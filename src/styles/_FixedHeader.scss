@@ -1,3 +1,5 @@
+@import "LogoContainer", "TimeCard";
+
 @font-face {
   font-family: 'NanumSquare';
   src: url('../assets/NanumSquareB.eot');
@@ -36,47 +38,6 @@
   */
 }
 
-.logo-container {
-  height: 150px;
-  width: 280px;
-  min-width: 150px;
-}
-
-.real-logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 80px;
-  width: 100%;
-}
-
-.left-logo {
-  object-fit: contain;
-  height: 50px;
-  width: 50px;
-  
-  margin: 0 20px;
-  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));
-}
-
-.siksha-title {
-  font-size: 17pt;
-  font-weight: bold;
-  margin-bottom: 3px;
-  color: white;
-}
-
-.siksha-subtitle {
-  font-size: 10pt;
-  color: white;
-}
-
-p {
-  margin: 0;
-  font-family: 'NanumSquare';
-}
-
 .time-card-container {
   display: flex;
   align-items: center;
@@ -100,67 +61,6 @@ p {
 
   box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
   background: white;
-}
-
-.date-container {
-  display: flex;
-  justify-content: space-around;
-  flex: 1;
-
-  margin-top: 5px;
-}
-
-.time-button {
-  background: transparent;
-  border: transparent;
-  font-size: 13pt;
-  font-family: 'NanumSquare';
-  color: #bababa;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    color: #fa9a44;
-  }
-}
-
-.focused-time {
-  color: #fa9a44;
-  font-weight: bold;
-}
-
-.meal-container {
-  display: flex;
-  justify-content: space-around;
-  flex: 1;
-
-  margin-bottom: 5px;
-}
-
-.meal-button {
-  display: inline-flex;
-  align-items: center;
-
-  width: 93px;
-
-  padding: 0px 7px;
-}
-
-.breakfast-icon {
-  font-size: 35pt;
-  margin-bottom: 3px;
-}
-
-.lunch-icon {
-  font-size: 25pt;
-  margin-right: 5px;
-}
-
-.dinner-icon {
-  font-size: 22pt;
-  margin-right: 2px;
 }
 
 .gradient-header {
@@ -187,18 +87,6 @@ p {
 }
 
 @media (max-width: 768px) {
-  .top-logo {
-    display: block;
-    object-fit: contain;
-
-    height: 45px;
-    width: 45px;
-    
-    margin-top: 10px;
-    
-    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.05));
-  }
-
   .FixedHeader {
     display: flex;
     justify-content: center;
