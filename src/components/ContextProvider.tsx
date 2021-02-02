@@ -37,7 +37,7 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const Provider = ({ children }: { children: React.ReactNode }) => {
+const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
     date: 'today',
     meal: initMeal
@@ -64,4 +64,4 @@ export function useDispatchContext() {
   return dispatch;
 }
 
-export default Provider;
+export default ContextProvider;
