@@ -1,5 +1,5 @@
-import React, { createContext, useMemo, useReducer, Dispatch } from 'react';
-import Provider from './components/Provider';
+import React from 'react';
+import ContextProvider from './components/ContextProvider';
 import TopContainer from './components/TopContainer';
 
 import './App.css';
@@ -7,9 +7,9 @@ import './App.css';
 const App = () => {
   return (
     <div className="App">
-      <Provider>
+      <ContextProvider>
         <TopContainer />
-      </Provider>
+      </ContextProvider>
     </div>
   );
 };

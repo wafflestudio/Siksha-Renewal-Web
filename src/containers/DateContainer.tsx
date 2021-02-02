@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Date, useDispatchContext, useStateContext } from '../components/Provider';
+import { Date, useDispatchContext, useStateContext } from '../components/ContextProvider';
 
 import '../styles/TopContainer.scss';
 
-const DateContainer = () => {
+const DateContainer: React.FC = () => {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 

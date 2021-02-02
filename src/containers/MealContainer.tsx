@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Meal, useDispatchContext, useStateContext } from '../components/Provider';
+import { Meal, useDispatchContext, useStateContext } from '../components/ContextProvider';
 
 import '../my-icons/my-icons.css';
 import '../styles/TopContainer.scss';
 
-const MealContainer = () => {
+const MealContainer: React.FC = () => {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
