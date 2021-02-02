@@ -1,9 +1,65 @@
 import React from 'react';
+import styled from 'styled-components';
 import classNames from 'classnames';
 import { Meal, useDispatchContext, useStateContext } from '../components/ContextProvider';
 
 import '../my-icons/my-icons.css';
-import '../styles/TopContainer.scss';
+
+const MealContainerBlock = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex: 1;
+
+  margin-bottom: 5px;
+
+  .meal-button {
+    display: inline-flex;
+    align-items: center;
+
+    width: 93px;
+    padding: 0px 7px;
+
+    background: transparent;
+    border: transparent;
+    color: #bababa;
+    font-size: 13pt;
+    font-family: 'NanumSquare';
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      color: #fa9a44;
+    }
+
+    .breakfast-icon {
+      font-size: 35pt;
+      margin-bottom: 3px;
+    }
+
+    .lunch-icon {
+      font-size: 25pt;
+      margin-right: 5px;
+    }
+
+    .dinner-icon {
+      font-size: 22pt;
+      margin-right: 2px;
+    }
+  }
+
+  .focused-meal {
+    color: #fa9a44;
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    .meal-button {
+      font-size: 12pt;
+    }
+  }
+`;
 
 const MealContainer: React.FC = () => {
   const state = useStateContext();
@@ -13,29 +69,29 @@ const MealContainer: React.FC = () => {
   const setMeal = (meal: Meal) => dispatch({ type: 'SET_MEAL', meal: meal });
 
   return (
-    <div className="meal-container">
+    <MealContainerBlock>
       <button 
-        className={classNames("time-button meal-button", { "focused-time": meal === 'BR' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'BR' })}
         onClick={() => setMeal('BR')}
       >
         <i className="my-icon my-icon-noun_sunrise_333233_000000 breakfast-icon"></i>
         아침
       </button>
       <button 
-        className={classNames("time-button meal-button", { "focused-time": meal === 'LU' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'LU' })}
         onClick={() => setMeal('LU')}
       >
         <i className="my-icon my-icon-noun_Morning_1015359_000000 lunch-icon"></i>
         점심
       </button>
       <button 
-        className={classNames("time-button meal-button", { "focused-time": meal === 'DN' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'DN' })}
         onClick={() => setMeal('DN')}
       >
         <i className="my-icon my-icon-noun_Moon_600919_000000 dinner-icon"></i>
         저녁
       </button>
-    </div>
+    </MealContainerBlock>
   );
 };
 
