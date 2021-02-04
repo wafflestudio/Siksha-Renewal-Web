@@ -1,8 +1,5 @@
 import React, { ReactNode } from 'react'
-import Link from 'next/link'
 import Head from 'next/head'
-import Header from './Header'
-import Footer from './Footer'
 
 type Props = {
   children?: ReactNode
@@ -15,6 +12,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       body {
         margin: 0;
         padding: 0;
+        background: #f8f8f8;
       }
     `}</style>
     <Head>
@@ -23,9 +21,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
       <link rel="icon" href="/favicon.ico" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <Header />
     {children}
-    <Footer />
   </div>
 )
 

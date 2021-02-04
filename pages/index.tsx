@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { AdditionalHeader, FixedHeader } from '../components/Home'
+import { AdditionalHeader, FixedHeader, Main } from '../components/Home'
 import ContextProvider from '../utils/hooks/ContextProvider'
 import Layout from '../components/Common/Layout'
 
@@ -16,9 +16,7 @@ const Home = () => (
       <TopContainer>
         <AdditionalHeader />
         <FixedHeader />
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <Main />
       </TopContainer>
     </ContextProvider>
   </Layout>

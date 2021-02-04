@@ -13,11 +13,13 @@ else if (currHour >= 16 && currHour < 20) {
 type State = {
   date: date;
   meal: meal;
+  restaurant: string;
 }
 
 type Action = 
   | { type: 'SET_DATE', date: date }
   | { type: 'SET_MEAL', meal: meal }
+  | { type: 'SET_RESTAURANT', restaurant: string }
 
 type dispatch = Dispatch<Action>;
 
@@ -30,6 +32,8 @@ function reducer(state: State, action: Action) {
       return { ...state, date: action.date };
     case 'SET_MEAL' : 
       return { ...state, meal: action.meal };
+    case 'SET_RESTAURANT' :
+      return { ...state, restaurant: action.restaurant }
     default:
       throw new Error('Unhandled action');
   }
@@ -38,7 +42,8 @@ function reducer(state: State, action: Action) {
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
     date: 'today',
-    meal: initMeal
+    meal: initMeal,
+    restaurant: ''
   })
   
   return (
