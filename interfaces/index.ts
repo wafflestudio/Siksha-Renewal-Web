@@ -1,4 +1,2 @@
-export type User = {
-  id: number
-  name: string
-}
+export type date = 'today' | 'tomorrow'
+export type meal = 'BR' | 'LU' | 'DN'

@@ -1,0 +1,45 @@
+@font-face {
+	font-family: "my-icons";
+	src: url("my-icons.eot?8d0291914377350011218e781bfa987d?#iefix") format("embedded-opentype"),
+	url("my-icons.woff2?8d0291914377350011218e781bfa987d") format("woff2"),
+	url("my-icons.woff?8d0291914377350011218e781bfa987d") format("woff");
+}
+
+.my-icon {
+	line-height: 1;
+}
+
+.my-icon:before {
+	font-family: my-icons !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.my-icon-noun_sunrise_333233_000000:before {
+	content: "\f101";
+}
+.my-icon-noun_Morning_1015359_000000:before {
+	content: "\f102";
+}
+.my-icon-noun_Moon_600919_000000:before {
+	content: "\f103";
+}
+.my-icon-clock_empty:before {
+	content: "\f104";
+}
+.my-icon-clock_full:before {
+	content: "\f105";
+}
+.my-icon-location_empty:before {
+	content: "\f106";
+}
+.my-icon-location_full:before {
+	content: "\f107";
+}
+.my-icon-info-icon:before {
+	content: "\f108";
+}
+.my-icon-close-icon:before {
+	content: "\f109";
+}

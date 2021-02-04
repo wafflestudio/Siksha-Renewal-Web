@@ -34,7 +34,7 @@ const AdditionalHeaderBlock = styled.div`
 const AdditionalHeader = () => {
   return (
     <AdditionalHeaderBlock>
-      <img className="top-logo" src="/logo.png" alt="siksha-logo" />
+      <img className="top-logo" src="/img/logo.png" alt="siksha-logo" />
     </AdditionalHeaderBlock>
   );
 };

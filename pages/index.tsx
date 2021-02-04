@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import AdditionalHeader from '../components/Home/AdditionalHeader';
-import Layout from '../components/Layout'
+import { AdditionalHeader, FixedHeader } from '../components/Home'
+import ContextProvider from '../utils/hooks/ContextProvider'
+import Layout from '../components/Common/Layout'
 
 const TopContainer = styled.div`
   display: flex;
@@ -11,10 +12,15 @@ const TopContainer = styled.div`
 
 const Home = () => (
   <Layout title="서울대학교 식단 알리미 : 식샤">
-    <TopContainer>
-      <AdditionalHeader />
-      
-    </TopContainer>
+    <ContextProvider>
+      <TopContainer>
+        <AdditionalHeader />
+        <FixedHeader />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      </TopContainer>
+    </ContextProvider>
   </Layout>
 )
 
