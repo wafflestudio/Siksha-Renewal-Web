@@ -7,13 +7,12 @@ const TopContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 100%;
 `;
 
 const Home = () => (
   <Layout title="서울대학교 식단 알리미 : 식샤">
     <ContextProvider>
-      <TopContainer>
+      <TopContainer id="top">
         <AdditionalHeader />
         <FixedHeader />
         <Main />

@@ -48,7 +48,6 @@ const DateContainer: React.FC = () => {
     <DateContainerBlock>
       <button 
         className={classNames("time-button", { "focused-time": date === '2020-01-31' })}
-        onClick={() => setDate('today')}
       >
         2020. 01. 31
       </button>

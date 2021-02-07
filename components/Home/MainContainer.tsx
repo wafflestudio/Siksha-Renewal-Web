@@ -17,6 +17,15 @@ const MainContainerBlock = styled.div`
     width: 100%;
     max-width: 800px;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-top: 0px;
+
+    .menu-card-container {
+      margin: 0 25px;
+    }
+  }
 `;
 
 const MainContainer = () => {
@@ -27,7 +36,7 @@ const MainContainer = () => {
 
   return (
     <MainContainerBlock>
-      {menuData[dateIndex][meal].map((restaurant: restaurant) => (
+      {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
         <div className="menu-card-container" key={restaurant.name_en}>
           <MenuCard restaurant={restaurant} key={restaurant.name_en} />
         </div>

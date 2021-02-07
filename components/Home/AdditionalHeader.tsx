@@ -7,7 +7,7 @@ const AdditionalHeaderBlock = styled.div`
 
   height: 100px;
   width: 100%;
-  
+
   z-index: 3;
 
   background: linear-gradient(to right, #fd7878 0%, #fe8662 65%, #ff9a44 100%);

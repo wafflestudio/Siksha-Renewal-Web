@@ -1,9 +1,15 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
-import { mealType, menu, restaurant } from '../../interfaces';
+import { menu, restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
+import { useState } from 'react'
 
 const MenuCardBlock = styled.div`
+  @font-face {
+    font-family: 'Lato';
+    src: url('/font/Lato-Regular.ttf') format("truetype");
+  }
+
   display: flex;
   box-shadow: 1px 1px 17px rgba(0,0,0,0.06);
   flex-direction: column;
@@ -25,20 +31,15 @@ const MenuCardBlock = styled.div`
     align-items: center;
     width: 100%;
 
+    h4 {
+      margin: 10px 0;
+      color: #6c6b70;
+      font-family: 'NanumSquare';
+      font-weight: bold;
+    }
+
     .information-button {
       display: none;
-      border: none;
-      background: none;
-      padding: 0px;
-
-      &:focus {
-        outline: none;
-      }
-
-      .info-icon {
-        font-size: 15pt;
-        color: #FF9A44;
-      }
     }
   }
 
@@ -92,7 +93,7 @@ const MenuCardBlock = styled.div`
 
     .menus-container {
       padding: 0 20px;
-      width: 50%;
+      width: 100%;
 
       .menu-info-container {
         display: flex;
@@ -116,10 +117,42 @@ const MenuCardBlock = styled.div`
 
         .menu-name {
           line-height: 20px;
-          margin-top: 2.1px;
+          margin-top: 3px;
           word-break: break-all;
           white-space: pre-line;
         }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 5px 25px;
+
+    .content-container {
+      margin: 10px 0px;
+
+      .restaurant-info-container {
+        display: none;
+      }
+    }
+    .menus-container {
+      width: 100%;
+      padding: 0;
+    }
+    
+    .information-button {
+      display: block !important;
+      border: none;
+      background: none;
+      padding: 0px;
+
+      &:focus {
+        outline: none;
+      }
+
+      .info-icon {
+        font-size: 15pt;
+        color: #FF9A44;
       }
     }
   }
@@ -130,11 +163,13 @@ interface MenuCardProps {
 }
 
 const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  
   return (
     <MenuCardBlock className={"a"+restaurant.name_en.replace(/\s/g, '')}>
       <div className="restaurant-name-container">
         <h4>{restaurant.name_kr}</h4>
-        <button className="information-button">
+        <button className="information-button" onClick={() => setShowModal(true)}>
           <i className={classNames(styles['my-icon'], styles['my-icon-info-icon'], "info-icon")}></i>
         </button>
       </div>
@@ -154,7 +189,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
         </div>
         <div className="menus-container">
           {restaurant.menus.map((menu: menu) => (
-            <div className="menu-info-container">
+            <div className="menu-info-container" key={menu.id}>
               <div className="price-container">
                 <p className="price">{menu.price}</p>
               </div>

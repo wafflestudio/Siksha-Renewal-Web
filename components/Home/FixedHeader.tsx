@@ -6,26 +6,26 @@ import MealContainer from './MealContainer'
 const FixedHeaderBlock = styled.div`
   @font-face {
     font-family: 'NanumSquare';
-    src: url('../assets/NanumSquareB.eot');
-    src: url('../assets/NanumSquareB.woff') format('woff'),
-        url('../assets/NanumSquareB.ttf') format("truetype");
+    src: url('/font/NanumSquareB.eot');
+    src: url('/font/NanumSquareB.woff') format('woff'),
+        url('/font/NanumSquareB.ttf') format("truetype");
 
     font-weight: bold;
   }
 
   @font-face {
     font-family: 'NanumSquare';
-    src: url('../assets/NanumSquareR.eot');
-    src: url('../assets/NanumSquareR.woff') format('woff'),
-        url('../assets/NanumSquareR.ttf') format("truetype");
+    src: url('/font/NanumSquareR.eot');
+    src: url('/font/NanumSquareR.woff') format('woff'),
+        url('/font/NanumSquareR.ttf') format("truetype");
     font-weight: normal;
   }
 
   @font-face {
     font-family: 'NanumSquare';
-    src: url('../assets/NanumSquareL.eot');
-    src: url('../assets/NanumSquareL.woff') format('woff'),
-        url('../assets/NanumSquareL.ttf') format("truetype");
+    src: url('/font/NanumSquareL.eot');
+    src: url('/font/NanumSquareL.woff') format('woff'),
+        url('/font/NanumSquareL.ttf') format("truetype");
     font-weight: 100;
   }
 
@@ -36,17 +36,13 @@ const FixedHeaderBlock = styled.div`
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  
+  left: 0;
+
   z-index: 2;
 
   .empty-header {
     display: flex;
     justify-content: center;
-
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    left: 0;
 
     .time-card-container {
       display: flex;

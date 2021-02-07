@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
-import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider';
+import { useStateContext } from '../../utils/hooks/ContextProvider';
 import { menuData } from '../../utils/menuData'
 import { useState } from 'react';
 import { restaurant } from '../../interfaces';
@@ -105,6 +105,10 @@ const SidebarContainerBlock = styled.div`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 function scrollRestaurant(restaurant: string) {
@@ -135,7 +139,7 @@ const SidebarContainer = () => {
   return (
     <SidebarContainerBlock>
       <div className="sidebar">
-        {menuData[dateIndex][meal].map((restaurant: restaurant) => (
+        {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
           <button 
             className="sidebar-button"
             tabIndex={1}
