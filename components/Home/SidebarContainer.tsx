@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider';
+import { menuData } from '../../utils/menuData'
+import { useState } from 'react';
+import { restaurant } from '../../interfaces';
 
 const SidebarContainerBlock = styled.div`
   min-height: 100vh;
@@ -55,102 +58,57 @@ const SidebarContainerBlock = styled.div`
       }
     }
   }
+
+  .popper {
+    border: solid 1px black;
+
+    .contact-waffle {
+      margin-left: 45px;
+      background-color: white;
+      white-space: pre-line;
+      text-align: left;
+      padding: 20px 15px;
+      font-size: 10pt;
+      line-height: 17px;
+      color: #6C6B70;
+      box-shadow: 1px 1px 17px rgba(0,0,0,0.06);
+      position: absolute;
+      top: 635px;
+
+      p {
+        margin: 0;
+        font-family: 'NanumSquare';
+      }
+
+      a {
+        font-family: 'NanumSquare';
+      }
+    }
+
+    .waffle-logo-container {
+      width: 280px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 535px;
+
+      .waffle-logo {
+        height: 80px;
+        object-fit: contain;
+        cursor: pointer;
+      }
+
+      .blurred-waffle-logo {
+        opacity: 0.7;
+      }
+    }
+  }
 `;
 
-const menuData = {
-  today: {
-    menus: [
-      {
-        type: 'BR',
-        meals: ['a', 'b', 'c'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      },
-      {
-        type: 'BR',
-        meals: ['d', 'e'],
-        restaurant: {
-          kr_name: '자하연',
-          en_name: 'jahayeon'
-        }
-      },
-      {
-        type: 'LU',
-        meals: ['al', 'bl', 'cl'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      },
-      {
-        type: 'LU',
-        meals: ['dl', 'el'],
-        restaurant: {
-          kr_name: '자하연',
-          en_name: 'jahayeon'
-        }
-      },
-      {
-        type: 'DN',
-        meals: ['ad', 'cd'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      }
-    ]
-  },
-
-  tomorrow: {
-    menus: [
-      {
-        type: 'BR',
-        meals: ['ta', 'tb', 'tc'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      },
-      {
-        type: 'BR',
-        meals: ['td', 'te'],
-        restaurant: {
-          kr_name: '자하연',
-          en_name: 'jahayeon'
-        }
-      },
-      {
-        type: 'LU',
-        meals: ['tal', 'tbl', 'tcl'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      },
-      {
-        type: 'LU',
-        meals: ['tdl', 'tel'],
-        restaurant: {
-          kr_name: '자하연',
-          en_name: 'jahayeon'
-        }
-      },
-      {
-        type: 'DN',
-        meals: ['tad', 'tcd'],
-        restaurant: {
-          kr_name: '학식',
-          en_name: 'haksik'
-        }
-      }
-    ]
-  }
-}
-
 function scrollRestaurant(restaurant: string) {
-  let element = document.querySelector('#a'+restaurant)
+  let element = document.querySelector('.a'+restaurant)
   let headerOffset = 150
   let elementPosition = element!.getBoundingClientRect().top + window.pageYOffset;
   let offsetPosition = elementPosition - headerOffset;
@@ -167,27 +125,46 @@ function scrollRestaurant(restaurant: string) {
 
 const SidebarContainer = () => {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-  const { date, meal, restaurant } = state;
-  const setRestaurant = (restaurant: string) => dispatch({ type: 'SET_RESTAURANT', restaurant: restaurant })
+  const { date, meal } = state;
+
+  const [focusedRestaurant, setFocusedRestaurant] = useState<string>('')
+  const [isContactBoxClosed, setContactBoxState] = useState<boolean>(true)
+
+  const dateIndex = menuData.findIndex(day => day.date === date)
 
   return (
     <SidebarContainerBlock>
       <div className="sidebar">
-        {((date === 'today' ? menuData.today : menuData.tomorrow).menus.filter(
-          menu => menu.type === meal && menu.meals.length > 0)).map(
-          menu => <button 
-            className="sidebar-button" 
+        {menuData[dateIndex][meal].map((restaurant: restaurant) => (
+          <button 
+            className="sidebar-button"
             tabIndex={1}
-            //onClick={() => scrollRestaurant(menu.restaurant.en_name.replace(/\s/g, ''))}
-            onFocus={() => setRestaurant(menu.restaurant.en_name)}
-            onBlur={() => setRestaurant('')}
-            key={menu.restaurant.en_name}
+            onClick={() => scrollRestaurant(restaurant.name_en.replace(/\s/g, ''))}
+            onFocus={() => setFocusedRestaurant(restaurant.name_en)}
+            onBlur={() => setFocusedRestaurant('')}
+            key={restaurant.name_en}
           >
-            <div className={classNames("bullet", { "visible-bullet": menu.restaurant.en_name === restaurant })} />
-            {menu.restaurant.kr_name}
+            <div className={classNames("bullet", { "visible-bullet": restaurant.name_en === focusedRestaurant })} />
+            {restaurant.name_kr}
           </button>
-        )}
+        ))}
+      </div>
+      <div className="popper">
+        {!isContactBoxClosed && (<div className="contact-waffle">
+          <p>와플스튜디오</p>
+          <a href="https://wafflestudio.com">wafflestudio.com</a>
+          <p>
+            만든 사람들
+            조규상 박지유 박석현 박주현 조일현
+          </p>
+        </div>)}
+        <div className="waffle-logo-container" onClick={() => setContactBoxState(!isContactBoxClosed)}>
+          <img 
+            className={classNames("waffle-logo", { "blurred-waffle-logo": isContactBoxClosed })} 
+            src="/img/waffle-logo.png"
+            alt="waffle-logo"
+          />
+        </div>
       </div>
     </SidebarContainerBlock>
   );

@@ -1,8 +1,8 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react'
-import { meal, date } from '../../interfaces'
+import { mealType } from '../../interfaces'
 
 const currHour: number = new Date().getHours();
-let initMeal: meal = 'BR';
+let initMeal: mealType = 'BR';
 if(currHour > 9 && currHour < 16) {
   initMeal = 'LU';
 }
@@ -11,15 +11,13 @@ else if (currHour >= 16 && currHour < 20) {
 }
 
 type State = {
-  date: date;
-  meal: meal;
-  restaurant: string;
+  date: string;
+  meal: mealType;
 }
 
 type Action = 
-  | { type: 'SET_DATE', date: date }
-  | { type: 'SET_MEAL', meal: meal }
-  | { type: 'SET_RESTAURANT', restaurant: string }
+  | { type: 'SET_DATE', date: string }
+  | { type: 'SET_MEAL', meal: mealType }
 
 type dispatch = Dispatch<Action>;
 
@@ -32,8 +30,6 @@ function reducer(state: State, action: Action) {
       return { ...state, date: action.date };
     case 'SET_MEAL' : 
       return { ...state, meal: action.meal };
-    case 'SET_RESTAURANT' :
-      return { ...state, restaurant: action.restaurant }
     default:
       throw new Error('Unhandled action');
   }
@@ -41,9 +37,8 @@ function reducer(state: State, action: Action) {
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
-    date: 'today',
+    date: '2020-01-31',
     meal: initMeal,
-    restaurant: ''
   })
   
   return (

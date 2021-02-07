@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider';
-import { date } from '../../interfaces'
 
 const DateContainerBlock = styled.div`
   display: flex;
@@ -43,21 +42,15 @@ const DateContainer: React.FC = () => {
   const dispatch = useDispatchContext();
 
   const { date } = state;
-  const setDate = (date: date) => dispatch({ type: 'SET_DATE', date: date });
+  const setDate = (date: string) => dispatch({ type: 'SET_DATE', date: date });
 
   return (
     <DateContainerBlock>
       <button 
-        className={classNames("time-button", { "focused-time": date === 'today' })}
+        className={classNames("time-button", { "focused-time": date === '2020-01-31' })}
         onClick={() => setDate('today')}
       >
-        2021. 02. 01
-      </button>
-      <button 
-        className={classNames("time-button", { "focused-time": date === 'tomorrow' })}
-        onClick={() => setDate('tomorrow')}
-      >
-        2021. 02. 02
+        2020. 01. 31
       </button>
     </DateContainerBlock>
   );

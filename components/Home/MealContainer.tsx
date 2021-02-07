@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
-import { meal } from '../../interfaces'
+import { mealType } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 
 const MealContainerBlock = styled.div`
@@ -65,7 +65,7 @@ const MealContainer: React.FC = () => {
   const dispatch = useDispatchContext();
 
   const { meal } = state;
-  const setMeal = (meal: meal) => dispatch({ type: 'SET_MEAL', meal: meal });
+  const setMeal = (meal: mealType) => dispatch({ type: 'SET_MEAL', meal: meal });
 
   return (
     <MealContainerBlock>
