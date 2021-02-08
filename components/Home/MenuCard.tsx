@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { menu, restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 import { useState } from 'react'
+import Modal from './Modal'
 
 const MenuCardBlock = styled.div`
   @font-face {
@@ -163,15 +164,16 @@ interface MenuCardProps {
 }
 
 const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   
   return (
     <MenuCardBlock className={"a"+restaurant.name_en.replace(/\s/g, '')}>
       <div className="restaurant-name-container">
         <h4>{restaurant.name_kr}</h4>
-        <button className="information-button" onClick={() => setShowModal(true)}>
+        <button className="information-button" onClick={() => setIsModalOpen(true)}>
           <i className={classNames(styles['my-icon'], styles['my-icon-info-icon'], "info-icon")}></i>
         </button>
+        {isModalOpen && <Modal restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
       </div>
       <div className="underline"/>
       <div className="content-container">

@@ -5,7 +5,7 @@ import { menuData } from '../../utils/menuData'
 import { useState } from 'react';
 import { restaurant } from '../../interfaces';
 
-const SidebarContainerBlock = styled.div<{ isFixed: boolean }>`
+const SidebarContainerBlock = styled.div`
   min-height: 300px;
   width: 280px;
   min-width: 280px;
@@ -142,7 +142,7 @@ const SidebarContainer = () => {
   const dateIndex = menuData.findIndex(day => day.date === date)
 
   return (
-    <SidebarContainerBlock isFixed={window.scrollY >= 150}>
+    <SidebarContainerBlock>
       <div className="sidebar">
         {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
           <button 
