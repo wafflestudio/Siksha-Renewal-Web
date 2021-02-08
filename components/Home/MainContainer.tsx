@@ -9,8 +9,12 @@ const MainContainerBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
   width: 60vw;
+
+  color: #2c3e50;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   .menu-card-container {
     margin: 0 40px;
@@ -19,8 +23,10 @@ const MainContainerBlock = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 97vw;
     padding-top: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
 
     .menu-card-container {
       margin: 0 25px;

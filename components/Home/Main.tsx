@@ -29,13 +29,9 @@ const MainBlock = styled.div`
   }
 `;
 
-const StickyContainer = styled.div`
-`;
-
 const Main = () => {
   return (
     <MainBlock>
-      <SidebarContainer />
       <MainContainer />
       <img className="mobile-waffle-logo" src="/img/waffle-logo.png"></img>
     </MainBlock>

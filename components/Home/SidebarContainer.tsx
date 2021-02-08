@@ -5,14 +5,20 @@ import { menuData } from '../../utils/menuData'
 import { useState } from 'react';
 import { restaurant } from '../../interfaces';
 
-const SidebarContainerBlock = styled.div`
-  min-height: 100vh;
+const SidebarContainerBlock = styled.div<{ isFixed: boolean }>`
+  min-height: 300px;
   width: 280px;
   min-width: 280px;
 
+  display: inline-block;
+
+  position: sticky;
+  position: -webkit-sticky;
+  top: 155px;
+
   .sidebar {
     width: inherit;
-    height: 100vh;
+    height: 300px;
     z-index: 1;
     overflow: hidden;
     display: flex;
@@ -60,7 +66,6 @@ const SidebarContainerBlock = styled.div`
   }
 
   .popper {
-    border: solid 1px black;
 
     .contact-waffle {
       margin-left: 45px;
@@ -73,7 +78,7 @@ const SidebarContainerBlock = styled.div`
       color: #6C6B70;
       box-shadow: 1px 1px 17px rgba(0,0,0,0.06);
       position: absolute;
-      top: 635px;
+      top: 465px;
 
       p {
         margin: 0;
@@ -92,7 +97,7 @@ const SidebarContainerBlock = styled.div`
       justify-content: center;
       align-items: center;
       position: absolute;
-      top: 535px;
+      top: 375px;
 
       .waffle-logo {
         height: 80px;
@@ -137,7 +142,7 @@ const SidebarContainer = () => {
   const dateIndex = menuData.findIndex(day => day.date === date)
 
   return (
-    <SidebarContainerBlock>
+    <SidebarContainerBlock isFixed={window.scrollY >= 150}>
       <div className="sidebar">
         {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
           <button 

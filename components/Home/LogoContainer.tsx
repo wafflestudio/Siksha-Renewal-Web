@@ -13,6 +13,8 @@ const LogoContainerBlock = styled.div`
     height: 80px;
     width: 100%;
 
+    text-align: left !important;
+
     .left-logo {
       object-fit: contain;
       height: 50px;
