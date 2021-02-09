@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-import { AdditionalHeader, FixedHeader, Main } from '../components/Home'
-import ContextProvider from '../utils/hooks/ContextProvider'
 import Layout from '../components/Common/Layout'
-import SidebarContainer from '../components/Home/SidebarContainer';
-import MainContainer from '../components/Home/MainContainer';
+import { AdditionalHeader, FixedHeader, SidebarContainer, MainContainer } from '../components/Home'
+import ContextProvider from '../utils/hooks/ContextProvider'
 
 const TopContainer = styled.div`
   text-align: center;

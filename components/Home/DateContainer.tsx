@@ -37,6 +37,8 @@ const DateContainerBlock = styled.div`
   }
 `;
 
+const convertDate = (date: string) => date.substring(0, 4) + '. ' + date.substring(5, 7) + '. ' + date.substring(8, 10)
+
 const DateContainer: React.FC = () => {
   const state = useStateContext();
   const dispatch = useDispatchContext();
@@ -49,7 +51,7 @@ const DateContainer: React.FC = () => {
       <button 
         className={classNames("time-button", { "focused-time": date === '2020-01-31' })}
       >
-        2020. 01. 31
+        {convertDate(date)}
       </button>
     </DateContainerBlock>
   );

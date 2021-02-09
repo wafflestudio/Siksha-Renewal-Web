@@ -3,13 +3,20 @@ import classNames from 'classnames'
 import { menu, restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 import { useState } from 'react'
-import Modal from './Modal'
 import ModalContainer from './ModalContainer'
 
 const MenuCardBlock = styled.div`
   @font-face {
     font-family: 'Lato';
     src: url('/font/Lato-Regular.ttf') format("truetype");
+  }
+
+  @font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: 300;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf') format('truetype');
   }
 
   display: flex;
@@ -25,6 +32,7 @@ const MenuCardBlock = styled.div`
     text-align: left;
     color: #6c6b70;
     font-size: 12pt;
+    font-family: 'NanumBarunGothic', sans-serif;
   }
 
   .restaurant-name-container {
@@ -111,7 +119,7 @@ const MenuCardBlock = styled.div`
 
           .price {
             color: white;
-            font-family: 'Lato';
+            font-family: 'Lato' !important;
             margin-top: 2px;
             margin-bottom: 1.5px;
           }
