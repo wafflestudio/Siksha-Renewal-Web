@@ -1,33 +1,39 @@
-import styled from 'styled-components';
-import classNames from 'classnames';
-import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider';
+import styled from 'styled-components'
+import classNames from 'classnames'
+import { AiFillCaretLeft, AiFillCaretRight, AiOutlineCalendar } from 'react-icons/ai'
+import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
 
 const DateContainerBlock = styled.div`
   display: flex;
   flex: 1;
-  justify-content: space-around;
+  justify-content: center;
 
   margin-top: 5px;
 
-  .time-button {
-    background: transparent;
-    border: transparent;
-    font-size: 13pt;
-    font-family: 'NanumSquare';
-    color: #bababa;
-
-    &:focus {
-      outline: none;
-    }
-
-    &:hover {
-      color: #fa9a44;
-    }
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    color: #fa9a44;
   }
 
-  .focused-time {
-    color: #fa9a44;
+  .time-button {
+    font-size: 13pt;
+    font-family: 'NanumSquare';
+    margin-left: 20px;
     font-weight: bold;
+  }
+
+  .arrow {
+    font-size: 14pt;
+    margin-top: 3px;
+  }
+
+  .calendar {
+    font-size: 14pt;
+    margin-top: 2px;
+    margin-left: -4px;
+    margin-right: 2px;
   }
 
   @media (max-width: 768px) {
@@ -48,11 +54,10 @@ const DateContainer: React.FC = () => {
 
   return (
     <DateContainerBlock>
-      <button 
-        className={classNames("time-button", { "focused-time": date === '2020-01-31' })}
-      >
-        {convertDate(date)}
-      </button>
+      <button className="arrow left-button"><AiFillCaretLeft /></button>
+      <button className="time-button">{convertDate(date)}</button>
+      <button className="calendar"><AiOutlineCalendar /></button>
+      <button className="arrow right-button"><AiFillCaretRight /></button>
     </DateContainerBlock>
   );
 };

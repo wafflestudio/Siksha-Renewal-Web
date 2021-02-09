@@ -6,30 +6,48 @@ import MenuCard from './MenuCard'
 
 
 const MainContainerBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 60vw;
+  display: inline-block;
 
-  color: #2c3e50;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  .menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw;
 
-  .menu-card-container {
-    margin: 0 40px;
-    width: 100%;
-    max-width: 800px;
+    color: #2c3e50;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    .menu-card-container {
+      margin: 0 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+  }
+
+  .mobile-waffle-logo {
+    display: none;
   }
 
   @media (max-width: 768px) {
-    width: 97vw;
-    padding-top: 0px;
-    margin-top: 0px;
-    margin-left: 0px;
+    .menu-container {
+      width: 97vw;
+      padding-top: 0px;
+      margin-top: 0px;
+      margin-left: 0px;
 
-    .menu-card-container {
-      margin: 0 25px;
+      .menu-card-container {
+        margin: 0 25px;
+      }
+    }
+
+    .mobile-waffle-logo {
+      display: inline-block;
+      width: 50%;
+      opacity: 0.8;
+      margin: 20px 0px;
+      object-fit: contain;
     }
   }
 `;
@@ -42,11 +60,14 @@ const MainContainer = () => {
 
   return (
     <MainContainerBlock>
-      {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
-        <div className="menu-card-container" key={restaurant.name_en}>
-          <MenuCard restaurant={restaurant} key={restaurant.name_en} />
-        </div>
-      ))}
+      <div className="menu-container">
+        {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
+          <div className="menu-card-container" key={restaurant.name_en}>
+            <MenuCard restaurant={restaurant} key={restaurant.name_en} />
+          </div>
+        ))}
+      </div>
+      <img className="mobile-waffle-logo" src="/img/waffle-logo.png"></img>
     </MainContainerBlock>
   );
 };

@@ -28,10 +28,7 @@ const Home = () => (
         <AdditionalHeader />
         <FixedHeader />
         <SidebarContainer />
-        <div style={{display: 'inline-block'}}>
-          <MainContainer />
-        </div>
-        <img className="mobile-waffle-logo" src="/img/waffle-logo.png"></img>
+        <MainContainer />
       </TopContainer>
     </ContextProvider>
   </Layout>

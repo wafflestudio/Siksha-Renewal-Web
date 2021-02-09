@@ -118,8 +118,12 @@ const SidebarContainerBlock = styled.div`
 
 function scrollRestaurant(restaurant: string) {
   let element = document.querySelector('.a'+restaurant)
+  if(!element) {
+    throw new Error('Cannot find element')
+  }
+
   let headerOffset = 150
-  let elementPosition = element!.getBoundingClientRect().top + window.pageYOffset;
+  let elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
   let offsetPosition = elementPosition - headerOffset;
   if((navigator.userAgent.includes('Chrome') || navigator.userAgent.includes('Firefox')) && !navigator.userAgent.includes('Edge')) {
     window.scrollTo({
