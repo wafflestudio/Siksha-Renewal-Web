@@ -7,13 +7,16 @@ const ModalBlock = styled.div`
   display: none;
   position: fixed;
 
-  top: 50%;
-  left: 50%;
-
   width: 85%;
-  height: auto;
+  height: 20%;
 
-  z-index: 4;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  z-index: 5;
 
   h4 {
     margin: 10px 0;

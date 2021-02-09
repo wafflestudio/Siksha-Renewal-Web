@@ -4,6 +4,7 @@ import { menu, restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 import { useState } from 'react'
 import Modal from './Modal'
+import ModalContainer from './ModalContainer'
 
 const MenuCardBlock = styled.div`
   @font-face {
@@ -173,7 +174,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
         <button className="information-button" onClick={() => setIsModalOpen(true)}>
           <i className={classNames(styles['my-icon'], styles['my-icon-info-icon'], "info-icon")}></i>
         </button>
-        {isModalOpen && <Modal restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
+        {isModalOpen && <ModalContainer restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
       </div>
       <div className="underline"/>
       <div className="content-container">
