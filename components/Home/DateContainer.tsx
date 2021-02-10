@@ -1,49 +1,90 @@
 import styled from 'styled-components'
-import classNames from 'classnames'
-import { AiFillCaretLeft, AiFillCaretRight, AiOutlineCalendar } from 'react-icons/ai'
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
 
 const DateContainerBlock = styled.div`
   display: flex;
   flex: 1;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
 
-  margin-top: 5px;
+  box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
+  margin-top: 20px;
+  background: white;
+  width: 100%;
 
   button {
     background: none;
     border: none;
     outline: none;
-    color: #fa9a44;
   }
 
   .time-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 13pt;
     font-family: 'NanumSquare';
-    margin-left: 20px;
     font-weight: bold;
+    color: #fa9a44;
+    height: 60px;
+    width: 140px;
+    border-bottom: solid 3px #fa9a44;
   }
 
-  .arrow {
-    font-size: 14pt;
-    margin-top: 3px;
-  }
+  .arrow-button {
+    font-size: 12pt;
+    font-family: 'NanumSquare';
+    color: #bababa;
 
-  .calendar {
-    font-size: 14pt;
-    margin-top: 2px;
-    margin-left: -4px;
-    margin-right: 2px;
+    display: flex;
+    align-items: center;
+
+    svg {
+      font-size: 13pt;
+      margin: 0 10px;
+      margin-top: -1px;
+    }
+
+    &:hover {
+      color: #fa9a44;
+    }
   }
 
   @media (max-width: 768px) {
+    box-shadow: 0px 0.5px 2px rgba(0, 0, 0, 0.25);
+
     .time-button {
       font-size: 12pt;
+      width: 120px;
+    }
+
+    .arrow-button {
+      font-size: 11pt;
+
+      svg {
+        font-size: 12pt;
+      }
     }
   }
 `;
 
-const convertDate = (date: string) => date.substring(0, 4) + '. ' + date.substring(5, 7) + '. ' + date.substring(8, 10)
+const convertDate = (date: string) => {
+  const week: string[] = ['일', '월', '화', '수', '목', '금', '토']
+  return `${date.substring(5, 7)}. ${date.substring(8, 10)}. ${week[new Date(date).getDay()]}`
+}
+
+const getYesterday = (date: string) => {
+  const yesterday = new Date(date)
+  yesterday.setDate(yesterday.getDate() - 1)
+  return `${yesterday.getFullYear()}-${("0" + (yesterday.getMonth() + 1)).slice(-2)}-${("0" + yesterday.getDate()).slice(-2)}`
+}
+
+const getTomorrow = (date: string) => {
+  const tomorrow = new Date(date)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  return `${tomorrow.getFullYear()}-${("0" + (tomorrow.getMonth() + 1)).slice(-2)}-${("0" + tomorrow.getDate()).slice(-2)}`
+}
 
 const DateContainer: React.FC = () => {
   const state = useStateContext();
@@ -54,10 +95,15 @@ const DateContainer: React.FC = () => {
 
   return (
     <DateContainerBlock>
-      <button className="arrow left-button"><AiFillCaretLeft /></button>
+      <button className="arrow-button" onClick={() => setDate(getYesterday(date))}>
+        <BsChevronLeft />
+        {convertDate(getYesterday(date))}
+      </button>
       <button className="time-button">{convertDate(date)}</button>
-      <button className="calendar"><AiOutlineCalendar /></button>
-      <button className="arrow right-button"><AiFillCaretRight /></button>
+      <button className="arrow-button" onClick={() => setDate(getTomorrow(date))}>
+        {convertDate(getTomorrow(date))}
+        <BsChevronRight />
+      </button>
     </DateContainerBlock>
   );
 };

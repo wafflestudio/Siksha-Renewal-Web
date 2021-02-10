@@ -148,7 +148,7 @@ const SidebarContainer = () => {
   return (
     <SidebarContainerBlock>
       <div className="sidebar">
-        {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
+        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: restaurant) => (
           <button 
             className="sidebar-button"
             tabIndex={1}

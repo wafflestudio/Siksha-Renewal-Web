@@ -10,6 +10,16 @@ else if (currHour >= 16 && currHour < 20) {
   initMeal = 'DN';
 }
 
+let initDate = () => {
+  const date = new Date()
+  let month: string = (date.getMonth()+1).toString()
+  if(date.getMonth()+1 < 10) {
+    month = '0' + month
+  }
+
+  return `${date.getFullYear()}-${month}-${date.getDate()}`
+}
+
 type State = {
   date: string;
   meal: mealType;
@@ -37,7 +47,7 @@ function reducer(state: State, action: Action) {
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
-    date: '2020-01-31',
+    date: initDate(),
     meal: initMeal,
   })
   

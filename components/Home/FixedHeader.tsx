@@ -46,34 +46,15 @@ const FixedHeaderBlock = styled.div`
 
     .time-card-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
 
       height: 150px;
-      width: 60vw;
+      width: 55vw;
+      max-width: 800px;
 
       z-index: 2;
-
-      .time-card {
-        display: flex;
-        flex-direction: column;
-
-        height: 110px;
-        width: 100%;
-        max-width: 800px;
-
-        padding: 5px 0;
-
-        box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
-        background: white;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .time-card-container {
-        padding: 0px 15px;
-        width: 100%;
-      }
     }
 
     .gradient-header {
@@ -88,7 +69,7 @@ const FixedHeaderBlock = styled.div`
     }
 
     .gray-header {
-      height: 70px;
+      height: 55px;
       width: 100%;
 
       background: #f8f8f8;
@@ -98,6 +79,16 @@ const FixedHeaderBlock = styled.div`
       z-index: -2;
       left: 0;
     }
+
+    @media (max-width: 768px) {
+      .time-card-container {
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    top: 100px;
   }
 `;
 
@@ -107,10 +98,8 @@ const FixedHeader = () => {
       <div className="empty-header">
         <LogoContainer />
         <div className="time-card-container">
-          <div className="time-card">
-            <DateContainer />
-            <MealContainer />
-          </div>
+          <DateContainer />
+          <MealContainer />
         </div>
         <div className="gradient-header" />
         <div className="gray-header" />

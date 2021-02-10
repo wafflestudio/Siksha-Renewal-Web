@@ -7,6 +7,7 @@ import MenuCard from './MenuCard'
 
 const MainContainerBlock = styled.div`
   display: inline-block;
+  margin-top: -10px;
 
   .menu-container {
     display: flex;
@@ -34,7 +35,7 @@ const MainContainerBlock = styled.div`
     .menu-container {
       width: 97vw;
       padding-top: 0px;
-      margin-top: 0px;
+      margin-top: -7px;
       margin-left: 0px;
 
       .menu-card-container {
@@ -61,7 +62,7 @@ const MainContainer = () => {
   return (
     <MainContainerBlock>
       <div className="menu-container">
-        {menuData[dateIndex][meal] && menuData[dateIndex][meal].map((restaurant: restaurant) => (
+        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: restaurant) => (
           <div className="menu-card-container" key={restaurant.name_en}>
             <MenuCard restaurant={restaurant} key={restaurant.name_en} />
           </div>
