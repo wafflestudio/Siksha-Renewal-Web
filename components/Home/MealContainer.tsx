@@ -73,19 +73,19 @@ const MealContainer: React.FC = () => {
   return (
     <MealContainerBlock>
       <button 
-        className={classNames("meal-button", { "focused-meal breakfast": meal === 'BR' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'BR' })}
         onClick={() => setMeal('BR')}
       >
         <i className={classNames(styles['my-icon'], styles['my-icon-noun_sunrise_333233_000000'], 'breakfast-icon')}></i>
       </button>
       <button 
-        className={classNames("meal-button", { "focused-meal lunch": meal === 'LU' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'LU' })}
         onClick={() => setMeal('LU')}
       >
         <i className={classNames(styles['my-icon'], styles['my-icon-noun_Morning_1015359_000000'], 'lunch-icon')}></i>
       </button>
       <button 
-        className={classNames("meal-button", { "focused-meal dinner": meal === 'DN' })}
+        className={classNames("meal-button", { "focused-meal": meal === 'DN' })}
         onClick={() => setMeal('DN')}
       >
         <i className={classNames(styles['my-icon'], styles['my-icon-noun_Moon_600919_000000'], 'dinner-icon')}></i>
