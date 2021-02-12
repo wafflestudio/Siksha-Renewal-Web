@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
-import { menu, restaurant } from '../../interfaces'
-import styles from '../../public/css/my-icons/my-icons.module.css'
-import { useState } from 'react'
 import ModalContainer from './ModalContainer'
+import { menu, restaurant } from '../../interfaces'
+import { useState } from 'react'
+import styles from '../../public/css/my-icons/my-icons.module.css'
 
 const MenuCardBlock = styled.div`
   @font-face {
@@ -23,150 +23,151 @@ const MenuCardBlock = styled.div`
   box-shadow: 1px 1px 17px rgba(0,0,0,0.06);
   flex-direction: column;
   align-items: flex-start;
-  margin: 10px 25px;
+  margin: 5px 25px;
   background: white;
   padding: 5px 20px;
 
   p {
-    margin: 0;
     text-align: left;
-    color: #6c6b70;
     font-size: 12pt;
     font-family: 'NanumBarunGothic', sans-serif;
   }
-
-  .restaurant-name-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-
-    h4 {
-      margin: 10px 0;
-      color: #6c6b70;
-      font-family: 'NanumSquare';
-      font-weight: bold;
-    }
-
-    .information-button {
-      display: none;
-    }
-  }
-
-  .underline {
-    width: 100%;
-    height: 2px;
-    background-color: #ff9a44;
-  }
-
-  .content-container {
-    display: flex;
-    width: 100%;
-    margin: 30px 0;
-
-    .restaurant-info-container {
-      width: 50%;
-      border-right: #d6d6d6 0.5px solid;
-      padding: 0 20px;
-      margin-top: -1.5px;
-
-      .icon-text-container {
-        display: flex;
-        margin: 10px 0px;
-
-        .location-icon {
-          color: #fe8b5a;
-          font-size: 17pt;
-          padding: 0 3.5px;
-          margin-top: 1px;
-        }
-
-        .location {
-          margin: 0 15px;
-          line-height: 25px;
-        }
-
-        .clock-icon {
-          color: #fe8b5a;
-          font-size: 17pt;
-          margin-top: 1px;
-        }
-
-        .operating-hours {
-          white-space: pre-line;
-          text-align: left;
-          line-height: 25px;
-          margin: 0 15px;
-        }
-      }
-    }
-
-    .menus-container {
-      padding: 0 20px;
-      width: 100%;
-
-      .menu-info-container {
-        display: flex;
-        margin: 7px 0;
-
-        .price-container {
-          background-color: #fe8b5a;
-          padding: 0 12px;
-          height: 25px;
-          display: block;
-          border-radius: 13px;
-          margin-right: 10px;
-
-          .price {
-            color: white;
-            font-family: 'Lato' !important;
-            margin-top: 2px;
-            margin-bottom: 1.5px;
-          }
-        }
-
-        .menu-name {
-          line-height: 20px;
-          margin-top: 3px;
-          word-break: break-all;
-          white-space: pre-line;
-        }
-      }
-    }
-  }
-
+  
   @media (max-width: 768px) {
     margin: 5px 25px;
-
-    .content-container {
-      margin: 10px 0px;
-
-      .restaurant-info-container {
-        display: none;
-      }
-    }
-    .menus-container {
-      width: 100%;
-      padding: 0;
-    }
-    
-    .information-button {
-      display: block !important;
-      border: none;
-      background: none;
-      padding: 0px;
-
-      &:focus {
-        outline: none;
-      }
-
-      .info-icon {
-        font-size: 15pt;
-        color: #FF9A44;
-      }
-    }
   }
-`;
+`
+
+const RestaurantNameContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+
+const RestaurantName = styled.h4`
+  margin: 10px 0;
+  color: #6c6b70;
+  font-family: 'NanumSquare';
+  font-weight: bold;
+`
+
+const InformationButton = styled.button`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block !important;
+    border: none;
+    background: none;
+    padding: 0px;
+
+    &:focus {
+      outline: none;
+    }
+  }   
+`
+
+const InfoIcon = styled.i`
+  @media (max-width: 768px) {
+    font-size: 15pt;
+    color: #FF9A44;
+  }
+`
+
+const UnderLine = styled.div`
+  width: 100%;
+  height: 2px;
+  background-color: #ff9a44;
+`
+
+const ContentContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 30px 0;
+
+  @media (max-width: 768px) {
+    margin: 10px 0px;
+  }
+`
+
+const RestaurantInfoContainer = styled.div`
+  width: 50%;
+  border-right: #d6d6d6 0.5px solid;
+  padding: 0 20px;
+  margin-top: -1.5px;
+
+  @media (max-width: 768px) {
+    display: none; 
+  }
+`
+
+export const IconTextContainer = styled.div`
+  display: flex;
+  margin: 10px 0px;
+`
+
+export const LocationIcon = styled.i`
+  color: #fe8b5a;
+  font-size: 17pt;
+  padding: 0 3.5px;
+  margin-top: 1px;
+`
+
+const Location = styled.p`
+  margin: 0 15px;
+  line-height: 25px;
+`
+
+export const ClockIcon = styled.i`
+  color: #fe8b5a;
+  font-size: 17pt;
+  margin-top: 1px;
+`
+
+const OperatingHours = styled.p`
+  white-space: pre-line;
+  text-align: left;
+  line-height: 25px;
+  margin: 0 15px;
+`
+
+const MenusContainer = styled.div`
+  padding: 0 20px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px 5px;
+  }
+`
+
+const MenuInfoContainer = styled.div`
+  display: flex;
+  margin: -11px 0;
+  align-items: center;
+`
+
+const PriceContainer = styled.div`
+  background-color: #fe8b5a;
+  padding: 0 12px;
+  height: 25px;
+  display: block;
+  border-radius: 13px;
+  margin-right: 10px;
+`
+
+const Price = styled.p`
+  color: white;
+  font-family: 'Lato' !important;
+  margin-top: 2px;
+  margin-bottom: 1.5px;
+`
+
+const MenuName = styled.p`
+  line-height: 20px;
+  word-break: break-all;
+  white-space: pre-line;
+`
 
 interface MenuCardProps {
   restaurant: restaurant;
@@ -177,38 +178,38 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
   
   return (
     <MenuCardBlock className={"a"+restaurant.name_en.replace(/\s/g, '')}>
-      <div className="restaurant-name-container">
-        <h4>{restaurant.name_kr}</h4>
-        <button className="information-button" onClick={() => setIsModalOpen(true)}>
-          <i className={classNames(styles['my-icon'], styles['my-icon-info-icon'], "info-icon")}></i>
-        </button>
+      <RestaurantNameContainer>
+        <RestaurantName>{restaurant.name_kr}</RestaurantName>
+        <InformationButton onClick={() => setIsModalOpen(true)}>
+          <InfoIcon className={classNames(styles['my-icon'], styles['my-icon-info-icon'])} />
+        </InformationButton>
         {isModalOpen && <ModalContainer restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
-      </div>
-      <div className="underline"/>
-      <div className="content-container">
-        <div className="restaurant-info-container">
-          <div className="icon-text-container">
-            <i className={classNames(styles['my-icon'], styles['my-icon-location_full'], "location-icon")}></i>
-            <p className="location">{restaurant.addr}</p>
-          </div>
-          <div className="icon-text-container">
-            <i className={classNames(styles['my-icon'], styles['my-icon-clock_full'], "clock-icon")}></i>
-            <p className="operating-hours">
+      </RestaurantNameContainer>
+      <UnderLine />
+      <ContentContainer>
+        <RestaurantInfoContainer>
+          <IconTextContainer>
+            <LocationIcon className={classNames(styles['my-icon'], styles['my-icon-location_full'])} />
+            <Location>{restaurant.addr}</Location>
+          </IconTextContainer>
+          <IconTextContainer>
+            <ClockIcon className={classNames(styles['my-icon'], styles['my-icon-clock_full'])} />
+            <OperatingHours>
               나중에
-            </p>
-          </div>
-        </div>
-        <div className="menus-container">
+            </OperatingHours>
+          </IconTextContainer>
+        </RestaurantInfoContainer>
+        <MenusContainer>
           {restaurant.menus.map((menu: menu) => (
-            <div className="menu-info-container" key={menu.id}>
-              <div className="price-container">
-                <p className="price">{menu.price}</p>
-              </div>
-              <p className="menu-name">{menu.name_kr}</p>
-            </div>
+            <MenuInfoContainer key={menu.id}>
+              <PriceContainer>
+                <Price>{menu.price}</Price>
+              </PriceContainer>
+              <MenuName>{menu.name_kr}</MenuName>
+            </MenuInfoContainer>
           ))}
-        </div>
-      </div>
+        </MenusContainer>
+      </ContentContainer>
     </MenuCardBlock>
   );
 };
