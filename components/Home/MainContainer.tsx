@@ -1,57 +1,44 @@
 import styled from 'styled-components'
-import { restaurant } from '../../interfaces';
+import Image from 'next/image'
+import MenuCard from './MenuCard'
+import { restaurant } from '../../interfaces'
 import { useStateContext } from '../../utils/hooks/ContextProvider'
 import { menuData } from '../../utils/menuData'
-import MenuCard from './MenuCard'
-
 
 const MainContainerBlock = styled.div`
   display: inline-block;
-  margin-top: -10px;
+`
 
-  .menu-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 60vw;
+const MenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60vw;
 
-    color: #2c3e50;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    .menu-card-container {
-      margin: 0 40px;
-      width: 100%;
-      max-width: 800px;
-    }
-  }
-
-  .mobile-waffle-logo {
-    display: none;
-  }
+  color: #2c3e50;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 768px) {
-    .menu-container {
-      width: 97vw;
-      padding-top: 0px;
-      margin-top: -7px;
-      margin-left: 0px;
-
-      .menu-card-container {
-        margin: 0 25px;
-      }
-    }
-
-    .mobile-waffle-logo {
-      display: inline-block;
-      width: 50%;
-      opacity: 0.8;
-      margin: 20px 0px;
-      object-fit: contain;
-    }
+    width: 100vw;
   }
-`;
+`
+
+const MenuCardContainer = styled.div`
+  width: 100%;
+  max-width: 800px;
+`
+
+const ImagePanel = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: inline-block;
+    opacity: 0.8;
+    margin: 20px 0px;
+  }
+`
 
 const MainContainer = () => {
   const state = useStateContext()
@@ -61,14 +48,21 @@ const MainContainer = () => {
 
   return (
     <MainContainerBlock>
-      <div className="menu-container">
+      <MenuContainer>
         {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: restaurant) => (
-          <div className="menu-card-container" key={restaurant.name_en}>
+          <MenuCardContainer key={restaurant.name_en}>
             <MenuCard restaurant={restaurant} key={restaurant.name_en} />
-          </div>
+          </MenuCardContainer>
         ))}
-      </div>
-      <img className="mobile-waffle-logo" src="/img/waffle-logo.png"></img>
+      </MenuContainer>
+      <ImagePanel>
+        <Image 
+          src="/img/waffle-logo.png" 
+          alt="waffle-logo" 
+          width='329'
+          height='117'
+        />
+      </ImagePanel>
     </MainContainerBlock>
   );
 };

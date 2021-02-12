@@ -39,8 +39,20 @@ export const menuData: day[] = [
                  "updated_at":"2020-11-27T18:35:32.604109Z",
                  "score":4.3,
                  "review_cnt":35
-              }
-           ]
+              },
+              {
+                  "id":3,
+                  "code":"메뉴 이름 raw",
+                  "name_kr":"메뉴 이름",
+                  "name_en":"restaurant name",
+                  "price":6000,
+                  "etc":"no meat 등 정보(json)",
+                  "created_at":"2020-11-27T18:35:32.604109Z",
+                  "updated_at":"2020-11-27T18:35:32.604109Z",
+                  "score":4.3,
+                  "review_cnt":35
+               }
+            ]
         },
         {
          "id":2,

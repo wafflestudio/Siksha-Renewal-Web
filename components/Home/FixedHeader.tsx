@@ -29,81 +29,71 @@ const FixedHeaderBlock = styled.div`
     font-weight: 100;
   }
 
-  height: 150px;
+  height: 130px;
   width: 100vw;
   max-width: 100%;
-
   position: sticky;
   position: -webkit-sticky;
   top: 0;
   left: 0;
-
+  display: flex;
+  justify-content: center;
   z-index: 2;
-
-  .empty-header {
-    display: flex;
-    justify-content: center;
-
-    .time-card-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      height: 150px;
-      width: 55vw;
-      max-width: 800px;
-
-      z-index: 2;
-    }
-
-    .gradient-header {
-      height: 80px;
-      width: 100%;
-
-      background: linear-gradient(to right, #fd7878 0%,#fe8662 65%,#ff9a44 100%);
-      
-      position: absolute;
-      z-index: -1;
-      left: 0;
-    }
-
-    .gray-header {
-      height: 55px;
-      width: 100%;
-
-      background: #f8f8f8;
-      
-      position: absolute;
-      top: 80px;
-      z-index: -2;
-      left: 0;
-    }
-
-    @media (max-width: 768px) {
-      .time-card-container {
-        width: 100%;
-      }
-    }
-  }
 
   @media (max-width: 768px) {
     top: 100px;
+    height: 110px;
   }
-`;
+`
+
+const TimeCard = styled.div`
+  width: 55vw;
+  max-width: 800px;
+
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`
+
+const GradientHeader = styled.div`
+  height: 80px;
+  width: 100%;
+  background: linear-gradient(to right, #fd7878 0%,#fe8662 65%,#ff9a44 100%);
+  position: absolute;
+  z-index: -1;
+  left: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const GrayHeader = styled.div`
+  height: 50px;
+  width: 100%;
+  background: #f8f8f8;
+  position: absolute;
+  top: 80px;
+  z-index: -2;
+  left: 0;
+
+  @media (max-width: 768px) {
+    top: 60px;
+  }
+`
 
 const FixedHeader = () => {
   return (
     <FixedHeaderBlock>
-      <div className="empty-header">
-        <LogoContainer />
-        <div className="time-card-container">
-          <DateContainer />
-          <MealContainer />
-        </div>
-        <div className="gradient-header" />
-        <div className="gray-header" />
-      </div>
+      <LogoContainer />
+      <TimeCard>
+        <DateContainer />
+        <MealContainer />
+      </TimeCard>
+      <GradientHeader />
+      <GrayHeader />
     </FixedHeaderBlock>
   );
 };

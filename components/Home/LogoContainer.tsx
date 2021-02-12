@@ -1,62 +1,66 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components'
+import Image from 'next/image'
 
 const LogoContainerBlock = styled.div`
   height: 150px;
   width: 280px;
   min-width: 150px;
 
-  .real-logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 80px;
-    width: 100%;
-
-    text-align: left !important;
-
-    .left-logo {
-      object-fit: contain;
-      height: 50px;
-      width: 50px;
-      
-      margin: 0 20px;
-      filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));
-    }
-
-    .siksha-title {
-      font-size: 17pt;
-      font-weight: bold;
-      margin-bottom: 3px;
-      color: white;
-    }
-
-    .siksha-subtitle {
-      font-size: 10pt;
-      color: white;
-    }
-
-    p {
-      margin: 0;
-      font-family: 'NanumSquare';
-    }
-  }
-
   @media (max-width: 768px) {
     display: none;
   }
-`;
+`
+
+const RealLogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 80px;
+  width: 100%;
+
+  text-align: left !important;
+`
+
+const ImagePanel = styled.div`
+  object-fit: contain;
+  height: 50px;
+  width: 50px;
+  
+  margin: 0 20px;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.05));
+`
+
+const TitleContainer = styled.div`
+  
+`
+
+const SikshaTitle = styled.p<{ isTitle: boolean }>`
+  margin: 0;
+  font-family: 'NanumSquare';
+  color: white;
+
+  font-size: ${props => props.isTitle ? '17pt' : '10pt'};
+  ${props => props.isTitle &&
+    css`
+      font-weight: bold;
+      margin-bottom: 3px;
+    `
+  }
+`
 
 const LogoContainer = () => {
   return (
     <LogoContainerBlock>
-      <div className="real-logo-container">
-        <img className="left-logo" src="/img/logo.png" alt="siksha-logo" />
-        <div>
-          <p className="siksha-title">식 샤</p>
-          <p className="siksha-subtitle">서울대학교 식단 알리미</p>
-        </div>
-      </div>
+      <RealLogoContainer>
+        <ImagePanel>
+          <Image src="/img/logo.png" alt="siksha-logo" width='50px' height='50px' />
+        </ImagePanel>
+        <TitleContainer>
+          <SikshaTitle isTitle={true}>식 샤</SikshaTitle>
+          <SikshaTitle isTitle={false}>서울대학교 식단 알리미</SikshaTitle>
+        </TitleContainer>
+      </RealLogoContainer>
     </LogoContainerBlock>
   );
 };

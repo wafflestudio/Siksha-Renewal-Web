@@ -4,70 +4,68 @@ import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextPr
 
 const DateContainerBlock = styled.div`
   display: flex;
-  flex: 1;
   justify-content: space-around;
   align-items: center;
-
-  box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
+  width: 100%;
   margin-top: 20px;
   background: white;
-  width: 100%;
-
-  button {
-    background: none;
-    border: none;
-    outline: none;
-  }
-
-  .time-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13pt;
-    font-family: 'NanumSquare';
-    font-weight: bold;
-    color: #fa9a44;
-    height: 60px;
-    width: 140px;
-    border-bottom: solid 3px #fa9a44;
-  }
-
-  .arrow-button {
-    font-size: 12pt;
-    font-family: 'NanumSquare';
-    color: #bababa;
-
-    display: flex;
-    align-items: center;
-
-    svg {
-      font-size: 13pt;
-      margin: 0 10px;
-      margin-top: -1px;
-    }
-
-    &:hover {
-      color: #fa9a44;
-    }
-  }
+  box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
 
   @media (max-width: 768px) {
     box-shadow: 0px 0.5px 2px rgba(0, 0, 0, 0.25);
+    margin-top: 0;
+  }
+`
 
-    .time-button {
+const ArrowButton = styled.button`
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 12pt;
+  font-family: 'NanumSquare';
+  color: #bababa;
+
+  svg {
+    font-size: 13pt;
+    margin: 0 10px;
+    margin-top: -1px;
+  }
+
+  &:hover {
+    color: #fa9a44;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 11pt;
+
+    svg {
       font-size: 12pt;
-      width: 120px;
-    }
-
-    .arrow-button {
-      font-size: 11pt;
-
-      svg {
-        font-size: 12pt;
-      }
     }
   }
-`;
+`
+
+const TimeButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13pt;
+  font-family: 'NanumSquare';
+  font-weight: bold;
+  color: #fa9a44;
+  height: 60px;
+  width: 140px;
+  border: none;
+  background: none;
+  outline: none;
+  border-bottom: solid 3px #fa9a44;
+
+  @media (max-width: 768px) {
+    font-size: 12pt;
+    width: 120px;
+  }
+`
 
 const convertDate = (date: string) => {
   const week: string[] = ['일', '월', '화', '수', '목', '금', '토']
@@ -95,15 +93,15 @@ const DateContainer: React.FC = () => {
 
   return (
     <DateContainerBlock>
-      <button className="arrow-button" onClick={() => setDate(getYesterday(date))}>
+      <ArrowButton onClick={() => setDate(getYesterday(date))}>
         <BsChevronLeft />
         {convertDate(getYesterday(date))}
-      </button>
-      <button className="time-button">{convertDate(date)}</button>
-      <button className="arrow-button" onClick={() => setDate(getTomorrow(date))}>
+      </ArrowButton>
+      <TimeButton>{convertDate(date)}</TimeButton>
+      <ArrowButton onClick={() => setDate(getTomorrow(date))}>
         {convertDate(getTomorrow(date))}
         <BsChevronRight />
-      </button>
+      </ArrowButton>
     </DateContainerBlock>
   );
 };
