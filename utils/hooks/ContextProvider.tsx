@@ -10,23 +10,13 @@ else if (currHour >= 16 && currHour < 20) {
   initMeal = 'DN';
 }
 
-let initDate = () => {
-  const date = new Date()
-  let month: string = (date.getMonth()+1).toString()
-  if(date.getMonth()+1 < 10) {
-    month = '0' + month
-  }
-
-  return `${date.getFullYear()}-${month}-${date.getDate()}`
-}
-
 type State = {
-  date: string;
+  date: Date;
   meal: mealType;
 }
 
 type Action = 
-  | { type: 'SET_DATE', date: string }
+  | { type: 'SET_DATE', date: Date }
   | { type: 'SET_MEAL', meal: mealType }
 
 type dispatch = Dispatch<Action>;
@@ -47,16 +37,16 @@ function reducer(state: State, action: Action) {
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
-    date: initDate(),
+    date: new Date(),
     meal: initMeal,
   })
   
   return (
-    <stateContext.Provider value={state}>
-      <dispatchContext.Provider value={dispatch}>
+    <dispatchContext.Provider value={dispatch}>
+      <stateContext.Provider value={state}>
         {children}
-      </dispatchContext.Provider>
-    </stateContext.Provider>
+      </stateContext.Provider>
+    </dispatchContext.Provider>
   );
 };
 

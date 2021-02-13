@@ -1,20 +1,23 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
+import { createGlobalStyle } from 'styled-components'
 
 type Props = {
   children?: ReactNode
   title?: string
 }
 
+export const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+  }
+`
+
 const Layout = ({ children, title = 'This is the default title' }: Props) => (
   <div>
-    <style jsx global>{`
-      body {
-        margin: 0;
-        padding: 0;
-        background: #f8f8f8;
-      }
-    `}</style>
+    <GlobalStyle />
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
