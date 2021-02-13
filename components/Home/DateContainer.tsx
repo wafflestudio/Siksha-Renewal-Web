@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
+import { formatDate } from '../../utils/hooks/FormatUtil'
 
 const DateContainerBlock = styled.div`
   display: flex;
@@ -67,39 +68,34 @@ const TimeButton = styled.button`
   }
 `
 
-const convertDate = (date: string) => {
-  const week: string[] = ['일', '월', '화', '수', '목', '금', '토']
-  return `${date.substring(5, 7)}. ${date.substring(8, 10)}. ${week[new Date(date).getDay()]}`
-}
-
-const getYesterday = (date: string) => {
+const getYesterday = (date: Date) => {
   const yesterday = new Date(date)
-  yesterday.setDate(yesterday.getDate() - 1)
-  return `${yesterday.getFullYear()}-${("0" + (yesterday.getMonth() + 1)).slice(-2)}-${("0" + yesterday.getDate()).slice(-2)}`
+  yesterday.setDate(date.getDate() - 1)
+  return yesterday
 }
 
-const getTomorrow = (date: string) => {
+const getTomorrow = (date: Date) => {
   const tomorrow = new Date(date)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  return `${tomorrow.getFullYear()}-${("0" + (tomorrow.getMonth() + 1)).slice(-2)}-${("0" + tomorrow.getDate()).slice(-2)}`
+  tomorrow.setDate(date.getDate() + 1)
+  return tomorrow
 }
 
 const DateContainer: React.FC = () => {
-  const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const state = useStateContext()
+  const dispatch = useDispatchContext()
 
-  const { date } = state;
-  const setDate = (date: string) => dispatch({ type: 'SET_DATE', date: date });
+  const { date } = state
+  const setDate = (date: Date) => dispatch({ type: 'SET_DATE', date: date })
 
   return (
     <DateContainerBlock>
       <ArrowButton onClick={() => setDate(getYesterday(date))}>
         <BsChevronLeft />
-        {convertDate(getYesterday(date))}
+        {formatDate(getYesterday(date))}
       </ArrowButton>
-      <TimeButton>{convertDate(date)}</TimeButton>
+      <TimeButton>{formatDate(date)}</TimeButton>
       <ArrowButton onClick={() => setDate(getTomorrow(date))}>
-        {convertDate(getTomorrow(date))}
+        {formatDate(getTomorrow(date))}
         <BsChevronRight />
       </ArrowButton>
     </DateContainerBlock>
