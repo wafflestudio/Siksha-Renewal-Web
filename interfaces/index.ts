@@ -1,6 +1,6 @@
-export type mealType = 'BR' | 'LU' | 'DN'
+export type Meal = 'BR' | 'LU' | 'DN'
 
-export type menu = {
+export type Menu = {
   id: number,
   code: string,
   name_kr: string,
@@ -13,7 +13,7 @@ export type menu = {
   review_cnt: number
 }
 
-export type restaurant = {
+export type Restaurant = {
   id: number,
   code: string,
   name_kr: string,
@@ -24,12 +24,17 @@ export type restaurant = {
   etc: string,
   created_at: string,
   updated_at: string,
-  menus: menu[],
+  menus: Menu[],
 }
 
-export type day = {
+export type Day = {
   date: string,
-  BR: restaurant[],
-  LU: restaurant[],
-  DN: restaurant[]
+  BR: Restaurant[],
+  LU: Restaurant[],
+  DN: Restaurant[]
+}
+
+export type Data = {
+  count: number,
+  result: Day[]
 }

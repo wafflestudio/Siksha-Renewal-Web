@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
 import { formatDate } from '../../utils/hooks/FormatUtil'
+import { useMemo } from 'react'
 
 const DateContainerBlock = styled.div`
   display: flex;
@@ -87,15 +88,18 @@ const DateContainer: React.FC = () => {
   const { date } = state
   const setDate = (date: Date) => dispatch({ type: 'SET_DATE', date: date })
 
+  const yesterday = useMemo(() => formatDate(getYesterday(date)), [date])
+  const tomorrow = useMemo(() => formatDate(getTomorrow(date)), [date])
+
   return (
     <DateContainerBlock>
       <ArrowButton onClick={() => setDate(getYesterday(date))}>
         <BsChevronLeft />
-        {formatDate(getYesterday(date))}
+        {yesterday}
       </ArrowButton>
       <TimeButton>{formatDate(date)}</TimeButton>
       <ArrowButton onClick={() => setDate(getTomorrow(date))}>
-        {formatDate(getTomorrow(date))}
+        {tomorrow}
         <BsChevronRight />
       </ArrowButton>
     </DateContainerBlock>
