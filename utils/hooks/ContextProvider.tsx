@@ -1,8 +1,8 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react'
-import { mealType } from '../../interfaces'
+import { Meal } from '../../interfaces'
 
 const currHour: number = new Date().getHours();
-let initMeal: mealType = 'BR';
+let initMeal: Meal = 'BR';
 if(currHour > 9 && currHour < 16) {
   initMeal = 'LU';
 }
@@ -12,12 +12,12 @@ else if (currHour >= 16 && currHour < 20) {
 
 type State = {
   date: Date;
-  meal: mealType;
+  meal: Meal;
 }
 
 type Action = 
   | { type: 'SET_DATE', date: Date }
-  | { type: 'SET_MEAL', meal: mealType }
+  | { type: 'SET_MEAL', meal: Meal }
 
 type dispatch = Dispatch<Action>;
 

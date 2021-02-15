@@ -1,7 +1,7 @@
 import Document, { DocumentContext } from 'next/document'
+import { Fragment } from 'react';
 import { ServerStyleSheet } from 'styled-components'
 import GlobalStyle from '../components/Common/Layout'
-
 
 class CustomDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -11,7 +11,7 @@ class CustomDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+          enhanceApp: App => props => sheet.collectStyles(<Fragment><GlobalStyle /><App {...props} /></Fragment>)
         });
 
       const initialProps = await Document.getInitialProps(ctx);

@@ -1,12 +1,12 @@
-import { day } from "../interfaces";
+import { Day } from "../interfaces";
 
-export const menuData: day[] = [
+export const menuData: Day[] = [
   {
      "date":"2021-02-10",
      "BR":[
         {
            "id":1,
-           "code":"식당 이름 raw",
+           "code":"code1",
            "name_kr":"식당 이름",
            "name_en":"restaurant name",
            "addr":"식당 주소",
@@ -56,7 +56,7 @@ export const menuData: day[] = [
         },
         {
          "id":2,
-         "code":"식당 이름 raw",
+         "code":"code2",
          "name_kr":"식당 이름",
          "name_en":"restaurant name2",
          "addr":"식당 주소",
@@ -94,7 +94,7 @@ export const menuData: day[] = [
       },
       {
          "id":3,
-         "code":"식당 이름 raw",
+         "code":"code3",
          "name_kr":"식당 이름",
          "name_en":"restaurant name3",
          "addr":"식당 주소",
@@ -132,7 +132,7 @@ export const menuData: day[] = [
       },
       {
          "id":4,
-         "code":"식당 이름 raw",
+         "code":"code4",
          "name_kr":"식당 이름",
          "name_en":"restaurant name4",
          "addr":"식당 주소",

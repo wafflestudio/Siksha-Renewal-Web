@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components'
 import Image from 'next/image'
 import { useStateContext } from '../../utils/hooks/ContextProvider'
-import { menuData } from '../../utils/menuData'
-import { useState } from 'react'
-import { restaurant } from '../../interfaces'
+import { useMemo, useState } from 'react'
+import { Data, Restaurant } from '../../interfaces'
 
 const SidebarContainerBlock = styled.div`
   min-height: 300px;
@@ -75,6 +74,7 @@ const Popper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  display: none;
 `
 
 const ImagePanel = styled.div<{ clicked: boolean }>`
@@ -118,46 +118,39 @@ const People = styled.p`
 `
 
 function scrollRestaurant(restaurant: string) {
-  let element = document.querySelector('.a'+restaurant)
+  let element = document.querySelector(".a"+restaurant)
   if(!element) {
     throw new Error('Cannot find element')
   }
-
-  let headerOffset = 150
-  let elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-  let offsetPosition = elementPosition - headerOffset;
-  if((navigator.userAgent.includes('Chrome') || navigator.userAgent.includes('Firefox')) && !navigator.userAgent.includes('Edge')) {
-    window.scrollTo({
-      top: offsetPosition ? offsetPosition : elementPosition,
-      behavior: 'smooth'
-    });
-  }
-  else {
-    window.scrollTo(0, offsetPosition)
-  }
+  element.scrollIntoView({ behavior: "smooth", block: "center" })
 }
 
-const SidebarContainer = () => {
-  const state = useStateContext();
-  const { date, meal } = state;
+type Props = {
+  data: Data
+}
 
-  const [focusedRestaurant, setFocusedRestaurant] = useState<string>('')
+const SidebarContainer: React.FC<Props> = ({ data }) => {
+  const state = useStateContext();
+  const { date, meal } = state
+  const menuData = data.result
+
+  const [focusedRestaurant, setFocusedRestaurant] = useState<number>(-1)
   const [isContactBoxClosed, setContactBoxState] = useState<boolean>(true)
 
-  const dateIndex = menuData.findIndex(day => day.date === date)
+  const dateIndex = useMemo(() => menuData.findIndex(day => new Date(day.date).toDateString() === date.toDateString()), [menuData, date])
 
   return (
     <SidebarContainerBlock>
       <Sidebar>
-        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: restaurant) => (
+        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: Restaurant, index) => (
           <SidebarButton
             tabIndex={1}
-            onClick={() => scrollRestaurant(restaurant.name_en.replace(/\s/g, ''))}
-            onFocus={() => setFocusedRestaurant(restaurant.name_en)}
-            onBlur={() => setFocusedRestaurant('')}
-            key={restaurant.name_en}
+            onClick={() => scrollRestaurant(restaurant.code)}
+            onFocus={() => setFocusedRestaurant(restaurant.id)}
+            onBlur={() => setFocusedRestaurant(-1)}
+            key={index}
           >
-            <Bullet focused={restaurant.name_en === focusedRestaurant} />
+            <Bullet focused={restaurant.id === focusedRestaurant} />
             {restaurant.name_kr}
           </SidebarButton>
         ))}

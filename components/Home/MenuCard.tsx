@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
 import ModalContainer from './ModalContainer'
-import { menu, restaurant } from '../../interfaces'
+import { Menu, Restaurant } from '../../interfaces'
 import { useState } from 'react'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 
@@ -20,21 +20,20 @@ const MenuCardBlock = styled.div`
   }
 
   display: flex;
-  box-shadow: 1px 1px 17px rgba(0,0,0,0.06);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   flex-direction: column;
   align-items: flex-start;
-  margin: 5px 25px;
+  margin: 5px 25px 10px 25px;
   background: white;
   padding: 5px 20px;
+  border-radius: 10px;
 
   p {
     text-align: left;
-    font-size: 12pt;
+    font-size: 11.5pt;
     font-family: 'NanumBarunGothic', sans-serif;
-  }
-  
-  @media (max-width: 768px) {
-    margin: 5px 25px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 `
 
@@ -86,7 +85,7 @@ const ContentContainer = styled.div`
   margin: 30px 0;
 
   @media (max-width: 768px) {
-    margin: 10px 0px;
+    margin: 15px 0 12px 0;
   }
 `
 
@@ -137,47 +136,50 @@ const MenusContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 10px 5px;
+    padding: 0 5px;
   }
 `
 
 const MenuInfoContainer = styled.div`
   display: flex;
-  margin: -11px 0;
-  align-items: center;
+  align-items: flex-start;
+  & ~ & {
+    margin-top: 10px;
+  }
+  
 `
 
 const PriceContainer = styled.div`
   background-color: #fe8b5a;
-  padding: 0 12px;
+  padding: 0 11px;
   height: 25px;
-  display: block;
+  display: flex;
   border-radius: 13px;
-  margin-right: 10px;
+  margin-right: 11px;
+  align-items: center;
 `
 
 const Price = styled.p`
   color: white;
   font-family: 'Lato' !important;
-  margin-top: 2px;
-  margin-bottom: 1.5px;
 `
 
 const MenuName = styled.p`
-  line-height: 20px;
   word-break: break-all;
   white-space: pre-line;
+  margin: 3px 0 0 0;
+  line-height: 1.3;
 `
 
 interface MenuCardProps {
-  restaurant: restaurant;
+  restaurant: Restaurant;
 }
 
 const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  
+
   return (
-    <MenuCardBlock className={"a"+restaurant.name_en.replace(/\s/g, '')}>
+    <MenuCardBlock className={'a'+restaurant.code}>
       <RestaurantNameContainer>
         <RestaurantName>{restaurant.name_kr}</RestaurantName>
         <InformationButton onClick={() => setIsModalOpen(true)}>
@@ -200,7 +202,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
           </IconTextContainer>
         </RestaurantInfoContainer>
         <MenusContainer>
-          {restaurant.menus.map((menu: menu) => (
+          {restaurant.menus.map((menu: Menu) => (
             <MenuInfoContainer key={menu.id}>
               <PriceContainer>
                 <Price>{menu.price}</Price>

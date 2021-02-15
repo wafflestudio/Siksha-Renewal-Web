@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import classNames from 'classnames'
-import { restaurant } from '../../interfaces'
+import { Restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 import { IconTextContainer, LocationIcon, ClockIcon } from './MenuCard'
 
@@ -72,7 +72,7 @@ const OperatingHours = styled.p`
 `
 
 type ModalContainerProps = {
-  restaurant: restaurant,
+  restaurant: Restaurant,
   setIsModalOpen: Function
 }
 

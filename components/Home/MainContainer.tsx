@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import Image from 'next/image'
 import MenuCard from './MenuCard'
-import { restaurant } from '../../interfaces'
+import { Data, Restaurant } from '../../interfaces'
 import { useStateContext } from '../../utils/hooks/ContextProvider'
-import { menuData } from '../../utils/menuData'
+import { useMemo } from 'react'
 
 const MainContainerBlock = styled.div`
   display: inline-block;
+  padding-bottom: 10px;
 `
 
 const MenuContainer = styled.div`
@@ -40,17 +41,22 @@ const ImagePanel = styled.div`
   }
 `
 
-const MainContainer = () => {
+type Props = {
+  data: Data
+}
+
+const MainContainer: React.FC<Props> = ({ data }) => {
   const state = useStateContext()
   const { date, meal } = state
+  const menuData = data.result
 
-  const dateIndex = menuData.findIndex(day => day.date === date)
+  const dateIndex = useMemo(() => menuData.findIndex(day => new Date(day.date).toDateString() === date.toDateString()), [menuData, date])
 
   return (
     <MainContainerBlock>
       <MenuContainer>
-        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: restaurant) => (
-          <MenuCardContainer key={restaurant.name_en}>
+        {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: Restaurant, index) => (
+          <MenuCardContainer key={index}>
             <MenuCard restaurant={restaurant} key={restaurant.name_en} />
           </MenuCardContainer>
         ))}
