@@ -4,6 +4,7 @@ import Layout from '../components/Common/Layout'
 import { AdditionalHeader, FixedHeader, SidebarContainer, MainContainer } from '../components/Home'
 import ContextProvider from '../utils/hooks/ContextProvider'
 import { Data } from '../interfaces'
+import { formatISODate } from '../utils/hooks/FormatUtil'
 
 const TopContainer = styled.div`
   text-align: center;
@@ -14,7 +15,10 @@ type Props = {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('https://siksha-api.wafflestudio.com/menus?start_date=2021-01-31&end_date=2021-02-15&except_empty=true')
+  const endDate = new Date()
+  endDate.setDate(endDate.getDate() + 31)
+
+  const res = await fetch(`https://siksha-api.wafflestudio.com/menus?start_date=2021-02-02&end_date=${formatISODate(endDate)}&except_empty=true`)
   const data = await res.json()
 
   return {
@@ -25,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const Home: NextPage<Props> = ({ data }) => {
-
   console.log(data)
 
   return (

@@ -1,8 +1,7 @@
-import styled, { css } from 'styled-components'
-import classNames from 'classnames'
+import styled from 'styled-components'
 import { useDispatchContext, useStateContext } from '../../utils/hooks/ContextProvider'
 import { Meal } from '../../interfaces'
-import styles from '../../public/css/my-icons/my-icons.module.css'
+import SVG from '../../public/svg/SVG'
 
 const MealContainerBlock = styled.div`
   display: flex;
@@ -11,46 +10,20 @@ const MealContainerBlock = styled.div`
   height: 50px;
 `
 
-const BreakfastIcon = styled.i`
-  font-size: 29pt;
-  margin-bottom: 2px;
-`;
-
-const LunchIcon = styled.i`
-  font-size: 23pt;
-`;
-
-const DinnerIcon = styled.i`
-  font-size: 20pt;
-`;
-
-const MealButton = styled.button<{ focused: boolean }>`
+const MealButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 85px;
   background: transparent;
-  border: transparent;
-  color: ${props => props.focused ? '#fa9a44' : '#bababa'};
+  border: none;
+  margin: 0 30px;
 
   &:focus {
     outline: none;
   }
 
-  &:hover {
-    color: #fa9a44;
-  }
-
-  ${BreakfastIcon} {
-    ${props => props.focused && css`font-size: 37pt;`}
-  }
-
-  ${LunchIcon} {
-    ${props => props.focused && css`font-size: 29pt;`}
-  }
-
-  ${DinnerIcon} {
-    ${props => props.focused && css`font-size: 25pt;`}
+  @media (max-width: 768px) {
+    margin: 0 5vw;
   }
 `
 
@@ -63,14 +36,14 @@ const MealContainer: React.FC = () => {
 
   return (
     <MealContainerBlock>
-      <MealButton focused={meal === 'BR'} onClick={() => setMeal('BR')}>
-        <BreakfastIcon className={classNames(styles['my-icon'], styles['my-icon-noun_sunrise_333233_000000'])} />
+      <MealButton onClick={() => setMeal('BR')}>
+        <SVG name='breakfast' focused={meal === 'BR'} />
       </MealButton>
-      <MealButton focused={meal === 'LU'} onClick={() => setMeal('LU')}>
-        <LunchIcon className={classNames(styles['my-icon'], styles['my-icon-noun_Morning_1015359_000000'])} />
+      <MealButton onClick={() => setMeal('LU')}>
+        <SVG name='lunch' focused={meal === 'LU'} />
       </MealButton>
-      <MealButton focused={meal === 'DN'} onClick={() => setMeal('DN')}>
-        <DinnerIcon className={classNames(styles['my-icon'], styles['my-icon-noun_Moon_600919_000000'])} />
+      <MealButton onClick={() => setMeal('DN')}>
+        <SVG name='dinner' focused={meal === 'DN'} />
       </MealButton>
     </MealContainerBlock>
   );

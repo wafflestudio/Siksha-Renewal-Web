@@ -4,6 +4,8 @@ import ModalContainer from './ModalContainer'
 import { Menu, Restaurant } from '../../interfaces'
 import { useState } from 'react'
 import styles from '../../public/css/my-icons/my-icons.module.css'
+import { MdInfoOutline, MdLocationOn } from 'react-icons/md'
+import { AiFillClockCircle } from 'react-icons/ai'
 
 const MenuCardBlock = styled.div`
   @font-face {
@@ -55,10 +57,10 @@ const InformationButton = styled.button`
   display: none;
 
   @media (max-width: 768px) {
-    display: block !important;
-    border: none;
+    display: flex;
     background: none;
     padding: 0px;
+    border: none;
 
     &:focus {
       outline: none;
@@ -66,11 +68,10 @@ const InformationButton = styled.button`
   }   
 `
 
-const InfoIcon = styled.i`
-  @media (max-width: 768px) {
-    font-size: 15pt;
-    color: #FF9A44;
-  }
+const InfoIcon = styled(MdInfoOutline)`
+  font-size: 18pt;
+  color: #FF9A44;
+  padding-top: 3px;
 `
 
 const UnderLine = styled.div`
@@ -102,24 +103,30 @@ const RestaurantInfoContainer = styled.div`
 
 export const IconTextContainer = styled.div`
   display: flex;
-  margin: 10px 0px;
+  margin: 5px 0px 10px 0;
+  padding: 0;
+
+  & ~ & {
+    margin: 10px 0px;
+  }
 `
 
-export const LocationIcon = styled.i`
+export const LocationIcon = styled(MdLocationOn)`
   color: #fe8b5a;
-  font-size: 17pt;
-  padding: 0 3.5px;
-  margin-top: 1px;
+  font-size: 21pt;
+  margin-left: -3px;
 `
 
 const Location = styled.p`
-  margin: 0 15px;
+  margin: 0 10px;
+  padding-top: 4px;
   line-height: 25px;
 `
 
-export const ClockIcon = styled.i`
+export const ClockIcon = styled(AiFillClockCircle)`
   color: #fe8b5a;
-  font-size: 17pt;
+  font-size: 19pt;
+  margin-left: -2px;
   margin-top: 1px;
 `
 
@@ -127,7 +134,8 @@ const OperatingHours = styled.p`
   white-space: pre-line;
   text-align: left;
   line-height: 25px;
-  margin: 0 15px;
+  margin: 0 12px;
+  padding-top: 3px;
 `
 
 const MenusContainer = styled.div`
@@ -146,7 +154,6 @@ const MenuInfoContainer = styled.div`
   & ~ & {
     margin-top: 10px;
   }
-  
 `
 
 const PriceContainer = styled.div`
@@ -183,7 +190,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
       <RestaurantNameContainer>
         <RestaurantName>{restaurant.name_kr}</RestaurantName>
         <InformationButton onClick={() => setIsModalOpen(true)}>
-          <InfoIcon className={classNames(styles['my-icon'], styles['my-icon-info-icon'])} />
+          <InfoIcon />
         </InformationButton>
         {isModalOpen && <ModalContainer restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
       </RestaurantNameContainer>
@@ -192,12 +199,14 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
         <RestaurantInfoContainer>
           <IconTextContainer>
             <LocationIcon className={classNames(styles['my-icon'], styles['my-icon-location_full'])} />
-            <Location>{restaurant.addr}</Location>
+            <Location>302-204</Location>
           </IconTextContainer>
           <IconTextContainer>
             <ClockIcon className={classNames(styles['my-icon'], styles['my-icon-clock_full'])} />
             <OperatingHours>
-              나중에
+              9:00 ~ 11:00 <br />
+              12:00 ~ 14:00 <br />
+              17:00 ~ 19:00
             </OperatingHours>
           </IconTextContainer>
         </RestaurantInfoContainer>
