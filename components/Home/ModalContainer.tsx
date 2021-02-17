@@ -57,7 +57,7 @@ const CloseIcon = styled.i`
 `
 
 const Location = styled.p`
-  margin: 0 15px;
+  margin: 2px 0 0 10px;
   line-height: 25px;
   font-size: 11pt;
 `
@@ -66,7 +66,7 @@ const OperatingHours = styled.p`
   white-space: pre-line;
   text-align: left;
   line-height: 25px;
-  margin: 0 15px;
+  margin: 2.8px 0 0 12px;
   font-size: 11pt;
 `
 
@@ -85,11 +85,13 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalO
         </ModalTitleContainer>
         <IconTextContainer>
           <LocationIcon className={classNames(styles['my-icon'], styles['my-icon-location_full'])} />
-          <Location>{restaurant.addr}</Location>
+          <Location>
+            {restaurant.addr || '위치 정보 없음'}
+          </Location>
         </IconTextContainer>
         <IconTextContainer>
           <ClockIcon className={classNames(styles['my-icon'], styles['my-icon-clock_full'])} />
-          <OperatingHours>나중에</OperatingHours>
+          <OperatingHours>9:00 ~ 11:00 / 12:00 ~ 14:00 / 17:00 ~ 19:00</OperatingHours>
         </IconTextContainer>
       </Modal>
     </ModalContainerBlock>

@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-import classNames from 'classnames'
 import ModalContainer from './ModalContainer'
 import { Menu, Restaurant } from '../../interfaces'
 import { useState } from 'react'
-import styles from '../../public/css/my-icons/my-icons.module.css'
 import { MdInfoOutline, MdLocationOn } from 'react-icons/md'
 import { AiFillClockCircle } from 'react-icons/ai'
 
@@ -105,7 +103,7 @@ export const IconTextContainer = styled.div`
   display: flex;
   margin: 5px 0px 10px 0;
   padding: 0;
-
+  
   & ~ & {
     margin: 10px 0px;
   }
@@ -118,7 +116,9 @@ export const LocationIcon = styled(MdLocationOn)`
 `
 
 const Location = styled.p`
-  margin: 0 10px;
+  margin: 0 0 0 10px;
+  display: flex;
+  flex: 1;
   padding-top: 4px;
   line-height: 25px;
 `
@@ -131,10 +131,12 @@ export const ClockIcon = styled(AiFillClockCircle)`
 `
 
 const OperatingHours = styled.p`
+  display: flex;
+  flex: 1;
   white-space: pre-line;
   text-align: left;
   line-height: 25px;
-  margin: 0 12px;
+  margin: 0 0 0 12px;
   padding-top: 3px;
 `
 
@@ -166,9 +168,10 @@ const PriceContainer = styled.div`
   align-items: center;
 `
 
-const Price = styled.p`
+const Price = styled.p<{ isNumber: boolean }>`
   color: white;
-  font-family: 'Lato' !important;
+  font-family: ${props => props.isNumber ? 'Lato' : 'NanumSquare'} !important;
+  font-size: ${props => props.isNumber ? '11.5pt' : '10.5pt'} !important;
 `
 
 const MenuName = styled.p`
@@ -198,11 +201,13 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
       <ContentContainer>
         <RestaurantInfoContainer>
           <IconTextContainer>
-            <LocationIcon className={classNames(styles['my-icon'], styles['my-icon-location_full'])} />
-            <Location>302-204</Location>
+            <LocationIcon />
+            <Location>
+              {restaurant.addr || '위치 정보 없음'}
+            </Location>
           </IconTextContainer>
           <IconTextContainer>
-            <ClockIcon className={classNames(styles['my-icon'], styles['my-icon-clock_full'])} />
+            <ClockIcon />
             <OperatingHours>
               9:00 ~ 11:00 <br />
               12:00 ~ 14:00 <br />
@@ -214,7 +219,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
           {restaurant.menus.map((menu: Menu) => (
             <MenuInfoContainer key={menu.id}>
               <PriceContainer>
-                <Price>{menu.price}</Price>
+                {menu.price ? <Price isNumber={true}>{menu.price}</Price> : <Price isNumber={false}>가격정보없음</Price>}
               </PriceContainer>
               <MenuName>{menu.name_kr}</MenuName>
             </MenuInfoContainer>
