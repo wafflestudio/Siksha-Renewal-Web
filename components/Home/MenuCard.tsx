@@ -172,12 +172,13 @@ const Price = styled.p<{ isNumber: boolean }>`
   color: white;
   font-family: ${props => props.isNumber ? 'Lato' : 'NanumSquare'} !important;
   font-size: ${props => props.isNumber ? '11.5pt' : '10.5pt'} !important;
+  font-weight: ${props => props.isNumber ? 'normal' : '600'} !important;
 `
 
 const MenuName = styled.p`
   word-break: break-all;
   white-space: pre-line;
-  margin: 3px 0 0 0;
+  margin: 3.5px 0 0 0;
   line-height: 1.3;
 `
 
