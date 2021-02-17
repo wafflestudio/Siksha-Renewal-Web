@@ -80,12 +80,12 @@ const MenuCardContainer = styled.div`
 const ImagePanel = styled.div`
   display: none;
 
-  animation: slidein .75s;
-  -moz-animation: slidein .75s; /* Firefox */
-  -webkit-animation: slidein .75s; /* Safari and Chrome */
-  -o-animation: slidein .75s; /* Opera */
+  animation: logoSlidein .75s;
+  -moz-animation: logoSlidein .75s; /* Firefox */
+  -webkit-animation: logoSlidein .75s; /* Safari and Chrome */
+  -o-animation: logoSlidein .75s; /* Opera */
 
-  @keyframes slidein {
+  @keyframes logoSlidein {
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -95,7 +95,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-moz-keyframes slidein { /* Firefox */
+  @-moz-keyframes logoSlidein { /* Firefox */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -105,7 +105,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-webkit-keyframes slidein { /* Safari and Chrome */
+  @-webkit-keyframes logoSlidein { /* Safari and Chrome */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -115,7 +115,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-o-keyframes slidein { /* Opera */
+  @-o-keyframes logoSlidein { /* Opera */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -154,7 +154,7 @@ const MainContainer: React.FC<Props> = ({ data }) => {
           </MenuCardContainer>
         ))}
       </MenuContainer>
-      <ImagePanel>
+      <ImagePanel key={date+meal}>
         <Image 
           src="/img/waffle-logo.png" 
           alt="waffle-logo" 
