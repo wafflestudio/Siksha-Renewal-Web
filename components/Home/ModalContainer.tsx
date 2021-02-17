@@ -25,10 +25,9 @@ const Modal = styled.div`
   background: white;
   padding: 15px 25px;
   width: 75%;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 40vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   z-index: 5;
 
