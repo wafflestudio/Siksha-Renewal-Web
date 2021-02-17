@@ -80,7 +80,7 @@ const GrayHeader = styled.div`
   left: 0;
 
   @media (max-width: 768px) {
-    top: 60px;
+    top: 55px;
   }
 `
 

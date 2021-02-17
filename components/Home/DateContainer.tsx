@@ -9,7 +9,7 @@ const DateContainerBlock = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 25px;
   background: white;
   box-shadow: 1px 1px 17px rgba(0, 0, 0, 0.06);
 
@@ -56,7 +56,7 @@ const TimeButton = styled.button`
   font-family: 'NanumSquare';
   font-weight: bold;
   color: #fa9a44;
-  height: 60px;
+  height: 55px;
   width: 140px;
   border: none;
   background: none;
