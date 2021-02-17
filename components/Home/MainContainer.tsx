@@ -91,7 +91,7 @@ const ImagePanel = styled.div`
       transform: translateY(20px);
     }
     to {
-      opacity: 1;
+      opacity: 0.8;
       transform: translateY(0);
     }
   }
@@ -101,7 +101,7 @@ const ImagePanel = styled.div`
       transform: translateY(20px);
     }
     to {
-      opacity: 1;
+      opacity: 0.8;
       transform: translateY(0);
     }
   }
@@ -111,7 +111,7 @@ const ImagePanel = styled.div`
       transform: translateY(20px);
     }
     to {
-      opacity: 1;
+      opacity: 0.8;
       transform: translateY(0);
     }
   }
@@ -121,7 +121,7 @@ const ImagePanel = styled.div`
       transform: translateY(20px);
     }
     to {
-      opacity: 1;
+      opacity: 0.8;
       transform: translateY(0);
     }
   }
