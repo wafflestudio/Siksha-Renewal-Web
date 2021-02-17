@@ -84,6 +84,7 @@ const ImagePanel = styled.div`
     display: inline-block;
     opacity: 0.8;
     margin: 20px 0px;
+    width: 60%;
   }
 `
 
