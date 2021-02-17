@@ -80,6 +80,52 @@ const MenuCardContainer = styled.div`
 const ImagePanel = styled.div`
   display: none;
 
+  animation: slidein .75s;
+  -moz-animation: slidein .75s; /* Firefox */
+  -webkit-animation: slidein .75s; /* Safari and Chrome */
+  -o-animation: slidein .75s; /* Opera */
+
+  @keyframes slidein {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-moz-keyframes slidein { /* Firefox */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-webkit-keyframes slidein { /* Safari and Chrome */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-o-keyframes slidein { /* Opera */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (max-width: 768px) {
     display: inline-block;
     opacity: 0.8;
