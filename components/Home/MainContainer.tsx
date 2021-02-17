@@ -29,6 +29,52 @@ const MenuContainer = styled.div`
 const MenuCardContainer = styled.div`
   width: 100%;
   max-width: 800px;
+
+  animation: fadein 1s;
+  -moz-animation: fadein 1s; /* Firefox */
+  -webkit-animation: fadein 1s; /* Safari and Chrome */
+  -o-animation: fadein 1s; /* Opera */
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  @-moz-keyframes fadein { /* Firefox */
+    from {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  @-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  @-o-keyframes fadein { /* Opera */
+    from {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
 `
 
 const ImagePanel = styled.div`
@@ -56,8 +102,8 @@ const MainContainer: React.FC<Props> = ({ data }) => {
     <MainContainerBlock>
       <MenuContainer>
         {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: Restaurant, index) => (
-          <MenuCardContainer key={index}>
-            <MenuCard restaurant={restaurant} key={restaurant.name_en} />
+          <MenuCardContainer key={restaurant.id+meal+date}>
+            <MenuCard restaurant={restaurant} />
           </MenuCardContainer>
         ))}
       </MenuContainer>
