@@ -84,13 +84,13 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalO
           <CloseIcon onClick={() => setIsModalOpen(false)} className={classNames(styles['my-icon'], styles['my-icon-close-icon'])} />
         </ModalTitleContainer>
         <IconTextContainer>
-          <LocationIcon className={classNames(styles['my-icon'], styles['my-icon-location_full'])} />
+          <LocationIcon />
           <Location>
             {restaurant.addr || '위치 정보 없음'}
           </Location>
         </IconTextContainer>
         <IconTextContainer>
-          <ClockIcon className={classNames(styles['my-icon'], styles['my-icon-clock_full'])} />
+          <ClockIcon />
           <OperatingHours>9:00 ~ 11:00 / 12:00 ~ 14:00 / 17:00 ~ 19:00</OperatingHours>
         </IconTextContainer>
       </Modal>

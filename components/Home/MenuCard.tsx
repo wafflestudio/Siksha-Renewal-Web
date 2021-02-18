@@ -170,6 +170,7 @@ const PriceContainer = styled.div`
 
 const Price = styled.p<{ isNumber: boolean }>`
   color: white;
+  white-space: nowrap;
   font-family: ${props => props.isNumber ? 'Lato' : 'NanumSquare'} !important;
   font-size: ${props => props.isNumber ? '11.5pt' : '10.5pt'} !important;
   font-weight: ${props => props.isNumber ? 'normal' : '600'} !important;

@@ -28,6 +28,7 @@ const ArrowButton = styled.button`
   font-size: 12pt;
   font-family: 'NanumSquare';
   color: #bababa;
+  white-space: nowrap;
 
   svg {
     font-size: 13pt;
@@ -62,6 +63,7 @@ const TimeButton = styled.button`
   background: none;
   outline: none;
   border-bottom: solid 3px #fa9a44;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     font-size: 12pt;
