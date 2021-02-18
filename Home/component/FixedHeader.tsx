@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import DateContainer from './DateContainer'
+import DateContainer from '../container/DateContainer'
 import LogoContainer from './LogoContainer'
-import MealContainer from './MealContainer'
+import MealContainer from '../container/MealContainer'
 
 const FixedHeaderBlock = styled.div`
   @font-face {

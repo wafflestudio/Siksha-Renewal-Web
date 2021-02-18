@@ -1,7 +1,7 @@
 import Document, { DocumentContext } from 'next/document'
 import { Fragment } from 'react';
 import { ServerStyleSheet } from 'styled-components'
-import GlobalStyle from '../components/Common/Layout'
+import GlobalStyle from '../Common/Layout'
 
 class CustomDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

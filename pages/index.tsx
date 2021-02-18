@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { GetServerSideProps, NextPage } from 'next'
-import Layout from '../components/Common/Layout'
-import { AdditionalHeader, FixedHeader, SidebarContainer, MainContainer } from '../components/Home'
+import Layout from '../Common/Layout'
+import { AdditionalHeader, FixedHeader, SidebarContainer, MainContainer } from '../Home'
 import ContextProvider from '../utils/hooks/ContextProvider'
 import { Data } from '../interfaces'
 import { formatISODate } from '../utils/hooks/FormatUtil'
@@ -29,8 +29,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const Home: NextPage<Props> = ({ data }) => {
-  console.log(data)
-
   return (
     <Layout title="서울대학교 식단 알리미 : 식샤">
       <ContextProvider>
