@@ -12,6 +12,11 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background: #f8f8f8;
+    -ms-overflow-style: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 `
 
