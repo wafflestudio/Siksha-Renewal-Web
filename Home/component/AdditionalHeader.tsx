@@ -11,6 +11,7 @@ const AdditionalHeaderBlock = styled.div`
   background: linear-gradient(to right, #fd7878 0%, #fe8662 65%, #ff9a44 100%);
 
   @media (max-width: 768px) {
+    height: 85px;
     position: sticky;
     position: -webkit-sticky;
     top: 0;

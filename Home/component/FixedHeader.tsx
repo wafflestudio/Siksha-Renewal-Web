@@ -41,7 +41,7 @@ const FixedHeaderBlock = styled.div`
   z-index: 2;
 
   @media (max-width: 768px) {
-    top: 100px;
+    top: 85px;
     height: 103px;
   }
 `
