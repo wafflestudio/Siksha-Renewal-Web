@@ -81,7 +81,7 @@ const UnderLine = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   width: 100%;
-  margin: 30px 0;
+  margin: 25px 0;
 
   @media (max-width: 768px) {
     margin: 15px 0 12px 0;
@@ -101,11 +101,11 @@ const RestaurantInfoContainer = styled.div`
 
 export const IconTextContainer = styled.div`
   display: flex;
-  margin: 5px 0px 10px 0;
+  margin: 3px 0 10px 0;
   padding: 0;
   
   & ~ & {
-    margin: 10px 0px;
+    margin: 5px 0 0 0;
   }
 `
 
@@ -126,14 +126,14 @@ const Location = styled.p`
 export const ClockIcon = styled(AiFillClockCircle)`
   color: #fe8b5a;
   font-size: 19pt;
-  margin-left: -2px;
+  margin-left: -1px;
   margin-top: 1px;
 `
 
 const OperatingHours = styled.p`
   display: flex;
   flex: 1;
-  white-space: pre-line;
+  white-space: nowrap;
   text-align: left;
   line-height: 25px;
   margin: 0 0 0 12px;
