@@ -10,7 +10,7 @@ if(currHour > 9 && currHour < 16) {
 else if (currHour >= 16 && currHour < 20) {
   initMeal = 'DN'
 }
-else {
+else if (currHour >= 20 && currHour < 24) {
   initDate.setDate(initDate.getDate() + 1)
 }
 
