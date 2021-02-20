@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import classNames from 'classnames'
 import { Restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
 import { IconTextContainer, LocationIcon, ClockIcon } from './MenuCard'
@@ -81,7 +80,7 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalO
       <Modal>
         <ModalTitleContainer>
           <ModalTitle>{restaurant.name_kr}</ModalTitle>
-          <CloseIcon onClick={() => setIsModalOpen(false)} className={classNames(styles['my-icon'], styles['my-icon-close-icon'])} />
+          <CloseIcon onClick={() => setIsModalOpen(false)} className={`${styles['my-icon']} ${styles['my-icon-close-icon']}`} />
         </ModalTitleContainer>
         <IconTextContainer>
           <LocationIcon />
