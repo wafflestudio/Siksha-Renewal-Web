@@ -29,6 +29,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const Home: NextPage<Props> = ({ data }) => {
+  console.log(data)
+
   return (
     <Layout title="서울대학교 식단 알리미 : 식샤">
       <ContextProvider>

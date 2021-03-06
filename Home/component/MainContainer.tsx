@@ -25,9 +25,12 @@ const MenuContainer = styled.div`
   }
 `
 
-const MenuCardContainer = styled.div`
-  width: 100%;
-  max-width: 800px;
+const TextContainer = styled.p`
+  font-size: 10.5pt;
+  font-family: 'NanumBarunGothic', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 
   animation: slidein .75s;
   -moz-animation: slidein .75s; /* Firefox */
@@ -76,15 +79,29 @@ const MenuCardContainer = styled.div`
   }
 `
 
-const ImagePanel = styled.div`
+const MenuCardContainer = styled.div`
+  width: 100%;
+  max-width: 800px;
+
+  animation: slidein .75s;
+  -moz-animation: slidein .75s; /* Firefox */
+  -webkit-animation: slidein .75s; /* Safari and Chrome */
+  -o-animation: slidein .75s; /* Opera */
+`
+
+const Footer = styled.div`
+
+`
+
+const LogoPanel = styled.div`
   display: none;
 
-  animation: logoSlidein .75s;
-  -moz-animation: logoSlidein .75s; /* Firefox */
-  -webkit-animation: logoSlidein .75s; /* Safari and Chrome */
-  -o-animation: logoSlidein .75s; /* Opera */
+  animation: logoin .75s;
+  -moz-animation: logoin .75s; /* Firefox */
+  -webkit-animation: logoin .75s; /* Safari and Chrome */
+  -o-animation: logoin .75s; /* Opera */
 
-  @keyframes logoSlidein {
+  @keyframes logoin {
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -94,7 +111,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-moz-keyframes logoSlidein { /* Firefox */
+  @-moz-keyframes logoin { /* Firefox */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -104,7 +121,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-webkit-keyframes logoSlidein { /* Safari and Chrome */
+  @-webkit-keyframes logoin { /* Safari and Chrome */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -114,7 +131,7 @@ const ImagePanel = styled.div`
       transform: translateY(0);
     }
   }
-  @-o-keyframes logoSlidein { /* Opera */
+  @-o-keyframes logoin { /* Opera */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -128,8 +145,24 @@ const ImagePanel = styled.div`
   @media (max-width: 768px) {
     display: inline-block;
     opacity: 0.8;
-    margin: 20px 0px;
+    margin: 20px 0 0 0;
     width: 60%;
+  }
+`
+
+const DownloadPanel = styled.div`
+  margin-bottom: 20px;
+  padding: 0;
+  opacity: 0.8;
+  display: none;
+
+  animation: logoin .75s;
+  -moz-animation: logoin .75s; /* Firefox */
+  -webkit-animation: logoin .75s; /* Safari and Chrome */
+  -o-animation: logoin .75s; /* Opera */
+
+  @media (max-width: 768px) {
+    display: inline-block;
   }
 `
 
@@ -145,7 +178,8 @@ const MainContainer: React.FC<Props> = ({ data }) => {
   const dateIndex = useMemo(() => menuData.findIndex(day => new Date(day.date).toDateString() === date.toDateString()), [menuData, date])
 
   return (
-    <MainContainerBlock>
+    <MainContainerBlock key={meal+date}>
+      {menuData[dateIndex] && (menuData[dateIndex][meal].length === 0 && <TextContainer key={'text'+meal+date}>업로드 된 식단이 없습니다.</TextContainer>)}
       <MenuContainer>
         {(menuData[dateIndex] && menuData[dateIndex][meal]) && menuData[dateIndex][meal].map((restaurant: Restaurant) => (
           <MenuCardContainer key={restaurant.id+meal+date}>
@@ -153,14 +187,30 @@ const MainContainer: React.FC<Props> = ({ data }) => {
           </MenuCardContainer>
         ))}
       </MenuContainer>
-      <ImagePanel key={date+meal}>
-        <Image 
-          src="/img/waffle-logo.png" 
-          alt="waffle-logo" 
-          width='329'
-          height='117'
-        />
-      </ImagePanel>
+      <Footer key={'footer'+meal+date}>
+        <LogoPanel>
+          <Image 
+            src="/img/waffle-logo.png" 
+            alt="waffle-logo" 
+            width='329'
+            height='117'
+          />
+        </LogoPanel>
+        <DownloadPanel>
+          <Image
+            src="/img/google-play.png"
+            alt="google-play"
+            width='103'
+            height='31'
+          />
+          <Image
+            src="/img/app-store.png"
+            alt="google-play"
+            width='103'
+            height='31'
+          />
+        </DownloadPanel>
+      </Footer>
     </MainContainerBlock>
   );
 };

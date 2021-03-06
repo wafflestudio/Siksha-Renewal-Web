@@ -1,6 +1,9 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Restaurant } from '../../interfaces'
 import styles from '../../public/css/my-icons/my-icons.module.css'
+import { useStateContext } from '../../utils/hooks/ContextProvider'
+import { formatWeek } from '../../utils/hooks/FormatUtil'
 import { IconTextContainer, LocationIcon, ClockIcon } from './MenuCard'
 
 const ModalContainerBlock = styled.div`
@@ -61,12 +64,32 @@ const Location = styled.p`
   font-size: 11pt;
 `
 
-const OperatingHours = styled.p`
+const OperatingHours = styled.div`
+  display: flex;
+  flex-direction: column;
   white-space: pre-line;
   text-align: left;
+  margin: 2.8px 0 6px 12px;
+`
+
+const Hours = styled.p`
+  white-space: nowrap;
+  text-align: left;
   line-height: 25px;
-  margin: 2.8px 0 0 12px;
+  padding: 0;
+  margin: 0;
   font-size: 11pt;
+`
+
+const Week = styled.p`
+  white-space: nowrap;
+  display: flex;
+  align-items: flex-end;
+  text-align: left;
+  font-size: 10pt !important;
+  line-height: 25px;
+  padding: 0;
+  margin: 0 0 6.5px 5px;
 `
 
 type ModalContainerProps = {
@@ -75,6 +98,9 @@ type ModalContainerProps = {
 }
 
 const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalOpen }) => {
+  const { date } = useStateContext()
+  const week = useMemo(() => formatWeek(date), [date])
+
   return (
     <ModalContainerBlock>
       <Modal>
@@ -85,12 +111,15 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalO
         <IconTextContainer>
           <LocationIcon />
           <Location>
-            {restaurant.addr || '위치 정보 없음'}
+            {restaurant.addr.slice(13) || '위치 정보 없음'}
           </Location>
         </IconTextContainer>
         <IconTextContainer>
           <ClockIcon />
-          <OperatingHours>9:00 ~ 11:00 / 12:00 ~ 14:00 / 17:00 ~ 19:00</OperatingHours>
+          <OperatingHours>
+            {restaurant.etc && restaurant.etc.operating_hours[week].length !== 0 && restaurant.etc.operating_hours[week].map((hour, index) => <Hours key={index}>{hour}</Hours>) || <Hours>운영시간 정보없음</Hours>}
+          </OperatingHours>
+          <Week>{week === 'holiday' ? '(일요일/공휴일)' : week === 'saturday' ? '(토요일)' : '(평일)'}</Week>
         </IconTextContainer>
       </Modal>
     </ModalContainerBlock>

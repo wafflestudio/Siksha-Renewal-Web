@@ -1,9 +1,9 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react'
 import { Meal } from '../../interfaces'
 
-const currHour: number = new Date().getHours()
 let initMeal: Meal = 'BR'
 const initDate: Date = new Date()
+const currHour: number = initDate.getHours()
 if(currHour > 9 && currHour < 16) {
   initMeal = 'LU'
 }
@@ -42,7 +42,7 @@ function reducer(state: State, action: Action) {
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
     date: initDate,
-    meal: initMeal,
+    meal: initMeal
   })
   
   return (

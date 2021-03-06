@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import ModalContainer from './ModalContainer'
 import { Menu, Restaurant } from '../../interfaces'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { MdInfoOutline, MdLocationOn } from 'react-icons/md'
 import { AiFillClockCircle } from 'react-icons/ai'
+import { useStateContext } from '../../utils/hooks/ContextProvider'
+import { formatWeek } from '../../utils/hooks/FormatUtil'
 
 const MenuCardBlock = styled.div`
   @font-face {
@@ -130,14 +132,22 @@ export const ClockIcon = styled(AiFillClockCircle)`
   margin-top: 1px;
 `
 
-const OperatingHours = styled.p`
+const OperatingHours = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 1;
   white-space: nowrap;
-  text-align: left;
   line-height: 25px;
   margin: 0 0 0 12px;
   padding-top: 3px;
+`
+
+const Hours = styled.p`
+  white-space: nowrap;
+  text-align: left;
+  line-height: 25px;
+  padding: 0;
+  margin: 0;
 `
 
 const MenusContainer = styled.div`
@@ -188,6 +198,8 @@ interface MenuCardProps {
 }
 
 const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
+  const { date } = useStateContext()
+  const week = useMemo(() => formatWeek(date), [date])
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
@@ -205,15 +217,13 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
           <IconTextContainer>
             <LocationIcon />
             <Location>
-              {restaurant.addr || '위치 정보 없음'}
+              {restaurant.addr.slice(19) || '위치 정보 없음'}
             </Location>
           </IconTextContainer>
           <IconTextContainer>
             <ClockIcon />
             <OperatingHours>
-              9:00 ~ 11:00 <br />
-              12:00 ~ 14:00 <br />
-              17:00 ~ 19:00
+              {restaurant.etc && restaurant.etc.operating_hours[week].length !== 0 && restaurant.etc.operating_hours[week].map((hour, index) => <Hours key={index}>{hour}</Hours>) || <Hours>운영시간 정보없음</Hours>}
             </OperatingHours>
           </IconTextContainer>
         </RestaurantInfoContainer>

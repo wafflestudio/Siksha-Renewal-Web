@@ -21,7 +21,13 @@ export type Restaurant = {
   addr: string,
   lat: string,
   lng: string,
-  etc: string,
+  etc: {
+    operating_hours: {
+      holiday: string[],
+      saturday: string[],
+      weekdays: string[]
+    }
+  },
   created_at: string,
   updated_at: string,
   menus: Menu[],
@@ -38,3 +44,5 @@ export type Data = {
   count: number,
   result: Day[]
 }
+
+export type Week = 'holiday' | 'saturday' | 'weekdays'
