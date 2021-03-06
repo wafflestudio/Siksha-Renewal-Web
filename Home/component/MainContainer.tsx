@@ -90,7 +90,9 @@ const MenuCardContainer = styled.div`
 `
 
 const Footer = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const LogoPanel = styled.div`
