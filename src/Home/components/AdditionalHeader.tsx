@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import logo from '../../asset/img/logo.png'
 
 const AdditionalHeaderBlock = styled.div`
   display: flex;
@@ -34,7 +33,7 @@ const Logo = styled.img`
 const AdditionalHeader = () => {
   return (
     <AdditionalHeaderBlock>
-      <Logo src={logo} alt="siksha-logo" />
+      <Logo src='/img/logo.png' alt="siksha-logo" />
     </AdditionalHeaderBlock>
   )
 }

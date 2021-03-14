@@ -3,9 +3,6 @@ import MenuCard from './MenuCard'
 import { Day, Restaurant } from '../../interfaces'
 import { useStateContext } from '../../utils/ContextProvider'
 import { useMemo } from 'react'
-import logo from '../../asset/img/waffle-logo.png'
-import google from '../../asset/img/google-play.png'
-import apple from '../../asset/img/app-store.png'
 
 const MainContainerBlock = styled.div`
   display: inline-block;
@@ -195,13 +192,13 @@ const MainContainer: React.FC<{ loading: boolean }> = ({ loading }) => {
         ))}
       </MenuContainer>
       <Footer key={'footer'+meal+date}>
-        <Logo src={logo} />
+        <Logo src='/img/waffle-logo.png' />
         <DownloadPanel>
           <a href="https://play.google.com/store/apps/details?id=com.wafflestudio.siksha">
-            <Download src={google} />
+            <Download src='/img/google-play.png' />
           </a>
           <a href="https://apps.apple.com/kr/app/id1032700617">
-            <Download src={apple} />
+            <Download src='/img/app-store.png' />
           </a>
         </DownloadPanel>
       </Footer>

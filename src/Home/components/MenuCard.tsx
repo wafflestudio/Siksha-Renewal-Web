@@ -178,12 +178,12 @@ const PriceContainer = styled.div`
   align-items: center;
 `
 
-const Price = styled.p<{ isNumber: boolean }>`
+const Price = styled.p`
   color: white;
   white-space: nowrap;
-  font-family: ${props => props.isNumber ? 'Lato' : 'NanumSquare'} !important;
-  font-size: ${props => props.isNumber ? '11.5pt' : '10.5pt'} !important;
-  font-weight: ${props => props.isNumber ? 'normal' : '600'} !important;
+  font-family: 'Lato' !important;
+  font-size: '11.5pt' !important;
+  font-weight: 'normal' !important;
 `
 
 const MenuName = styled.p`
@@ -231,7 +231,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
           {restaurant.menus.map((menu: Menu) => (
             <MenuInfoContainer key={menu.id}>
               <PriceContainer>
-                {menu.price ? <Price isNumber={true}>{menu.price}</Price> : <Price isNumber={false}>가격정보없음</Price>}
+                {menu.price ? <Price>{menu.price}</Price> : <Price>-</Price>}
               </PriceContainer>
               <MenuName>{menu.name_kr}</MenuName>
             </MenuInfoContainer>

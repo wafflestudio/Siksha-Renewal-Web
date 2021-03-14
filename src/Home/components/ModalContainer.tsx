@@ -84,13 +84,11 @@ const Hours = styled.p`
 
 const Week = styled.p`
   white-space: nowrap;
-  display: flex;
-  align-items: flex-end;
   text-align: left;
-  font-size: 10pt !important;
+  font-size: 10.5pt !important;
   line-height: 25px;
   padding: 0;
-  margin: 0 0 6.5px 5px;
+  margin: -1.5px 0 0 -2.5px;
 `
 
 type ModalContainerProps = {
@@ -118,9 +116,9 @@ const ModalContainer: React.FC<ModalContainerProps> = ({ restaurant, setIsModalO
         <IconTextContainer>
           <ClockIcon />
           <OperatingHours>
+            <Week>{week === 'holiday' ? '(일요일/공휴일)' : week === 'saturday' ? '(토요일)' : '(평일)'}</Week>
             {(restaurant.etc && restaurant.etc.operating_hours[week].length !== 0) ? restaurant.etc.operating_hours[week].map((hour, index) => <Hours key={index}>{hour}</Hours>) : <Hours>운영시간 정보없음</Hours>}
           </OperatingHours>
-          <Week>{week === 'holiday' ? '(일요일/공휴일)' : week === 'saturday' ? '(토요일)' : '(평일)'}</Week>
         </IconTextContainer>
       </Modal>
     </ModalContainerBlock>

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useDispatchContext, useStateContext } from '../../utils/ContextProvider'
 import { Meal } from '../../interfaces'
-import SVG from '../../asset/svg'
+import SVG from '../../utils/svg'
 
 const MealContainerBlock = styled.div`
   display: flex;

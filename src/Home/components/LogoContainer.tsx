@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import logo from '../../asset/img/logo.png'
 
 const LogoContainerBlock = styled.div`
   height: 150px;
@@ -53,7 +52,7 @@ const LogoContainer = () => {
   return (
     <LogoContainerBlock>
       <RealLogoContainer>
-        <Logo src={logo} alt="siksha-logo" />
+        <Logo src='/img/logo.png' alt="siksha-logo" />
         <TitleContainer>
           <SikshaTitle isTitle={true}>식 샤</SikshaTitle>
           <SikshaTitle isTitle={false}>서울대학교 식단 알리미</SikshaTitle>

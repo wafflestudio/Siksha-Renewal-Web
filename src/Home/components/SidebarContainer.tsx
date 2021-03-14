@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components'
 import { useStateContext } from '../../utils/ContextProvider'
 import { useMemo, useState } from 'react'
 import { Day, Restaurant } from '../../interfaces'
-import logo from '../../asset/img/waffle-logo.png'
 
 const SidebarContainerBlock = styled.div`
   min-height: 300px;
@@ -199,7 +198,7 @@ const SidebarContainer: React.FC = () => {
         ))}
       </Sidebar>
       <Popper>
-        <WaffleLogo src={logo} alt="waffle-logo" clicked={isContactBoxClosed} />
+        <WaffleLogo src='/img/waffle-logo.png' alt="waffle-logo" clicked={isContactBoxClosed} />
         {!isContactBoxClosed && (<ContactWaffle>
           <WaffleStudio>
             <TextContainer>와플스튜디오</TextContainer>

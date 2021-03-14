@@ -43,6 +43,10 @@ const ArrowButton = styled.button`
   @media (max-width: 768px) {
     font-size: 11pt;
 
+    &:hover {
+      color: #bababa;
+    }
+
     svg {
       font-size: 12pt;
     }
