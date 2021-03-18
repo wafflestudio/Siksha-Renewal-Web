@@ -10,8 +10,10 @@ const TopContainerBlock = styled.div`
 `
 
 const TopContainer = () => {
+  const startDate = useMemo(() => new Date(), [])
+  useMemo(() => startDate.setDate(startDate.getDate() - 7), [startDate])
   const endDate = useMemo(() => new Date(), [])
-  useMemo(() => endDate.setDate(endDate.getDate() + 31), [endDate])
+  useMemo(() => endDate.setDate(endDate.getDate() + 7), [endDate])
 
   const dispatch = useDispatchContext()
 
@@ -23,7 +25,7 @@ const TopContainer = () => {
 
       setLoading(true)
       try {
-        const res = await fetch(`https://siksha-api.wafflestudio.com/menus?start_date=2021-02-02&end_date=${formatISODate(endDate)}&except_empty=true`)
+        const res = await fetch(`https://siksha-api.wafflestudio.com/menus?start_date=${formatISODate(startDate)}&end_date=${formatISODate(endDate)}&except_empty=true`)
         const data = await res.json()
         setData(data)
       } catch (e) {
@@ -33,7 +35,7 @@ const TopContainer = () => {
     }
 
     fetchData();
-  }, [endDate, dispatch])
+  }, [startDate, endDate, dispatch])
 
   return (
     <TopContainerBlock>
