@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { Data, Day } from '../../interfaces'
 import { useDispatchContext, useStateContext } from '../../utils/ContextProvider'
-import { formatISODate, getTomorrow, getYesterday } from '../../utils/FormatUtil'
+import { formatISODate } from '../../utils/FormatUtil'
 import { AdditionalHeader, FixedHeader, MainContainer, SidebarContainer } from '../index'
 
 const TopContainerBlock = styled.div`
