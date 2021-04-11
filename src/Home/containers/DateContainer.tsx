@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { useDispatchContext, useStateContext } from '../../utils/ContextProvider'
-import { formatDate } from '../../utils/FormatUtil'
-import { useMemo, useState } from 'react'
+import { formatDate, getTomorrow, getYesterday } from '../../utils/FormatUtil'
+import { useMemo } from 'react'
 
 const DateContainerBlock = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const DateContainerBlock = styled.div`
   }
 `
 
-const ArrowButton = styled.button<{ isEnd: boolean }>`
+const ArrowButton = styled.button`
   display: flex;
   align-items: center;
   background: none;
@@ -33,7 +33,7 @@ const ArrowButton = styled.button<{ isEnd: boolean }>`
   outline: none;
   font-size: 12pt;
   font-family: 'NanumSquare';
-  color: ${props => props.isEnd ? '#e0e0e0' : '#bababa'};
+  color: #bababa;
   white-space: nowrap;
 
   svg {
@@ -43,14 +43,14 @@ const ArrowButton = styled.button<{ isEnd: boolean }>`
   }
 
   &:hover {
-    color: ${props => props.isEnd ? '#e0e0e0' : '#fa9a44'};
+    color: #fa9a44;
   }
 
   @media (max-width: 768px) {
     font-size: 11pt;
 
     &:hover {
-      color: ${props => props.isEnd ? '#e0e0e0' : '#bababa'};
+      color: #bababa;
     }
 
     svg {
@@ -88,40 +88,17 @@ const DateContainer: React.FC = () => {
   const { date } = state
   const setDate = (date: Date) => dispatch({ type: 'SET_DATE', date: date })
 
-  const [start, setStart] = useState(false)
-  const [end, setEnd] = useState(false)
-
-  const startDate = useMemo(() => new Date(), [])
-  useMemo(() => startDate.setDate(startDate.getDate() - 7), [startDate])
-  const endDate = useMemo(() => new Date(), [])
-  useMemo(() => endDate.setDate(endDate.getDate() + 7), [endDate])
-
-  useMemo(() => date.toDateString() === startDate.toDateString() ? setStart(true) : setStart(false), [date, startDate])
-  useMemo(() => date.toDateString() === endDate.toDateString() ? setEnd(true) : setEnd(false), [date, endDate])
-
-  const getYesterday = (date: Date) => {
-    const yesterday = new Date(date)
-    yesterday.setDate(date.getDate() - 1)
-    return yesterday
-  }
-  
-  const getTomorrow = (date: Date) => {
-    const tomorrow = new Date(date)
-    tomorrow.setDate(date.getDate() + 1)
-    return tomorrow
-  }
-
   const yesterday = useMemo(() => formatDate(getYesterday(date)), [date])
   const tomorrow = useMemo(() => formatDate(getTomorrow(date)), [date])
 
   return (
     <DateContainerBlock>
-      <ArrowButton isEnd={start} onClick={() => date.toDateString() !== startDate.toDateString() && setDate(getYesterday(date))}>
+      <ArrowButton onClick={() => setDate(getYesterday(date))}>
         <BsChevronLeft />
         {yesterday}
       </ArrowButton>
       <TimeButton>{formatDate(date)}</TimeButton>
-      <ArrowButton isEnd={end} onClick={() => date.toDateString() !== endDate.toDateString() && setDate(getTomorrow(date))}>
+      <ArrowButton onClick={() => setDate(getTomorrow(date))}>
         {tomorrow}
         <BsChevronRight />
       </ArrowButton>

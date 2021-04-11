@@ -11,8 +11,6 @@ const TopContainerBlock = styled.div`
 `
 
 const TopContainer = () => {
-  const date = useMemo(() => new Date(), [])
-
   const state = useStateContext()
   const dispatch = useDispatchContext()
 
