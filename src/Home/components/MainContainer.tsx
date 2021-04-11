@@ -25,6 +25,14 @@ const MenuContainer = styled.div`
 `
 
 const TextContainer = styled.p`
+  @font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: 300;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf') format('truetype');
+  }
+  
   font-size: 10.5pt;
   font-family: 'NanumBarunGothic', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -194,7 +202,7 @@ const MainContainer: React.FC<{ loading: boolean }> = ({ loading }) => {
       <Footer key={'footer'+meal+date}>
         <Logo src='/img/waffle-logo.png' />
         <DownloadPanel>
-          <a href="https://play.google.com/store/apps/details?id=com.wafflestudio.siksha">
+          <a href="https://play.google.com/store/apps/details?id=com.wafflestudio.siksha2">
             <Download src='/img/google-play.png' />
           </a>
           <a href="https://apps.apple.com/kr/app/id1032700617">

@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import { Data } from '../../interfaces'
-import { useDispatchContext } from '../../utils/ContextProvider'
-import { formatISODate } from '../../utils/FormatUtil'
+import { useDispatchContext, useStateContext } from '../../utils/ContextProvider'
+import { formatISODate, getTomorrow, getYesterday } from '../../utils/FormatUtil'
 import { AdditionalHeader, FixedHeader, MainContainer, SidebarContainer } from '../index'
 
 const TopContainerBlock = styled.div`
@@ -10,12 +11,14 @@ const TopContainerBlock = styled.div`
 `
 
 const TopContainer = () => {
-  const startDate = useMemo(() => new Date(), [])
-  useMemo(() => startDate.setDate(startDate.getDate() - 7), [startDate])
-  const endDate = useMemo(() => new Date(), [])
-  useMemo(() => endDate.setDate(endDate.getDate() + 7), [endDate])
+  const date = useMemo(() => new Date(), [])
+  const yesterday = useMemo(() => formatISODate(getYesterday(date)), [date])
+  const tomorrow = useMemo(() => formatISODate(getTomorrow(date)), [date])
 
+  const state = useStateContext()
   const dispatch = useDispatchContext()
+
+  const { data } = state
 
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -25,9 +28,9 @@ const TopContainer = () => {
 
       setLoading(true)
       try {
-        const res = await fetch(`https://siksha-api.wafflestudio.com/menus?start_date=${formatISODate(startDate)}&end_date=${formatISODate(endDate)}&except_empty=true`)
-        const data = await res.json()
-        setData(data)
+        const res = await axios.get(`https://siksha-api.wafflestudio.com/menus/?start_date=${yesterday}&end_date=${tomorrow}&except_empty=true`)
+        const newData = await res.data
+        setData({...data, ...newData})
       } catch (e) {
         console.log(e)
       }
@@ -35,7 +38,7 @@ const TopContainer = () => {
     }
 
     fetchData();
-  }, [startDate, endDate, dispatch])
+  }, [yesterday, tomorrow, data, dispatch])
 
   return (
     <TopContainerBlock>
