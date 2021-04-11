@@ -199,7 +199,7 @@ const MainContainer: React.FC<{ loading: boolean }> = ({ loading }) => {
           </MenuCardContainer>
         ))}
       </MenuContainer>
-      <Footer key={'footer'+meal+date}>
+      {!loading && <Footer key={'footer'+meal+date}>
         <Logo src='/img/waffle-logo.png' />
         <DownloadPanel>
           <a href="https://play.google.com/store/apps/details?id=com.wafflestudio.siksha2">
@@ -209,7 +209,7 @@ const MainContainer: React.FC<{ loading: boolean }> = ({ loading }) => {
             <Download src='/img/app-store.png' />
           </a>
         </DownloadPanel>
-      </Footer>
+      </Footer>}
     </MainContainerBlock>
   );
 };
