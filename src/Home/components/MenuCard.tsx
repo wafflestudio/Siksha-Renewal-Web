@@ -1,0 +1,245 @@
+import styled from 'styled-components'
+import ModalContainer from './ModalContainer'
+import { Menu, Restaurant } from '../../interfaces'
+import { useMemo, useState } from 'react'
+import { MdInfoOutline, MdLocationOn } from 'react-icons/md'
+import { AiFillClockCircle } from 'react-icons/ai'
+import { useStateContext } from '../../utils/ContextProvider'
+import { formatWeek } from '../../utils/FormatUtil'
+
+const MenuCardBlock = styled.div`
+  @font-face {
+    font-family: 'Lato';
+    src: url('/font/Lato-Regular.ttf') format("truetype");
+  }
+
+  @font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: 300;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf') format('truetype');
+  }
+
+  display: flex;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 5px 25px 10px 25px;
+  background: white;
+  padding: 5px 20px;
+  border-radius: 10px;
+
+  p {
+    text-align: left;
+    font-size: 11.5pt;
+    font-family: 'NanumBarunGothic', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+`
+
+const RestaurantNameContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+
+const RestaurantName = styled.h4`
+  margin: 10px 0;
+  color: #6c6b70;
+  font-family: 'NanumSquare';
+  font-weight: bold;
+`
+
+const InformationButton = styled.button`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    background: none;
+    padding: 0px;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }   
+`
+
+const InfoIcon = styled(MdInfoOutline)`
+  font-size: 18pt;
+  color: #FF9A44;
+  padding-top: 3px;
+`
+
+const UnderLine = styled.div`
+  width: 100%;
+  height: 2px;
+  background-color: #ff9a44;
+`
+
+const ContentContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 25px 0;
+
+  @media (max-width: 768px) {
+    margin: 15px 0 12px 0;
+  }
+`
+
+const RestaurantInfoContainer = styled.div`
+  width: 50%;
+  border-right: #d6d6d6 0.5px solid;
+  padding: 0 20px;
+  margin-top: -1.5px;
+
+  @media (max-width: 768px) {
+    display: none; 
+  }
+`
+
+export const IconTextContainer = styled.div`
+  display: flex;
+  margin: 3px 0 10px 0;
+  padding: 0;
+  
+  & ~ & {
+    margin: 5px 0 0 0;
+  }
+`
+
+export const LocationIcon = styled(MdLocationOn)`
+  color: #fe8b5a;
+  font-size: 21pt;
+  margin-left: -3px;
+`
+
+const Location = styled.p`
+  margin: 0 0 0 10px;
+  display: flex;
+  flex: 1;
+  padding-top: 4px;
+  line-height: 25px;
+`
+
+export const ClockIcon = styled(AiFillClockCircle)`
+  color: #fe8b5a;
+  font-size: 19pt;
+  margin-left: -1px;
+  margin-top: 1px;
+`
+
+const OperatingHours = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  white-space: nowrap;
+  line-height: 25px;
+  margin: 0 0 0 12px;
+  padding-top: 3px;
+`
+
+const Hours = styled.p`
+  white-space: nowrap;
+  text-align: left;
+  line-height: 25px;
+  padding: 0;
+  margin: 0;
+`
+
+const MenusContainer = styled.div`
+  padding: 0 20px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 5px;
+  }
+`
+
+const MenuInfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  & ~ & {
+    margin-top: 10px;
+  }
+`
+
+const PriceContainer = styled.div`
+  background-color: #fe8b5a;
+  padding: 0 11px;
+  height: 25px;
+  display: flex;
+  border-radius: 13px;
+  margin-right: 11px;
+  align-items: center;
+`
+
+const Price = styled.p`
+  color: white;
+  white-space: nowrap;
+  font-family: 'Lato' !important;
+  font-size: '11.5pt' !important;
+  font-weight: 'normal' !important;
+`
+
+const MenuName = styled.p`
+  word-break: break-all;
+  white-space: pre-line;
+  margin: 3.5px 0 0 0;
+  line-height: 1.3;
+`
+
+interface MenuCardProps {
+  restaurant: Restaurant;
+}
+
+const MenuCard: React.FC<MenuCardProps> = ({ restaurant }) => {
+  const { date } = useStateContext()
+  const week = useMemo(() => formatWeek(date), [date])
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  return (
+    <MenuCardBlock className={'a'+restaurant.code}>
+      <RestaurantNameContainer>
+        <RestaurantName>{restaurant.name_kr}</RestaurantName>
+        <InformationButton onClick={() => setIsModalOpen(true)}>
+          <InfoIcon />
+        </InformationButton>
+        {isModalOpen && <ModalContainer restaurant={restaurant} setIsModalOpen={setIsModalOpen} />}
+      </RestaurantNameContainer>
+      <UnderLine />
+      <ContentContainer>
+        <RestaurantInfoContainer>
+          <IconTextContainer>
+            <LocationIcon />
+            <Location>
+              {restaurant.addr.slice(19) || '위치 정보 없음'}
+            </Location>
+          </IconTextContainer>
+          <IconTextContainer>
+            <ClockIcon />
+            <OperatingHours>
+              {(restaurant.etc && restaurant.etc.operating_hours[week].length !== 0) ? restaurant.etc.operating_hours[week].map((hour, index) => <Hours key={index}>{hour}</Hours>) : <Hours>운영시간 정보없음</Hours>}
+            </OperatingHours>
+          </IconTextContainer>
+        </RestaurantInfoContainer>
+        <MenusContainer>
+          {restaurant.menus.map((menu: Menu) => (
+            <MenuInfoContainer key={menu.id}>
+              <PriceContainer>
+                {menu.price ? <Price>{menu.price}</Price> : <Price>-</Price>}
+              </PriceContainer>
+              <MenuName>{menu.name_kr}</MenuName>
+            </MenuInfoContainer>
+          ))}
+        </MenusContainer>
+      </ContentContainer>
+    </MenuCardBlock>
+  )
+}
+
+export default MenuCard

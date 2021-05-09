@@ -1,17 +1,30 @@
-import React from 'react';
-import ContextProvider from './components/ContextProvider';
-import TopContainer from './components/TopContainer';
+import React from 'react'
+import { createGlobalStyle } from 'styled-components'
+import { TopContainer } from './Home'
+import ContextProvider from './utils/ContextProvider'
 
-import './App.css';
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    -ms-overflow-style: none;
+  }
 
-const App = () => {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+function App() {
   return (
-    <div className="App">
+    <>
+      <GlobalStyle />
       <ContextProvider>
         <TopContainer />
       </ContextProvider>
-    </div>
-  );
-};
+    </>
+  )
+}
 
 export default App;
