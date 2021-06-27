@@ -10,3 +10,15 @@ export function formatISODate(date) {
 export function formatWeek(date) {
   return date.getDay() === 0 ? 'holiday' : date.getDay() === 6 ? 'saturday' : 'weekdays'
 }
+
+export function getYesterday(date) {
+  const yesterday = new Date(date)
+  yesterday.setDate(date.getDate() - 1)
+  return yesterday
+}
+
+export function getTomorrow(date) {
+  const tomorrow = new Date(date)
+  tomorrow.setDate(date.getDate() + 1)
+  return tomorrow
+}

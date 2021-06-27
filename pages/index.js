@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { createGlobalStyle } from "styled-components";
 import Header from "../components/Header";
 import Body from "../components/Body";
@@ -53,12 +52,6 @@ export default function Home() {
   return (
     <>
         <GlobalStyle />
-        <Head>
-            <title>서울대학교 식단 알리미 : 식샤</title>
-            <meta charSet="utf-8" />
-            <link rel="icon" href="/favicon.ico" />
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        </Head>
         <ContextProvider>
             <Header />
             <Body />

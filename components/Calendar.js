@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
-import {formatDate} from "../utils/hooks/FormatUtil";
+import {formatDate, getTomorrow, getYesterday} from "../utils/hooks/FormatUtil";
 
 const Container = styled.div`
   width: 380px;
@@ -17,6 +17,7 @@ const DateContainer = styled.div`
 `
 
 const Arrow = styled.img`
+    cursor: pointer;
 `
 
 const Date = styled.div`
@@ -38,11 +39,16 @@ export default function Calendar() {
     return (
         <Container>
             <DateContainer>
-                <Arrow src={"/img/left-arrow.svg"} width={"10px"} />
+                <Arrow
+                    src={"/img/left-arrow.svg"} width={"10px"}
+                    onClick={() => setDate(getYesterday(date))}
+                />
                 <Date>{formatDate(date)}</Date>
-                <Arrow src={"/img/right-arrow.svg"} width={"10px"} />
+                <Arrow
+                    src={"/img/right-arrow.svg"}
+                    onClick={() => setDate(getTomorrow(date))}
+                />
             </DateContainer>
-
         </Container>
-    )
+    );
 }
