@@ -9,6 +9,7 @@ const Container = styled.div`
   height: calc(100vh - 153px);
   overflow-y: scroll;
   
+  align-items: center;
   width: 100%;
 
   animation: slidein .75s;
