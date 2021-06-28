@@ -15,6 +15,8 @@ const MenuName = styled.div`
   width: 300px;
   letter-spacing: -0.3px;
   line-height: 23px;
+  display: flex;
+  align-items: center;
 `
 
 const Dots = styled.div`
@@ -49,6 +51,12 @@ const Score = styled.div`
   background: ${props => props.type ? props.type == "high" ? '#F47156' : props.type == "middle" ? '#F58625' : '#F5B52C' : 'white'};
 `
 
+const NoMeat = styled.img`
+  width: 19px;
+  padding-left: 8px;
+  padding-bottom: 2px;
+`
+
 export default function Menu({ menu }) {
     const [hasPrice, setHasPrice] = useState(true);
     const [score, setScore] = useState(null);
@@ -67,7 +75,10 @@ export default function Menu({ menu }) {
 
     return (
         <Container>
-            <MenuName>{menu.name_kr}</MenuName>
+            <MenuName>
+                {menu.name_kr}
+                {menu.etc && menu.etc.find(e => e == "No meat") && <NoMeat src={"/img/no-meat.svg"}/>}
+            </MenuName>
             <Dots>.........</Dots>
             <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
             <Score type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Score>

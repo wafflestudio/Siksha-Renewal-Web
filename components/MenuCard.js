@@ -85,7 +85,7 @@ export default function MenuCard({ data }) {
             </RestInfo>
             <HLine/>
             <MenuInfo>
-                <RestaurantTime hours={data.etc.operating_hours} />
+                <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
                 <VLine/>
                 <Menus>
                     {

@@ -41,7 +41,7 @@ export default function RestaurantList() {
     return (
         <Container>
             <Restaurants>
-                {data[meal].map((restaurant) =>
+                {data[meal] && data[meal].map((restaurant) =>
                     <Restaurant
                         key={restaurant.id}
                         onClick={() => scrollRestaurant(restaurant.code)}
