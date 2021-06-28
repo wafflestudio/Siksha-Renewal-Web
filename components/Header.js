@@ -10,8 +10,7 @@ const Container = styled.div`
 
 const SikshaIcon = styled.img`
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
-  padding-left: 20vw;
-  // padding 나중에 수정하기
+  padding-left: 23.5vw;
 `
 
 const SikshaTypo = styled.img`
