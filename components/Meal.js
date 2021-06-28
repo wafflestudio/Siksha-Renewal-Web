@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
+import {useEffect} from "react";
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,10 @@ export default function Meal() {
 
     const { meal } = state;
     const setMeal = (meal) => dispatch({ type: 'SET_MEAL', meal: meal })
+
+    useEffect(() => {
+        console.log(meal)
+    }, [meal])
 
     return (
         <Container>
