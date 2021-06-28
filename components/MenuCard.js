@@ -83,7 +83,11 @@ export default function MenuCard(props) {
             <MenuInfo>
                 <RestaurantTime hours={props.data.etc.operating_hours} />
                 <VLine/>
-                <Menus/>
+                <Menus>
+                    {
+
+                    }
+                </Menus>
             </MenuInfo>
         </Container>
     );
