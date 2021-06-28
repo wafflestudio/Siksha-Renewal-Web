@@ -49,10 +49,6 @@ export default function Meal() {
     const { meal } = state;
     const setMeal = (meal) => dispatch({ type: 'SET_MEAL', meal: meal })
 
-    useEffect(() => {
-        console.log(meal)
-    }, [meal])
-
     return (
         <Container>
             <MealButton onClick={() => setMeal('BR')}>

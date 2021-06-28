@@ -73,7 +73,7 @@ export default function MenuList() {
     useEffect(() => {
         if(!data[meal] || data[meal].length == 0) setHasData(false)
         else setHasData(true)
-    }, [data])
+    }, [data, meal])
 
     return (
         <Container key={data.date + meal}>
