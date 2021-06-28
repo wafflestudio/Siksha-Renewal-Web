@@ -21,7 +21,6 @@ const Arrow = styled.img`
 `
 
 const Date = styled.div`
-  font-family: 'NanumSquare', sans-serif;
   font-weight: 700;
   font-size: 15px;
   line-height: 17px;

@@ -8,7 +8,7 @@ const Container = styled.div`
 `
 
 const HourText = styled.div`
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 100;
   font-family: NanumSquare, sans-serif;
   color: #575757;
