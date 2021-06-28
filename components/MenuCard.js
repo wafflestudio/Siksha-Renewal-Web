@@ -69,13 +69,13 @@ const VLine = styled.div`
 const Menus = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 2px;
+  padding-top: 3px;
   padding-bottom: 4px;
 `
 
 export default function MenuCard({ data }) {
     return (
-        <Container>
+        <Container className={'a'+data.code}>
             <RestInfo>
                 <Name>{data.name_kr}</Name>
                 <Location>
@@ -85,7 +85,7 @@ export default function MenuCard({ data }) {
             </RestInfo>
             <HLine/>
             <MenuInfo>
-                <RestaurantTime hours={data.etc.operating_hours} />
+                <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
                 <VLine/>
                 <Menus>
                     {
