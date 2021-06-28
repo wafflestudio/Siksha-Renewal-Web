@@ -5,6 +5,7 @@ const Container = styled.div`
   width: 380px;
   height: calc(100vh - 370px);
   background: white;
+  overflow-y: scroll;
 `
 
 const Restaurants = styled.div`
