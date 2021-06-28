@@ -4,7 +4,7 @@ import {formatDate, formatWeekday, getNextMonth, getPrevMonth} from "../utils/ho
 import ReactCalendar from "react-calendar";
 
 const Container = styled.div`
-  width: 380px;
+  width: 100%;
   height: 302px;
   background: white;
   display: flex;
@@ -23,6 +23,7 @@ const DateText = styled.div`
   color: #F0976C;
   position: absolute;
   top: 95px;
+  white-space: nowrap;
 `
 
 export default function Calendar() {

@@ -7,7 +7,7 @@ const Container = styled.div`
   border: solid 1px #E8E8E8;
   box-sizing: border-box;
   border-radius: 8px;
-  width: 785px;
+  width: 100%;
   margin-bottom: 30px;
 `
 
@@ -24,13 +24,13 @@ const Name = styled.div`
   line-height: 27px;
   color: #242424;
   white-space: nowrap;
-  padding-left: 35.53px;
+  padding-left: 35px;
 `
 
 const Location = styled.div`
   display: flex;
   padding-top: 3px;
-  padding-right: 34.85px;
+  padding-right: 35px;
 `
 
 const LocationIcon = styled.img`
@@ -48,7 +48,7 @@ const LocationText = styled.div`
 `
 
 const HLine = styled.div`
-  width: 715.03px;
+  width: calc(100% - 70px);
   height: 2px;
   background: #FE8C59;
   margin: 10px auto 10px auto;
@@ -68,9 +68,11 @@ const VLine = styled.div`
 
 const Menus = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   padding-top: 3px;
   padding-bottom: 4px;
+  padding-right: 38px;
 `
 
 export default function MenuCard({ data }) {

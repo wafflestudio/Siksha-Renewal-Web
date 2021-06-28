@@ -24,6 +24,7 @@ const Title = styled.div`
   font-weight: 100;
   padding-top: 8px;
   padding-left: 14px;
+  white-space: nowrap;
 `
 
 export default function Header() {

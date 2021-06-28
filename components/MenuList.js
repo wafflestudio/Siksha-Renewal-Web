@@ -8,6 +8,8 @@ const Container = styled.div`
   flex-direction: column;
   height: calc(100vh - 153px);
   overflow-y: scroll;
+  
+  width: 100%;
 
   animation: slidein .75s;
   -moz-animation: slidein .75s; /* Firefox */

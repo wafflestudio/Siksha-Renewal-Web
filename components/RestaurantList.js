@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {useStateContext} from "../utils/hooks/ContextProvider";
 
 const Container = styled.div`
-  width: 380px;
+  width: 100%;
   height: calc(100vh - 370px);
   background: white;
   overflow-y: scroll;

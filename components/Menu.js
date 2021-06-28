@@ -4,8 +4,10 @@ import {useEffect, useState} from "react";
 
 const Container = styled.div`
   padding: 8px 0 8px 0;
+  width: 100%;
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
 `
 
 const MenuName = styled.div`
@@ -17,6 +19,10 @@ const MenuName = styled.div`
   line-height: 23px;
   display: flex;
   align-items: center;
+`
+
+const MenuInfo = styled.div`
+  display: flex;
 `
 
 const Dots = styled.div`
@@ -79,9 +85,11 @@ export default function Menu({ menu }) {
                 {menu.name_kr}
                 {menu.etc && menu.etc.find(e => e == "No meat") && <NoMeat src={"/img/no-meat.svg"}/>}
             </MenuName>
-            <Dots>.........</Dots>
-            <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-            <Score type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Score>
+            <MenuInfo>
+                <Dots>.........</Dots>
+                <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
+                <Score type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Score>
+            </MenuInfo>
         </Container>
     )
 }
