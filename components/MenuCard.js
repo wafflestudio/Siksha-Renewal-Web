@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import RestaurantTime from "./RestaurantTime";
 
 const Container = styled.div`
   background: white;
@@ -6,6 +7,7 @@ const Container = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   width: 785px;
+  margin-bottom: 30px;
 `
 
 const RestInfo = styled.div`
@@ -53,40 +55,36 @@ const HLine = styled.div`
 
 const MenuInfo = styled.div`
   display: flex;
-`
-
-const RestTime = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding-bottom: 10px;
 `
 
 const VLine = styled.div`
   width: 1px;
   background: #DCDCDC;
-  padding-left: 10px;
-  padding-right: 26px;
+  margin-left: 17px;
+  margin-right: 26px;
 `
 
 const Menus = styled.div`
-
+  
 `
 
-export default function Menu(props) {
+export default function MenuCard(props) {
     return (
         <Container>
             <RestInfo>
-                <Name>{props.restaurant.name_kr}</Name>
+                <Name>{props.data.name_kr}</Name>
                 <Location>
-                    <LocationIcon src={"/img/location.svg"} />
-                    <LocationText>{props.restaurant.addr.slice(19)}</LocationText>
+                    <LocationIcon src={"/img/location.svg"}/>
+                    <LocationText>{props.data.addr.slice(19)}</LocationText>
                 </Location>
             </RestInfo>
-            <HLine />
+            <HLine/>
             <MenuInfo>
-                <RestTime />
-                <VLine />
-                <Menus />
+                <RestaurantTime hours={props.data.etc.operating_hours} />
+                <VLine/>
+                <Menus/>
             </MenuInfo>
         </Container>
-    )
+    );
 }
