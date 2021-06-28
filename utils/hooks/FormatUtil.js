@@ -22,3 +22,8 @@ export function getTomorrow(date) {
   tomorrow.setDate(date.getDate() + 1)
   return tomorrow
 }
+
+export function formatPrice(price) {
+
+  return price.toString().slice(0, price.toString().length-3) + "," + price.toString().slice(-3)
+}

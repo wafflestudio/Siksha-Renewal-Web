@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
+import Menu from "./Menu";
 
 const Container = styled.div`
   background: white;
@@ -55,7 +56,7 @@ const HLine = styled.div`
 
 const MenuInfo = styled.div`
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 `
 
 const VLine = styled.div`
@@ -66,26 +67,31 @@ const VLine = styled.div`
 `
 
 const Menus = styled.div`
-  
+  display: flex;
+  flex-direction: column;
+  padding-top: 2px;
+  padding-bottom: 4px;
 `
 
-export default function MenuCard(props) {
+export default function MenuCard({ data }) {
     return (
         <Container>
             <RestInfo>
-                <Name>{props.data.name_kr}</Name>
+                <Name>{data.name_kr}</Name>
                 <Location>
                     <LocationIcon src={"/img/location.svg"}/>
-                    <LocationText>{props.data.addr.slice(19)}</LocationText>
+                    <LocationText>{data.addr.slice(19)}</LocationText>
                 </Location>
             </RestInfo>
             <HLine/>
             <MenuInfo>
-                <RestaurantTime hours={props.data.etc.operating_hours} />
+                <RestaurantTime hours={data.etc.operating_hours} />
                 <VLine/>
                 <Menus>
                     {
-
+                        data.menus.map((menu) =>
+                            <Menu menu={menu} key={menu.id}/>
+                        )
                     }
                 </Menus>
             </MenuInfo>

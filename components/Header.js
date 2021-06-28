@@ -19,7 +19,6 @@ const SikshaTypo = styled.img`
 `
 
 const Title = styled.div`
-  font-family: 'NanumSquare', sans-serif;
   font-size: 20px;
   line-height: 23px;
   color: white;

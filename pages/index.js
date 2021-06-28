@@ -41,6 +41,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: #F8F8F8;
     -ms-overflow-style: none;
+    font-family: NanumSquare, sans-serif;
   }
 
   ::-webkit-scrollbar {

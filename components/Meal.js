@@ -35,7 +35,6 @@ const Dinner = styled.img`
 `
 
 const MealText = styled.div`
-  font-family: 'NanumSquare', sans-serif;
   font-size: 15px;
   font-weight: 100;
   color: ${props => props.active ? "#FE8C59" : "#919191"};
