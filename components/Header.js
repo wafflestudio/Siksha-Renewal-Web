@@ -10,7 +10,7 @@ const Container = styled.div`
 
 const SikshaIcon = styled.img`
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
-  padding-left: calc((100vw - 1195px)/2);
+  padding-left: calc((100vw - 72.82em - 30px)/2);
 `
 
 const SikshaTypo = styled.img`
