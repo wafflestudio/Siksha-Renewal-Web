@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
-import {formatDate, getTomorrow, getYesterday} from "../utils/hooks/FormatUtil";
+import {formatDate, formatWeekday, getNextMonth, getPrevMonth} from "../utils/hooks/FormatUtil";
+import ReactCalendar from "react-calendar";
 
 const Container = styled.div`
   width: 380px;
@@ -20,34 +21,37 @@ const Arrow = styled.img`
     cursor: pointer;
 `
 
-const Date = styled.div`
+const DateText = styled.div`
   font-weight: 700;
   font-size: 15px;
   line-height: 17px;
   color: #F0976C;
-  padding: 2px 105px 0px 105px;
+  position: absolute;
+  top: 95px;
 `
 
 export default function Calendar() {
     const state = useStateContext();
     const dispatch = useDispatchContext();
 
-    const { date } = state;
+    const { date, today } = state;
     const setDate = (date) => dispatch({ type: 'SET_DATE', date: date })
 
     return (
         <Container>
-            <DateContainer>
-                <Arrow
-                    src={"/img/left-arrow.svg"} width={"10px"}
-                    onClick={() => setDate(getYesterday(date))}
-                />
-                <Date>{formatDate(date)}</Date>
-                <Arrow
-                    src={"/img/right-arrow.svg"}
-                    onClick={() => setDate(getTomorrow(date))}
-                />
-            </DateContainer>
+            <DateText>{formatDate(date)}</DateText>
+            <ReactCalendar
+                onChange={(day) => setDate(day)}
+                onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+                value={date}
+                showNeighboringMonth={false}
+                navigationLabel={() => formatDate(date)}
+                prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"}/>}
+                nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"}/>}
+                formatDay={(locale, date) => date.getDate()}
+                formatShortWeekday={(locale, date) => formatWeekday(date)}
+                tileClassName={({ date }) => date.toDateString() === today.toDateString() ? 'today' : null}
+            />
         </Container>
     );
 }

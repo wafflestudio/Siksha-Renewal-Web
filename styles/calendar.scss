@@ -1,0 +1,98 @@
+.react-calendar {
+  width: 341.71px;
+  height: 180px;
+  padding-top: 25px;
+
+  .today {
+    font-weight: 400;
+    background-image: url("/img/circle.svg");
+  }
+
+  button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 32px;
+    width: 32px;
+    outline: none;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__navigation {
+    justify-content: space-between;
+
+    &__label {
+      display: none;
+      background: white;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 17px;
+      color: #F0976C;
+      font-family: NanumSquare, sans-serif;
+    }
+
+    &__prev-button {
+      background: white;
+    }
+
+    &__next-button {
+      background: white;
+    }
+
+    &__prev2-button {
+      display: none;
+    }
+
+    &__next2-button {
+      display: none;
+    }
+  }
+
+  &__month-view {
+    padding-top: 20px;
+
+    &__weekdays {
+      text-align: center;
+
+      &__weekday {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 15px;
+        color: #333333;
+
+        abbr {
+          text-decoration: none;
+        }
+      }
+    }
+
+    &__days {
+      padding-top: 5px;
+
+      &__day {
+        font-family: NanumSquare, sans-serif;
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: 100;
+        color: #666666;
+      }
+    }
+  }
+
+  &__tile {
+    text-align: center;
+    background: none;
+
+    &--active {
+      color: white !important;
+      background-image: url("/img/circle-active.svg") !important;
+    }
+  }
+}

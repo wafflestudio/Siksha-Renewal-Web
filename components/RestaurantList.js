@@ -19,10 +19,13 @@ const Restaurant = styled.div`
   text-decoration-line: underline;
   color: #727272;
   font-weight: 100;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   padding-bottom: 12px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 function scrollRestaurant(restaurant) {

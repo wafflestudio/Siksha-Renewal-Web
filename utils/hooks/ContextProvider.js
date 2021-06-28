@@ -34,7 +34,8 @@ const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, {
     date: initDate,
     meal: initMeal,
-    data: initData
+    data: initData,
+    today: initDate
   })
 
   return (
