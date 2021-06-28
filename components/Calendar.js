@@ -12,11 +12,6 @@ const Container = styled.div`
   align-items: center;
 `
 
-const DateContainer = styled.div`
-  display: flex;
-  padding-top: 33px;
-`
-
 const Arrow = styled.img`
     cursor: pointer;
 `
