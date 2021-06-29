@@ -1,14 +1,31 @@
 import styled from "styled-components";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
+import Date from "./Date";
 import {useEffect} from "react";
 import {formatISODate} from "../utils/hooks/FormatUtil";
 import axios from "axios";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
+import Meal from "./Meal";
+import MenuList from "./MenuList";
 
-const Container = styled.div`
+const DesktopContainer = styled.div`
   display: flex;
   justify-content: center;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const MobileContainer = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 export default function Body() {
@@ -33,9 +50,16 @@ export default function Body() {
     }, [date, dispatch])
 
     return (
-        <Container>
-            <LeftSide />
-            <RightSide />
-        </Container>
+        <>
+            <DesktopContainer>
+                <LeftSide />
+                <RightSide />
+            </DesktopContainer>
+            <MobileContainer>
+                <Date />
+                <Meal />
+                <MenuList />
+            </MobileContainer>
+        </>
     )
 }

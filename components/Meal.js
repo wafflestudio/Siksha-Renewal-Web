@@ -7,6 +7,11 @@ const Container = styled.div`
   align-items: flex-end;
   padding-top: 22px;
   padding-bottom: 13px;
+
+  @media (max-width: 768px) {
+    padding-top: 11px;
+    padding-bottom: 10px;
+  }
 `
 
 const MealButton = styled.div`
@@ -15,31 +20,57 @@ const MealButton = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 0 22px 0 22px;
+
+  @media (max-width: 768px) {
+    padding: 0 13px 0 13px;
+  }
 `
 
 const Breakfast = styled.img`
   width: 30.76px;
   height: 18.8px;
   padding-bottom: 13.67px;
+
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 11px;
+    padding-bottom: 8px;
+  }
 `
 
 const Lunch = styled.img`
   width: 30px;
   height: 30px;
   padding-bottom: 6.84px;
+
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+    padding-bottom: 5.5px;
+  }
 `
 
 const Dinner = styled.img`
   width: 20px;
   height: 22.21px;
   padding-bottom: 11.5px;
+
+  @media (max-width: 768px) {
+    width: 12px;
+    padding-bottom: 3px;
+  }
 `
 
 const MealText = styled.div`
   font-size: 15px;
+  line-height: 17px;
   font-weight: 100;
   color: ${props => props.active ? "#FE8C59" : "#919191"};
-  
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    line-height: 11px;
+  }
 `
 
 export default function Meal() {

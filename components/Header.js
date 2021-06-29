@@ -6,15 +6,31 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+
+  @media (max-width: 768px) {
+    background: #FE8C59;
+    justify-content: center;
+  }
 `
 
 const SikshaIcon = styled.img`
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
   padding-left: calc((100vw - 72.82em - 30px)/2);
+  width: 64px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    width: 52px;
+  }
 `
 
 const SikshaTypo = styled.img`
   padding-left: 18px;
+  width: 95px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const Title = styled.div`
@@ -25,14 +41,18 @@ const Title = styled.div`
   padding-top: 8px;
   padding-left: 14px;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 export default function Header() {
     return (
         <>
             <Container>
-                <SikshaIcon src={"/img/siksha-icon.svg"} width={"64px"} />
-                <SikshaTypo src={"/img/siksha-typo.svg"} width={"95px"} />
+                <SikshaIcon src={"/img/siksha-icon.svg"} />
+                <SikshaTypo src={"/img/siksha-typo.svg"} />
                 <Title>서울대학교 식단 알리미</Title>
             </Container>
         </>

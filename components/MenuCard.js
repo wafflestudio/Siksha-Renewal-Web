@@ -2,29 +2,88 @@ import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
 
-const Container = styled.div`
+const RestInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 23px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding-top: 17px;
+  }
+`
+
+const DesktopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   background: white;
   border: solid 1px #E8E8E8;
   box-sizing: border-box;
   border-radius: 8px;
   width: 100%;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
-const RestInfo = styled.div`
+const MobileContainer = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: solid 1px #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: calc(100% - 16px);
+    margin-bottom: 16px;
+  }
+`
+
+const HeaderContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding-top: 23px;
+  align-items: center;
+`
+
+const InfoIcon = styled.img`
+  width: 16px;
+  height: 16px;
+  padding-left: 8px;
+`
+
+const Price = styled.div`
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 100;
+  color: #FE8B5A;
+  padding-right: 24px;
+`
+
+const Rate = styled.div`
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 100;
+  color: #FE8B5A;
+  padding-right: 22.5px;
 `
 
 const Name = styled.div`
-  font-family: NanumSquare, sans-serif;
   font-weight: 700;
   font-size: 24px;
   line-height: 27px;
   color: #242424;
   white-space: nowrap;
   padding-left: 35px;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+    line-height: 17px;
+    color: #E15618;
+    padding-left: 16px;
+  }
 `
 
 const Location = styled.div`
@@ -52,6 +111,12 @@ const HLine = styled.div`
   height: 2px;
   background: #FE8C59;
   margin: 10px auto 10px auto;
+  
+  @media (max-width: 768px) {
+    width: calc(100% - 32px);
+    height: 1px;
+    margin: 8.5px auto 8.5px auto;
+  }
 `
 
 const MenuInfo = styled.div`
@@ -70,25 +135,49 @@ const Menus = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-top: 3px;
-  padding-bottom: 4px;
-  padding-right: 38px;
+  padding: 3px 38px 4px 0;
+
+  @media (max-width: 768px) {
+    padding: 6px 12px 3px 16px;
+  }
 `
 
 export default function MenuCard({ data }) {
     return (
-        <Container className={'a'+data.code}>
-            <RestInfo>
-                <Name>{data.name_kr}</Name>
-                <Location>
-                    <LocationIcon src={"/img/location.svg"}/>
-                    <LocationText>{data.addr.slice(19)}</LocationText>
-                </Location>
-            </RestInfo>
-            <HLine/>
-            <MenuInfo>
-                <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
-                <VLine/>
+        <>
+            <DesktopContainer className={'a'+data.code}>
+                <RestInfo>
+                    <Name>{data.name_kr}</Name>
+                    <Location>
+                        <LocationIcon src={"/img/location.svg"}/>
+                        <LocationText>{data.addr.slice(19)}</LocationText>
+                    </Location>
+                </RestInfo>
+                <HLine/>
+                <MenuInfo>
+                    <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
+                    <VLine/>
+                    <Menus>
+                        {
+                            data.menus.map((menu) =>
+                                <Menu menu={menu} key={menu.id}/>
+                            )
+                        }
+                    </Menus>
+                </MenuInfo>
+            </DesktopContainer>
+            <MobileContainer className={'a'+data.code}>
+                <RestInfo>
+                    <HeaderContainer>
+                        <Name>{data.name_kr}</Name>
+                        <InfoIcon src={"/img/info.svg"} />
+                    </HeaderContainer>
+                    <HeaderContainer>
+                        <Price>Price</Price>
+                        <Rate>Rate</Rate>
+                    </HeaderContainer>
+                </RestInfo>
+                <HLine />
                 <Menus>
                     {
                         data.menus.map((menu) =>
@@ -96,7 +185,7 @@ export default function MenuCard({ data }) {
                         )
                     }
                 </Menus>
-            </MenuInfo>
-        </Container>
+            </MobileContainer>
+        </>
     );
 }

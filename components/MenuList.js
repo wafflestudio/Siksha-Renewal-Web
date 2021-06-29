@@ -12,6 +12,10 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
 
+  @media (max-width: 768px) {
+    height: calc(100vh - 169px);
+  }
+
   animation: menuSlide .75s;
   -moz-animation: menuSlide .75s;
   -webkit-animation: menuSlide .75s;
@@ -64,6 +68,10 @@ const EmptyText = styled.div`
   font-weight: 100;
   padding-top: 25px;
   font-size: 16px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
 `
 
 export default function MenuList() {
