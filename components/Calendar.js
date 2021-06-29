@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
-import {formatDate, formatWeekday, getNextMonth, getPrevMonth} from "../utils/hooks/FormatUtil";
+import {formatDate, formatWeekday} from "../utils/hooks/FormatUtil";
 import ReactCalendar from "react-calendar";
 
 const Container = styled.div`

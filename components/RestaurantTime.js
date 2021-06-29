@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import OperatingHour from "./OperatingHour";
-import {useEffect} from "react";
 
 const Container = styled.div`
   display: flex;
@@ -113,7 +112,9 @@ export default function RestaurantTime({hours}) {
             }
             {
                 !hours &&
-                <div>운영 시간 정보가 없습니다.</div>
+                <Time>
+                    <TimeText>운영 시간 정보가 없습니다.</TimeText>
+                </Time>
             }
         </Container>
     );

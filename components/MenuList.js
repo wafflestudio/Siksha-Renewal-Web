@@ -12,12 +12,12 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
 
-  animation: slidein .75s;
-  -moz-animation: slidein .75s; /* Firefox */
-  -webkit-animation: slidein .75s; /* Safari and Chrome */
-  -o-animation: slidein .75s; /* Opera */
-
-  @keyframes slidein {
+  animation: menuSlide .75s;
+  -moz-animation: menuSlide .75s;
+  -webkit-animation: menuSlide .75s;
+  -o-animation: menuSlide .75s;
+  
+  @keyframes menuSlide {
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -27,7 +27,7 @@ const Container = styled.div`
       transform: translateY(0);
     }
   }
-  @-moz-keyframes slidein { /* Firefox */
+  @-moz-keyframes menuSlide { /* Firefox */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -37,7 +37,7 @@ const Container = styled.div`
       transform: translateY(0);
     }
   }
-  @-webkit-keyframes slidein { /* Safari and Chrome */
+  @-webkit-keyframes menuSlide { /* Safari and Chrome */
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -47,7 +47,7 @@ const Container = styled.div`
       transform: translateY(0);
     }
   }
-  @-o-keyframes slidein { /* Opera */
+  @-o-keyframes menuSlide { /* Opera */
     from {
       opacity: 0;
       transform: translateY(20px);
