@@ -14,6 +14,8 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     height: calc(100vh - 169px);
+    position: absolute;
+    top: 169px;
   }
   
   ${props => !props.showCal && css`
@@ -79,7 +81,7 @@ const EmptyText = styled.div`
 export default function MenuList() {
     const state = useStateContext();
 
-    const { meal, data, showCal, date } = state;
+    const { meal, data, showCal, date, loading } = state;
 
     const [hasData, setHasData] = useState(false)
 
@@ -90,7 +92,8 @@ export default function MenuList() {
 
     return (
         <Container showCal={showCal} key={date + meal}>
-            {hasData ? data[meal].map((restaurant) =>
+            {loading ? <EmptyText>식단을 불러오는 중입니다.</EmptyText>
+              :  hasData ? data[meal].map((restaurant) =>
                 <MenuCard data={restaurant} key={restaurant.id + meal}/>
             ) : <EmptyText>업로드 된 식단이 없습니다.</EmptyText>}
         </Container>

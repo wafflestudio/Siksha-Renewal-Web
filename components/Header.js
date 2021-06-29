@@ -10,6 +10,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     background: #FE8C59;
     justify-content: center;
+    position: absolute;
   }
 `
 

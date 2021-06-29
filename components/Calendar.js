@@ -55,7 +55,7 @@ const DateText = styled.div`
 
 const ClickArea = styled.div`
   width: 100vw;
-  height: 100vh;
+  flex: 1;
 `
 
 export default function Calendar() {

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
+import {useDispatchContext} from "../utils/hooks/ContextProvider";
 
 const RestInfo = styled.div`
   display: flex;
@@ -143,6 +144,11 @@ const Menus = styled.div`
 `
 
 export default function MenuCard({ data }) {
+    const dispatch = useDispatchContext();
+
+    const setInfoData = (infoData) => dispatch({ type: 'SET_INFODATA', infoData: infoData })
+    const toggleInfo = () => dispatch({ type: 'TOGGLE_SHOWINFO' })
+
     return (
         <>
             <DesktopContainer className={'a'+data.code}>
@@ -170,7 +176,13 @@ export default function MenuCard({ data }) {
                 <RestInfo>
                     <HeaderContainer>
                         <Name>{data.name_kr}</Name>
-                        <InfoIcon src={"/img/info.svg"} />
+                        <InfoIcon
+                            src={"/img/info.svg"}
+                            onClick={() => {
+                                setInfoData(data);
+                                toggleInfo();
+                            }}
+                        />
                     </HeaderContainer>
                     <HeaderContainer>
                         <Price>Price</Price>

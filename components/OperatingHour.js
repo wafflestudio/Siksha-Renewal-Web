@@ -27,16 +27,16 @@ const Dinner = styled.img`
   width: 12px;
 `
 
-export default function OperatingHour(props) {
+export default function OperatingHour({type, hour}) {
     return (
         <Container>
-            {props.type == "BR" ?
+            {type == "BR" ?
                 <Breakfast src={"/img/breakfast.svg"} /> :
-                props.type == "LU" ?
+                type == "LU" ?
                     <Lunch src={"/img/lunch.svg"} /> :
                     <Dinner src={"/img/dinner.svg"} />
             }
-            <HourText type={props.type}>{props.hour}</HourText>
+            <HourText type={type}>{hour}</HourText>
         </Container>
     )
 }

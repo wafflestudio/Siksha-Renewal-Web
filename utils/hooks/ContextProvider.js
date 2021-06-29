@@ -25,8 +25,14 @@ function reducer(state, action) {
       return { ...state, meal: action.meal }
     case 'SET_DATA' :
       return { ...state, data: action.data }
+    case 'SET_LOADING' :
+      return { ...state, loading: action.loading }
+    case 'SET_INFODATA' :
+      return { ...state, infoData: action.infoData }
     case 'TOGGLE_SHOWCAL' :
       return { ...state, showCal: !state.showCal }
+    case 'TOGGLE_SHOWINFO' :
+      return { ...state, showInfo: !state.showInfo }
     default:
       throw new Error('Unhandled action')
   }
@@ -39,6 +45,9 @@ const ContextProvider = ({ children }) => {
     data: initData,
     today: initDate,
     showCal: false,
+    showInfo: false,
+    loading: false,
+    infoData: null,
   })
 
   return (
