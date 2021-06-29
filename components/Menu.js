@@ -32,6 +32,11 @@ const Dots = styled.div`
   letter-spacing: 2px;
   padding-left: 10px;
   padding-right: 7px;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `
 
 const Price = styled.div`

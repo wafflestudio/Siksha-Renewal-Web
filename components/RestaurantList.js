@@ -17,15 +17,15 @@ const Restaurant = styled.div`
   font-size: 16px;
   line-height: 18px;
   letter-spacing: -0.3px;
-  text-decoration-line: underline;
   color: #727272;
   font-weight: 100;
   display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  padding-bottom: 17px;
 
   &:hover {
     cursor: pointer;
+    text-decoration-line: underline;
   }
 `
 

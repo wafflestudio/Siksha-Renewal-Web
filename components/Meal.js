@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const Container = styled.div`
   display: flex;
@@ -24,15 +24,15 @@ const Breakfast = styled.img`
 `
 
 const Lunch = styled.img`
-  width: 34.18px;
-  height: 34.18px;
+  width: 30px;
+  height: 30px;
   padding-bottom: 6.84px;
 `
 
 const Dinner = styled.img`
-  width: 17.09px;
-  height: 18.8px;
-  padding-bottom: 13.67px;
+  width: 20px;
+  height: 22.21px;
+  padding-bottom: 11.5px;
 `
 
 const MealText = styled.div`
@@ -49,19 +49,41 @@ export default function Meal() {
     const { meal } = state;
     const setMeal = (meal) => dispatch({ type: 'SET_MEAL', meal: meal })
 
+    const [isBR, setIsBR] = useState(false);
+    const [isLU, setIsLU] = useState(false);
+    const [isDN, setIsDN] = useState(false);
+
+    useEffect(() => {
+        if(meal == 'BR') {
+            setIsBR(true);
+            setIsLU(false);
+            setIsDN(false);
+        }
+        else if(meal == 'LU') {
+            setIsBR(false);
+            setIsLU(true);
+            setIsDN(false);
+        }
+        else if(meal == 'DN') {
+            setIsBR(false);
+            setIsLU(false);
+            setIsDN(true);
+        }
+    }, [meal])
+
     return (
         <Container>
             <MealButton onClick={() => setMeal('BR')}>
-                <Breakfast src={meal == 'BR' ? "/img/breakfast-active.svg" : "/img/breakfast.svg"}/>
-                <MealText active={meal == 'BR'}>아침</MealText>
+                <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"}/>
+                <MealText active={isBR}>아침</MealText>
             </MealButton>
             <MealButton onClick={() => setMeal('LU')}>
-                <Lunch src={meal == 'LU' ? "/img/lunch-active.svg" : "/img/lunch.svg"}/>
-                <MealText active={meal == 'LU'}>점심</MealText>
+                <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"}/>
+                <MealText active={isLU}>점심</MealText>
             </MealButton>
             <MealButton onClick={() => setMeal('DN')}>
-                <Dinner src={meal == 'DN' ? "/img/dinner-active.svg" : "/img/dinner.svg"}/>
-                <MealText active={meal == 'DN'}>저녁</MealText>
+                <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"}/>
+                <MealText active={isDN}>저녁</MealText>
             </MealButton>
         </Container>
     )
