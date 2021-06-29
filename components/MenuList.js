@@ -1,5 +1,5 @@
 import MenuCard from "./MenuCard";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {useStateContext} from "../utils/hooks/ContextProvider";
 import {useEffect, useState} from "react";
 
@@ -15,52 +15,54 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height: calc(100vh - 169px);
   }
-
-  animation: menuSlide .75s;
-  -moz-animation: menuSlide .75s;
-  -webkit-animation: menuSlide .75s;
-  -o-animation: menuSlide .75s;
   
-  @keyframes menuSlide {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+  ${props => !props.showCal && css`
+    animation: menuSlide .75s;
+    -moz-animation: menuSlide .75s;
+    -webkit-animation: menuSlide .75s;
+    -o-animation: menuSlide .75s;
+
+    @keyframes menuSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    @-moz-keyframes menuSlide { /* Firefox */
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-  }
-  @-moz-keyframes menuSlide { /* Firefox */
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+    @-webkit-keyframes menuSlide { /* Safari and Chrome */
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    @-o-keyframes menuSlide { /* Opera */
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-  }
-  @-webkit-keyframes menuSlide { /* Safari and Chrome */
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @-o-keyframes menuSlide { /* Opera */
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  `}
 `
 
 const EmptyText = styled.div`
@@ -77,7 +79,7 @@ const EmptyText = styled.div`
 export default function MenuList() {
     const state = useStateContext();
 
-    const { meal, data } = state;
+    const { meal, data, showCal, date } = state;
 
     const [hasData, setHasData] = useState(false)
 
@@ -87,7 +89,7 @@ export default function MenuList() {
     }, [data, meal])
 
     return (
-        <Container key={data.date + meal}>
+        <Container showCal={showCal} key={date + meal}>
             {hasData ? data[meal].map((restaurant) =>
                 <MenuCard data={restaurant} key={restaurant.id + meal}/>
             ) : <EmptyText>업로드 된 식단이 없습니다.</EmptyText>}

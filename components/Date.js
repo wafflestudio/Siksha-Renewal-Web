@@ -24,25 +24,27 @@ const DateText = styled.div`
   line-height: 17px;
   color: #F0976C;
   white-space: nowrap;
+  cursor: pointer;
 `
 
 export default function Date() {
     const state = useStateContext();
     const dispatch = useDispatchContext();
 
-    const { date } = state;
+    const { date, showCal } = state;
     const setDate = (date) => dispatch({ type: 'SET_DATE', date: date })
+    const toggleShowCal = () => dispatch({ type: 'TOGGLE_SHOWCAL' })
 
     return (
         <Container>
             <Arrow
-                src={"/img/left-arrow.svg"}
-                onClick={() => setDate(getYesterday(date))}
+                src={showCal ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
+                onClick={() => {!showCal && setDate(getYesterday(date))}}
             />
-            <DateText>{formatDate(date)}</DateText>
+            <DateText onClick={() => toggleShowCal()}>{formatDate(date)}</DateText>
             <Arrow
-                src={"/img/right-arrow.svg"}
-                onClick={() => setDate(getTomorrow(date))}
+                src={showCal ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
+                onClick={() => {!showCal && setDate(getTomorrow(date))}}
             />
         </Container>
     )

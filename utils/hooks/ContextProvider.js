@@ -25,6 +25,8 @@ function reducer(state, action) {
       return { ...state, meal: action.meal }
     case 'SET_DATA' :
       return { ...state, data: action.data }
+    case 'TOGGLE_SHOWCAL' :
+      return { ...state, showCal: !state.showCal }
     default:
       throw new Error('Unhandled action')
   }
@@ -35,7 +37,8 @@ const ContextProvider = ({ children }) => {
     date: initDate,
     meal: initMeal,
     data: initData,
-    today: initDate
+    today: initDate,
+    showCal: false,
   })
 
   return (

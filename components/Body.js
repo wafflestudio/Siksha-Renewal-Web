@@ -8,6 +8,7 @@ import axios from "axios";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
 import Meal from "./Meal";
 import MenuList from "./MenuList";
+import Calendar from "./Calendar";
 
 const DesktopContainer = styled.div`
   display: flex;
@@ -28,11 +29,20 @@ const MobileContainer = styled.div`
   }
 `
 
+const MobileCalendar = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    background: rgba(0, 0, 0, 0.5);
+  }
+`
+
 export default function Body() {
     const state = useStateContext();
     const dispatch = useDispatchContext();
 
-    const { date } = state;
+    const { date, showCal } = state;
 
     useEffect(() => {
         async function fetchData() {
@@ -52,14 +62,20 @@ export default function Body() {
     return (
         <>
             <DesktopContainer>
-                <LeftSide />
-                <RightSide />
+                <LeftSide/>
+                <RightSide/>
             </DesktopContainer>
             <MobileContainer>
-                <Date />
-                <Meal />
-                <MenuList />
+                <Date/>
+                {
+                    showCal &&
+                    <MobileCalendar>
+                        <Calendar/>
+                    </MobileCalendar>
+                }
+                <Meal/>
+                <MenuList/>
             </MobileContainer>
         </>
-    )
+    );
 }
