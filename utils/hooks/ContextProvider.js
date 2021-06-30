@@ -1,6 +1,7 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react'
 
 let initMeal = 'BR'
+const initToday = new Date()
 const initDate = new Date()
 const currHour = initDate.getHours()
 if(currHour > 9 && currHour < 16) {
@@ -43,7 +44,7 @@ const ContextProvider = ({ children }) => {
     date: initDate,
     meal: initMeal,
     data: initData,
-    today: initDate,
+    today: initToday,
     showCal: false,
     showInfo: false,
     loading: false,

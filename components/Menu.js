@@ -30,6 +30,7 @@ const MenuName = styled.div`
     padding-right: 7px;
     padding-top: 2px;
     align-items: flex-start;
+    font-weight: 400;
   }
 `
 
@@ -73,6 +74,7 @@ const Price = styled.div`
     width: 45px;
     padding-right: 12px;
     padding-top: 1px;
+    font-weight: 400;
   }
 `
 

@@ -47,6 +47,7 @@ const CloseIcon = styled.img`
   padding-top: 16px;
   padding-right: calc(5vw + 21.3px);
   right: 0;
+  cursor: pointer;
 `
 
 const HLine = styled.div`
@@ -81,7 +82,7 @@ const Text = styled.div`
   font-size: 14px;
   line-height: 16px;
   color: black;
-  font-weight: 100;
+  font-weight: 400;
 `
 
 const LocationBox = styled.div`
@@ -90,12 +91,11 @@ const LocationBox = styled.div`
 
 const LocationIcon = styled.img`
   width: 16px;
-  padding-top: 1px;
 `
 
 const LocationText = styled.div`
   font-size: 14px;
-  font-weight: 100;
+  font-weight: 400;
   line-height: 16px;
   color: #575757;
   padding-left: 4px;

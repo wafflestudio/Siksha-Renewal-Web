@@ -13,6 +13,10 @@
   .today {
     font-weight: 400;
     background-image: url("/img/circle.svg");
+
+    @media (max-width: 768px) {
+      font-weight: 700;
+    }
   }
 
   button {
@@ -87,6 +91,10 @@
         line-height: 15px;
         color: #333333;
 
+        @media (max-width: 768px) {
+          font-weight: 700;
+        }
+
         abbr {
           text-decoration: none;
         }
@@ -102,6 +110,10 @@
         line-height: 16px;
         font-weight: 100;
         color: #666666;
+
+        @media (max-width: 768px) {
+          font-weight: 400;
+        }
       }
     }
   }

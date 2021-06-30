@@ -21,7 +21,7 @@ const Text = styled.div`
   color: black;
   justify-content: flex-start;
   padding-bottom: 8px;
-  font-weight: 100;
+  font-weight: 400;
 `
 
 const RightSide = styled.div`
@@ -39,6 +39,7 @@ const Meal = styled.div`
   line-height: 14px;
   color: #FE8C59;
   padding-top: 1px;
+  font-weight: 400;
 `
 
 const Time = styled.div`
@@ -46,7 +47,7 @@ const Time = styled.div`
   line-height: 16px;
   color: #575757;
   padding-left: 10px;
-  font-weight: 100;
+  font-weight: 400;
 `
 
 export default function MobileOperatingHour({type}) {

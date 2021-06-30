@@ -29,7 +29,18 @@ const DateText = styled.div`
   line-height: 17px;
   color: #F0976C;
   white-space: nowrap;
+`
+
+const FlexBox = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
+`
+
+const CalendarIcon = styled.img`
+  height: 19px;
+  padding-right: 7px;
+  padding-bottom: 3px;
 `
 
 export default function Date() {
@@ -44,13 +55,20 @@ export default function Date() {
         <Container>
             <Arrow
                 src={showCal ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
-                onClick={() => {!showCal && setDate(getYesterday(date))}}
+                onClick={() => {
+                    !showCal && setDate(getYesterday(date))
+                }}
             />
-            <DateText onClick={() => toggleShowCal()}>{formatDate(date)}</DateText>
+            <FlexBox onClick={() => toggleShowCal()}>
+                <CalendarIcon src={"/img/calendar.svg"}/>
+                <DateText>{formatDate(date)}</DateText>
+            </FlexBox>
             <Arrow
                 src={showCal ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
-                onClick={() => {!showCal && setDate(getTomorrow(date))}}
+                onClick={() => {
+                    !showCal && setDate(getTomorrow(date))
+                }}
             />
         </Container>
-    )
+    );
 }

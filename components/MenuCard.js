@@ -60,7 +60,7 @@ const InfoIcon = styled.img`
 const Price = styled.div`
   font-size: 12px;
   line-height: 14px;
-  font-weight: 100;
+  font-weight: 400;
   color: #FE8B5A;
   padding-right: 24px;
 `
@@ -68,7 +68,7 @@ const Price = styled.div`
 const Rate = styled.div`
   font-size: 12px;
   line-height: 14px;
-  font-weight: 100;
+  font-weight: 400;
   color: #FE8B5A;
   padding-right: 22.5px;
 `

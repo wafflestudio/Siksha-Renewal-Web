@@ -1,0 +1,17 @@
+<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.5" y="2.5" width="19" height="19" rx="2.5" stroke="#F0976C"/>
+    <path d="M0.5 7H19.5" stroke="#F0976C" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="4.5" y="0.5" width="1" height="4" fill="#F0976C" stroke="#F0976C"/>
+    <rect x="14.5" y="0.5" width="1" height="4" fill="#F0976C" stroke="#F0976C"/>
+    <rect x="3" y="13" width="2" height="2" fill="#F0976C"/>
+    <rect x="3" y="17" width="2" height="2" fill="#F0976C"/>
+    <rect x="7" y="9" width="2" height="2" fill="#F0976C"/>
+    <rect x="7" y="13" width="2" height="2" fill="#F0976C"/>
+    <rect x="7" y="17" width="2" height="2" fill="#F0976C"/>
+    <rect x="11" y="9" width="2" height="2" fill="#F0976C"/>
+    <rect x="11" y="13" width="2" height="2" fill="#F0976C"/>
+    <rect x="11" y="17" width="2" height="2" fill="#F0976C"/>
+    <rect x="15" y="9" width="2" height="2" fill="#F0976C"/>
+    <rect x="15" y="13" width="2" height="2" fill="#F0976C"/>
+    <rect x="15" y="17" width="2" height="2" fill="#F0976C"/>
+</svg>
