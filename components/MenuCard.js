@@ -39,7 +39,7 @@ const MobileContainer = styled.div`
     border: solid 1px #E8E8E8;
     box-sizing: border-box;
     border-radius: 8px;
-    width: calc(100% - 16px);
+    width: 95vw;
     margin-bottom: 16px;
   }
 `
@@ -52,7 +52,9 @@ const HeaderContainer = styled.div`
 const InfoIcon = styled.img`
   width: 16px;
   height: 16px;
-  padding-left: 8px;
+  padding-left: 6px;
+  padding-bottom: 0.3px;
+  cursor: pointer;
 `
 
 const Price = styled.div`
@@ -84,6 +86,7 @@ const Name = styled.div`
     line-height: 17px;
     color: #E15618;
     padding-left: 16px;
+    white-space: normal;
   }
 `
 
@@ -114,7 +117,7 @@ const HLine = styled.div`
   margin: 10px auto 10px auto;
   
   @media (max-width: 768px) {
-    width: calc(100% - 32px);
+    width: calc(95vw - 32px);
     height: 1px;
     margin: 8.5px auto 8.5px auto;
   }

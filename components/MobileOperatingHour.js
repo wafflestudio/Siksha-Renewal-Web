@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding-top: 12px;
-  width: calc(100vw - 35px);
+  width: calc(90vw - 35px);
 `
 
 const LeftSide = styled.div`

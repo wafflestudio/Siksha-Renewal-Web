@@ -73,7 +73,7 @@ export default function Body() {
             setLoading(false);
         }
         fetchData();
-    }, [date, dispatch])
+    }, [date])
 
     return (
         <>

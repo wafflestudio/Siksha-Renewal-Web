@@ -12,22 +12,25 @@ const Container = styled.div`
   position: fixed;
   left: 0;
   right: 0;
-  
-  z-index: 100;
 `
 
 const ClickArea = styled.div`
-  width: 100vw;
   flex: 1;
+`
+
+const FlexBox = styled.div`
+  display: flex;
 `
 
 const InfoBox = styled.div`
   background: white;
-  border-radius: 15px 15px 0 0;
-  width: 100vw;
+  border-radius: 15px;
+  width: 90vw;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
 `
 
 const RestName = styled.div`
@@ -42,20 +45,34 @@ const CloseIcon = styled.img`
   width: 25px;
   position: absolute;
   padding-top: 16px;
-  padding-right: 21.3px;
+  padding-right: calc(5vw + 21.3px);
   right: 0;
 `
 
 const HLine = styled.div`
-  width: calc(100vw - 32px);
+  width: calc(90vw - 32px);
   height: 1px;
   background: ${props => props.color};
   margin-top: ${props => props.margin};
 `
 
+const ScrollArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  margin-top: 16px;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
 const AboveMap = styled.div`
-  width: calc(100vw - 32px);
-  padding: 16px 16px 12px 16px;
+  width: calc(90vw - 32px);
+  padding-bottom: 12px;
   display: flex;
   justify-content: space-between;
 `
@@ -73,6 +90,7 @@ const LocationBox = styled.div`
 
 const LocationIcon = styled.img`
   width: 16px;
+  padding-top: 1px;
 `
 
 const LocationText = styled.div`
@@ -84,8 +102,9 @@ const LocationText = styled.div`
 `
 
 const Map = styled.div`
-  width: calc(100vw - 32px);
+  width: calc(90vw - 32px);
   height: 247px;
+  min-height: 247px;
 `
 
 const Division = styled.div`
@@ -96,7 +115,7 @@ const Division = styled.div`
 `
 
 const BelowMap = styled.div`
-  width: calc(100vw - 32px);
+  width: calc(90vw - 32px);
   display: flex;
   justify-content: flex-start;
 `
@@ -112,7 +131,7 @@ const EmptyText = styled.div`
 const EmptyBox = styled.div`
   height: ${props => props.height};
   background: white;
-  width: 100vw;
+  width: 1px;
 `
 
 export default function RestaurantInfo() {
@@ -123,59 +142,81 @@ export default function RestaurantInfo() {
     const toggleShowInfo = () => dispatch({ type: 'TOGGLE_SHOWINFO' });
 
     useEffect(() => {
-        console.log(infoData)
+        const container = document.getElementById('map');
+        const options = {
+            center: new window.kakao.maps.LatLng(infoData.lat, infoData.lng),
+        };
+
+        const map = new window.kakao.maps.Map(container, options);
+
+        const markerPosition  = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
+
+        const marker = new window.kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        marker.setMap(map);
     }, [infoData])
 
     return (
         <Container>
             <ClickArea onClick={() => toggleShowInfo()}/>
-            <InfoBox>
-                <RestName>{infoData.name_kr}</RestName>
-                <CloseIcon
-                    src={"/img/close.svg"}
-                    onClick={() => toggleShowInfo()}
-                />
-                <HLine color={'#FE8C59'} margin={'10px'}/>
-                <AboveMap>
-                    <Text>식당 위치</Text>
-                    <LocationBox>
-                        <LocationIcon src={"/img/mobile-location.svg"}/>
-                        <LocationText>{infoData.addr.slice(19)}</LocationText>
-                    </LocationBox>
-                </AboveMap>
-                <Map/>
-                <Division/>
-                <BelowMap>
-                    <Text>영업시간</Text>
-                </BelowMap>
-                <HLine color={'#FE8C59'} margin={'8px'}/>
-                {
-                    infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.weekdays.length != 0 &&
-                    <MobileOperatingHour type={'weekdays'}/>
-                }
-                {
-                    infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.saturday.length != 0 &&
-                    <>
-                        <HLine color={'#ECECEC'} margin={'2px'}/>
-                        <MobileOperatingHour type={'saturday'}/>
-                    </>
-                }
-                {
-                    infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.holiday.length != 0 &&
-                    <>
-                        <HLine color={'#ECECEC'} margin={'2px'}/>
-                        <MobileOperatingHour type={'holiday'}/>
-                    </>
-                }
-                {
-                    (!infoData.etc || !infoData.etc.operating_hours) &&
-                    <>
-                        <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
-                        <EmptyBox height={'8px'}/>
-                    </>
-                }
-                <EmptyBox height={'17px'}/>
-            </InfoBox>
+            <FlexBox>
+                <ClickArea onClick={() => toggleShowInfo()}/>
+                <InfoBox>
+                    <RestName>{infoData.name_kr}</RestName>
+                    <CloseIcon
+                        src={"/img/close.svg"}
+                        onClick={() => toggleShowInfo()}
+                    />
+                    <HLine color={'#FE8C59'} margin={'10px'}/>
+                    <ScrollArea>
+                        <Wrapper>
+                            <AboveMap>
+                                <Text>식당 위치</Text>
+                                <LocationBox>
+                                    <LocationIcon src={"/img/mobile-location.svg"}/>
+                                    <LocationText>{infoData.addr.slice(19)}</LocationText>
+                                </LocationBox>
+                            </AboveMap>
+                            <Map id={"map"}/>
+                            <Division/>
+                            <BelowMap>
+                                <Text>영업시간</Text>
+                            </BelowMap>
+                            <HLine color={'#FE8C59'} margin={'8px'}/>
+                            {
+                                infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.weekdays.length != 0 &&
+                                <MobileOperatingHour type={'weekdays'}/>
+                            }
+                            {
+                                infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.saturday.length != 0 &&
+                                <>
+                                    <HLine color={'#ECECEC'} margin={'2px'}/>
+                                    <MobileOperatingHour type={'saturday'}/>
+                                </>
+                            }
+                            {
+                                infoData.etc && infoData.etc.operating_hours && infoData.etc.operating_hours.holiday.length != 0 &&
+                                <>
+                                    <HLine color={'#ECECEC'} margin={'2px'}/>
+                                    <MobileOperatingHour type={'holiday'}/>
+                                </>
+                            }
+                            {
+                                (!infoData.etc || !infoData.etc.operating_hours) &&
+                                <>
+                                    <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
+                                    <EmptyBox height={'8px'}/>
+                                </>
+                            }
+                            <EmptyBox height={'17px'}/>
+                        </Wrapper>
+                    </ScrollArea>
+                </InfoBox>
+                <ClickArea onClick={() => toggleShowInfo()}/>
+            </FlexBox>
+            <ClickArea onClick={() => toggleShowInfo()}/>
         </Container>
     );
 }
