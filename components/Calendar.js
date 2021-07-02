@@ -73,6 +73,7 @@ export default function Calendar() {
                 <ReactCalendar
                     onChange={(day) => setDate(day)}
                     onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+                    defaultActiveStartDate={today}
                     value={date}
                     showNeighboringMonth={false}
                     navigationLabel={() => formatDate(date)}
@@ -88,6 +89,7 @@ export default function Calendar() {
                 <ReactCalendar
                     onChange={(day) => {setDate(day); toggleShowCal()}}
                     onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+                    defaultActiveStartDate={today}
                     value={date}
                     showNeighboringMonth={false}
                     navigationLabel={() => formatDate(date)}
