@@ -2,6 +2,8 @@ import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
 import {formatDate, formatMonth, formatWeekday} from "../utils/hooks/FormatUtil";
 import ReactCalendar from "react-calendar";
+import {useCallback, useEffect} from "react";
+import RestaurantInfo from "./RestaurantInfo";
 
 const DesktopContainer = styled.div`
   width: 100%;
@@ -66,6 +68,10 @@ export default function Calendar() {
     const setDate = (date) => dispatch({ type: 'SET_DATE', date: date })
     const toggleShowCal = () => dispatch({ type: 'TOGGLE_SHOWCAL' })
 
+    const isToday = useCallback((date) => {
+        return date.toDateString() === today.toDateString()
+    }, [today])
+
     return (
         <>
             <DesktopContainer>
@@ -75,13 +81,14 @@ export default function Calendar() {
                     onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
                     defaultActiveStartDate={today}
                     value={date}
+                    defaultValue={today}
                     showNeighboringMonth={false}
                     navigationLabel={() => formatDate(date)}
                     prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"}/>}
                     nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"}/>}
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
-                    tileClassName={({ date }) => date.toDateString() === today.toDateString() ? 'today' : null}
+                    tileClassName={({ date }) => isToday(date) ? 'today' : null}
                 />
             </DesktopContainer>
             <MobileContainer>
@@ -91,13 +98,14 @@ export default function Calendar() {
                     onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
                     defaultActiveStartDate={today}
                     value={date}
+                    defaultValue={today}
                     showNeighboringMonth={false}
                     navigationLabel={() => formatDate(date)}
                     prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"}/>}
                     nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"}/>}
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
-                    tileClassName={({ date }) => date.toDateString() === today.toDateString() ? 'today' : null}
+                    tileClassName={({ date }) => isToday(date) ? 'today' : null}
                 />
                 <ClickArea onClick={() => toggleShowCal()}/>
             </MobileContainer>
