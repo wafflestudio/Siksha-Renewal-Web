@@ -72,6 +72,7 @@ const EmptyText = styled.div`
   color: #919191;
   font-weight: 400;
   padding-top: 25px;
+  padding-bottom: 30px;
   font-size: 16px;
 
   @media (max-width: 768px) {

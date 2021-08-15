@@ -39,6 +39,7 @@ const RestName = styled.div`
   font-weight: 700;
   color: black;
   padding-top: 14px;
+  white-space: nowrap;
 `
 
 const CloseIcon = styled.img`
@@ -211,6 +212,7 @@ export default function RestaurantInfo() {
                                 </>
                             }
                             <EmptyBox height={'17px'}/>
+                            <EmptyBox height={'30px'}/>
                         </Wrapper>
                     </ScrollArea>
                 </InfoBox>

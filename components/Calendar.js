@@ -88,7 +88,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
-                    key={date.toDateString()}
+                    key={today.toDateString()}
                 />
             </DesktopContainer>
             <MobileContainer>
@@ -106,7 +106,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
-                    key={date.toDateString()}
+                    key={today.toDateString()}
                 />
                 <ClickArea onClick={() => toggleShowCal()}/>
             </MobileContainer>
