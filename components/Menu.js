@@ -15,7 +15,7 @@ const Container = styled.div`
 `
 
 const MenuName = styled.div`
-  font-weight: 100;
+  font-weight: 400;
   font-size: 16px;
   color: black;
   flex: 1;
@@ -42,7 +42,7 @@ const MenuInfo = styled.div`
 const Dots = styled.div`
   font-size: 12px;
   line-height: 14px;
-  font-weight: 100;
+  font-weight: 400;
   color: rgba(0, 0, 0, 0.3);
   letter-spacing: 2px;
   padding-left: 10px;
@@ -53,7 +53,7 @@ const Dots = styled.div`
   }
   
   -ms-user-select: none;
-  -moz-user-select: -moz-none;
+  -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
@@ -62,7 +62,7 @@ const Dots = styled.div`
 const Price = styled.div`
   font-size: 16px;
   line-height: 18px;
-  font-weight: 100;
+  font-weight: 400;
   width: 48px;
   display: flex;
   justify-content: ${props => props.hasPrice ? 'flex-end' : 'center'};
@@ -87,7 +87,7 @@ const Rate = styled.div`
   border-radius: 20px;
   font-weight: 400;
   font-size: 15px;
-  line-height: 17px;
+  line-height: 20px;
   color: ${props => props.type ? 'white' : 'black'};
   background: ${props => props.type ? props.type == "high" ? '#F47156' : props.type == "middle" ? '#F58625' : '#F5B52C' : 'white'};
 

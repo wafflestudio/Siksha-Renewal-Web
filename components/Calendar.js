@@ -2,8 +2,7 @@ import styled from "styled-components";
 import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
 import {formatDate, formatMonth, formatWeekday} from "../utils/hooks/FormatUtil";
 import ReactCalendar from "react-calendar";
-import {useCallback, useEffect} from "react";
-import RestaurantInfo from "./RestaurantInfo";
+import {useCallback} from "react";
 
 const DesktopContainer = styled.div`
   width: 100%;
@@ -89,6 +88,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
+                    key={date.toDateString()}
                 />
             </DesktopContainer>
             <MobileContainer>
@@ -106,6 +106,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
+                    key={date.toDateString()}
                 />
                 <ClickArea onClick={() => toggleShowCal()}/>
             </MobileContainer>

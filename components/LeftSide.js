@@ -5,8 +5,7 @@ import RestaurantList from "./RestaurantList";
 const Container = styled.div`
   padding-right: 15px;
   height: calc(100vh - 60px);
-  width: 23.75em;
-  min-width: 23.75em;
+  width: 340px;
 `
 
 const Line = styled.div`

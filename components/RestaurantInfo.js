@@ -125,7 +125,7 @@ const EmptyText = styled.div`
   line-height: 16px;
   color: #575757;
   padding-top: 25px;
-  font-weight: 100;
+  font-weight: 400;
 `
 
 const EmptyBox = styled.div`

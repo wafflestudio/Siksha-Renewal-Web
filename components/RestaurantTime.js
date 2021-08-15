@@ -16,7 +16,7 @@ const Time = styled.div`
 
 const TimeText = styled.div`
   font-family: NanumSquare, sans-serif;
-  font-weight: 100;
+  font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   color: black;

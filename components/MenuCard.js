@@ -103,7 +103,7 @@ const LocationIcon = styled.img`
 
 const LocationText = styled.div`
   font-family: NanumSquare;
-  font-weight: 100;
+  font-weight: 400;
   font-size: 15px;
   line-height: 17px;
   padding-top: 1px;

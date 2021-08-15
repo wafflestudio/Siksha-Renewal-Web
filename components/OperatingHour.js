@@ -9,7 +9,7 @@ const Container = styled.div`
 
 const HourText = styled.div`
   font-size: 15px;
-  font-weight: 100;
+  font-weight: 400;
   font-family: NanumSquare, sans-serif;
   color: #575757;
   padding-left: ${props => props.type == "BR" ? '8px' : props.type == "LU" ? '7px' : '8px'};

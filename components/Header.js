@@ -38,7 +38,7 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 23px;
   color: white;
-  font-weight: 100;
+  font-weight: 400;
   padding-top: 8px;
   padding-left: 14px;
   white-space: nowrap;

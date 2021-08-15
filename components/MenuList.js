@@ -2,6 +2,7 @@ import MenuCard from "./MenuCard";
 import styled, {css} from "styled-components";
 import {useStateContext} from "../utils/hooks/ContextProvider";
 import {useEffect, useState} from "react";
+import Download from "./Download";
 
 const Container = styled.div`
   display: flex;
@@ -69,7 +70,7 @@ const Container = styled.div`
 
 const EmptyText = styled.div`
   color: #919191;
-  font-weight: 100;
+  font-weight: 400;
   padding-top: 25px;
   font-size: 16px;
 
@@ -96,6 +97,7 @@ export default function MenuList() {
               :  hasData ? data[meal].map((restaurant) =>
                 <MenuCard data={restaurant} key={restaurant.id + meal}/>
             ) : <EmptyText>업로드 된 식단이 없습니다.</EmptyText>}
+            {!loading && <Download/>}
         </Container>
     );
 }

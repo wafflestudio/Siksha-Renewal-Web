@@ -66,7 +66,7 @@ const Dinner = styled.img`
 const MealText = styled.div`
   font-size: 15px;
   line-height: 17px;
-  font-weight: 100;
+  font-weight: 400;
   color: ${props => props.active ? "#FE8C59" : "#919191"};
 
   @media (max-width: 768px) {

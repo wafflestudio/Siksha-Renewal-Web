@@ -8,8 +8,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding-left: 15px;
-  width: 49.07em;
-  min-width: 49.07em;
+  width: 785px;
+  min-width: 785px;
   height: calc(100vh - 60px);
 `
 

@@ -18,7 +18,7 @@ const Restaurant = styled.div`
   line-height: 18px;
   letter-spacing: -0.3px;
   color: #727272;
-  font-weight: 100;
+  font-weight: 400;
   display: flex;
   flex-direction: column;
   padding-bottom: 17px;
