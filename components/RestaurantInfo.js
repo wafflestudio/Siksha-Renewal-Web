@@ -212,7 +212,6 @@ export default function RestaurantInfo() {
                                 </>
                             }
                             <EmptyBox height={'17px'}/>
-                            <EmptyBox height={'30px'}/>
                         </Wrapper>
                     </ScrollArea>
                 </InfoBox>

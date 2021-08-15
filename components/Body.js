@@ -47,6 +47,10 @@ const MobileInfo = styled.div`
   @media (max-width: 768px) {
     display: flex;
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
     z-index: 100;
   }
 `
