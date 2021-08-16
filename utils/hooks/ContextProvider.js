@@ -49,6 +49,7 @@ const ContextProvider = ({ children }) => {
     showInfo: false,
     loading: false,
     infoData: null,
+    initDate: initDate,
   })
 
   return (

@@ -63,7 +63,7 @@ export default function Calendar() {
     const state = useStateContext();
     const dispatch = useDispatchContext();
 
-    const { date, today } = state;
+    const { date, today, initDate } = state;
     const setDate = (date) => dispatch({ type: 'SET_DATE', date: date })
     const toggleShowCal = () => dispatch({ type: 'TOGGLE_SHOWCAL' })
 
@@ -88,7 +88,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
-                    key={today.toDateString()}
+                    key={initDate.toDateString()}
                 />
             </DesktopContainer>
             <MobileContainer>
@@ -106,7 +106,7 @@ export default function Calendar() {
                     formatDay={(locale, date) => date.getDate()}
                     formatShortWeekday={(locale, date) => formatWeekday(date)}
                     tileClassName={({ date }) => isToday(date) ? 'today' : null}
-                    key={today.toDateString()}
+                    key={initDate.toDateString()}
                 />
                 <ClickArea onClick={() => toggleShowCal()}/>
             </MobileContainer>
