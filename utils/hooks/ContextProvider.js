@@ -7,11 +7,8 @@ const currHour = initDate.getHours()
 if(currHour > 9 && currHour < 16) {
   initMeal = 'LU'
 }
-else if (currHour >= 16 && currHour < 20) {
+else if (currHour >= 16 && currHour < 24) {
   initMeal = 'DN'
-}
-else if (currHour >= 20 && currHour < 24) {
-  initDate.setDate(initDate.getDate() + 1)
 }
 const initData = { count: 0, result: [] }
 
@@ -49,7 +46,6 @@ const ContextProvider = ({ children }) => {
     showInfo: false,
     loading: false,
     infoData: null,
-    initDate: initDate,
   })
 
   return (
