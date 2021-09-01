@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const SikshaIcon = styled.img`
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
-  padding-left: calc((100vw - 72.82em - 30px)/2);
+  padding-left: calc((100vw - 1155px)/2);
   width: 64px;
 
   @media (max-width: 768px) {
@@ -25,9 +25,12 @@ const SikshaIcon = styled.img`
   }
 `
 
-const SikshaTypo = styled.img`
-  padding-left: 18px;
-  width: 95px;
+const SikshaTypo = styled.div`
+  padding-left: 16px;
+  font-size: 36px;
+  line-height: 48px;
+  font-weight: 700;
+  color: #FFFFFF;
 
   @media (max-width: 768px) {
     display: none;
@@ -40,7 +43,7 @@ const Title = styled.div`
   color: white;
   font-weight: 400;
   padding-top: 8px;
-  padding-left: 14px;
+  padding-left: 12px;
   white-space: nowrap;
 
   @media (max-width: 768px) {
@@ -53,7 +56,7 @@ export default function Header() {
         <>
             <Container>
                 <SikshaIcon src={"/img/siksha-icon.svg"} />
-                <SikshaTypo src={"/img/siksha-typo.svg"} />
+                <SikshaTypo>식샤</SikshaTypo>
                 <Title>서울대학교 식단 알리미</Title>
             </Container>
         </>
