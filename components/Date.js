@@ -2,6 +2,36 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
 
+export default function Date() {
+  const state = useStateContext();
+  const dispatch = useDispatchContext();
+
+  const { date, showCal } = state;
+  const setDate = (date) => dispatch({ type: "SET_DATE", date: date });
+  const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
+
+  return (
+    <Container>
+      <Arrow
+        src={showCal ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
+        onClick={() => {
+          !showCal && setDate(getYesterday(date));
+        }}
+      />
+      <FlexBox onClick={() => toggleShowCal()}>
+        <CalendarIcon src={"/img/calendar.svg"} />
+        <DateText>{formatDate(date)}</DateText>
+      </FlexBox>
+      <Arrow
+        src={showCal ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
+        onClick={() => {
+          !showCal && setDate(getTomorrow(date));
+        }}
+      />
+    </Container>
+  );
+}
+
 const Container = styled.div`
   height: 53px;
   width: 100%;
@@ -42,33 +72,3 @@ const CalendarIcon = styled.img`
   padding-right: 7px;
   padding-bottom: 3px;
 `;
-
-export default function Date() {
-  const state = useStateContext();
-  const dispatch = useDispatchContext();
-
-  const { date, showCal } = state;
-  const setDate = (date) => dispatch({ type: "SET_DATE", date: date });
-  const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
-
-  return (
-    <Container>
-      <Arrow
-        src={showCal ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
-        onClick={() => {
-          !showCal && setDate(getYesterday(date));
-        }}
-      />
-      <FlexBox onClick={() => toggleShowCal()}>
-        <CalendarIcon src={"/img/calendar.svg"} />
-        <DateText>{formatDate(date)}</DateText>
-      </FlexBox>
-      <Arrow
-        src={showCal ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
-        onClick={() => {
-          !showCal && setDate(getTomorrow(date));
-        }}
-      />
-    </Container>
-  );
-}
