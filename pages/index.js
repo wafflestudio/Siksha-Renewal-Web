@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import Header from "../components/Header";
 import Body from "../components/Body";
-import ContextProvider from "../utils/hooks/ContextProvider";
+import ContextProvider from "../hooks/ContextProvider";
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -47,16 +47,16 @@ export const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 export default function Home() {
   return (
     <>
-        <GlobalStyle />
-        <ContextProvider>
-            <Header />
-            <Body />
-        </ContextProvider>
+      <GlobalStyle />
+      <ContextProvider>
+        <Header />
+        <Body />
+      </ContextProvider>
     </>
-  )
+  );
 }

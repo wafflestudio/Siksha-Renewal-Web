@@ -1,0 +1,12 @@
+.github
+.husky
+.next
+.vscode
+node_modules
+out
+.gitignore
+next-env.d.ts
+next.config.js
+README.md
+yarn.lock
+package-lock.json

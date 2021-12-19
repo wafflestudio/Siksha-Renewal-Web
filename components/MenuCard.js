@@ -1,7 +1,62 @@
 import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
-import {useDispatchContext} from "../utils/hooks/ContextProvider";
+import { useDispatchContext } from "../hooks/ContextProvider";
+
+export default function MenuCard({ data }) {
+  const dispatch = useDispatchContext();
+
+  const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
+  const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
+
+  return (
+    <>
+      <DesktopContainer className={"a" + data.code}>
+        <RestInfo>
+          <Name>{data.name_kr}</Name>
+          <Location>
+            <LocationIcon src={"/img/location.svg"} />
+            <LocationText>{data.addr.slice(19)}</LocationText>
+          </Location>
+        </RestInfo>
+        <HLine />
+        <MenuInfo>
+          <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
+          <VLine />
+          <Menus>
+            {data.menus.map((menu) => (
+              <Menu menu={menu} key={menu.id} />
+            ))}
+          </Menus>
+        </MenuInfo>
+      </DesktopContainer>
+      <MobileContainer className={"a" + data.code}>
+        <RestInfo>
+          <HeaderContainer>
+            <Name>{data.name_kr}</Name>
+            <InfoIcon
+              src={"/img/info.svg"}
+              onClick={() => {
+                setInfoData(data);
+                toggleInfo();
+              }}
+            />
+          </HeaderContainer>
+          <HeaderContainer>
+            <Price>Price</Price>
+            <Rate>Rate</Rate>
+          </HeaderContainer>
+        </RestInfo>
+        <HLine />
+        <Menus>
+          {data.menus.map((menu) => (
+            <Menu menu={menu} key={menu.id} />
+          ))}
+        </Menus>
+      </MobileContainer>
+    </>
+  );
+}
 
 const RestInfo = styled.div`
   display: flex;
@@ -12,13 +67,13 @@ const RestInfo = styled.div`
   @media (max-width: 768px) {
     padding-top: 17px;
   }
-`
+`;
 
 const DesktopContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: white;
-  border: solid 1px #E8E8E8;
+  border: solid 1px #e8e8e8;
   box-sizing: border-box;
   border-radius: 8px;
   width: 100%;
@@ -27,27 +82,27 @@ const DesktopContainer = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
-`
+`;
 
 const MobileContainer = styled.div`
   display: none;
-  
+
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     background: white;
-    border: solid 1px #E8E8E8;
+    border: solid 1px #e8e8e8;
     box-sizing: border-box;
     border-radius: 8px;
     width: 95vw;
     margin-bottom: 16px;
   }
-`
+`;
 
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const InfoIcon = styled.img`
   width: 16px;
@@ -55,23 +110,23 @@ const InfoIcon = styled.img`
   padding-left: 6px;
   padding-bottom: 0.3px;
   cursor: pointer;
-`
+`;
 
 const Price = styled.div`
   font-size: 12px;
   line-height: 14px;
   font-weight: 400;
-  color: #FE8B5A;
+  color: #fe8b5a;
   padding-right: 24px;
-`
+`;
 
 const Rate = styled.div`
   font-size: 12px;
   line-height: 14px;
   font-weight: 400;
-  color: #FE8B5A;
+  color: #fe8b5a;
   padding-right: 22.5px;
-`
+`;
 
 const Name = styled.div`
   font-weight: 700;
@@ -84,22 +139,22 @@ const Name = styled.div`
   @media (max-width: 768px) {
     font-size: 15px;
     line-height: 17px;
-    color: #E15618;
+    color: #e15618;
     padding-left: 16px;
     white-space: normal;
   }
-`
+`;
 
 const Location = styled.div`
   display: flex;
   padding-top: 3px;
   padding-right: 35px;
-`
+`;
 
 const LocationIcon = styled.img`
   width: 14.4px;
   height: 20.21px;
-`
+`;
 
 const LocationText = styled.div`
   font-family: NanumSquare;
@@ -108,32 +163,32 @@ const LocationText = styled.div`
   line-height: 17px;
   padding-top: 1px;
   padding-left: 10px;
-`
+`;
 
 const HLine = styled.div`
   width: calc(100% - 70px);
   height: 2px;
-  background: #FE8C59;
+  background: #fe8c59;
   margin: 10px auto 10px auto;
-  
+
   @media (max-width: 768px) {
     width: calc(95vw - 32px);
     height: 1px;
     margin: 8.5px auto 8.5px auto;
   }
-`
+`;
 
 const MenuInfo = styled.div`
   display: flex;
   padding-bottom: 12px;
-`
+`;
 
 const VLine = styled.div`
   width: 1px;
-  background: #DCDCDC;
+  background: #dcdcdc;
   margin-left: 17px;
   margin-right: 26px;
-`
+`;
 
 const Menus = styled.div`
   display: flex;
@@ -144,63 +199,4 @@ const Menus = styled.div`
   @media (max-width: 768px) {
     padding: 6px 12px 3px 16px;
   }
-`
-
-export default function MenuCard({ data }) {
-    const dispatch = useDispatchContext();
-
-    const setInfoData = (infoData) => dispatch({ type: 'SET_INFODATA', infoData: infoData })
-    const toggleInfo = () => dispatch({ type: 'TOGGLE_SHOWINFO' })
-
-    return (
-        <>
-            <DesktopContainer className={'a'+data.code}>
-                <RestInfo>
-                    <Name>{data.name_kr}</Name>
-                    <Location>
-                        <LocationIcon src={"/img/location.svg"}/>
-                        <LocationText>{data.addr.slice(19)}</LocationText>
-                    </Location>
-                </RestInfo>
-                <HLine/>
-                <MenuInfo>
-                    <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
-                    <VLine/>
-                    <Menus>
-                        {
-                            data.menus.map((menu) =>
-                                <Menu menu={menu} key={menu.id}/>
-                            )
-                        }
-                    </Menus>
-                </MenuInfo>
-            </DesktopContainer>
-            <MobileContainer className={'a'+data.code}>
-                <RestInfo>
-                    <HeaderContainer>
-                        <Name>{data.name_kr}</Name>
-                        <InfoIcon
-                            src={"/img/info.svg"}
-                            onClick={() => {
-                                setInfoData(data);
-                                toggleInfo();
-                            }}
-                        />
-                    </HeaderContainer>
-                    <HeaderContainer>
-                        <Price>Price</Price>
-                        <Rate>Rate</Rate>
-                    </HeaderContainer>
-                </RestInfo>
-                <HLine />
-                <Menus>
-                    {
-                        data.menus.map((menu) =>
-                            <Menu menu={menu} key={menu.id}/>
-                        )
-                    }
-                </Menus>
-            </MobileContainer>
-        </>
-    );
-}
+`;
