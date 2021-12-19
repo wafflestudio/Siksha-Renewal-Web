@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { formatPrice } from "../hooks/FormatUtil";
+import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
 
 const Container = styled.div`
@@ -137,15 +137,11 @@ export default function Menu({ menu }) {
     <Container>
       <MenuName>
         {menu.name_kr}
-        {menu.etc && menu.etc.find((e) => e == "No meat") && (
-          <NoMeat src={"/img/no-meat.svg"} />
-        )}
+        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
       </MenuName>
       <MenuInfo>
         <Dots>.........</Dots>
-        <Price hasPrice={hasPrice}>
-          {menu.price ? formatPrice(menu.price) : "-"}
-        </Price>
+        <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
       </MenuInfo>
     </Container>

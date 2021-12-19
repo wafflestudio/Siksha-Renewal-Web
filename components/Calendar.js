@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
-import { formatDate, formatMonth, formatWeekday } from "../hooks/FormatUtil";
+import { formatDate, formatMonth, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import { useCallback } from "react";
 
@@ -16,7 +16,7 @@ export default function Calendar() {
     (date) => {
       return date.toDateString() === today.toDateString();
     },
-    [today]
+    [today],
   );
 
   return (
@@ -25,9 +25,7 @@ export default function Calendar() {
         <DateText>{formatDate(date)}</DateText>
         <ReactCalendar
           onChange={(day) => setDate(day)}
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setDate(activeStartDate)
-          }
+          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}
@@ -47,9 +45,7 @@ export default function Calendar() {
             setDate(day);
             toggleShowCal();
           }}
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setDate(activeStartDate)
-          }
+          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}

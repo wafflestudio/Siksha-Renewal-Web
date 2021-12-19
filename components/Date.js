@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
-import { formatDate, getTomorrow, getYesterday } from "../hooks/FormatUtil";
+import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
 
 const Container = styled.div`
   height: 53px;

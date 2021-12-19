@@ -3,7 +3,7 @@ import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Date from "./Date";
 import { useEffect, useState } from "react";
-import { formatISODate } from "../hooks/FormatUtil";
+import { formatISODate } from "../utils/FormatUtil";
 import axios from "axios";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import Meal from "./Meal";
@@ -55,8 +55,7 @@ export default function Body() {
   const dispatch = useDispatchContext();
 
   const { date, showCal, showInfo } = state;
-  const setLoading = (loading) =>
-    dispatch({ type: "SET_LOADING", loading: loading });
+  const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
 
   useEffect(() => {
     async function fetchData() {
@@ -66,7 +65,7 @@ export default function Body() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `https://siksha-api.wafflestudio.com/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`
+          `https://siksha-api.wafflestudio.com/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
         );
         setData(res.data.result[0]);
       } catch (e) {
