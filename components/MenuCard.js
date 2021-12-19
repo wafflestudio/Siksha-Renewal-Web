@@ -3,6 +3,61 @@ import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
 import { useDispatchContext } from "../hooks/ContextProvider";
 
+export default function MenuCard({ data }) {
+  const dispatch = useDispatchContext();
+
+  const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
+  const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
+
+  return (
+    <>
+      <DesktopContainer className={"a" + data.code}>
+        <RestInfo>
+          <Name>{data.name_kr}</Name>
+          <Location>
+            <LocationIcon src={"/img/location.svg"} />
+            <LocationText>{data.addr.slice(19)}</LocationText>
+          </Location>
+        </RestInfo>
+        <HLine />
+        <MenuInfo>
+          <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
+          <VLine />
+          <Menus>
+            {data.menus.map((menu) => (
+              <Menu menu={menu} key={menu.id} />
+            ))}
+          </Menus>
+        </MenuInfo>
+      </DesktopContainer>
+      <MobileContainer className={"a" + data.code}>
+        <RestInfo>
+          <HeaderContainer>
+            <Name>{data.name_kr}</Name>
+            <InfoIcon
+              src={"/img/info.svg"}
+              onClick={() => {
+                setInfoData(data);
+                toggleInfo();
+              }}
+            />
+          </HeaderContainer>
+          <HeaderContainer>
+            <Price>Price</Price>
+            <Rate>Rate</Rate>
+          </HeaderContainer>
+        </RestInfo>
+        <HLine />
+        <Menus>
+          {data.menus.map((menu) => (
+            <Menu menu={menu} key={menu.id} />
+          ))}
+        </Menus>
+      </MobileContainer>
+    </>
+  );
+}
+
 const RestInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -145,58 +200,3 @@ const Menus = styled.div`
     padding: 6px 12px 3px 16px;
   }
 `;
-
-export default function MenuCard({ data }) {
-  const dispatch = useDispatchContext();
-
-  const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
-  const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
-
-  return (
-    <>
-      <DesktopContainer className={"a" + data.code}>
-        <RestInfo>
-          <Name>{data.name_kr}</Name>
-          <Location>
-            <LocationIcon src={"/img/location.svg"} />
-            <LocationText>{data.addr.slice(19)}</LocationText>
-          </Location>
-        </RestInfo>
-        <HLine />
-        <MenuInfo>
-          <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
-          <VLine />
-          <Menus>
-            {data.menus.map((menu) => (
-              <Menu menu={menu} key={menu.id} />
-            ))}
-          </Menus>
-        </MenuInfo>
-      </DesktopContainer>
-      <MobileContainer className={"a" + data.code}>
-        <RestInfo>
-          <HeaderContainer>
-            <Name>{data.name_kr}</Name>
-            <InfoIcon
-              src={"/img/info.svg"}
-              onClick={() => {
-                setInfoData(data);
-                toggleInfo();
-              }}
-            />
-          </HeaderContainer>
-          <HeaderContainer>
-            <Price>Price</Price>
-            <Rate>Rate</Rate>
-          </HeaderContainer>
-        </RestInfo>
-        <HLine />
-        <Menus>
-          {data.menus.map((menu) => (
-            <Menu menu={menu} key={menu.id} />
-          ))}
-        </Menus>
-      </MobileContainer>
-    </>
-  );
-}

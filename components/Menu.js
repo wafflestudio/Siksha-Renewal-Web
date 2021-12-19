@@ -2,6 +2,37 @@ import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
 
+export default function Menu({ menu }) {
+  const [hasPrice, setHasPrice] = useState(true);
+  const [score, setScore] = useState(null);
+
+  useEffect(() => {
+    if (!menu.price) setHasPrice(false);
+  }, [menu.price]);
+
+  useEffect(() => {
+    if (menu.score) {
+      if (menu.score >= 4) setScore("high");
+      else if (menu.score > 3) setScore("middle");
+      else setScore("low");
+    }
+  }, [menu.score]);
+
+  return (
+    <Container>
+      <MenuName>
+        {menu.name_kr}
+        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
+      </MenuName>
+      <MenuInfo>
+        <Dots>.........</Dots>
+        <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
+        <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+      </MenuInfo>
+    </Container>
+  );
+}
+
 const Container = styled.div`
   padding: 8px 0 8px 0;
   width: 100%;
@@ -116,34 +147,3 @@ const NoMeat = styled.img`
     padding-bottom: 0;
   }
 `;
-
-export default function Menu({ menu }) {
-  const [hasPrice, setHasPrice] = useState(true);
-  const [score, setScore] = useState(null);
-
-  useEffect(() => {
-    if (!menu.price) setHasPrice(false);
-  }, [menu.price]);
-
-  useEffect(() => {
-    if (menu.score) {
-      if (menu.score >= 4) setScore("high");
-      else if (menu.score > 3) setScore("middle");
-      else setScore("low");
-    }
-  }, [menu.score]);
-
-  return (
-    <Container>
-      <MenuName>
-        {menu.name_kr}
-        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
-      </MenuName>
-      <MenuInfo>
-        <Dots>.........</Dots>
-        <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-        <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
-      </MenuInfo>
-    </Container>
-  );
-}

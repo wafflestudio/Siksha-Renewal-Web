@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+export default function OperatingHour({ type, hour }) {
+  return (
+    <Container>
+      {type == "BR" ? (
+        <Breakfast src={"/img/breakfast.svg"} />
+      ) : type == "LU" ? (
+        <Lunch src={"/img/lunch.svg"} />
+      ) : (
+        <Dinner src={"/img/dinner.svg"} />
+      )}
+      <HourText type={type}>{hour}</HourText>
+    </Container>
+  );
+}
+
 const Container = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -26,18 +41,3 @@ const Lunch = styled.img`
 const Dinner = styled.img`
   width: 12px;
 `;
-
-export default function OperatingHour({ type, hour }) {
-  return (
-    <Container>
-      {type == "BR" ? (
-        <Breakfast src={"/img/breakfast.svg"} />
-      ) : type == "LU" ? (
-        <Lunch src={"/img/lunch.svg"} />
-      ) : (
-        <Dinner src={"/img/dinner.svg"} />
-      )}
-      <HourText type={type}>{hour}</HourText>
-    </Container>
-  );
-}

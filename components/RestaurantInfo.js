@@ -3,6 +3,92 @@ import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { useEffect } from "react";
 import MobileOperatingHour from "./MobileOperatingHour";
 
+export default function RestaurantInfo() {
+  const state = useStateContext();
+  const dispatch = useDispatchContext();
+
+  const { infoData } = state;
+  const toggleShowInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
+
+  useEffect(() => {
+    const container = document.getElementById("map");
+    const options = {
+      center: new window.kakao.maps.LatLng(infoData.lat, infoData.lng),
+    };
+
+    const map = new window.kakao.maps.Map(container, options);
+
+    const markerPosition = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
+
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition,
+    });
+
+    marker.setMap(map);
+  }, [infoData]);
+
+  return (
+    <Container>
+      <ClickArea onClick={() => toggleShowInfo()} />
+      <FlexBox>
+        <ClickArea onClick={() => toggleShowInfo()} />
+        <InfoBox>
+          <RestName>{infoData.name_kr}</RestName>
+          <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} />
+          <HLine color={"#FE8C59"} margin={"10px"} />
+          <ScrollArea>
+            <Wrapper>
+              <AboveMap>
+                <Text>식당 위치</Text>
+                <LocationBox>
+                  <LocationIcon src={"/img/mobile-location.svg"} />
+                  <LocationText>{infoData.addr.slice(19)}</LocationText>
+                </LocationBox>
+              </AboveMap>
+              <Map id={"map"} />
+              <Division />
+              <BelowMap>
+                <Text>영업시간</Text>
+              </BelowMap>
+              <HLine color={"#FE8C59"} margin={"8px"} />
+              {infoData.etc &&
+                infoData.etc.operating_hours &&
+                infoData.etc.operating_hours.weekdays.length != 0 && (
+                  <MobileOperatingHour type={"weekdays"} />
+                )}
+              {infoData.etc &&
+                infoData.etc.operating_hours &&
+                infoData.etc.operating_hours.saturday.length != 0 && (
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"saturday"} />
+                  </>
+                )}
+              {infoData.etc &&
+                infoData.etc.operating_hours &&
+                infoData.etc.operating_hours.holiday.length != 0 && (
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"holiday"} />
+                  </>
+                )}
+              {(!infoData.etc || !infoData.etc.operating_hours) && (
+                <>
+                  <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
+                  <EmptyBox height={"8px"} />
+                </>
+              )}
+              <EmptyBox height={"17px"} />
+            </Wrapper>
+          </ScrollArea>
+        </InfoBox>
+        <ClickArea onClick={() => toggleShowInfo()} />
+      </FlexBox>
+      <ClickArea onClick={() => toggleShowInfo()} />
+    </Container>
+  );
+}
+
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -136,89 +222,3 @@ const EmptyBox = styled.div`
   background: white;
   width: 1px;
 `;
-
-export default function RestaurantInfo() {
-  const state = useStateContext();
-  const dispatch = useDispatchContext();
-
-  const { infoData } = state;
-  const toggleShowInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
-
-  useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new window.kakao.maps.LatLng(infoData.lat, infoData.lng),
-    };
-
-    const map = new window.kakao.maps.Map(container, options);
-
-    const markerPosition = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
-
-    const marker = new window.kakao.maps.Marker({
-      position: markerPosition,
-    });
-
-    marker.setMap(map);
-  }, [infoData]);
-
-  return (
-    <Container>
-      <ClickArea onClick={() => toggleShowInfo()} />
-      <FlexBox>
-        <ClickArea onClick={() => toggleShowInfo()} />
-        <InfoBox>
-          <RestName>{infoData.name_kr}</RestName>
-          <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} />
-          <HLine color={"#FE8C59"} margin={"10px"} />
-          <ScrollArea>
-            <Wrapper>
-              <AboveMap>
-                <Text>식당 위치</Text>
-                <LocationBox>
-                  <LocationIcon src={"/img/mobile-location.svg"} />
-                  <LocationText>{infoData.addr.slice(19)}</LocationText>
-                </LocationBox>
-              </AboveMap>
-              <Map id={"map"} />
-              <Division />
-              <BelowMap>
-                <Text>영업시간</Text>
-              </BelowMap>
-              <HLine color={"#FE8C59"} margin={"8px"} />
-              {infoData.etc &&
-                infoData.etc.operating_hours &&
-                infoData.etc.operating_hours.weekdays.length != 0 && (
-                  <MobileOperatingHour type={"weekdays"} />
-                )}
-              {infoData.etc &&
-                infoData.etc.operating_hours &&
-                infoData.etc.operating_hours.saturday.length != 0 && (
-                  <>
-                    <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"saturday"} />
-                  </>
-                )}
-              {infoData.etc &&
-                infoData.etc.operating_hours &&
-                infoData.etc.operating_hours.holiday.length != 0 && (
-                  <>
-                    <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"holiday"} />
-                  </>
-                )}
-              {(!infoData.etc || !infoData.etc.operating_hours) && (
-                <>
-                  <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
-                  <EmptyBox height={"8px"} />
-                </>
-              )}
-              <EmptyBox height={"17px"} />
-            </Wrapper>
-          </ScrollArea>
-        </InfoBox>
-        <ClickArea onClick={() => toggleShowInfo()} />
-      </FlexBox>
-      <ClickArea onClick={() => toggleShowInfo()} />
-    </Container>
-  );
-}

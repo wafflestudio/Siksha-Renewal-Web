@@ -4,6 +4,32 @@ import { useStateContext } from "../hooks/ContextProvider";
 import { useEffect, useState } from "react";
 import Download from "./Download";
 
+export default function MenuList() {
+  const state = useStateContext();
+
+  const { meal, data, showCal, date, loading } = state;
+
+  const [hasData, setHasData] = useState(false);
+
+  useEffect(() => {
+    if (!data[meal] || data[meal].length == 0) setHasData(false);
+    else setHasData(true);
+  }, [data, meal]);
+
+  return (
+    <Container showCal={showCal} key={date + meal}>
+      {loading ? (
+        <EmptyText>식단을 불러오는 중입니다.</EmptyText>
+      ) : hasData ? (
+        data[meal].map((restaurant) => <MenuCard data={restaurant} key={restaurant.id + meal} />)
+      ) : (
+        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
+      )}
+      {!loading && <Download />}
+    </Container>
+  );
+}
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -84,29 +110,3 @@ const EmptyText = styled.div`
     font-size: 13px;
   }
 `;
-
-export default function MenuList() {
-  const state = useStateContext();
-
-  const { meal, data, showCal, date, loading } = state;
-
-  const [hasData, setHasData] = useState(false);
-
-  useEffect(() => {
-    if (!data[meal] || data[meal].length == 0) setHasData(false);
-    else setHasData(true);
-  }, [data, meal]);
-
-  return (
-    <Container showCal={showCal} key={date + meal}>
-      {loading ? (
-        <EmptyText>식단을 불러오는 중입니다.</EmptyText>
-      ) : hasData ? (
-        data[meal].map((restaurant) => <MenuCard data={restaurant} key={restaurant.id + meal} />)
-      ) : (
-        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
-      )}
-      {!loading && <Download />}
-    </Container>
-  );
-}

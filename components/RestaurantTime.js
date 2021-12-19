@@ -1,40 +1,6 @@
 import styled from "styled-components";
 import OperatingHour from "./OperatingHour";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 188px;
-  padding-left: 33px;
-`;
-
-const Time = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
-`;
-
-const TimeText = styled.div`
-  font-family: NanumSquare, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  color: black;
-  padding-top: 2px;
-`;
-
-const Times = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const VLine = styled.div`
-  width: 188px;
-  height: 1px;
-  background: #ececec;
-  margin-top: 3px;
-`;
-
 export default function RestaurantTime({ hours }) {
   return (
     <Container>
@@ -115,3 +81,37 @@ export default function RestaurantTime({ hours }) {
     </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 188px;
+  padding-left: 33px;
+`;
+
+const Time = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+`;
+
+const TimeText = styled.div`
+  font-family: NanumSquare, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: black;
+  padding-top: 2px;
+`;
+
+const Times = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const VLine = styled.div`
+  width: 188px;
+  height: 1px;
+  background: #ececec;
+  margin-top: 3px;
+`;

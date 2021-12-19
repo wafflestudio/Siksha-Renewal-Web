@@ -1,5 +1,17 @@
 import styled from "styled-components";
 
+export default function Header() {
+  return (
+    <>
+      <Container>
+        <SikshaIcon src={"/img/siksha-icon.svg"} />
+        <SikshaTypo>식샤</SikshaTypo>
+        <Title>서울대학교 식단 알리미</Title>
+      </Container>
+    </>
+  );
+}
+
 const Container = styled.div`
   background: linear-gradient(268.79deg, #ff9a44 0%, #ff9a44 0.01%, #fe8b5b 50.28%, #fd7878 100%);
   height: 60px;
@@ -50,15 +62,3 @@ const Title = styled.div`
     display: none;
   }
 `;
-
-export default function Header() {
-  return (
-    <>
-      <Container>
-        <SikshaIcon src={"/img/siksha-icon.svg"} />
-        <SikshaTypo>식샤</SikshaTypo>
-        <Title>서울대학교 식단 알리미</Title>
-      </Container>
-    </>
-  );
-}

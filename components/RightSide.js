@@ -2,6 +2,15 @@ import styled from "styled-components";
 import Meal from "./Meal";
 import MenuList from "./MenuList";
 
+export default function RightSide() {
+  return (
+    <Container>
+      <Meal />
+      <MenuList />
+    </Container>
+  );
+}
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,12 +21,3 @@ const Container = styled.div`
   min-width: 785px;
   height: calc(100vh - 60px);
 `;
-
-export default function RightSide() {
-  return (
-    <Container>
-      <Meal />
-      <MenuList />
-    </Container>
-  );
-}

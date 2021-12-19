@@ -1,6 +1,31 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+const Download = () => {
+  return (
+    <Container>
+      <Link href={"https://wafflestudio.com/"}>
+        <Waffle src={"/img/waffle.svg"} />
+      </Link>
+      <DownloadLink>
+        <Link href={"https://play.google.com/store/apps/details?id=com.wafflestudio.siksha2"}>
+          <Flexbox>
+            <DownloadImg src={"/img/google-play.svg"} />
+            <StoreText>Google Play</StoreText>
+          </Flexbox>
+        </Link>
+        <Divider />
+        <Link href={"https://apps.apple.com/kr/app/id1032700617"}>
+          <Flexbox>
+            <DownloadImg src={"/img/app-store.svg"} />
+            <StoreText>App Store</StoreText>
+          </Flexbox>
+        </Link>
+      </DownloadLink>
+    </Container>
+  );
+};
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -54,30 +79,5 @@ const Waffle = styled.img`
     width: 223px;
   }
 `;
-
-const Download = () => {
-  return (
-    <Container>
-      <Link href={"https://wafflestudio.com/"}>
-        <Waffle src={"/img/waffle.svg"} />
-      </Link>
-      <DownloadLink>
-        <Link href={"https://play.google.com/store/apps/details?id=com.wafflestudio.siksha2"}>
-          <Flexbox>
-            <DownloadImg src={"/img/google-play.svg"} />
-            <StoreText>Google Play</StoreText>
-          </Flexbox>
-        </Link>
-        <Divider />
-        <Link href={"https://apps.apple.com/kr/app/id1032700617"}>
-          <Flexbox>
-            <DownloadImg src={"/img/app-store.svg"} />
-            <StoreText>App Store</StoreText>
-          </Flexbox>
-        </Link>
-      </DownloadLink>
-    </Container>
-  );
-};
 
 export default Download;
