@@ -102,9 +102,7 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
-        data[meal].map((restaurant) => (
-          <MenuCard data={restaurant} key={restaurant.id + meal} />
-        ))
+        data[meal].map((restaurant) => <MenuCard data={restaurant} key={restaurant.id + meal} />)
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}

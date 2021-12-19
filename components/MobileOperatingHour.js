@@ -58,52 +58,45 @@ export default function MobileOperatingHour({ type }) {
   return (
     <Container>
       <LeftSide>
-        <Text>
-          {type === "weekdays"
-            ? "주중"
-            : type === "saturday"
-            ? "토요일"
-            : "휴일"}
-        </Text>
+        <Text>{type === "weekdays" ? "주중" : type === "saturday" ? "토요일" : "휴일"}</Text>
       </LeftSide>
       <RightSide>
-        {infoData.etc.operating_hours &&
-          infoData.etc.operating_hours[type].length != 0 && (
-            <>
-              {infoData.etc.operating_hours[type].length == 3 ? (
-                <>
-                  <Hour>
-                    <Meal>아침</Meal>
-                    <Time>{infoData.etc.operating_hours[type][0]}</Time>
-                  </Hour>
-                  <Hour>
-                    <Meal>점심</Meal>
-                    <Time>{infoData.etc.operating_hours[type][1]}</Time>
-                  </Hour>
-                  <Hour>
-                    <Meal>저녁</Meal>
-                    <Time>{infoData.etc.operating_hours[type][2]}</Time>
-                  </Hour>
-                </>
-              ) : infoData.etc.operating_hours[type].length == 2 ? (
-                <>
-                  <Hour>
-                    <Meal>점심</Meal>
-                    <Time>{infoData.etc.operating_hours[type][0]}</Time>
-                  </Hour>
-                  <Hour>
-                    <Meal>저녁</Meal>
-                    <Time>{infoData.etc.operating_hours[type][1]}</Time>
-                  </Hour>
-                </>
-              ) : (
+        {infoData.etc.operating_hours && infoData.etc.operating_hours[type].length != 0 && (
+          <>
+            {infoData.etc.operating_hours[type].length == 3 ? (
+              <>
+                <Hour>
+                  <Meal>아침</Meal>
+                  <Time>{infoData.etc.operating_hours[type][0]}</Time>
+                </Hour>
+                <Hour>
+                  <Meal>점심</Meal>
+                  <Time>{infoData.etc.operating_hours[type][1]}</Time>
+                </Hour>
+                <Hour>
+                  <Meal>저녁</Meal>
+                  <Time>{infoData.etc.operating_hours[type][2]}</Time>
+                </Hour>
+              </>
+            ) : infoData.etc.operating_hours[type].length == 2 ? (
+              <>
                 <Hour>
                   <Meal>점심</Meal>
                   <Time>{infoData.etc.operating_hours[type][0]}</Time>
                 </Hour>
-              )}
-            </>
-          )}
+                <Hour>
+                  <Meal>저녁</Meal>
+                  <Time>{infoData.etc.operating_hours[type][1]}</Time>
+                </Hour>
+              </>
+            ) : (
+              <Hour>
+                <Meal>점심</Meal>
+                <Time>{infoData.etc.operating_hours[type][0]}</Time>
+              </Hour>
+            )}
+          </>
+        )}
       </RightSide>
     </Container>
   );

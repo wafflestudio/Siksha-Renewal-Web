@@ -1,6 +1,33 @@
 import styled from "styled-components";
 import { useStateContext } from "../hooks/ContextProvider";
 
+function scrollRestaurant(restaurant) {
+  let element = document.querySelector(".a" + restaurant);
+  if (!element) {
+    throw new Error("Cannot find element");
+  }
+  element.scrollIntoView({ behavior: "smooth" });
+}
+
+export default function RestaurantList() {
+  const state = useStateContext();
+
+  const { meal, data } = state;
+
+  return (
+    <Container>
+      <Restaurants>
+        {data[meal] &&
+          data[meal].map((restaurant) => (
+            <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
+              {restaurant.name_kr}
+            </Restaurant>
+          ))}
+      </Restaurants>
+    </Container>
+  );
+}
+
 const Container = styled.div`
   width: 100%;
   height: calc(100vh - 370px);
@@ -28,33 +55,3 @@ const Restaurant = styled.div`
     text-decoration-line: underline;
   }
 `;
-
-function scrollRestaurant(restaurant) {
-  let element = document.querySelector(".a" + restaurant);
-  if (!element) {
-    throw new Error("Cannot find element");
-  }
-  element.scrollIntoView({ behavior: "smooth" });
-}
-
-export default function RestaurantList() {
-  const state = useStateContext();
-
-  const { meal, data } = state;
-
-  return (
-    <Container>
-      <Restaurants>
-        {data[meal] &&
-          data[meal].map((restaurant) => (
-            <Restaurant
-              key={restaurant.id}
-              onClick={() => scrollRestaurant(restaurant.code)}
-            >
-              {restaurant.name_kr}
-            </Restaurant>
-          ))}
-      </Restaurants>
-    </Container>
-  );
-}

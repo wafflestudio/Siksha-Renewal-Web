@@ -43,9 +43,5 @@ export function getPrevMonth(date) {
 }
 
 export function formatPrice(price) {
-  return (
-    price.toString().slice(0, price.toString().length - 3) +
-    "," +
-    price.toString().slice(-3)
-  );
+  return price.toString().slice(0, price.toString().length - 3) + "," + price.toString().slice(-3);
 }

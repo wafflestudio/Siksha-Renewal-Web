@@ -11,13 +11,13 @@ const Container = styled.div`
   width: 785px;
   min-width: 785px;
   height: calc(100vh - 60px);
-`
+`;
 
 export default function RightSide() {
-    return (
-        <Container>
-            <Meal />
-            <MenuList />
-        </Container>
-    )
+  return (
+    <Container>
+      <Meal />
+      <MenuList />
+    </Container>
+  );
 }

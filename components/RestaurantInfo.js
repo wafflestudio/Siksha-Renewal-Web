@@ -152,10 +152,7 @@ export default function RestaurantInfo() {
 
     const map = new window.kakao.maps.Map(container, options);
 
-    const markerPosition = new window.kakao.maps.LatLng(
-      infoData.lat,
-      infoData.lng
-    );
+    const markerPosition = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
 
     const marker = new window.kakao.maps.Marker({
       position: markerPosition,

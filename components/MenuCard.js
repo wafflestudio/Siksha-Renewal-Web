@@ -149,8 +149,7 @@ const Menus = styled.div`
 export default function MenuCard({ data }) {
   const dispatch = useDispatchContext();
 
-  const setInfoData = (infoData) =>
-    dispatch({ type: "SET_INFODATA", infoData: infoData });
+  const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
   const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
 
   return (

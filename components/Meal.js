@@ -105,9 +105,7 @@ export default function Meal() {
   return (
     <Container>
       <MealButton onClick={() => setMeal("BR")}>
-        <Breakfast
-          src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"}
-        />
+        <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} />
         <MealText active={isBR}>아침</MealText>
       </MealButton>
       <MealButton onClick={() => setMeal("LU")}>
