@@ -47,16 +47,16 @@ export const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 export default function Home() {
   return (
     <>
-        <GlobalStyle />
-        <ContextProvider>
-            <Header />
-            <Body />
-        </ContextProvider>
+      <GlobalStyle />
+      <ContextProvider>
+        <Header />
+        <Body />
+      </ContextProvider>
     </>
-  )
+  );
 }
