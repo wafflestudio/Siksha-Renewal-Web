@@ -11,45 +11,6 @@ import MenuList from "./MenuList";
 import Calendar from "./Calendar";
 import RestaurantInfo from "./RestaurantInfo";
 
-const DesktopContainer = styled.div`
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const MobileContainer = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-const MobileCalendar = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    position: absolute;
-    top: 113px;
-    z-index: 100;
-  }
-`;
-
-const MobileInfo = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    z-index: 100;
-  }
-`;
-
 export default function Body() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
@@ -100,3 +61,42 @@ export default function Body() {
     </>
   );
 }
+
+const DesktopContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileContainer = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const MobileCalendar = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    position: absolute;
+    top: 113px;
+    z-index: 100;
+  }
+`;
+
+const MobileInfo = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    z-index: 100;
+  }
+`;
