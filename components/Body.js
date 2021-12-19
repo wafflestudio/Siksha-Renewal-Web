@@ -2,10 +2,10 @@ import styled from "styled-components";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Date from "./Date";
-import {useEffect, useState} from "react";
-import {formatISODate} from "../utils/hooks/FormatUtil";
+import { useEffect, useState } from "react";
+import { formatISODate } from "../hooks/FormatUtil";
 import axios from "axios";
-import {useDispatchContext, useStateContext} from "../utils/hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import Meal from "./Meal";
 import MenuList from "./MenuList";
 import Calendar from "./Calendar";
@@ -14,11 +14,11 @@ import RestaurantInfo from "./RestaurantInfo";
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: center;
-  
+
   @media (max-width: 768px) {
     display: none;
   }
-`
+`;
 
 const MobileContainer = styled.div`
   display: none;
@@ -28,7 +28,7 @@ const MobileContainer = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 
 const MobileCalendar = styled.div`
   display: none;
@@ -39,7 +39,7 @@ const MobileCalendar = styled.div`
     top: 113px;
     z-index: 100;
   }
-`
+`;
 
 const MobileInfo = styled.div`
   display: none;
@@ -48,55 +48,56 @@ const MobileInfo = styled.div`
     display: flex;
     z-index: 100;
   }
-`
+`;
 
 export default function Body() {
-    const state = useStateContext();
-    const dispatch = useDispatchContext();
+  const state = useStateContext();
+  const dispatch = useDispatchContext();
 
-    const { date, showCal, showInfo } = state;
-    const setLoading = (loading) => dispatch({ type: 'SET_LOADING', loading: loading })
+  const { date, showCal, showInfo } = state;
+  const setLoading = (loading) =>
+    dispatch({ type: "SET_LOADING", loading: loading });
 
-    useEffect(() => {
-        async function fetchData() {
-            const setData = (data) => dispatch({type: 'SET_DATA', data: data});
-            const dateString = formatISODate(date);
+  useEffect(() => {
+    async function fetchData() {
+      const setData = (data) => dispatch({ type: "SET_DATA", data: data });
+      const dateString = formatISODate(date);
 
-            setLoading(true);
-            try {
-                const res = await axios.get(`https://siksha-api.wafflestudio.com/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`)
-                setData(res.data.result[0]);
-            } catch (e) {
-                console.log(e);
-            }
-            setLoading(false);
-        }
-        fetchData();
-    }, [date])
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `https://siksha-api.wafflestudio.com/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`
+        );
+        setData(res.data.result[0]);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, [date]);
 
-    return (
-        <>
-            <DesktopContainer>
-                <LeftSide/>
-                <RightSide/>
-            </DesktopContainer>
-            <MobileContainer>
-                <Date/>
-                {
-                    showCal &&
-                    <MobileCalendar>
-                        <Calendar/>
-                    </MobileCalendar>
-                }
-                {
-                    showInfo &&
-                    <MobileInfo>
-                        <RestaurantInfo/>
-                    </MobileInfo>
-                }
-                <Meal/>
-                <MenuList/>
-            </MobileContainer>
-        </>
-    );
+  return (
+    <>
+      <DesktopContainer>
+        <LeftSide />
+        <RightSide />
+      </DesktopContainer>
+      <MobileContainer>
+        <Date />
+        {showCal && (
+          <MobileCalendar>
+            <Calendar />
+          </MobileCalendar>
+        )}
+        {showInfo && (
+          <MobileInfo>
+            <RestaurantInfo />
+          </MobileInfo>
+        )}
+        <Meal />
+        <MenuList />
+      </MobileContainer>
+    </>
+  );
 }

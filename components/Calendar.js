@@ -1,13 +1,6 @@
 import styled from "styled-components";
-import {
-  useDispatchContext,
-  useStateContext,
-} from "../utils/hooks/ContextProvider";
-import {
-  formatDate,
-  formatMonth,
-  formatWeekday,
-} from "../utils/hooks/FormatUtil";
+import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { formatDate, formatMonth, formatWeekday } from "../hooks/FormatUtil";
 import ReactCalendar from "react-calendar";
 import { useCallback } from "react";
 

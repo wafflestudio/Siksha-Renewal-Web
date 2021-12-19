@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {formatPrice} from "../utils/hooks/FormatUtil";
-import {useEffect, useState} from "react";
+import { formatPrice } from "../hooks/FormatUtil";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   padding: 8px 0 8px 0;
@@ -12,7 +12,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
   }
-`
+`;
 
 const MenuName = styled.div`
   font-weight: 400;
@@ -32,12 +32,12 @@ const MenuName = styled.div`
     align-items: flex-start;
     font-weight: 400;
   }
-`
+`;
 
 const MenuInfo = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const Dots = styled.div`
   font-size: 12px;
@@ -51,13 +51,13 @@ const Dots = styled.div`
   @media (max-width: 768px) {
     padding: 0 8px 4px 0;
   }
-  
+
   -ms-user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-`
+`;
 
 const Price = styled.div`
   font-size: 16px;
@@ -65,7 +65,7 @@ const Price = styled.div`
   font-weight: 400;
   width: 48px;
   display: flex;
-  justify-content: ${props => props.hasPrice ? 'flex-end' : 'center'};
+  justify-content: ${(props) => (props.hasPrice ? "flex-end" : "center")};
   padding-right: 26px;
 
   @media (max-width: 768px) {
@@ -76,7 +76,7 @@ const Price = styled.div`
     padding-top: 1px;
     font-weight: 400;
   }
-`
+`;
 
 const Rate = styled.div`
   display: flex;
@@ -88,8 +88,15 @@ const Rate = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${props => props.type ? 'white' : 'black'};
-  background: ${props => props.type ? props.type == "high" ? '#F47156' : props.type == "middle" ? '#F58625' : '#F5B52C' : 'white'};
+  color: ${(props) => (props.type ? "white" : "black")};
+  background: ${(props) =>
+    props.type
+      ? props.type == "high"
+        ? "#F47156"
+        : props.type == "middle"
+        ? "#F58625"
+        : "#F5B52C"
+      : "white"};
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -97,7 +104,7 @@ const Rate = styled.div`
     width: 42px;
     height: 17.5px;
   }
-`
+`;
 
 const NoMeat = styled.img`
   width: 19px;
@@ -108,35 +115,39 @@ const NoMeat = styled.img`
     padding-left: 5px;
     padding-bottom: 0;
   }
-`
+`;
 
 export default function Menu({ menu }) {
-    const [hasPrice, setHasPrice] = useState(true);
-    const [score, setScore] = useState(null);
+  const [hasPrice, setHasPrice] = useState(true);
+  const [score, setScore] = useState(null);
 
-    useEffect(() => {
-        if(!menu.price) setHasPrice(false);
-    }, [menu.price])
+  useEffect(() => {
+    if (!menu.price) setHasPrice(false);
+  }, [menu.price]);
 
-    useEffect(() => {
-        if(menu.score) {
-            if(menu.score >= 4) setScore("high")
-            else if(menu.score > 3) setScore("middle")
-            else setScore("low")
-        }
-    }, [menu.score])
+  useEffect(() => {
+    if (menu.score) {
+      if (menu.score >= 4) setScore("high");
+      else if (menu.score > 3) setScore("middle");
+      else setScore("low");
+    }
+  }, [menu.score]);
 
-    return (
-        <Container>
-            <MenuName>
-                {menu.name_kr}
-                {menu.etc && menu.etc.find(e => e == "No meat") && <NoMeat src={"/img/no-meat.svg"}/>}
-            </MenuName>
-            <MenuInfo>
-                <Dots>.........</Dots>
-                <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-                <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
-            </MenuInfo>
-        </Container>
-    )
+  return (
+    <Container>
+      <MenuName>
+        {menu.name_kr}
+        {menu.etc && menu.etc.find((e) => e == "No meat") && (
+          <NoMeat src={"/img/no-meat.svg"} />
+        )}
+      </MenuName>
+      <MenuInfo>
+        <Dots>.........</Dots>
+        <Price hasPrice={hasPrice}>
+          {menu.price ? formatPrice(menu.price) : "-"}
+        </Price>
+        <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+      </MenuInfo>
+    </Container>
+  );
 }
