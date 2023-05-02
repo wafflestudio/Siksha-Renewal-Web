@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { formatDate, formatMonth, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 export default function Calendar() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
   const { date, today } = state;
-  const setDate = (date) => dispatch({ type: "SET_DATE", date: date });
+  const setDate = useCallback((date) => dispatch({ type: "SET_DATE", date: date }), [dispatch]);
+
   const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
 
   const isToday = useCallback(
@@ -18,6 +19,11 @@ export default function Calendar() {
     },
     [today],
   );
+
+  useEffect(() => {
+    const current = new Date();
+    setDate(current);
+  }, [setDate]);
 
   return (
     <>
@@ -39,7 +45,6 @@ export default function Calendar() {
         />
       </DesktopContainer>
       <MobileContainer>
-        <DateText>{formatMonth(date)}</DateText>
         <ReactCalendar
           onChange={(day) => {
             setDate(day);
