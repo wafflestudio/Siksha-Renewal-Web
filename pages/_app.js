@@ -1,5 +1,5 @@
 import Head from "next/head";
-import "/styles/calendar.scss";
+import "/styles/calendar.css";
 
 function MyApp({ Component, pageProps }) {
   return (
