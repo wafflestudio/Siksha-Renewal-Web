@@ -15,7 +15,13 @@ export default function MenuCard({ data }) {
         <RestInfo>
           <Name>{data.name_kr}</Name>
           <Location>
-            <LocationIcon src={"/img/location.svg"} />
+            <LocationIcon
+              src={"/img/location.svg"}
+              onClick={() => {
+                setInfoData(data);
+                toggleInfo();
+              }}
+            />
             <LocationText>{data.addr.slice(19)}</LocationText>
           </Location>
         </RestInfo>

@@ -50,14 +50,14 @@ export default function Body() {
             <Calendar />
           </MobileCalendar>
         )}
-        {showInfo && (
-          <MobileInfo>
-            <RestaurantInfo />
-          </MobileInfo>
-        )}
         <Meal />
         <MenuList />
       </MobileContainer>
+      {showInfo && (
+        <Info>
+          <RestaurantInfo />
+        </Info>
+      )}
     </>
   );
 }
@@ -92,11 +92,7 @@ const MobileCalendar = styled.div`
   }
 `;
 
-const MobileInfo = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    z-index: 100;
-  }
+const Info = styled.div`
+  display: flex;
+  z-index: 100;
 `;
