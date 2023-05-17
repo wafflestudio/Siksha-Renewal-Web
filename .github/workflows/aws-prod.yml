@@ -1,8 +1,8 @@
-name: Deploy Dev
+name: Deploy Prod
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["prod"]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         run: yarn build
 
       - name: S3 Deploy
-        run: aws s3 sync ./out s3://siksha-dev.wafflestudio.com/ --acl bucket-owner-full-control
+        run: aws s3 sync ./out s3://siksha.wafflestudio.com/ --acl bucket-owner-full-control
         env: 
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -32,6 +32,6 @@ jobs:
       - name: Invalidate CloudFront Cache # 새로 리소스를 업데이트할 때 기존 캐시 무효화
         uses: chetan/invalidate-cloudfront-action@master
         env:
-          AWS_DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_ID_DEV }}
+          AWS_DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_ID }}
           PATHS: '/index.html'
         continue-on-error: true
