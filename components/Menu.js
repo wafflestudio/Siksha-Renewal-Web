@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
+import MenuDetailView from "./MenuDetailView";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
   const [score, setScore] = useState(null);
+  const [isShowingDetail, setIsShowingDetail] = useState(false);
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -19,7 +21,12 @@ export default function Menu({ menu }) {
   }, [menu.score]);
 
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        setIsShowingDetail(true);
+      }}
+    >
+      {isShowingDetail && <MenuDetailView menu={menu} />}
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
@@ -39,6 +46,7 @@ const Container = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
