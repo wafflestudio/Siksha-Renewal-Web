@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
 import { useDispatchContext } from "../hooks/ContextProvider";
+import MenuDetailView from "./MenuDetailView";
 
 export default function MenuCard({ data }) {
   const dispatch = useDispatchContext();
@@ -16,6 +17,7 @@ export default function MenuCard({ data }) {
           <Name>{data.name_kr}</Name>
           <Location>
             <LocationIcon
+              style={{ cursor: "pointer" }}
               src={"/img/location.svg"}
               onClick={() => {
                 setInfoData(data);
