@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
-import MenuDetailView from "./MenuDetailView";
+import { useRouter } from "next/router";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
   const [score, setScore] = useState(null);
-  const [isShowingDetail, setIsShowingDetail] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -23,10 +24,9 @@ export default function Menu({ menu }) {
   return (
     <Container
       onClick={() => {
-        setIsShowingDetail(true);
+        router.push(`/menu/${menu.id}`);
       }}
     >
-      {isShowingDetail && <MenuDetailView menu={menu} />}
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
