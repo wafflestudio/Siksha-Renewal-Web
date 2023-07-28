@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useRouter } from "next/Router";
+
 export default function Auth() {
+  const router = useRouter();
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
@@ -28,6 +31,7 @@ export default function Auth() {
           .then((res: any) => {
             console.log(res);
             localStorage.setItem("access_token", res.data.access_token);
+            router.push("/");
           })
           .catch((res: any) => {
             console.log(res);
