@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect } from "react";
-
 export default function Auth() {
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -22,10 +21,13 @@ export default function Auth() {
           .post(
             `https://siksha-api-dev.wafflestudio.com/auth/login/kakao`,
             {},
-            { params: { "kakao-token": access_token } },
+            {
+              headers: { "kakao-token": `Bearer ${access_token}` },
+            },
           )
           .then((res: any) => {
             console.log(res);
+            localStorage.setItem("access_token", res.data.access_token);
           })
           .catch((res: any) => {
             console.log(res);
