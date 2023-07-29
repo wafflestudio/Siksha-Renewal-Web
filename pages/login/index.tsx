@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Header from "../../components/Header";
 
 export default function Login() {
   const handleKakaoLogin = () => {
@@ -12,9 +13,7 @@ export default function Login() {
 
   return (
     <LoginPage>
-      <LoginButton>로그인</LoginButton>
-      <SocialKakao onClick={handleKakaoLogin}>Login with Kakao</SocialKakao>
-      <SocialGoogle>Login with Google</SocialGoogle>
+      <Header />
     </LoginPage>
   );
 }
@@ -25,6 +24,9 @@ const LoginPage = styled.div`
   height: 100vh;
   justify-content: center;
   background-color: white;
+  margin: 0;
+  padding: 0;
+  -ms-overflow-style: none;
 `;
 
 const LoginButton = styled.div`

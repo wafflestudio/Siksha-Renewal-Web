@@ -23,8 +23,8 @@ export default function Header() {
 const LoginButton = styled.button``;
 const Container = styled.div`
   background: linear-gradient(268.79deg, #ff9a44 0%, #ff9a44 0.01%, #fe8b5b 50.28%, #fd7878 100%);
-  height: 60px;
-  width: 100%;
+  height: 271px;
+  width: 100vw;
   display: flex;
   align-items: center;
 
