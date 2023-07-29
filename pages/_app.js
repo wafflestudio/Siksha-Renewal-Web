@@ -1,7 +1,27 @@
 import Head from "next/head";
 import "/styles/calendar.css";
+import axios from "axios";
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+    console.log(access_token);
+    axios
+      .post(
+        "https://siksha-api-dev.wafflestudio.com/auth/refresh",
+        {},
+        { headers: { "authorization-token": `Bearer ${access_token}` } },
+      )
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("access_token", res.data.access_token);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+
   return (
     <>
       <Head>
