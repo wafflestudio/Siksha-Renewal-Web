@@ -7,13 +7,8 @@
     "jsx": "preserve", // use typescript to transpile jsx to js
     "target": "es2015", // specify ECMAScript target version
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
-    "lib": [
-      "es2015"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
+    "lib": ["es2015"],
+    "typeRoots": ["node_modules/@types", "types"],
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -24,10 +19,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": [
-    "./src/"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["./src/"],
+  "exclude": ["node_modules"]
 }

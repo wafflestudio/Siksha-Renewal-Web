@@ -1,23 +1,22 @@
-/*"use client";*/
 import styled from "styled-components";
 
 export default function Login() {
-    const handleKakaoLogin = () => {
-        const restApiKey : string = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
-        const redirectUri : string = process.env.NEXT_PUBLIC_REDIRECTURI;
-        const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${restApiKey}&redirect_uri=${redirectUri}`;
+  const handleKakaoLogin = () => {
+    const restApiKey: string = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
+    const redirectUri: string = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${restApiKey}&redirect_uri=${redirectUri}`;
 
-        window.location.href = kakaoUrl;
-        console.log(restApiKey);
-    };
+    window.location.href = kakaoUrl;
+    console.log(restApiKey);
+  };
 
-    return (
-        <LoginPage>
-            <LoginButton>로그인</LoginButton>
-            <SocialKakao onClick={handleKakaoLogin}>Login with Kakao</SocialKakao>
-            <SocialGoogle>Login with Google</SocialGoogle>
-        </LoginPage>
-    );
+  return (
+    <LoginPage>
+      <LoginButton>로그인</LoginButton>
+      <SocialKakao onClick={handleKakaoLogin}>Login with Kakao</SocialKakao>
+      <SocialGoogle>Login with Google</SocialGoogle>
+    </LoginPage>
+  );
 }
 
 const LoginPage = styled.div`

@@ -1,17 +1,26 @@
 import styled from "styled-components";
+import { useRouter } from "next/Router";
 
 export default function Header() {
+  const router = useRouter();
   return (
     <>
       <Container>
         <SikshaIcon src={"/img/siksha-icon.svg"} />
         <SikshaTypo>식샤</SikshaTypo>
         <Title>서울대학교 식단 알리미</Title>
+        <LoginButton
+          onClick={() => {
+            router.push("/login");
+          }}
+        >
+          로그인
+        </LoginButton>
       </Container>
     </>
   );
 }
-
+const LoginButton = styled.button``;
 const Container = styled.div`
   background: linear-gradient(268.79deg, #ff9a44 0%, #ff9a44 0.01%, #fe8b5b 50.28%, #fd7878 100%);
   height: 60px;
