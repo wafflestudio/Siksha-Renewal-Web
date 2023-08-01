@@ -75,6 +75,7 @@ const DesktopContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 
   @media (max-width: 768px) {
     display: none;
@@ -108,7 +109,7 @@ const DateText = styled.div`
   line-height: 17px;
   color: #f0976c;
   position: absolute;
-  top: 93px;
+  top: 31px;
   white-space: nowrap;
 
   @media (max-width: 768px) {

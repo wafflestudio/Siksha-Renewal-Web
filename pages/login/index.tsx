@@ -16,38 +16,63 @@ export default function Login() {
     <>
       <GlobalStyle />
       <Header />
-      <SocialKakao
-        onClick={() => {
-          handleKakaoLogin();
-        }}
-      >
-        Login with Kakao
-      </SocialKakao>
-      <SocialGoogle>Login with Google</SocialGoogle>
+      <Container>
+        <LoginTitle>로그인</LoginTitle>
+        <SocialKakao
+          onClick={() => {
+            handleKakaoLogin();
+          }}
+        >
+          <KakaoUnion src={"/img/kakaoUnion.svg"}></KakaoUnion>
+          Login with Kakao
+        </SocialKakao>
+        <SocialGoogle>Login with Google</SocialGoogle>
+      </Container>
     </>
   );
 }
-
-const LoginButton = styled.div`
-  display: inline;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 22.7px;
-  width: 84px;
-  height: 23px;
+const Container = styled.div`
   text-align: center;
+`;
+
+const LoginTitle = styled.div`
+  font-family: NanumSquare;
+  font-weight: 400;
+  font-size: 20px;
   color: #ff9522;
-  top: 17%;
-  position: absolute;
+  padding-top: 139px;
 `;
 
 const SocialKakao = styled.div`
   width: 300px;
   height: 45px;
   background-color: #fee500;
+  margin: auto;
+  margin-top: 128px;
+  vertical-align: center;
+  line-height: 45px;
+  font-family: NanumSquare;
+  font-size: 14px;
+  color: #181600;
+  position: relative;
+  cursor: pointer;
+`;
+const KakaoUnion = styled.img`
+  width: 19px;
+  height: 17px;
+  position: absolute;
+  top: 14px;
+  left: 14px;
 `;
 const SocialGoogle = styled.div`
   width: 300px;
   height: 45px;
   background-color: #ff9522;
+  margin: auto;
+  margin-top: 18px;
+  vertical-align: center;
+  line-height: 45px;
+  font-family: NanumSquare;
+  font-size: 14px;
+  color: #ffffff;
 `;
