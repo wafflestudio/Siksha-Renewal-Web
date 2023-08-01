@@ -41,5 +41,5 @@ export default function Auth() {
         console.log(res);
       });
   }, []);
-  return <>F</>;
+  return <>kakao</>;
 }

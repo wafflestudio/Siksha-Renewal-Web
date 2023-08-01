@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Header from "../../components/Header";
+import { GlobalStyle } from "../../styles/globalstyle";
 
 export default function Login() {
   const handleKakaoLogin = () => {
@@ -12,22 +13,20 @@ export default function Login() {
   };
 
   return (
-    <LoginPage>
+    <>
+      <GlobalStyle />
       <Header />
-    </LoginPage>
+      <SocialKakao
+        onClick={() => {
+          handleKakaoLogin();
+        }}
+      >
+        Login with Kakao
+      </SocialKakao>
+      <SocialGoogle>Login with Google</SocialGoogle>
+    </>
   );
 }
-
-const LoginPage = styled.div`
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  background-color: white;
-  margin: 0;
-  padding: 0;
-  -ms-overflow-style: none;
-`;
 
 const LoginButton = styled.div`
   display: inline;
