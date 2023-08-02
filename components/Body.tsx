@@ -10,6 +10,7 @@ import Meal from "./Meal";
 import MenuList from "./MenuList";
 import Calendar from "./Calendar";
 import RestaurantInfo from "./RestaurantInfo";
+import APIendpoint from "../constants/constants";
 
 export default function Body() {
   const state = useStateContext();
@@ -26,7 +27,7 @@ export default function Body() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `https://siksha-api.wafflestudio.com/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
+          `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
         );
         setData(res.data.result[0]);
       } catch (e) {
