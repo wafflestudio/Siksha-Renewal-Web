@@ -26,7 +26,10 @@ export default function Login() {
           <KakaoUnion src={"/img/kakaoUnion.svg"}></KakaoUnion>
           Login with Kakao
         </SocialKakao>
-        <SocialGoogle>Login with Google</SocialGoogle>
+        <SocialGoogle>
+          <GoogleUnion src={"/img/googleUnion.svg"}></GoogleUnion>
+          Login with Google
+        </SocialGoogle>
       </Container>
     </>
   );
@@ -56,6 +59,7 @@ const SocialKakao = styled.div`
   color: #181600;
   position: relative;
   cursor: pointer;
+  border-radius: 6px;
 `;
 const KakaoUnion = styled.img`
   width: 19px;
@@ -67,12 +71,21 @@ const KakaoUnion = styled.img`
 const SocialGoogle = styled.div`
   width: 300px;
   height: 45px;
-  background-color: #ff9522;
   margin: auto;
   margin-top: 18px;
   vertical-align: center;
   line-height: 45px;
   font-family: NanumSquare;
   font-size: 14px;
-  color: #ffffff;
+  color: #393939;
+  border-radius: 6px;
+  border: 1px solid #b7b7b7;
+  position: relative;
+`;
+const GoogleUnion = styled.img`
+  width: 23px;
+  height: 41px;
+  position: absolute;
+  top: 2px;
+  left: 10.5px;
 `;
