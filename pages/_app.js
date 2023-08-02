@@ -2,6 +2,7 @@ import Head from "next/head";
 import "/styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
+import APIendpoint from "../constants/constants";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -9,7 +10,7 @@ function MyApp({ Component, pageProps }) {
     console.log(access_token);
     axios
       .post(
-        "https://siksha-api-dev.wafflestudio.com/auth/refresh",
+        `${APIendpoint()}/auth/refresh`,
         {},
         { headers: { "authorization-token": `Bearer ${access_token}` } },
       )

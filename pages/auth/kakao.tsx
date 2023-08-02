@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useRouter } from "next/Router";
+import APIendpoint from "../../constants/constants";
 
 export default function Auth() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function Auth() {
         const { access_token } = res.data;
         axios
           .post(
-            `https://siksha-api-dev.wafflestudio.com/auth/login/kakao`,
+            `${APIendpoint()}/auth/login/kakao`,
             {},
             {
               headers: { "kakao-token": `Bearer ${access_token}` },
