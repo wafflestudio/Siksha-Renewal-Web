@@ -65,6 +65,7 @@ export default function Body() {
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: center;
+  height: calc(100vh - 100px);
 
   @media (max-width: 768px) {
     display: none;
