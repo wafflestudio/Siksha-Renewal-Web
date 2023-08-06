@@ -1,23 +1,75 @@
 import styled from "styled-components";
+import { useRouter } from "next/Router";
+import { useEffect, useState } from "react";
 
 export default function Header() {
-  return (
-    <>
-      <Container>
-        <SikshaIcon src={"/img/siksha-icon.svg"} />
-        <SikshaTypo>식샤</SikshaTypo>
-        <Title>서울대학교 식단 알리미</Title>
-      </Container>
-    </>
-  );
+  const router = useRouter();
+  const [loginStatus, setLoginStatus] = useState<boolean>(false);
+  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
+  useEffect(() => {
+    setLoginStatus(localStorage.getItem("access_token") ? true : false);
+    setIsLoginPage(router.asPath.localeCompare("/login/") === 0);
+  }, []);
+  if (loginStatus !== undefined) {
+    return (
+      <>
+        <Container>
+          <SikshaIcon
+            src={"/img/siksha-splash.png"}
+            onClick={() => {
+              router.push("/");
+            }}
+          />
+          <Title
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            서울대학교 식단 알리미
+          </Title>
+          {isLoginPage ? (
+            <></>
+          ) : loginStatus ? (
+            <LoginButton
+              onClick={() => {
+                localStorage.removeItem("access_token");
+                setLoginStatus(false);
+              }}
+            >
+              로그아웃
+            </LoginButton>
+          ) : (
+            <LoginButton
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              로그인
+            </LoginButton>
+          )}
+        </Container>
+      </>
+    );
+  }
 }
-
+const LoginButton = styled.div`
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: NanumSquare;
+  font-weight: 400;
+  color: #ffffff;
+  position: absolute;
+  bottom: 16px;
+  right: calc(5vw);
+`;
 const Container = styled.div`
-  background: linear-gradient(268.79deg, #ff9a44 0%, #ff9a44 0.01%, #fe8b5b 50.28%, #fd7878 100%);
-  height: 60px;
-  width: 100%;
+  background: #ff9522;
+  height: 25vh;
+  width: 100vw;
   display: flex;
-  align-items: center;
+  max-height: 271px;
+  position: relative;
 
   @media (max-width: 768px) {
     background: #fe8c59;
@@ -27,9 +79,12 @@ const Container = styled.div`
 `;
 
 const SikshaIcon = styled.img`
-  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
-  padding-left: calc((100vw - 1155px) / 2);
-  width: 64px;
+  position: absolute;
+  bottom: 21.5px;
+  left: calc((100vw - 1155px) / 2);
+  width: 86px;
+  height: 50px;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     padding: 0;
@@ -37,26 +92,17 @@ const SikshaIcon = styled.img`
   }
 `;
 
-const SikshaTypo = styled.div`
-  padding-left: 16px;
-  font-size: 36px;
-  line-height: 48px;
-  font-weight: 700;
-  color: #ffffff;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const Title = styled.div`
+  font-family: "NIXGONFONTS V2.0";
   font-size: 20px;
-  line-height: 23px;
+  line-height: 20px;
   color: white;
   font-weight: 400;
-  padding-top: 8px;
-  padding-left: 12px;
+  bottom: 27px;
+  position: absolute;
+  left: calc((100vw - 1155px) / 2 + 118.5px);
   white-space: nowrap;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     display: none;

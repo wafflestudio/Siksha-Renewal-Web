@@ -16,6 +16,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.14.2
+
+      - name: .env setting
+        run: |
+          echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
+          echo "NEXT_PUBLIC_REDIRECTURI=${{ secrets.NEXT_PUBLIC_REDIRECTURI }}" >> .env
         
       - name: Install dependencies
         run: yarn install

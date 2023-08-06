@@ -19,5 +19,5 @@ const Container = styled.div`
   padding-left: 15px;
   width: 785px;
   min-width: 785px;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 100px);
 `;
