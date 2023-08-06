@@ -23,6 +23,11 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: .env setting
+        run: |
+            echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
+            echo "NEXT_PUBLIC_REDIRECTURI=${{ secrets.NEXT_PUBLIC_REDIRECTURI }}" >> .env
+
       - name: S3 Deploy
         run: aws s3 sync ./out s3://siksha-dev.wafflestudio.com/ --acl bucket-owner-full-control
         env: 
