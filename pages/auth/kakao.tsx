@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useRouter } from "next/Router";
+import { useRouter } from "next/router";
 import APIendpoint from "../../constants/constants";
 
 export default function Auth() {
