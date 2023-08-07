@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRouter } from "next/Router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Header() {
