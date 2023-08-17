@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import APIendpoint from "../../constants/constants";
+import APIendpoint from "../../../constants/constants";
 import styled from "styled-components";
 
 export default function Auth() {
