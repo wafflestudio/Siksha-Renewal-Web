@@ -20,7 +20,7 @@
     "cross-env": "^7.0.3",
     "next": "^13.0.2",
     "react": "^18.2.0",
-    "react-calendar": "^3.4.0",
+    "react-calendar": "^4.6.0",
     "react-dom": "^18.2.0",
     "sass": "^1.62.1",
     "source-map-loader": "^4.0.1",
