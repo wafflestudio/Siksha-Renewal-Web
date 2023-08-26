@@ -21,11 +21,10 @@ export default function ReviewDistribution({
         <Stars score={score} />
       </ScoreContainer>
       <DistributionChart>
-        <ReviewTotalCountText>총 {totalReviewCount}명이 평가했어요!</ReviewTotalCountText>
-        {distribution.reverse().map((count, i) => (
+        {distribution.map((count, i) => (
           <DistributionBarWithText>
             <DistributionText key={i}>
-              {5 - i}
+              {i + 1}
               <img
                 src="/img/star-neutral-base.svg"
                 width="8px"
@@ -36,6 +35,7 @@ export default function ReviewDistribution({
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
         ))}
+        <ReviewTotalCountText>총 {totalReviewCount}명이 평가했어요!</ReviewTotalCountText>
       </DistributionChart>
     </Container>
   );
@@ -68,7 +68,7 @@ const ScoreContainer = styled.div`
 
 const DistributionChart = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   width: 100%;
   gap: 8px;
 `;

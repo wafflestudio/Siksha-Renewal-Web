@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import { set } from "lodash";
+import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 
 interface MenuType {
   id: number;
@@ -47,15 +48,23 @@ interface RestaurantType {
   updated_at: string;
 }
 
+interface ReviewListType {
+  result: ReviewType[];
+  total_count: number;
+}
+
 export default function Menu() {
   const router = useRouter();
   const { id } = router.query;
   const [isLoading, setLoading] = useState(false);
-  const [reviews, setReviews] = useState<ReviewType[]>([]);
+  const [reviews, setReviews] = useState<ReviewListType>({
+    result: [],
+    total_count: 0,
+  });
   const [menu, setMenu] = useState<MenuType>();
   const [restaurantName, setRestaurantName] = useState("");
-  const [totalReviewCount, setTotalReviewCount] = useState(0);
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
+  const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
 
   useEffect(() => {
     if (!id) {
@@ -86,8 +95,7 @@ export default function Menu() {
         const res = await axios
           .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=100`)
           .then((res) => {
-            setReviews(res.data.result);
-            setTotalReviewCount(res.data.total_count);
+            setReviews(res.data);
           });
       } catch (e) {
         console.log(e);
@@ -127,6 +135,10 @@ export default function Menu() {
     fetchMenu();
   }, [id, setLoading]);
 
+  const handleReviewPostButtonClick = () => {
+    setReviewPostModalOpen(true);
+  };
+
   return (
     <>
       <Header />
@@ -138,22 +150,33 @@ export default function Menu() {
               <MenuSubTitle>{restaurantName}</MenuSubTitle>
             </MenuHeader>
             <ReviewDistribution
-              totalReviewCount={totalReviewCount}
+              totalReviewCount={reviews.total_count}
               score={menu.score || 0}
               distribution={reviewDistribution}
             />
           </MenuContainer>
-          <ReviewContainer>
-            <ReviewHeader>
-              <ReviewTitle>리뷰</ReviewTitle>
-              <ReviewPostButton>나의 평가 남기기</ReviewPostButton>
-            </ReviewHeader>
-            <ReviewList>
-              {reviews.length > 0 &&
-                reviews.map((review) => <ReviewItem key={review.id} review={review} />)}
-              {reviews.length === 0 && <div>리뷰가 없습니다.</div>}
-            </ReviewList>
-          </ReviewContainer>
+          {!isReviewPostModalOpen && (
+            <ReviewContainer>
+              <ReviewHeader>
+                <ReviewTitle>리뷰</ReviewTitle>
+                <ReviewPostButton onClick={handleReviewPostButtonClick}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+              </ReviewHeader>
+              <ReviewList>
+                {reviews.result.length > 0 &&
+                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
+                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+              </ReviewList>
+            </ReviewContainer>
+          )}
+          {isReviewPostModalOpen && (
+            <ReviewPostModal
+              isOpen={isReviewPostModalOpen}
+              menuName={menu.name_kr}
+              onClose={() => setReviewPostModalOpen(false)}
+            />
+          )}
         </Info>
       )}
     </>
@@ -179,7 +202,7 @@ const ReviewContainer = styled.div`
   position: absolute;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
-  padding-right: 150px;
+  padding-right: 50px;
   padding-top: 50px;
   min-height: 100%;
 `;
@@ -190,6 +213,7 @@ const ReviewList = styled.div`
   width: 100%;
   max-height: 800px;
   overflow-y: scroll;
+  overflow-x: auto;
 `;
 
 const MenuHeader = styled.div`
