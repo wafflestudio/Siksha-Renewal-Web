@@ -173,7 +173,10 @@ export default function Menu() {
           {isReviewPostModalOpen && (
             <ReviewPostModal
               isOpen={isReviewPostModalOpen}
-              menuName={menu.name_kr}
+              menu={{
+                menuName: menu.name_kr,
+                menuId: menu.id,
+              }}
               onClose={() => setReviewPostModalOpen(false)}
             />
           )}

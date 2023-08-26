@@ -1,11 +1,50 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import APIendpoint from "../../constants/constants";
+import axios from "axios";
 
-export default function ReviewPostModal({ isOpen, menuName, onClose }) {
+export default function ReviewPostModal({
+  isOpen,
+  menu,
+  onClose,
+}: {
+  isOpen: boolean;
+  menu: {
+    menuId: number;
+    menuName: string;
+  };
+  onClose: () => void;
+}) {
   const [score, setScore] = useState(3);
   const [comment, setComment] = useState("");
 
   const MAX_COMMENT_LENGTH = 150;
+
+  const accessToken = localStorage.getItem("access_token");
+
+  const onReviewSubmit = async () => {
+    await axios
+      .post(
+        `${APIendpoint()}/reviews`,
+        {
+          menu_id: menu.menuId,
+          score,
+          comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert(`리뷰 등록에 실패했습니다.`);
+      });
+  };
 
   if (!isOpen) return null;
   return (
@@ -17,7 +56,7 @@ export default function ReviewPostModal({ isOpen, menuName, onClose }) {
           marginBottom: "35px",
         }}
       >
-        ' <MenuNameText>{menuName} </MenuNameText>' <ReviewTitle>는 어땠나요?</ReviewTitle>
+        ' <MenuNameText>{menu.menuName} </MenuNameText>' <ReviewTitle>는 어땠나요?</ReviewTitle>
       </div>
       <span
         style={{
@@ -85,7 +124,7 @@ export default function ReviewPostModal({ isOpen, menuName, onClose }) {
             style={{
               color: "#707070",
               fontSize: "14px",
-              right: "40px",
+              right: "60px",
               bottom: "35px",
               zIndex: 1,
               position: "absolute",
@@ -96,7 +135,14 @@ export default function ReviewPostModal({ isOpen, menuName, onClose }) {
         </div>
       </div>
 
-      <ReviewPostButton>평가 등록</ReviewPostButton>
+      <ReviewPostButton
+        onClick={() => {
+          onReviewSubmit();
+        }}
+        disabled={comment.length === 0}
+      >
+        평가 등록
+      </ReviewPostButton>
     </Container>
   );
 }
