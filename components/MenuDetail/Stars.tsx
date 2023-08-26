@@ -21,7 +21,7 @@ const StarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 60px;
   gap: 1px;
 `;
 

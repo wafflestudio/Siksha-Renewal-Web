@@ -5,6 +5,8 @@ import axios from "axios";
 import APIendpoint from "../../constants/constants";
 import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
+import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
+import { set } from "lodash";
 
 interface MenuType {
   id: number;
@@ -52,6 +54,8 @@ export default function Menu() {
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [menu, setMenu] = useState<MenuType>();
   const [restaurantName, setRestaurantName] = useState("");
+  const [totalReviewCount, setTotalReviewCount] = useState(0);
+  const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
 
   useEffect(() => {
     if (!id) {
@@ -67,6 +71,9 @@ export default function Menu() {
           fetchRestaurantName({
             restaurantId: res.data.restaurant_id,
           });
+          fetchReviewDistribution({
+            menuId: res.data.id,
+          });
         });
       } catch (e) {
         console.log(e);
@@ -77,9 +84,10 @@ export default function Menu() {
       setLoading(true);
       try {
         const res = await axios
-          .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=5`)
+          .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=100`)
           .then((res) => {
             setReviews(res.data.result);
+            setTotalReviewCount(res.data.total_count);
           });
       } catch (e) {
         console.log(e);
@@ -105,6 +113,17 @@ export default function Menu() {
       }
     };
 
+    const fetchReviewDistribution = async ({ menuId }: { menuId: number }) => {
+      try {
+        await axios.get(`${APIendpoint()}/reviews/dist?menu_id=${menuId}`).then((res) => {
+          setReviewDistribution(res.data.dist);
+        });
+      } catch (e) {
+        console.log(e);
+        router.push("/");
+      }
+    };
+
     fetchMenu();
   }, [id, setLoading]);
 
@@ -118,15 +137,22 @@ export default function Menu() {
               <MenuTitle>{menu.name_kr}</MenuTitle>
               <MenuSubTitle>{restaurantName}</MenuSubTitle>
             </MenuHeader>
+            <ReviewDistribution
+              totalReviewCount={totalReviewCount}
+              score={menu.score || 0}
+              distribution={reviewDistribution}
+            />
           </MenuContainer>
           <ReviewContainer>
             <ReviewHeader>
               <ReviewTitle>리뷰</ReviewTitle>
               <ReviewPostButton>나의 평가 남기기</ReviewPostButton>
             </ReviewHeader>
-            {reviews.length > 0 &&
-              reviews.map((review) => <ReviewItem key={review.id} review={review} />)}
-            {reviews.length === 0 && <div>리뷰가 없습니다.</div>}
+            <ReviewList>
+              {reviews.length > 0 &&
+                reviews.map((review) => <ReviewItem key={review.id} review={review} />)}
+              {reviews.length === 0 && <div>리뷰가 없습니다.</div>}
+            </ReviewList>
           </ReviewContainer>
         </Info>
       )}
@@ -139,8 +165,9 @@ const Info = styled.div`
 `;
 
 const MenuContainer = styled.div`
-  display: flex;
   padding-top: 40px;
+  left: calc((100vw - 1200px) / 2);
+  position: absolute;
 `;
 
 const ReviewContainer = styled.div`
@@ -155,6 +182,14 @@ const ReviewContainer = styled.div`
   padding-right: 150px;
   padding-top: 50px;
   min-height: 100%;
+`;
+
+const ReviewList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 800px;
+  overflow-y: scroll;
 `;
 
 const MenuHeader = styled.div`
