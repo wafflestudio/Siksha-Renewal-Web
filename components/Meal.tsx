@@ -112,7 +112,7 @@ const MealText = styled.div`
   font-size: 15px;
   line-height: 17px;
   font-weight: 400;
-  color: ${(props) => (props.active ? "#FE8C59" : "#919191")};
+  color: ${(props: { active: boolean }) => (props.active ? "#FE8C59" : "#919191")};
 
   @media (max-width: 768px) {
     font-size: 10px;

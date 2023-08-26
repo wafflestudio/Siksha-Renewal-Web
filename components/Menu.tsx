@@ -28,6 +28,8 @@ export default function Menu({ menu }) {
         <Dots>.........</Dots>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+        <HeartIcon src={"/img/heart-off.svg"}/>
+        <Likes>42개</Likes>
       </MenuInfo>
     </Container>
   );
@@ -96,7 +98,7 @@ const Price = styled.div`
   font-weight: 400;
   width: 48px;
   display: flex;
-  justify-content: ${(props) => (props.hasPrice ? "flex-end" : "center")};
+  justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
   padding-right: 26px;
 
   @media (max-width: 768px) {
@@ -119,14 +121,14 @@ const Rate = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${(props) => (props.type ? "white" : "black")};
+  color: ${(props: { type: "high" | "middle" }) => (props.type ? "white" : "black")};
   background: ${(props) =>
     props.type
       ? props.type == "high"
         ? "#F47156"
         : props.type == "middle"
-        ? "#F58625"
-        : "#F5B52C"
+          ? "#F58625"
+          : "#F5B52C"
       : "white"};
 
   @media (max-width: 768px) {
@@ -147,3 +149,27 @@ const NoMeat = styled.img`
     padding-bottom: 0;
   }
 `;
+
+const HeartIcon = styled.img`
+  width: 18px;
+  height: 18px;
+  padding-left: 12px;
+`;
+
+const Likes = styled.div`
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 400;
+  display: flex;
+  padding-left: 12px;
+  color: #B7B7B7;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 400;
+    padding-left: 12px;
+    color: #B7B7B7;
+  }
+`
+
