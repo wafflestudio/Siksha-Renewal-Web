@@ -9,8 +9,6 @@ export default function Calendar() {
   const dispatch = useDispatchContext();
 
   const { date, today } = state;
-  const [yesterday, setYesterday] = useState(new Date(date.valueOf() - 86400000));
-  const [tomorrow, setTomorrow] = useState(new Date(date.valueOf() + 86400000));
   const setDate = useCallback((date) => dispatch({ type: "SET_DATE", date: date }), [dispatch]);
 
   const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
@@ -26,28 +24,16 @@ export default function Calendar() {
     const current = new Date();
     setDate(current);
   }, [setDate]);
-  useEffect(() => {
-    yesterday.setFullYear(date.getFullYear());
-    tomorrow.setFullYear(date.getFullYear());
-    yesterday.setDate(1); // date initialize
-    tomorrow.setDate(1);
-    yesterday.setMonth(date.getMonth());
-    tomorrow.setMonth(date.getMonth());
-    yesterday.setDate(date.getDate() - 1);
-    tomorrow.setDate(date.getDate() + 1);
-  }, [date]);
 
   return (
     <>
       <DesktopContainer>
-        <DateNavi>
-          {formatDate(yesterday)}
-          {formatDate(date)}
-          {formatDate(tomorrow)}
-        </DateNavi>
         <DateText>{formatDate(date)}</DateText>
         <ReactCalendar
-          onChange={(day: Date) => setDate(day)}
+          onChange={(day: Date) => {
+            setDate(day);
+            console.log(day);
+          }}
           onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
           defaultActiveStartDate={today}
           value={date}
@@ -118,23 +104,6 @@ const MobileContainer = styled.div`
 
 const Arrow = styled.img`
   cursor: pointer;
-`;
-
-const DateNavi = styled.div`
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 17px;
-  color: black;
-  position: absolute;
-  top: -30px;
-  left: 1000px;
-  white-space: nowrap;
-
-  @media (max-width: 768px) {
-    color: #fe8c59;
-    cursor: pointer;
-    top: 4px;
-  }
 `;
 
 const DateText = styled.div`
