@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Stars from "./Stars";
-import { ReviewType } from "../../hooks/useMenuDetail";
+import { ReviewType } from "../../pages/menu/[id]";
 
 export function ReviewItem({ review }: { review: ReviewType }) {
   return (
@@ -54,11 +54,12 @@ const ReviewContent = styled.div`
   border-radius: 8px;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
   min-height: 100px;
-  margin-top" 4px;
+  margin-top: 4px;
   padding-top: 14px;
   padding-left: 22px;
   padding-right: 22px;
   width: 100%;
+  word-break: break-all;
 `;
 
 const ReviewerIdText = styled.div`
@@ -72,6 +73,7 @@ const ReviewDate = styled.div`
   color: #919191;
   width: 100px;
   text-align: right;
+  vertical-align: bottom;
 `;
 
 export default ReviewItem;
