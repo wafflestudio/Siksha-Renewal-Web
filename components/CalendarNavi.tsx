@@ -39,7 +39,8 @@ const DateNavi = styled.div`
   font-size: 15px;
   line-height: 17px;
   color: black;
-  width: 600px;
+  max-width: 600px;
+  width: 40vw;
   white-space: nowrap;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
