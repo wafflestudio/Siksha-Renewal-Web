@@ -81,7 +81,7 @@ const Container = styled.div`
 const SikshaIcon = styled.img`
   position: absolute;
   bottom: 21.5px;
-  left: calc((100vw - 1155px) / 2);
+  left: calc(max((100vw - 1155px), 0px) / 2);
   width: 86px;
   height: 50px;
   cursor: pointer;
@@ -100,7 +100,7 @@ const Title = styled.div`
   font-weight: 400;
   bottom: 27px;
   position: absolute;
-  left: calc((100vw - 1155px) / 2 + 118.5px);
+  left: calc(max((100vw - 1155px), 0px) / 2 + 118.5px);
   white-space: nowrap;
   cursor: pointer;
 
