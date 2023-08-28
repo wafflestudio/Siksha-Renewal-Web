@@ -8,6 +8,7 @@ import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import { set } from "lodash";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
+import { GlobalStyle } from "../../styles/globalstyle";
 
 interface MenuType {
   id: number;
@@ -141,6 +142,7 @@ export default function Menu() {
 
   return (
     <>
+      <GlobalStyle />
       <Header />
       {!isLoading && !!menu && (
         <Info>
@@ -232,6 +234,8 @@ const MenuTitle = styled.div`
   color: #ff9522;
   margin-right: 32px;
   margin-left: 32px;
+  max-width: 450px;
+  word-break: keep-all;
 `;
 
 const MenuSubTitle = styled.div`

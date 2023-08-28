@@ -200,7 +200,7 @@ const MenuNameText = styled.div`
   font-feature-settings: "clig" off, "liga" off;
   font-family: NanumSquareOTF;
   font-size: 20px;
-  width: 140px;
+  max-width: 140px;
   font-weight: 400;
   line-height: normal;
   text-align: center;
