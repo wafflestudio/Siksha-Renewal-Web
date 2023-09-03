@@ -25,7 +25,7 @@ export default function ReviewPostModal({
   const onReviewSubmit = async () => {
     await axios
       .post(
-        `${APIendpoint()}/reviews`,
+        `${APIendpoint()}/reviews/`,
         {
           menu_id: menu.menuId,
           score,
@@ -33,7 +33,7 @@ export default function ReviewPostModal({
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            "authorization-token": `Bearer ${accessToken}`,
           },
         },
       )
