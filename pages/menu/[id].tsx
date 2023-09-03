@@ -134,7 +134,7 @@ export default function Menu() {
     };
 
     fetchMenu();
-  }, [id, setLoading]);
+  }, [id, setLoading, isReviewPostModalOpen]);
 
   const handleReviewPostButtonClick = () => {
     setReviewPostModalOpen(true);
