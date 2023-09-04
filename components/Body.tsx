@@ -2,7 +2,7 @@ import styled from "styled-components";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Date from "./Date";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { formatISODate } from "../utils/FormatUtil";
 import axios from "axios";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
@@ -25,13 +25,29 @@ export default function Body() {
       const dateString = formatISODate(date);
 
       setLoading(true);
-      try {
-        const res = await axios.get(
-          `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
-        );
-        setData(res.data.result[0]);
-      } catch (e) {
-        console.log(e);
+      if (!localStorage.getItem("access_token")) {
+        try {
+          const res = await axios.get(
+            `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
+          );
+          setData(res.data.result[0]);
+          console.log("f");
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        try {
+          const ress = await axios.get(
+            `${APIendpoint()}/menus/lo?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
+            {
+              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+            },
+          );
+          setData(ress.data.result[0]);
+          console.log("t");
+        } catch (e) {
+          console.log(e);
+        }
       }
       setLoading(false);
     }

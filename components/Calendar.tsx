@@ -20,10 +20,10 @@ export default function Calendar() {
     [today],
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     const current = new Date();
     setDate(current);
-  }, [setDate]);
+  }, [setDate]);*/
 
   return (
     <>

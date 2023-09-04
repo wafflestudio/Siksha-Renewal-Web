@@ -30,6 +30,8 @@ function reducer(state, action) {
       return { ...state, showCal: !state.showCal };
     case "TOGGLE_SHOWINFO":
       return { ...state, showInfo: !state.showInfo };
+    case "SET_LOGINSTATUS":
+      return { ...state, loginStatus: action.loginStatus };
     default:
       throw new Error("Unhandled action");
   }
@@ -45,6 +47,7 @@ const ContextProvider = ({ children }) => {
     showInfo: false,
     loading: false,
     infoData: null,
+    loginStatus: false,
   });
 
   return (
