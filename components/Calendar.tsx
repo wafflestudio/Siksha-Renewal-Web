@@ -20,11 +20,6 @@ export default function Calendar() {
     [today],
   );
 
-  /*useEffect(() => {
-    const current = new Date();
-    setDate(current);
-  }, [setDate]);*/
-
   return (
     <>
       <DesktopContainer>
