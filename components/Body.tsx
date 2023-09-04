@@ -16,7 +16,7 @@ export default function Body() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { date, showCal, showInfo } = state;
+  const { date, showCal, showInfo, loginStatus } = state;
   const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Body() {
       setLoading(false);
     }
     fetchData();
-  }, [date]);
+  }, [date, loginStatus]);
 
   return (
     <>
