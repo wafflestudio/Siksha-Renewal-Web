@@ -16,7 +16,7 @@ export default function Body() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus } = state;
+  const { date, showCal, showInfo, loginStatus, meal } = state;
   const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
 
   useEffect(() => {
@@ -31,7 +31,6 @@ export default function Body() {
             `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
           );
           setData(res.data.result[0]);
-          console.log("f");
         } catch (e) {
           console.log(e);
         }
@@ -44,7 +43,6 @@ export default function Body() {
             },
           );
           setData(ress.data.result[0]);
-          console.log("t");
         } catch (e) {
           console.log(e);
         }
@@ -52,7 +50,7 @@ export default function Body() {
       setLoading(false);
     }
     fetchData();
-  }, [date, loginStatus]);
+  }, [date, loginStatus, meal]);
 
   return (
     <>
