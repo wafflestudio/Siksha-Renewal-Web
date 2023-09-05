@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
-import { formatDate, formatMonth, formatWeekday } from "../utils/FormatUtil";
+import { formatDate, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 export default function Calendar() {
   const state = useStateContext();
@@ -20,18 +20,18 @@ export default function Calendar() {
     [today],
   );
 
-  useEffect(() => {
-    const current = new Date();
-    setDate(current);
-  }, [setDate]);
-
   return (
     <>
       <DesktopContainer>
         <DateText>{formatDate(date)}</DateText>
         <ReactCalendar
-          onChange={(day) => setDate(day)}
-          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+          onChange={(day: Date) => {
+            setDate(day);
+          }}
+          onActiveStartDateChange={({ activeStartDate }) => {
+            setDate(activeStartDate);
+          }}
+          activeStartDate={date}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}
