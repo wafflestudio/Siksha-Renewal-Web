@@ -47,7 +47,10 @@ const Container = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   cursor: pointer;
-
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: #f5f5f5;
+  }
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
   }
