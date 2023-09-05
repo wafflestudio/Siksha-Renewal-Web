@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
   const [score, setScore] = useState(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -19,7 +22,11 @@ export default function Menu({ menu }) {
   }, [menu.score]);
 
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        router.push(`/menu/${menu.id}`);
+      }}
+    >
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
@@ -39,7 +46,11 @@ const Container = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: #f5f5f5;
+  }
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
   }
