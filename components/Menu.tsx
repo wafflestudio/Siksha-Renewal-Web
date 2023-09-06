@@ -81,8 +81,9 @@ export default function Menu({ menu }) {
         <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
         <HeartIcon
           src={isLikedImg}
-          onClick={() => {
+          onClick={(e) => {
             isLikedToggle();
+            e.stopPropagation();
           }}
         />
         <Likes>{likeCount}개</Likes>
@@ -215,6 +216,7 @@ const HeartIcon = styled.img`
   height: 18px;
   padding-left: 12px;
   cursor: pointer;
+  z-index: 0;
 `;
 
 const Likes = styled.div`

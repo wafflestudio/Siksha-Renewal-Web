@@ -9,6 +9,7 @@ import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import { set } from "lodash";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 import { GlobalStyle } from "../../styles/globalstyle";
+import ContextProvider from "../../hooks/ContextProvider";
 
 interface MenuType {
   id: number;
@@ -143,7 +144,9 @@ export default function Menu() {
   return (
     <>
       <GlobalStyle />
-      <Header />
+      <ContextProvider>
+        <Header />
+      </ContextProvider>
       {!isLoading && !!menu && (
         <Info>
           <MenuContainer>
