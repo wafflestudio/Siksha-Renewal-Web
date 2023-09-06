@@ -22,7 +22,7 @@ export default function ReviewDistribution({
       </ScoreContainer>
       <DistributionChart>
         {distribution.map((count, i) => (
-          <DistributionBarWithText>
+          <DistributionBarWithText key={i}>
             <DistributionText key={i}>
               {i + 1}
               <img
@@ -30,6 +30,7 @@ export default function ReviewDistribution({
                 width="8px"
                 height="8px"
                 style={{ marginLeft: "4px" }}
+                alt="star"
               />
             </DistributionText>
             <DistributionBar percentage={(count / totalReviewCount) * 100} />

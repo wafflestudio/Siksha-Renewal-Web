@@ -56,7 +56,8 @@ export default function ReviewPostModal({
           marginBottom: "35px",
         }}
       >
-        ' <MenuNameText>{menu.menuName} </MenuNameText>' <ReviewTitle>는 어땠나요?</ReviewTitle>
+        &apos; <MenuNameText>{menu.menuName} </MenuNameText>&apos;{" "}
+        <ReviewTitle>는 어땠나요?</ReviewTitle>
       </div>
       <span
         style={{
@@ -100,7 +101,7 @@ export default function ReviewPostModal({
             display: "flex",
           }}
         >
-          <img src="/img/comment.svg" />
+          <img src="/img/comment.svg" alt="comment" />
           <span
             style={{
               color: "#707070",
