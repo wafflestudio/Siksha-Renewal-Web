@@ -1,13 +1,22 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 
 export default function Header() {
   const router = useRouter();
-  const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
+  const state = useStateContext();
+  const dispatch = useDispatchContext();
+  const { loginStatus } = state;
+  const setLoginStatus = () =>
+    dispatch({
+      type: "SET_LOGINSTATUS",
+      loginStatus: !!localStorage.getItem("access_token"),
+    });
+
   useEffect(() => {
-    setLoginStatus(localStorage.getItem("access_token") ? true : false);
+    setLoginStatus();
     setIsLoginPage(router.asPath.localeCompare("/login/") === 0);
   }, []);
   if (loginStatus !== undefined) {
@@ -33,7 +42,7 @@ export default function Header() {
             <LoginButton
               onClick={() => {
                 localStorage.removeItem("access_token");
-                setLoginStatus(false);
+                setLoginStatus();
               }}
             >
               로그아웃

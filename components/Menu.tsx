@@ -1,14 +1,22 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
+import { useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
+import axios from "axios";
+import APIendpoint from "../constants/constants";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
   const [score, setScore] = useState(null);
+  const [isLiked, setIsLiked] = useState(menu?.is_liked);
+  const [likeCount, setLikeCount] = useState(menu.like_cnt);
 
+  const isLikedImg = isLiked ? "/img/heart-on.svg" : "/img/heart-off.svg";
   const router = useRouter();
 
+  const state = useStateContext();
+  const { loginStatus } = state;
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
   }, [menu.price]);
@@ -20,6 +28,42 @@ export default function Menu({ menu }) {
       else setScore("low");
     }
   }, [menu.score]);
+  const isLikedToggle = () => {
+    if (loginStatus === false) {
+      router.push("/login");
+    } else {
+      const access_token = localStorage.getItem("access_token");
+      if (isLiked === false) {
+        axios
+          .post(
+            `${APIendpoint()}/menus/${menu.id}/like`,
+            {},
+            { headers: { "authorization-token": `Bearer ${access_token}` } },
+          )
+          .then((res) => {
+            setIsLiked(true);
+            setLikeCount((x) => x + 1);
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } else {
+        axios
+          .post(
+            `${APIendpoint()}/menus/${menu.id}/unlike`,
+            {},
+            { headers: { "authorization-token": `Bearer ${access_token}` } },
+          )
+          .then((res) => {
+            setIsLiked(false);
+            setLikeCount((x) => x - 1);
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      }
+    }
+  };
 
   return (
     <Container
@@ -35,6 +79,13 @@ export default function Menu({ menu }) {
         <Dots>.........</Dots>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+        <HeartIcon
+          src={isLikedImg}
+          onClick={() => {
+            isLikedToggle();
+          }}
+        />
+        <Likes>{likeCount}개</Likes>
       </MenuInfo>
     </Container>
   );
@@ -107,7 +158,7 @@ const Price = styled.div`
   font-weight: 400;
   width: 48px;
   display: flex;
-  justify-content: ${(props) => (props.hasPrice ? "flex-end" : "center")};
+  justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
   padding-right: 26px;
 
   @media (max-width: 768px) {
@@ -130,7 +181,7 @@ const Rate = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${(props) => (props.type ? "white" : "black")};
+  color: ${(props: { type: "high" | "middle" }) => (props.type ? "white" : "black")};
   background: ${(props) =>
     props.type
       ? props.type == "high"
@@ -156,5 +207,29 @@ const NoMeat = styled.img`
   @media (max-width: 768px) {
     padding-left: 5px;
     padding-bottom: 0;
+  }
+`;
+
+const HeartIcon = styled.img`
+  width: 18px;
+  height: 18px;
+  padding-left: 12px;
+  cursor: pointer;
+`;
+
+const Likes = styled.div`
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 400;
+  display: flex;
+  padding-left: 12px;
+  color: #b7b7b7;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 400;
+    padding-left: 12px;
+    color: #b7b7b7;
   }
 `;

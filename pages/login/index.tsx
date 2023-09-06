@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Header from "../../components/Header";
 import { GlobalStyle } from "../../styles/globalstyle";
+import ContextProvider from "../../hooks/ContextProvider";
 
 export default function Login() {
   const handleKakaoLogin = () => {
@@ -15,7 +16,9 @@ export default function Login() {
   return (
     <>
       <GlobalStyle />
-      <Header />
+      <ContextProvider>
+        <Header />
+      </ContextProvider>
       <Container>
         <LoginTitle>로그인</LoginTitle>
         <SocialKakao

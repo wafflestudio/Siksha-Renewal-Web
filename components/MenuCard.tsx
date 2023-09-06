@@ -50,8 +50,16 @@ export default function MenuCard({ data }) {
             />
           </HeaderContainer>
           <HeaderContainer>
-            <Price>Price</Price>
-            <Rate>Rate</Rate>
+            <Location>
+              <LocationIcon
+                src={"/img/location.svg"}
+                onClick={() => {
+                  setInfoData(data);
+                  toggleInfo();
+                }}
+              />
+              <LocationText>{data.addr.slice(19)}</LocationText>
+            </Location>
           </HeaderContainer>
         </RestInfo>
         <HLine />
@@ -119,22 +127,6 @@ const InfoIcon = styled.img`
   cursor: pointer;
 `;
 
-const Price = styled.div`
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 400;
-  color: #fe8b5a;
-  padding-right: 24px;
-`;
-
-const Rate = styled.div`
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 400;
-  color: #fe8b5a;
-  padding-right: 22.5px;
-`;
-
 const Name = styled.div`
   font-weight: 700;
   font-size: 24px;
@@ -156,6 +148,10 @@ const Location = styled.div`
   display: flex;
   padding-top: 3px;
   padding-right: 35px;
+
+  @media (max-width: 768px) {
+    padding-right: 16px;
+  }
 `;
 
 const LocationIcon = styled.img`

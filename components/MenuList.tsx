@@ -45,7 +45,7 @@ const Container = styled.div`
     top: 169px;
   }
 
-  ${(props) =>
+  ${(props: { showCal: boolean }) =>
     !props.showCal &&
     css`
       animation: menuSlide 0.75s;

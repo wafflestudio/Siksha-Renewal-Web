@@ -7,7 +7,6 @@ import APIendpoint from "../constants/constants";
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
-    console.log(access_token);
     axios
       .post(
         `${APIendpoint()}/auth/refresh`,
@@ -15,7 +14,6 @@ function MyApp({ Component, pageProps }) {
         { headers: { "authorization-token": `Bearer ${access_token}` } },
       )
       .then((res) => {
-        console.log(res);
         localStorage.setItem("access_token", res.data.access_token);
       })
       .catch((res) => {
