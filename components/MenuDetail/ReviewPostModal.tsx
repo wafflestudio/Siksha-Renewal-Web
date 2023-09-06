@@ -101,7 +101,7 @@ export default function ReviewPostModal({
             display: "flex",
           }}
         >
-          <img src="/img/comment.svg" alt="comment" />
+          <CommentImg src={"/img/comment.svg"} />
           <span
             style={{
               color: "#707070",
@@ -147,6 +147,8 @@ export default function ReviewPostModal({
     </Container>
   );
 }
+const CommentImg = styled.img`
+`
 
 const TextArea = styled.textarea`
   width: 90%;

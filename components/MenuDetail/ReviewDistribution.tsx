@@ -25,13 +25,7 @@ export default function ReviewDistribution({
           <DistributionBarWithText key={i}>
             <DistributionText key={i}>
               {i + 1}
-              <img
-                src="/img/star-neutral-base.svg"
-                width="8px"
-                height="8px"
-                style={{ marginLeft: "4px" }}
-                alt="star"
-              />
+              <StarImg src={"/img/star-neutral-base.svg"}/>
             </DistributionText>
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
@@ -93,6 +87,12 @@ const DistributionText = styled.div`
   font-weight: 700;
   color: #919191;
 `;
+
+const StarImg = styled.img`
+  width: 8px;
+  height: 8px;
+  margin-left: 4px;
+`
 
 const ReviewTotalCountText = styled.div`
   font-size: 10px;
