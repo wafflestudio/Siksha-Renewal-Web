@@ -66,7 +66,11 @@ export default function Menu({ menu }) {
   };
 
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        router.push(`/menu/${menu.id}`);
+      }}
+    >
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
@@ -93,7 +97,11 @@ const Container = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: #f5f5f5;
+  }
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
   }
