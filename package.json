@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env REACT_APP_SIKSHA_ENV=dev next dev",
-    "build": "cross-env REACT_APP_SIKSHA_ENV=prod next build && next export",
+    "dev": "cross-env NODE_ENV=development next dev",
+    "build": "cross-env NODE_ENV=production next build && next export",
+    "devbuild": "cross-env NODE_ENV=development next build && next export",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
