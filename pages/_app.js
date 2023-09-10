@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script
           type="text/javascript"
-          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=97c9bf23c521ad7495139a70e395b4eb"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
         />
       </Head>
       <Component {...pageProps} />
