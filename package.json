@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development next dev",
-    "build": "cross-env NODE_ENV=production next build && next export",
-    "devbuild": "cross-env NODE_ENV=development next build && next export",
+    "dev": "cross-env NEXT_PUBLIC_NODE_ENV=development next dev",
+    "build": "cross-env NEXT_PUBLIC_NODE_ENV=production next build && next export",
+    "devbuild": "cross-env NEXT_PUBLIC_NODE_ENV=development next build && next export",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
