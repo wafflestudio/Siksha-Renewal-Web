@@ -28,35 +28,35 @@ export default function Menu({ menu }) {
       else setScore("low");
     }
   }, [menu.score]);
-  const isLikedToggle = () => {
+  const isLikedToggle = async () => {
     if (loginStatus === false) {
       router.push("/login");
     } else {
       const access_token = localStorage.getItem("access_token");
       if (isLiked === false) {
-        axios
+        await axios
           .post(
             `${APIendpoint()}/menus/${menu.id}/like`,
             {},
             { headers: { "authorization-token": `Bearer ${access_token}` } },
           )
           .then((res) => {
-            setIsLiked(true);
-            setLikeCount((x) => x + 1);
+            setIsLiked(res.data.is_liked);
+            setLikeCount(res.data.like_cnt);
           })
           .catch((res) => {
             console.log(res);
           });
       } else {
-        axios
+        await axios
           .post(
             `${APIendpoint()}/menus/${menu.id}/unlike`,
             {},
             { headers: { "authorization-token": `Bearer ${access_token}` } },
           )
           .then((res) => {
-            setIsLiked(false);
-            setLikeCount((x) => x - 1);
+            setIsLiked(res.data.is_liked);
+            setLikeCount(res.data.like_cnt);
           })
           .catch((res) => {
             console.log(res);
