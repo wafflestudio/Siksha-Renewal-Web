@@ -35,8 +35,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ap-northeast-2
       - name: Invalidate CloudFront Cache # 새로 리소스를 업데이트할 때 기존 캐시 무효화
-        uses: chetan/invalidate-cloudfront-action@master
         env:
           AWS_DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_ID_DEV }}
-          PATHS: '/index.html'
-        continue-on-error: true
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $AWS_DISTRIBUTION --paths /*
