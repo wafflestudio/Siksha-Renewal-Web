@@ -37,5 +37,4 @@ jobs:
       - name: Invalidate CloudFront Cache # 새로 리소스를 업데이트할 때 기존 캐시 무효화
         env:
           AWS_DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_ID_DEV }}
-        run: |
-          aws cloudfront create-invalidation --distribution-id $AWS_DISTRIBUTION --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id $AWS_DISTRIBUTION --paths "/*"
