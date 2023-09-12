@@ -138,7 +138,14 @@ export default function Menu() {
   }, [id, setLoading, isReviewPostModalOpen]);
 
   const handleReviewPostButtonClick = () => {
-    setReviewPostModalOpen(true);
+    if (!!localStorage.getItem("access_token"))
+    {
+      setReviewPostModalOpen(true);
+    }
+    else
+    {
+      router.push("/login");
+    }
   };
 
   return (
