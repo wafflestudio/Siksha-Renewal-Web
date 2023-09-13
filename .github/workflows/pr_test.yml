@@ -2,7 +2,7 @@ name: pr_test
 
 on:
   pull_request:
-    branches: ["prod"]
+    branches: ["dev/master"]
 
 jobs:
   build:
