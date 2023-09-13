@@ -57,6 +57,7 @@ export default function Menu({ menu }) {
           .then((res) => {
             setIsLiked(res.data.is_liked);
             setLikeCount(res.data.like_cnt);
+            console.log(res);
           })
           .catch((res) => {
             console.log(res);
