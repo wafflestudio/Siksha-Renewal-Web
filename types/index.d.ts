@@ -26,8 +26,8 @@ declare module types {
       { type: "SET_DATA", data: Data } |
       { type: "SET_LOADING", loading: boolean } |
       { type: "SET_INFODATA", infoData: any } |
-      { type: "TOGGLE_SHOWCAL", showCal: boolean } |
-      { type: "TOGGLE_SHOWINFO", showInfo: boolean } |
+      { type: "TOGGLE_SHOWCAL" } |
+      { type: "TOGGLE_SHOWINFO" } |
       { type: "SET_LOGINSTATUS", loginStatus: boolean }
 }
 
