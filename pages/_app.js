@@ -1,7 +1,26 @@
 import Head from "next/head";
 import "/styles/calendar.css";
+import axios from "axios";
+import { useEffect } from "react";
+import APIendpoint from "../constants/constants";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+    axios
+      .post(
+        `${APIendpoint()}/auth/refresh`,
+        {},
+        { headers: { "authorization-token": `Bearer ${access_token}` } },
+      )
+      .then((res) => {
+        localStorage.setItem("access_token", res.data.access_token);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+
   return (
     <>
       <Head>
@@ -17,7 +36,7 @@ function MyApp({ Component, pageProps }) {
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script
           type="text/javascript"
-          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=97c9bf23c521ad7495139a70e395b4eb"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
         />
       </Head>
       <Component {...pageProps} />
