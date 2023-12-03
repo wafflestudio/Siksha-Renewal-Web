@@ -54,12 +54,16 @@ const DateNavi = styled.div`
 `;
 const DateNaviTitle = styled.div`
   color: #ffffff;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: 3px;
   cursor: pointer;
 `;
 const DateNaviSub = styled.div`
   color: #ffffff80;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   cursor: pointer;
 `;
 const ArrowLeft = styled.img`

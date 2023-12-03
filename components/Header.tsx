@@ -24,7 +24,7 @@ export default function Header() {
       <>
         <Container>
           <SikshaIcon
-            src={"/img/siksha-splash.png"}
+            src={"/img/sikshaSplash.svg"}
             onClick={() => {
               router.push("/");
             }}
@@ -81,9 +81,8 @@ const Container = styled.div`
   position: relative;
 
   @media (max-width: 768px) {
-    background: #fe8c59;
-    justify-content: center;
-    position: absolute;
+    background: #ff9522;
+    height: 60px;
   }
 `;
 
@@ -96,8 +95,12 @@ const SikshaIcon = styled.img`
   cursor: pointer;
 
   @media (max-width: 768px) {
-    padding: 0;
-    width: 52px;
+    width: 50px;
+    height: 25px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 17px;
   }
 `;
 

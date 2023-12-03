@@ -138,12 +138,9 @@ export default function Menu() {
   }, [id, setLoading, isReviewPostModalOpen]);
 
   const handleReviewPostButtonClick = () => {
-    if (!!localStorage.getItem("access_token"))
-    {
+    if (!!localStorage.getItem("access_token")) {
       setReviewPostModalOpen(true);
-    }
-    else
-    {
+    } else {
       router.push("/login");
     }
   };
@@ -204,7 +201,7 @@ const Info = styled.div`
 
 const MenuContainer = styled.div`
   padding-top: 40px;
-  left: calc((100vw - 1200px) / 2);
+  left: calc(max((100vw - 1155px), 0px) / 2);
   position: absolute;
 `;
 
@@ -220,6 +217,10 @@ const ReviewContainer = styled.div`
   padding-right: 50px;
   padding-top: 50px;
   min-height: 100%;
+  @media (max-width: 768px) {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 `;
 
 const ReviewList = styled.div`

@@ -56,8 +56,6 @@ const ReviewContent = styled.div`
   min-height: 100px;
   margin-top: 4px;
   padding-top: 14px;
-  padding-left: 22px;
-  padding-right: 22px;
   width: 100%;
   word-break: break-all;
 `;
