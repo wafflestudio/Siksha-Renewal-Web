@@ -2,23 +2,21 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { formatDate, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
-import { useCallback } from "react";
 
 export default function Calendar() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { date, today } = state;
-  const setDate = useCallback((date) => dispatch({ type: "SET_DATE", date: date }), [dispatch]);
+  const today = new Date();
+
+  const { date } = state;
+  const setDate = (date: Date) => dispatch({ type: "SET_DATE", date: date });
 
   const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
 
-  const isToday = useCallback(
-    (date) => {
-      return date.toDateString() === today.toDateString();
-    },
-    [today],
-  );
+  const isToday = (date: Date) => {
+    return date.toDateString() === today.toDateString();
+  };
 
   return (
     <>
@@ -29,6 +27,7 @@ export default function Calendar() {
             setDate(day);
           }}
           onActiveStartDateChange={({ activeStartDate }) => {
+            if (!activeStartDate) return;
             setDate(activeStartDate);
           }}
           activeStartDate={date}
@@ -39,18 +38,21 @@ export default function Calendar() {
           navigationLabel={() => formatDate(date)}
           prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
           nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
-          formatDay={(locale, date) => date.getDate()}
-          formatShortWeekday={(locale, date) => formatWeekday(date)}
+          formatDay={(_, date) => date.getDate().toString()}
+          formatShortWeekday={(_, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
         />
       </DesktopContainer>
       <MobileContainer>
         <ReactCalendar
-          onChange={(day) => {
+          onChange={(day: Date) => {
             setDate(day);
             toggleShowCal();
           }}
-          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+          onActiveStartDateChange={({ activeStartDate }) => {
+            if (!activeStartDate) return;
+            setDate(activeStartDate);
+          }}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}
@@ -58,8 +60,8 @@ export default function Calendar() {
           navigationLabel={() => formatDate(date)}
           prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
           nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
-          formatDay={(locale, date) => date.getDate()}
-          formatShortWeekday={(locale, date) => formatWeekday(date)}
+          formatDay={(_, date) => date.getDate().toString()}
+          formatShortWeekday={(_, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
         />
         <ClickArea onClick={() => toggleShowCal()} />
