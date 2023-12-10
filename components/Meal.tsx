@@ -7,41 +7,24 @@ export default function Meal() {
   const dispatch = useDispatchContext();
 
   const { meal } = state;
-  const setMeal = (meal) => dispatch({ type: "SET_MEAL", meal: meal });
-
-  const [isBR, setIsBR] = useState(false);
-  const [isLU, setIsLU] = useState(false);
-  const [isDN, setIsDN] = useState(false);
-
-  useEffect(() => {
-    if (meal == "BR") {
-      setIsBR(true);
-      setIsLU(false);
-      setIsDN(false);
-    } else if (meal == "LU") {
-      setIsBR(false);
-      setIsLU(true);
-      setIsDN(false);
-    } else if (meal == "DN") {
-      setIsBR(false);
-      setIsLU(false);
-      setIsDN(true);
-    }
-  }, [meal]);
+  const setMeal = (meal: "BREAKFAST" | "LUNCH" | "DINNER") =>
+    dispatch({ type: "SET_MEAL", meal: meal });
 
   return (
     <Container>
-      <MealButton onClick={() => setMeal("BR")}>
-        <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} />
-        <MealText active={isBR}>아침</MealText>
+      <MealButton onClick={() => setMeal("BREAKFAST")}>
+        <Breakfast
+          src={meal === "BREAKFAST" ? "/img/breakfast-active.svg" : "/img/breakfast.svg"}
+        />
+        <MealText active={meal === "BREAKFAST"}>아침</MealText>
       </MealButton>
-      <MealButton onClick={() => setMeal("LU")}>
-        <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} />
-        <MealText active={isLU}>점심</MealText>
+      <MealButton onClick={() => setMeal("LUNCH")}>
+        <Lunch src={meal === "LUNCH" ? "/img/lunch-active.svg" : "/img/lunch.svg"} />
+        <MealText active={meal === "LUNCH"}>점심</MealText>
       </MealButton>
-      <MealButton onClick={() => setMeal("DN")}>
-        <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} />
-        <MealText active={isDN}>저녁</MealText>
+      <MealButton onClick={() => setMeal("DINNER")}>
+        <Dinner src={meal === "DINNER" ? "/img/dinner-active.svg" : "/img/dinner.svg"} />
+        <MealText active={meal === "DINNER"}>저녁</MealText>
       </MealButton>
     </Container>
   );

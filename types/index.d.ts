@@ -4,31 +4,30 @@ declare module types {
   }
 
   interface Data {
-      count: number
-      result: Array<any>
+    count: number;
+    result: Array<any>;
   }
 
   interface State {
-      date: Date
-      meal: string
-      data: Data
-      today: Date
-      showCal: boolean
-      showInfo: boolean
-      loading: boolean
-      infoData: any
-      loginStatus: boolean
+    date: Date;
+    meal: "BREAKFAST" | "LUNCH" | "DINNER";
+    data: Data;
+    showCal: boolean;
+    showInfo: boolean;
+    loading: boolean;
+    infoData: any;
+    loginStatus: boolean;
   }
 
   type Action =
-      { type: "SET_DATE", date: Date } |
-      { type: "SET_MEAL", meal: string } |
-      { type: "SET_DATA", data: Data } |
-      { type: "SET_LOADING", loading: boolean } |
-      { type: "SET_INFODATA", infoData: any } |
-      { type: "TOGGLE_SHOWCAL" } |
-      { type: "TOGGLE_SHOWINFO" } |
-      { type: "SET_LOGINSTATUS", loginStatus: boolean }
+    | { type: "SET_DATE"; date: Date }
+    | { type: "SET_MEAL"; meal: "BREAKFAST" | "LUNCH" | "DINNER" }
+    | { type: "SET_DATA"; data: Data }
+    | { type: "SET_LOADING"; loading: boolean }
+    | { type: "SET_INFODATA"; infoData: any }
+    | { type: "TOGGLE_SHOWCAL" }
+    | { type: "TOGGLE_SHOWINFO" }
+    | { type: "SET_LOGINSTATUS"; loginStatus: boolean };
 }
 
-export default types
+export default types;
