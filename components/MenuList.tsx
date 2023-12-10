@@ -9,10 +9,12 @@ export default function MenuList() {
 
   const { meal, data, showCal, date, loading } = state;
 
+  const abbrMeal = meal === "BREAKFAST" ? "BR" : meal === "LUNCH" ? "LU" : "DN";
+
   const [hasData, setHasData] = useState(false);
 
   useEffect(() => {
-    if (!data[meal] || data[meal].length == 0) setHasData(false);
+    if (!data[abbrMeal] || data[abbrMeal].length == 0) setHasData(false);
     else setHasData(true);
   }, [data, meal]);
 
@@ -21,7 +23,9 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
-        data[meal].map((restaurant) => <MenuCard data={restaurant} key={restaurant.id + meal} />)
+        data[abbrMeal].map((restaurant) => (
+          <MenuCard data={restaurant} key={restaurant.id + meal} />
+        ))
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}
