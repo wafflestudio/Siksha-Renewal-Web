@@ -78,7 +78,7 @@ export default function Menu({ menu }) {
       <MenuInfo>
         <Dots>.........</Dots>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-        <Rate type={score}>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+        {menu.score ? <Rate type={score}>{menu.score.toFixed(1)}</Rate> : <RateNone type={score}>{"-"}</RateNone>}
         <HeartIcon
           src={isLikedImg}
           onClick={(e) => {
@@ -191,6 +191,25 @@ const Rate = styled.div`
           ? "#F58625"
           : "#F5B52C"
       : "white"};
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+    width: 42px;
+    height: 17.5px;
+  }
+`;
+const RateNone = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 20px;
+  border-radius: 20px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+;
 
   @media (max-width: 768px) {
     font-size: 14px;
