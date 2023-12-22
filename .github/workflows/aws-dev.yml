@@ -20,7 +20,7 @@ jobs:
       - name: .env setting
         run: |
           echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
-          echo "NEXT_PUBLIC_REDIRECTURI=${{ secrets.NEXT_PUBLIC_REDIRECTURI }}" >> .env
+          echo "NEXT_PUBLIC_REDIRECTURI=${{ secrets.NEXT_PUBLIC_REDIRECTURI_DEV }}" >> .env
         
       - name: Install dependencies
         run: yarn install
