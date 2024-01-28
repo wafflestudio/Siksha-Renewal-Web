@@ -16,7 +16,7 @@ export default function MenuList() {
   useEffect(() => {
     if (!data[abbrMeal] || data[abbrMeal].length == 0) setHasData(false);
     else setHasData(true);
-  }, [data, meal]);
+  }, [data, abbrMeal]);
 
   return (
     <Container showCal={showCal} key={date + meal}>
