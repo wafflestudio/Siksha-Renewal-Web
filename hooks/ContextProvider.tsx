@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useContext, useReducer } from "react";
-import types from '../types';
+import types from "../types";
 import State = types.State;
 import Action = types.Action;
 
@@ -14,29 +14,29 @@ if (currHour > 9 && currHour < 16) {
 }
 const initData = { count: 0, result: [] };
 
-const stateContext = createContext<State>(null);
-const dispatchContext = createContext<Dispatch<Action>>(null);
+const stateContext = createContext<State | null>(null);
+const dispatchContext = createContext<Dispatch<Action> | null>(null);
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
-  case "SET_DATE":
-    return { ...state, date: action.date };
-  case "SET_MEAL":
-    return { ...state, meal: action.meal };
-  case "SET_DATA":
-    return { ...state, data: action.data };
-  case "SET_LOADING":
-    return { ...state, loading: action.loading };
-  case "SET_INFODATA":
-    return { ...state, infoData: action.infoData };
-  case "TOGGLE_SHOWCAL":
-    return { ...state, showCal: !state.showCal };
-  case "TOGGLE_SHOWINFO":
-    return { ...state, showInfo: !state.showInfo };
-  case "SET_LOGINSTATUS":
-    return { ...state, loginStatus: action.loginStatus };
-  default:
-    throw new Error("Unhandled action");
+    case "SET_DATE":
+      return { ...state, date: action.date };
+    case "SET_MEAL":
+      return { ...state, meal: action.meal };
+    case "SET_DATA":
+      return { ...state, data: action.data };
+    case "SET_LOADING":
+      return { ...state, loading: action.loading };
+    case "SET_INFODATA":
+      return { ...state, infoData: action.infoData };
+    case "TOGGLE_SHOWCAL":
+      return { ...state, showCal: !state.showCal };
+    case "TOGGLE_SHOWINFO":
+      return { ...state, showInfo: !state.showInfo };
+    case "SET_LOGINSTATUS":
+      return { ...state, loginStatus: action.loginStatus };
+    default:
+      throw new Error("Unhandled action");
   }
 }
 

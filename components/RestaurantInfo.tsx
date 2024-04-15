@@ -42,7 +42,7 @@ export default function RestaurantInfo() {
                 <Text>식당 위치</Text>
                 <LocationBox>
                   <LocationIcon src={"/img/mobile-location.svg"} />
-                  <LocationText>{infoData.addr.slice(19)}</LocationText>
+                  <LocationText>{infoData.addr ? infoData.addr.slice(19) : ""}</LocationText>
                 </LocationBox>
               </AboveMap>
               <Map id={"map"} />
@@ -139,7 +139,7 @@ const CloseIcon = styled.img`
   cursor: pointer;
 `;
 
-const HLine = styled.div`
+const HLine = styled.div<{ color: string; margin: string }>`
   width: calc(90vw - 32px);
   height: 1px;
   background: ${(props) => props.color};
@@ -217,7 +217,7 @@ const EmptyText = styled.div`
   font-weight: 400;
 `;
 
-const EmptyBox = styled.div`
+const EmptyBox = styled.div<{ height: string }>`
   height: ${(props) => props.height};
   background: white;
   width: 1px;

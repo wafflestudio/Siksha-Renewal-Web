@@ -4,10 +4,10 @@
     "sourceMap": true, // allow sourcemap support
     "strictNullChecks": true, // enable strict null checks as a best practice
     "module": "esnext", // specify module code generation
-    "jsx": "preserve", // use typescript to transpile jsx to js
+    "jsx": "react-jsx", // use typescript to transpile jsx to js
     "target": "es2015", // specify ECMAScript target version
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
-    "lib": ["es2015"],
+    "lib": ["es2015", "dom"],
     "typeRoots": ["node_modules/@types", "types"],
     "skipLibCheck": true,
     "strict": false,
@@ -19,6 +19,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["./src/"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/**/*.ts", "**/**/*.tsx"],
   "exclude": ["node_modules"]
 }

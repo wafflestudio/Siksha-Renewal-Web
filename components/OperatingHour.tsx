@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function OperatingHour({ type, hour }) {
+export default function OperatingHour({ type, hour }: { type: string; hour: string }) {
   return (
     <Container>
       {type == "BR" ? (
@@ -22,7 +22,7 @@ const Container = styled.div`
   padding-bottom: 7px;
 `;
 
-const HourText = styled.div`
+const HourText = styled.div<{ type: string }>`
   font-size: 15px;
   font-weight: 400;
   font-family: NanumSquare, sans-serif;
