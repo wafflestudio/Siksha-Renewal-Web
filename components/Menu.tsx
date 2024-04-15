@@ -188,8 +188,8 @@ const Rate = styled.div`
       ? props.type == "high"
         ? "#F47156"
         : props.type == "middle"
-        ? "#F58625"
-        : "#F5B52C"
+          ? "#F58625"
+          : "#F5B52C"
       : "white"};
 
   @media (max-width: 768px) {
