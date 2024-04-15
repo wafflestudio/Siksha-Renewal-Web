@@ -42,7 +42,7 @@ export default function RestaurantInfo() {
                 <Text>식당 위치</Text>
                 <LocationBox>
                   <LocationIcon src={"/img/mobile-location.svg"} />
-                  <LocationText>{infoData.addr.slice(19)}</LocationText>
+                  <LocationText>{infoData.addr ? infoData.addr.slice(19) : ""}</LocationText>
                 </LocationBox>
               </AboveMap>
               <Map id={"map"} />
@@ -54,24 +54,24 @@ export default function RestaurantInfo() {
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
-                <MobileOperatingHour type={"weekdays"} />
-              )}
+                  <MobileOperatingHour type={"weekdays"} />
+                )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
-                <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"saturday"} />
-                </>
-              )}
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"saturday"} />
+                  </>
+                )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.holiday.length != 0 && (
-                <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"holiday"} />
-                </>
-              )}
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"holiday"} />
+                  </>
+                )}
               {(!infoData.etc || !infoData.etc.operating_hours) && (
                 <>
                   <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
@@ -139,7 +139,7 @@ const CloseIcon = styled.img`
   cursor: pointer;
 `;
 
-const HLine = styled.div`
+const HLine = styled.div<{ color: string; margin: string }>`
   width: calc(90vw - 32px);
   height: 1px;
   background: ${(props) => props.color};
@@ -217,7 +217,7 @@ const EmptyText = styled.div`
   font-weight: 400;
 `;
 
-const EmptyBox = styled.div`
+const EmptyBox = styled.div<{ height: string }>`
   height: ${(props) => props.height};
   background: white;
   width: 1px;

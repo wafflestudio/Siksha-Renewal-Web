@@ -23,7 +23,7 @@ export default function MenuCard({ data }) {
                 toggleInfo();
               }}
             />
-            <LocationText>{data.addr.slice(19)}</LocationText>
+            <LocationText>{data.addr?.slice(19)}</LocationText>
           </Location>
         </RestInfo>
         <HLine />
@@ -58,7 +58,7 @@ export default function MenuCard({ data }) {
                   toggleInfo();
                 }}
               />
-              <LocationText>{data.addr.slice(19)}</LocationText>
+              <LocationText>{data.addr ? data.addr.slice(19) : ""}</LocationText>
             </Location>
           </HeaderContainer>
         </RestInfo>

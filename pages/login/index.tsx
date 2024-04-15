@@ -5,8 +5,8 @@ import ContextProvider from "../../hooks/ContextProvider";
 
 export default function Login() {
   const handleKakaoLogin = () => {
-    const restApiKey: string = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
-    const redirectUri: string = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
+    const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
     const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${restApiKey}&redirect_uri=${redirectUri}`;
 
     window.location.href = kakaoUrl;

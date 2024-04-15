@@ -8,7 +8,7 @@ import APIendpoint from "../constants/constants";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
-  const [score, setScore] = useState(null);
+  const [score, setScore] = useState<"high" | "middle" | "low" | null>(null);
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
 
@@ -78,7 +78,7 @@ export default function Menu({ menu }) {
       <MenuInfo>
         <Dots>.........</Dots>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-        {menu.score ? <Rate type={score}>{menu.score.toFixed(1)}</Rate> : <RateNone type={score}>{"-"}</RateNone>}
+        {score ? <Rate type={score}>{menu.score.toFixed(1)}</Rate> : <RateNone>{"-"}</RateNone>}
         <HeartIcon
           src={isLikedImg}
           onClick={(e) => {
@@ -182,14 +182,14 @@ const Rate = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${(props: { type: "high" | "middle" }) => (props.type ? "white" : "black")};
+  color: ${(props: { type: "high" | "middle" | "low" }) => (props.type ? "white" : "black")};
   background: ${(props) =>
     props.type
       ? props.type == "high"
         ? "#F47156"
         : props.type == "middle"
-          ? "#F58625"
-          : "#F5B52C"
+        ? "#F58625"
+        : "#F5B52C"
       : "white"};
 
   @media (max-width: 768px) {
@@ -209,8 +209,6 @@ const RateNone = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-;
-
   @media (max-width: 768px) {
     font-size: 14px;
     line-height: 16px;

@@ -39,7 +39,7 @@ export default function Calendar() {
           navigationLabel={() => formatDate(date)}
           prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
           nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
-          formatDay={(locale, date) => date.getDate()}
+          formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
         />
@@ -58,7 +58,7 @@ export default function Calendar() {
           navigationLabel={() => formatDate(date)}
           prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
           nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
-          formatDay={(locale, date) => date.getDate()}
+          formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
         />
