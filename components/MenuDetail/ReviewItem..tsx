@@ -8,7 +8,7 @@ export function ReviewItem({ review }: { review: ReviewType }) {
     <ReviewItemContainer>
       <ReviewInfo>
         <ReviewerInfo>
-          <ReviwerProfile src={"/img/default-profile.svg"} width="36px" />
+          <ReviwerProfile src={"/img/default-profile.svg"} />
           <div>
             <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
             <Stars score={review.score || 0} />
@@ -17,6 +17,15 @@ export function ReviewItem({ review }: { review: ReviewType }) {
         <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>
       </ReviewInfo>
       <ReviewContent>{review.comment}</ReviewContent>
+      { review.etc && 
+        <ReviewImageList>
+        {
+          review.etc.images.map((image) => 
+            <ReviewImage key={image} src={image}/>
+          )
+        }
+        </ReviewImageList>
+      }
     </ReviewItemContainer>
   );
 }
@@ -29,8 +38,8 @@ const ReviewItemContainer = styled.div`
 `;
 
 const ReviwerProfile = styled.img`
-  width: 36px;
-  height: 36px;
+  width: 43px;
+  height: 43px;
   margin-right: 15px;
 `;
 
@@ -50,13 +59,12 @@ const ReviewInfo = styled.div`
 const ReviewContent = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: #4f4f4f;
+  color: #000;
   border-radius: 8px;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
   min-height: 100px;
-  margin-top: 4px;
-  padding-top: 14px;
-  width: 100%;
+  margin: 4px 3px 0 34px;
+  padding: 14px 26px 0 26px;
   word-break: break-all;
 `;
 
@@ -72,6 +80,23 @@ const ReviewDate = styled.div`
   width: 100px;
   text-align: right;
   vertical-align: bottom;
+`;
+
+const ReviewImageList = styled.div`
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 192px;
+  padding-left: 23px;
+  padding-top: 12px;
+`;
+
+const ReviewImage = styled.img`
+  object-fit: cover;
+  height: 192px;
+  width: 192px;
+  margin: 0 9px;
+  border-radius: 8px;
 `;
 
 export default ReviewItem;

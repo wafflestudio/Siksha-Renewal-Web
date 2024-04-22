@@ -30,7 +30,7 @@ export default function ReviewDistribution({
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
         ))}
-        <ReviewTotalCountText>총 {totalReviewCount}명이 평가했어요!</ReviewTotalCountText>
+        <TotalReviewCountText>총 {totalReviewCount}명이 평가했어요!</TotalReviewCountText>
       </DistributionChart>
     </Container>
   );
@@ -38,7 +38,7 @@ export default function ReviewDistribution({
 
 const Container = styled.div`
   display: flex;
-  margin-top: 60px;
+  margin-top: 23px;
   margin-left: 26px;
 `;
 
@@ -94,7 +94,7 @@ const StarImg = styled.img`
   margin-left: 4px;
 `
 
-const ReviewTotalCountText = styled.div`
+const TotalReviewCountText = styled.div`
   font-size: 10px;
   font-weight: 700;
   color: #919191;

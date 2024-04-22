@@ -186,6 +186,9 @@ const Container = styled.div`
   padding-right: 50px;
   padding-top: 50px;
   min-height: 100%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CloseButton = styled.img`
