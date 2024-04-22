@@ -240,7 +240,8 @@ const Info = styled.div`
   }
 `;
 
-const MenuContainer = styled.div`
+const MenuContainer = styled.section`
+  background-color: white;
   flex-grow: 1;
   @media (max-width: 768px) {
     flex-grow: 0;
@@ -255,7 +256,8 @@ const MenuInfoContainer = styled.div`
   }
 `;
 
-const ReviewContainer = styled.div`
+const ReviewContainer = styled.section`
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
