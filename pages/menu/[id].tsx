@@ -151,9 +151,14 @@ export default function Menu() {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
-    // TODO: 일단 스와이퍼에 들어갈 이미지 수를 10장으로 제한했는데, 풀어도 별 상관 없을까?
-    if(updatedImages.length > 10) {
-      updatedImages = updatedImages.slice(0, 10);
+    // TODO: 스와이퍼에 넣은 이미지 수 얼마까지?
+    
+    const SWIPER_IMAGES_LIMIT = 10;
+    if(updatedImages.length > SWIPER_IMAGES_LIMIT) {
+      updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
+    }
+    while(updatedImages.length > 0 && updatedImages.length <= SWIPER_IMAGES_LIMIT) {
+      updatedImages = updatedImages.concat(updatedImages);
     }
     setImages(updatedImages);
   }, [reviews]);
@@ -261,9 +266,9 @@ const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 0;
   width: 37%;
   right: 0;
+  flex-grow: 0;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
@@ -333,7 +338,6 @@ const HLine = styled.div`
 
 const ReviewTitleContainer = styled.div`
   display: flex;
-  flex-direction: row;
 `;
 
 const ReviewTitle = styled.div`
@@ -350,7 +354,6 @@ const ReviewTotalCount = styled.div`
 
 const ImageReviewButton = styled.div`
   display: flex;
-  flex-direction: row;
   text-decoration: none;
 `;
 
