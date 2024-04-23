@@ -151,8 +151,6 @@ export default function Menu() {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
-    // TODO: 스와이퍼에 넣은 이미지 수 얼마까지?
-    
     const SWIPER_IMAGES_LIMIT = 10;
     if(updatedImages.length > SWIPER_IMAGES_LIMIT) {
       updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
