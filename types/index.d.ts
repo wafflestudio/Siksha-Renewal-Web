@@ -30,7 +30,8 @@ declare module types {
     | { type: "SET_INFODATA"; infoData: any }
     | { type: "TOGGLE_SHOWCAL" }
     | { type: "TOGGLE_SHOWINFO" }
-    | { type: "SET_LOGINSTATUS"; loginStatus: boolean };
+    | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
+    | { type: "SET_LOGINMODAL"; isLoginModal: boolean };
 }
 
 export default types;

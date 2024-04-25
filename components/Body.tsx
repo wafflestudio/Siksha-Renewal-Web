@@ -11,12 +11,13 @@ import MenuList from "./MenuList";
 import Calendar from "./Calendar";
 import RestaurantInfo from "./RestaurantInfo";
 import APIendpoint from "../constants/constants";
+import LoginModal from "./Auth/LoginModal";
 
 export default function Body() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus, meal } = state;
+  const { date, showCal, showInfo, loginStatus, meal, isLoginModal } = state;
   const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function Body() {
 
   return (
     <>
+      {isLoginModal && <LoginModal />}
       <DesktopContainer>
         <LeftSide />
         <RightSide />
