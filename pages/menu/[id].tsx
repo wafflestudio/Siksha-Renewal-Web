@@ -9,9 +9,10 @@ import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import { set } from "lodash";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 import { GlobalStyle } from "../../styles/globalstyle";
-import ContextProvider from "../../hooks/ContextProvider";
+import ContextProvider, { useStateContext } from "../../hooks/ContextProvider";
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
+import Likes from "../../components/MenuDetail/Likes";
 
 interface MenuType {
   id: number;
@@ -27,6 +28,8 @@ interface MenuType {
   updated_at: string;
   score: number | null;
   review_cnt: number;
+  is_liked: boolean;
+  like_cnt: number;
 }
 
 export interface ReviewType {
@@ -174,62 +177,63 @@ export default function Menu() {
       <GlobalStyle />
       <ContextProvider>
         <Header />
-      </ContextProvider>
-      {!isLoading && !!menu && (
-        <Info>
-          <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} />}
-            <MenuInfoContainer>
-              <MenuHeader>
-                <MenuTitleContainer>
-                  <MenuTitle>{menu.name_kr}</MenuTitle>
-                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                </MenuTitleContainer>
-              </MenuHeader>
-              <HLine />
-              <ReviewDistribution
-                totalReviewCount={reviews.total_count}
-                score={menu.score || 0}
-                distribution={reviewDistribution}
+        {!isLoading && !!menu && (
+          <Info>
+            <MenuContainer>
+              {images.length > 0 && <ReviewImageSwiper images={images} />}
+              <MenuInfoContainer>
+                <MenuHeader>
+                  <MenuTitleContainer>
+                    <MenuTitle>{menu.name_kr}</MenuTitle>
+                    <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                  </MenuTitleContainer>
+                  <Likes menu={menu}/>
+                </MenuHeader>
+                <HLine />
+                <ReviewDistribution
+                  totalReviewCount={reviews.total_count}
+                  score={menu.score || 0}
+                  distribution={reviewDistribution}
+                />
+              </MenuInfoContainer>
+            </MenuContainer>
+            {!isReviewPostModalOpen && (
+              <ReviewContainer>
+                <ReviewPostButton onClick={handleReviewPostButtonClick}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+                <ReviewHeader>
+                  <ReviewTitleContainer>
+                    <ReviewTitle>리뷰</ReviewTitle>
+                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                  </ReviewTitleContainer>
+                  <Link href="#" style={{ textDecoration: 'none' }}>
+                    <ImageReviewButton>
+                      <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
+                      <img src="/img/right-arrow-grey.svg" />
+                    </ImageReviewButton>
+                  </Link>
+                </ReviewHeader>
+                <ReviewList>
+                  {reviews.result.length > 0 &&
+                    reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
+                  {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+                </ReviewList>
+              </ReviewContainer>
+            )}
+            {isReviewPostModalOpen && (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id,
+                }}
+                onClose={() => setReviewPostModalOpen(false)}
               />
-            </MenuInfoContainer>
-          </MenuContainer>
-          {!isReviewPostModalOpen && (
-            <ReviewContainer>
-              <ReviewPostButton onClick={handleReviewPostButtonClick}>
-                나의 평가 남기기
-              </ReviewPostButton>
-              <ReviewHeader>
-                <ReviewTitleContainer>
-                  <ReviewTitle>리뷰</ReviewTitle>
-                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                </ReviewTitleContainer>
-                <Link href="#" style={{ textDecoration: 'none' }}>
-                  <ImageReviewButton>
-                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                    <img src="/img/right-arrow-grey.svg" />
-                  </ImageReviewButton>
-                </Link>
-              </ReviewHeader>
-              <ReviewList>
-                {reviews.result.length > 0 &&
-                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
-              </ReviewList>
-            </ReviewContainer>
-          )}
-          {isReviewPostModalOpen && (
-            <ReviewPostModal
-              isOpen={isReviewPostModalOpen}
-              menu={{
-                menuName: menu.name_kr,
-                menuId: menu.id,
-              }}
-              onClose={() => setReviewPostModalOpen(false)}
-            />
-          )}
-        </Info>
-      )}
+            )}
+          </Info>
+        )}
+      </ContextProvider>
     </>
   );
 }
@@ -293,9 +297,10 @@ const MenuHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  align-items: baseline;
+  align-items: last baseline;
   @media (max-width: 768px) {
-    justify-content: space-around
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -310,8 +315,10 @@ const MenuTitle = styled.div`
   color: #ff9522;
   margin-right: 32px;
   margin-left: 7px;
-  max-width: 450px;
-  word-break: keep-all;
+  max-width: 400px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   @media (max-width: 768px) {
     font-size: 20px;
     margin: 0;
@@ -322,6 +329,9 @@ const MenuSubTitle = styled.div`
   font-size: 20px;
   font-weight: 400;
   color: #ff9522;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   @media (max-width: 768px) {
     display: none;
   }
