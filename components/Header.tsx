@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 
 export default function Header() {
@@ -9,11 +9,23 @@ export default function Header() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginStatus = () =>
-    dispatch({
-      type: "SET_LOGINSTATUS",
-      loginStatus: !!localStorage.getItem("access_token"),
-    });
+  const setLoginStatus = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINSTATUS",
+        loginStatus: !!localStorage.getItem("access_token"),
+      }),
+    [dispatch],
+  );
+
+  const setLoginModal = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINMODAL",
+        isLoginModal: true,
+      }),
+    [dispatch],
+  );
 
   useEffect(() => {
     setLoginStatus();
@@ -50,7 +62,7 @@ export default function Header() {
           ) : (
             <LoginButton
               onClick={() => {
-                router.push("/login");
+                setLoginModal();
               }}
             >
               로그인

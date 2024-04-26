@@ -20,6 +20,7 @@ declare module types {
     loading: boolean;
     infoData: any;
     loginStatus: boolean;
+    isLoginModal: boolean;
   }
 
   type Action =

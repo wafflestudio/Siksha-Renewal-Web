@@ -1,15 +1,15 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
+import LoginModal from "../../components/Auth/LoginModal";
 import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
-import { set } from "lodash";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 import { GlobalStyle } from "../../styles/globalstyle";
-import ContextProvider from "../../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
 
 interface MenuType {
   id: number;
@@ -67,6 +67,18 @@ export default function Menu() {
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
   const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
+
+  const state = useStateContext();
+  const { isLoginModal } = state;
+  const dispatch = useDispatchContext();
+  const setLoginModal = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINMODAL",
+        isLoginModal: true,
+      }),
+    [dispatch],
+  );
 
   useEffect(() => {
     if (!id) {
@@ -141,16 +153,15 @@ export default function Menu() {
     if (!!localStorage.getItem("access_token")) {
       setReviewPostModalOpen(true);
     } else {
-      router.push("/login");
+      setLoginModal();
     }
   };
 
   return (
     <>
       <GlobalStyle />
-      <ContextProvider>
-        <Header />
-      </ContextProvider>
+      {isLoginModal && <LoginModal />}
+      <Header />
       {!isLoading && !!menu && (
         <Info>
           <MenuContainer>

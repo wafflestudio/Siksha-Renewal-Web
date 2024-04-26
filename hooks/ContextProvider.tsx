@@ -1,4 +1,4 @@
-import { createContext, Dispatch, useContext, useReducer } from "react";
+import { createContext, Dispatch, useContext, useEffect, useReducer } from "react";
 import types from "../types";
 import State = types.State;
 import Action = types.Action;
@@ -36,7 +36,7 @@ function reducer(state: State, action: Action) {
     case "SET_LOGINSTATUS":
       return { ...state, loginStatus: action.loginStatus };
     case "SET_LOGINMODAL":
-      return { ...state, loginModal: action.isLoginModal };
+      return { ...state, isLoginModal: action.isLoginModal };
     default:
       throw new Error("Unhandled action");
   }
@@ -53,7 +53,7 @@ const ContextProvider = ({ children }) => {
     loading: false,
     infoData: null,
     loginStatus: false,
-    isLoginModal: true,
+    isLoginModal: false,
   });
 
   return (

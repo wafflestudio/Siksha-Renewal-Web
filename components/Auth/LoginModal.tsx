@@ -1,17 +1,8 @@
 import styled from "styled-components";
+import { useDispatchContext } from "../../hooks/ContextProvider";
+import React, { useCallback } from "react";
 
 export default function LoginModal() {
-  const CloseSvg = (
-    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M20.4291 1.50138C21.0816 2.15559 21.0802 3.21487 20.426 3.86736L13.3203 10.9545L20.3917 18.0258C21.045 18.6792 21.045 19.7384 20.3917 20.3918C19.7383 21.0451 18.679 21.0451 18.0257 20.3918L10.9512 13.3173L3.84243 20.4075C3.18823 21.06 2.12894 21.0586 1.47645 20.4044C0.823961 19.7502 0.825349 18.6909 1.47955 18.0385L8.58525 10.9514L1.46381 3.82991C0.810458 3.17656 0.810458 2.11728 1.46381 1.46393C2.11715 0.810581 3.17644 0.81058 3.82979 1.46393L10.9543 8.58847L18.0631 1.49828C18.7173 0.845791 19.7766 0.84718 20.4291 1.50138Z"
-        fill="white"
-      />
-    </svg>
-  );
-
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
@@ -20,27 +11,59 @@ export default function LoginModal() {
     window.location.href = kakaoUrl;
   };
 
+  const dispatch = useDispatchContext();
+
+  const closeModal = useCallback(
+    () => dispatch({ type: "SET_LOGINMODAL", isLoginModal: false }),
+    [dispatch],
+  );
+
   return (
     <Background>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton>{CloseSvg}</CloseButton>
+          <CloseButton src={"/img/close-auth.svg"} onClick={closeModal} />
         </TopContainer>
-        <p>식샤</p>
-        <SocialKakao
-          onClick={() => {
-            handleKakaoLogin();
-          }}
-        >
-          <KakaoUnion src={"/img/kakaoUnion.svg"}></KakaoUnion>
-          Login with Kakao
-        </SocialKakao>
-        <SocialGoogle>
-          <GoogleUnion src={"/img/googleUnion.svg"}></GoogleUnion>
-          Login with Google
-        </SocialGoogle>
-        <p>WAFFLE STUDIO</p>
+        <SikshaLogo src={"/img/siksha-typo.svg"} />
+        <SocialContainer>
+          <SocialButton
+            provider="kakao"
+            onClick={() => {
+              handleKakaoLogin();
+            }}
+          >
+            <SocialUnion
+              width={19}
+              height={17}
+              left={14}
+              right={74}
+              src={"/img/kakaoUnion.svg"}
+            ></SocialUnion>
+            Login with Kakao
+          </SocialButton>
+          <SocialButton provider="google">
+            <SocialUnion
+              width={23}
+              height={41}
+              left={10.5}
+              right={74}
+              src={"/img/googleUnion.svg"}
+            ></SocialUnion>
+            Login with Google
+          </SocialButton>
+          <SocialButton provider="google">
+            <SocialUnion
+              width={17}
+              height={18}
+              left={16.5}
+              right={77}
+              src={"/img/appleUnion.svg"}
+            ></SocialUnion>
+            Login with Apple
+          </SocialButton>
+        </SocialContainer>
+        <WaffleLogo src={"/img/waffle-typo.svg"} />
       </MainContainer>
     </Background>
   );
@@ -53,7 +76,7 @@ const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
 `;
 
@@ -76,6 +99,7 @@ const TopContainer = styled.span`
 const LoginTitle = styled.p`
   margin-top: 35px;
   margin-left: 50%;
+  margin-bottom: 0px;
   transform: translateX(-50%);
   width: 55px;
   height: 23px;
@@ -85,58 +109,57 @@ const LoginTitle = styled.p`
   color: #ffffff;
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled.img`
   margin-top: 27px;
   margin-right: 30.14px;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  width: 37.86px;
-  height: 37.86px;
+  padding: 5.77px;
+  width: 26.77px;
+  height: 26.77px;
   background: transparent;
-  border: none;
+  cursor: pointer;
 `;
 
-const SocialKakao = styled.div`
-  width: 300px;
-  height: 45px;
-  background-color: #fee500;
-  margin: auto;
-  margin-top: 128px;
-  vertical-align: center;
-  line-height: 45px;
-  font-family: NanumSquare;
-  font-size: 14px;
-  color: #181600;
-  position: relative;
-  cursor: pointer;
-  border-radius: 6px;
+const SikshaLogo = styled.img`
+  margin-top: 60.91px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;
-const KakaoUnion = styled.img`
-  width: 19px;
-  height: 17px;
-  position: absolute;
-  top: 14px;
-  left: 14px;
+
+const SocialContainer = styled.div`
+  margin-top: 75.26px;
 `;
-const SocialGoogle = styled.div`
+
+const SocialButton = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   width: 300px;
   height: 45px;
   margin: auto;
   margin-top: 18px;
-  vertical-align: center;
   line-height: 45px;
   font-family: NanumSquare;
   font-size: 14px;
-  color: #393939;
+  background-color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+    props.provider === "kakao" ? "#fee500" : "#ffffff"};
+  color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+    props.provider === "kakao" ? "#181600" : "#393939"};
+
   border-radius: 6px;
-  border: 1px solid #b7b7b7;
   position: relative;
+  cursor: pointer;
 `;
-const GoogleUnion = styled.img`
-  width: 23px;
-  height: 41px;
-  position: absolute;
-  top: 2px;
-  left: 10.5px;
+
+const SocialUnion = styled.img`
+  width: ${(props: { width: number; height: number; left: number; right: number }) =>
+    props.width}px;
+  height: ${(props) => props.height}px;
+  margin-left: ${(props) => props.left}px;
+  margin-right: ${(props) => props.right}px;
+`;
+
+const WaffleLogo = styled.img`
+  margin-top: 72px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;

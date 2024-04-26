@@ -11,7 +11,6 @@ import MenuList from "./MenuList";
 import Calendar from "./Calendar";
 import RestaurantInfo from "./RestaurantInfo";
 import APIendpoint from "../constants/constants";
-import LoginModal from "./Auth/LoginModal";
 
 export default function Body() {
   const state = useStateContext();
@@ -55,7 +54,6 @@ export default function Body() {
 
   return (
     <>
-      {isLoginModal && <LoginModal />}
       <DesktopContainer>
         <LeftSide />
         <RightSide />
