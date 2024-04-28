@@ -150,15 +150,15 @@ export default function Menu() {
   useEffect(() => {
     var updatedImages: string[] = [];
     reviews.result.map((review) => {
-      if(review.etc) {
+      if (review.etc) {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
     const SWIPER_IMAGES_LIMIT = 10;
-    if(updatedImages.length > SWIPER_IMAGES_LIMIT) {
+    if (updatedImages.length > SWIPER_IMAGES_LIMIT) {
       updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
     }
-    while(updatedImages.length > 0 && updatedImages.length <= SWIPER_IMAGES_LIMIT) {
+    while (updatedImages.length > 0 && updatedImages.length <= SWIPER_IMAGES_LIMIT) {
       updatedImages = updatedImages.concat(updatedImages);
     }
     setImages(updatedImages);
@@ -187,7 +187,7 @@ export default function Menu() {
                     <MenuTitle>{menu.name_kr}</MenuTitle>
                     <MenuSubTitle>{restaurantName}</MenuSubTitle>
                   </MenuTitleContainer>
-                  <Likes menu={menu}/>
+                  <Likes menu={menu} />
                 </MenuHeader>
                 <HLine />
                 <ReviewDistribution
@@ -199,15 +199,15 @@ export default function Menu() {
             </MenuContainer>
             {!isReviewPostModalOpen && (
               <ReviewContainer>
-                <ReviewPostButton onClick={handleReviewPostButtonClick}>
+                <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
                   나의 평가 남기기
-                </ReviewPostButton>
+                </MobileReviewPostButton>
                 <ReviewHeader>
                   <ReviewTitleContainer>
                     <ReviewTitle>리뷰</ReviewTitle>
                     <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
                   </ReviewTitleContainer>
-                  <Link href="#" style={{ textDecoration: 'none' }}>
+                  <Link href="#" style={{ textDecoration: "none" }}>
                     <ImageReviewButton>
                       <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
                       <img src="/img/right-arrow-grey.svg" />
@@ -219,6 +219,9 @@ export default function Menu() {
                     reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
                   {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
                 </ReviewList>
+                <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
+                  나의 평가 남기기
+                </DesktopReviewPostButton>
               </ReviewContainer>
             )}
             {isReviewPostModalOpen && (
@@ -269,8 +272,7 @@ const ReviewContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 37%;
-  right: 0;
-  flex-grow: 0;
+  height: max-content;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
@@ -380,29 +382,41 @@ const ReviewHeader = styled.div`
   margin-bottom: 40px;
 `;
 
-const ReviewPostButton = styled.button`
-  position: fixed;
-  bottom: 0;
+const DesktopReviewPostButton = styled.button`
   background: #ff9522;
-  border-radius: 5px;
   color: white;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
-  vertical-align: middle;
   line-height: 18px;
   padding: 10px 25px;
   border: none;
+  border-radius: 5px;
   margin-bottom: 17px;
   cursor: pointer;
   @media (max-width: 768px) {
-    position: inherit;
-    border-radius: 50px;
-    width: 200px;
-    height: 32px;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 16px;
-    padding: 0;
+    display: none;
+  }
+`;
+
+const MobileReviewPostButton = styled.button`
+  background: #ff9522;
+  display: none;
+  text-align: center;
+  position: inherit;
+  width: 200px;
+  height: 32px;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  align-items: center;
+  line-height: 16px;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  margin-bottom: 17px;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    display: inline-block;
   }
 `;

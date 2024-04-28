@@ -49,30 +49,14 @@ export default function ReviewPostModal({
   if (!isOpen) return null;
   return (
     <Container>
-      <CloseButton src="/img/x-button.svg" onClick={onClose} />
-      <div
-        style={{
-          display: "flex",
-          marginBottom: "35px",
-        }}
-      >
+      <ModalTitle>나의 평가 남기기</ModalTitle>
+      <HLine />
+      <ReviewTitle>
         &apos; <MenuNameText>{menu.menuName} </MenuNameText>&apos;{" "}
-        <ReviewTitle>는 어땠나요?</ReviewTitle>
-      </div>
-      <span
-        style={{
-          color: "#707070",
-          fontSize: "14px",
-        }}
-      >
-        별점을 선택해 주세요.
-      </span>
-      <div
-        style={{
-          display: "flex",
-          cursor: "pointer",
-        }}
-      >
+        <ReviewTitleText>는 어땠나요?</ReviewTitleText>
+      </ReviewTitle>
+      <SelectStarText>별점을 선택해 주세요.</SelectStarText>
+      <StarsContainer>
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
@@ -80,124 +64,94 @@ export default function ReviewPostModal({
             onClick={() => setScore(i)}
           />
         ))}
-      </div>
-      <div
-        style={{
-          fontSize: "20px",
-          fontWeight: "bold",
-          marginTop: "9px",
-          marginBottom: "45px",
-        }}
-      >
-        {score}
-      </div>
-      <div
-        style={{
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
+      </StarsContainer>
+      <Score>{score}</Score>
+      <CommentContainer>
+        <CommentTitleContainer>
           <CommentImg src={"/img/comment.svg"} />
-          <span
-            style={{
-              color: "#707070",
-              fontSize: "14px",
-              marginLeft: "6px",
-            }}
-          >
+          <CommentTitle>
             식단 한 줄 평을 함께 남겨보세요!
-          </span>
-        </div>
-        <div
-          style={{
-            position: "relative",
-          }}
-        >
-          <TextArea
+          </CommentTitle>
+        </CommentTitleContainer>
+        <CommentBox>
+          <CommentTextArea
             value={comment}
+            placeholder={"맛은 어땠나요?"}
             onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
           />
-          <span
-            style={{
-              color: "#707070",
-              fontSize: "14px",
-              right: "60px",
-              bottom: "35px",
-              zIndex: 1,
-              position: "absolute",
-            }}
-          >
+          <CommentLength>
             {comment.length} 자 / {MAX_COMMENT_LENGTH} 자
-          </span>
-        </div>
-      </div>
-
-      <ReviewPostButton
-        onClick={() => {
-          onReviewSubmit();
-        }}
-        disabled={comment.length === 0}
-      >
-        평가 등록
-      </ReviewPostButton>
+          </CommentLength>
+        </CommentBox>
+      </CommentContainer>
+      <ImagesContainer>
+        <AddImageButton>
+          <PhotoImg src={"/img/siksha-icon.svg"} />
+          <AddImageText>사진 추가</AddImageText>
+        </AddImageButton>
+      </ImagesContainer>
+      <ModalFooter>
+        <ReviewCancelButton
+          onClick={() => {
+            onClose();
+          }}
+        >
+          취소
+        </ReviewCancelButton>
+        <ReviewPostButton
+          onClick={() => {
+            onReviewSubmit();
+          }}
+          disabled={comment.length === 0}
+        >
+          등록
+        </ReviewPostButton>
+      </ModalFooter>
     </Container>
   );
 }
-const CommentImg = styled.img`
-`
-
-const TextArea = styled.textarea`
-  width: 90%;
-  height: 115px;
-  border-radius: 8px;
-  border: 1px solid #eeeeee;
-  background-color: #fafafa;
-  padding: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  resize: none;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.3px;
-  color: #333;
-`;
-
-const Star = styled.img`
-  width: 25px;
-  height: 25px;
-  margin-right: 5px;
-  cursor: pointer;
-`;
 
 const Container = styled.div`
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
-  right: 0;
-  position: absolute;
+  width: 37%;
   border-left: 1px solid #eeeeee;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 50px;
-  min-height: 100%;
+  padding-left: 37px;
+  padding-right: 36px;
+  padding-top: 22px;
+  padding-bottom: 22px;
   @media (max-width: 768px) {
-    width: 100%;
+    position: absolute;
+    flex-grow: 1;
+    width: 100vw;
+    box-sizing: border-box;
   }
 `;
 
-const CloseButton = styled.img`
-  width: 26px;
-  height: 26px;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
+const ModalTitle = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff9522;
+  @media (max-width: 768px) {
+    font-weight: 800;
+  }
+`;
+
+const HLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #fe8c59;
+  margin: 10px auto 10px auto;
+`;
+
+const ReviewTitle = styled.div`
+  display: flex;
+  margin-bottom: 22px;
+  @media (max-width: 768px) {
+    margin-bottom: 26px;
+  }
 `;
 
 const MenuNameText = styled.div`
@@ -207,7 +161,7 @@ const MenuNameText = styled.div`
   font-family: NanumSquareOTF;
   font-size: 20px;
   max-width: 140px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
   text-align: center;
   text-overflow: ellipsis;
@@ -215,28 +169,200 @@ const MenuNameText = styled.div`
   white-space: nowrap;
 `;
 
-const ReviewTitle = styled.span`
+const ReviewTitleText = styled.span`
   color: #7a7a7a;
   font-feature-settings: "clig" off, "liga" off;
   font-family: NanumSquareOTF;
   font-size: 20px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
   letter-spacing: -0.3px;
 `;
 
+const SelectStarText = styled.span`
+  display: none;
+  margin-bottom: 16px;
+  color: #707070;
+  font-size: 14px;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
+const Star = styled.img`
+  width: 43px;
+  height: 40px;
+  margin-right: 5px;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 25px;
+  }
+`;
+
+const StarsContainer = styled.div`
+  display: flex;
+  width: 242px;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    width: 152px;
+  }
+`;
+
+const Score = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 48px;
+  color: #ff9522;
+  @media (max-width: 768px) {
+    margin-top: 7px;
+    margin-bottom: 35px;
+    color: #000000;
+  }
+`;
+
+const CommentContainer = styled.div`
+  width: 100%;
+  padding: 0 17px;
+  margin-bottom: 16px;
+`;
+
+const CommentTitleContainer = styled.div`
+  display: flex;
+`;
+
+const CommentBox = styled.div`
+  position: relative;
+`;
+
+const CommentTextArea = styled.textarea`
+  box-sizing: border-box;
+  width: 100%;
+  height: 137px;
+  border-radius: 8px;
+  border: 1px solid #eeeeee;
+  background-color: #fafafa;
+  padding: 12px;
+  margin-top: 10px;
+  resize: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+  color: #333;
+`;
+
+const CommentImg = styled.img`
+`;
+
+const CommentTitle = styled.div`
+  color: #707070;
+  font-size: 14px;
+  margin-left: 6px;
+`;
+
+const CommentLength = styled.span`
+  color: #707070;
+  font-size: 14px;
+  right: 15px;
+  bottom: 16px;
+  z-index: 1;
+  position: absolute;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+    right: 13px;
+    bottom: 12px;
+  }
+`;
+
+const ImagesContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+`;
+
+const AddImageButton = styled.div`
+  box-sizing: border-box;
+  width: 120px;
+  height: 120px;
+  flex: 0 0 auto;
+  background-color: #ff9522;
+  border-radius: 8px;
+  padding: 35px 26px;
+  margin: 0 5px;
+  text-align: center;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: flex;
+    width: 134px;
+    height: 32px;
+    border-radius: 50px;
+    padding: 8px 25px;
+  }
+`;
+
+const PhotoImg = styled.img`
+  width: 28px;
+  height: 28px;
+`;
+
+const AddImageText = styled.div`
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 16px;
+
+  &:after {
+    content: " +";
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+`;
+
+const ModalFooter = styled.div`
+  display: flex;
+  width: 100%;
+  padding-bottom: 30px;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
 const ReviewPostButton = styled.button`
-  width: 343px;
-  height: 56px;
-  flex-shrink: 0;
+  width: 50%;
+  height: 46px;
+  margin: 0 7px;
   border-radius: 8px;
   background-color: #ff9522;
   text-align: center;
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
-  margin-top: 70px;
+
+  &:disabled{
+    background-color: #adadad;
+  }
+`;
+
+const ReviewCancelButton = styled.button`
+  width: 50%;
+  height: 46px;
+  margin: 0 7px;
+  border-radius: 8px;
+  background-color: #eeeeee;
+  text-align: center;
+  color: #8e8e8e;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
 `;
