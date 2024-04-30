@@ -19,11 +19,11 @@ export function ReviewItem({ review }: { review: ReviewType }) {
       <ReviewContent>{review.comment}</ReviewContent>
       { review.etc && 
         <ReviewImageList>
-        {
-          review.etc.images.map((image) => 
-            <ReviewImage key={image} src={image}/>
-          )
-        }
+          {
+            review.etc.images.map((image) => 
+              <ReviewImage key={image} src={image}/>
+            )
+          }
         </ReviewImageList>
       }
     </ReviewItemContainer>

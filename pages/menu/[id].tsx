@@ -13,6 +13,7 @@ import ContextProvider, { useStateContext } from "../../hooks/ContextProvider";
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
+import Image from "next/image";
 
 interface MenuType {
   id: number;
@@ -210,7 +211,7 @@ export default function Menu() {
                   <Link href="#" style={{ textDecoration: "none" }}>
                     <ImageReviewButton>
                       <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                      <img src="/img/right-arrow-grey.svg" />
+                      <Image src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
                     </ImageReviewButton>
                   </Link>
                 </ReviewHeader>
@@ -382,7 +383,7 @@ const ReviewPostButton = styled.button<{mobile : boolean}>`
   cursor: pointer;
   ${props =>
     props.mobile ?
-    css`
+      css`
       display: none;
       position: inherit;
       width: 200px;
@@ -395,7 +396,7 @@ const ReviewPostButton = styled.button<{mobile : boolean}>`
         display: inline-block;
       }
     ` : 
-    css`
+      css`
       font-size: 16px;
       font-weight: 700;
       line-height: 18px;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import APIendpoint from "../../constants/constants";
 import axios from "axios";
+import Image from "next/image";
 
 export default function ReviewPostModal({
   isOpen,
@@ -68,7 +69,7 @@ export default function ReviewPostModal({
       <Score>{score}</Score>
       <CommentContainer>
         <div style={{display: "flex",}}>
-          <img src={"/img/comment.svg"} />
+          <Image src="/img/comment.svg" alt="코멘트 이미지"/>
           <CommentTitle>
             식단 한 줄 평을 함께 남겨보세요!
           </CommentTitle>
