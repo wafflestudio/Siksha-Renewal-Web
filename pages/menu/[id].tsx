@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -145,7 +145,7 @@ export default function Menu() {
     };
 
     fetchMenu();
-  }, [id, setLoading, isReviewPostModalOpen]);
+  }, [id, setLoading]);
 
   useEffect(() => {
     var updatedImages: string[] = [];
@@ -183,10 +183,10 @@ export default function Menu() {
               {images.length > 0 && <ReviewImageSwiper images={images} />}
               <MenuInfoContainer>
                 <MenuHeader>
-                  <MenuTitleContainer>
+                  <div style={{display: "flex", alignItems: "baseline", }}>
                     <MenuTitle>{menu.name_kr}</MenuTitle>
                     <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                  </MenuTitleContainer>
+                  </div>
                   <Likes menu={menu} />
                 </MenuHeader>
                 <HLine />
@@ -199,14 +199,14 @@ export default function Menu() {
             </MenuContainer>
             {!isReviewPostModalOpen && (
               <ReviewContainer>
-                <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
                   나의 평가 남기기
-                </MobileReviewPostButton>
+                </ReviewPostButton>
                 <ReviewHeader>
-                  <ReviewTitleContainer>
+                  <div style={{display: "flex", }}>
                     <ReviewTitle>리뷰</ReviewTitle>
                     <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                  </ReviewTitleContainer>
+                  </div>
                   <Link href="#" style={{ textDecoration: "none" }}>
                     <ImageReviewButton>
                       <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
@@ -219,9 +219,9 @@ export default function Menu() {
                     reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
                   {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
                 </ReviewList>
-                <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
                   나의 평가 남기기
-                </DesktopReviewPostButton>
+                </ReviewPostButton>
               </ReviewContainer>
             )}
             {isReviewPostModalOpen && (
@@ -244,7 +244,6 @@ export default function Menu() {
 const Info = styled.div`
   background-color: white;
   display: flex;
-  height: max(100vh, 910px);
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -267,12 +266,12 @@ const MenuInfoContainer = styled.div`
 `;
 
 const ReviewContainer = styled.section`
+  box-sizing: border-box;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 37%;
-  height: max-content;
+  width: 38%;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
@@ -304,11 +303,6 @@ const MenuHeader = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`;
-
-const MenuTitleContainer = styled.div`
-  display: flex;
-  align-items: baseline;
 `;
 
 const MenuTitle = styled.div`
@@ -346,10 +340,6 @@ const HLine = styled.div`
   margin: 10px auto 10px auto;
 `;
 
-const ReviewTitleContainer = styled.div`
-  display: flex;
-`;
-
 const ReviewTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
@@ -382,41 +372,36 @@ const ReviewHeader = styled.div`
   margin-bottom: 40px;
 `;
 
-const DesktopReviewPostButton = styled.button`
+const ReviewPostButton = styled.button<{mobile : boolean}>`
   background: #ff9522;
   color: white;
-  font-size: 16px;
-  font-weight: 700;
   text-align: center;
-  line-height: 18px;
   padding: 10px 25px;
   border: none;
-  border-radius: 5px;
   margin-bottom: 17px;
   cursor: pointer;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const MobileReviewPostButton = styled.button`
-  background: #ff9522;
-  display: none;
-  text-align: center;
-  position: inherit;
-  width: 200px;
-  height: 32px;
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-  align-items: center;
-  line-height: 16px;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 50px;
-  margin-bottom: 17px;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    display: inline-block;
-  }
+  ${props =>
+    props.mobile ?
+    css`
+      display: none;
+      position: inherit;
+      width: 200px;
+      height: 32px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 16px;
+      border-radius: 50px;
+      @media (max-width: 768px) {
+        display: inline-block;
+      }
+    ` : 
+    css`
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 18px;
+      border-radius: 5px;
+      @media (max-width: 768px) {
+        display: none;
+      }
+    `}
 `;

@@ -67,13 +67,13 @@ export default function ReviewPostModal({
       </StarsContainer>
       <Score>{score}</Score>
       <CommentContainer>
-        <CommentTitleContainer>
-          <CommentImg src={"/img/comment.svg"} />
+        <div style={{display: "flex",}}>
+          <img src={"/img/comment.svg"} />
           <CommentTitle>
             식단 한 줄 평을 함께 남겨보세요!
           </CommentTitle>
-        </CommentTitleContainer>
-        <CommentBox>
+        </div>
+        <div style={{position: "relative",}}>
           <CommentTextArea
             value={comment}
             placeholder={"맛은 어땠나요?"}
@@ -82,14 +82,9 @@ export default function ReviewPostModal({
           <CommentLength>
             {comment.length} 자 / {MAX_COMMENT_LENGTH} 자
           </CommentLength>
-        </CommentBox>
+        </div>
       </CommentContainer>
-      <ImagesContainer>
-        <AddImageButton>
-          <PhotoImg src={"/img/siksha-icon.svg"} />
-          <AddImageText>사진 추가</AddImageText>
-        </AddImageButton>
-      </ImagesContainer>
+      {/* TODO: 리뷰 내 이미지 첨부 구현 */}
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {
@@ -112,11 +107,12 @@ export default function ReviewPostModal({
 }
 
 const Container = styled.div`
+  box-sizing: border-box;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 37%;
+  width: 38%;
   border-left: 1px solid #eeeeee;
   padding-left: 37px;
   padding-right: 36px;
@@ -143,12 +139,12 @@ const HLine = styled.div`
   width: 100%;
   height: 1px;
   background: #fe8c59;
-  margin: 10px auto 10px auto;
+  margin: 10px auto;
 `;
 
 const ReviewTitle = styled.div`
   display: flex;
-  margin-bottom: 22px;
+  margin: 30px 0 22px 0;
   @media (max-width: 768px) {
     margin-bottom: 26px;
   }
@@ -224,17 +220,10 @@ const Score = styled.div`
 `;
 
 const CommentContainer = styled.div`
+  box-sizing: border-box;
   width: 100%;
   padding: 0 17px;
   margin-bottom: 16px;
-`;
-
-const CommentTitleContainer = styled.div`
-  display: flex;
-`;
-
-const CommentBox = styled.div`
-  position: relative;
 `;
 
 const CommentTextArea = styled.textarea`
@@ -253,9 +242,6 @@ const CommentTextArea = styled.textarea`
   line-height: normal;
   letter-spacing: -0.3px;
   color: #333;
-`;
-
-const CommentImg = styled.img`
 `;
 
 const CommentTitle = styled.div`
