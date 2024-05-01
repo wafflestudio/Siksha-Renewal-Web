@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
+import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import Image from "next/image";
