@@ -245,6 +245,7 @@ export default function Menu() {
 const Info = styled.div`
   background-color: white;
   display: flex;
+  height: max(910px, 100vh);
   @media (max-width: 768px) {
     flex-direction: column;
   }
