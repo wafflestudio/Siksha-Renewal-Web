@@ -41,10 +41,10 @@ export default function ReviewImageSwiper({images}: { images: string[]; }) {
         </SwiperContainer>
       </SwiperViewport>
       <SwiperPrevButton type="button" onClick={onPrevButtonClick}>
-        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" />
+        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22}/>
       </SwiperPrevButton>
       <SwiperNextButton type="button" onClick={onNextButtonClick}>
-        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" />
+        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22}/>
       </SwiperNextButton>
     </Swiper>
   );

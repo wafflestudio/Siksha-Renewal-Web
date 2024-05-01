@@ -211,7 +211,7 @@ export default function Menu() {
                   <Link href="#" style={{ textDecoration: "none" }}>
                     <ImageReviewButton>
                       <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                      <Image src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
+                      <Image src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" width={10} height={16} />
                     </ImageReviewButton>
                   </Link>
                 </ReviewHeader>
