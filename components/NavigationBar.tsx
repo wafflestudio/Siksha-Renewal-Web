@@ -38,6 +38,10 @@ const NaviBar = styled.nav`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const NavItem = styled.div`
@@ -48,7 +52,7 @@ const NavItem = styled.div`
   padding: 0;
 `;
 
-const NavLink = styled.a<{ $cur: boolean }>`
+const NavLink = styled.div<{ $cur: boolean }>`
   font-size: 20px;
   padding: 20px 10px;
   color: #ffffff80;
