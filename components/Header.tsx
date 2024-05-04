@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import NavigationBar from "./NavigationBar";
 
 export default function Header() {
   const router = useRouter();
@@ -36,6 +37,7 @@ export default function Header() {
           >
             서울대학교 식단 알리미
           </Title>
+          <NavigationBar/>
           {isLoginPage ? (
             <></>
           ) : loginStatus ? (

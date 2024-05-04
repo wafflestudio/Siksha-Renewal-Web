@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import Meal from "./Meal";
 import MenuList from "./MenuList";
-import CalendarNavi from "./CalendarNavi";
 
 export default function RightSide() {
   return (
     <Container>
-      <CalendarNavi />
       <Meal />
       <MenuList />
     </Container>

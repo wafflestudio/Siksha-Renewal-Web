@@ -51,11 +51,11 @@ const Container = styled.div`
   display: flex;
   align-items: flex-end;
   padding-top: 22px;
-  padding-bottom: 13px;
+  padding-bottom: 22px;
 
   @media (max-width: 768px) {
     padding-top: 11px;
-    padding-bottom: 10px;
+    padding-bottom: 11px;
     position: absolute;
     top: 113px;
   }
