@@ -69,7 +69,7 @@ export default function ReviewPostModal({
       <Score>{score}</Score>
       <CommentContainer>
         <div style={{display: "flex",}}>
-          <Image src="/img/comment.svg" alt="코멘트 이미지"/>
+          <Image src="/img/comment.svg" alt="코멘트 이미지" width={18} height={18}/>
           <CommentTitle>
             식단 한 줄 평을 함께 남겨보세요!
           </CommentTitle>
