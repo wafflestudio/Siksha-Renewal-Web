@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import Stars from "./Stars";
 
 export default function ReviewDistribution({
@@ -18,7 +18,9 @@ export default function ReviewDistribution({
     <Container>
       <ScoreContainer>
         <Score>{score.toFixed(1)}</Score>
-        <Stars score={score} />
+        <ThemeProvider theme={{width: 180}}>
+          <Stars score={score}/>
+        </ThemeProvider>
       </ScoreContainer>
       <DistributionChart>
         {distribution.map((count, i) => (
@@ -30,7 +32,10 @@ export default function ReviewDistribution({
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
         ))}
-        <ReviewTotalCountText>총 {totalReviewCount}명이 평가했어요!</ReviewTotalCountText>
+        <TotalReviewCountText>총
+          <TotalReviewCountContainer> {totalReviewCount}명</TotalReviewCountContainer>
+          이 평가했어요!
+        </TotalReviewCountText>
       </DistributionChart>
     </Container>
   );
@@ -38,34 +43,49 @@ export default function ReviewDistribution({
 
 const Container = styled.div`
   display: flex;
-  margin-top: 60px;
+  justify-content: space-between;
+  margin-top: 23px;
   margin-left: 26px;
 `;
 
 const Score = styled.div`
   text-align: center;
-  font-size: 40px;
+  font-size: 45px;
   font-weight: 700;
-  margin-right: 32px;
-  margin-left: 32px;
-  margin-bottom: 4px;
-  margin-top: 30px;
+  margin-top: 68px;
+  margin-bottom: 16px;
+  line-height: 51px;
+  @media (max-width: 768px) {
+    font-size: 32px;
+    margin-right: 32px;
+    margin-left: 32px;
+    margin-top: 30px;
+    margin-bottom: 4px;
+  }
 `;
 
 const ScoreContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90px;
+  width: 300px;
   height: 90px;
-  margin-right: 26px;
+  margin-right: 10%;
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 90px;
+    margin-right: 26px;
+  }
 `;
 
 const DistributionChart = styled.div`
   display: flex;
   flex-direction: column-reverse;
   width: 100%;
-  gap: 8px;
+  gap: 20px;
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
 `;
 
 const DistributionBarWithText = styled.div`
@@ -75,27 +95,51 @@ const DistributionBarWithText = styled.div`
 `;
 
 const DistributionBar = styled.div<{ percentage: number }>`
-  width: ${(props) => props.percentage * 2.3 + 4}px;
-  height: 8px;
+  width: calc(${(props) => props.percentage + 2}% * 0.9 - 41px);
+  height: 16px;
   background: #ff9522;
   border-radius: 0 5px 5px 0;
   margin-left: 9px;
+  @media (max-width: 768px) {
+    width: ${(props) => props.percentage * 2.3 + 4}px;
+    height: 8px;
+    border-radius: 0 5px 5px 0;
+  }
 `;
 
 const DistributionText = styled.div`
-  font-size: 8px;
+  display: flex;
+  width: 32px;
+  font-size: 12px;
   font-weight: 700;
   color: #919191;
+  align-items: end;
+  @media (max-width: 768px) {
+    font-size: 8px;
+  }
 `;
 
 const StarImg = styled.img`
-  width: 8px;
-  height: 8px;
-  margin-left: 4px;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  @media (max-width: 768px) {
+    width: 8px;
+    height: 8px;
+    margin-left: 4px;
+  }
 `
 
-const ReviewTotalCountText = styled.div`
-  font-size: 10px;
+const TotalReviewCountContainer = styled.span`
+  font-weight: 800;
+  color: #FE8C59;
+`;
+
+const TotalReviewCountText = styled.div`
+  font-size: 16px;
   font-weight: 700;
   color: #919191;
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
