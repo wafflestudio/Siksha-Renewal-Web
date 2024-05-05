@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -10,6 +10,10 @@ import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 import { GlobalStyle } from "../../styles/globalstyle";
 import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
+import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
+import Link from "next/link";
+import Likes from "../../components/MenuDetail/Likes";
+import Image from "next/image";
 
 interface MenuType {
   id: number;
@@ -20,11 +24,13 @@ interface MenuType {
   name_kr: string;
   name_en: string;
   price: number;
-  etc: string[];
+  etc: {};
   created_at: string;
   updated_at: string;
   score: number | null;
   review_cnt: number;
+  is_liked: boolean;
+  like_cnt: number;
 }
 
 export interface ReviewType {
@@ -33,7 +39,7 @@ export interface ReviewType {
   user_id: number;
   score: number | null;
   comment: string;
-  etc: {};
+  etc: ReviewEtcType | null;
   created_at: string;
   updated_at: string;
 }
@@ -55,6 +61,10 @@ interface ReviewListType {
   total_count: number;
 }
 
+interface ReviewEtcType {
+  images: string[];
+}
+
 export default function Menu() {
   const router = useRouter();
   const { id } = router.query;
@@ -64,6 +74,7 @@ export default function Menu() {
     total_count: 0,
   });
   const [menu, setMenu] = useState<MenuType>();
+  const [images, setImages] = useState<string[]>([]);
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
   const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
@@ -147,7 +158,24 @@ export default function Menu() {
     };
 
     fetchMenu();
-  }, [id, setLoading, isReviewPostModalOpen]);
+  }, [id, setLoading]);
+
+  useEffect(() => {
+    var updatedImages: string[] = [];
+    reviews.result.map((review) => {
+      if (review.etc) {
+        updatedImages = updatedImages.concat(review.etc.images);
+      }
+    });
+    const SWIPER_IMAGES_LIMIT = 10;
+    if (updatedImages.length > SWIPER_IMAGES_LIMIT) {
+      updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
+    }
+    while (updatedImages.length > 0 && updatedImages.length <= SWIPER_IMAGES_LIMIT) {
+      updatedImages = updatedImages.concat(updatedImages);
+    }
+    setImages(updatedImages);
+  }, [reviews]);
 
   const handleReviewPostButtonClick = () => {
     if (!!localStorage.getItem("access_token")) {
@@ -165,29 +193,53 @@ export default function Menu() {
       {!isLoading && !!menu && (
         <Info>
           <MenuContainer>
-            <MenuHeader>
-              <MenuTitle>{menu.name_kr}</MenuTitle>
-              <MenuSubTitle>{restaurantName}</MenuSubTitle>
-            </MenuHeader>
-            <ReviewDistribution
-              totalReviewCount={reviews.total_count}
-              score={menu.score || 0}
-              distribution={reviewDistribution}
-            />
+            {images.length > 0 && <ReviewImageSwiper images={images} />}
+            <MenuInfoContainer>
+              <MenuHeader>
+                <div style={{ display: "flex", alignItems: "baseline" }}>
+                  <MenuTitle>{menu.name_kr}</MenuTitle>
+                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                </div>
+                <Likes menu={menu} />
+              </MenuHeader>
+              <HLine />
+              <ReviewDistribution
+                totalReviewCount={reviews.total_count}
+                score={menu.score || 0}
+                distribution={reviewDistribution}
+              />
+            </MenuInfoContainer>
           </MenuContainer>
           {!isReviewPostModalOpen && (
             <ReviewContainer>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                나의 평가 남기기
+              </ReviewPostButton>
               <ReviewHeader>
-                <ReviewTitle>리뷰</ReviewTitle>
-                <ReviewPostButton onClick={handleReviewPostButtonClick}>
-                  나의 평가 남기기
-                </ReviewPostButton>
+                <div style={{ display: "flex" }}>
+                  <ReviewTitle>리뷰</ReviewTitle>
+                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                </div>
+                <Link href="#" style={{ textDecoration: "none" }}>
+                  <ImageReviewButton>
+                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
+                    <Image
+                      src="/img/right-arrow-grey.svg"
+                      alt="오른쪽 화살표"
+                      width={10}
+                      height={16}
+                    />
+                  </ImageReviewButton>
+                </Link>
               </ReviewHeader>
               <ReviewList>
                 {reviews.result.length > 0 &&
                   reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
                 {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
               </ReviewList>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                나의 평가 남기기
+              </ReviewPostButton>
             </ReviewContainer>
           )}
           {isReviewPostModalOpen && (
@@ -207,30 +259,47 @@ export default function Menu() {
 }
 
 const Info = styled.div`
+  background-color: white;
   display: flex;
+  height: max(910px, 100vh);
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
-const MenuContainer = styled.div`
-  padding-top: 40px;
-  left: calc(max((100vw - 1155px), 0px) / 2);
-  position: absolute;
+const MenuContainer = styled.section`
+  background-color: white;
+  flex-grow: 1;
+  @media (max-width: 768px) {
+    flex-grow: 0;
+    width: auto;
+  }
 `;
 
-const ReviewContainer = styled.div`
+const MenuInfoContainer = styled.div`
+  padding: 37px 30px 26px calc(max((100vw - 1155px), 0px) / 2);
+  @media (max-width: 768px) {
+    padding: 19px 15px 18px 17px;
+  }
+`;
+
+const ReviewContainer = styled.section`
+  box-sizing: border-box;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
-  right: 0;
-  position: absolute;
+  width: 38%;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
-  padding-top: 50px;
-  min-height: 100%;
+  padding-top: 36px;
   @media (max-width: 768px) {
+    flex-grow: 1;
+    width: auto;
     padding-left: 5%;
     padding-right: 5%;
+    padding-top: 0;
   }
 `;
 
@@ -247,7 +316,11 @@ const MenuHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  align-items: center;
+  align-items: last baseline;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const MenuTitle = styled.div`
@@ -255,21 +328,57 @@ const MenuTitle = styled.div`
   font-weight: 700;
   color: #ff9522;
   margin-right: 32px;
-  margin-left: 32px;
-  max-width: 450px;
-  word-break: keep-all;
+  margin-left: 7px;
+  max-width: 400px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin: 0;
+  }
 `;
 
 const MenuSubTitle = styled.div`
   font-size: 20px;
   font-weight: 400;
   color: #ff9522;
-  vertical-align: bottom;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const HLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #fe8c59;
+  margin: 10px auto 10px auto;
 `;
 
 const ReviewTitle = styled.div`
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 700;
+`;
+
+const ReviewTotalCount = styled.div`
+  margin-left: 7px;
+  padding-top: 2px;
+  font-weight: 800;
+  color: #ff9522;
+`;
+
+const ImageReviewButton = styled.div`
+  display: flex;
+  text-decoration: none;
+`;
+
+const ImageReviewButtonText = styled.div`
+  color: #919191;
+  margin-right: 12px;
+  font-size: 14px;
 `;
 
 const ReviewHeader = styled.div`
@@ -277,22 +386,40 @@ const ReviewHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 0 24px 0 24px;
-  height: 48px;
   align-items: center;
   margin-bottom: 40px;
 `;
 
-const ReviewPostButton = styled.button`
+const ReviewPostButton = styled.button<{ mobile: boolean }>`
   background: #ff9522;
-  border-radius: 16px;
-  width: 138px;
-  height: 32px;
   color: white;
-  font-size: 14px;
-  font-weight: 800;
   text-align: center;
-  vertical-align: middle;
-  line-height: 32px;
+  padding: 10px 25px;
   border: none;
+  margin-bottom: 17px;
   cursor: pointer;
+  ${(props) =>
+    props.mobile
+      ? css`
+          display: none;
+          position: inherit;
+          width: 200px;
+          height: 32px;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 16px;
+          border-radius: 50px;
+          @media (max-width: 768px) {
+            display: inline-block;
+          }
+        `
+      : css`
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 18px;
+          border-radius: 5px;
+          @media (max-width: 768px) {
+            display: none;
+          }
+        `}
 `;

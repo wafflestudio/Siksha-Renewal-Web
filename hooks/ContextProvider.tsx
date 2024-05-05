@@ -1,7 +1,5 @@
-import { createContext, Dispatch, useContext, useEffect, useReducer } from "react";
-import types from "../types";
-import State = types.State;
-import Action = types.Action;
+import { createContext, Dispatch, useContext, useReducer } from "react";
+import { State, Action } from "../types";
 
 let initMeal = "BR";
 const initToday = new Date();
