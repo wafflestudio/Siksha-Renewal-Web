@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
-import { useEffect, useState } from "react";
-import { useStateContext } from "../hooks/ContextProvider";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../constants/constants";
@@ -16,7 +16,17 @@ export default function Menu({ menu }) {
   const router = useRouter();
 
   const state = useStateContext();
+  const dispatch = useDispatchContext();
   const { loginStatus } = state;
+  const setLoginModal = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINMODAL",
+        isLoginModal: true,
+      }),
+    [dispatch],
+  );
+
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
   }, [menu.price]);
@@ -28,9 +38,10 @@ export default function Menu({ menu }) {
       else setScore("low");
     }
   }, [menu.score]);
+
   const isLikedToggle = async () => {
     if (loginStatus === false) {
-      router.push("/login");
+      setLoginModal();
     } else {
       const access_token = localStorage.getItem("access_token");
       if (isLiked === false) {
@@ -188,8 +199,8 @@ const Rate = styled.div`
       ? props.type == "high"
         ? "#F47156"
         : props.type == "middle"
-          ? "#F58625"
-          : "#F5B52C"
+        ? "#F58625"
+        : "#F5B52C"
       : "white"};
 
   @media (max-width: 768px) {

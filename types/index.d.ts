@@ -14,6 +14,7 @@ export interface State {
   loading: boolean;
   infoData: any;
   loginStatus: boolean;
+  isLoginModal: boolean;
 }
 
 export type Action =
@@ -24,7 +25,8 @@ export type Action =
   | { type: "SET_INFODATA"; infoData: any }
   | { type: "TOGGLE_SHOWCAL" }
   | { type: "TOGGLE_SHOWINFO" }
-  | { type: "SET_LOGINSTATUS"; loginStatus: boolean };
+  | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
+  | { type: "SET_LOGINMODAL"; isLoginModal: boolean };
 
 // Extend the Window interface for global scope (if needed)
 declare global {

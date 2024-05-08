@@ -1,15 +1,15 @@
 import styled, { css } from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
+import LoginModal from "../../components/Auth/LoginModal";
 import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
-import { set } from "lodash";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
 import { GlobalStyle } from "../../styles/globalstyle";
-import ContextProvider, { useStateContext } from "../../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
@@ -78,6 +78,18 @@ export default function Menu() {
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
   const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
+
+  const state = useStateContext();
+  const { isLoginModal } = state;
+  const dispatch = useDispatchContext();
+  const setLoginModal = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINMODAL",
+        isLoginModal: true,
+      }),
+    [dispatch],
+  );
 
   useEffect(() => {
     if (!id) {
@@ -169,75 +181,79 @@ export default function Menu() {
     if (!!localStorage.getItem("access_token")) {
       setReviewPostModalOpen(true);
     } else {
-      router.push("/login");
+      setLoginModal();
     }
   };
 
   return (
     <>
       <GlobalStyle />
-      <ContextProvider>
-        <Header />
-        {!isLoading && !!menu && (
-          <Info>
-            <MenuContainer>
-              {images.length > 0 && <ReviewImageSwiper images={images} />}
-              <MenuInfoContainer>
-                <MenuHeader>
-                  <div style={{display: "flex", alignItems: "baseline", }}>
-                    <MenuTitle>{menu.name_kr}</MenuTitle>
-                    <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                  </div>
-                  <Likes menu={menu} />
-                </MenuHeader>
-                <HLine />
-                <ReviewDistribution
-                  totalReviewCount={reviews.total_count}
-                  score={menu.score || 0}
-                  distribution={reviewDistribution}
-                />
-              </MenuInfoContainer>
-            </MenuContainer>
-            {!isReviewPostModalOpen && (
-              <ReviewContainer>
-                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-                  나의 평가 남기기
-                </ReviewPostButton>
-                <ReviewHeader>
-                  <div style={{display: "flex", }}>
-                    <ReviewTitle>리뷰</ReviewTitle>
-                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                  </div>
-                  <Link href="#" style={{ textDecoration: "none" }}>
-                    <ImageReviewButton>
-                      <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                      <Image src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" width={10} height={16} />
-                    </ImageReviewButton>
-                  </Link>
-                </ReviewHeader>
-                <ReviewList>
-                  {reviews.result.length > 0 &&
-                    reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                  {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
-                </ReviewList>
-                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
-                  나의 평가 남기기
-                </ReviewPostButton>
-              </ReviewContainer>
-            )}
-            {isReviewPostModalOpen && (
-              <ReviewPostModal
-                isOpen={isReviewPostModalOpen}
-                menu={{
-                  menuName: menu.name_kr,
-                  menuId: menu.id,
-                }}
-                onClose={() => setReviewPostModalOpen(false)}
+      {isLoginModal && <LoginModal />}
+      <Header />
+      {!isLoading && !!menu && (
+        <Info>
+          <MenuContainer>
+            {images.length > 0 && <ReviewImageSwiper images={images} />}
+            <MenuInfoContainer>
+              <MenuHeader>
+                <div style={{ display: "flex", alignItems: "baseline" }}>
+                  <MenuTitle>{menu.name_kr}</MenuTitle>
+                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                </div>
+                <Likes menu={menu} />
+              </MenuHeader>
+              <HLine />
+              <ReviewDistribution
+                totalReviewCount={reviews.total_count}
+                score={menu.score || 0}
+                distribution={reviewDistribution}
               />
-            )}
-          </Info>
-        )}
-      </ContextProvider>
+            </MenuInfoContainer>
+          </MenuContainer>
+          {!isReviewPostModalOpen && (
+            <ReviewContainer>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                나의 평가 남기기
+              </ReviewPostButton>
+              <ReviewHeader>
+                <div style={{ display: "flex" }}>
+                  <ReviewTitle>리뷰</ReviewTitle>
+                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                </div>
+                <Link href="#" style={{ textDecoration: "none" }}>
+                  <ImageReviewButton>
+                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
+                    <Image
+                      src="/img/right-arrow-grey.svg"
+                      alt="오른쪽 화살표"
+                      width={10}
+                      height={16}
+                    />
+                  </ImageReviewButton>
+                </Link>
+              </ReviewHeader>
+              <ReviewList>
+                {reviews.result.length > 0 &&
+                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
+                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+              </ReviewList>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                나의 평가 남기기
+              </ReviewPostButton>
+            </ReviewContainer>
+          )}
+          {isReviewPostModalOpen && (
+            <ReviewPostModal
+              isOpen={isReviewPostModalOpen}
+              menu={{
+                menuName: menu.name_kr,
+                menuId: menu.id,
+              }}
+              onClose={() => setReviewPostModalOpen(false)}
+            />
+          )}
+        </Info>
+      )}
     </>
   );
 }
@@ -374,7 +390,7 @@ const ReviewHeader = styled.div`
   margin-bottom: 40px;
 `;
 
-const ReviewPostButton = styled.button<{mobile : boolean}>`
+const ReviewPostButton = styled.button<{ mobile: boolean }>`
   background: #ff9522;
   color: white;
   text-align: center;
@@ -382,28 +398,28 @@ const ReviewPostButton = styled.button<{mobile : boolean}>`
   border: none;
   margin-bottom: 17px;
   cursor: pointer;
-  ${props =>
-    props.mobile ?
-      css`
-      display: none;
-      position: inherit;
-      width: 200px;
-      height: 32px;
-      font-size: 14px;
-      font-weight: 800;
-      line-height: 16px;
-      border-radius: 50px;
-      @media (max-width: 768px) {
-        display: inline-block;
-      }
-    ` : 
-      css`
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 18px;
-      border-radius: 5px;
-      @media (max-width: 768px) {
-        display: none;
-      }
-    `}
+  ${(props) =>
+    props.mobile
+      ? css`
+          display: none;
+          position: inherit;
+          width: 200px;
+          height: 32px;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 16px;
+          border-radius: 50px;
+          @media (max-width: 768px) {
+            display: inline-block;
+          }
+        `
+      : css`
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 18px;
+          border-radius: 5px;
+          @media (max-width: 768px) {
+            display: none;
+          }
+        `}
 `;

@@ -16,7 +16,7 @@ export default function Body() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus, meal } = state;
+  const { date, showCal, showInfo, loginStatus, meal, isLoginModal } = state;
   const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
 
   useEffect(() => {

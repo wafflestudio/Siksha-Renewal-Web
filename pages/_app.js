@@ -3,6 +3,7 @@ import "/styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
+import ContextProvider from "../hooks/ContextProvider";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -22,7 +23,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <ContextProvider>
       <Head>
         <title>서울대학교 식단 알리미 : 식샤</title>
         <meta charSet="utf-8" />
@@ -40,7 +41,7 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <Component {...pageProps} />
-    </>
+    </ContextProvider>
   );
 }
 
