@@ -11,6 +11,14 @@ export default function LoginModal() {
     window.location.href = kakaoUrl;
   };
 
+  const handleGoogleLogin = () => {
+    const restApiKey = process.env.NEXT_PUBLIC_GOOGLE_RESTAPI;
+    const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&redirect_uri=${redirectUri}&client_id=${restApiKey}`;
+
+    window.location.href = googleUrl;
+  };
+
   const dispatch = useDispatchContext();
 
   const closeModal = useCallback(
@@ -27,12 +35,7 @@ export default function LoginModal() {
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>
-          <SocialButton
-            provider="kakao"
-            onClick={() => {
-              handleKakaoLogin();
-            }}
-          >
+          <SocialButton provider="kakao" onClick={handleKakaoLogin}>
             <SocialUnion
               width={19}
               height={17}
@@ -42,7 +45,7 @@ export default function LoginModal() {
             ></SocialUnion>
             Login with Kakao
           </SocialButton>
-          <SocialButton provider="google">
+          <SocialButton provider="google" onClick={handleGoogleLogin}>
             <SocialUnion
               width={23}
               height={41}

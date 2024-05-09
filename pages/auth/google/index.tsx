@@ -10,11 +10,13 @@ export default function Auth() {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
     const grantType = "authorization_code";
-    const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
+    const REST_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_RESTAPI;
+    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_GOOGLE_SECRET;
     const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECTURI;
+
     axios
       .post(
-        `https://kauth.kakao.com/oauth/token?grant_type=${grantType}&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+        `https://oauth2.googleapis.com/token?grant_type=${grantType}&client_id=${REST_API_KEY}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
         {},
         { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
       )
@@ -24,10 +26,10 @@ export default function Auth() {
       })
       .then((access_token: string) =>
         axios.post(
-          `${APIendpoint()}/auth/login/kakao`,
+          `${APIendpoint()}/auth/login/google`,
           {},
           {
-            headers: { "kakao-token": `Bearer ${access_token}` },
+            headers: { "google-token": `Bearer ${access_token}` },
           },
         ),
       )
@@ -36,10 +38,11 @@ export default function Auth() {
         router.push("/");
       })
       .catch((res: any) => {
-        console.log(res);
+        console.dir(res);
       });
   }, []);
-  return <Container>kakao</Container>;
+
+  return <Container>google</Container>;
 }
 
 const Container = styled.div`
