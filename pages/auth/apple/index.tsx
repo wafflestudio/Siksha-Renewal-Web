@@ -10,13 +10,13 @@ export default function Auth() {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
     const grantType = "authorization_code";
-    const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_RESTAPI;
-    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_GOOGLE_SECRET;
-    const REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECTURI;
+    const CLIENT_ID = process.env.NEXT_PUBLIC_APPLE_CLIENTID;
+    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_APPLE_SECRET;
+    const REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI;
 
     axios
       .post(
-        `https://oauth2.googleapis.com/token?grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+        `https://appleid.apple.com/auth/token?grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
         {},
         { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
       )
@@ -26,7 +26,7 @@ export default function Auth() {
       })
       .then((access_token: string) =>
         axios.post(
-          `${APIendpoint()}/auth/login/apple`,
+          `${APIendpoint()}/auth/login/google`,
           {},
           {
             headers: { "google-token": `Bearer ${access_token}` },

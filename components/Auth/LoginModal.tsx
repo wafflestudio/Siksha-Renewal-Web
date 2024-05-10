@@ -1,22 +1,59 @@
 import styled from "styled-components";
 import { useDispatchContext } from "../../hooks/ContextProvider";
 import React, { useCallback } from "react";
+import { useRouter } from "next/router";
 
 export default function LoginModal() {
+  const router = useRouter();
+
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
-    const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
     const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${restApiKey}&redirect_uri=${redirectUri}`;
 
     window.location.href = kakaoUrl;
   };
 
   const handleGoogleLogin = () => {
-    const restApiKey = process.env.NEXT_PUBLIC_GOOGLE_RESTAPI;
-    const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
-    const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&redirect_uri=${redirectUri}&client_id=${restApiKey}`;
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENTID;
+    const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECTURI;
+    const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&redirect_uri=${redirectUri}&client_id=${clientId}`;
 
     window.location.href = googleUrl;
+  };
+
+  const handleAppleLogin = () => {
+    const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENTID!;
+    const redirectUri = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI!;
+
+    window.AppleID.auth.init({
+      clientId: clientId,
+      scope: "[SCOPES]",
+      redirectURI: redirectUri,
+      state: "[STATE]",
+      nonce: "[NONCE]",
+      usePopup: true,
+    });
+
+    const signIn = () =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const response = await window.AppleID.auth.signIn();
+          resolve(response);
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+    signIn()
+      .then((res: SigninResponse) => {
+        const { code, id_token } = res.authorization;
+        router.push(`/auth/apple?code=${code}&id_token=${id_token}`);
+        console.log(res);
+      })
+      .catch((error: SigninError) => {
+        console.log(error);
+      });
   };
 
   const dispatch = useDispatchContext();
@@ -55,7 +92,7 @@ export default function LoginModal() {
             ></SocialUnion>
             Login with Google
           </SocialButton>
-          <SocialButton provider="google">
+          <SocialButton provider="apple" onClick={handleAppleLogin}>
             <SocialUnion
               width={17}
               height={18}

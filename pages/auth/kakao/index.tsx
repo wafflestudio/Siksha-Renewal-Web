@@ -11,7 +11,7 @@ export default function Auth() {
     const code = params.get("code");
     const grantType = "authorization_code";
     const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
-    const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
     axios
       .post(
         `https://kauth.kakao.com/oauth/token?grant_type=${grantType}&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
