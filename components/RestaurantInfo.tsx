@@ -54,24 +54,24 @@ export default function RestaurantInfo() {
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
-                <MobileOperatingHour type={"weekdays"} />
-              )}
+                  <MobileOperatingHour type={"weekdays"} />
+                )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
-                <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"saturday"} />
-                </>
-              )}
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"saturday"} />
+                  </>
+                )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.holiday.length != 0 && (
-                <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"holiday"} />
-                </>
-              )}
+                  <>
+                    <HLine color={"#ECECEC"} margin={"2px"} />
+                    <MobileOperatingHour type={"holiday"} />
+                  </>
+                )}
               {(!infoData.etc || !infoData.etc.operating_hours) && (
                 <>
                   <EmptyText>운영 시간 정보가 없습니다.</EmptyText>

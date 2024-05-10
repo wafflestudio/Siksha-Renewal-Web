@@ -21,7 +21,7 @@ const StarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: ${props => props.theme.width ? props.theme.width : 60}px;
+  width: ${(props) => (props.theme.width ? props.theme.width : 60)}px;
   gap: 1px;
   @media (max-width: 768px) {
     width: 60px;
@@ -29,8 +29,8 @@ const StarContainer = styled.div`
 `;
 
 const Star = styled.img`
-  width: ${props => props.theme.width ? props.theme.width/5 : 12}px;
-  height: ${props => props.theme.width ? props.theme.width/5 : 12}px;
+  width: ${(props) => (props.theme.width ? props.theme.width / 5 : 12)}px;
+  height: ${(props) => (props.theme.width ? props.theme.width / 5 : 12)}px;
   fill: #ffd600;
   @media (max-width: 768px) {
     width: 12px;

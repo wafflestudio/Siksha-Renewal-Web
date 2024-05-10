@@ -49,7 +49,7 @@ export default function Header() {
           >
             서울대학교 식단 알리미
           </Title>
-          <NavigationBar/>
+          <NavigationBar />
           {isLoginPage ? (
             <></>
           ) : loginStatus ? (
