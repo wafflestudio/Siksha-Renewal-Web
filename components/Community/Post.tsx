@@ -1,12 +1,8 @@
 import styled from "styled-components";
+import { post } from "../../types";
 
 interface PropsPost {
-  post: {
-    title: string;
-    content: string;
-    likes: number;
-    comments: number;
-  };
+  post: post;
 }
 
 export function Post({ post }: PropsPost) {
@@ -51,12 +47,10 @@ const Info = styled.div`
   max-width: 540px;
 `;
 
-// title, content가 잘리는 이슈 -> padding 값을 설정했는데 왜이러지?
 const Title = styled.div`
   overflow: hidden;
   font-size: 18px;
   font-weight: bold;
-  /* white-space: nowrap; */
 `;
 const ContentPreview = styled.div`
   color: #393939;
@@ -68,7 +62,6 @@ const LikesAndComments = styled.div`
   font-size: 12px;
 `;
 
-// 아이콘이 정렬이 안되는 이슈 -> display flex와 align items를 하니까 위에 title, content가 잘리던 이슈도 해결됨 -> 왜?
 const Likes = styled.div`
   display: flex;
   align-items: center;

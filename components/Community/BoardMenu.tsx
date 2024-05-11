@@ -1,13 +1,11 @@
 import Link from "next/link";
 import styled from "styled-components";
+import { board } from "../../types";
 
 interface BoardMenuProps {
   boardId: number;
   setBoardId: (value: number) => void;
-  boards: {
-    id: number;
-    name: string;
-  }[];
+  boards: board[];
 }
 
 export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
@@ -35,7 +33,6 @@ const Menu = styled.div`
   left: -118px;
   top: 32px;
   width: 118px;
-  background-color: white;
 `;
 const MenuItem = styled.div`
   position: relative;
@@ -48,6 +45,7 @@ const MenuItem = styled.div`
 
   &.selected {
     color: #ff9522;
+    background: #ffffff;
 
     &::before {
       content: "";

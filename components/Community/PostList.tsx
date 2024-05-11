@@ -1,13 +1,9 @@
 import styled from "styled-components";
 import { Post } from "./Post";
+import { post } from "../../types";
 
 interface PropsPostList {
-  posts: {
-    title: string;
-    content: string;
-    likes: number;
-    comments: number;
-  }[];
+  posts: post[];
 }
 
 export function PostList({ posts }: PropsPostList) {
@@ -22,7 +18,5 @@ export function PostList({ posts }: PropsPostList) {
   );
 }
 
-const Container = styled.div`
-  /* width: 664px; */
-`;
+const Container = styled.div``;
 const EmptyText = styled.div``;

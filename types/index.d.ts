@@ -34,3 +34,15 @@ declare global {
     kakao: any;
   }
 }
+
+// 가짜 데이터 type
+export interface board {
+  id: number;
+  name: string;
+}
+export interface post {
+  title: string;
+  content: string;
+  likes: number;
+  comments: number;
+}
