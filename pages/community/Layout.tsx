@@ -8,7 +8,7 @@ interface LayoutProps {
   children: JSX.Element;
 }
 
-export function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
   return (
     <>
       <GlobalStyle />
