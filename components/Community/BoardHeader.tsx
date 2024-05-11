@@ -59,6 +59,7 @@ const ContentPreview = styled.div`
 `;
 const Likes = styled.div`
   color: #ff9522;
+  font-size: 12px;
 `;
 const Icon = styled.img`
   margin-right: 4px;
