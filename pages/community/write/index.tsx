@@ -177,6 +177,11 @@ const ContentInput = styled.textarea`
   outline: none;
   resize: none;
   box-sizing: border-box;
+
+  &::placeholder {
+    color: #b7b7b7;
+    font-weight: bold;
+  }
 `;
 const Options = styled.div`
   height: 36px;
