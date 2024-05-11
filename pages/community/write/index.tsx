@@ -42,11 +42,7 @@ export default function PostWriter() {
         {clicked && (
           <BoardMenuList>
             {boards.map((board, i) => (
-              <BoardMenuItem
-                key={i}
-                className={board.id === boardId ? "active" : ""}
-                onClick={() => handleClickMenuItem(board.id)}
-              >
+              <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
                 {board.name}
               </BoardMenuItem>
             ))}
@@ -124,8 +120,6 @@ const BoardMenu = styled.div`
   cursor: pointer;
 `;
 const BoardMenuList = styled.div`
-  /* position: absolute; */
-
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -133,7 +127,6 @@ const BoardMenuList = styled.div`
   border-radius: 8px;
   margin-top: -8px;
   margin-bottom: 12px;
-  z-index: 2;
 `;
 const BoardMenuItem = styled.div`
   display: flex;
@@ -143,11 +136,18 @@ const BoardMenuItem = styled.div`
   height: 39px;
   background: #ffffff;
   cursor: pointer;
-  &.active {
+
+  &:hover {
     background: #f6f6f6;
   }
   &:not(:last-child) {
     border-bottom: 1px solid #dfdfdf;
+  }
+  &:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 8px 8px;
   }
 `;
 
