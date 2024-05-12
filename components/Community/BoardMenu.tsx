@@ -9,7 +9,6 @@ interface BoardMenuProps {
 }
 
 export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
-  console.log(boardId);
   return (
     <Menu>
       {boards.map((board, i) => (

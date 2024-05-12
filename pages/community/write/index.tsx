@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Layout from "../Layout";
+import Layout from "../layout";
 import { useMemo, useState } from "react";
 import { boards } from "../../../constants/constants";
 
