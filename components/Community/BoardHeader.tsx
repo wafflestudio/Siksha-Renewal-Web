@@ -5,10 +5,19 @@ export function BoardHeader() {
   return (
     <Container>
       <HotPost>
-        <Text>
-          <Title> 제목 </Title>
-          <ContentPreview> 본문 본문 본문 </ContentPreview>
-        </Text>
+        {/* <Text> */}
+        <Title>
+          {" "}
+          제목
+          제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목
+        </Title>
+        <ContentPreview>
+          {" "}
+          본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문본문 본문 본문본문 본문
+          본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문
+          본문본문 본문 본문본문 본문 본문본문 본문 본문
+        </ContentPreview>
+        {/* </Text> */}
         <Likes>
           <Icon src="/img/post-like.svg" />
           12
@@ -25,6 +34,7 @@ export function BoardHeader() {
 
 const Container = styled.div`
   display: flex;
+  justify-content: space-between;
   height: 43px;
 `;
 
@@ -32,30 +42,29 @@ const HotPost = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 573px;
+  width: min(100% - 56px, 573px);
   height: 100%;
   background-color: #ff952233;
   padding: 15px 17px;
   border-radius: 8px;
   box-sizing: border-box;
+  font-size: 16px;
   cursor: pointer;
 `;
 
-// 글자가 padding 밖으로 빠져나가는 이슈
-const Text = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-`;
-
 const Title = styled.div`
+  width: 100%;
   font-weight: bold;
-  margin-right: 12px;
+  margin-right: 14px;
+  white-space: nowrap;
   overflow: hidden;
 `;
 const ContentPreview = styled.div`
+  width: 100%;
   color: #393939;
   overflow: hidden;
+  margin-right: 14px;
+  white-space: nowrap;
 `;
 const Likes = styled.div`
   color: #ff9522;
@@ -65,7 +74,7 @@ const Icon = styled.img`
   margin-right: 4px;
 `;
 const WriteButton = styled.button`
-  margin-left: 27px;
+  /* margin-left: 27px; */
   background: transparent;
   border: none;
   outline: none;
