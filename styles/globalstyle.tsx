@@ -51,4 +51,18 @@ export const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     display: none;
   }
+  a {
+    text-decoration: none;
+    color: #000000;
+  }
+  input {
+    font-family: "NanumSquare", "NIXGONFONTS V2.0";
+  }
+  
+  textarea {
+    font-family: "NanumSquare", "NIXGONFONTS V2.0";
+  }
+
+  /* constants */
+  /* --main-orange-color: #FF9522 */
 `;
