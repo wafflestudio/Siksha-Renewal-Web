@@ -3,40 +3,49 @@ import Layout from "../layout";
 import { useMemo, useState } from "react";
 import { boards } from "../../../constants/constants";
 
+type inputs = {
+  title: string;
+  content: string;
+  boardId: number;
+  photos: File[];
+  options: {
+    anonymous: boolean;
+  };
+};
 type option = {
   anonymous: boolean;
 };
 
 export default function PostWriter() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [boardId, setBoardId] = useState(0);
-  const [photos, setPhotos] = useState<File[]>([]);
-
+  const [inputs, setInputs] = useState<inputs>({
+    title: "",
+    content: "",
+    boardId: 0,
+    photos: [],
+    options: { anonymous: false },
+  });
   const [clicked, setClicked] = useState(false);
-  const [options, setOptions] = useState<option>({ anonymous: false });
 
-  const isValid = title.length > 0 && content.length > 0;
+  const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
   function handleClickMenuItem(id: number) {
-    setBoardId(id);
+    setInputs({ ...inputs, boardId: id });
     setClicked(false);
   }
   function handlePhotoAttach(photo: File | undefined) {
     if (photo) {
-      setPhotos([...photos, photo]);
+      setInputs({ ...inputs, photos: [...inputs.photos, photo] });
     }
   }
   function hanldlePhotoDelete(index: number) {
-    setPhotos(photos.filter((_, i) => i !== index));
+    setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
-
   return (
     <Layout>
       <Container>
         <Header>글쓰기</Header>
         <BoardMenu onClick={() => setClicked(!clicked)}>
-          {boards.filter((board) => board.id === boardId)[0].name}
+          {boards.filter((board) => board.id === inputs.boardId)[0].name}
           <Icon src="/img/down-arrow.svg" />
         </BoardMenu>
         {clicked && (
@@ -51,25 +60,27 @@ export default function PostWriter() {
         <TitleInput
           type="text"
           placeholder="제목"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={inputs.title}
+          onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
         />
         <ContentInput
           placeholder="내용을 입력하세요."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={inputs.content}
+          onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
         />
         <Options>
           <Option
-            className={options.anonymous ? "active" : ""}
-            onClick={() => setOptions({ ...options, anonymous: !options.anonymous })}
+            className={inputs.options.anonymous ? "active" : ""}
+            onClick={() =>
+              setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
+            }
           >
-            <Icon src={options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"} />
+            <Icon src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"} />
             익명
           </Option>
         </Options>
         <PhotoViewer>
-          {photos.map((photo, i) => (
+          {inputs.photos.map((photo, i) => (
             <PhotoContainer key={i}>
               <Photo src={URL.createObjectURL(photo)} />
               <DeleteButton onClick={() => hanldlePhotoDelete(i)}>
@@ -77,9 +88,9 @@ export default function PostWriter() {
               </DeleteButton>
             </PhotoContainer>
           ))}
-          {photos.length < 5 ? (
+          {inputs.photos.length < 5 ? (
             <PhotoAttacher>
-              <Icon src={photos.length === 0 ? "/img/file.svg" : "/img/file-big.svg"} />
+              <Icon src={inputs.photos.length === 0 ? "/img/file.svg" : "/img/file-big.svg"} />
               <FileInput
                 type="file"
                 accept="image/*"
