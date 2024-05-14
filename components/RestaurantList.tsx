@@ -30,7 +30,7 @@ export default function RestaurantList() {
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 410px);
+  height: 191px;
   background: white;
   overflow-y: scroll;
 `;

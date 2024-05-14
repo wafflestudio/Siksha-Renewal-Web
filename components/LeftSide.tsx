@@ -1,6 +1,8 @@
 import Calendar from "./Calendar";
 import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
+import Image from 'next/image';
+import Link from "next/link";
 
 export default function LeftSide() {
   return (
@@ -8,6 +10,20 @@ export default function LeftSide() {
       <Calendar />
       <Line />
       <RestaurantList />
+      <CommunityButtonContainer>
+        <Link href="#">
+          <MyPostsButton>
+            <Image src="/img/posts.svg" alt="글 목록 이미지" width="16" height="12" style={{marginRight: "10px",}}/>
+            내가 쓴 글
+          </MyPostsButton>
+        </Link>
+        <Link href="/community/write">
+          <WritePostButton>
+            <Image src="/img/posts-white.svg" alt="글 목록 이미지" width="16" height="12" style={{marginRight: "10px",}}/>
+            게시판 글쓰기
+          </WritePostButton>
+        </Link>
+      </CommunityButtonContainer>
     </Container>
   );
 }
@@ -22,4 +38,30 @@ const Line = styled.div`
   width: 100%;
   height: 8px;
   background: #f8f8f8;
+`;
+
+const CommunityButtonContainer = styled.div`
+  margin-top: 32px;
+`;
+
+const Button = styled.button`
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-family: NanumSquare;
+  font-weight: 700;
+  font-size: 18px;
+  width: calc((100% - 35px) / 2);
+  cursor: pointer;
+`;
+
+const MyPostsButton = styled(Button)`
+  background-color: white;
+  color: #575757;
+  margin-right: 35px;
+`;
+
+const WritePostButton = styled(Button)`
+  background-color: #ff9522;
+  color: white;
 `;
