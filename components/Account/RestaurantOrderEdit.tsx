@@ -33,10 +33,11 @@ export default function RestaurantOrderEdit({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      dragging={snapshot.isDragging}
                     >
                       <DragBox>
                         <Restaurant>{name_kr}</Restaurant>
-                        <DragButton dragging={false}>
+                        <DragButton dragging={snapshot.isDragging}>
                           <Line />
                           <Line />
                           <Line />
@@ -80,7 +81,7 @@ const Description = styled.p`
   color: #a6a6a6;
 `;
 
-const DragContainer = styled.div`
+const DragContainer = styled.div<{ dragging: boolean }>`
   &:hover {
     background-color: #f2f2f2;
   }

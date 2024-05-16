@@ -23,7 +23,6 @@ export default function Setting_NonFavorite() {
       const {
         data: { result },
       }: { data: { result: Restaurant[] } } = await axios.get(`${APIendpoint()}/restaurants/`);
-      console.log(result);
       for (let i = 0; i < orderList.length; i++) {
         if (!result.find(({ id }) => id === orderList[i].id)) {
           orderList.splice(i, 1);
