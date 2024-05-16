@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../../../hooks/ContextProvider";
 import axios from "axios";
 import APIendpoint from "../../../constants/constants";
+import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
+import { GlobalStyle } from "../../../styles/globalstyle";
 
 interface Restaurant {
   id: number;
@@ -12,13 +14,7 @@ interface Restaurant {
 export default function Setting_NonFavorite() {
   const state = useStateContext();
 
-  const { infoData, loginStatus, data, meal } = state;
-
-  const [hasData, setHasData] = useState(false);
   const [orderData, setOrderData] = useState<Restaurant[]>([]);
-  const [dragStartId, setDragStartId] = useState<number>(-1);
-  const [dragEndId, setDragEndId] = useState<number>(-1);
-
   const getMenuData = async () => {
     try {
       const orderList: Restaurant[] = JSON.parse(
@@ -39,7 +35,6 @@ export default function Setting_NonFavorite() {
           orderList.push({ id, name_kr, name_en });
       });
 
-      console.log(orderList);
       setOrderData(orderList);
     } catch (error) {
       console.log(error);
@@ -54,48 +49,19 @@ export default function Setting_NonFavorite() {
     if (!!orderData.length)
       localStorage.setItem("orderList_nonFavorite", JSON.stringify(orderData));
   }, [orderData]);
-  /*
-  useEffect(() => {
-    if (!data[meal] || data[meal].length == 0) setHasData(false);
-    else setHasData(true);
-  }, [data, meal]);
-*/
 
-  const onDragStart = (event, index) => {
-    setDragStartId(index);
-  };
-
-  const onDragEnter = (event, index) => {
-    setDragEndId(index);
-  };
-
-  const onDragEnd = () => {
-    const dragStartIndex = orderData.findIndex(({ id }) => id === dragStartId);
-    const dragEndIndex = orderData.findIndex(({ id }) => id === dragEndId);
-    if (dragStartIndex === -1 || dragEndIndex === -1 || dragStartIndex === dragEndIndex) return;
+  const setNewOrderData = (source: number, destination: number) => {
     const copyData = [...orderData];
-    const temp = copyData[dragStartIndex];
-    copyData[dragStartIndex] = copyData[dragEndIndex];
-    copyData[dragEndIndex] = temp;
-    console.log(copyData);
+    const sourceData = copyData[source];
+    copyData.splice(source, 1);
+    copyData.splice(destination, 0, sourceData);
     setOrderData(copyData);
   };
 
   return (
     <>
-      <div>
-        {orderData.map(({ id, name_kr, name_en }) => (
-          <div
-            key={id}
-            onDragStart={(event) => onDragStart(event, id)}
-            onDragEnter={(event) => onDragEnter(event, id)}
-            onDragEnd={onDragEnd}
-            draggable={true}
-          >
-            {name_kr}
-          </div>
-        ))}
-      </div>
+      <GlobalStyle />
+      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
     </>
   );
 }

@@ -5,7 +5,7 @@ import React, { useCallback } from "react";
 export default function LoginModal() {
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
-    const redirectUri = process.env.NEXT_PUBLIC_REDIRECTURI;
+    const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
     const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${restApiKey}&redirect_uri=${redirectUri}`;
 
     window.location.href = kakaoUrl;
