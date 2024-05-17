@@ -80,7 +80,11 @@ export default function Body() {
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: center;
-  height: calc(100vh - 100px);
+  height: max(780px, 100vh - min(25vh, 271px));
+  width: 100%;
+  min-width: max-content;
+  margin-top: 39px;
+  padding-bottom: 20px;
 
   @media (max-width: 768px) {
     display: none;

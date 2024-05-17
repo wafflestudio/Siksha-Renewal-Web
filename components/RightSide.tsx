@@ -16,8 +16,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 15px;
-  width: 785px;
-  min-width: 785px;
-  height: calc(100vh - 100px);
+  padding-left: 18px;
+  width: calc(73vw * 0.6);
+  min-width: 720px;
+  max-width: 818px;
+  height: 100%;
+  flex: 0 0 auto;
 `;

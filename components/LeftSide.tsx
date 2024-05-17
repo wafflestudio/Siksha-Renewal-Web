@@ -8,9 +8,10 @@ export default function LeftSide() {
   return (
     <Container>
       <Calendar />
-      <Line />
-      <RestaurantList />
-      <CommunityButtonContainer>
+      <div style={{ marginTop: "35px", }}>
+        <RestaurantList />
+      </div>
+      <div style={{ marginTop: "32px", marginBottom: "69px", }}>
         <Link href="#">
           <MyPostsButton>
             <Image src="/img/posts.svg" alt="글 목록 이미지" width="16" height="12" style={{marginRight: "10px",}}/>
@@ -23,25 +24,24 @@ export default function LeftSide() {
             게시판 글쓰기
           </WritePostButton>
         </Link>
-      </CommunityButtonContainer>
+      </div>
     </Container>
   );
 }
 
 const Container = styled.div`
-  padding-right: 15px;
-  height: calc(100vh - 100px);
-  width: 340px;
+  padding-right: 18px;
+  height: fit-content;
+  width: calc(73vw * 0.4);
+  min-width: 400px;
+  max-width: 563px;
+  flex: 0 0 auto;
 `;
 
 const Line = styled.div`
   width: 100%;
-  height: 8px;
+  height: 30px;
   background: #f8f8f8;
-`;
-
-const CommunityButtonContainer = styled.div`
-  margin-top: 32px;
 `;
 
 const Button = styled.button`
