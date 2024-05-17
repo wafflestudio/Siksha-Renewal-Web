@@ -30,28 +30,35 @@ export default function RestaurantList() {
 
 const Container = styled.div`
   width: 100%;
-  height: 191px;
+  height: max(191px, 100vh - 526px - min(25vh, 271px));
+  max-height: 500px;
   background: white;
   overflow-y: scroll;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 5.7% 11.4%;
 `;
 
-const Restaurants = styled.div`
-  padding-top: 36px;
-  padding-left: 26px;
-`;
+const Restaurants = styled.div``;
 
 const Restaurant = styled.div`
-  font-size: 16px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 16px;
   letter-spacing: -0.3px;
   color: #727272;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   font-weight: 400;
   display: flex;
   flex-direction: column;
-  padding-bottom: 17px;
+  padding-bottom: 12px;
 
   &:hover {
     cursor: pointer;
     text-decoration-line: underline;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
   }
 `;

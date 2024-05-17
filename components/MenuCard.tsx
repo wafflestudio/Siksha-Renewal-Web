@@ -49,18 +49,6 @@ export default function MenuCard({ data }) {
               }}
             />
           </HeaderContainer>
-          <HeaderContainer>
-            <Location>
-              <LocationIcon
-                src={"/img/location.svg"}
-                onClick={() => {
-                  setInfoData(data);
-                  toggleInfo();
-                }}
-              />
-              <LocationText>{data.addr ? data.addr.slice(19) : ""}</LocationText>
-            </Location>
-          </HeaderContainer>
         </RestInfo>
         <HLine />
         <Menus>
@@ -138,7 +126,7 @@ const Name = styled.div`
   @media (max-width: 768px) {
     font-size: 15px;
     line-height: 17px;
-    color: #e15618;
+    color: #ff9522;
     padding-left: 16px;
     white-space: normal;
   }
@@ -166,12 +154,13 @@ const LocationText = styled.div`
   line-height: 17px;
   padding-top: 1px;
   padding-left: 10px;
+  color: #575757;
 `;
 
 const HLine = styled.div`
   width: calc(100% - 70px);
   height: 2px;
-  background: #fe8c59;
+  background: #ff9522;
   margin: 10px auto 10px auto;
 
   @media (max-width: 768px) {

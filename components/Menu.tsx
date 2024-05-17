@@ -256,10 +256,6 @@ const Likes = styled.div`
   color: #b7b7b7;
 
   @media (max-width: 768px) {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 400;
-    padding-left: 12px;
-    color: #b7b7b7;
+    display: none;
   }
 `;
