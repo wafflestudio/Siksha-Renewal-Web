@@ -37,8 +37,8 @@ export default function Calendar() {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
+          prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} />}
+          nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
@@ -70,12 +70,13 @@ export default function Calendar() {
 
 const DesktopContainer = styled.div`
   width: 100%;
-  height: 302px;
+  height: 400px;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  border-radius: 8px;
 
   @media (max-width: 768px) {
     display: none;
@@ -104,16 +105,15 @@ const Arrow = styled.img`
 `;
 
 const DateText = styled.div`
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 17px;
-  color: #f0976c;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 22.7px;
+  color: #ff9522;
   position: absolute;
-  top: 31px;
+  top: 40px;
   white-space: nowrap;
 
   @media (max-width: 768px) {
-    color: #fe8c59;
     cursor: pointer;
     top: 4px;
   }
