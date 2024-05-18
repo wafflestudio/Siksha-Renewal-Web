@@ -91,7 +91,6 @@ const Container = styled.div`
   background: #ff9522;
   position: relative;
   height: 25vh;
-  min-width: 1221px;
   min-height: 100px;
   display: flex;
   max-height: 271px;
@@ -100,6 +99,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     background: #ff9522;
     height: 60px;
+    min-height: 0;
     min-width: 0;
   }
 `;
