@@ -18,7 +18,7 @@ const Container = styled.div`
   justify-content: flex-start;
   padding-left: 18px;
   width: calc(73vw * 0.6);
-  min-width: 720px;
+  min-width: 785px;
   max-width: 818px;
   height: 100%;
   flex: 0 0 auto;

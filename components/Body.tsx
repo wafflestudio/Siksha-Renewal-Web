@@ -84,7 +84,6 @@ const DesktopContainer = styled.div`
   width: 100%;
   min-width: max-content;
   margin-top: 39px;
-  padding-bottom: 20px;
 
   @media (max-width: 768px) {
     display: none;

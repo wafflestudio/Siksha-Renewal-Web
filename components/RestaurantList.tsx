@@ -42,8 +42,8 @@ const Container = styled.div`
 const Restaurants = styled.div``;
 
 const Restaurant = styled.div`
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 18px;
   letter-spacing: -0.3px;
   color: #727272;
   text-decoration: underline;
@@ -51,7 +51,7 @@ const Restaurant = styled.div`
   font-weight: 400;
   display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  padding-bottom: 17px;
 
   &:hover {
     cursor: pointer;
