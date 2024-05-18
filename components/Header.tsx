@@ -85,6 +85,10 @@ const LoginButton = styled.div`
   position: absolute;
   bottom: 16px;
   right: 97px;
+  
+  @media (max-width: 768px) {
+    right: 5vw;
+  }
 `;
 
 const Container = styled.div`
