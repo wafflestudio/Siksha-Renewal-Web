@@ -154,6 +154,7 @@ const Dots = styled.div`
   padding-right: 7px;
 
   @media (max-width: 768px) {
+    display: none;
     padding: 0 8px 4px 0;
   }
 
