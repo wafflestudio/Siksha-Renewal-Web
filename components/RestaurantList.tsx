@@ -19,9 +19,13 @@ export default function RestaurantList() {
       <Restaurants>
         {data[meal] &&
           data[meal].map((restaurant) => (
-            <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
-              {restaurant.name_kr}
-            </Restaurant>
+            <RestaurantContainer>
+              <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
+                {restaurant.name_kr}
+              </Restaurant>
+              <Dots>..............</Dots>
+              <Favorite src={'/img/star-empty-orange.svg'}/>
+            </RestaurantContainer>
           ))}
       </Restaurants>
     </Container>
@@ -41,7 +45,19 @@ const Container = styled.div`
 
 const Restaurants = styled.div``;
 
+const RestaurantContainer = styled.div`
+  padding-bottom: 17px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+`;
+
 const Restaurant = styled.div`
+  flex-grow: 1;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: -0.3px;
@@ -49,16 +65,36 @@ const Restaurant = styled.div`
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 400;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 17px;
 
   &:hover {
     cursor: pointer;
     text-decoration-line: underline;
   }
+`;
 
-  &:last-child {
-    padding-bottom: 0;
+const Dots = styled.div`
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  text-align: right;
+
+  @media (max-width: 768px) {
+    display: none;
+    padding: 0 8px 4px 0;
   }
+
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+`;
+
+const Favorite = styled.img`
+  height: 18px;
+  width: 18px;
+  margin-left: 20px;
+  cursor: pointer;
 `;

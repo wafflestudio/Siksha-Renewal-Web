@@ -9,14 +9,22 @@ export default function MenuCard({ data }) {
   const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
   const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
 
+  const toggleFavorite = () => {};
+
   return (
     <>
       <DesktopContainer className={"a" + data.code}>
         <RestInfo>
-          <Name>{data.name_kr}</Name>
+          <HeaderContainer>
+            <Name>{data.name_kr}</Name>
+            <Favorite
+              src={"/img/star-empty-orange.svg"}
+              onClick={() => {
+              }}
+            />
+          </HeaderContainer>
           <Location>
             <LocationIcon
-              style={{ cursor: "pointer" }}
               src={"/img/location.svg"}
               onClick={() => {
                 setInfoData(data);
@@ -132,6 +140,13 @@ const Name = styled.div`
   }
 `;
 
+const Favorite = styled.img`
+  height: 27px;
+  width: 27px;
+  margin-left: 11px;
+  cursor: pointer;
+`;
+
 const Location = styled.div`
   display: flex;
   padding-top: 3px;
@@ -145,6 +160,7 @@ const Location = styled.div`
 const LocationIcon = styled.img`
   width: 14.4px;
   height: 20.21px;
+  cursor: "pointer";
 `;
 
 const LocationText = styled.div`
