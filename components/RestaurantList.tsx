@@ -30,7 +30,6 @@ export default function RestaurantList() {
 
 const Container = styled.div`
   width: 100%;
-  height: fit-content;
   max-height: 300px;
   background: white;
   overflow-y: scroll;
