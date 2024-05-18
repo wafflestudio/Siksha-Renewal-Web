@@ -84,16 +84,18 @@ const LoginButton = styled.div`
   color: #ffffff;
   position: absolute;
   bottom: 16px;
-  right: calc(5vw);
+  right: 97px;
 `;
+
 const Container = styled.div`
   background: #ff9522;
+  position: relative;
   height: 25vh;
-  width: 100%;
   min-width: 1221px;
+  min-height: 100px;
   display: flex;
   max-height: 271px;
-  position: relative;
+  padding: 0 calc(max(100vw - max(1221px, min(73vw, 1417px)), 0px) / 2);
 
   @media (max-width: 768px) {
     background: #ff9522;
@@ -103,11 +105,10 @@ const Container = styled.div`
 `;
 
 const SikshaIcon = styled.img`
-  position: absolute;
-  bottom: 21.5px;
-  left: calc(max((100vw - 1155px), 0px) / 2);
   width: 86px;
   height: 50px;
+  margin-top: auto;
+  padding-bottom: 21.5px;
   cursor: pointer;
 
   @media (max-width: 768px) {
@@ -126,9 +127,9 @@ const Title = styled.div`
   line-height: 20px;
   color: white;
   font-weight: 400;
-  bottom: 27px;
-  position: absolute;
-  left: calc(max((100vw - 1155px), 0px) / 2 + 118.5px);
+  margin-top: auto;
+  margin-left: 32.5px;
+  padding-bottom: 27px;
   white-space: nowrap;
   cursor: pointer;
 
