@@ -19,13 +19,9 @@ export default function RestaurantList() {
       <Restaurants>
         {data[meal] &&
           data[meal].map((restaurant) => (
-            <RestaurantContainer>
               <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
-                {restaurant.name_kr}
+                <RestaurantName>{restaurant.name_kr}</RestaurantName>
               </Restaurant>
-              <Dots>..............</Dots>
-              <Favorite src={'/img/star-empty-orange.svg'}/>
-            </RestaurantContainer>
           ))}
       </Restaurants>
     </Container>
@@ -45,7 +41,7 @@ const Container = styled.div`
 
 const Restaurants = styled.div``;
 
-const RestaurantContainer = styled.div`
+const Restaurant = styled.div`
   padding-bottom: 17px;
   display: flex;
   justify-content: space-between;
@@ -54,9 +50,13 @@ const RestaurantContainer = styled.div`
   &:last-child {
     padding-bottom: 0;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const Restaurant = styled.div`
+const RestaurantName = styled.div`
   flex-grow: 1;
   font-size: 16px;
   line-height: 18px;
@@ -65,11 +65,6 @@ const Restaurant = styled.div`
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 400;
-
-  &:hover {
-    cursor: pointer;
-    text-decoration-line: underline;
-  }
 `;
 
 const Dots = styled.div`
@@ -79,6 +74,7 @@ const Dots = styled.div`
   color: rgba(0, 0, 0, 0.3);
   letter-spacing: 2px;
   text-align: right;
+  text-decoration: none;
 
   @media (max-width: 768px) {
     display: none;

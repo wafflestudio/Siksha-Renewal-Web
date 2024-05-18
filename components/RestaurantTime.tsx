@@ -86,7 +86,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 188px;
-  padding-left: 33px;
 `;
 
 const Time = styled.div`
