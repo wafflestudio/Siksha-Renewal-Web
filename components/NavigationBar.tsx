@@ -29,12 +29,11 @@ export default function NavigationBar() {
 
 const NaviBar = styled.nav`
   position: absolute;
-  bottom: 14px;
+  bottom: 0;
   left: calc(max((100vw - 1155px), 0px) / 2 + 370px);
-  width: max(436px);
+  width: 436px;
   white-space: nowrap;
   cursor: pointer;
-  padding: 10px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;

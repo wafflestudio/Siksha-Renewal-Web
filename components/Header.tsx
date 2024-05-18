@@ -89,7 +89,8 @@ const LoginButton = styled.div`
 const Container = styled.div`
   background: #ff9522;
   height: 25vh;
-  width: 100vw;
+  width: 100%;
+  min-width: 1221px;
   display: flex;
   max-height: 271px;
   position: relative;
@@ -97,6 +98,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     background: #ff9522;
     height: 60px;
+    min-width: 0;
   }
 `;
 

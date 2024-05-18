@@ -82,7 +82,7 @@ const DesktopContainer = styled.div`
   justify-content: center;
   height: max(780px, 100vh - min(25vh, 271px));
   width: 100%;
-  min-width: max-content;
+  min-width: fit-content;
   margin-top: 39px;
 
   @media (max-width: 768px) {
