@@ -30,12 +30,12 @@ export default function LeftSide() {
 }
 
 const Container = styled.div`
-  padding-right: 18px;
+  margin-right: 18px;
   height: fit-content;
-  width: calc(73vw * 0.4);
+  box-sizing: border-box;
   min-width: 400px;
   max-width: 563px;
-  flex: 0 0 auto;
+  flex-grow: 1;
 `;
 
 const Line = styled.div`
