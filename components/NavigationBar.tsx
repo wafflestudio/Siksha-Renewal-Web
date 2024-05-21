@@ -29,17 +29,18 @@ export default function NavigationBar() {
 
 const NaviBar = styled.nav`
   position: absolute;
-  bottom: 14px;
+  bottom: 0;
   left: calc(max((100vw - 1155px), 0px) / 2 + 370px);
   width: max(436px);
   white-space: nowrap;
   cursor: pointer;
   padding: 10px;
+  padding-bottom: 0;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: 918px) {
     display: none;
   }
 `;
@@ -61,6 +62,7 @@ const NavLink = styled.div<{ $cur: boolean }>`
     css`
       border-bottom: 5px solid white;
       color: white;
+      padding-bottom: 15px;
     `};
 
   &:hover {

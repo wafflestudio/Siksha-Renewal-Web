@@ -83,7 +83,10 @@ const LoginButton = styled.div`
   font-weight: 400;
   color: #ffffff;
   position: absolute;
-  bottom: 16px;
+  bottom: 0px;
+  height: 67.5px;
+  display: flex;
+  align-items:center;
   right: calc(5vw);
 `;
 const Container = styled.div`
