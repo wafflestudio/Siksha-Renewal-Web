@@ -1,10 +1,32 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
+import { useStateContext, useDispatchContext } from "../hooks/ContextProvider";
 
 export default function NavigationBar() {
   const router = useRouter();
   const addr = router.pathname;
+
+  const state = useStateContext();
+  const dispatch = useDispatchContext();
+  const { loginStatus } = state;
+  const setLoginModal = useCallback(
+    () =>
+      dispatch({
+        type: "SET_LOGINMODAL",
+        isLoginModal: true,
+      }),
+    [dispatch],
+  );
+
+  const isAccountToggle = () => {
+    if (loginStatus === false) {
+      setLoginModal();
+    } else {
+      router.push(`/account`);
+    }
+  };
 
   return (
     <NaviBar>
@@ -18,10 +40,8 @@ export default function NavigationBar() {
           <NavLink $cur={addr.startsWith(`/community/`)}>게시판</NavLink>
         </Link>
       </NavItem>
-      <NavItem>
-        <Link href="/account" passHref>
-          <NavLink $cur={addr === `/account`}>마이 페이지</NavLink>
-        </Link>
+      <NavItem onClick={isAccountToggle}>
+        <NavLink $cur={addr === `/account`}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>
   );
