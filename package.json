@@ -12,6 +12,7 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "@types/styled-components": "^5.1.26",
