@@ -73,7 +73,7 @@ export default function Account() {
     }
   }, [setLoading]);
 
-  const nickname = !userInfo.nickname ? `익명 ${userInfo.id}` : userInfo.nickname;
+  const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
 
   return (
     <>
