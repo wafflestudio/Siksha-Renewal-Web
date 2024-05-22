@@ -76,54 +76,58 @@ export default function Account() {
   const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
 
   return (
-    <>
-      <AccountLayout>
-        <Container>
-          <Nickname
+    <AccountLayout>
+      <Container>
+        <Nickname
+          onClick={() => {
+            router.push("/account/nickname");
+          }}
+        >
+          {isLoading ? "잠시만 기다려주세요..." : nickname}
+        </Nickname>
+
+        <MyPost
+          onClick={() => {
+            router.push("/account/nickname");
+          }}
+        >
+          내가 쓴 글
+        </MyPost>
+
+        <Package>
+          <FirstDiv
             onClick={() => {
-              router.push("/account/nickname");
+              router.push("/account/restaurant");
             }}
           >
-            {isLoading ? '잠시만 기다려주세요...' : nickname}
-          </Nickname>
-
-          <MyPost
+            식당 순서 변경
+          </FirstDiv>
+          <MiddleDiv
             onClick={() => {
-              router.push("/account/nickname");
+              router.push("/account/restaurant/favorite");
             }}
           >
-            내가 쓴 글
-          </MyPost>
+            즐겨찾기 식당 순서 변경
+          </MiddleDiv>
+          <MiddleDiv>메뉴 없는 식당 숨기기</MiddleDiv>
+          <LastDiv
+            onClick={() => {
+              router.push("/account/user");
+            }}
+          >
+            계정관리
+          </LastDiv>
+        </Package>
 
-          <Package>
-            <FirstDiv
-              onClick={() => {
-                router.push("/account/restaurant");
-              }}
-            >
-              식당 순서 변경
-            </FirstDiv>
-            <MiddleDiv
-              onClick={() => {
-                router.push("/account/restaurant/favorite");
-              }}
-            >
-              즐겨찾기 식당 순서 변경
-            </MiddleDiv>
-            <MiddleDiv>메뉴 없는 식당 숨기기</MiddleDiv>
-            <LastDiv
-              onClick={() => {
-                router.push("/account/user");
-              }}
-            >
-              계정관리
-            </LastDiv>
-          </Package>
-
-          <Inquiry>1:1 문의하기</Inquiry>
-        </Container>
-      </AccountLayout>
-    </>
+        <Inquiry
+          onClick={() => {
+            router.push("/account/inquiry");
+          }}
+        >
+          1:1 문의하기
+        </Inquiry>
+      </Container>
+    </AccountLayout>
   );
 }
 
