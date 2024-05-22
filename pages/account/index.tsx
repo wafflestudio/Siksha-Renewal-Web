@@ -73,6 +73,8 @@ export default function Account() {
     }
   }, [setLoading]);
 
+  const nickname = !userInfo.nickname ? `익명 ${userInfo.id}` : userInfo.nickname;
+
   return (
     <>
       <AccountLayout>
@@ -82,7 +84,7 @@ export default function Account() {
               router.push("/account/nickname");
             }}
           >
-            {isLoading ? '잠시만 기다려주세요...' : userInfo.nickname}
+            {isLoading ? '잠시만 기다려주세요...' : nickname}
           </Nickname>
 
           <MyPost
