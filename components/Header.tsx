@@ -6,7 +6,6 @@ import NavigationBar from "./NavigationBar";
 
 export default function Header() {
   const router = useRouter();
-  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
   const state = useStateContext();
   const dispatch = useDispatchContext();
   const { loginStatus } = state;
@@ -30,7 +29,6 @@ export default function Header() {
 
   useEffect(() => {
     setLoginStatus();
-    setIsLoginPage(router.asPath.localeCompare("/login/") === 0);
   }, []);
   if (loginStatus !== undefined) {
     return (
@@ -50,9 +48,7 @@ export default function Header() {
             서울대학교 식단 알리미
           </Title>
           <NavigationBar/>
-          {isLoginPage ? (
-            <></>
-          ) : loginStatus ? (
+          {loginStatus ? (
             <LoginButton
               onClick={() => {
                 localStorage.removeItem("access_token");
@@ -83,7 +79,10 @@ const LoginButton = styled.div`
   font-weight: 400;
   color: #ffffff;
   position: absolute;
-  bottom: 16px;
+  bottom: 0px;
+  height: 67.5px;
+  display: flex;
+  align-items:center;
   right: calc(5vw);
 `;
 const Container = styled.div`

@@ -8,6 +8,8 @@ import Layout from "../layout";
 
 // 가짜 데이터 import
 import { boards, posts } from "../../../constants/constants";
+import { useStateContext } from "../../../hooks/ContextProvider";
+import LoginModal from "../../../components/Auth/LoginModal";
 
 export default function Board() {
   const [boardId, setBoardId] = useState(0);

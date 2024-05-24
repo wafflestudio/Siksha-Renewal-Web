@@ -1,6 +1,7 @@
 import Header from "../../components/Header";
 import { GlobalStyle } from "../../styles/globalstyle";
 import styled from "styled-components";
+import LoginModal from "../../components/Auth/LoginModal";
 
 interface LayoutProps {
   children: JSX.Element;

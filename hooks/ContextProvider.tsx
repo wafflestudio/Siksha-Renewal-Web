@@ -35,6 +35,8 @@ function reducer(state: State, action: Action) {
       return { ...state, loginStatus: action.loginStatus };
     case "SET_LOGINMODAL":
       return { ...state, isLoginModal: action.isLoginModal };
+    case "SET_USERINFO":
+      return { ...state, userInfo: action.userInfo };
     default:
       throw new Error("Unhandled action");
   }
@@ -52,6 +54,10 @@ const ContextProvider = ({ children }) => {
     infoData: null,
     loginStatus: false,
     isLoginModal: false,
+    userInfo: {
+      id: null,
+      nickname: null,
+    },
   });
 
   return (
