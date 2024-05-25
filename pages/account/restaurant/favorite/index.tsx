@@ -4,7 +4,6 @@ import axios from "axios";
 import APIendpoint from "../../../../constants/constants";
 import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderEdit";
 import { GlobalStyle } from "../../../../styles/globalstyle";
-import AccountLayout from "../../accountLayout";
 import { useRouter } from "next/router";
 import Header from "../../../../components/Header";
 import styled from "styled-components";
@@ -18,8 +17,10 @@ interface Restaurant {
 export default function Setting_Favorite() {
   // Favorite 로직 나오기 전까지는 동작 안하게 설정
   const router = useRouter();
-  router.push("/account");
-  return;
+  useEffect(() => {
+    router.push("/account");
+  }, []);
+  return <></>;
 
   const state = useStateContext();
 
