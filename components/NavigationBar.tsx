@@ -58,7 +58,7 @@ const NaviBar = styled.nav`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 918px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
