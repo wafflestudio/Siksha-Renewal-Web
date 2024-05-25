@@ -1,8 +1,7 @@
-import { ReactElement } from "react";
 import Header from "../../components/Header";
-import ContextProvider from "../../hooks/ContextProvider";
 import { GlobalStyle } from "../../styles/globalstyle";
 import styled from "styled-components";
+import LoginModal from "../../components/Auth/LoginModal";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -12,10 +11,8 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <>
       <GlobalStyle />
-      <ContextProvider>
-        <Header />
-        <Content>{children}</Content>
-      </ContextProvider>
+      <Header />
+      <Content>{children}</Content>
     </>
   );
 }
