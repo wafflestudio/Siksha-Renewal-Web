@@ -5,6 +5,7 @@ export function BoardHeader() {
   return (
     <Container>
       <HotPost>
+        {/* <Text> */}
         <Title>
           {" "}
           제목
@@ -16,6 +17,7 @@ export function BoardHeader() {
           본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문
           본문본문 본문 본문본문 본문 본문본문 본문 본문
         </ContentPreview>
+        {/* </Text> */}
         <Likes>
           <Icon src="/img/post-like.svg" />
           12
