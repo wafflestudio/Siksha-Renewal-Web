@@ -57,6 +57,7 @@ export default function Post() {
   }
   async function fetchComments() {
     const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`);
+    setComments([]);
     res.data.result.map((comment: RawComment) => {
       const {
         post_id,
