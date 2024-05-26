@@ -24,7 +24,7 @@ const Content = styled.div`
   width: min(700px, 100%);
   margin: 0 auto;
   margin-top: 37px;
-  height: max(910px, 100vh);
+  height: max(910px, 100%);
   background: white;
   border-radius: 10px 10px 0 0;
   padding: 20px 19px;

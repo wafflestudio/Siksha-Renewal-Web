@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { post } from "../../types";
+import { Post as PostType } from "../../types";
 
 interface PropsPost {
-  post: post;
+  post: PostType;
 }
 
 export function Post({ post }: PropsPost) {
-  const { title, content, likes, comments } = post;
+  const { title, content, likeCount, commentCount, images } = post;
 
   return (
     <Container>
@@ -16,15 +16,17 @@ export function Post({ post }: PropsPost) {
         <LikesAndComments>
           <Likes>
             <Icon src="/img/post-like.svg" />
-            {likes}
+            {likeCount}
           </Likes>
           <Comments>
             <Icon src="/img/post-comment.svg" />
-            {comments}
+            {commentCount}
           </Comments>
         </LikesAndComments>
       </Info>
-      <Photo src="/img/file-big.svg" />
+      <PhotoZone>
+        {images ? images.map((src, idx) => (idx < 2 ? <Photo src={src} /> : null)) : null}
+      </PhotoZone>
     </Container>
   );
 }
@@ -75,6 +77,11 @@ const Comments = styled.div`
 const Icon = styled.img`
   margin-right: 4px;
 `;
+const PhotoZone = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
 const Photo = styled.img`
   width: 84px;
   height: 84px;
