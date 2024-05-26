@@ -47,11 +47,12 @@ export default function Header() {
           >
             서울대학교 식단 알리미
           </Title>
-          <NavigationBar/>
+          <NavigationBar />
           {loginStatus ? (
             <LoginButton
               onClick={() => {
                 localStorage.removeItem("access_token");
+                router.push(`/`);
                 setLoginStatus();
               }}
             >
@@ -81,7 +82,7 @@ const LoginButton = styled.div`
   position: absolute;
   bottom: 16px;
   right: 97px;
-  
+
   @media (max-width: 768px) {
     right: 5vw;
   }
