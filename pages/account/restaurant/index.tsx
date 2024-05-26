@@ -4,7 +4,7 @@ import axios from "axios";
 import APIendpoint from "../../../constants/constants";
 import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
 import { GlobalStyle } from "../../../styles/globalstyle";
-import AccountLayout from "../accountLayout";
+import AccountLayout from "../layout";
 import Header from "../../../components/Header";
 import styled from "styled-components";
 

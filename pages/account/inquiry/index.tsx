@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import AccountLayout from "../accountLayout";
+import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useCallback, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";

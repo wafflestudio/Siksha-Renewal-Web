@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
 import { useRouter } from "next/router";
-import AccountLayout from "./accountLayout";
+import AccountLayout from "./layout";
 import { useCallback, useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
 
