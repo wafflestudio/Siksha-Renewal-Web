@@ -15,6 +15,10 @@ export interface State {
   infoData: any;
   loginStatus: boolean;
   isLoginModal: boolean;
+  userInfo: {
+    id: number | null;
+    nickname: string | null;
+  };
 }
 
 export type Action =
@@ -26,7 +30,8 @@ export type Action =
   | { type: "TOGGLE_SHOWCAL" }
   | { type: "TOGGLE_SHOWINFO" }
   | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
-  | { type: "SET_LOGINMODAL"; isLoginModal: boolean };
+  | { type: "SET_LOGINMODAL"; isLoginModal: boolean }
+  | { type: "SET_USERINFO"; userInfo: { id: number; nickname: string } };
 
 // Extend the Window interface for global scope (if needed)
 declare global {
@@ -69,4 +74,16 @@ declare global {
   interface SigninError {
     error: string;
   }
+}
+
+// 가짜 데이터 type
+export interface board {
+  id: number;
+  name: string;
+}
+export interface post {
+  title: string;
+  content: string;
+  likes: number;
+  comments: number;
 }
