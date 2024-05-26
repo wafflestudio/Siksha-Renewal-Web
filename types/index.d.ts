@@ -31,7 +31,7 @@ export type Action =
   | { type: "TOGGLE_SHOWINFO" }
   | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
   | { type: "SET_LOGINMODAL"; isLoginModal: boolean }
-  | { type: "SET_USERINFO"; userInfo: { id: number; nickname: string } };
+  | { type: "SET_USERINFO"; userInfo: { id: number | null; nickname: string | null } };
 
 // Extend the Window interface for global scope (if needed)
 declare global {

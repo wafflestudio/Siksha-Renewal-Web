@@ -30,7 +30,7 @@ export default function Header() {
     [dispatch],
   );
   const setUserInfo = useCallback(
-    (id: number, nickname: string) =>
+    (id: number | null, nickname: string | null) =>
       dispatch({
         type: "SET_USERINFO",
         userInfo: { id, nickname },
@@ -49,7 +49,9 @@ export default function Header() {
           headers: { "authorization-token": `Bearer ${access_token}` },
         });
         setUserInfo(res.data.id, res.data.nickname);
-      } catch (e) {}
+      } catch (e) {
+        setUserInfo(null, null);
+      }
     }
 
     fetchUserInfo();
