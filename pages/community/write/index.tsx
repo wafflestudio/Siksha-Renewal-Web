@@ -77,6 +77,8 @@ export default function PostWriter() {
     }
   }
 
+  console.log(inputs);
+
   async function fetchBoards() {
     const res = await axios.get(`${APIendpoint()}/community/boards`);
     setBoards([]);

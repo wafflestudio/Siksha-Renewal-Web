@@ -1,11 +1,14 @@
 import { useRouter } from "next/router";
-import { GlobalStyle } from "../../../../../styles/globalstyle";
-import Layout from "../../../layout";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import APIendpoint from "../../../../../constants/constants";
-import { Post as PostType, Comment as CommentType, RawComment } from "../../../../../types";
+import {
+  Post as PostType,
+  Comment as CommentType,
+  RawComment,
+  RawPost,
+} from "../../../../../types";
 import Board from "../../index";
 import CommentList from "../../../../../components/Community/CommentList";
 import CommentWriter from "../../../../../components/Community/CommentWriter";
@@ -14,55 +17,70 @@ import { useDispatchContext, useStateContext } from "../../../../../hooks/Contex
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { userInfo } = useStateContext();
+  const { userInfo, loginStatus } = useStateContext();
   const dispatch = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
 
   async function fetchPost() {
-    const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`, {
-      headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-    });
-    const {
-      board_id,
-      id,
-      title,
-      content,
-      created_at,
-      updated_at,
-      nickname,
-      anonymous,
-      available,
-      is_mine,
-      etc,
-      like_cnt,
-      comment_cnt,
-      is_liked,
-    } = res.data;
-    setPost({
-      boardId: board_id,
-      id: id,
-      title: title,
-      content: content,
-      createdAt: created_at,
-      updatedAt: updated_at,
-      nickname: nickname,
-      anonymous: anonymous,
-      available: available,
-      isMine: is_mine,
-      images: etc ? etc.images : etc,
-      likeCount: like_cnt,
-      commentCount: comment_cnt,
-      isLiked: is_liked,
-    });
+    if (loginStatus) {
+      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}`, {
+        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+      });
+      update(res.data);
+    } else {
+      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`, {});
+      update(res.data);
+    }
+    function update(post: RawPost) {
+      const {
+        board_id,
+        id,
+        title,
+        content,
+        created_at,
+        updated_at,
+        nickname,
+        anonymous,
+        available,
+        is_mine,
+        etc,
+        like_cnt,
+        comment_cnt,
+        is_liked,
+      } = post;
+      setPost({
+        boardId: board_id,
+        id: id,
+        title: title,
+        content: content,
+        createdAt: created_at,
+        updatedAt: updated_at,
+        nickname: nickname,
+        anonymous: anonymous,
+        available: available,
+        isMine: is_mine,
+        images: etc ? etc.images : etc,
+        likeCount: like_cnt,
+        commentCount: comment_cnt,
+        isLiked: is_liked,
+      });
+    }
   }
   async function fetchComments() {
-    const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`, {
-      headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-    });
-    setComments([]);
-    res.data.result.map((comment: RawComment) => {
+    if (loginStatus) {
+      const res = await axios.get(`${APIendpoint()}/community/comments?post_id=${postId}`, {
+        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+      });
+      setComments([]);
+      res.data.result.map(update);
+    } else {
+      const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`, {});
+      setComments([]);
+      res.data.result.map(update);
+    }
+    function update(comment: RawComment) {
       const {
         post_id,
         content,
@@ -92,7 +110,7 @@ export default function Post() {
           isLiked: is_liked,
         },
       ]);
-    });
+    }
   }
   async function fetchLike() {
     if (!userInfo.id) {
@@ -105,7 +123,7 @@ export default function Post() {
             {},
             {
               headers: {
-                "authorizatoin-token": `Bearer ${localStorage.getItem("access_token")}`,
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
               },
             },
           )
@@ -117,7 +135,7 @@ export default function Post() {
             {},
             {
               headers: {
-                "authorizatoin-token": `Bearer ${localStorage.getItem("access_token")}`,
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
               },
             },
           )
