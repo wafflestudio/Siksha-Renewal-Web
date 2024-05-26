@@ -1,33 +1,36 @@
 import styled from "styled-components";
 import { Post as PostType } from "../../types";
+import Link from "next/link";
 
 interface PropsPost {
   post: PostType;
 }
 
 export function Post({ post }: PropsPost) {
-  const { title, content, likeCount, commentCount, images } = post;
+  const { boardId, id, title, content, likeCount, commentCount, images } = post;
 
   return (
-    <Container>
-      <Info>
-        <Title>{title}</Title>
-        <ContentPreview>{content}</ContentPreview>
-        <LikesAndComments>
-          <Likes>
-            <Icon src="/img/post-like.svg" />
-            {likeCount}
-          </Likes>
-          <Comments>
-            <Icon src="/img/post-comment.svg" />
-            {commentCount}
-          </Comments>
-        </LikesAndComments>
-      </Info>
-      <PhotoZone>
-        {images ? images.map((src, idx) => (idx < 2 ? <Photo src={src} /> : null)) : null}
-      </PhotoZone>
-    </Container>
+    <Link href={`/community/boards/${boardId}/posts/${id}`}>
+      <Container>
+        <Info>
+          <Title>{title}</Title>
+          <ContentPreview>{content}</ContentPreview>
+          <LikesAndComments>
+            <Likes>
+              <Icon src="/img/post-like.svg" />
+              {likeCount}
+            </Likes>
+            <Comments>
+              <Icon src="/img/post-comment.svg" />
+              {commentCount}
+            </Comments>
+          </LikesAndComments>
+        </Info>
+        <PhotoZone>
+          {images ? images.map((src, idx) => (idx < 2 ? <Photo src={src} /> : null)) : null}
+        </PhotoZone>
+      </Container>
+    </Link>
   );
 }
 
