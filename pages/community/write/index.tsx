@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import Layout from "../layout";
-import { useMemo, useState } from "react";
-import { boards } from "../../../constants/constants";
+import { useEffect, useMemo, useState } from "react";
+import APIendpoint from "../../../constants/constants";
+import { useDispatchContext, useStateContext } from "../../../hooks/ContextProvider";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { Board, RawBoard } from "../../../types";
 
 type inputs = {
   title: string;
@@ -17,14 +21,19 @@ type option = {
 };
 
 export default function PostWriter() {
+  const router = useRouter();
+
   const [inputs, setInputs] = useState<inputs>({
     title: "",
     content: "",
-    boardId: 0,
+    boardId: 1,
     photos: [],
     options: { anonymous: false },
   });
+  const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
+  const { userInfo } = useStateContext();
+  const dispatch = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
@@ -40,17 +49,67 @@ export default function PostWriter() {
   function hanldlePhotoDelete(index: number) {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
+
+  async function submit() {
+    if (!userInfo.id) {
+      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+    } else {
+      await axios
+        .post(
+          `${APIendpoint()}/community/posts`,
+          {
+            board_id: inputs.boardId,
+            title: inputs.title,
+            content: inputs.content,
+            anonymous: inputs.options.anonymous,
+            images: inputs.photos,
+          },
+          {
+            headers: {
+              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          },
+        )
+        .then((res) => {
+          const { board_id, id } = res.data;
+          router.push(`/community/boards${board_id}/posts/${id}`);
+        });
+    }
+  }
+
+  async function fetchBoards() {
+    const res = await axios.get(`${APIendpoint()}/community/boards`);
+    setBoards([]);
+    res.data.map((board: RawBoard) => {
+      const { created_at, updated_at, id, type, name, description } = board;
+      setBoards((prev) => [
+        ...prev,
+        {
+          createdAt: created_at,
+          updatedAt: updated_at,
+          id: id,
+          type: type,
+          name: name,
+          description: description,
+        },
+      ]);
+    });
+  }
+
+  useEffect(() => {
+    fetchBoards();
+  }, []);
   return (
     <Layout>
       <Container>
         <Header>글쓰기</Header>
         <BoardMenu onClick={() => setClicked(!clicked)}>
-          {boards.filter((board) => board.id === inputs.boardId)[0].name}
+          {boards?.filter((board) => board.id === inputs.boardId)[0]?.name}
           <Icon src="/img/down-arrow.svg" />
         </BoardMenu>
         {clicked && (
           <BoardMenuList>
-            {boards.map((board, i) => (
+            {boards?.map((board, i) => (
               <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
                 {board.name}
               </BoardMenuItem>
@@ -101,7 +160,9 @@ export default function PostWriter() {
         </PhotoViewer>
         <ButtonContainer>
           <Button className="cancel">취소</Button>
-          <Button className={`submit ${isValid ? "active" : ""}`}>등록</Button>
+          <Button className={`submit ${isValid ? "active" : ""}`} onClick={submit}>
+            등록
+          </Button>
         </ButtonContainer>
       </Container>
     </Layout>
