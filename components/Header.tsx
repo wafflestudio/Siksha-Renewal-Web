@@ -49,9 +49,7 @@ export default function Header() {
           headers: { "authorization-token": `Bearer ${access_token}` },
         });
         setUserInfo(res.data.id, res.data.nickname);
-      } catch (e) {
-        router.push(`/`);
-      }
+      } catch (e) {}
     }
 
     fetchUserInfo();
