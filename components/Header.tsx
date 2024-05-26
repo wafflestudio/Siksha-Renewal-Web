@@ -85,6 +85,8 @@ const LoginButton = styled.div`
 
   @media (max-width: 768px) {
     right: 5vw;
+    font-size: 16px;
+    top: 21px;
   }
 `;
 
