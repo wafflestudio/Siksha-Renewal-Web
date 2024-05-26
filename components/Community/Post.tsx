@@ -1,31 +1,36 @@
 import styled from "styled-components";
-import { post } from "../../types";
+import { Post as PostType } from "../../types";
+import Link from "next/link";
 
 interface PropsPost {
-  post: post;
+  post: PostType;
 }
 
 export function Post({ post }: PropsPost) {
-  const { title, content, likes, comments } = post;
+  const { boardId, id, title, content, likeCount, commentCount, images } = post;
 
   return (
-    <Container>
-      <Info>
-        <Title>{title}</Title>
-        <ContentPreview>{content}</ContentPreview>
-        <LikesAndComments>
-          <Likes>
-            <Icon src="/img/post-like.svg" />
-            {likes}
-          </Likes>
-          <Comments>
-            <Icon src="/img/post-comment.svg" />
-            {comments}
-          </Comments>
-        </LikesAndComments>
-      </Info>
-      <Photo src="/img/file-big.svg" />
-    </Container>
+    <Link href={`/community/boards/${boardId}/posts/${id}`}>
+      <Container>
+        <Info>
+          <Title>{title}</Title>
+          <ContentPreview>{content}</ContentPreview>
+          <LikesAndComments>
+            <Likes>
+              <Icon src="/img/post-like.svg" />
+              {likeCount}
+            </Likes>
+            <Comments>
+              <Icon src="/img/post-comment.svg" />
+              {commentCount}
+            </Comments>
+          </LikesAndComments>
+        </Info>
+        <PhotoZone>
+          {images ? images.map((src, idx) => (idx < 2 ? <Photo src={src} /> : null)) : null}
+        </PhotoZone>
+      </Container>
+    </Link>
   );
 }
 
@@ -75,6 +80,11 @@ const Comments = styled.div`
 const Icon = styled.img`
   margin-right: 4px;
 `;
+const PhotoZone = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
 const Photo = styled.img`
   width: 84px;
   height: 84px;

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Post } from "./Post";
-import { post } from "../../types";
+import { Post as PostType } from "../../types";
 
 interface PropsPostList {
-  posts: post[];
+  posts: PostType[];
 }
 
 export function PostList({ posts }: PropsPostList) {

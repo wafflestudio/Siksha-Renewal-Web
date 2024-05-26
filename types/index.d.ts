@@ -40,14 +40,82 @@ declare global {
   }
 }
 
-// 가짜 데이터 type
-export interface board {
+export interface Board {
+  createdAt: string;
+  updatedAt: string;
   id: number;
+  type: number;
   name: string;
+  description: string;
 }
-export interface post {
+
+export interface RawBoard {
+  created_at: string;
+  updated_at: string;
+  id: number;
+  type: number;
+  name: string;
+  description: string;
+}
+
+export interface Post {
+  boardId: number;
+  id: number;
   title: string;
   content: string;
-  likes: number;
-  comments: number;
+  createdAt: string;
+  updatedAt: string;
+  nickname: string | null;
+  anonymous: boolean;
+  available: boolean;
+  isMine: boolean;
+  images: string[] | null;
+  likeCount: number;
+  commentCount: number;
+  isLiked: boolean | null;
+}
+
+export interface RawPost {
+  board_id: number;
+  id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  nickname: string | null;
+  anonymous: boolean;
+  available: boolean;
+  is_mine: boolean;
+  etc: { images: string[] } | null;
+  like_cnt: number;
+  comment_cnt: number;
+  is_liked: boolean | null;
+}
+
+export interface Comment {
+  postId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  nickname: string;
+  avaliable: boolean;
+  anonymous: boolean;
+  isMine: boolean;
+  likeCount: number;
+  isLiked: boolean;
+}
+
+export interface RawComment {
+  post_id: number;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  id: number;
+  nickname: string;
+  avaliable: boolean;
+  anonymous: boolean;
+  is_mine: boolean;
+  like_cnt: number;
+  is_liked: boolean;
 }
