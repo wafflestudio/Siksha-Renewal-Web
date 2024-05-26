@@ -21,7 +21,9 @@ export default function Post() {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   async function fetchPost() {
-    const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`);
+    const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`, {
+      headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    });
     const {
       board_id,
       id,
@@ -56,7 +58,9 @@ export default function Post() {
     });
   }
   async function fetchComments() {
-    const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`);
+    const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`, {
+      headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    });
     setComments([]);
     res.data.result.map((comment: RawComment) => {
       const {
