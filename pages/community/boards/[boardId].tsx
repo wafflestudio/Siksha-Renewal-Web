@@ -56,7 +56,9 @@ export default function Posts() {
         ]);
       });
     }
-    fetchPosts();
+    if (boardId) {
+      fetchPosts();
+    }
   }, [boardId]);
 
   return (
