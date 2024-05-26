@@ -32,7 +32,7 @@ export default function NavigationBar() {
     <NaviBar>
       <NavItem>
         <Link href="/" passHref>
-          <NavLink $cur={addr === `/`}>식단</NavLink>
+          <NavLink $cur={addr === `/` || addr.startsWith(`/menu`) }>식단</NavLink>
         </Link>
       </NavItem>
       <NavItem>
