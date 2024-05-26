@@ -49,31 +49,29 @@ export default function PostWriter() {
   function hanldlePhotoDelete(index: number) {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
-
+  console.log(inputs.photos);
   async function submit() {
     if (!userInfo.id) {
       dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
     } else {
+      const body = new FormData();
+      body.append("board_id", String(inputs.boardId));
+      body.append("title", inputs.title);
+      body.append("content", inputs.content);
+      body.append("anonymous", String(inputs.options.anonymous));
+      body.append("images", new Blob(inputs.photos));
+
       await axios
-        .post(
-          `${APIendpoint()}/community/posts`,
-          {
-            board_id: inputs.boardId,
-            title: inputs.title,
-            content: inputs.content,
-            anonymous: inputs.options.anonymous,
-            images: inputs.photos,
+        .post(`${APIendpoint()}/community/posts`, body, {
+          headers: {
+            "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
           },
-          {
-            headers: {
-              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          },
-        )
+        })
         .then((res) => {
           const { board_id, id } = res.data;
-          router.push(`/community/boards${board_id}/posts/${id}`);
-        });
+          router.push(`/community/boards/${board_id}/posts/${id}`);
+        })
+        .catch((e) => console.log(e));
     }
   }
 
