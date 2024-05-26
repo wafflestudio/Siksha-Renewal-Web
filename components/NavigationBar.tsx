@@ -48,19 +48,17 @@ export default function NavigationBar() {
 }
 
 const NaviBar = styled.nav`
-  position: absolute;
-  bottom: 0;
-  left: calc(max((100vw - 1155px), 0px) / 2 + 370px);
-  width: max(436px);
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: 386px;
+  width: 394px;
   white-space: nowrap;
   cursor: pointer;
-  padding: 10px;
-  padding-bottom: 0;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 918px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
