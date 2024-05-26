@@ -1,11 +1,11 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { board } from "../../types";
+import { Board } from "../../types";
 
 interface BoardMenuProps {
   boardId: number;
   setBoardId: (value: number) => void;
-  boards: board[];
+  boards: Board[];
 }
 
 export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {

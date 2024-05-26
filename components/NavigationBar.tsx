@@ -37,11 +37,11 @@ export default function NavigationBar() {
       </NavItem>
       <NavItem>
         <Link href="/community/boards/0" passHref>
-          <NavLink $cur={addr.startsWith(`/community`)}>게시판</NavLink>
+          <NavLink $cur={addr.startsWith(`/community/`)}>게시판</NavLink>
         </Link>
       </NavItem>
       <NavItem onClick={isAccountToggle}>
-        <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
+        <NavLink $cur={addr === `/account`}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>
   );
