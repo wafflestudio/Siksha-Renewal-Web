@@ -52,6 +52,7 @@ export default function Header() {
             <LoginButton
               onClick={() => {
                 localStorage.removeItem("access_token");
+                router.push(`/`);
                 setLoginStatus();
               }}
             >
