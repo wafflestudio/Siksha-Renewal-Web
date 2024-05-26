@@ -91,3 +91,31 @@ export interface RawPost {
   comment_cnt: number;
   is_liked: boolean | null;
 }
+
+export interface Comment {
+  postId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  nickname: string;
+  avaliable: boolean;
+  anonymous: boolean;
+  isMine: boolean;
+  likeCount: number;
+  isLiked: boolean;
+}
+
+export interface RawComment {
+  post_id: number;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  id: number;
+  nickname: string;
+  avaliable: boolean;
+  anonymous: boolean;
+  is_mine: boolean;
+  like_cnt: number;
+  is_liked: boolean;
+}
