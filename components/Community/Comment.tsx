@@ -47,8 +47,6 @@ export default function Comment({ comment, refetch }: CommentProps) {
     }
   }
 
-  console.log(comment);
-
   return (
     <Container>
       <User>{nickname}</User>
