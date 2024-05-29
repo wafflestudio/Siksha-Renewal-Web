@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
-import AccountLayout from "../accountLayout";
+import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -35,7 +35,9 @@ export default function Setting_User() {
   };
 
   const handleExit = async () => {
-    const confirmExit = window.confirm('앱 계정을 삭제합니다. \n 이 계정으로 등록된 리뷰 정보들도 모두 함께 삭제됩니다.');
+    const confirmExit = window.confirm(
+      "앱 계정을 삭제합니다. \n 이 계정으로 등록된 리뷰 정보들도 모두 함께 삭제됩니다.",
+    );
     if (!confirmExit) return;
 
     if (loginStatus === false) {
@@ -59,7 +61,6 @@ export default function Setting_User() {
         console.log(e);
         router.push(`/account/user`);
       }
-      
     }
   };
 

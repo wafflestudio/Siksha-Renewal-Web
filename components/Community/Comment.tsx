@@ -20,9 +20,29 @@ export default function Comment({ comment, refetch }: CommentProps) {
       dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
     } else {
       if (isLiked) {
-        await axios.post(`${APIendpoint()}/community/comments/${id}/unlike`).then(() => refetch());
+        await axios
+          .post(
+            `${APIendpoint()}/community/comments/${id}/unlike`,
+            {},
+            {
+              headers: {
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            },
+          )
+          .then(() => refetch());
       } else {
-        await axios.post(`${APIendpoint()}/community/comments/${id}/like`).then(() => refetch());
+        await axios
+          .post(
+            `${APIendpoint()}/community/comments/${id}/like`,
+            {},
+            {
+              headers: {
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            },
+          )
+          .then(() => refetch());
       }
     }
   }
@@ -34,6 +54,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
       <Date>{updatedAt ? updatedAt : createdAt}</Date>
       <Likes>{likeCount}</Likes>
       <LikeButton onClick={fetchLike}>공감</LikeButton>
+      {isLiked ? "liked!" : "not liked"}
     </Container>
   );
 }

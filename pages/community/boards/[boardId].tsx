@@ -8,17 +8,28 @@ import axios from "axios";
 import { Post, RawPost } from "../../../types";
 import Board from ".";
 import { useRouter } from "next/router";
+import { useStateContext } from "../../../hooks/ContextProvider";
 
 export default function Posts() {
   const router = useRouter();
   const { boardId } = router.query;
+  const { loginStatus } = useStateContext();
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     async function fetchPosts() {
-      const res = await axios.get(`${APIendpoint()}/community/posts/web?board_id=${boardId}`, {});
-      setPosts([]);
-      res.data.result.map((post: RawPost) => {
+      if (loginStatus) {
+        const res = await axios.get(`${APIendpoint()}/community/posts?board_id=${boardId}`, {
+          headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+        });
+        setPosts([]);
+        res.data.result.map(update);
+      } else {
+        const res = await axios.get(`${APIendpoint()}/community/posts/web?board_id=${boardId}`, {});
+        setPosts([]);
+        res.data.result.map(update);
+      }
+      function update(post: RawPost) {
         const {
           board_id,
           id,
@@ -54,9 +65,12 @@ export default function Posts() {
             isLiked: is_liked,
           },
         ]);
-      });
+      }
     }
-    fetchPosts();
+
+    if (boardId) {
+      fetchPosts();
+    }
   }, [boardId]);
 
   return (

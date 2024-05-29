@@ -1,4 +1,4 @@
-import AccountLayout from "../accountLayout";
+import AccountLayout from "../layout";
 import styled from "styled-components";
 import axios from "axios";
 import APIendpoint from "../../../constants/constants";

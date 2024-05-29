@@ -27,7 +27,7 @@ export function Post({ post }: PropsPost) {
           </LikesAndComments>
         </Info>
         <PhotoZone>
-          {images ? images.map((src, idx) => (idx < 2 ? <Photo src={src} /> : null)) : null}
+          {images ? images.map((src, idx) => (idx < 1 ? <Photo src={src} /> : null)) : null}
         </PhotoZone>
       </Container>
     </Link>

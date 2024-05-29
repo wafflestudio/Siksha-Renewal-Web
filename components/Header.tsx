@@ -3,12 +3,16 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
+import APIendpoint from "../constants/constants";
+import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
   const dispatch = useDispatchContext();
+
   const { loginStatus } = state;
+
   const setLoginStatus = useCallback(
     () =>
       dispatch({
@@ -17,7 +21,6 @@ export default function Header() {
       }),
     [dispatch],
   );
-
   const setLoginModal = useCallback(
     () =>
       dispatch({
@@ -26,10 +29,34 @@ export default function Header() {
       }),
     [dispatch],
   );
+  const setUserInfo = useCallback(
+    (id: number | null, nickname: string | null) =>
+      dispatch({
+        type: "SET_USERINFO",
+        userInfo: { id, nickname },
+      }),
+    [dispatch],
+  );
 
   useEffect(() => {
     setLoginStatus();
-  }, []);
+
+    const access_token = localStorage.getItem("access_token");
+
+    async function fetchUserInfo() {
+      try {
+        const res = await axios.get(`${APIendpoint()}/auth/me`, {
+          headers: { "authorization-token": `Bearer ${access_token}` },
+        });
+        setUserInfo(res.data.id, res.data.nickname);
+      } catch (e) {
+        setUserInfo(null, null);
+      }
+    }
+
+    fetchUserInfo();
+  }, [loginStatus]);
+
   if (loginStatus !== undefined) {
     return (
       <>

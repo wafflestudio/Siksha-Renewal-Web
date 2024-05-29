@@ -16,7 +16,9 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   const dispatch = useDispatchContext();
 
   async function submit() {
-    if (userInfo.id) {
+    if (!userInfo.id) {
+      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+    } else {
       await axios.post(
         `${APIendpoint()}/community/comments`,
         {
@@ -29,8 +31,6 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
       await refetch();
       setCommentInput("");
       setIsAnonymous(false);
-    } else {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
     }
   }
 
