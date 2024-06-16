@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
 import { useDispatchContext } from "../hooks/ContextProvider";
+import { useEffect, useState } from "react";
 
 export default function MenuCard({ data }) {
   const dispatch = useDispatchContext();
@@ -9,12 +10,44 @@ export default function MenuCard({ data }) {
   const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
   const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
 
+  const [isStar, setIsStar] = useState(false);
+
+  const getFavoriteRestaurantData = async () => {
+    const favoriteList: number[] = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
+
+    if (favoriteList.includes(data.id)) setIsStar(true);
+  };
+
+  useEffect(() => {
+    getFavoriteRestaurantData();
+  }, []);
+
+  const toggleStar = () => {
+    const favoriteList: number[] = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
+
+    if (isStar) {
+      const idx = favoriteList.indexOf(data.id);
+      favoriteList.splice(idx, 1);
+      localStorage.setItem("favorite_restaurant", JSON.stringify(favoriteList));
+      setIsStar(false);
+    } else {
+      favoriteList.push(data.id);
+      localStorage.setItem("favorite_restaurant", JSON.stringify(favoriteList));
+      setIsStar(true);
+    }
+  };
+
   return (
     <>
       <DesktopContainer className={"a" + data.code}>
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
+            {isStar ? (
+              <Star src="/img/star.svg" onClick={toggleStar} />
+            ) : (
+              <Star src="/img/star-empty.svg" onClick={toggleStar} />
+            )}
           </HeaderContainer>
           <Location>
             <LocationIcon
@@ -49,10 +82,15 @@ export default function MenuCard({ data }) {
                 toggleInfo();
               }}
             />
+            {isStar ? (
+              <Star src="/img/star.svg" onClick={toggleStar} />
+            ) : (
+              <Star src="/img/star-empty.svg" onClick={toggleStar} />
+            )}
           </HeaderContainer>
           <MenuInfoLabels>
-            <div style={{ width: "45px", textAlign: "center", paddingRight: "12px", }}>Price</div>
-            <div style={{ width: "42px", textAlign: "center", paddingRight: "9px", }}>Rate</div>
+            <div style={{ width: "45px", textAlign: "center", paddingRight: "12px" }}>Price</div>
+            <div style={{ width: "42px", textAlign: "center", paddingRight: "9px" }}>Rate</div>
             <div>Like</div>
           </MenuInfoLabels>
         </RestInfo>
@@ -139,17 +177,17 @@ const Name = styled.div`
   }
 `;
 
-const Favorite = styled.img`
-  height: 27px;
-  width: 27px;
-  margin-left: 11px;
+const Star = styled.img`
+  width: 23px;
+  height: 22px;
+  margin: 0 0 2.5px 11px;
   cursor: pointer;
 
+  /* App버전을 참고한 디자인 */
   @media (max-width: 768px) {
-    height: 18px;
-    width: 18px;
-    margin-left: 8px;
-    padding-bottom: 3px;
+    width: 17px;
+    height: 16px;
+    margin: 0 0 2.5px 8px;
   }
 `;
 

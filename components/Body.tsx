@@ -2,7 +2,7 @@ import styled from "styled-components";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import Date from "./Date";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { formatISODate } from "../utils/FormatUtil";
 import axios from "axios";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
