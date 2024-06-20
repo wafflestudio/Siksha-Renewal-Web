@@ -24,15 +24,21 @@ export default function Post() {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   async function fetchPost() {
-    if (loginStatus) {
-      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    const apiUrl = loginStatus
+      ? `${APIendpoint()}/community/posts/${postId}`
+      : `${APIendpoint()}/community/posts/${postId}/web`;
+    const config = loginStatus
+      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+      : {};
+
+    try {
+      await axios.get(apiUrl, config).then((res) => {
+        update(res.data);
       });
-      update(res.data);
-    } else {
-      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`, {});
-      update(res.data);
+    } catch (e) {
+      console.error(e);
     }
+
     function update(post: RawPost) {
       const {
         board_id,
@@ -69,17 +75,22 @@ export default function Post() {
     }
   }
   async function fetchComments() {
-    if (loginStatus) {
-      const res = await axios.get(`${APIendpoint()}/community/comments?post_id=${postId}`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    const apiUrl = loginStatus
+      ? `${APIendpoint()}/community/comments?post_id=${postId}`
+      : `${APIendpoint()}/community/comments/web?post_id=${postId}`;
+    const config = loginStatus
+      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+      : {};
+
+    try {
+      await axios.get(apiUrl, config).then((res) => {
+        setComments([]);
+        res.data.result.map(update);
       });
-      setComments([]);
-      res.data.result.map(update);
-    } else {
-      const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`, {});
-      setComments([]);
-      res.data.result.map(update);
+    } catch (e) {
+      console.error(e);
     }
+
     function update(comment: RawComment) {
       const {
         post_id,
@@ -116,30 +127,21 @@ export default function Post() {
     if (!userInfo.id) {
       dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
     } else if (post) {
-      if (post.isLiked) {
+      const apiUrl = post.isLiked
+        ? `${APIendpoint()}/community/posts/${post.id}/unlike`
+        : `${APIendpoint()}/community/posts/${post.id}/like`;
+      try {
         await axios
           .post(
-            `${APIendpoint()}/community/posts/${post.id}/unlike`,
+            apiUrl,
             {},
             {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
+              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
             },
           )
-          .then(() => setPost({ ...post, isLiked: false }));
-      } else {
-        await axios
-          .post(
-            `${APIendpoint()}/community/posts/${post.id}/like`,
-            {},
-            {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            },
-          )
-          .then(() => setPost({ ...post, isLiked: true }));
+          .then(() => setPost({ ...post, isLiked: post.isLiked }));
+      } catch (e) {
+        console.error(e);
       }
     }
   }
@@ -159,6 +161,7 @@ export default function Post() {
           <Content>
             <Title>{post.title}</Title>
             <Text>{post.content}</Text>
+            {/* TODO: 사진 부분 캐러셀로 바꾸기 */}
             <Photos>{post.images ? post.images.map((src) => <Photo src={src} />) : null}</Photos>
           </Content>
           <Footer>
@@ -173,9 +176,11 @@ export default function Post() {
       </Board>
     );
   } else {
-    <Board selectedBoardId={Number(boardId) ?? 1}>
-      <Container>포스트를 찾을 수 없어요</Container>
-    </Board>;
+    return (
+      <Board selectedBoardId={Number(boardId) ?? 1}>
+        <Container>포스트를 찾을 수 없어요</Container>
+      </Board>
+    );
   }
 }
 

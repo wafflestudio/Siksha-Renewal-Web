@@ -18,17 +18,21 @@ export default function Posts() {
 
   useEffect(() => {
     async function fetchPosts() {
-      if (loginStatus) {
-        const res = await axios.get(`${APIendpoint()}/community/posts?board_id=${boardId}`, {
-          headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-        });
+      const apiUrl = loginStatus
+        ? `${APIendpoint()}/community/posts?board_id=${boardId}`
+        : `${APIendpoint()}/community/posts/web?board_id=${boardId}`;
+      const config = loginStatus
+        ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+        : {};
+      
+      try {
+        const res = await axios.get(apiUrl, config);
         setPosts([]);
         res.data.result.map(update);
-      } else {
-        const res = await axios.get(`${APIendpoint()}/community/posts/web?board_id=${boardId}`, {});
-        setPosts([]);
-        res.data.result.map(update);
+      } catch (e) {
+        console.error(e);
       }
+
       function update(post: RawPost) {
         const {
           board_id,
