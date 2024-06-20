@@ -13,11 +13,11 @@ export default function Comment({ comment, refetch }: CommentProps) {
   const { nickname, content, likeCount, createdAt, updatedAt, id, isLiked } = comment;
 
   const { userInfo } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   async function fetchLike() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else {
       if (isLiked) {
         await axios
