@@ -12,21 +12,13 @@ export default function Setting_Nickname({ userInfo }) {
 
   const router = useRouter();
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   const handleSetClick = async () => {
     if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal();
+      setLoginModal(true);
     } else {
       const access_token = localStorage.getItem("access_token");
 

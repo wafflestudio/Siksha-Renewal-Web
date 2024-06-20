@@ -33,7 +33,7 @@ export default function PostWriter() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
   const { userInfo } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
@@ -49,10 +49,9 @@ export default function PostWriter() {
   function hanldlePhotoDelete(index: number) {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
-  console.log(inputs.photos);
   async function submit() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else {
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
@@ -74,8 +73,6 @@ export default function PostWriter() {
         .catch((e) => console.log(e));
     }
   }
-
-  console.log(inputs);
 
   async function fetchBoards() {
     const res = await axios.get(`${APIendpoint()}/community/boards`);

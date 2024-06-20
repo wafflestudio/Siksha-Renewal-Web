@@ -18,7 +18,7 @@ export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
   const { userInfo, loginStatus } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
@@ -114,7 +114,7 @@ export default function Post() {
   }
   async function fetchLike() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else if (post) {
       if (post.isLiked) {
         await axios
