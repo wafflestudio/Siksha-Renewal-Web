@@ -16,16 +16,8 @@ export default function Menu({ menu }) {
   const router = useRouter();
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -41,7 +33,7 @@ export default function Menu({ menu }) {
 
   const isLikedToggle = async () => {
     if (loginStatus === false) {
-      setLoginModal();
+      setLoginModal(true);
     } else {
       const access_token = localStorage.getItem("access_token");
       if (isLiked === false) {
@@ -193,7 +185,7 @@ const Rate = styled.div`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${(props : { type: "high" | "middle" | "low" }) =>
+  color: ${(props: { type: "high" | "middle" | "low" }) =>
     props.type
       ? props.type == "high"
         ? "#393939"

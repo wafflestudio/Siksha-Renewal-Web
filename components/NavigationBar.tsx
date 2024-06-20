@@ -9,20 +9,13 @@ export default function NavigationBar() {
   const addr = router.pathname;
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
+
+  const { setLoginModal } = useDispatchContext();
 
   const isAccountToggle = () => {
     if (!loginStatus) {
-      setLoginModal();
+      setLoginModal(true);
     } else {
       router.push(`/account`);
     }
