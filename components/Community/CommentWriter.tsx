@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import APIendpoint from "../../constants/constants";
 import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
@@ -15,6 +15,7 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   const { userInfo } = useStateContext();
   const dispatch = useDispatchContext();
 
+  const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
   async function submit() {
     if (!userInfo.id) {
       dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
@@ -36,17 +37,80 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
 
   return (
     <Container>
-      <Input value={commentInput} onChange={(e) => setCommentInput(e.target.value)}></Input>
-      <SubmitButton onClick={submit}>등록</SubmitButton>
+      <CommentInput
+        placeholder="댓글을 입력하세요."
+        value={commentInput}
+        onChange={(e) => setCommentInput(e.target.value)}
+      ></CommentInput>
       <Options>
-        <Option onClick={() => setIsAnonymous(!isAnonymous)}>익명</Option>
+        <AnonymousButton isAnonymous={isAnonymous}>
+          <Option src={checkBoxImg} onClick={() => setIsAnonymous(!isAnonymous)} />
+          <span>익명</span>
+        </AnonymousButton>
+        <SubmitButton onClick={submit}>올리기</SubmitButton>
       </Options>
     </Container>
   );
 }
 
-const Container = styled.div``;
-const Input = styled.input``;
-const SubmitButton = styled.button``;
-const Options = styled.div``;
-const Option = styled.button``;
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+`;
+const CommentInput = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+
+  border: none;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  padding: 14px 14.5px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+
+  outline: none;
+  &::placeholder {
+    color: #b7b7b7;
+  }
+`;
+
+const Options = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  padding: 6px 6.5px;
+
+  display: flex;
+  align-items: center;
+
+  & button {
+    cursor: pointer;
+  }
+`;
+const AnonymousButton = styled.button<{isAnonymous?: boolean}>`
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  border: none;
+  color: ${props => props.isAnonymous ? "#ff9522" : "#575757"};
+  font-weight: ${props => props.isAnonymous ? 700 : 400};
+  font-size: 14px;
+  line-height: 16px;
+  margin-right: 18px;
+  & span {
+    padding-left: 8px;
+  }
+`;
+const Option = styled.img``;
+const SubmitButton = styled.button`
+  background-color: #ff9522;
+  color: #fff;
+  padding: 8.5px 11.5px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+`;
