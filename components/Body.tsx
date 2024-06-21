@@ -60,7 +60,8 @@ export default function Body() {
           const sortFunction = (a, b) => {
             const aOrder = orderHash.get(a.id)?.order ?? Infinity;
             const bOrder = orderHash.get(b.id)?.order ?? Infinity;
-            return aOrder - bOrder;
+            if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
+            else return aOrder - bOrder;
           };
 
           result[0].BR = BR.sort(sortFunction);
