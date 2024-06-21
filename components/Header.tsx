@@ -12,31 +12,6 @@ export default function Header() {
   const { setLoginStatus, setLoginModal, setUserInfo } = useDispatchContext();
 
   const { loginStatus } = state;
-  // loginmodal에 대한 의문
-  // const setLoginStatus = useCallback(
-  //   () =>
-  //     dispatch({
-  //       type: "SET_LOGINSTATUS",
-  //       loginStatus: !!localStorage.getItem("access_token"),
-  //     }),
-  //   [dispatch],
-  // );
-  // const setLoginModal = useCallback(
-  //   () =>
-  //     dispatch({
-  //       type: "SET_LOGINMODAL",
-  //       isLoginModal: true,
-  //     }),
-  //   [dispatch],
-  // );
-  // const setUserInfo = useCallback(
-  //   (id: number | null, nickname: string | null) =>
-  //     dispatch({
-  //       type: "SET_USERINFO",
-  //       userInfo: { id, nickname },
-  //     }),
-  //   [dispatch],
-  // );
 
   function set() {
     setLoginStatus(!!localStorage.getItem("access_token"));
