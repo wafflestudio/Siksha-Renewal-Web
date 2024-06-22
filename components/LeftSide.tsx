@@ -1,38 +1,26 @@
 import Calendar from "./Calendar";
 import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
-import Image from "next/image";
+import Image from 'next/image';
 import Link from "next/link";
 
 export default function LeftSide() {
   return (
     <Container>
       <Calendar />
-      <div style={{ marginTop: "35px" }}>
+      <div style={{ marginTop: "35px", }}>
         <RestaurantList />
       </div>
-      <div style={{ marginTop: "32px", marginBottom: "69px" }}>
+      <div style={{ marginTop: "32px", marginBottom: "69px", }}>
         <Link href="#">
           <MyPostsButton>
-            <Image
-              src="/img/posts.svg"
-              alt="글 목록 이미지"
-              width="16"
-              height="12"
-              style={{ marginRight: "10px" }}
-            />
+            <Image src="/img/posts.svg" alt="글 목록 이미지" width="16" height="12" style={{marginRight: "10px",}}/>
             내가 쓴 글
           </MyPostsButton>
         </Link>
         <Link href="/community/write">
           <WritePostButton>
-            <Image
-              src="/img/posts-white.svg"
-              alt="글 목록 이미지"
-              width="16"
-              height="12"
-              style={{ marginRight: "10px" }}
-            />
+            <Image src="/img/posts-white.svg" alt="글 목록 이미지" width="16" height="12" style={{marginRight: "10px",}}/>
             게시판 글쓰기
           </WritePostButton>
         </Link>

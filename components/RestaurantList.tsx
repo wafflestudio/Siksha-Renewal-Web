@@ -19,9 +19,9 @@ export default function RestaurantList() {
       <Restaurants>
         {data[meal] &&
           data[meal].map((restaurant) => (
-            <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
-              <RestaurantName>{restaurant.name_kr}</RestaurantName>
-            </Restaurant>
+              <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
+                <RestaurantName>{restaurant.name_kr}</RestaurantName>
+              </Restaurant>
           ))}
       </Restaurants>
     </Container>
