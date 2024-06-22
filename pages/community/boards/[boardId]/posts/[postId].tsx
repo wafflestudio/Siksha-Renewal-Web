@@ -14,6 +14,7 @@ import CommentList from "../../../../../components/Community/CommentList";
 import CommentWriter from "../../../../../components/Community/CommentWriter";
 import { useDispatchContext, useStateContext } from "../../../../../hooks/ContextProvider";
 import { formatPostCommentDate } from "../../../../../utils/FormatUtil";
+import PostImageSwiper from "../../../../../components/Community/PostImageSwiper";
 
 export default function Post() {
   const router = useRouter();
@@ -22,7 +23,8 @@ export default function Post() {
   const dispatch = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
-  // TODO: comment pagenation 어떻게 할지?
+  // 현재 comment를 가져오는 API에 pagination이 적용되어 있음
+  // TODO: front에서 comment pagination 어떻게 할지?
   const [comments, setComments] = useState<CommentType[]>([]);
 
   const [isError, setIsError] = useState<boolean>(false);
@@ -89,17 +91,15 @@ export default function Post() {
 
     try {
       await axios.get(apiUrl, config).then((res) => {
-        // state 갱신이 n번씩 발생... 고칠 순 없을까?
-        setComments([]);
-        res.data.result.map(update);
-        console.log(res.data);
+        const newComments = res.data.result.map(parseComment);
+        setComments(newComments);
       });
     } catch (e) {
       console.error(e);
       setIsError(true);
     }
 
-    function update(comment: RawComment) {
+    function parseComment(comment: RawComment): CommentType {
       const {
         post_id,
         content,
@@ -113,22 +113,20 @@ export default function Post() {
         is_liked,
         like_cnt,
       } = comment;
-      setComments((prev) => [
-        ...prev,
-        {
-          postId: post_id,
-          content: content,
-          createdAt: created_at,
-          updatedAt: updated_at,
-          id: id,
-          nickname: nickname,
-          avaliable: avaliable,
-          anonymous: anonymous,
-          isMine: is_mine,
-          likeCount: like_cnt,
-          isLiked: is_liked,
-        },
-      ]);
+      const parsedComment: CommentType = {
+        postId: post_id,
+        content: content,
+        createdAt: created_at,
+        updatedAt: updated_at,
+        id: id,
+        nickname: nickname,
+        avaliable: avaliable,
+        anonymous: anonymous,
+        isMine: is_mine,
+        likeCount: like_cnt,
+        isLiked: is_liked,
+      };
+      return parsedComment;
     }
   }
   async function fetchLike() {
@@ -198,7 +196,7 @@ export default function Post() {
                 </PostDate>
               </div>
             </WriterInfoContainer>
-            <DesktopCommentActions>
+            <DesktopPostActions>
               {post.isMine && (
                 <>
                   <DesktopActionButton onClick={(e) => {}}>수정</DesktopActionButton>
@@ -206,13 +204,13 @@ export default function Post() {
                 </>
               )}
               <DesktopActionButton onClick={(e) => {}}>신고</DesktopActionButton>
-            </DesktopCommentActions>
+            </DesktopPostActions>
+            <MobileMoreActionsButton src="/img/etc.svg"/>
           </Header>
           <Content>
             <Title>{post.title}</Title>
             <Text>{post.content}</Text>
-            {/* TODO: 사진 부분 캐러셀로 바꾸기 */}
-            <Photos>{post.images ? post.images.map((src) => <Photo src={src} />) : null}</Photos>
+            {post.images && <PostImageSwiper images={post.images} />}
           </Content>
           <LikesAndComments>
             <Likes>
@@ -234,7 +232,6 @@ export default function Post() {
               목록보기
             </BackToBoardButton>
           </Footer>
-          <HLine />
           <CommentContainer>
             <CommentList comments={comments} refetch={fetchComments} />
             <CommentWriter postId={post.id} refetch={fetchComments} />
@@ -253,6 +250,9 @@ export default function Post() {
 
 const Container = styled.div`
   width: 100%;
+  @media (max-width: 768px) {
+    padding-top: 16px;
+  }
 `;
 
 const Header = styled.div`
@@ -269,39 +269,51 @@ const WriterInfoContainer = styled.div`
 const ProfileImage = styled.img`
   width: 43px;
   height: 43px;
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
 `;
 const Nickname = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   margin-bottom: 5px;
+  @media (max-width: 768px) {
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 12.5px;
+  }
 `;
 const PostDate = styled.div`
   color: #b7b7b7;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    line-height: 11.3px;
+  }
 `;
-const DesktopCommentActions = styled.ul`
+const DesktopPostActions = styled.div`
   display: flex;
-  list-style-type: none;
   margin: 0;
   padding: 0;
 
-  & li {
+  & div {
     margin: 0 8px;
   }
-  & li:first-child {
+  & div:first-child {
     margin-left: 0;
   }
-  & li:last-child {
+  & div:last-child {
     margin-right: 0;
   }
   @media (max-width: 768px) {
     display: none;
   }
 `;
-const DesktopActionButton = styled.li`
+const DesktopActionButton = styled.div`
   background-color: transparent;
   border: none;
   padding: 0;
@@ -311,6 +323,14 @@ const DesktopActionButton = styled.li`
   font-size: 12px;
   cursor: pointer;
 `;
+const MobileMoreActionsButton = styled.img`
+  display: none;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
 const Content = styled.div`
   margin-bottom: 15.5px;
 `;
@@ -318,11 +338,19 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 30px;
+  @media (max-width: 768px) {
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
 `;
 const Text = styled.div`
   font-weight: 400;
   font-size: 16px;
   margin-bottom: 20px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const Photos = styled.div``;
 const Photo = styled.img`
@@ -352,7 +380,12 @@ const Icon = styled.img`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 17.7px;
+  padding-bottom: 17.7px;
+  border-bottom: 1px solid #eeeeee;
+  @media (max-width: 768px) {
+    border-color: #f0f0f0;
+    padding-bottom: 12.5px;
+  }
 `;
 const FooterButton = styled.button`
   display: flex;
@@ -365,32 +398,39 @@ const FooterButton = styled.button`
   font-size: 13px;
   line-height: 14.75px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    line-height: 11.35px;
+    border-radius: 6px;
+  }
 `;
 const LikeButton = styled(FooterButton)<{isLiked?: boolean | null}>`
   padding: 8.5px 12.4px;
   background-color: ${props => props.isLiked ? '#ff9522' : '#fff'};
   border-color: ${props => props.isLiked ? '#fff' : '#ff9522'};
   color: ${props => props.isLiked ? '#fff' : '#ff9522'};
+  @media (max-width: 768px) {
+    padding: 6.5px 8.25px;
+  }
 `;
 const BackToBoardButton = styled(FooterButton)`
   padding: 8.5px 10.5px;
+  @media (max-width: 768px) {
+    padding: 6.5px 8.25px;
+  }
 `;
 const FooterIcon = styled.img`
   width: 13px;
   height: 12.5px;
   margin-right: 4px;
+  @media (max-width: 768px) {
+    width: 11.5px;
+    height: 11px;
+  }
 `;
 const LikeButtonIcon = styled(FooterIcon)<{isLiked?: boolean | null}>`
   background-color: ${props => props.isLiked ? '#ff9522' : '#fff'};
-`
-const HLine = styled.div`
-  height: 1px;
-  background: #eeeeee;
-  margin-bottom: 14px;
-
-  @media (max-width: 768px) {
-    background: #f0f0f0;
-  }
 `;
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+`;
