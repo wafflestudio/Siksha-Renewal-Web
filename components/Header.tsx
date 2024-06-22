@@ -14,7 +14,7 @@ export default function Header() {
   const { loginStatus } = state;
 
   function set() {
-    setLoginStatus(!!localStorage.getItem("access_token"));
+    setLoginModal(!localStorage.getItem("access_token"));
   }
 
   useEffect(() => {
@@ -36,41 +36,39 @@ export default function Header() {
     fetchUserInfo();
   }, [loginStatus]);
 
-  if (loginStatus !== undefined) {
-    return (
-      <>
-        <Container>
-          <SikshaIcon
-            src={"/img/sikshaSplash.svg"}
+  return (
+    <>
+      <Container>
+        <SikshaIcon
+          src={"/img/sikshaSplash.svg"}
+          onClick={() => {
+            router.push("/");
+          }}
+        />
+        <Title
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          서울대학교 식단 알리미
+        </Title>
+        <NavigationBar />
+        {loginStatus ? (
+          <LoginButton
             onClick={() => {
-              router.push("/");
-            }}
-          />
-          <Title
-            onClick={() => {
-              router.push("/");
+              localStorage.removeItem("access_token");
+              router.push(`/`);
+              set();
             }}
           >
-            서울대학교 식단 알리미
-          </Title>
-          <NavigationBar />
-          {loginStatus ? (
-            <LoginButton
-              onClick={() => {
-                localStorage.removeItem("access_token");
-                router.push(`/`);
-                set();
-              }}
-            >
-              로그아웃
-            </LoginButton>
-          ) : (
-            <LoginButton onClick={set}>로그인</LoginButton>
-          )}
-        </Container>
-      </>
-    );
-  }
+            로그아웃
+          </LoginButton>
+        ) : (
+          <LoginButton onClick={set}>로그인</LoginButton>
+        )}
+      </Container>
+    </>
+  );
 }
 const LoginButton = styled.div`
   background: none;
