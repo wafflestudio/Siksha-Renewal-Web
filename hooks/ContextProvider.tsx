@@ -40,17 +40,18 @@ const ContextProvider = ({ children }) => {
   const [state, setState] = useState<State>(initialState);
 
   // dispatch functions
-  const setDate = (date: Date) => setState({ ...state, date: date });
-  const setMeal = (meal: string) => setState({ ...state, meal: meal });
-  const setData = (data: Data) => setState({ ...state, data: data });
-  const setLoading = (loading: boolean) => setState({ ...state, loading: loading });
-  const setInfoData = (infoData) => setState({ ...state, infoData: infoData });
-  const toggleShowCal = () => setState({ ...state, showCal: !state.showCal });
-  const toggleShowInfo = () => setState({ ...state, showInfo: !state.showInfo });
-  const setLoginStatus = (loginStatus: boolean) => setState({ ...state, loginStatus: loginStatus });
+  const setDate = (date: Date) => setState((prev) => ({ ...prev, date: date }));
+  const setMeal = (meal: string) => setState((prev) => ({ ...prev, meal: meal }));
+  const setData = (data: Data) => setState((prev) => ({ ...prev, data: data }));
+  const setLoading = (loading: boolean) => setState((prev) => ({ ...prev, loading: loading }));
+  const setInfoData = (infoData) => setState((prev) => ({ ...prev, infoData: infoData }));
+  const toggleShowCal = () => setState((prev) => ({ ...prev, showCal: !prev.showCal }));
+  const toggleShowInfo = () => setState((prev) => ({ ...prev, showInfo: !prev.showInfo }));
+  const setLoginStatus = (loginStatus: boolean) =>
+    setState((prev) => ({ ...prev, loginStatus: loginStatus }));
   const setLoginModal = (isLoginModal: boolean) =>
-    setState({ ...state, isLoginModal: isLoginModal });
-  const setUserInfo = (userInfo) => setState({ ...state, userInfo: userInfo });
+    setState((prev) => ({ ...prev, isLoginModal: isLoginModal }));
+  const setUserInfo = (userInfo) => setState((prev) => ({ ...prev, userInfo: userInfo }));
 
   return (
     <dispatchContext.Provider
