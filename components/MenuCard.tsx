@@ -4,10 +4,7 @@ import Menu from "./Menu";
 import { useDispatchContext } from "../hooks/ContextProvider";
 
 export default function MenuCard({ data }) {
-  const dispatch = useDispatchContext();
-
-  const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
-  const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
+  const { setInfoData, toggleShowInfo } = useDispatchContext();
 
   return (
     <>
@@ -21,7 +18,7 @@ export default function MenuCard({ data }) {
               src={"/img/location.svg"}
               onClick={() => {
                 setInfoData(data);
-                toggleInfo();
+                toggleShowInfo();
               }}
             />
             <LocationText>{data.addr?.slice(19)}</LocationText>
@@ -46,13 +43,13 @@ export default function MenuCard({ data }) {
               src={"/img/info.svg"}
               onClick={() => {
                 setInfoData(data);
-                toggleInfo();
+                toggleShowInfo();
               }}
             />
           </HeaderContainer>
           <MenuInfoLabels>
-            <div style={{ width: "45px", textAlign: "center", paddingRight: "12px", }}>Price</div>
-            <div style={{ width: "42px", textAlign: "center", paddingRight: "9px", }}>Rate</div>
+            <div style={{ width: "45px", textAlign: "center", paddingRight: "12px" }}>Price</div>
+            <div style={{ width: "42px", textAlign: "center", paddingRight: "9px" }}>Rate</div>
             <div>Like</div>
           </MenuInfoLabels>
         </RestInfo>

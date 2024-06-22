@@ -14,14 +14,12 @@ import APIendpoint from "../constants/constants";
 
 export default function Body() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus, meal, isLoginModal } = state;
-  const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
+  const { date, showCal, showInfo, loginStatus, meal } = state;
 
   useEffect(() => {
     async function fetchData() {
-      const setData = (data) => dispatch({ type: "SET_DATA", data: data });
       const dateString = formatISODate(date);
 
       setLoading(true);

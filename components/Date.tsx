@@ -4,11 +4,9 @@ import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
 
 export default function Date() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-
   const { date, showCal } = state;
-  const setDate = (date) => dispatch({ type: "SET_DATE", date: date });
-  const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
+
+  const { setDate, toggleShowCal } = useDispatchContext();
 
   return (
     <Container>

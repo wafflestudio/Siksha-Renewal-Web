@@ -3,7 +3,7 @@ import axios from "axios";
 import APIendpoint from "../../constants/constants";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
 
 export default function Account() {
@@ -12,22 +12,13 @@ export default function Account() {
   const [isLoading, setLoading] = useState(false);
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus, userInfo } = state;
-
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   useEffect(() => {
     if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal();
+      setLoginModal(true);
       return;
     }
   }, []);
