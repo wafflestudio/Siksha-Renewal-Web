@@ -11,6 +11,7 @@ if (currHour > 9 && currHour < 16) {
   initMeal = "DN";
 }
 const initData = { count: 0, result: [] };
+const initFavoriteRestaurant: number[] = [];
 
 const stateContext = createContext<State | null>(null);
 const dispatchContext = createContext<Dispatch<Action> | null>(null);
@@ -37,6 +38,8 @@ function reducer(state: State, action: Action) {
       return { ...state, isLoginModal: action.isLoginModal };
     case "SET_USERINFO":
       return { ...state, userInfo: action.userInfo };
+    case "SET_FAVORITERESTAURANT":
+      return { ...state, favoriteRestaurant: action.favoriteRestaurant };
     default:
       throw new Error("Unhandled action");
   }
@@ -58,6 +61,7 @@ const ContextProvider = ({ children }) => {
       id: null,
       nickname: null,
     },
+    favoriteRestaurant: initFavoriteRestaurant,
   });
 
   return (

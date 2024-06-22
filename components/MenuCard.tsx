@@ -2,7 +2,7 @@ import styled from "styled-components";
 import RestaurantTime from "./RestaurantTime";
 import Menu from "./Menu";
 import { useDispatchContext } from "../hooks/ContextProvider";
-import { useEffect, useState } from "react";
+import useFavorite from "../hooks/UseFavorite";
 
 export default function MenuCard({ data }) {
   const dispatch = useDispatchContext();
@@ -10,32 +10,7 @@ export default function MenuCard({ data }) {
   const setInfoData = (infoData) => dispatch({ type: "SET_INFODATA", infoData: infoData });
   const toggleInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
 
-  const [isStar, setIsStar] = useState(false);
-
-  const getFavoriteRestaurantData = async () => {
-    const favoriteList: number[] = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
-
-    if (favoriteList.includes(data.id)) setIsStar(true);
-  };
-
-  useEffect(() => {
-    getFavoriteRestaurantData();
-  }, []);
-
-  const toggleStar = () => {
-    const favoriteList: number[] = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
-
-    if (isStar) {
-      const idx = favoriteList.indexOf(data.id);
-      favoriteList.splice(idx, 1);
-      localStorage.setItem("favorite_restaurant", JSON.stringify(favoriteList));
-      setIsStar(false);
-    } else {
-      favoriteList.push(data.id);
-      localStorage.setItem("favorite_restaurant", JSON.stringify(favoriteList));
-      setIsStar(true);
-    }
-  };
+  const { toggleFavorite, isFavorite } = useFavorite();
 
   return (
     <>
@@ -43,10 +18,10 @@ export default function MenuCard({ data }) {
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
-            {isStar ? (
-              <Star src="/img/star.svg" onClick={toggleStar} />
+            {isFavorite(data.id) ? (
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
             ) : (
-              <Star src="/img/star-empty.svg" onClick={toggleStar} />
+              <Star src="/img/star-empty.svg" onClick={() => toggleFavorite(data.id)} />
             )}
           </HeaderContainer>
           <Location>
@@ -82,10 +57,10 @@ export default function MenuCard({ data }) {
                 toggleInfo();
               }}
             />
-            {isStar ? (
-              <Star src="/img/star.svg" onClick={toggleStar} />
+            {isFavorite(data.id) ? (
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
             ) : (
-              <Star src="/img/star-empty.svg" onClick={toggleStar} />
+              <Star src="/img/star-empty.svg" onClick={() => toggleFavorite(data.id)} />
             )}
           </HeaderContainer>
           <MenuInfoLabels>
