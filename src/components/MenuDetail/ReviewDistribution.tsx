@@ -18,8 +18,8 @@ export default function ReviewDistribution({
     <Container>
       <ScoreContainer>
         <Score>{score.toFixed(1)}</Score>
-        <ThemeProvider theme={{width: 180}}>
-          <Stars score={score}/>
+        <ThemeProvider theme={{ width: 180 }}>
+          <Stars score={score} />
         </ThemeProvider>
       </ScoreContainer>
       <DistributionChart>
@@ -27,14 +27,14 @@ export default function ReviewDistribution({
           <DistributionBarWithText key={i}>
             <DistributionText key={i}>
               {i + 1}
-              <StarImg src={"/img/star-neutral-base.svg"}/>
+              <StarImg src={"/img/star-neutral-base.svg"} />
             </DistributionText>
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
         ))}
-        <TotalReviewCountText>총
-          <TotalReviewCountContainer> {totalReviewCount}명</TotalReviewCountContainer>
-          이 평가했어요!
+        <TotalReviewCountText>
+          총<TotalReviewCountContainer> {totalReviewCount}명</TotalReviewCountContainer>이
+          평가했어요!
         </TotalReviewCountText>
       </DistributionChart>
     </Container>
@@ -128,11 +128,11 @@ const StarImg = styled.img`
     height: 8px;
     margin-left: 4px;
   }
-`
+`;
 
 const TotalReviewCountContainer = styled.span`
   font-weight: 800;
-  color: #FE8C59;
+  color: #fe8c59;
 `;
 
 const TotalReviewCountText = styled.div`
