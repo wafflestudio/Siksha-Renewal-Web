@@ -1,10 +1,10 @@
 import Head from "next/head";
-import "/styles/calendar.css";
+import "../styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
 import ContextProvider from "../hooks/ContextProvider";
-import LoginModalProvider from "../components/LoginModalProvider";
+import LoginModalProvider from "components/LoginModalProvider";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
