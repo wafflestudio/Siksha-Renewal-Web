@@ -8,7 +8,7 @@
     "target": "es2015", // specify ECMAScript target version
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
     "lib": ["es2015", "dom"],
-    "typeRoots": ["node_modules/@types", "types"],
+    "typeRoots": ["node_modules/@types", "src/types"],
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
