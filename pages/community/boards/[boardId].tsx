@@ -24,16 +24,17 @@ export default function Posts() {
       const config = loginStatus
         ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
         : {};
-      
+
       try {
-        const res = await axios.get(apiUrl, config);
-        setPosts([]);
-        res.data.result.map(update);
+        await axios.get(apiUrl, config).then((res) => {
+          const newPosts = res.data.result.map(parsePost);
+          setPosts(newPosts);
+        });
       } catch (e) {
         console.error(e);
       }
 
-      function update(post: RawPost) {
+      function parsePost(post: RawPost): Post {
         const {
           board_id,
           id,
@@ -50,25 +51,23 @@ export default function Posts() {
           comment_cnt,
           is_liked,
         } = post;
-        setPosts((prev) => [
-          ...prev,
-          {
-            boardId: board_id,
-            id: id,
-            title: title,
-            content: content,
-            createdAt: created_at,
-            updatedAt: updated_at,
-            nickname: nickname,
-            anonymous: anonymous,
-            available: available,
-            isMine: is_mine,
-            images: etc ? etc.images : etc,
-            likeCount: like_cnt,
-            commentCount: comment_cnt,
-            isLiked: is_liked,
-          },
-        ]);
+        const parsedPost: Post = {
+          boardId: board_id,
+          id: id,
+          title: title,
+          content: content,
+          createdAt: created_at,
+          updatedAt: updated_at,
+          nickname: nickname,
+          anonymous: anonymous,
+          available: available,
+          isMine: is_mine,
+          images: etc ? etc.images : etc,
+          likeCount: like_cnt,
+          commentCount: comment_cnt,
+          isLiked: is_liked,
+        };
+        return parsedPost;
       }
     }
 

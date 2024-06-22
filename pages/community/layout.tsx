@@ -31,4 +31,9 @@ const Content = styled.div`
   border-radius: 10px;
   padding: 20px 19px;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    margin-top: 0;
+    padding: 18px 20px;
+  }
 `;

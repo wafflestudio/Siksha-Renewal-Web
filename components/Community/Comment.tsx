@@ -55,13 +55,10 @@ export default function Comment({ comment, refetch }: CommentProps) {
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       try {
         await axios
-          .delete(
-            `${APIendpoint()}/community/comments/${id}`,
-            {
-              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-            },
-          )
-          .then(() => {refetch()});
+          .delete(`${APIendpoint()}/community/comments/${id}`, {
+            headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+          })
+          .then(refetch);
       } catch (e) {
         console.error(e);
       }
@@ -69,32 +66,48 @@ export default function Comment({ comment, refetch }: CommentProps) {
   }
 
   return (
-    <Container>
-      <Header>
-        <WriterInfoContainer>
-          <ProfileImage src={profileImg} />
-          <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
-        </WriterInfoContainer>
-        <DesktopCommentActions>
-          <DesktopActionButton onClick={(e) => {}}>댓글</DesktopActionButton>
-          <DesktopActionButton
-            onClick={(e) => {
-              isLikeToggle();
-              e.preventDefault();
-            }}
-          >
-            공감
-          </DesktopActionButton>
-          {comment.isMine ? (
-            <DesktopActionButton onClick={deleteComment}>삭제</DesktopActionButton>
-          ) : (
-            <DesktopActionButton onClick={(e) => {}}>신고</DesktopActionButton>
-          )}
-        </DesktopCommentActions>
-      </Header>
-      <Content>{content}</Content>
-      <Footer>
-        <CommentDate>{formatPostCommentDate(updatedAt ? updatedAt : createdAt)}</CommentDate>
+    <>
+      <Container>
+        <div>
+          <Header>
+            <WriterInfoContainer>
+              <ProfileImage src={profileImg} />
+              <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
+            </WriterInfoContainer>
+            <MobileCommentDate>
+              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+            </MobileCommentDate>
+            <DesktopCommentActions>
+              <DesktopActionButton onClick={(e) => {}}>댓글</DesktopActionButton>
+              <DesktopActionButton
+                onClick={(e) => {
+                  isLikeToggle();
+                  e.preventDefault();
+                }}
+              >
+                공감
+              </DesktopActionButton>
+              {comment.isMine ? (
+                <DesktopActionButton onClick={deleteComment}>삭제</DesktopActionButton>
+              ) : (
+                <DesktopActionButton onClick={(e) => {}}>신고</DesktopActionButton>
+              )}
+            </DesktopCommentActions>
+          </Header>
+          <Content>{content}</Content>
+          <Footer>
+            <MobileMoreActionsButton src="/img/etc.svg" />
+            <DesktopCommentDate>
+              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+            </DesktopCommentDate>
+            {likeCount > 0 && (
+              <DesktopLikeContainer>
+                <DesktopLikeIcon src="/img/post-like.svg" />
+                <DesktopLikes>{likeCount}</DesktopLikes>
+              </DesktopLikeContainer>
+            )}
+          </Footer>
+        </div>
         <MobileLikeButton
           onClick={(e) => {
             isLikeToggle();
@@ -104,58 +117,82 @@ export default function Comment({ comment, refetch }: CommentProps) {
           <MobileLikeIcon src={isLikedImg} />
           <MobileLikes>{likeCount}</MobileLikes>
         </MobileLikeButton>
-        {likeCount > 0 && (
-          <DesktopLikeContainer>
-            <DesktopLikeIcon src="/img/post-like.svg" />
-            <DesktopLikes>{likeCount}</DesktopLikes>
-          </DesktopLikeContainer>
-        )}
-      </Footer>
-      <HLine />
-    </Container>
+      </Container>
+    </>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eeeeee;  
+  margin: 0;
+
+  & > div {
+    padding-top: 14px;
+    flex-grow: 1;
+    @media (max-width: 768px) {
+      padding-top: 10px;
+    }
+  }
+  @media (max-width: 768px) {
+    border-color: #f0f0f0;
+    padding-bottom: 0;
+  }
+`;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 768px) {
+    justify-content: inherit;
+    margin-bottom: 7.4px;
+  }
 `;
 const WriterInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 8.2px;
 `;
 const ProfileImage = styled.img`
   width: 23px;
   height: 23px;
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
 `;
 const Nickname = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   margin-left: 9px;
+  @media (max-width: 768px) {
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 12.5px;
+  }
 `;
-const DesktopCommentActions = styled.ul`
+const DesktopCommentActions = styled.div`
   display: flex;
-  list-style-type: none;
   margin: 0;
   padding: 0;
-  & li {
+  & div {
     margin: 0 8px;
   }
-  & li:first-child {
+  & div:first-child {
     margin-left: 0;
   }
-  & li:last-child {
+  & div:last-child {
     margin-right: 0;
   }
   @media (max-width: 768px) {
     display: none;
   }
 `;
-const DesktopActionButton = styled.li`
+const DesktopActionButton = styled.div`
   color: #b7b7b7;
   font-weight: 400;
   font-size: 12px;
@@ -166,22 +203,32 @@ const Content = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 19.3px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 18px;
+  }
 `;
 
-const MobileLikeButton = styled.div`
+const MobileLikeButton = styled.button`
   display: none;
   @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background: #f8f8f8;
     width: 35.6px;
     height: 53px;
+    border: none;
     border-radius: 6px;
     padding: 14px 11px;
+    box-sizing: border-box;
     cursor: pointer;
   }
 `;
 const MobileLikeIcon = styled.img`
-  width: 13.6px;
-  height: 13px;
+  width: 11.5px;
+  height: 11px;
 `;
 const MobileLikes = styled.div`
   color: #ff9522;
@@ -194,10 +241,30 @@ const Footer = styled.div`
   display: flex;
   margin-top: 7px;
 `;
+const MobileMoreActionsButton = styled.img`
+  display: none;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    display: inherit;
+    padding: 10.4px 0;
+  }
+`;
 const CommentDate = styled.div`
   color: #b7b7b7;
   font-weight: 400;
   font-size: 12px;
+`;
+const MobileCommentDate = styled(CommentDate)`
+  display: none;
+  @media (max-width: 768px) {
+    display: inherit;
+    font-size: 10px;
+  }
+`;
+const DesktopCommentDate = styled(CommentDate)`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 const DesktopLikeContainer = styled.div`
   display: flex;
@@ -216,14 +283,4 @@ const DesktopLikes = styled.div`
   font-weight: 400;
   font-size: 12px;
   margin-left: 4px;
-`;
-
-const HLine = styled.div`
-  height: 1px;
-  background: #eeeeee;
-  margin: 14px 0;
-
-  @media (max-width: 768px) {
-    background: #f0f0f0;
-  }
 `;
