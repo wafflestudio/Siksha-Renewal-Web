@@ -65,7 +65,7 @@ export default function Header() {
               로그아웃
             </LoginButton>
           ) : (
-            <LoginButton onClick={set}>로그인</LoginButton>
+            <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
           )}
         </Container>
       </>
