@@ -13,12 +13,8 @@ export default function Header() {
 
   const { loginStatus } = state;
 
-  function set() {
-    setLoginStatus(!!localStorage.getItem("access_token"));
-  }
-
   useEffect(() => {
-    set();
+    setLoginStatus(!!localStorage.getItem("access_token"));
 
     const access_token = localStorage.getItem("access_token");
 
@@ -59,13 +55,13 @@ export default function Header() {
               onClick={() => {
                 localStorage.removeItem("access_token");
                 router.push(`/`);
-                set();
+                setLoginStatus(!!localStorage.getItem("access_token"));
               }}
             >
               로그아웃
             </LoginButton>
           ) : (
-            <LoginButton onClick={set}>로그인</LoginButton>
+            <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
           )}
         </Container>
       </>
