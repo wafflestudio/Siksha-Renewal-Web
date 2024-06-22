@@ -17,8 +17,9 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": "src"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/**/*.ts", "**/**/*.tsx"],
+  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/**/*.ts", "**/**/*.tsx"],
   "exclude": ["node_modules"]
 }
