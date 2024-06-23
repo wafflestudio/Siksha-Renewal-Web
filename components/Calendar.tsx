@@ -6,12 +6,9 @@ import { useCallback } from "react";
 
 export default function Calendar() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-
   const { date, today } = state;
-  const setDate = useCallback((date) => dispatch({ type: "SET_DATE", date: date }), [dispatch]);
 
-  const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
+  const { setDate, toggleShowCal } = useDispatchContext();
 
   const isToday = useCallback(
     (date) => {
@@ -29,7 +26,7 @@ export default function Calendar() {
             setDate(day);
           }}
           onActiveStartDateChange={({ activeStartDate }) => {
-            setDate(activeStartDate);
+            setDate(activeStartDate as Date);
           }}
           activeStartDate={date}
           defaultActiveStartDate={today}
@@ -46,11 +43,11 @@ export default function Calendar() {
       </DesktopContainer>
       <MobileContainer>
         <ReactCalendar
-          onChange={(day) => {
+          onChange={(day: Date) => {
             setDate(day);
             toggleShowCal();
           }}
-          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate)}
+          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate as Date)}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}

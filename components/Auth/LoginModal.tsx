@@ -11,19 +11,14 @@ export default function LoginModal() {
     window.location.href = kakaoUrl;
   };
 
-  const dispatch = useDispatchContext();
-
-  const closeModal = useCallback(
-    () => dispatch({ type: "SET_LOGINMODAL", isLoginModal: false }),
-    [dispatch],
-  );
+  const { setLoginModal } = useDispatchContext();
 
   return (
     <Background>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={closeModal} />
+          <CloseButton src={"/img/close-auth.svg"} onClick={() => setLoginModal(false)} />
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>

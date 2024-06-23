@@ -21,7 +21,7 @@ export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
   const { userInfo, loginStatus } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
   // 현재 comment를 가져오는 API에 pagination이 적용되어 있음
@@ -132,7 +132,7 @@ export default function Post() {
   }
   async function fetchLike() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else if (post) {
       const apiUrl = post.isLiked
         ? `${APIendpoint()}/community/posts/${post.id}/unlike`

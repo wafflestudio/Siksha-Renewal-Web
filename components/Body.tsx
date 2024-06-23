@@ -14,35 +14,59 @@ import APIendpoint from "../constants/constants";
 
 export default function Body() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus, meal, isLoginModal } = state;
-  const setLoading = (loading) => dispatch({ type: "SET_LOADING", loading: loading });
+  const { date, showCal, showInfo, loginStatus, meal } = state;
 
   useEffect(() => {
     async function fetchData() {
-      const setData = (data) => dispatch({ type: "SET_DATA", data: data });
       const dateString = formatISODate(date);
 
       setLoading(true);
+
+      const orderList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
+      const orderHash = orderList.reduce((map, obj, idx) => {
+        map.set(obj.id, { ...obj, order: idx });
+        return map;
+      }, new Map());
+
       if (!localStorage.getItem("access_token")) {
         try {
-          const res = await axios.get(
+          const {
+            data: { result },
+          } = await axios.get(
             `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
           );
-          setData(res.data.result[0]);
+
+          setData(result[0]);
         } catch (e) {
           console.log(e);
         }
       } else {
         try {
-          const ress = await axios.get(
+          const {
+            data: { result },
+          } = await axios.get(
             `${APIendpoint()}/menus/lo?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
             {
               headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
             },
           );
-          setData(ress.data.result[0]);
+
+          const { BR, LU, DN } = result[0];
+
+          const sortFunction = (a, b) => {
+            const aOrder = orderHash.get(a.id)?.order ?? Infinity;
+            const bOrder = orderHash.get(b.id)?.order ?? Infinity;
+            if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
+            else return aOrder - bOrder;
+          };
+
+          result[0].BR = BR.sort(sortFunction);
+          result[0].LU = LU.sort(sortFunction);
+          result[0].DN = DN.sort(sortFunction);
+
+          setData(result[0]);
         } catch (e) {
           console.log(e);
         }

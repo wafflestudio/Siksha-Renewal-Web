@@ -38,7 +38,7 @@ export default function PostWriter() {
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const { userInfo } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
@@ -59,7 +59,7 @@ export default function PostWriter() {
   }
   async function handleSubmit() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else {
       console.log(inputs.photos);
       const body = new FormData();

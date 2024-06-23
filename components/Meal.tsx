@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function Meal() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-
   const { meal } = state;
-  const setMeal = (meal) => dispatch({ type: "SET_MEAL", meal: meal });
+
+  const { setMeal } = useDispatchContext();
 
   const [isBR, setIsBR] = useState(false);
   const [isLU, setIsLU] = useState(false);

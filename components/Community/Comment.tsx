@@ -15,7 +15,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
   const { userInfo } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
@@ -25,7 +25,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
 
   async function isLikeToggle() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else {
       const apiUrl = isLiked
         ? `${APIendpoint()}/community/comments/${id}/unlike`

@@ -81,15 +81,7 @@ export default function Menu() {
 
   const state = useStateContext();
   const { isLoginModal } = state;
-  const dispatch = useDispatchContext();
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
+  const { setLoginModal } = useDispatchContext();
 
   useEffect(() => {
     if (!id) {
@@ -181,7 +173,7 @@ export default function Menu() {
     if (!!localStorage.getItem("access_token")) {
       setReviewPostModalOpen(true);
     } else {
-      setLoginModal();
+      setLoginModal(true);
     }
   };
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { EmblaOptionsType } from 'embla-carousel';
+import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import Image from "next/image";
@@ -17,7 +17,7 @@ const setAlignment = (viewSize: number, snapSize: number, index: number) => {
   return viewSize - SWIPER_ALIGNMENT_OFFSET;
 };
 
-export default function ReviewImageSwiper({images}: { images: string[]; }) {
+export default function ReviewImageSwiper({ images }: { images: string[] }) {
   const OPTIONS: EmblaOptionsType = { align: setAlignment, loop: true };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
 
@@ -41,10 +41,10 @@ export default function ReviewImageSwiper({images}: { images: string[]; }) {
         </SwiperContainer>
       </SwiperViewport>
       <SwiperPrevButton type="button" onClick={onPrevButtonClick}>
-        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22}/>
+        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
       </SwiperPrevButton>
       <SwiperNextButton type="button" onClick={onNextButtonClick}>
-        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22}/>
+        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
       </SwiperNextButton>
     </Swiper>
   );

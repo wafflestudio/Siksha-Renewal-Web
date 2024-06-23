@@ -13,12 +13,12 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const { userInfo } = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
   async function submit() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else {
       await axios.post(
         `${APIendpoint()}/community/comments`,

@@ -17,15 +17,13 @@ export function ReviewItem({ review }: { review: ReviewType }) {
         <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>
       </ReviewInfo>
       <ReviewContent>{review.comment}</ReviewContent>
-      { review.etc && 
+      {review.etc && (
         <ReviewImageList>
-          {
-            review.etc.images.map((image) => 
-              <ReviewImage key={image} src={image}/>
-            )
-          }
+          {review.etc.images.map((image) => (
+            <ReviewImage key={image} src={image} />
+          ))}
         </ReviewImageList>
-      }
+      )}
     </ReviewItemContainer>
   );
 }

@@ -9,37 +9,16 @@ import axios from "axios";
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginStatus, setLoginModal, setUserInfo } = useDispatchContext();
 
   const { loginStatus } = state;
 
-  const setLoginStatus = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINSTATUS",
-        loginStatus: !!localStorage.getItem("access_token"),
-      }),
-    [dispatch],
-  );
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
-  const setUserInfo = useCallback(
-    (id: number | null, nickname: string | null) =>
-      dispatch({
-        type: "SET_USERINFO",
-        userInfo: { id, nickname },
-      }),
-    [dispatch],
-  );
+  function set() {
+    setLoginStatus(!!localStorage.getItem("access_token"));
+  }
 
   useEffect(() => {
-    setLoginStatus();
+    set();
 
     const access_token = localStorage.getItem("access_token");
 
@@ -48,9 +27,9 @@ export default function Header() {
         const res = await axios.get(`${APIendpoint()}/auth/me`, {
           headers: { "authorization-token": `Bearer ${access_token}` },
         });
-        setUserInfo(res.data.id, res.data.nickname);
+        setUserInfo({ id: res.data.id, nickname: res.data.nickname });
       } catch (e) {
-        setUserInfo(null, null);
+        setUserInfo({ id: null, nickname: null });
       }
     }
 
@@ -80,19 +59,13 @@ export default function Header() {
               onClick={() => {
                 localStorage.removeItem("access_token");
                 router.push(`/`);
-                setLoginStatus();
+                set();
               }}
             >
               로그아웃
             </LoginButton>
           ) : (
-            <LoginButton
-              onClick={() => {
-                setLoginModal();
-              }}
-            >
-              로그인
-            </LoginButton>
+            <LoginButton onClick={set}>로그인</LoginButton>
           )}
         </Container>
       </>

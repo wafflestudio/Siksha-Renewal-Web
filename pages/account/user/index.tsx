@@ -9,28 +9,12 @@ import APIendpoint from "../../../constants/constants";
 export default function Setting_User() {
   const router = useRouter();
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginStatus, setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginStatus = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINSTATUS",
-        loginStatus: !!localStorage.getItem("access_token"),
-      }),
-    [dispatch],
-  );
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    setLoginStatus();
+    setLoginStatus(!!localStorage.getItem("access_token"));
     router.push(`/`);
   };
 
@@ -42,7 +26,7 @@ export default function Setting_User() {
 
     if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal();
+      setLoginModal(true);
     } else {
       const access_token = localStorage.getItem("access_token");
 
@@ -54,7 +38,7 @@ export default function Setting_User() {
           .then((res) => {
             console.log(res);
             localStorage.removeItem("access_token");
-            setLoginStatus();
+            setLoginStatus(!!localStorage.getItem("access_token"));
             router.push(`/`);
           });
       } catch (e) {
