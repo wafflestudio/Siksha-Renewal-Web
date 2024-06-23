@@ -6,12 +6,13 @@ import { useDispatchContext, useStateContext } from "../../../hooks/ContextProvi
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Board, RawBoard } from "../../../types";
+import { patchFetch } from "next/dist/server/lib/patch-fetch";
 
-type inputs = {
+export type inputs = {
   title: string;
   content: string;
   boardId: number;
-  photos: File[];
+  photos: (File | string)[];
   options: {
     anonymous: boolean;
   };
@@ -20,18 +21,22 @@ type option = {
   anonymous: boolean;
 };
 
+const emptyInputs: inputs = {
+  title: "",
+  content: "",
+  boardId: 1,
+  photos: [],
+  options: { anonymous: false },
+};
+
 export default function PostWriter() {
   const router = useRouter();
+  const { postId } = router.query;
 
-  const [inputs, setInputs] = useState<inputs>({
-    title: "",
-    content: "",
-    boardId: 1,
-    photos: [],
-    options: { anonymous: false },
-  });
+  const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const { userInfo } = useStateContext();
   const dispatch = useDispatchContext();
 
@@ -49,34 +54,67 @@ export default function PostWriter() {
   function hanldlePhotoDelete(index: number) {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
-  console.log(inputs.photos);
-  async function submit() {
+  function handleCancel() {
+    router.back();
+  }
+  async function handleSubmit() {
     if (!userInfo.id) {
       dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
     } else {
+      console.log(inputs.photos);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
       body.append("title", inputs.title);
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
-      body.append("images", new Blob(inputs.photos));
+      
+      // TODO: image를 모두 지워서 없앴을 때 사라져야 하는데, 이전 상태가 유지됨
+      // 백엔드 쪽에 물어봐야 할 듯?
+      await Promise.all(inputs.photos.map(convertToBlob)).then((blobs) => {
+        for (let i = 0; i < blobs.length; i++) {
+          body.append("images", blobs[i]);
+        }
+      });
 
-      await axios
-        .post(`${APIendpoint()}/community/posts`, body, {
-          headers: {
-            "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        })
-        .then((res) => {
-          const { board_id, id } = res.data;
-          router.push(`/community/boards/${board_id}/posts/${id}`);
-        })
-        .catch((e) => console.log(e));
+      if (isUpdate) {
+        console.log(body);
+        await axios
+          .patch(`${APIendpoint()}/community/posts/${postId}`, body, {
+            headers: {
+              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((res) => {
+            const { board_id, id } = res.data;
+            router.push(`/community/boards/${board_id}/posts/${id}`);
+          })
+          .catch((e) => console.log(e));
+      } else {
+        await axios
+          .post(`${APIendpoint()}/community/posts`, body, {
+            headers: {
+              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((res) => {
+            const { board_id, id } = res.data;
+            router.push(`/community/boards/${board_id}/posts/${id}`);
+          })
+          .catch((e) => console.log(e));
+      }
+    }
+
+    async function convertToBlob(image: string | File) {
+      if (typeof image === "string") {
+        // TODO: 기존 업로드 이미지 url을 blob 객체로 변환하며 fetch 시에 CORS 발생
+        const response = await fetch("https://cors-anywhere.herokuapp.com/" + image);
+        const blob = await response.blob();
+        return blob;
+      } else {
+        return image;
+      }
     }
   }
-
-  console.log(inputs);
-
   async function fetchBoards() {
     const res = await axios.get(`${APIendpoint()}/community/boards`);
     setBoards([]);
@@ -95,9 +133,31 @@ export default function PostWriter() {
       ]);
     });
   }
+  async function fetchPreviousPost() {
+    if (!postId) return;
+
+    await axios
+      .get(`${APIendpoint()}/community/posts/${postId}`, {
+        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+      })
+      .then((res) => {
+        const { title, content, board_id, etc, anonymous, is_mine } = res.data;
+        if (is_mine) {
+          setInputs({
+            title: title,
+            content: content,
+            boardId: board_id,
+            photos: etc ? etc.images : [],
+            options: { anonymous: anonymous },
+          });
+          setIsUpdate(true);
+        }
+      });
+  }
 
   useEffect(() => {
     fetchBoards();
+    fetchPreviousPost();
   }, []);
   return (
     <Layout>
@@ -141,7 +201,7 @@ export default function PostWriter() {
         <PhotoViewer>
           {inputs.photos.map((photo, i) => (
             <PhotoContainer key={i}>
-              <Photo src={URL.createObjectURL(photo)} />
+              <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
               <DeleteButton onClick={() => hanldlePhotoDelete(i)}>
                 <Icon src="/img/photo-delete.svg" />
               </DeleteButton>
@@ -159,8 +219,10 @@ export default function PostWriter() {
           ) : null}
         </PhotoViewer>
         <ButtonContainer>
-          <Button className="cancel">취소</Button>
-          <Button className={`submit ${isValid ? "active" : ""}`} onClick={submit}>
+          <Button className="cancel" onClick={handleCancel}>
+            취소
+          </Button>
+          <Button className={`submit ${isValid ? "active" : ""}`} onClick={handleSubmit}>
             등록
           </Button>
         </ButtonContainer>

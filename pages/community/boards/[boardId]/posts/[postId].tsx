@@ -15,6 +15,7 @@ import CommentWriter from "../../../../../components/Community/CommentWriter";
 import { useDispatchContext, useStateContext } from "../../../../../hooks/ContextProvider";
 import { formatPostCommentDate } from "../../../../../utils/FormatUtil";
 import PostImageSwiper from "../../../../../components/Community/PostImageSwiper";
+import { inputs } from "../../../write";
 
 export default function Post() {
   const router = useRouter();
@@ -171,6 +172,12 @@ export default function Post() {
       }
     }
   }
+  async function updatePost(postId: number) {
+    /**
+     * 게시글 수정 관련 미비 사항이 많아 일단 수정은 비활성화
+     */
+    router.push(`/community/write/?postId=${postId}`);
+  }
 
   useEffect(() => {
     if (boardId && postId) {
@@ -199,11 +206,11 @@ export default function Post() {
             <DesktopPostActions>
               {post.isMine && (
                 <>
-                  <DesktopActionButton onClick={(e) => {}}>수정</DesktopActionButton>
-                  <DesktopActionButton onClick={(e) => deletePost(post.id)}>삭제</DesktopActionButton>
+                  <DesktopActionButton onClick={() => updatePost(post.id)}>수정</DesktopActionButton>
+                  <DesktopActionButton onClick={() => deletePost(post.id)}>삭제</DesktopActionButton>
                 </>
               )}
-              <DesktopActionButton onClick={(e) => {}}>신고</DesktopActionButton>
+              <DesktopActionButton onClick={() => {}}>신고</DesktopActionButton>
             </DesktopPostActions>
             <MobileMoreActionsButton src="/img/etc.svg"/>
           </Header>
