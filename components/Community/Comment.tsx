@@ -51,7 +51,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
 
   async function deleteComment() {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       try {
         await axios
