@@ -55,7 +55,7 @@ export default function Header() {
               onClick={() => {
                 localStorage.removeItem("access_token");
                 router.push(`/`);
-                setLoginStatus(!!localStorage.getItem("access_token"));
+                setLoginStatus(false);
               }}
             >
               로그아웃
