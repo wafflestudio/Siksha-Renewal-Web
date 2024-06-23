@@ -78,7 +78,6 @@ export default function Comment({ comment, refetch }: CommentProps) {
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </MobileCommentDate>
             <DesktopCommentActions>
-              <DesktopActionButton onClick={(e) => {}}>댓글</DesktopActionButton>
               <DesktopActionButton
                 onClick={(e) => {
                   isLikeToggle();
