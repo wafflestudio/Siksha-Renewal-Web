@@ -14,13 +14,21 @@ export default function Header() {
   const { loginStatus } = state;
 
   function set() {
-    setLoginStatus(!!localStorage.getItem("access_token"));
+    const access_token = localStorage.getItem("access_token");
+
+    if (!access_token) setLoginModal(true);
+    else {
+      localStorage.removeItem("access_token");
+      setLoginStatus(false);
+    }
   }
 
+  // Needs to be fixed.
   useEffect(() => {
     set();
 
     const access_token = localStorage.getItem("access_token");
+    setLoginStatus(!!access_token);
 
     async function fetchUserInfo() {
       try {

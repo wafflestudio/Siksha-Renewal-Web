@@ -18,7 +18,6 @@ export default function LoginModal() {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENTID;
     const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECTURI;
     const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&redirect_uri=${redirectUri}&client_id=${clientId}`;
-
     window.location.href = googleUrl;
   };
 
@@ -58,17 +57,14 @@ export default function LoginModal() {
 
   const dispatch = useDispatchContext();
 
-  const closeModal = useCallback(
-    () => dispatch({ type: "SET_LOGINMODAL", isLoginModal: false }),
-    [dispatch],
-  );
+  const closeModal = useCallback(() => dispatch.setLoginModal(false), [dispatch]);
 
   return (
     <Background>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={() => setLoginModal(false)} />
+          <CloseButton src={"/img/close-auth.svg"} onClick={() => closeModal()} />
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>
