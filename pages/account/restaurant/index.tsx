@@ -4,6 +4,9 @@ import axios from "axios";
 import APIendpoint from "../../../constants/constants";
 import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
 import { GlobalStyle } from "../../../styles/globalstyle";
+import AccountLayout from "../layout";
+import Header from "../../../components/Header";
+import styled from "styled-components";
 
 interface Restaurant {
   id: number;
@@ -60,7 +63,17 @@ export default function Setting_NonFavorite() {
   return (
     <>
       <GlobalStyle />
-      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+      <Header />
+      <Container>
+        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+      </Container>
     </>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 36.92px;
+`;

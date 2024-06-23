@@ -2,11 +2,9 @@ import styled from "styled-components";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
 import { useRouter } from "next/router";
-import Layout from "../community/layout";
-import AccountLayout from "./accountLayout";
-import { useCallback, useEffect, useState } from "react";
+import AccountLayout from "./layout";
+import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
-import { log } from "util";
 
 export default function Account() {
   const router = useRouter();
@@ -14,64 +12,16 @@ export default function Account() {
   const [isLoading, setLoading] = useState(false);
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus, userInfo } = state;
-  const setLoginStatus = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINSTATUS",
-        loginStatus: !!localStorage.getItem("access_token"),
-      }),
-    [dispatch],
-  );
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
-  const setUserInfo = useCallback(
-    (id: number, nickname: string) =>
-      dispatch({
-        type: "SET_USERINFO",
-        userInfo: { id, nickname },
-      }),
-    [dispatch],
-  );
 
   useEffect(() => {
-    setLoginStatus();
-
     if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal();
+      setLoginModal(true);
       return;
-    } else {
-      const access_token = localStorage.getItem("access_token");
-
-      async function fetchUserInfo() {
-        setLoading(true);
-        try {
-          const res = await axios
-            .get(`${APIendpoint()}/auth/me`, {
-              headers: { "authorization-token": `Bearer ${access_token}` },
-            })
-            .then((res) => {
-              setUserInfo(res.data.id, res.data.nickname);
-            });
-        } catch (e) {
-          console.log(e);
-          router.push(`/`);
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      fetchUserInfo();
     }
-  }, [setLoading]);
+  }, []);
 
   const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
 

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import AccountLayout from "../accountLayout";
+import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useCallback, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
@@ -9,16 +9,8 @@ import axios from "axios";
 export default function Inquire() {
   const router = useRouter();
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus, userInfo } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   const [voc, setVoc] = useState("");
 
@@ -36,7 +28,7 @@ export default function Inquire() {
   const handlePost = async () => {
     if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal();
+      setLoginModal(true);
       return;
     } else {
       if (voc === "") {

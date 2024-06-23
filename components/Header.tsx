@@ -3,33 +3,39 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
+import APIendpoint from "../constants/constants";
+import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-  const { loginStatus } = state;
-  const setLoginStatus = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINSTATUS",
-        loginStatus: !!localStorage.getItem("access_token"),
-      }),
-    [dispatch],
-  );
+  const { setLoginStatus, setLoginModal, setUserInfo } = useDispatchContext();
 
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
+  const { loginStatus } = state;
+
+  function set() {
+    setLoginStatus(!!localStorage.getItem("access_token"));
+  }
 
   useEffect(() => {
-    setLoginStatus();
-  }, []);
+    set();
+
+    const access_token = localStorage.getItem("access_token");
+
+    async function fetchUserInfo() {
+      try {
+        const res = await axios.get(`${APIendpoint()}/auth/me`, {
+          headers: { "authorization-token": `Bearer ${access_token}` },
+        });
+        setUserInfo({ id: res.data.id, nickname: res.data.nickname });
+      } catch (e) {
+        setUserInfo({ id: null, nickname: null });
+      }
+    }
+
+    fetchUserInfo();
+  }, [loginStatus]);
+
   if (loginStatus !== undefined) {
     return (
       <>
@@ -48,25 +54,18 @@ export default function Header() {
             서울대학교 식단 알리미
           </Title>
           <NavigationBar />
-          {isLoginPage ? (
-            <></>
-          ) : loginStatus ? (
+          {loginStatus ? (
             <LoginButton
               onClick={() => {
                 localStorage.removeItem("access_token");
-                setLoginStatus();
+                router.push(`/`);
+                set();
               }}
             >
               로그아웃
             </LoginButton>
           ) : (
-            <LoginButton
-              onClick={() => {
-                setLoginModal();
-              }}
-            >
-              로그인
-            </LoginButton>
+            <LoginButton onClick={set}>로그인</LoginButton>
           )}
         </Container>
       </>
@@ -81,32 +80,38 @@ const LoginButton = styled.div`
   font-weight: 400;
   color: #ffffff;
   position: absolute;
-  bottom: 0px;
-  height: 67.5px;
-  display: flex;
-  align-items: center;
-  right: calc(5vw);
+  bottom: 16px;
+  right: 97px;
+
+  @media (max-width: 768px) {
+    right: 5vw;
+    font-size: 16px;
+    top: 21px;
+  }
 `;
+
 const Container = styled.div`
   background: #ff9522;
+  position: relative;
   height: 25vh;
-  width: 100vw;
+  min-height: 100px;
   display: flex;
   max-height: 271px;
-  position: relative;
+  padding: 0 calc(max(100vw - max(1221px, min(73vw, 1417px)), 0px) / 2);
 
   @media (max-width: 768px) {
     background: #ff9522;
     height: 60px;
+    min-height: 0;
+    min-width: 0;
   }
 `;
 
 const SikshaIcon = styled.img`
-  position: absolute;
-  bottom: 21.5px;
-  left: calc(max((100vw - 1155px), 0px) / 2);
   width: 86px;
   height: 50px;
+  margin-top: auto;
+  padding-bottom: 21.5px;
   cursor: pointer;
 
   @media (max-width: 768px) {
@@ -125,9 +130,9 @@ const Title = styled.div`
   line-height: 20px;
   color: white;
   font-weight: 400;
-  bottom: 27px;
-  position: absolute;
-  left: calc(max((100vw - 1155px), 0px) / 2 + 118.5px);
+  margin-top: auto;
+  margin-left: 32.5px;
+  padding-bottom: 27px;
   white-space: nowrap;
   cursor: pointer;
 

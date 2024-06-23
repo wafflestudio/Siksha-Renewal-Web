@@ -16,16 +16,8 @@ export default function Menu({ menu }) {
   const router = useRouter();
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -41,7 +33,7 @@ export default function Menu({ menu }) {
 
   const isLikedToggle = async () => {
     if (loginStatus === false) {
-      setLoginModal();
+      setLoginModal(true);
     } else {
       const access_token = localStorage.getItem("access_token");
       if (isLiked === false) {
@@ -154,6 +146,7 @@ const Dots = styled.div`
   padding-right: 7px;
 
   @media (max-width: 768px) {
+    display: none;
     padding: 0 8px 4px 0;
   }
 
@@ -189,18 +182,16 @@ const Rate = styled.div`
   align-items: center;
   width: 48px;
   height: 20px;
-  border-radius: 20px;
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
-  color: ${(props: { type: "high" | "middle" | "low" }) => (props.type ? "white" : "black")};
-  background: ${(props) =>
+  color: ${(props: { type: "high" | "middle" | "low" }) =>
     props.type
       ? props.type == "high"
-        ? "#F47156"
+        ? "#393939"
         : props.type == "middle"
-        ? "#F58625"
-        : "#F5B52C"
+        ? "#797979"
+        : "#B7B7B7"
       : "white"};
 
   @media (max-width: 768px) {
@@ -248,18 +239,14 @@ const HeartIcon = styled.img`
 `;
 
 const Likes = styled.div`
+  width: 35px;
   font-size: 15px;
   line-height: 17px;
   font-weight: 400;
-  display: flex;
   padding-left: 12px;
   color: #b7b7b7;
 
   @media (max-width: 768px) {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 400;
-    padding-left: 12px;
-    color: #b7b7b7;
+    display: none;
   }
 `;

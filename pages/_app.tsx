@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
 import ContextProvider from "../hooks/ContextProvider";
+import LoginModalProvider from "../components/LoginModalProvider";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -24,16 +25,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ContextProvider>
+      <LoginModalProvider />
       <Head>
         <title>서울대학교 식단 알리미 : 식샤</title>
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          hid="og:image"
-          property="og:image"
-          content="https://siksha.wafflestudio.com/img/og-image.png"
-        />
+        <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script
           type="text/javascript"

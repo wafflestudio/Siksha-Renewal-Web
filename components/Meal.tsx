@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function Meal() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-
   const { meal } = state;
-  const setMeal = (meal) => dispatch({ type: "SET_MEAL", meal: meal });
+
+  const { setMeal } = useDispatchContext();
 
   const [isBR, setIsBR] = useState(false);
   const [isLU, setIsLU] = useState(false);
@@ -49,9 +48,11 @@ export default function Meal() {
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: center;
   align-items: flex-end;
-  padding-top: 22px;
-  padding-bottom: 22px;
+  padding-top: 12px;
+  padding-bottom: 44px;
 
   @media (max-width: 768px) {
     padding-top: 11px;
@@ -66,7 +67,7 @@ const MealButton = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  padding: 0 22px 0 22px;
+  padding: 0 6%;
 
   @media (max-width: 768px) {
     padding: 0 13px 0 13px;

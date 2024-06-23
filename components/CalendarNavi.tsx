@@ -2,16 +2,15 @@
 
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
-import { useCallback } from "react";
 import { formatDate } from "../utils/FormatUtil";
 
 export default function CalendarNavi() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
   const { date } = state;
+  const { setDate } = useDispatchContext();
+
   const yesterday = new Date(date.valueOf() - 86400000);
   const tomorrow = new Date(date.valueOf() + 86400000);
-  const setDate = useCallback((date) => dispatch({ type: "SET_DATE", date: date }), [dispatch]);
 
   return (
     <DateNavi>

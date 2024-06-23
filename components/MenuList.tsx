@@ -33,7 +33,7 @@ export default function MenuList() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 153px);
+  height: 100%;
   overflow-y: scroll;
 
   align-items: center;

@@ -9,20 +9,13 @@ export default function NavigationBar() {
   const addr = router.pathname;
 
   const state = useStateContext();
-  const dispatch = useDispatchContext();
   const { loginStatus } = state;
-  const setLoginModal = useCallback(
-    () =>
-      dispatch({
-        type: "SET_LOGINMODAL",
-        isLoginModal: true,
-      }),
-    [dispatch],
-  );
+
+  const { setLoginModal } = useDispatchContext();
 
   const isAccountToggle = () => {
     if (!loginStatus) {
-      setLoginModal();
+      setLoginModal(true);
     } else {
       router.push(`/account`);
     }
@@ -32,30 +25,28 @@ export default function NavigationBar() {
     <NaviBar>
       <NavItem>
         <Link href="/" passHref>
-          <NavLink $cur={addr === `/`}>식단</NavLink>
+          <NavLink $cur={addr === `/` || addr.startsWith(`/menu`)}>식단</NavLink>
         </Link>
       </NavItem>
       <NavItem>
-        <Link href="/community/boards/0" passHref>
-          <NavLink $cur={addr.startsWith(`/community/`)}>게시판</NavLink>
+        <Link href="/community/boards/1" passHref>
+          <NavLink $cur={addr.startsWith(`/community`)}>게시판</NavLink>
         </Link>
       </NavItem>
       <NavItem onClick={isAccountToggle}>
-        <NavLink $cur={addr === `/account`}>마이 페이지</NavLink>
+        <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>
   );
 }
 
 const NaviBar = styled.nav`
-  position: absolute;
-  bottom: 0;
-  left: calc(max((100vw - 1155px), 0px) / 2 + 370px);
-  width: max(436px);
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: 386px;
+  width: 394px;
   white-space: nowrap;
   cursor: pointer;
-  padding: 10px;
-  padding-bottom: 0;
   display: flex;
   justify-content: space-evenly;
   align-items: center;

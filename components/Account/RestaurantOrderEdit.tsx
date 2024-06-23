@@ -60,6 +60,7 @@ const Container = styled.div`
   font-family: NanumSquare;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+  background-color: #ffffff;
 `;
 
 const Title = styled.h2`

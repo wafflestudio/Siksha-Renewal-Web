@@ -5,10 +5,9 @@ import MobileOperatingHour from "./MobileOperatingHour";
 
 export default function RestaurantInfo() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { toggleShowInfo } = useDispatchContext();
 
   const { infoData } = state;
-  const toggleShowInfo = () => dispatch({ type: "TOGGLE_SHOWINFO" });
 
   useEffect(() => {
     const container = document.getElementById("map");

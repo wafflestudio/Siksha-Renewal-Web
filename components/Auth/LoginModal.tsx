@@ -68,7 +68,7 @@ export default function LoginModal() {
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={closeModal} />
+          <CloseButton src={"/img/close-auth.svg"} onClick={() => setLoginModal(false)} />
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>
@@ -111,7 +111,7 @@ export default function LoginModal() {
 
 const Background = styled.div`
   z-index: 1;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

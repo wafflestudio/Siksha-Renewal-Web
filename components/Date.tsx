@@ -4,11 +4,9 @@ import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
 
 export default function Date() {
   const state = useStateContext();
-  const dispatch = useDispatchContext();
-
   const { date, showCal } = state;
-  const setDate = (date) => dispatch({ type: "SET_DATE", date: date });
-  const toggleShowCal = () => dispatch({ type: "TOGGLE_SHOWCAL" });
+
+  const { setDate, toggleShowCal } = useDispatchContext();
 
   return (
     <Container>
@@ -19,7 +17,6 @@ export default function Date() {
         }}
       />
       <FlexBox onClick={() => toggleShowCal()}>
-        <CalendarIcon src={"/img/calendar.svg"} />
         <DateText>{formatDate(date)}</DateText>
       </FlexBox>
       <Arrow
@@ -57,7 +54,7 @@ const DateText = styled.div`
   font-weight: 700;
   font-size: 15px;
   line-height: 17px;
-  color: #f0976c;
+  color: #ff9522;
   white-space: nowrap;
 `;
 
@@ -65,10 +62,4 @@ const FlexBox = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-`;
-
-const CalendarIcon = styled.img`
-  height: 19px;
-  padding-right: 7px;
-  padding-bottom: 3px;
 `;
