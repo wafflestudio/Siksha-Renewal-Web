@@ -68,8 +68,8 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
       
-      // TODO: image를 모두 지워서 없앴을 때 사라져야 하는데, 이전 상태가 유지됨
-      // 백엔드 쪽에 물어봐야 할 듯?
+      // 기존에 이미지가 존재했을 때 이를 모두 지우는 건 서버 측에서 처리 X (예외로 보는 듯)
+      // 따라서 해당 경우는 아직 구현 불가 
       await Promise.all(inputs.photos.map(convertToBlob)).then((blobs) => {
         for (let i = 0; i < blobs.length; i++) {
           body.append("images", blobs[i]);
@@ -106,7 +106,8 @@ export default function PostWriter() {
 
     async function convertToBlob(image: string | File) {
       if (typeof image === "string") {
-        // TODO: 기존 업로드 이미지 url을 blob 객체로 변환하며 fetch 시에 CORS 발생
+        // 기존 업로드 이미지 url을 blob 객체로 변환하며 fetch 시에 CORS 발생
+        // TODO: 기존 이미지 재업로드(?) 방법 찾기
         const response = await fetch("https://cors-anywhere.herokuapp.com/" + image);
         const blob = await response.blob();
         return blob;
