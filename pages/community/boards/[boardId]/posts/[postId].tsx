@@ -156,7 +156,7 @@ export default function Post() {
 
   async function deletePost(postId: number) {
     if (!userInfo.id) {
-      dispatch({ type: "SET_LOGINMODAL", isLoginModal: true });
+      setLoginModal(true);
     } else if (confirm("이 글을 삭제하시겠습니까?")) {
       try {
         await axios
