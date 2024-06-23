@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function PostImageSwiper({ images }: { images: string[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
 
-  const [selectedSnap, setSelectedSnap] = useState<number>(1);
+  const [selectedSnap, setSelectedSnap] = useState<number>(0);
   const onPrevButtonClick = useCallback(() => {
     if (emblaApi) {
       emblaApi.scrollPrev();
@@ -23,7 +23,16 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
   const updateSnapDisplay = () => {
     setSelectedSnap(emblaApi!!.selectedScrollSnap());
   };
-  emblaApi?.on("select", updateSnapDisplay).on("reInit", updateSnapDisplay);
+
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.on("select", updateSnapDisplay);
+      emblaApi.on("reInit", updateSnapDisplay);
+      if(images.length === 1) {
+        emblaApi.destroy();
+      }
+    }
+  }, [emblaApi]);
 
   return (
     <Swiper>
@@ -119,7 +128,6 @@ const SelectedSnapDisplay = styled.div`
 
 const PostImageContainer = styled.div`
   height: 100%;
-  background-color: black;
   flex: 0 0 var(--slide-width);
   min-width: 0;
   padding-left: var(--slide-spacing);
