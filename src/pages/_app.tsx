@@ -1,5 +1,5 @@
 import Head from "next/head";
-import "../styles/calendar.css";
+import "styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
