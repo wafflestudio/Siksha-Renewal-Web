@@ -1,7 +1,9 @@
 // types/index.d.ts
 export interface Data {
-  count: number;
-  result: Array<any>;
+  BR: Array<any>;
+  DN: Array<any>;
+  LU: Array<any>;
+  date: string;
 }
 
 export interface State {
