@@ -1,12 +1,13 @@
 import { createContext, Dispatch, useCallback, useContext, useReducer, useState } from "react";
 import { State, Action, Data } from "../types";
+import { formatISODate } from "../utils/FormatUtil";
 
 const initDate = new Date();
 
 const initialState = {
   date: initDate,
   meal: initDate.getHours() < 9 ? "BR" : initDate.getHours() < 16 ? "LU" : "DN",
-  data: { count: 0, result: [] },
+  data: { BR: [], LU: [], DN: [], date: formatISODate(initDate) },
   today: initDate,
   showCal: false,
   showInfo: false,
@@ -21,7 +22,7 @@ const initialState = {
 };
 
 interface dispatchers {
-  setDate: (datae: Date) => void;
+  setDate: (date: Date) => void;
   setMeal: (meal: string) => void;
   setData: (data: Data) => void;
   setLoading: (loading: boolean) => void;
