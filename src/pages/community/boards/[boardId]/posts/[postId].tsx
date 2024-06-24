@@ -10,6 +10,7 @@ import CommentWriter from "components/Community/CommentWriter";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
+import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
 
 export default function Post() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function Post() {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   const [isError, setIsError] = useState<boolean>(false);
+  const [actionsModal, setActionsModal] = useState<boolean>(false);
 
   async function fetchPost() {
     const apiUrl = loginStatus
@@ -164,9 +166,6 @@ export default function Post() {
     }
   }
   async function updatePost(postId: number) {
-    /**
-     * 게시글 수정 관련 미비 사항이 많아 일단 수정은 비활성화
-     */
     router.push(`/community/write/?postId=${postId}`);
   }
 
@@ -180,6 +179,11 @@ export default function Post() {
   if (post) {
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
     const profileImg = "/img/default-profile.svg";
+
+    const actions: ModalAction[] = post.isMine ?
+    [{ name: "수정", handleClick: () => {}}, // 수정 관련 미비 사항이 많아 일단은 비활성화
+    { name: "삭제", handleClick: () => deletePost(post.id)}] : 
+    [{ name: "신고", handleClick: () => {}}];
 
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
@@ -195,19 +199,14 @@ export default function Post() {
               </div>
             </WriterInfoContainer>
             <DesktopPostActions>
-              {post.isMine && (
-                <>
-                  <DesktopActionButton onClick={() => updatePost(post.id)}>
-                    수정
-                  </DesktopActionButton>
-                  <DesktopActionButton onClick={() => deletePost(post.id)}>
-                    삭제
-                  </DesktopActionButton>
-                </>
-              )}
-              <DesktopActionButton onClick={() => {}}>신고</DesktopActionButton>
+              {actions.map((action) => (
+                <DesktopActionButton onClick={action.handleClick}>
+                  {action.name}
+                </DesktopActionButton>
+              ))}
             </DesktopPostActions>
-            <MobileMoreActionsButton src="/img/etc.svg" />
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={()=>setActionsModal(true)} />
+            { actionsModal && <MobileActionsModal actions={actions} setActionsModal={setActionsModal}/> }
           </Header>
           <Content>
             <Title>{post.title}</Title>

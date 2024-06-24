@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Comment as CommentType } from "types";
+import { Action, Comment as CommentType } from "types";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
+import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 
 interface CommentProps {
   comment: CommentType;
@@ -20,8 +21,17 @@ export default function Comment({ comment, refetch }: CommentProps) {
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
+  const [actionsModal, setActionsModal] = useState<boolean>(false);
+
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
   const profileImg = "/img/default-profile.svg";
+
+  const actions: ModalAction[] = [
+    { name: "공감", handleClick: isLikeToggle },
+    comment.isMine
+      ? { name: "삭제", handleClick: deleteComment }
+      : { name: "신고", handleClick: () => {} },
+  ];
 
   async function isLikeToggle() {
     if (!userInfo.id) {
@@ -78,24 +88,15 @@ export default function Comment({ comment, refetch }: CommentProps) {
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </MobileCommentDate>
             <DesktopCommentActions>
-              <DesktopActionButton
-                onClick={(e) => {
-                  isLikeToggle();
-                  e.preventDefault();
-                }}
-              >
-                공감
-              </DesktopActionButton>
-              {comment.isMine ? (
-                <DesktopActionButton onClick={deleteComment}>삭제</DesktopActionButton>
-              ) : (
-                <DesktopActionButton onClick={(e) => {}}>신고</DesktopActionButton>
-              )}
+              {actions.map((action) => (
+                <DesktopActionButton onClick={action.handleClick}>{action.name}</DesktopActionButton>
+              ))}
             </DesktopCommentActions>
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" />
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={()=>setActionsModal(true)} />
+            { actionsModal && <MobileActionsModal actions={actions} setActionsModal={setActionsModal}/> }
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>
@@ -125,7 +126,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 14px;
-  border-bottom: 1px solid #eeeeee;  
+  border-bottom: 1px solid #eeeeee;
   margin: 0;
 
   & > div {
@@ -248,6 +249,7 @@ const MobileMoreActionsButton = styled.img`
     padding: 10.4px 0;
   }
 `;
+
 const CommentDate = styled.div`
   color: #b7b7b7;
   font-weight: 400;
