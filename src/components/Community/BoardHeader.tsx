@@ -1,7 +1,21 @@
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 export function BoardHeader() {
+  const { userInfo } = useStateContext();
+  const { setLoginModal } = useDispatchContext();
+  const router = useRouter();
+  
+  function handleClickWriteButton() {
+    if (!userInfo.id) {
+      setLoginModal(true);
+      return;
+    }
+    router.push("/community/write");
+  }
+
   return (
     <Container>
       <HotPost>
@@ -24,9 +38,7 @@ export function BoardHeader() {
         </Likes>
       </HotPost>
       <WriteButton>
-        <Link href="/community/write">
-          <ButtonImg src={"/img/write-post-button.svg"} />
-        </Link>
+        <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
       </WriteButton>
     </Container>
   );

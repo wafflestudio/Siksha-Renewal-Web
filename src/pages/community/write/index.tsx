@@ -154,6 +154,9 @@ export default function PostWriter() {
   }
 
   useEffect(() => {
+    if (!userInfo.id) {
+      router.push("/community/boards/1");
+    }
     fetchBoards();
     fetchPreviousPost();
   }, []);
