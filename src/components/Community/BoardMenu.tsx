@@ -62,6 +62,10 @@ const MenuItem = styled.div`
   height: 42px;
   cursor: pointer;
 
+  &:hover {
+    background: #f2f2f2;
+  }
+
   &.selected {
     color: #ff9522;
     background: #ffffff;
