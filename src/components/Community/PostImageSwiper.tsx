@@ -106,20 +106,24 @@ const NextButton = styled(transitionButton)`
 
 const SelectedSnapDisplay = styled.div`
   position: absolute;
+  display: flex;
   top: 20px;
   right: 20px;
-  width: fit-content;
+  height: 25px;
   color: white;
   background-color: #575757;
   border-radius: 14px;
-  padding: 7px 7.5px;
+  padding: 0 7.5px;
   font-weight: 400;
   font-size: 16px;
+  align-items: center;
+  justify-content: center;
   @media (max-width: 768px) {
     top: 12px;
     right: 12px;
+    height: 17px;
     border-radius: 10px;
-    padding: 5px;
+    padding: 0 5px;
     font-size: 10px;
   }
 `;
