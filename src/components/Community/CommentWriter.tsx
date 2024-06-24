@@ -87,10 +87,11 @@ const CommentInput = styled.input`
 
 const Options = styled.div`
   position: absolute;
-  top: 0;
+  top: 50%;
   right: 0;
+  transform: translateY(-50%);
 
-  padding: 6px 6.5px;
+  padding: 0 6.5px;
 
   display: flex;
   align-items: center;
@@ -142,4 +143,8 @@ const SubmitButton = styled.button`
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding: 6.5px 11px;
+  }
 `;
