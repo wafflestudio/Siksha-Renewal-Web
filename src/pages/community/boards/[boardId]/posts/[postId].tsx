@@ -24,8 +24,6 @@ export default function Post() {
   const { setLoginModal } = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
-  // 현재 comment를 가져오는 API에 pagination이 적용되어 있음
-  // TODO: front에서 comment pagination 어떻게 할지?
   const [comments, setComments] = useState<CommentType[]>([]);
 
   const [isError, setIsError] = useState<boolean>(false);
