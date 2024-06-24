@@ -83,26 +83,25 @@ const SwiperContainer = styled.div`
   touch-action: pan-y;
 `;
 
-const PrevButton = styled.button`
+const transitionButton = styled.button`
   position: absolute;
-  left: 0;
   top: 50%;
   transform: translateY(-50%);
   margin-left: 24px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const PrevButton = styled(transitionButton)`
+  left: 0;
 `;
 
-const NextButton = styled.button`
-  position: absolute;
+const NextButton = styled(transitionButton)`
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-right: 24px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 `;
 
 const SelectedSnapDisplay = styled.div`
