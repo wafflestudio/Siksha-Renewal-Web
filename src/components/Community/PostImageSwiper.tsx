@@ -87,7 +87,6 @@ const transitionButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: 24px;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -98,10 +97,12 @@ const transitionButton = styled.button`
 
 const PrevButton = styled(transitionButton)`
   left: 0;
+  margin-left: 24px;
 `;
 
 const NextButton = styled(transitionButton)`
   right: 0;
+  margin-right: 24px;
 `;
 
 const SelectedSnapDisplay = styled.div`
