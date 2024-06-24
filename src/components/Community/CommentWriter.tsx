@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import APIendpoint from "../../constants/constants";
-import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
+import APIendpoint from "constants/constants";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 
 interface CommentWriterProps {
   postId: number;

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { Comment as CommentType } from "../../types";
-import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
+import { Comment as CommentType } from "types";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import axios from "axios";
-import APIendpoint from "../../constants/constants";
+import APIendpoint from "constants/constants";
 import { useState } from "react";
-import { formatPostCommentDate } from "../../utils/FormatUtil";
+import { formatPostCommentDate } from "utils/FormatUtil";
 
 interface CommentProps {
   comment: CommentType;

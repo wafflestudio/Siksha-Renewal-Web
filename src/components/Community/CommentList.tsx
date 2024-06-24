@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Comment as CommentType } from "../../types";
-import Comment from "./Comment";
+import { Comment as CommentType } from "types";
+import Comment from "components/Community/Comment";
 
 interface CommentsProps {
   comments: CommentType[];

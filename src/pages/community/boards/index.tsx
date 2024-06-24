@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BoardHeader } from "../../../components/Community/BoardHeader";
-import { PostList } from "../../../components/Community/PostList";
-import { BoardMenu } from "../../../components/Community/BoardMenu";
+import { BoardMenu } from "components/Community/BoardMenu";
 
 import Layout from "../layout";
 
-import APIendpoint from "../../../constants/constants";
-import { useStateContext } from "../../../hooks/ContextProvider";
-import LoginModal from "../../../components/Auth/LoginModal";
+import APIendpoint from "constants/constants";
 import axios from "axios";
-import { Board as BoardType, Post, RawPost, RawBoard } from "../../../types";
-import Posts from "./[boardId]";
+import { Board as BoardType, Post, RawPost, RawBoard } from "types";
 
 interface BoardProps {
   selectedBoardId?: number;

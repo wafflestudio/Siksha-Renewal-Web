@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BoardHeader } from "../../../components/Community/BoardHeader";
-import { PostList } from "../../../components/Community/PostList";
+import { BoardHeader } from "components/Community/BoardHeader";
+import { PostList } from "components/Community/PostList";
 
-import APIendpoint from "../../../constants/constants";
+import APIendpoint from "constants/constants";
 import axios from "axios";
-import { Post, RawPost } from "../../../types";
+import { Post, RawPost } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
-import { useStateContext } from "../../../hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 
 export default function Posts() {
   const router = useRouter();

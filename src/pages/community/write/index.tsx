@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Layout from "../layout";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import APIendpoint from "../../../constants/constants";
 import { useDispatchContext, useStateContext } from "../../../hooks/ContextProvider";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Board, RawBoard } from "../../../types";
-import { patchFetch } from "next/dist/server/lib/patch-fetch";
 
 export type inputs = {
   title: string;
@@ -68,8 +67,6 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
       
-      // 기존에 이미지가 존재했을 때 이를 모두 지우는 건 서버 측에서 처리 X (예외로 보는 듯)
-      // 따라서 해당 경우는 아직 구현 불가 
       await Promise.all(inputs.photos.map(convertToBlob)).then((blobs) => {
         for (let i = 0; i < blobs.length; i++) {
           body.append("images", blobs[i]);

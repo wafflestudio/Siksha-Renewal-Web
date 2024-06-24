@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { Board } from "../../types";
+import { Board } from "types";
 
 interface BoardMenuProps {
   boardId: number;

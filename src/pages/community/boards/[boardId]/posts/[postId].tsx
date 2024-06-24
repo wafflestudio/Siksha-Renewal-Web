@@ -1,21 +1,15 @@
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import APIendpoint from "../../../../../constants/constants";
-import {
-  Post as PostType,
-  Comment as CommentType,
-  RawComment,
-  RawPost,
-} from "../../../../../types";
+import APIendpoint from "constants/constants";
+import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "types";
 import Board from "../../index";
-import CommentList from "../../../../../components/Community/CommentList";
-import CommentWriter from "../../../../../components/Community/CommentWriter";
-import { useDispatchContext, useStateContext } from "../../../../../hooks/ContextProvider";
-import { formatPostCommentDate } from "../../../../../utils/FormatUtil";
-import PostImageSwiper from "../../../../../components/Community/PostImageSwiper";
-import { inputs } from "../../../write";
+import CommentList from "components/Community/CommentList";
+import CommentWriter from "components/Community/CommentWriter";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { formatPostCommentDate } from "utils/FormatUtil";
+import PostImageSwiper from "components/Community/PostImageSwiper";
 
 export default function Post() {
   const router = useRouter();
@@ -144,7 +138,9 @@ export default function Post() {
               headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
             },
           )
-          .then((res) => setPost({ ...post, isLiked: res.data.is_liked, likeCount: res.data.like_cnt }));
+          .then((res) =>
+            setPost({ ...post, isLiked: res.data.is_liked, likeCount: res.data.like_cnt }),
+          );
       } catch (e) {
         console.error(e);
         setIsError(true);
@@ -158,12 +154,9 @@ export default function Post() {
     } else if (confirm("이 글을 삭제하시겠습니까?")) {
       try {
         await axios
-          .delete(
-            `${APIendpoint()}/community/posts/${postId}`,
-            {
-              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-            },
-          )
+          .delete(`${APIendpoint()}/community/posts/${postId}`, {
+            headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+          })
           .then(() => router.push(`/community/boards/${boardId}`));
       } catch (e) {
         console.error(e);
@@ -193,7 +186,7 @@ export default function Post() {
         <Container>
           <Header>
             <WriterInfoContainer>
-              <ProfileImage src={profileImg}/>
+              <ProfileImage src={profileImg} />
               <div>
                 <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
                 <PostDate>
@@ -204,13 +197,17 @@ export default function Post() {
             <DesktopPostActions>
               {post.isMine && (
                 <>
-                  <DesktopActionButton onClick={() => updatePost(post.id)}>수정</DesktopActionButton>
-                  <DesktopActionButton onClick={() => deletePost(post.id)}>삭제</DesktopActionButton>
+                  <DesktopActionButton onClick={() => updatePost(post.id)}>
+                    수정
+                  </DesktopActionButton>
+                  <DesktopActionButton onClick={() => deletePost(post.id)}>
+                    삭제
+                  </DesktopActionButton>
                 </>
               )}
               <DesktopActionButton onClick={() => {}}>신고</DesktopActionButton>
             </DesktopPostActions>
-            <MobileMoreActionsButton src="/img/etc.svg"/>
+            <MobileMoreActionsButton src="/img/etc.svg" />
           </Header>
           <Content>
             <Title>{post.title}</Title>
@@ -229,10 +226,14 @@ export default function Post() {
           </LikesAndComments>
           <Footer>
             <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked}/>
+              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
               공감
             </LikeButton>
-            <BackToBoardButton onClick={()=>{router.push(`/community/boards/${boardId}`);}}>
+            <BackToBoardButton
+              onClick={() => {
+                router.push(`/community/boards/${boardId}`);
+              }}
+            >
               <FooterIcon src="/img/posts-orange.svg" />
               목록보기
             </BackToBoardButton>
@@ -409,11 +410,11 @@ const FooterButton = styled.button`
     border-radius: 6px;
   }
 `;
-const LikeButton = styled(FooterButton)<{isLiked?: boolean | null}>`
+const LikeButton = styled(FooterButton)<{ isLiked?: boolean | null }>`
   padding: 8.5px 12.4px;
-  background-color: ${props => props.isLiked ? '#ff9522' : '#fff'};
-  border-color: ${props => props.isLiked ? '#fff' : '#ff9522'};
-  color: ${props => props.isLiked ? '#fff' : '#ff9522'};
+  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
+  border-color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
+  color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
   @media (max-width: 768px) {
     padding: 6.5px 8.25px;
   }
@@ -433,9 +434,8 @@ const FooterIcon = styled.img`
     height: 11px;
   }
 `;
-const LikeButtonIcon = styled(FooterIcon)<{isLiked?: boolean | null}>`
-  background-color: ${props => props.isLiked ? '#ff9522' : '#fff'};
+const LikeButtonIcon = styled(FooterIcon)<{ isLiked?: boolean | null }>`
+  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
 `;
 
-const CommentContainer = styled.div`
-`;
+const CommentContainer = styled.div``;

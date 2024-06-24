@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Post as PostType } from "../../types";
+import { Post as PostType } from "types";
 import Link from "next/link";
 
 interface PropsPost {
