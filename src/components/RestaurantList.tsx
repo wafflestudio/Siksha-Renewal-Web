@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useStateContext } from "../hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import { use, useEffect } from "react";
-import useFavorite from "../../hooks/UseFavorite";
+import useFavorite from "hooks/UseFavorite";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + restaurant);

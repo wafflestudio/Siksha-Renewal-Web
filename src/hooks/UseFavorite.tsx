@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useEffect } from "react";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 
 export default function useFavorite() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
   const { favoriteRestaurant } = state;
-  const setFavorite = (favorite) =>
-    dispatch({ type: "SET_FAVORITERESTAURANT", favoriteRestaurant: favorite });
+  const { setFavoriteRestaurant } = dispatch;
 
   useEffect(() => {
     const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
-    setFavorite(favoriteList);
+    setFavoriteRestaurant(favoriteList);
   }, []);
 
   const toggleFavorite = (restaurantId: number) => {
     const newFavoriteList = favoriteRestaurant.includes(restaurantId)
       ? favoriteRestaurant.filter((id) => id !== restaurantId)
       : [...favoriteRestaurant, restaurantId];
-    setFavorite(newFavoriteList);
+    setFavoriteRestaurant(newFavoriteList);
     localStorage.setItem("favorite_restaurant", JSON.stringify(newFavoriteList));
   };
 
