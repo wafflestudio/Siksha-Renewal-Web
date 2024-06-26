@@ -5,15 +5,24 @@ export default function useFavorite() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
-  const { favoriteRestaurant } = state;
-  const { setFavoriteRestaurant } = dispatch;
+  const { favoriteRestaurant, loginStatus } = state;
+  const { setFavoriteRestaurant, setLoginModal } = dispatch;
 
   useEffect(() => {
+    if (loginStatus === false) {
+      setFavoriteRestaurant([]);
+    }
+
     const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
     setFavoriteRestaurant(favoriteList);
-  }, []);
+  }, [loginStatus]);
 
   const toggleFavorite = (restaurantId: number) => {
+    if (loginStatus === false) {
+      setLoginModal(true);
+      return;
+    }
+
     const newFavoriteList = favoriteRestaurant.includes(restaurantId)
       ? favoriteRestaurant.filter((id) => id !== restaurantId)
       : [...favoriteRestaurant, restaurantId];

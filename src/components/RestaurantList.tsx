@@ -23,13 +23,18 @@ export default function RestaurantList() {
       <Restaurants>
         {data[meal] &&
           data[meal].map((restaurant) => (
-            <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
-              <RestaurantName>{restaurant.name_kr}</RestaurantName>
+            <Restaurant key={restaurant.id}>
+              <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
+                {restaurant.name_kr}
+              </RestaurantName>
               <Dots>..............</Dots>
               {isFavorite(restaurant.id) ? (
                 <Star src="/img/star.svg" onClick={() => toggleFavorite(restaurant.id)} />
               ) : (
-                <Star src="/img/star-empty.svg" onClick={() => toggleFavorite(restaurant.id)} />
+                <Star
+                  src="/img/star-empty-white.svg"
+                  onClick={() => toggleFavorite(restaurant.id)}
+                />
               )}
             </Restaurant>
           ))}

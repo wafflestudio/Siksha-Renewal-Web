@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import RestaurantTime from "./RestaurantTime";
-import Menu from "./Menu";
-import { useDispatchContext } from "../hooks/ContextProvider";
-import useFavorite from "../hooks/UseFavorite";
+import RestaurantTime from "components/RestaurantTime";
+import Menu from "components/Menu";
+import { useDispatchContext } from "hooks/ContextProvider";
+import useFavorite from "hooks/UseFavorite";
 
 export default function MenuCard({ data }) {
   const { setInfoData, toggleShowInfo } = useDispatchContext();
@@ -18,7 +18,7 @@ export default function MenuCard({ data }) {
             {isFavorite(data.id) ? (
               <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
             ) : (
-              <Star src="/img/star-empty.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
             )}
           </HeaderContainer>
           <Location>
@@ -57,7 +57,7 @@ export default function MenuCard({ data }) {
             {isFavorite(data.id) ? (
               <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
             ) : (
-              <Star src="/img/star-empty.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
             )}
           </HeaderContainer>
           <MenuInfoLabels>
