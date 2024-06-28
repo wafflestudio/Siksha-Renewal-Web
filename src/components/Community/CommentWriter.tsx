@@ -19,7 +19,7 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   async function submit() {
     if (loginStatus === false) {
       setLoginModal(true);
-    } else {
+    } else if (commentInput !== "") {
       await axios.post(
         `${APIendpoint()}/community/comments`,
         {
