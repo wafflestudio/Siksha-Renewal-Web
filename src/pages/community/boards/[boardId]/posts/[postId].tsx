@@ -15,7 +15,7 @@ import MobileActionsModal, { ModalAction } from "components/Community/MobileActi
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { userInfo, loginStatus } = useStateContext();
+  const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
@@ -125,7 +125,7 @@ export default function Post() {
     }
   }
   async function fetchLike() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else if (post) {
       const apiUrl = post.isLiked
@@ -151,7 +151,7 @@ export default function Post() {
   }
 
   async function deletePost(postId: number) {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else if (confirm("이 글을 삭제하시겠습니까?")) {
       try {

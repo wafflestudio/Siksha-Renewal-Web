@@ -15,7 +15,7 @@ interface CommentProps {
 export default function Comment({ comment, refetch }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
-  const { userInfo } = useStateContext();
+  const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
@@ -34,7 +34,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
   ];
 
   async function isLikeToggle() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else {
       const apiUrl = isLiked
@@ -60,7 +60,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
   }
 
   async function deleteComment() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       try {

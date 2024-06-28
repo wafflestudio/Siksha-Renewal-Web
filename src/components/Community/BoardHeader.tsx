@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 export function BoardHeader() {
-  const { userInfo } = useStateContext();
+  const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const router = useRouter();
   
   function handleClickWriteButton() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
       return;
     }

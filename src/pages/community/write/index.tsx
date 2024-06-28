@@ -36,7 +36,7 @@ export default function PostWriter() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const { userInfo } = useStateContext();
+  const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
@@ -57,7 +57,7 @@ export default function PostWriter() {
     router.back();
   }
   async function handleSubmit() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else {
       console.log(inputs.photos);
@@ -66,7 +66,7 @@ export default function PostWriter() {
       body.append("title", inputs.title);
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
-      
+
       await Promise.all(inputs.photos.map(convertToBlob)).then((blobs) => {
         for (let i = 0; i < blobs.length; i++) {
           body.append("images", blobs[i]);
@@ -154,7 +154,7 @@ export default function PostWriter() {
   }
 
   useEffect(() => {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       router.push("/community/boards/1");
     }
     fetchBoards();
