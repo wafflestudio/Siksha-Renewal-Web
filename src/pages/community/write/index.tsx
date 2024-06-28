@@ -36,6 +36,7 @@ export default function PostWriter() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isSubmitting, SetIsSubmitting] = useState(false);
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
@@ -57,9 +58,14 @@ export default function PostWriter() {
     router.back();
   }
   async function handleSubmit() {
+    if (isSubmitting) {
+      return;
+    }
+
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
+      SetIsSubmitting(true);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
       body.append("title", inputs.title);
@@ -72,30 +78,24 @@ export default function PostWriter() {
         }
       });
 
-      if (isUpdate) {
-        await axios
+      try {
+        const res = isUpdate ? await axios
           .patch(`${APIendpoint()}/community/posts/${postId}`, body, {
             headers: {
               "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
             },
-          })
-          .then((res) => {
-            const { board_id, id } = res.data;
-            router.push(`/community/boards/${board_id}/posts/${id}`);
-          })
-          .catch((e) => console.log(e));
-      } else {
-        await axios
-          .post(`${APIendpoint()}/community/posts`, body, {
-            headers: {
-              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          })
-          .then((res) => {
-            const { board_id, id } = res.data;
-            router.push(`/community/boards/${board_id}/posts/${id}`);
-          })
-          .catch((e) => console.log(e));
+          }) : await axios
+            .post(`${APIendpoint()}/community/posts`, body, {
+              headers: {
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            });
+        const { board_id, id } = res.data;
+        router.push(`/community/boards/${board_id}/posts/${id}`);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        SetIsSubmitting(false);
       }
     }
 
@@ -221,7 +221,7 @@ export default function PostWriter() {
           <Button className="cancel" onClick={handleCancel}>
             취소
           </Button>
-          <Button className={`submit ${isValid ? "active" : ""}`} onClick={handleSubmit}>
+          <Button className={`submit ${isValid && (isSubmitting === false) ? "active" : ""}`} onClick={handleSubmit}>
             등록
           </Button>
         </ButtonContainer>
