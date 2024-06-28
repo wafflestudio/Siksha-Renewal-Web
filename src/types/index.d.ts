@@ -21,6 +21,7 @@ export interface State {
     id: number | null;
     nickname: string | null;
   };
+  favoriteRestaurant: number[];
 }
 
 export type Action =
@@ -33,7 +34,8 @@ export type Action =
   | { type: "TOGGLE_SHOWINFO" }
   | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
   | { type: "SET_LOGINMODAL"; isLoginModal: boolean }
-  | { type: "SET_USERINFO"; userInfo: { id: number | null; nickname: string | null } };
+  | { type: "SET_USERINFO"; userInfo: { id: number | null; nickname: string | null } }
+  | { type: "SET_FAVORITERESTAURANT"; favoriteRestaurant: number[] };
 
 // Extend the Window interface for global scope (if needed)
 declare global {

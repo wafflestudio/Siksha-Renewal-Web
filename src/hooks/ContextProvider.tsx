@@ -19,6 +19,7 @@ const initialState = {
     id: null,
     nickname: null,
   },
+  favoriteRestaurant: [],
 };
 
 interface dispatchers {
@@ -32,6 +33,7 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setLoginModal: (isLoginModal: boolean) => void;
   setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -56,6 +58,8 @@ const ContextProvider = ({ children }) => {
   const setLoginModal = (isLoginModal: boolean) =>
     setState((prevState) => ({ ...prevState, isLoginModal: isLoginModal }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
+  const setFavoriteRestaurant = (favoriteRestaurant) =>
+    setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
 
   return (
     <dispatchContext.Provider
@@ -70,6 +74,7 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setLoginModal,
         setUserInfo,
+        setFavoriteRestaurant,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>
