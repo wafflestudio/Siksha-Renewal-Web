@@ -200,7 +200,7 @@ export default function Post() {
             </WriterInfoContainer>
             <DesktopPostActions>
               {actions.map((action) => (
-                <DesktopActionButton onClick={action.handleClick}>
+                <DesktopActionButton key={action.name} onClick={action.handleClick}>
                   {action.name}
                 </DesktopActionButton>
               ))}
