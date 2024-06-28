@@ -57,9 +57,11 @@ const MenuItem = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   height: 42px;
+  box-sizing: border-box;
+  padding-left: 15px;
   cursor: pointer;
 
   &:hover {

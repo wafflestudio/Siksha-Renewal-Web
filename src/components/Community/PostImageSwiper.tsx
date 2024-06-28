@@ -7,6 +7,8 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
 
   const [selectedSnap, setSelectedSnap] = useState<number>(0);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
   const onPrevButtonClick = useCallback(() => {
     if (emblaApi) {
       emblaApi.scrollPrev();
@@ -27,14 +29,14 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
     if (emblaApi) {
       emblaApi.on("select", updateSnapDisplay);
       emblaApi.on("reInit", updateSnapDisplay);
-      if(images.length === 1) {
+      if (images.length === 1) {
         emblaApi.destroy();
       }
     }
   }, [emblaApi]);
 
   return (
-    <Swiper>
+    <Swiper onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <SwiperViewport ref={emblaRef}>
         <SwiperContainer>
           {images.map((image, index) => (
@@ -52,7 +54,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
           <NextButton type="button" onClick={onNextButtonClick}>
             <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
           </NextButton>
-          <SelectedSnapDisplay>
+          <SelectedSnapDisplay isHovered={isHovered}>
             {selectedSnap + 1}/{images.length}
           </SelectedSnapDisplay>
         </>
@@ -93,7 +95,7 @@ const transitionButton = styled.button`
   @media (max-width: 768px) {
     display: none;
   }
-`
+`;
 
 const PrevButton = styled(transitionButton)`
   left: 0;
@@ -105,9 +107,9 @@ const NextButton = styled(transitionButton)`
   margin-right: 24px;
 `;
 
-const SelectedSnapDisplay = styled.div`
+const SelectedSnapDisplay = styled.div<{isHovered: boolean}>`
   position: absolute;
-  display: flex;
+  display: ${(props) => (props.isHovered ? "flex" : "none")};
   top: 20px;
   right: 20px;
   height: 25px;
@@ -119,6 +121,7 @@ const SelectedSnapDisplay = styled.div`
   font-size: 16px;
   align-items: center;
   justify-content: center;
+
   @media (max-width: 768px) {
     top: 12px;
     right: 12px;

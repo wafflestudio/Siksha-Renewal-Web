@@ -146,6 +146,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 14.73px;
   @media (max-width: 768px) {
     justify-content: inherit;
     margin-bottom: 7.4px;
@@ -239,7 +240,7 @@ const MobileLikes = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  margin-top: 7px;
+  margin-top: 14.73px;
 `;
 const MobileMoreActionsButton = styled.img`
   display: none;
