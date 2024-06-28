@@ -60,7 +60,6 @@ export default function PostWriter() {
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
-      console.log(inputs.photos);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
       body.append("title", inputs.title);
@@ -74,7 +73,6 @@ export default function PostWriter() {
       });
 
       if (isUpdate) {
-        console.log(body);
         await axios
           .patch(`${APIendpoint()}/community/posts/${postId}`, body, {
             headers: {
