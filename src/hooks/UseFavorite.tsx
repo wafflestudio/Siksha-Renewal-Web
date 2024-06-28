@@ -11,6 +11,7 @@ export default function useFavorite() {
   useEffect(() => {
     if (loginStatus === false) {
       setFavoriteRestaurant([]);
+      return;
     }
 
     const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
