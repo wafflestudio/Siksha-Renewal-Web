@@ -1,6 +1,21 @@
-import { Post, RawPost } from "types";
+import { Post, RawComment, RawPost, Comment, RawBoard, Board } from "types";
 
-export function postParser(post: RawPost) {
+export function boardParser(board: RawBoard): Board {
+  const { created_at, updated_at, id, type, name, description } = board;
+
+  const parsedBoard: Board = {
+    createdAt: created_at,
+    updatedAt: updated_at,
+    id: id,
+    type: type,
+    name: name,
+    description: description,
+  };
+
+  return parsedBoard;
+}
+
+export function postParser(post: RawPost): Post {
   const {
     board_id,
     id,
@@ -36,4 +51,36 @@ export function postParser(post: RawPost) {
   };
 
   return parsedPost;
+}
+
+export function commentParser(comment: RawComment): Comment {
+  const {
+    post_id,
+    content,
+    created_at,
+    updated_at,
+    id,
+    nickname,
+    avaliable,
+    anonymous,
+    is_mine,
+    is_liked,
+    like_cnt,
+  } = comment;
+
+  const parsedComment: Comment = {
+    postId: post_id,
+    content: content,
+    createdAt: created_at,
+    updatedAt: updated_at,
+    id: id,
+    nickname: nickname,
+    avaliable: avaliable,
+    anonymous: anonymous,
+    isMine: is_mine,
+    likeCount: like_cnt,
+    isLiked: is_liked,
+  };
+
+  return parsedComment;
 }
