@@ -3,7 +3,6 @@ import AccountLayout from "../layout";
 import APIendpoint from "constants/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useStateContext } from "hooks/ContextProvider";
 import { Post, RawPost } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
@@ -26,7 +25,6 @@ export default function MyPost() {
       .catch((e) => console.log(e));
   }
 
-  console.log(posts);
   useEffect(() => {
     fetchMyPosts();
   }, []);
