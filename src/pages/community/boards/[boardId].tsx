@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BoardHeader } from "../../../components/Community/BoardHeader";
-import { PostList } from "../../../components/Community/PostList";
+import { BoardHeader } from "components/Community/BoardHeader";
+import { PostList } from "components/Community/PostList";
 
-import APIendpoint from "../../../constants/constants";
+import APIendpoint from "constants/constants";
 import axios from "axios";
-import { Post, RawPost } from "../../../types";
+import { Post, RawPost } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
-import { useStateContext } from "../../../hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 
 export default function Posts() {
   const router = useRouter();
@@ -18,18 +18,23 @@ export default function Posts() {
 
   useEffect(() => {
     async function fetchPosts() {
-      if (loginStatus) {
-        const res = await axios.get(`${APIendpoint()}/community/posts?board_id=${boardId}`, {
-          headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+      const apiUrl = loginStatus
+        ? `${APIendpoint()}/community/posts?board_id=${boardId}`
+        : `${APIendpoint()}/community/posts/web?board_id=${boardId}`;
+      const config = loginStatus
+        ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+        : {};
+
+      try {
+        await axios.get(apiUrl, config).then((res) => {
+          const newPosts = res.data.result.map(parsePost);
+          setPosts(newPosts);
         });
-        setPosts([]);
-        res.data.result.map(update);
-      } else {
-        const res = await axios.get(`${APIendpoint()}/community/posts/web?board_id=${boardId}`, {});
-        setPosts([]);
-        res.data.result.map(update);
+      } catch (e) {
+        console.error(e);
       }
-      function update(post: RawPost) {
+
+      function parsePost(post: RawPost): Post {
         const {
           board_id,
           id,
@@ -46,25 +51,23 @@ export default function Posts() {
           comment_cnt,
           is_liked,
         } = post;
-        setPosts((prev) => [
-          ...prev,
-          {
-            boardId: board_id,
-            id: id,
-            title: title,
-            content: content,
-            createdAt: created_at,
-            updatedAt: updated_at,
-            nickname: nickname,
-            anonymous: anonymous,
-            available: available,
-            isMine: is_mine,
-            images: etc ? etc.images : etc,
-            likeCount: like_cnt,
-            commentCount: comment_cnt,
-            isLiked: is_liked,
-          },
-        ]);
+        const parsedPost: Post = {
+          boardId: board_id,
+          id: id,
+          title: title,
+          content: content,
+          createdAt: created_at,
+          updatedAt: updated_at,
+          nickname: nickname,
+          anonymous: anonymous,
+          available: available,
+          isMine: is_mine,
+          images: etc ? etc.images : etc,
+          likeCount: like_cnt,
+          commentCount: comment_cnt,
+          isLiked: is_liked,
+        };
+        return parsedPost;
       }
     }
 

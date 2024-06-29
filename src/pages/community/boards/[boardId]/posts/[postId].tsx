@@ -2,37 +2,45 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import APIendpoint from "../../../../../constants/constants";
-import {
-  Post as PostType,
-  Comment as CommentType,
-  RawComment,
-  RawPost,
-} from "../../../../../types";
+import APIendpoint from "constants/constants";
+import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "types";
 import Board from "../../index";
-import CommentList from "../../../../../components/Community/CommentList";
-import CommentWriter from "../../../../../components/Community/CommentWriter";
-import { useDispatchContext, useStateContext } from "../../../../../hooks/ContextProvider";
+import CommentList from "components/Community/CommentList";
+import CommentWriter from "components/Community/CommentWriter";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { formatPostCommentDate } from "utils/FormatUtil";
+import PostImageSwiper from "components/Community/PostImageSwiper";
+import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { userInfo, loginStatus } = useStateContext();
+  const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
 
+  const [isError, setIsError] = useState<boolean>(false);
+  const [actionsModal, setActionsModal] = useState<boolean>(false);
+
   async function fetchPost() {
-    if (loginStatus) {
-      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    const apiUrl = loginStatus
+      ? `${APIendpoint()}/community/posts/${postId}`
+      : `${APIendpoint()}/community/posts/${postId}/web`;
+    const config = loginStatus
+      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+      : {};
+
+    try {
+      await axios.get(apiUrl, config).then((res) => {
+        update(res.data);
       });
-      update(res.data);
-    } else {
-      const res = await axios.get(`${APIendpoint()}/community/posts/${postId}/web`, {});
-      update(res.data);
+    } catch (e) {
+      console.error(e);
+      setIsError(true);
     }
+
     function update(post: RawPost) {
       const {
         board_id,
@@ -69,18 +77,24 @@ export default function Post() {
     }
   }
   async function fetchComments() {
-    if (loginStatus) {
-      const res = await axios.get(`${APIendpoint()}/community/comments?post_id=${postId}`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+    const apiUrl = loginStatus
+      ? `${APIendpoint()}/community/comments?post_id=${postId}&per_page=100`
+      : `${APIendpoint()}/community/comments/web?post_id=${postId}&per_page=100`;
+    const config = loginStatus
+      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
+      : {};
+
+    try {
+      await axios.get(apiUrl, config).then((res) => {
+        const newComments = res.data.result.map(parseComment);
+        setComments(newComments);
       });
-      setComments([]);
-      res.data.result.map(update);
-    } else {
-      const res = await axios.get(`${APIendpoint()}/community/comments/web?post_id=${postId}`, {});
-      setComments([]);
-      res.data.result.map(update);
+    } catch (e) {
+      console.error(e);
+      setIsError(true);
     }
-    function update(comment: RawComment) {
+
+    function parseComment(comment: RawComment): CommentType {
       const {
         post_id,
         content,
@@ -94,54 +108,65 @@ export default function Post() {
         is_liked,
         like_cnt,
       } = comment;
-      setComments((prev) => [
-        ...prev,
-        {
-          postId: post_id,
-          content: content,
-          createdAt: created_at,
-          updatedAt: updated_at,
-          id: id,
-          nickname: nickname,
-          avaliable: avaliable,
-          anonymous: anonymous,
-          isMine: is_mine,
-          likeCount: like_cnt,
-          isLiked: is_liked,
-        },
-      ]);
+      const parsedComment: CommentType = {
+        postId: post_id,
+        content: content,
+        createdAt: created_at,
+        updatedAt: updated_at,
+        id: id,
+        nickname: nickname,
+        avaliable: avaliable,
+        anonymous: anonymous,
+        isMine: is_mine,
+        likeCount: like_cnt,
+        isLiked: is_liked,
+      };
+      return parsedComment;
     }
   }
   async function fetchLike() {
-    if (!userInfo.id) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else if (post) {
-      if (post.isLiked) {
+      const apiUrl = post.isLiked
+        ? `${APIendpoint()}/community/posts/${post.id}/unlike`
+        : `${APIendpoint()}/community/posts/${post.id}/like`;
+      try {
         await axios
           .post(
-            `${APIendpoint()}/community/posts/${post.id}/unlike`,
+            apiUrl,
             {},
             {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
+              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
             },
           )
-          .then(() => setPost({ ...post, isLiked: false }));
-      } else {
-        await axios
-          .post(
-            `${APIendpoint()}/community/posts/${post.id}/like`,
-            {},
-            {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            },
-          )
-          .then(() => setPost({ ...post, isLiked: true }));
+          .then((res) =>
+            setPost({ ...post, isLiked: res.data.is_liked, likeCount: res.data.like_cnt }),
+          );
+      } catch (e) {
+        console.error(e);
+        setIsError(true);
       }
     }
+  }
+
+  async function deletePost(postId: number) {
+    if (loginStatus === false) {
+      setLoginModal(true);
+    } else if (confirm("이 글을 삭제하시겠습니까?")) {
+      try {
+        await axios
+          .delete(`${APIendpoint()}/community/posts/${postId}`, {
+            headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
+          })
+          .then(() => router.push(`/community/boards/${boardId}`));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+  async function updatePost(postId: number) {
+    router.push(`/community/write/?postId=${postId}`);
   }
 
   useEffect(() => {
@@ -152,20 +177,67 @@ export default function Post() {
   }, [boardId, postId]);
 
   if (post) {
+    const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
+    const profileImg = "/img/default-profile.svg";
+
+    const actions: ModalAction[] = post.isMine ?
+    [{ name: "수정", handleClick: () => {}}, // 수정 관련 미비 사항이 많아 일단은 비활성화
+    { name: "삭제", handleClick: () => deletePost(post.id)}] : 
+    [{ name: "신고", handleClick: () => {}}];
+
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
         <Container>
-          <Header>{post.nickname}</Header>
+          <Header>
+            <WriterInfoContainer>
+              <ProfileImage src={profileImg} />
+              <div>
+                <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                <PostDate>
+                  {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                </PostDate>
+              </div>
+            </WriterInfoContainer>
+            <DesktopPostActions>
+              {actions.map((action) => (
+                <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                  {action.name}
+                </DesktopActionButton>
+              ))}
+            </DesktopPostActions>
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={()=>setActionsModal(true)} />
+            { actionsModal && <MobileActionsModal actions={actions} setActionsModal={setActionsModal}/> }
+          </Header>
           <Content>
             <Title>{post.title}</Title>
             <Text>{post.content}</Text>
-            <Photos>{post.images ? post.images.map((src) => <Photo src={src} />) : null}</Photos>
+            {post.images && <PostImageSwiper images={post.images} />}
           </Content>
+          <LikesAndComments>
+            <Likes>
+              <Icon src="/img/post-like.svg" />
+              {post.likeCount}
+            </Likes>
+            <Comments>
+              <Icon src="/img/post-comment.svg" />
+              {post.commentCount}
+            </Comments>
+          </LikesAndComments>
           <Footer>
-            <LikeButton onClick={fetchLike}>공감</LikeButton>
+            <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
+              공감
+            </LikeButton>
+            <BackToBoardButton
+              onClick={() => {
+                router.push(`/community/boards/${boardId}`);
+              }}
+            >
+              <FooterIcon src="/img/posts-orange.svg" />
+              목록보기
+            </BackToBoardButton>
           </Footer>
           <CommentContainer>
-            ---Comments---
             <CommentList comments={comments} refetch={fetchComments} />
             <CommentWriter postId={post.id} refetch={fetchComments} />
           </CommentContainer>
@@ -173,24 +245,196 @@ export default function Post() {
       </Board>
     );
   } else {
-    <Board selectedBoardId={Number(boardId) ?? 1}>
-      <Container>포스트를 찾을 수 없어요</Container>
-    </Board>;
+    return (
+      <Board selectedBoardId={Number(boardId) ?? 1}>
+        <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
+      </Board>
+    );
   }
 }
 
 const Container = styled.div`
   width: 100%;
+  @media (max-width: 768px) {
+    padding-top: 16px;
+  }
 `;
 
-const Header = styled.div``;
-const Content = styled.div``;
-const Title = styled.div``;
-const Text = styled.div``;
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+const WriterInfoContainer = styled.div`
+  display: flex;
+  & > div {
+    margin-left: 12px;
+  }
+`;
+const ProfileImage = styled.img`
+  width: 43px;
+  height: 43px;
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
+`;
+const Nickname = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 5px;
+  @media (max-width: 768px) {
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 12.5px;
+  }
+`;
+const PostDate = styled.div`
+  color: #b7b7b7;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    line-height: 11.3px;
+  }
+`;
+const DesktopPostActions = styled.div`
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  & div {
+    margin: 0 8px;
+  }
+  & div:first-child {
+    margin-left: 0;
+  }
+  & div:last-child {
+    margin-right: 0;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const DesktopActionButton = styled.div`
+  background-color: transparent;
+  border: none;
+  padding: 0;
+
+  color: #b7b7b7;
+  font-weight: 400;
+  font-size: 12px;
+  cursor: pointer;
+`;
+const MobileMoreActionsButton = styled.img`
+  display: none;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
+const Content = styled.div`
+  margin-bottom: 15.5px;
+`;
+const Title = styled.div`
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 30px;
+  @media (max-width: 768px) {
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+`;
+const Text = styled.div`
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 20px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+`;
 const Photos = styled.div``;
 const Photo = styled.img`
   width: 100%;
 `;
-const Footer = styled.div``;
-const LikeButton = styled.button``;
+
+const LikesAndComments = styled.div`
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  margin-bottom: 23px;
+`;
+const Likes = styled.div`
+  display: flex;
+  align-items: center;
+  color: #ff9522;
+`;
+const Comments = styled.div`
+  display: flex;
+  align-items: center;
+  color: #797979;
+`;
+const Icon = styled.img`
+  margin-right: 4px;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 17.7px;
+  border-bottom: 1px solid #eeeeee;
+  @media (max-width: 768px) {
+    border-color: #f0f0f0;
+    padding-bottom: 12.5px;
+  }
+`;
+const FooterButton = styled.button`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ff9522;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #ff9522;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 14.75px;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    line-height: 11.35px;
+    border-radius: 6px;
+  }
+`;
+const LikeButton = styled(FooterButton)<{ isLiked?: boolean | null }>`
+  padding: 8.5px 12.4px;
+  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
+  border-color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
+  color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
+  @media (max-width: 768px) {
+    padding: 6.5px 8.25px;
+  }
+`;
+const BackToBoardButton = styled(FooterButton)`
+  padding: 8.5px 10.5px;
+  @media (max-width: 768px) {
+    padding: 6.5px 8.25px;
+  }
+`;
+const FooterIcon = styled.img`
+  width: 13px;
+  height: 12.5px;
+  margin-right: 4px;
+  @media (max-width: 768px) {
+    width: 11.5px;
+    height: 11px;
+  }
+`;
+const LikeButtonIcon = styled(FooterIcon)<{ isLiked?: boolean | null }>`
+  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
+`;
+
 const CommentContainer = styled.div``;

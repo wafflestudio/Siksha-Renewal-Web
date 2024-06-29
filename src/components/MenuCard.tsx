@@ -1,10 +1,13 @@
 import styled from "styled-components";
-import RestaurantTime from "./RestaurantTime";
-import Menu from "./Menu";
-import { useDispatchContext } from "../hooks/ContextProvider";
+import RestaurantTime from "components/RestaurantTime";
+import Menu from "components/Menu";
+import { useDispatchContext } from "hooks/ContextProvider";
+import useFavorite from "hooks/UseFavorite";
 
 export default function MenuCard({ data }) {
   const { setInfoData, toggleShowInfo } = useDispatchContext();
+
+  const { toggleFavorite, isFavorite } = useFavorite();
 
   return (
     <>
@@ -12,6 +15,11 @@ export default function MenuCard({ data }) {
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
+            {isFavorite(data.id) ? (
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
+            ) : (
+              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
+            )}
           </HeaderContainer>
           <Location>
             <LocationIcon
@@ -46,6 +54,11 @@ export default function MenuCard({ data }) {
                 toggleShowInfo();
               }}
             />
+            {isFavorite(data.id) ? (
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
+            ) : (
+              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
+            )}
           </HeaderContainer>
           <MenuInfoLabels>
             <div style={{ width: "45px", textAlign: "center", paddingRight: "12px" }}>Price</div>
@@ -136,17 +149,17 @@ const Name = styled.div`
   }
 `;
 
-const Favorite = styled.img`
-  height: 27px;
-  width: 27px;
-  margin-left: 11px;
+const Star = styled.img`
+  width: 23px;
+  height: 22px;
+  margin: 0 0 2.5px 11px;
   cursor: pointer;
 
+  /* App버전을 참고한 디자인 */
   @media (max-width: 768px) {
-    height: 18px;
-    width: 18px;
-    margin-left: 8px;
-    padding-bottom: 3px;
+    width: 17px;
+    height: 16px;
+    margin: 0 0 2.5px 8px;
   }
 `;
 

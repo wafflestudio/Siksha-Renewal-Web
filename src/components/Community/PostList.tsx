@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Post } from "./Post";
-import { Post as PostType } from "../../types";
+import { Post } from "components/Community/Post";
+import { Post as PostType } from "types";
 
 interface PropsPostList {
   posts: PostType[];

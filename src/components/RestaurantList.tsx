@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useStateContext } from "../hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
+import { use, useEffect } from "react";
+import useFavorite from "hooks/UseFavorite";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + restaurant);
@@ -14,13 +16,26 @@ export default function RestaurantList() {
 
   const { meal, data } = state;
 
+  const { toggleFavorite, isFavorite } = useFavorite();
+
   return (
     <Container>
       <Restaurants>
         {data[meal] &&
           data[meal].map((restaurant) => (
-            <Restaurant key={restaurant.id} onClick={() => scrollRestaurant(restaurant.code)}>
-              <RestaurantName>{restaurant.name_kr}</RestaurantName>
+            <Restaurant key={restaurant.id}>
+              <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
+                {restaurant.name_kr}
+              </RestaurantName>
+              <Dots>..............</Dots>
+              {isFavorite(restaurant.id) ? (
+                <Star src="/img/star.svg" onClick={() => toggleFavorite(restaurant.id)} />
+              ) : (
+                <Star
+                  src="/img/star-empty-white.svg"
+                  onClick={() => toggleFavorite(restaurant.id)}
+                />
+              )}
             </Restaurant>
           ))}
       </Restaurants>
@@ -67,29 +82,16 @@ const RestaurantName = styled.div`
 `;
 
 const Dots = styled.div`
-  font-size: 12px;
-  line-height: 14px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  line-height: 13.62px;
   letter-spacing: 2px;
-  text-align: right;
-  text-decoration: none;
-
-  @media (max-width: 768px) {
-    display: none;
-    padding: 0 8px 4px 0;
-  }
-
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+  color: #0000004d;
 `;
 
-const Favorite = styled.img`
-  height: 18px;
-  width: 18px;
+const Star = styled.img`
+  width: 15px;
+  height: 14px;
   margin-left: 20px;
   cursor: pointer;
 `;

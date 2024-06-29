@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Post as PostType } from "../../types";
+import { Post as PostType } from "types";
 import Link from "next/link";
 
 interface PropsPost {
@@ -27,7 +27,7 @@ export function Post({ post }: PropsPost) {
           </LikesAndComments>
         </Info>
         <PhotoZone>
-          {images ? images.map((src, idx) => (idx < 1 ? <Photo src={src} /> : null)) : null}
+          {images ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null)) : null}
         </PhotoZone>
       </Container>
     </Link>
@@ -36,35 +36,66 @@ export function Post({ post }: PropsPost) {
 
 const Container = styled.div`
   display: flex;
+  position: relative;
   width: 100%;
-  height: 100px;
   justify-content: space-between;
-  border-top: 1px solid #eeeeee;
-  margin-top: 16px;
-  padding: 19px 7px 0px 17px;
+  padding: 19px 7px 16px 17px;
   box-sizing: border-box;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding: 15px 12.5px 14px 12.5px;
+  }
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    top: 0;
+    left: 50%;
+    background-color: #eeeeee;
+    transform: translateX(-50%);
+
+    @media (max-width: 768px) {
+      width: calc(100% + 25px);
+      background-color: #f0f0f0;
+    }
+  }
 `;
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 540px;
+  @media (max-width: 768px) {
+    gap: 12px;
+    height: min-content;
+  }
 `;
 
 const Title = styled.div`
   overflow: hidden;
   font-size: 18px;
   font-weight: bold;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const ContentPreview = styled.div`
   color: #393939;
   overflow: hidden;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const LikesAndComments = styled.div`
   display: flex;
   gap: 12px;
   font-size: 12px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const Likes = styled.div`
@@ -79,6 +110,10 @@ const Comments = styled.div`
 `;
 const Icon = styled.img`
   margin-right: 4px;
+  @media (max-width: 768px) {
+    width: 11.5px;
+    height: 11px;
+  }
 `;
 const PhotoZone = styled.div`
   display: flex;
@@ -90,4 +125,8 @@ const Photo = styled.img`
   height: 84px;
   border-radius: 8px;
   background-color: #d9d9d9;
+  @media (max-width: 768px) {
+    width: 61px;
+    height: 61px;
+  }
 `;
