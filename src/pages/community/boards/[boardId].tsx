@@ -18,7 +18,7 @@ export default function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    function setParedPosts(post: RawPost) {
+    function setParsedPosts(post: RawPost) {
       setPosts((prev) => [...prev, postParser(post)]);
     }
 
@@ -32,7 +32,7 @@ export default function Posts() {
 
       try {
         await axios.get(apiUrl, config).then((res) => {
-          res.data.result.map(setParedPosts);
+          res.data.result.map(setParsedPosts);
         });
       } catch (e) {
         console.error(e);
