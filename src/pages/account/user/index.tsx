@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../../constants/constants";
 
-export default function Setting_User() {
+export default function UserSetting() {
   const router = useRouter();
   const state = useStateContext();
   const { setLoginStatus, setLoginModal } = useDispatchContext();
@@ -49,21 +49,21 @@ export default function Setting_User() {
   };
 
   return (
-    <>
-      <AccountLayout>
-        <Container>
-          <Title>계정 관리</Title>
-          <Box>
-            <Item onClick={handleLogout}>로그아웃</Item>
-            <Item onClick={handleExit}>회원 탈퇴</Item>
-          </Box>
-        </Container>
-      </AccountLayout>
-    </>
+    <AccountLayout>
+      <Container>
+        <Title>계정 관리</Title>
+        <Box>
+          <Item onClick={handleLogout}>로그아웃</Item>
+          <Item onClick={handleExit}>회원 탈퇴</Item>
+        </Box>
+      </Container>
+    </AccountLayout>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  background-color: white;
+`;
 
 const Title = styled.div``;
 
