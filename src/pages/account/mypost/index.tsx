@@ -12,7 +12,7 @@ export default function MyPost() {
 
   const [posts, setPosts] = useState<Post[]>([]);
 
-  function parse(rawPost: RawPost) {
+  function setParsedPosts(rawPost: RawPost) {
     setPosts((prev) => [...prev, postParser(rawPost)]);
   }
 
@@ -22,7 +22,7 @@ export default function MyPost() {
         headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
       })
       .then((res) => {
-        res.data.result.map(parse);
+        res.data.result.map(setParsedPosts);
       })
       .catch((e) => console.log(e));
   }
