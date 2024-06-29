@@ -6,6 +6,7 @@ import { useDispatchContext, useStateContext } from "../../../hooks/ContextProvi
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Board, RawBoard } from "../../../types";
+import { boardParser } from "utils/DataUtil";
 
 export type inputs = {
   title: string;
@@ -37,6 +38,7 @@ export default function PostWriter() {
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSubmitting, SetIsSubmitting] = useState(false);
+
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
 
@@ -79,13 +81,13 @@ export default function PostWriter() {
       });
 
       try {
-        const res = isUpdate ? await axios
-          .patch(`${APIendpoint()}/community/posts/${postId}`, body, {
-            headers: {
-              "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }) : await axios
-            .post(`${APIendpoint()}/community/posts`, body, {
+        const res = isUpdate
+          ? await axios.patch(`${APIendpoint()}/community/posts/${postId}`, body, {
+              headers: {
+                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            })
+          : await axios.post(`${APIendpoint()}/community/posts`, body, {
               headers: {
                 "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
               },
@@ -111,24 +113,16 @@ export default function PostWriter() {
       }
     }
   }
+
+  function setParsedBoards(board: RawBoard) {
+    setBoards((prev) => [...prev, boardParser(board)]);
+  }
   async function fetchBoards() {
     const res = await axios.get(`${APIendpoint()}/community/boards`);
     setBoards([]);
-    res.data.map((board: RawBoard) => {
-      const { created_at, updated_at, id, type, name, description } = board;
-      setBoards((prev) => [
-        ...prev,
-        {
-          createdAt: created_at,
-          updatedAt: updated_at,
-          id: id,
-          type: type,
-          name: name,
-          description: description,
-        },
-      ]);
-    });
+    res.data.map(setParsedBoards);
   }
+
   async function fetchPreviousPost() {
     if (!postId) return;
 
@@ -221,7 +215,10 @@ export default function PostWriter() {
           <Button className="cancel" onClick={handleCancel}>
             취소
           </Button>
-          <Button className={`submit ${isValid && (isSubmitting === false) ? "active" : ""}`} onClick={handleSubmit}>
+          <Button
+            className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+            onClick={handleSubmit}
+          >
             등록
           </Button>
         </ButtonContainer>
