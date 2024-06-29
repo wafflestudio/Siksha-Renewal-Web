@@ -60,11 +60,7 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: #000000;
   }
-  input {
-    font-family: "NanumSquare", "NIXGONFONTS V2.0";
-  }
-  
-  textarea {
+  input, textarea, button {
     font-family: "NanumSquare", "NIXGONFONTS V2.0";
   }
 

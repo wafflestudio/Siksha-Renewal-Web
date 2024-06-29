@@ -14,7 +14,7 @@ export default function NavigationBar() {
   const { setLoginModal } = useDispatchContext();
 
   const isAccountToggle = () => {
-    if (!loginStatus) {
+    if (loginStatus === false) {
       setLoginModal(true);
     } else {
       router.push(`/account`);
