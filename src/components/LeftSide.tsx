@@ -8,7 +8,7 @@ import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 export default function LeftSide() {
   const state = useStateContext();
   const { setLoginModal } = useDispatchContext();
-  const { loginStatus, isLoginModal } = state;
+  const { loginStatus } = state;
 
   return (
     <Container>
