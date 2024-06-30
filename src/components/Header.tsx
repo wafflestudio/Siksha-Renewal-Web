@@ -5,7 +5,7 @@ import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
 import APIendpoint from "../constants/constants";
 import axios from "axios";
-import useIsMobile from "hooks/useIsMobile";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Header() {
   const router = useRouter();
