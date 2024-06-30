@@ -38,7 +38,7 @@ export default function Account() {
 
         <MyPost
           onClick={() => {
-            router.push("/account/nickname");
+            router.push("/account/mypost");
           }}
         >
           내가 쓴 글

@@ -3,8 +3,13 @@ import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 
 export default function LeftSide() {
+  const state = useStateContext();
+  const { setLoginModal } = useDispatchContext();
+  const { loginStatus } = state;
+
   return (
     <Container>
       <Calendar />
@@ -12,8 +17,8 @@ export default function LeftSide() {
         <RestaurantList />
       </div>
       <div style={{ marginTop: "32px", marginBottom: "69px" }}>
-        <Link href="#">
-          <MyPostsButton>
+        <Link href={loginStatus ? "/account/mypost/" : "/"}>
+          <MyPostsButton onClick={() => (!loginStatus ? setLoginModal(true) : null)}>
             <Image
               src="/img/posts.svg"
               alt="글 목록 이미지"

@@ -11,6 +11,7 @@ import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
+import { commentParser, postParser } from "utils/DataUtil";
 
 export default function Post() {
   const router = useRouter();
@@ -24,6 +25,10 @@ export default function Post() {
   const [isError, setIsError] = useState<boolean>(false);
   const [actionsModal, setActionsModal] = useState<boolean>(false);
 
+  function setParsedPost(rawPost: RawPost) {
+    setPost(postParser(rawPost));
+  }
+
   async function fetchPost() {
     const apiUrl = loginStatus
       ? `${APIendpoint()}/community/posts/${postId}`
@@ -34,48 +39,18 @@ export default function Post() {
 
     try {
       await axios.get(apiUrl, config).then((res) => {
-        update(res.data);
+        setParsedPost(res.data);
       });
     } catch (e) {
       console.error(e);
       setIsError(true);
     }
-
-    function update(post: RawPost) {
-      const {
-        board_id,
-        id,
-        title,
-        content,
-        created_at,
-        updated_at,
-        nickname,
-        anonymous,
-        available,
-        is_mine,
-        etc,
-        like_cnt,
-        comment_cnt,
-        is_liked,
-      } = post;
-      setPost({
-        boardId: board_id,
-        id: id,
-        title: title,
-        content: content,
-        createdAt: created_at,
-        updatedAt: updated_at,
-        nickname: nickname,
-        anonymous: anonymous,
-        available: available,
-        isMine: is_mine,
-        images: etc ? etc.images : etc,
-        likeCount: like_cnt,
-        commentCount: comment_cnt,
-        isLiked: is_liked,
-      });
-    }
   }
+
+  function setParsedComments(comment: RawComment) {
+    setComments((prev) => [...prev, commentParser(comment)]);
+  }
+
   async function fetchComments() {
     const apiUrl = loginStatus
       ? `${APIendpoint()}/community/comments?post_id=${postId}&per_page=100`
@@ -86,42 +61,11 @@ export default function Post() {
 
     try {
       await axios.get(apiUrl, config).then((res) => {
-        const newComments = res.data.result.map(parseComment);
-        setComments(newComments);
+        res.data.result.map(setParsedComments);
       });
     } catch (e) {
       console.error(e);
       setIsError(true);
-    }
-
-    function parseComment(comment: RawComment): CommentType {
-      const {
-        post_id,
-        content,
-        created_at,
-        updated_at,
-        id,
-        nickname,
-        avaliable,
-        anonymous,
-        is_mine,
-        is_liked,
-        like_cnt,
-      } = comment;
-      const parsedComment: CommentType = {
-        postId: post_id,
-        content: content,
-        createdAt: created_at,
-        updatedAt: updated_at,
-        id: id,
-        nickname: nickname,
-        avaliable: avaliable,
-        anonymous: anonymous,
-        isMine: is_mine,
-        likeCount: like_cnt,
-        isLiked: is_liked,
-      };
-      return parsedComment;
     }
   }
   async function fetchLike() {
@@ -165,6 +109,7 @@ export default function Post() {
       }
     }
   }
+
   async function updatePost(postId: number) {
     router.push(`/community/write/?postId=${postId}`);
   }
@@ -180,10 +125,12 @@ export default function Post() {
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
     const profileImg = "/img/default-profile.svg";
 
-    const actions: ModalAction[] = post.isMine ?
-    [{ name: "수정", handleClick: () => {}}, // 수정 관련 미비 사항이 많아 일단은 비활성화
-    { name: "삭제", handleClick: () => deletePost(post.id)}] : 
-    [{ name: "신고", handleClick: () => {}}];
+    const actions: ModalAction[] = post.isMine
+      ? [
+          { name: "수정", handleClick: () => {} }, // 수정 관련 미비 사항이 많아 일단은 비활성화
+          { name: "삭제", handleClick: () => deletePost(post.id) },
+        ]
+      : [{ name: "신고", handleClick: () => {} }];
 
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
@@ -205,8 +152,10 @@ export default function Post() {
                 </DesktopActionButton>
               ))}
             </DesktopPostActions>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={()=>setActionsModal(true)} />
-            { actionsModal && <MobileActionsModal actions={actions} setActionsModal={setActionsModal}/> }
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
+            {actionsModal && (
+              <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
+            )}
           </Header>
           <Content>
             <Title>{post.title}</Title>
