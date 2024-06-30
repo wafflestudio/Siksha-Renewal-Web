@@ -9,6 +9,7 @@ import { Post, RawPost } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
 import { useStateContext } from "hooks/ContextProvider";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function Posts() {
   const router = useRouter();
@@ -81,6 +82,7 @@ export default function Posts() {
       <>
         <BoardHeader />
         <PostList posts={posts} />
+        <MobileNavigationBar />
       </>
     </Board>
   );
