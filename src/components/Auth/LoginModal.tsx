@@ -27,7 +27,7 @@ export default function LoginModal() {
 
     window.AppleID.auth.init({
       clientId: clientId,
-      scope: "[SCOPES]",
+      scope: "email",
       redirectURI: redirectUri,
       state: "[STATE]",
       nonce: "[NONCE]",

@@ -21,15 +21,15 @@ export default function Auth() {
         { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
       )
       .then((res: any) => {
-        const { access_token } = res.data;
-        return access_token;
+        const { id_token } = res.data;
+        return id_token;
       })
-      .then((access_token: string) =>
+      .then((id_token: string) =>
         axios.post(
           `${APIendpoint()}/auth/login/google`,
           {},
           {
-            headers: { "google-token": `Bearer ${access_token}` },
+            headers: { "apple-token": `Bearer ${id_token}` },
           },
         ),
       )

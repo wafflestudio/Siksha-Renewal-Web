@@ -25,12 +25,12 @@ export default function Auth() {
         const { id_token } = res.data;
         return id_token;
       })
-      .then((access_token: string) =>
+      .then((id_token: string) =>
         axios.post(
           `${APIendpoint()}/auth/login/google`,
           {},
           {
-            headers: { "google-token": `Bearer ${access_token}` },
+            headers: { "google-token": `Bearer ${id_token}` },
           },
         ),
       )
