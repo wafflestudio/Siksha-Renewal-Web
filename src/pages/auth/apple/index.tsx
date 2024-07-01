@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import APIendpoint from "../../../constants/constants";
+import APIendpoint from "constants/constants";
 import styled from "styled-components";
 
 export default function Auth() {
@@ -9,21 +9,20 @@ export default function Auth() {
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
-    const response_type = "id_token";
     const grantType = "authorization_code";
-    const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENTID;
-    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_GOOGLE_SECRET;
-    const REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECTURI;
+    const CLIENT_ID = process.env.NEXT_PUBLIC_APPLE_CLIENTID;
+    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_APPLE_SECRET;
+    const REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI;
 
     axios
       .post(
-        `https://oauth2.googleapis.com/token?response_type=${response_type}&grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+        `https://appleid.apple.com/auth/token?grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
         {},
         { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
       )
       .then((res: any) => {
-        const { id_token } = res.data;
-        return id_token;
+        const { access_token } = res.data;
+        return access_token;
       })
       .then((access_token: string) =>
         axios.post(
@@ -35,8 +34,7 @@ export default function Auth() {
         ),
       )
       .then((res: any) => {
-        const { access_token } = res.data;
-        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("access_token", res.data.access_token);
         router.push("/");
       })
       .catch((res: any) => {
@@ -44,7 +42,7 @@ export default function Auth() {
       });
   }, []);
 
-  return <Container>google</Container>;
+  return <Container>apple</Container>;
 }
 
 const Container = styled.div`
