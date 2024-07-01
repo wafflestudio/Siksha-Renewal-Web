@@ -22,8 +22,7 @@ export default function Auth() {
         { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
       )
       .then((res: any) => {
-        console.log(res.data); //for debugging
-        const { access_token, id_token } = res.data; //Need to check which one to use.
+        const { id_token } = res.data;
         return id_token;
       })
       .then((access_token: string) =>
@@ -36,7 +35,8 @@ export default function Auth() {
         ),
       )
       .then((res: any) => {
-        localStorage.setItem("access_token", res.data.access_token);
+        const { access_token } = res.data;
+        localStorage.setItem("access_token", access_token);
         router.push("/");
       })
       .catch((res: any) => {
