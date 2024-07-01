@@ -26,7 +26,7 @@ export default function Auth() {
       })
       .then((id_token: string) =>
         axios.post(
-          `${APIendpoint()}/auth/login/google`,
+          `${APIendpoint()}/auth/login/apple`,
           {},
           {
             headers: { "apple-token": `Bearer ${id_token}` },
