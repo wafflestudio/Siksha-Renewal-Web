@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { useDispatchContext } from "../../hooks/ContextProvider";
+import React, { useCallback } from "react";
+import { useRouter } from "next/router";
 
 export default function LoginModal() {
+  const router = useRouter();
+
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -10,23 +14,61 @@ export default function LoginModal() {
     window.location.href = kakaoUrl;
   };
 
-  const { setLoginModal } = useDispatchContext();
+  const handleGoogleLogin = () => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENTID;
+    const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECTURI;
+    const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&redirect_uri=${redirectUri}&client_id=${clientId}`;
+    window.location.href = googleUrl;
+  };
+
+  const handleAppleLogin = () => {
+    const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENTID!;
+    const redirectUri = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI!;
+
+    window.AppleID.auth.init({
+      clientId: clientId,
+      scope: "email",
+      redirectURI: redirectUri,
+      state: "[STATE]",
+      nonce: "[NONCE]",
+      usePopup: true,
+    });
+
+    const signIn = () =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const response = await window.AppleID.auth.signIn();
+          resolve(response);
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+    signIn()
+      .then((res: SigninResponse) => {
+        const { code, id_token } = res.authorization;
+        router.push(`/auth/apple?code=${code}&id_token=${id_token}`);
+        console.log(res);
+      })
+      .catch((error: SigninError) => {
+        console.log(error);
+      });
+  };
+
+  const dispatch = useDispatchContext();
+
+  const closeModal = useCallback(() => dispatch.setLoginModal(false), [dispatch]);
 
   return (
     <Background>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={() => setLoginModal(false)} />
+          <CloseButton src={"/img/close-auth.svg"} onClick={() => closeModal()} />
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>
-          <SocialButton
-            provider="kakao"
-            onClick={() => {
-              handleKakaoLogin();
-            }}
-          >
+          <SocialButton provider="kakao" onClick={handleKakaoLogin}>
             <SocialUnion
               width={19}
               height={17}
@@ -36,7 +78,7 @@ export default function LoginModal() {
             ></SocialUnion>
             Login with Kakao
           </SocialButton>
-          <SocialButton provider="google">
+          <SocialButton provider="google" onClick={handleGoogleLogin}>
             <SocialUnion
               width={23}
               height={41}
@@ -46,7 +88,7 @@ export default function LoginModal() {
             ></SocialUnion>
             Login with Google
           </SocialButton>
-          <SocialButton provider="google">
+          <SocialButton provider="apple" onClick={handleAppleLogin}>
             <SocialUnion
               width={17}
               height={18}
@@ -64,7 +106,7 @@ export default function LoginModal() {
 }
 
 const Background = styled.div`
-  z-index: 99;
+  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;
