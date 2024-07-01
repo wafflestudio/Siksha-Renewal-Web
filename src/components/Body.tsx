@@ -47,7 +47,9 @@ export default function Body() {
           const {
             data: { result },
           } = await axios.get(
-            `${APIendpoint()}/menus/lo?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
+            `${APIendpoint()}/menus/lo?start_date=${dateString}&end_date=${dateString}&except_empty=${localStorage.getItem(
+              "isExceptEmptyRestaurant",
+            )}`,
             {
               headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
             },
@@ -66,6 +68,7 @@ export default function Body() {
           result[0].LU = LU.sort(sortFunction);
           result[0].DN = DN.sort(sortFunction);
 
+          console.log(result[0]);
           setData(result[0]);
         } catch (e) {
           console.log(e);

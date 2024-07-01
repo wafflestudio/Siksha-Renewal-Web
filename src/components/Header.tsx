@@ -9,9 +9,10 @@ import axios from "axios";
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginStatus, setLoginModal, setUserInfo } = useDispatchContext();
+  const { setLoginStatus, setLoginModal, setUserInfo, setIsExceptEmptyRestaurant } =
+    useDispatchContext();
 
-  const { loginStatus } = state;
+  const { loginStatus, isExceptEmptyRestaurant } = state;
 
   useEffect(() => {
     setLoginStatus(!!localStorage.getItem("access_token"));
@@ -30,6 +31,18 @@ export default function Header() {
     }
 
     fetchUserInfo();
+  }, [loginStatus]);
+
+  useEffect(() => {
+    if (loginStatus) {
+      const value = localStorage.getItem("isExceptEmptyRestaurant");
+
+      if (value !== null) {
+        setIsExceptEmptyRestaurant(JSON.parse(value));
+      } else {
+        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
+      }
+    }
   }, [loginStatus]);
 
   if (loginStatus !== undefined) {

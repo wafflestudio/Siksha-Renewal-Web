@@ -22,6 +22,7 @@ export interface State {
     nickname: string | null;
   };
   favoriteRestaurant: number[];
+  isExceptEmptyRestaurant: boolean;
 }
 
 export type Action =
