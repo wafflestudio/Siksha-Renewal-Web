@@ -10,7 +10,13 @@ import useIsMobile from "hooks/UseIsMobile";
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginStatus, setLoginModal, setUserInfo, setIsFilterFavorite } = useDispatchContext();
+  const {
+    setLoginStatus,
+    setLoginModal,
+    setUserInfo,
+    setIsFilterFavorite,
+    setIsExceptEmptyRestaurant,
+  } = useDispatchContext();
   const isMobile = useIsMobile();
 
   const { loginStatus, isExceptEmptyRestaurant } = state;
@@ -34,7 +40,7 @@ export default function Header() {
     fetchUserInfo();
   }, [loginStatus]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
 
