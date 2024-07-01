@@ -13,7 +13,7 @@ export default function Header() {
   const { setLoginStatus, setLoginModal, setUserInfo, setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
 
-  const { loginStatus } = state;
+  const { loginStatus, isExceptEmptyRestaurant } = state;
 
   useEffect(() => {
     setLoginStatus(!!localStorage.getItem("access_token"));
@@ -34,9 +34,21 @@ export default function Header() {
     fetchUserInfo();
   }, [loginStatus]);
 
-  useEffect(() => {
+   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
+
+  useEffect(() => {
+    if (loginStatus) {
+      const value = localStorage.getItem("isExceptEmptyRestaurant");
+
+      if (value !== null) {
+        setIsExceptEmptyRestaurant(JSON.parse(value));
+      } else {
+        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
+      }
+    }
+  }, [loginStatus]);
 
   if (loginStatus !== undefined) {
     return (

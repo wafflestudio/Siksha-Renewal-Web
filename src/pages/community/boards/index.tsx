@@ -7,6 +7,7 @@ import Layout from "../layout";
 import APIendpoint from "constants/constants";
 import axios from "axios";
 import { Board as BoardType, Post, RawPost, RawBoard } from "types";
+import { boardParser } from "utils/DataUtil";
 
 interface BoardProps {
   selectedBoardId?: number;
@@ -18,23 +19,17 @@ export default function Board({ selectedBoardId, children }: BoardProps) {
   const [boards, setBoards] = useState<BoardType[]>([]);
 
   useEffect(() => {
+    function setParsedBoards(board: RawBoard) {
+      setBoards((prev) => [...prev, boardParser(board)]);
+    }
     async function fetchBoards() {
-      const res = await axios.get(`${APIendpoint()}/community/boards`);
-      setBoards([]);
-      res.data.map((board: RawBoard) => {
-        const { created_at, updated_at, id, type, name, description } = board;
-        setBoards((prev) => [
-          ...prev,
-          {
-            createdAt: created_at,
-            updatedAt: updated_at,
-            id: id,
-            type: type,
-            name: name,
-            description: description,
-          },
-        ]);
-      });
+      await axios
+        .get(`${APIendpoint()}/community/boards`)
+        .then((res) => {
+          setBoards([]);
+          res.data.map(setParsedBoards);
+        })
+        .catch((e) => console.log(e));
     }
 
     fetchBoards();

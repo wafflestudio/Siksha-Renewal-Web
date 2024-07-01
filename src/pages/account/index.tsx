@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import axios from "axios";
-import APIendpoint from "../../constants/constants";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useEffect, useState } from "react";
@@ -9,11 +7,11 @@ import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider
 export default function Account() {
   const router = useRouter();
 
-  const [isLoading, setLoading] = useState(false);
-
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
-  const { loginStatus, userInfo } = state;
+  const { setLoginModal, setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
+
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (loginStatus === false) {
@@ -24,6 +22,11 @@ export default function Account() {
   }, []);
 
   const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
+
+  function toggle() {
+    localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(!isExceptEmptyRestaurant));
+    setIsExceptEmptyRestaurant(!isExceptEmptyRestaurant);
+  }
 
   return (
     <AccountLayout>
@@ -38,7 +41,7 @@ export default function Account() {
 
         <MyPost
           onClick={() => {
-            router.push("/account/nickname");
+            router.push("/account/mypost");
           }}
         >
           내가 쓴 글
@@ -59,7 +62,14 @@ export default function Account() {
           >
             즐겨찾기 식당 순서 변경
           </MiddleDiv>
-          <MiddleDiv>메뉴 없는 식당 숨기기</MiddleDiv>
+          <MiddleDiv>
+            메뉴 없는 식당 숨기기{" "}
+            {isExceptEmptyRestaurant ? (
+              <Icon src="/img/hide-circle-active.svg" onClick={toggle} />
+            ) : (
+              <Icon src="/img/hide-circle-inactive.svg" onClick={toggle} />
+            )}
+          </MiddleDiv>
           <LastDiv
             onClick={() => {
               router.push("/account/user");
@@ -93,6 +103,9 @@ const MyPost = styled(Box)``;
 const Package = styled.div``;
 const FirstDiv = styled(Box)``;
 const MiddleDiv = styled(Box)``;
+
+const Icon = styled.img``;
+
 const LastDiv = styled(Box)``;
 
 const Inquiry = styled(Box)``;

@@ -23,6 +23,7 @@ export interface State {
   };
   isFilterFavorite: boolean;
   favoriteRestaurant: number[];
+  isExceptEmptyRestaurant: boolean;
 }
 
 export type Action =

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useDispatchContext } from "../../hooks/ContextProvider";
-import React, { useCallback } from "react";
 
 export default function LoginModal() {
   const handleKakaoLogin = () => {
@@ -73,6 +72,10 @@ const Background = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    overflow: scroll;
+  }
 `;
 
 const MainContainer = styled.div`
@@ -84,11 +87,25 @@ const MainContainer = styled.div`
   transform: translate(-50%, -50%);
   background: #ff9522;
   border-radius: 13px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0px;
+  }
 `;
 
 const TopContainer = styled.span`
   display: flex;
   justify-content: space-between;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-grow: 222;
+  }
 `;
 
 const LoginTitle = styled.p`
@@ -115,13 +132,27 @@ const CloseButton = styled.img`
 `;
 
 const SikshaLogo = styled.img`
+  width: 110.5px;
+  height: 63.97px;
   margin-top: 60.91px;
   margin-left: 50%;
   transform: translateX(-50%);
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+    flex-grow: 144.5;
+    width: 85px;
+    height: 49.5px;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const SocialContainer = styled.div`
   margin-top: 75.26px;
+  @media (max-width: 768px) {
+    margin-top: 0;
+    flex-grow: 95;
+  }
 `;
 
 const SocialButton = styled.div`
@@ -154,7 +185,15 @@ const SocialUnion = styled.img`
 `;
 
 const WaffleLogo = styled.img`
+  width: 191px;
+  height: 16px;
+
   margin-top: 72px;
   margin-left: 50%;
   transform: translateX(-50%);
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+    margin-bottom: 87px;
+  }
 `;

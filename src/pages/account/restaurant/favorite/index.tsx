@@ -15,13 +15,6 @@ interface Restaurant {
 }
 
 export default function Setting_Favorite() {
-  // Favorite 로직 나오기 전까지는 동작 안하게 설정
-  const router = useRouter();
-  useEffect(() => {
-    router.push("/account");
-  }, []);
-  return <></>;
-
   const state = useStateContext();
 
   const [orderData, setOrderData] = useState<Restaurant[]>([]);
@@ -33,15 +26,19 @@ export default function Setting_Favorite() {
       const {
         data: { result },
       }: { data: { result: Restaurant[] } } = await axios.get(`${APIendpoint()}/restaurants/`);
-      // Todo: 즐겨차기 리스트 완성되면 localStorage에서 가져오기
+      const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
+
       for (let i = 0; i < orderList.length; i++) {
-        if (!result.find(({ id }) => id === orderList[i].id)) {
+        if (
+          !result.find(({ id }) => id === orderList[i].id) ||
+          !favoriteList.includes(orderList[i].id)
+        ) {
           orderList.splice(i, 1);
           i--;
         }
       }
       result.forEach(({ id, name_kr, name_en }) => {
-        if (!orderList.some((menu) => Number(menu.id) === id))
+        if (!orderList.some((menu) => Number(menu.id) === id) && favoriteList.includes(id))
           orderList.push({ id, name_kr, name_en });
       });
 
