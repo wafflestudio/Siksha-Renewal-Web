@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useStateContext } from "hooks/ContextProvider";
-import { use, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
 
 function scrollRestaurant(restaurant) {
@@ -16,13 +16,22 @@ export default function RestaurantList() {
 
   const { meal, data } = state;
 
-  const { toggleFavorite, isFavorite } = useFavorite();
+  const { favoriteRestaurant, toggleFavorite, isFavorite } = useFavorite();
+  const [ favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    const favorites = data[meal].filter(restaurant => isFavorite(restaurant.id))
+    const nonFavorites = data[meal].filter(restaurant => isFavorite(restaurant.id) === false)
+
+    const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
+    setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
+  }, [data, favoriteRestaurant]);
 
   return (
     <Container>
       <Restaurants>
-        {data[meal] &&
-          data[meal].map((restaurant) => (
+        {favoriteFirstRestaurants &&
+          favoriteFirstRestaurants.map((restaurant) => (
             <Restaurant key={restaurant.id}>
               <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
                 {restaurant.name_kr}
