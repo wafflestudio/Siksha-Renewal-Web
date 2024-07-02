@@ -4,21 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import Image from "next/image";
 
-const SWIPER_ALIGNMENT_OFFSET = 90;
-/**
- * swiper의 element 정렬 기준축 위치를 조정
- * 기준측이 element의 우측 모서리와 일치하도록 정렬
- * @param viewSize swiper 길이 (스크롤 방향 기준)
- * @param snapSize swiper 내 element 길이 (스크롤 방향 기준)
- * @param index 각 element의 index
- * @returns swiper의 좌측 모서리 기준 기준축의 위치
- */
-const setAlignment = (viewSize: number, snapSize: number, index: number) => {
-  return viewSize - SWIPER_ALIGNMENT_OFFSET;
-};
-
 export default function ReviewImageSwiper({ images }: { images: string[] }) {
-  const OPTIONS: EmblaOptionsType = { align: setAlignment, loop: true };
+  const OPTIONS: EmblaOptionsType = { align: 'start', loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
 
   const onPrevButtonClick = useCallback(() => {
@@ -64,7 +51,10 @@ const Swiper = styled.div`
 `;
 
 const SwiperViewport = styled.div`
+  background-color: #f0f0f0;
   position: absolute;
+  display: flex;
+  justify-content: center;
   width: 100%;
   overflow: hidden;
 `;
@@ -100,6 +90,7 @@ const SwiperNextButton = styled.button`
 
 const ReviewImageContainer = styled.div`
   height: var(--slide-height);
+  width: var(--slide-width);
   flex: 0 0 var(--slide-width);
   min-width: 0;
   padding-left: var(--slide-spacing);

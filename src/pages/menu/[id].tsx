@@ -163,9 +163,6 @@ export default function Menu() {
     if (updatedImages.length > SWIPER_IMAGES_LIMIT) {
       updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
     }
-    while (updatedImages.length > 0 && updatedImages.length <= SWIPER_IMAGES_LIMIT) {
-      updatedImages = updatedImages.concat(updatedImages);
-    }
     setImages(updatedImages);
   }, [reviews]);
 
