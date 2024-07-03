@@ -8,30 +8,15 @@ export default function Auth() {
   const router = useRouter();
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
-    const code = params.get("code");
-    const grantType = "authorization_code";
-    const CLIENT_ID = process.env.NEXT_PUBLIC_APPLE_CLIENTID;
-    const REST_SECRET_KEY = process.env.NEXT_PUBLIC_APPLE_SECRET;
-    const REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI;
+    const id_token = params.get("id_token");
 
     axios
       .post(
-        `https://appleid.apple.com/auth/token?grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+        `${APIendpoint()}/auth/login/apple`,
         {},
-        { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
-      )
-      .then((res: any) => {
-        const { id_token } = res.data;
-        return id_token;
-      })
-      .then((id_token: string) =>
-        axios.post(
-          `${APIendpoint()}/auth/login/apple`,
-          {},
-          {
-            headers: { "apple-token": `Bearer ${id_token}` },
-          },
-        ),
+        {
+          headers: { "apple-token": `Bearer ${id_token}` },
+        },
       )
       .then((res: any) => {
         localStorage.setItem("access_token", res.data.access_token);
@@ -39,6 +24,7 @@ export default function Auth() {
       })
       .catch((res: any) => {
         console.dir(res);
+        console.log(res.response);
       });
   }, []);
 
