@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
@@ -82,6 +82,11 @@ export default function Menu() {
   const state = useStateContext();
   const { isLoginModal } = state;
   const { setLoginModal } = useDispatchContext();
+
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const toggleAccordion = () => setIsAccordionOpen(!isAccordionOpen);
+  const [isOverflow, setIsOverflow] = useState(false);
+  const menuTitleDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!id) {
@@ -174,6 +179,14 @@ export default function Menu() {
     }
   };
 
+  useEffect(() => {
+    if (menuTitleDivRef.current) {
+      const { current } = menuTitleDivRef
+      const { offsetWidth, scrollWidth } = current
+      setIsOverflow(offsetWidth < scrollWidth)
+    }
+  }, [menuTitleDivRef.current])
+
   return (
     <>
       <GlobalStyle />
@@ -186,7 +199,10 @@ export default function Menu() {
             <MenuInfoContainer>
               <MenuHeader>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <MenuTitle>{menu.name_kr}</MenuTitle>
+                  <MenuTitleContainer>
+                    <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>{menu.name_kr}</MenuTitle>
+                    <MenuTitleAccordionButton isOpen={isAccordionOpen} isTitleLong={isOverflow} onClick={toggleAccordion} />
+                  </MenuTitleContainer>
                   <MenuSubTitle>{restaurantName}</MenuSubTitle>
                 </div>
                 <Likes menu={menu} />
@@ -266,7 +282,7 @@ const MenuContainer = styled.section`
 `;
 
 const MenuInfoContainer = styled.div`
-  padding: 37px 30px 26px calc(max((100vw - 1155px), 0px) / 2);
+  padding: 37px 30px 26px calc(max(100vw - max(1221px,min(73vw,1417px)),0px) / 2);
   @media (max-width: 768px) {
     padding: 19px 15px 18px 17px;
   }
@@ -312,19 +328,44 @@ const MenuHeader = styled.div`
   }
 `;
 
-const MenuTitle = styled.div`
+const MenuTitleContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-right: 9.2px;
+`;
+
+const MenuTitle = styled.div<{ isOpen: boolean }>`
   font-size: 40px;
   font-weight: 700;
   color: #ff9522;
-  margin-right: 32px;
+  line-height: 45.4px;
+  margin-right: 3px;
   margin-left: 7px;
-  max-width: 400px;
+  width: ${props => props.isOpen ? '492px' : 'auto'};
+  max-width: 492px;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: ${props => props.isOpen ? 'normal' : 'nowrap'};
+  word-break: break-word;
   overflow: hidden;
   @media (max-width: 768px) {
     font-size: 20px;
     margin: 0;
+  }
+`;
+
+const MenuTitleAccordionButton = styled.button<{ isOpen: boolean, isTitleLong: boolean }>`
+  display: ${props => props.isTitleLong ? 'inherit' : 'none'};
+  height: 45.4px;
+  width: 21.75px;
+  border: none;
+  background-color: transparent;
+  background-image: url(${props => props.isOpen ? '"/img/up-arrow-orange.svg"' : '"/img/down-arrow-orange.svg"'});
+  background-repeat: no-repeat;
+  background-position-y: center;
+  cursor: pointer;
+  
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -380,12 +421,13 @@ const ReviewHeader = styled.div`
 `;
 
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
+  position: fixed;
   background: #ff9522;
   color: white;
   text-align: center;
-  padding: 10px 25px;
+  padding: 14px 25px;
   border: none;
-  margin-bottom: 17px;
+  bottom: 17px;
   cursor: pointer;
   ${(props) =>
     props.mobile
@@ -400,6 +442,7 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
           border-radius: 50px;
           @media (max-width: 768px) {
             display: inline-block;
+            padding: 8px 25px;
           }
         `
       : css`
