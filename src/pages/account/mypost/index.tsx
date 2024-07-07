@@ -10,17 +10,15 @@ import styled from "styled-components";
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
 
-  function setParsedPosts(rawPost: RawPost) {
-    setPosts((prev) => [...prev, postParser(rawPost)]);
-  }
-
   async function fetchMyPosts() {
     await axios
       .get(`${APIendpoint()}/community/posts/me`, {
         headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
       })
       .then((res) => {
-        res.data.result.map(setParsedPosts);
+        res.data.result.map((parsedPost: RawPost) =>
+          setPosts((prev) => [...prev, postParser(parsedPost)]),
+        );
       })
       .catch((e) => console.log(e));
   }
@@ -31,18 +29,35 @@ export default function MyPost() {
 
   return (
     <AccountLayout>
-      <Header>내가 쓴 글</Header>
-      <PostList posts={posts} />
+      <Container>
+        <Header>내가 쓴 글</Header>
+        <PostList posts={posts} />
+        <BreakLine />
+      </Container>
     </AccountLayout>
   );
 }
 
+const Container = styled.div`
+  padding: 0 18.5px;
+  width: 701px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+`;
+
 const Header = styled.div`
-  margin-top: 23px;
-  margin-bottom: 30px;
+  margin: 24.08px 0 29.42px 4.5px;
   color: var(--Main-Orange, #ff9522);
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 23px;
-  letter-spacing: -0.3;
+  letter-spacing: -0.3px;
+`;
+
+const BreakLine = styled.hr`
+  margin-bottom: 29.4px;
+  border: 0;
+  height: 1px;
+  background: #eeeeee;
 `;
