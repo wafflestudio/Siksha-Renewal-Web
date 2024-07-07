@@ -68,7 +68,6 @@ export default function Body() {
           result[0].LU = LU.sort(sortFunction);
           result[0].DN = DN.sort(sortFunction);
 
-          console.log(result[0]);
           setData(result[0]);
         } catch (e) {
           console.log(e);
