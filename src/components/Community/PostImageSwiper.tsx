@@ -39,8 +39,8 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
     <Swiper onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <SwiperViewport ref={emblaRef}>
         <SwiperContainer>
-          {images.map((image, index) => (
-            <PostImageContainer key={index}>
+          {images.map((image) => (
+            <PostImageContainer key={image}>
               <PostImage src={image} />
             </PostImageContainer>
           ))}
