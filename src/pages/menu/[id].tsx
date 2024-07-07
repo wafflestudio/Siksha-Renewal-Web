@@ -74,7 +74,6 @@ export default function Menu() {
     total_count: 0,
   });
   const [menu, setMenu] = useState<MenuType>();
-  const [images, setImages] = useState<string[]>([]);
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
   const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
@@ -87,6 +86,10 @@ export default function Menu() {
   const toggleAccordion = () => setIsAccordionOpen(!isAccordionOpen);
   const [isOverflow, setIsOverflow] = useState(false);
   const menuTitleDivRef = useRef<HTMLDivElement>(null);
+
+  const SWIPER_IMAGES_LIMIT = 5;
+  const [images, setImages] = useState<string[]>([]);
+  const [imageCount, SetImageCount] = useState<number>(0);
 
   useEffect(() => {
     if (!id) {
@@ -164,11 +167,11 @@ export default function Menu() {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
-    const SWIPER_IMAGES_LIMIT = 10;
     if (updatedImages.length > SWIPER_IMAGES_LIMIT) {
       updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
     }
     setImages(updatedImages);
+    SetImageCount(updatedImages.length);
   }, [reviews]);
 
   const handleReviewPostButtonClick = () => {
@@ -195,7 +198,7 @@ export default function Menu() {
       {!isLoading && !!menu && (
         <Info>
           <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} />}
+            {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount}/>}
             <MenuInfoContainer>
               <MenuHeader>
                 <div style={{ display: "flex", alignItems: "baseline" }}>

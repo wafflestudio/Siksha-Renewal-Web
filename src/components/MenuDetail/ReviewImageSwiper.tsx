@@ -3,8 +3,9 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function ReviewImageSwiper({ images }: { images: string[] }) {
+export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
   const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
@@ -42,8 +43,14 @@ export default function ReviewImageSwiper({ images }: { images: string[] }) {
     <Swiper>
       <SwiperViewport ref={emblaRef} isContainerSmaller={isContainerSmaller}>
         <SwiperContainer>
-          {images.map((image) => (
+          {images.map((image, index) => (
             <ReviewImageContainer key={image}>
+              {
+                imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
+                <Link href="#">
+                  <MoreImages>+{imageCount - swiperImagesLimit}</MoreImages>
+                </Link>
+              }
               <ReviewImage src={image} />
             </ReviewImageContainer>
           ))}
@@ -91,7 +98,6 @@ const SwiperContainer = styled.div`
   height: 100%;
   backface-visibility: hidden;
   display: flex;
-  touch-action: pan-y;
   margin-left: calc(var(--slide-spacing) * -1);
   padding: 0 auto;
 `;
@@ -127,4 +133,17 @@ const ReviewImage = styled.img`
   object-fit: cover;
   height: var(--slide-height);
   width: 100%;
+`;
+
+const MoreImages = styled.button`
+  position: absolute;
+  height: var(--slide-height);
+  width: var(--slide-width);
+  background: #D9D9D980;
+  border: none;
+  box-shadow: none;
+  font-weight: 700;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
 `;
