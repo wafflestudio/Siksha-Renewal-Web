@@ -36,11 +36,21 @@ export default function Account() {
       <ListGroup>
         <ContentDiv
           onClick={() => {
-            router.push("/account/mypost");
+            router.push("/account/nickname");
           }}
         >
           <Profile src={profileURL} />
           <ProfileText>{isLoading ? "잠시만 기다려주세요..." : nickname}</ProfileText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+      </ListGroup>
+      <ListGroup>
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/mypost");
+          }}
+        >
+          <DefaultText>내가 쓴 글</DefaultText>
           <ArrowButton src="/img/right-arrow-grey.svg" />
         </ContentDiv>
       </ListGroup>
