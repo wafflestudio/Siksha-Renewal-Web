@@ -72,7 +72,6 @@ const Container = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     margin-right: 0;
-    margin-top: 12px;
   }
 `;
 
@@ -90,17 +89,14 @@ const HeartIcon = styled.img`
 
 const LikesText = styled.div`
   width: max-content;
-  font-size: 15px;
-  line-height: 17px;
+  font-size: 14px;
+  line-height: 16px;
   font-weight: 400;
   display: flex;
   padding-left: 12px;
   color: #797979;
 
   @media (max-width: 768px) {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 400;
     padding-left: 0;
     color: #000000;
   }

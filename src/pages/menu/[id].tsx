@@ -14,6 +14,9 @@ import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
 import Image from "next/image";
+import MobileSubHeader from "components/MobileSubHeader";
+import useEmblaCarousel from "embla-carousel-react";
+import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
 
 interface MenuType {
   id: number;
@@ -88,6 +91,7 @@ export default function Menu() {
   const menuTitleDivRef = useRef<HTMLDivElement>(null);
 
   const SWIPER_IMAGES_LIMIT = 5;
+  const MOBILE_IMAGE_LIST_LIMIT = 5;
   const [images, setImages] = useState<string[]>([]);
   const [imageCount, SetImageCount] = useState<number>(0);
 
@@ -167,9 +171,6 @@ export default function Menu() {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
-    if (updatedImages.length > SWIPER_IMAGES_LIMIT) {
-      updatedImages = updatedImages.slice(0, SWIPER_IMAGES_LIMIT);
-    }
     setImages(updatedImages);
     SetImageCount(updatedImages.length);
   }, [reviews]);
@@ -197,17 +198,18 @@ export default function Menu() {
       <Header />
       {!isLoading && !!menu && (
         <Info>
+          <MobileSubHeader title={menu.name_kr} />
           <MenuContainer>
             {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount} />}
             <MenuInfoContainer>
               <MenuHeader>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <MenuTitleContainer>
+                <MenuTitleContainer>
+                  <MenuTitleWrapper>
                     <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>{menu.name_kr}</MenuTitle>
                     <MenuTitleAccordionButton isOpen={isAccordionOpen} isTitleLong={isOverflow} onClick={toggleAccordion} />
-                  </MenuTitleContainer>
+                  </MenuTitleWrapper>
                   <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                </div>
+                </MenuTitleContainer>
                 <Likes menu={menu} />
               </MenuHeader>
               <HLine />
@@ -218,32 +220,38 @@ export default function Menu() {
               />
             </MenuInfoContainer>
             <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-                나의 평가 남기기
+              나의 평가 남기기
             </ReviewPostButton>
           </MenuContainer>
           <MobileHLine />
           {!isReviewPostModalOpen && (
             <ReviewContainer>
               <ReviewHeader>
-                <div style={{ display: "flex" }}>
-                  <ReviewTitle>리뷰</ReviewTitle>
-                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                </div>
-                <Link href="#" style={{ textDecoration: "none" }}>
-                  <ImageReviewButton>
-                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                    <img
-                      src="/img/right-arrow-darkgrey.svg"
-                      alt="사진 리뷰 모아보기"
-                    />
-                  </ImageReviewButton>
-                </Link>
+                <MobilePhotoReviewHeader>
+                  <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
+                  <Link href="#" style={{ textDecoration: "none" }}>
+                    <PhotoReviewButton>
+                      <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
+                      <img
+                        src="/img/right-arrow-darkgrey.svg"
+                        alt="사진 리뷰 모아보기"
+                      />
+                    </PhotoReviewButton>
+                  </Link>
+                </MobilePhotoReviewHeader>
+                <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={imageCount} />
+                <MobileReviewHeader>
+                  <div style={{ display: "flex" }}>
+                    <ReviewTitle>리뷰</ReviewTitle>
+                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                  </div>
+                  <MoreReviewsButtonImage src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" />
+                </MobileReviewHeader>
               </ReviewHeader>
               <ReviewList>
-                {reviews.result.length > 0 &&
-                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                {reviews.result.length === 0 &&
-                  <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+                {reviews.result.length > 0
+                  ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+                  : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
                 }
               </ReviewList>
               <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
@@ -286,9 +294,9 @@ const MenuContainer = styled.section`
 `;
 
 const MenuInfoContainer = styled.div`
-  padding: 37px 30px 26px calc(max(100vw - max(1221px,min(73vw,1417px)),0px) / 2);
+  padding: 41px 30px 26px calc(max(100vw - max(1221px,min(73vw,1417px)),0px) / 2);
   @media (max-width: 768px) {
-    padding: 19px 15px 18px 17px;
+    padding: 18px 15px 16px 17px;
   }
 `;
 
@@ -315,8 +323,8 @@ const ReviewContainer = styled.section`
 const MobileHLine = styled.div`
   display: none;
   background: #9191911A;
+  padding: 5px 0;
   margin-bottom: 16px;
-  height: 10px;
   @media (max-width: 768px) {
     display: inherit;
   }
@@ -337,6 +345,9 @@ const NoReviewMessage = styled.div`
   font-weight: 400;
   color: #797979;
   margin-top: 300px;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const MenuHeader = styled.div`
@@ -344,16 +355,29 @@ const MenuHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   align-items: last baseline;
+  padding-bottom: 13px;
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
+    padding-bottom: 18px;
   }
 `;
 
 const MenuTitleContainer = styled.div`
   display: flex;
+  align-items: baseline;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MenuTitleWrapper = styled.div`
+  display: flex;
   align-items: flex-start;
   margin-right: 9.2px;
+  @media (max-width: 768px) {
+    margin: 0;
+  }
 `;
 
 const MenuTitle = styled.div<{ isOpen: boolean }>`
@@ -392,7 +416,7 @@ const MenuTitleAccordionButton = styled.button<{ isOpen: boolean, isTitleLong: b
 `;
 
 const MenuSubTitle = styled.div`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   color: #ff9522;
   text-overflow: ellipsis;
@@ -407,7 +431,46 @@ const HLine = styled.div`
   width: 100%;
   height: 1px;
   background: #fe8c59;
-  margin: 10px auto 10px auto;
+  margin: auto;
+`;
+
+const MobilePhotoReviewHeader = styled.div`
+  display: flex;
+  width: fit-content;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const MobilePhotoReviewTitle = styled.div`
+  display: none;
+  color: black;
+  font-size: 14px;
+  font-weight: 400;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
+const PhotoReviewButton = styled.div`
+  width: max-content;
+  display: flex;
+`;
+
+const PhotoReviewButtonText = styled.div`
+  color: #919191;
+  margin-right: 12px;
+  font-size: 14px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileReviewHeader = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const ReviewTitle = styled.div`
@@ -429,27 +492,26 @@ const ReviewTotalCount = styled.div`
   }
 `;
 
-const ImageReviewButton = styled.div`
-  display: flex;
-  text-decoration: none;
-`;
-
-const ImageReviewButtonText = styled.div`
-  color: #919191;
-  margin-right: 12px;
-  font-size: 14px;
+const MoreReviewsButtonImage = styled.img`
+  display: none;
+  cursor: pointer;
   @media (max-width: 768px) {
-    display: none;
+    display: inherit;
   }
 `;
 
 const ReviewHeader = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   width: 100%;
   padding: 0 24px 0 24px;
   align-items: center;
   margin-bottom: 40px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
 `;
 
 const ReviewPostButton = styled.button<{ mobile: boolean }>`

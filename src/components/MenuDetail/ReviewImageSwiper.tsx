@@ -10,6 +10,10 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
 
+  if(images.length > swiperImagesLimit) {
+    images = images.slice(0, swiperImagesLimit);
+  }
+
   useEffect(() => {
     if (emblaApi) {
       const viewportElement = emblaApi.rootNode();
@@ -17,8 +21,6 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
       const updateWidthComparison = () => {
         const viewportWidth = viewportElement.offsetWidth;
         const containerWidth = containerElement.scrollWidth;
-        console.log("viewport:", viewportWidth);
-        console.log("container:", containerWidth);
         SetIsContainerSmaller(viewportWidth + 4 >= containerWidth);
       }
 
@@ -50,7 +52,7 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
               {
                 imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
                 <Link href="#">
-                  <MoreImages>+{imageCount - swiperImagesLimit}</MoreImages>
+                  <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
                 </Link>
               }
               <ReviewImage src={image} />
@@ -140,7 +142,7 @@ const MoreImages = styled.button`
   position: absolute;
   height: var(--slide-height);
   width: var(--slide-width);
-  background: #D9D9D980;
+  background: #00000080;
   border: none;
   box-shadow: none;
   font-weight: 700;
