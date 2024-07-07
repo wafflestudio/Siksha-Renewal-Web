@@ -1,15 +1,37 @@
 import styled from "styled-components";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function ReviewImageSwiper({ images }: { images: string[] }) {
-  const OPTIONS: EmblaOptionsType = { align: 'start', loop: false };
+  const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+  const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (emblaApi) {
+      const viewportElement = emblaApi.rootNode();
+
+      const containerWidth = emblaApi.containerNode().clientWidth;
+      const updateWidthComparison = () => {
+        const viewportWidth = viewportElement.clientWidth;
+        SetIsContainerSmaller(viewportWidth > containerWidth);
+      }
+
+      const resizeObserver = new ResizeObserver(updateWidthComparison);
+      resizeObserver.observe(viewportElement);
+      updateWidthComparison();
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, [emblaApi]);
 
   const onPrevButtonClick = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
+    if (emblaApi) {
+      emblaApi.scrollPrev();
+    }
   }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
@@ -18,21 +40,21 @@ export default function ReviewImageSwiper({ images }: { images: string[] }) {
 
   return (
     <Swiper>
-      <SwiperViewport ref={emblaRef}>
+      <SwiperViewport ref={emblaRef} isContainerSmaller={isContainerSmaller}>
         <SwiperContainer>
-          {images.map((image, index) => (
-            <ReviewImageContainer key={index}>
+          {images.map((image) => (
+            <ReviewImageContainer key={image}>
               <ReviewImage src={image} />
             </ReviewImageContainer>
           ))}
         </SwiperContainer>
       </SwiperViewport>
-      <SwiperPrevButton type="button" onClick={onPrevButtonClick}>
+      <PrevButton type="button" onClick={onPrevButtonClick}>
         <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
-      </SwiperPrevButton>
-      <SwiperNextButton type="button" onClick={onNextButtonClick}>
+      </PrevButton>
+      <NextButton type="button" onClick={onNextButtonClick}>
         <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
-      </SwiperNextButton>
+      </NextButton>
     </Swiper>
   );
 }
@@ -50,42 +72,47 @@ const Swiper = styled.div`
   --slide-spacing: 4px;
 `;
 
-const SwiperViewport = styled.div`
+const SwiperViewport = styled.div<{ isContainerSmaller: boolean }>`
   background-color: #f0f0f0;
   position: absolute;
-  display: flex;
-  justify-content: center;
   width: 100%;
+  height: 100%;
   overflow: hidden;
+  ${(props) =>
+    props.isContainerSmaller
+    && `
+          display: flex;
+          justify-content: center;
+        `
+  }
 `;
 
 const SwiperContainer = styled.div`
+  height: 100%;
   backface-visibility: hidden;
   display: flex;
   touch-action: pan-y;
   margin-left: calc(var(--slide-spacing) * -1);
+  padding: 0 auto;
 `;
 
-const SwiperPrevButton = styled.button`
+const transitionButton = styled.button`
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const PrevButton = styled(transitionButton)`
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
   margin-left: 24px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
 `;
 
-const SwiperNextButton = styled.button`
-  position: absolute;
+const NextButton = styled(transitionButton)`
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
   margin-right: 24px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 `;
 
 const ReviewImageContainer = styled.div`
