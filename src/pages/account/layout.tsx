@@ -20,7 +20,6 @@ const Content = styled.div`
   margin: 0 auto;
   margin-top: 37px;
   height: 100%;
-  background: white;
   border-radius: 10px 10px 0 0;
   padding: 20px 19px;
   box-sizing: border-box;
