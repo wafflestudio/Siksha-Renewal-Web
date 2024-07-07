@@ -423,6 +423,7 @@ const ReviewHeader = styled.div`
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
   position: fixed;
   background: #ff9522;
+  width: 200px;
   color: white;
   text-align: center;
   padding: 14px 25px;
