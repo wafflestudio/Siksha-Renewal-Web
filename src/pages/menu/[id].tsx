@@ -198,7 +198,7 @@ export default function Menu() {
       {!isLoading && !!menu && (
         <Info>
           <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount}/>}
+            {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount} />}
             <MenuInfoContainer>
               <MenuHeader>
                 <div style={{ display: "flex", alignItems: "baseline" }}>
@@ -243,7 +243,9 @@ export default function Menu() {
               <ReviewList>
                 {reviews.result.length > 0 &&
                   reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+                {reviews.result.length === 0 &&
+                  <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+                }
               </ReviewList>
               <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
                 나의 평가 남기기
@@ -318,6 +320,14 @@ const ReviewList = styled.div`
   max-height: 800px;
   overflow-y: scroll;
   overflow-x: auto;
+`;
+
+const NoReviewMessage = styled.div`
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  color: #797979;
+  margin-top: 300px;
 `;
 
 const MenuHeader = styled.div`
