@@ -217,12 +217,13 @@ export default function Menu() {
                 distribution={reviewDistribution}
               />
             </MenuInfoContainer>
+            <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                나의 평가 남기기
+            </ReviewPostButton>
           </MenuContainer>
+          <MobileHLine />
           {!isReviewPostModalOpen && (
             <ReviewContainer>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-                나의 평가 남기기
-              </ReviewPostButton>
               <ReviewHeader>
                 <div style={{ display: "flex" }}>
                   <ReviewTitle>리뷰</ReviewTitle>
@@ -231,11 +232,9 @@ export default function Menu() {
                 <Link href="#" style={{ textDecoration: "none" }}>
                   <ImageReviewButton>
                     <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                    <Image
-                      src="/img/right-arrow-grey.svg"
-                      alt="오른쪽 화살표"
-                      width={10}
-                      height={16}
+                    <img
+                      src="/img/right-arrow-darkgrey.svg"
+                      alt="사진 리뷰 모아보기"
                     />
                   </ImageReviewButton>
                 </Link>
@@ -310,6 +309,16 @@ const ReviewContainer = styled.section`
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 0;
+  }
+`;
+
+const MobileHLine = styled.div`
+  display: none;
+  background: #9191911A;
+  margin-bottom: 16px;
+  height: 10px;
+  @media (max-width: 768px) {
+    display: inherit;
   }
 `;
 
@@ -404,6 +413,10 @@ const HLine = styled.div`
 const ReviewTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    font-weight: 400;
+  }
 `;
 
 const ReviewTotalCount = styled.div`
@@ -411,6 +424,9 @@ const ReviewTotalCount = styled.div`
   padding-top: 2px;
   font-weight: 800;
   color: #ff9522;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ImageReviewButton = styled.div`
@@ -422,6 +438,9 @@ const ImageReviewButtonText = styled.div`
   color: #919191;
   margin-right: 12px;
   font-size: 14px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ReviewHeader = styled.div`
@@ -453,10 +472,12 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
           font-size: 14px;
           font-weight: 800;
           line-height: 16px;
+          margin: auto;
+          margin-bottom: 16px;
           border-radius: 50px;
+          padding: 8px 25px;
           @media (max-width: 768px) {
-            display: inline-block;
-            padding: 8px 25px;
+            display: block;
           }
         `
       : css`
