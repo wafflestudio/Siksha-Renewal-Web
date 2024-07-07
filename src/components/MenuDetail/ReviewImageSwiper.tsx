@@ -13,12 +13,13 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
   useEffect(() => {
     if (emblaApi) {
       const viewportElement = emblaApi.rootNode();
-      const containerWidth = emblaApi.containerNode().scrollWidth;
+      const containerElement = emblaApi.containerNode();
       const updateWidthComparison = () => {
         const viewportWidth = viewportElement.offsetWidth;
+        const containerWidth = containerElement.scrollWidth;
         console.log("viewport:", viewportWidth);
         console.log("container:", containerWidth);
-        SetIsContainerSmaller(viewportWidth>= containerWidth);
+        SetIsContainerSmaller(viewportWidth + 4 >= containerWidth);
       }
 
       const resizeObserver = new ResizeObserver(updateWidthComparison);
