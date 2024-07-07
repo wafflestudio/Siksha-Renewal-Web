@@ -19,6 +19,4 @@ const Content = styled.div`
   align-items: center;
   margin-top: 37px;
   height: 100%;
-  border-radius: 10px 10px 0 0;
-  box-sizing: border-box;
 `;

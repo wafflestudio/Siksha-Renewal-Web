@@ -43,7 +43,7 @@ const Container = styled.div`
   width: 701px;
   background: #ffffff;
   border: 1px solid #e8e8e8;
-  border-radius: 10px;
+  border-radius: 8px;
 `;
 
 const Header = styled.div`
