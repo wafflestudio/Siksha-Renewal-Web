@@ -58,6 +58,7 @@ export default function RestaurantOrderEdit({
 const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
+  padding-bottom: 12.68px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   background-color: #ffffff;

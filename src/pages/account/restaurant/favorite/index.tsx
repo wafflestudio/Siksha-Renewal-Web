@@ -79,5 +79,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 36.92px 0 40.92px 0;
+  margin-top: 36.92px;
 `;
