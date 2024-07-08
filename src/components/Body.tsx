@@ -11,6 +11,7 @@ import MenuList from "./MenuList";
 import Calendar from "./Calendar";
 import RestaurantInfo from "./RestaurantInfo";
 import APIendpoint from "../constants/constants";
+import MobileNavigationBar from "./MobileNavigationBar";
 
 export default function Body() {
   const state = useStateContext();
@@ -94,6 +95,7 @@ export default function Body() {
         )}
         <Meal />
         <MenuList />
+        <MobileNavigationBar />
       </MobileContainer>
       {showInfo && (
         <Info>
