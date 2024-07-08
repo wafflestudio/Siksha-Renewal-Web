@@ -3,17 +3,14 @@ import Header from "components/Header";
 import APIendpoint from "constants/constants";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useIsMobile from "hooks/UseIsMobile";
-import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { GlobalStyle } from "styles/globalstyle";
 
 interface LayoutProps {
   children: JSX.Element;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const router = useRouter();
   const state = useStateContext();
   const { setLoginStatus, setUserInfo, setIsFilterFavorite, setIsExceptEmptyRestaurant } =
     useDispatchContext();
@@ -73,13 +70,10 @@ export default function Layout({ children }: LayoutProps) {
   }, [loginStatus]);
 
   return (
-    <>
-      <GlobalStyle />
-      <Container>
-        <Header />
-        {children}
-      </Container>
-    </>
+    <Container>
+      <Header />
+      {children}
+    </Container>
   );
 }
 

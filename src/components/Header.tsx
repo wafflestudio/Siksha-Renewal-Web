@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
-import useIsMobile from "hooks/UseIsMobile";
 
 export default function Header() {
   const router = useRouter();
@@ -47,7 +46,6 @@ const LoginButton = styled.div`
   background: none;
   cursor: pointer;
   font-size: 20px;
-  font-family: NanumSquare;
   font-weight: 400;
   color: #ffffff;
   position: absolute;
@@ -96,7 +94,6 @@ const SikshaIcon = styled.img`
 `;
 
 const Title = styled.div`
-  font-family: "NIXGONFONTS V2.0";
   font-size: 20px;
   line-height: 20px;
   color: white;

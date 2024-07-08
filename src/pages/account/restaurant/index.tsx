@@ -3,7 +3,6 @@ import { useStateContext } from "../../../hooks/ContextProvider";
 import axios from "axios";
 import APIendpoint from "../../../constants/constants";
 import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
-import { GlobalStyle } from "../../../styles/globalstyle";
 import Header from "../../../components/Header";
 import styled from "styled-components";
 
@@ -61,7 +60,6 @@ export default function Setting_NonFavorite() {
 
   return (
     <>
-      <GlobalStyle />
       <Header />
       <Container>
         <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
