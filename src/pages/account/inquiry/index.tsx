@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
 import APIendpoint from "../../../constants/constants";
 import axios from "axios";
@@ -40,27 +40,26 @@ export default function Inquire() {
 
       const access_token = localStorage.getItem("access_token");
 
-      try {
-        await axios
-          .post(
-            `${APIendpoint()}/voc`,
-            {
-              voc: voc,
-              platform: "WEB",
-            },
-            {
-              headers: { "authorization-token": `Bearer ${access_token}` },
-            },
-          )
-          .then((res) => {
-            console.log(res);
-            setVoc("");
-            router.push(`/account`);
-          });
-      } catch (e) {
-        console.log(e);
-        router.push(`/account/inquiry`);
-      }
+      await axios
+        .post(
+          `${APIendpoint()}/voc`,
+          {
+            voc: voc,
+            platform: "WEB",
+          },
+          {
+            headers: { "authorization-token": `Bearer ${access_token}` },
+          },
+        )
+        .then((res) => {
+          console.log(res);
+          setVoc("");
+          router.push(`/account`);
+        })
+        .catch((e) => {
+          console.log(e);
+          router.push(`/account/inquiry`);
+        });
     }
   };
 
