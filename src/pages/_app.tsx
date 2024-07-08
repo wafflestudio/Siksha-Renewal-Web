@@ -1,28 +1,9 @@
 import Head from "next/head";
 import "styles/calendar.css";
-import axios from "axios";
-import { useEffect } from "react";
-import APIendpoint from "../constants/constants";
 import ContextProvider from "../hooks/ContextProvider";
 import LoginModalProvider from "components/LoginModalProvider";
-
+import Layout from "components/general/Layout";
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    axios
-      .post(
-        `${APIendpoint()}/auth/refresh`,
-        {},
-        { headers: { "authorization-token": `Bearer ${access_token}` } },
-      )
-      .then((res) => {
-        localStorage.setItem("access_token", res.data.access_token);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-  }, []);
-
   return (
     <ContextProvider>
       <LoginModalProvider />
@@ -42,7 +23,9 @@ function MyApp({ Component, pageProps }) {
           src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
         />
       </Head>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ContextProvider>
   );
 }
