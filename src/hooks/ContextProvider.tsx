@@ -19,6 +19,7 @@ const initialState = {
     id: null,
     nickname: null,
   },
+  isFilterFavorite: false,
   favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
 };
@@ -34,6 +35,7 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setLoginModal: (isLoginModal: boolean) => void;
   setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
 }
@@ -60,6 +62,8 @@ const ContextProvider = ({ children }) => {
   const setLoginModal = (isLoginModal: boolean) =>
     setState((prevState) => ({ ...prevState, isLoginModal: isLoginModal }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
+  const setIsFilterFavorite = (value) =>
+    setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
   const setFavoriteRestaurant = (favoriteRestaurant) =>
     setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
   const setIsExceptEmptyRestaurant = (except: boolean) =>
@@ -78,6 +82,7 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setLoginModal,
         setUserInfo,
+        setIsFilterFavorite,
         setFavoriteRestaurant,
         setIsExceptEmptyRestaurant,
       }}

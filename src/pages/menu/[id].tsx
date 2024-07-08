@@ -14,6 +14,7 @@ import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
 import Image from "next/image";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 interface MenuType {
   id: number;
@@ -183,68 +184,71 @@ export default function Menu() {
       {isLoginModal && <LoginModal />}
       <Header />
       {!isLoading && !!menu && (
-        <Info>
-          <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} />}
-            <MenuInfoContainer>
-              <MenuHeader>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <MenuTitle>{menu.name_kr}</MenuTitle>
-                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                </div>
-                <Likes menu={menu} />
-              </MenuHeader>
-              <HLine />
-              <ReviewDistribution
-                totalReviewCount={reviews.total_count}
-                score={menu.score || 0}
-                distribution={reviewDistribution}
+        <>
+          <Info>
+            <MenuContainer>
+              {images.length > 0 && <ReviewImageSwiper images={images} />}
+              <MenuInfoContainer>
+                <MenuHeader>
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <MenuTitle>{menu.name_kr}</MenuTitle>
+                    <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                  </div>
+                  <Likes menu={menu} />
+                </MenuHeader>
+                <HLine />
+                <ReviewDistribution
+                  totalReviewCount={reviews.total_count}
+                  score={menu.score || 0}
+                  distribution={reviewDistribution}
+                />
+              </MenuInfoContainer>
+            </MenuContainer>
+            {!isReviewPostModalOpen && (
+              <ReviewContainer>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+                <ReviewHeader>
+                  <div style={{ display: "flex" }}>
+                    <ReviewTitle>리뷰</ReviewTitle>
+                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                  </div>
+                  <Link href="#" style={{ textDecoration: "none" }}>
+                    <ImageReviewButton>
+                      <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
+                      <Image
+                        src="/img/right-arrow-grey.svg"
+                        alt="오른쪽 화살표"
+                        width={10}
+                        height={16}
+                      />
+                    </ImageReviewButton>
+                  </Link>
+                </ReviewHeader>
+                <ReviewList>
+                  {reviews.result.length > 0 &&
+                    reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
+                  {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+                </ReviewList>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+              </ReviewContainer>
+            )}
+            {isReviewPostModalOpen && (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id,
+                }}
+                onClose={() => setReviewPostModalOpen(false)}
               />
-            </MenuInfoContainer>
-          </MenuContainer>
-          {!isReviewPostModalOpen && (
-            <ReviewContainer>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-                나의 평가 남기기
-              </ReviewPostButton>
-              <ReviewHeader>
-                <div style={{ display: "flex" }}>
-                  <ReviewTitle>리뷰</ReviewTitle>
-                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                </div>
-                <Link href="#" style={{ textDecoration: "none" }}>
-                  <ImageReviewButton>
-                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                    <Image
-                      src="/img/right-arrow-grey.svg"
-                      alt="오른쪽 화살표"
-                      width={10}
-                      height={16}
-                    />
-                  </ImageReviewButton>
-                </Link>
-              </ReviewHeader>
-              <ReviewList>
-                {reviews.result.length > 0 &&
-                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
-              </ReviewList>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
-                나의 평가 남기기
-              </ReviewPostButton>
-            </ReviewContainer>
-          )}
-          {isReviewPostModalOpen && (
-            <ReviewPostModal
-              isOpen={isReviewPostModalOpen}
-              menu={{
-                menuName: menu.name_kr,
-                menuId: menu.id,
-              }}
-              onClose={() => setReviewPostModalOpen(false)}
-            />
-          )}
-        </Info>
+            )}
+          </Info>
+          <MobileNavigationBar />
+        </>
       )}
     </>
   );

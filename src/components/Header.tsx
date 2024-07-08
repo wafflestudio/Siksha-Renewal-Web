@@ -5,12 +5,19 @@ import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
 import APIendpoint from "../constants/constants";
 import axios from "axios";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginStatus, setLoginModal, setUserInfo, setIsExceptEmptyRestaurant } =
-    useDispatchContext();
+  const {
+    setLoginStatus,
+    setLoginModal,
+    setUserInfo,
+    setIsFilterFavorite,
+    setIsExceptEmptyRestaurant,
+  } = useDispatchContext();
+  const isMobile = useIsMobile();
 
   const { loginStatus, isExceptEmptyRestaurant } = state;
 
@@ -32,6 +39,10 @@ export default function Header() {
 
     fetchUserInfo();
   }, [loginStatus]);
+
+  useEffect(() => {
+    if (!isMobile) setIsFilterFavorite(false);
+  }, [isMobile]);
 
   useEffect(() => {
     if (loginStatus) {
@@ -149,3 +160,13 @@ const Title = styled.div`
     display: none;
   }
 `;
+// const NavBarContainer = styled.div`
+//   width: 100%;
+//   display: flex;
+//   align-items: flex-end;
+//   justify-content: center;
+//   margin-right: 368px;
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;

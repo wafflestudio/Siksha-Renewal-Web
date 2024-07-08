@@ -21,6 +21,7 @@ export interface State {
     id: number | null;
     nickname: string | null;
   };
+  isFilterFavorite: boolean;
   favoriteRestaurant: number[];
   isExceptEmptyRestaurant: boolean;
 }
