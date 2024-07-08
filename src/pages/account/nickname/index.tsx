@@ -102,4 +102,5 @@ const Button = styled.button`
   font-weight: 400;
   color: #ffffff;
   line-height: 14px;
+  cursor: pointer;
 `;
