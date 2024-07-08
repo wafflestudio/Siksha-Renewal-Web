@@ -4,11 +4,9 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
 import LoginModal from "../../components/Auth/LoginModal";
-import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
-import { GlobalStyle } from "../../styles/globalstyle";
 import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
@@ -180,9 +178,7 @@ export default function Menu() {
 
   return (
     <>
-      <GlobalStyle />
       {isLoginModal && <LoginModal />}
-      <Header />
       {!isLoading && !!menu && (
         <>
           <Info>
