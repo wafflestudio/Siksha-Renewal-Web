@@ -1,10 +1,10 @@
-import axios from "axios";
 import Header from "components/Header";
-import APIendpoint from "constants/constants";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { getMyData, loginRefresh } from "utils/api/auth";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -15,42 +15,33 @@ export default function Layout({ children }: LayoutProps) {
   const { setLoginStatus, setUserInfo, setIsFilterFavorite, setIsExceptEmptyRestaurant } =
     useDispatchContext();
   const isMobile = useIsMobile();
+  const { getAccessToken } = UseAccessToken();
 
   const { loginStatus, isExceptEmptyRestaurant } = state;
 
   useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    axios
-      .post(
-        `${APIendpoint()}/auth/refresh`,
-        {},
-        { headers: { "authorization-token": `Bearer ${access_token}` } },
-      )
-      .then((res) => {
-        localStorage.setItem("access_token", res.data.access_token);
+    getAccessToken()
+      .then((accessToken) => loginRefresh(accessToken))
+      .then((newAccessToken) => {
+        localStorage.setItem("access_token", newAccessToken);
       })
       .catch((res) => {
-        console.log(res);
+        console.error(res);
       });
   }, []);
 
   useEffect(() => {
     setLoginStatus(!!localStorage.getItem("access_token"));
 
-    const access_token = localStorage.getItem("access_token");
-
-    async function fetchUserInfo() {
-      try {
-        const res = await axios.get(`${APIendpoint()}/auth/me`, {
-          headers: { "authorization-token": `Bearer ${access_token}` },
-        });
-        setUserInfo({ id: res.data.id, nickname: res.data.nickname });
-      } catch (e) {
+    getAccessToken()
+      .then((accessToken) => getMyData(accessToken))
+      .then(({ id, nickname }) => {
+        setUserInfo({ id, nickname });
+      })
+      .catch((e) => {
+        console.error(e);
         setUserInfo({ id: null, nickname: null });
-      }
-    }
-
-    fetchUserInfo();
+      });
   }, [loginStatus]);
 
   useEffect(() => {

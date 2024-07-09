@@ -4,14 +4,13 @@ import RightSide from "components/RightSide";
 import Date from "components/Date";
 import { useEffect } from "react";
 import { formatISODate } from "../utils/FormatUtil";
-import axios from "axios";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import Meal from "components/Meal";
 import MenuList from "components/MenuList";
 import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
-import APIendpoint from "../constants/constants";
 import MobileNavigationBar from "components/MobileNavigationBar";
+import { getMenuList } from "utils/api/menus";
 
 export default function Home() {
   const state = useStateContext();
@@ -32,48 +31,34 @@ export default function Home() {
       }, new Map());
 
       if (!localStorage.getItem("access_token")) {
-        try {
-          const {
-            data: { result },
-          } = await axios.get(
-            `${APIendpoint()}/menus/?start_date=${dateString}&end_date=${dateString}&except_empty=true`,
-          );
-
-          setData(result[0]);
-        } catch (e) {
-          console.log(e);
-        }
+        getMenuList(dateString, true)
+          .then(({ result }) => {
+            setData(result[0]);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       } else {
-        try {
-          const {
-            data: { result },
-          } = await axios.get(
-            `${APIendpoint()}/menus/lo?start_date=${dateString}&end_date=${dateString}&except_empty=${localStorage.getItem(
-              "isExceptEmptyRestaurant",
-            )}`,
-            {
-              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-            },
-          );
+        getMenuList(dateString, localStorage.getItem("isExceptEmptyRestaurant") === "true")
+          .then(({ result }) => {
+            const { BR, LU, DN } = result[0];
 
-          const { BR, LU, DN } = result[0];
+            const sortFunction = (a, b) => {
+              const aOrder = orderHash.get(a.id)?.order ?? Infinity;
+              const bOrder = orderHash.get(b.id)?.order ?? Infinity;
+              if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
+              else return aOrder - bOrder;
+            };
 
-          const sortFunction = (a, b) => {
-            const aOrder = orderHash.get(a.id)?.order ?? Infinity;
-            const bOrder = orderHash.get(b.id)?.order ?? Infinity;
-            if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
-            else return aOrder - bOrder;
-          };
+            result[0].BR = BR.sort(sortFunction);
+            result[0].LU = LU.sort(sortFunction);
+            result[0].DN = DN.sort(sortFunction);
 
-          result[0].BR = BR.sort(sortFunction);
-          result[0].LU = LU.sort(sortFunction);
-          result[0].DN = DN.sort(sortFunction);
-
-          console.log(result[0]);
-          setData(result[0]);
-        } catch (e) {
-          console.log(e);
-        }
+            setData(result[0]);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       }
       setLoading(false);
     }

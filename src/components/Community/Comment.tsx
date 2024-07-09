@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Action, Comment as CommentType } from "types";
+import { Comment as CommentType } from "types";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
-import axios from "axios";
-import APIendpoint from "constants/constants";
 import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
+import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
 
 interface CommentProps {
   comment: CommentType;
@@ -17,6 +17,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
 
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
+  const { getAccessToken } = UseAccessToken();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
@@ -26,54 +27,42 @@ export default function Comment({ comment, refetch }: CommentProps) {
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
   const profileImg = "/img/default-profile.svg";
 
-  const actions: ModalAction[] = [
-    { name: "공감", handleClick: isLikeToggle },
-    comment.isMine
-      ? { name: "삭제", handleClick: deleteComment }
-      : { name: "신고", handleClick: () => {} },
-  ];
-
-  async function isLikeToggle() {
+  const isLikeToggle = () => {
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
-      const apiUrl = isLiked
-        ? `${APIendpoint()}/community/comments/${id}/unlike`
-        : `${APIendpoint()}/community/comments/${id}/like`;
-      try {
-        await axios
-          .post(
-            apiUrl,
-            {},
-            {
-              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-            },
-          )
-          .then((res) => {
-            setIsLiked(res.data.is_liked);
-            setLikeCount(res.data.like_cnt);
-          });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
+      const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
 
-  async function deleteComment() {
+      return getAccessToken()
+        .then((accessToken) => handleLikeAction(id, accessToken))
+        .then(({ isLiked, likeCount }) => {
+          setIsLiked(isLiked);
+          setLikeCount(likeCount);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
+
+  const removeComment = () => {
     if (loginStatus === false) {
       setLoginModal(true);
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
-      try {
-        await axios
-          .delete(`${APIendpoint()}/community/comments/${id}`, {
-            headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-          })
-          .then(refetch);
-      } catch (e) {
-        console.error(e);
-      }
+      return getAccessToken()
+        .then((accessToken) => deleteComment(id, accessToken).then(refetch))
+        .catch((e) => {
+          console.error(e);
+        });
     }
-  }
+  };
+
+  const actions: ModalAction[] = [
+    { name: "공감", handleClick: isLikeToggle },
+    comment.isMine
+      ? { name: "삭제", handleClick: removeComment }
+      : { name: "신고", handleClick: () => {} },
+  ];
 
   return (
     <>
@@ -89,14 +78,18 @@ export default function Comment({ comment, refetch }: CommentProps) {
             </MobileCommentDate>
             <DesktopCommentActions>
               {actions.map((action) => (
-                <DesktopActionButton onClick={action.handleClick}>{action.name}</DesktopActionButton>
+                <DesktopActionButton onClick={action.handleClick}>
+                  {action.name}
+                </DesktopActionButton>
               ))}
             </DesktopCommentActions>
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={()=>setActionsModal(true)} />
-            { actionsModal && <MobileActionsModal actions={actions} setActionsModal={setActionsModal}/> }
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
+            {actionsModal && (
+              <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
+            )}
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>

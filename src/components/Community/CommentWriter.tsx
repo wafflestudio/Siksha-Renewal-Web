@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import APIendpoint from "constants/constants";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { setComment } from "utils/api/community";
 
 interface CommentWriterProps {
   postId: number;
@@ -16,24 +15,18 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   const { setLoginModal } = useDispatchContext();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
-  async function submit() {
+  const submit = () => {
     if (loginStatus === false) {
       setLoginModal(true);
     } else if (commentInput !== "") {
-      await axios.post(
-        `${APIendpoint()}/community/comments`,
-        {
-          post_id: postId,
-          content: commentInput,
-          anonymous: isAnonymous,
-        },
-        { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } },
-      );
-      await refetch();
-      setCommentInput("");
-      setIsAnonymous(false);
+      setComment(postId, commentInput, isAnonymous, localStorage.getItem("accessToken")!)
+        .then(refetch)
+        .then(() => {
+          setCommentInput("");
+          setIsAnonymous(false);
+        });
     }
-  }
+  };
 
   return (
     <Container>

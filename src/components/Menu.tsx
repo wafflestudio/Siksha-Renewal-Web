@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
-import axios from "axios";
-import APIendpoint from "../constants/constants";
+import { setMenuLike, setMenuUnlike } from "utils/api/menus";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -18,6 +18,7 @@ export default function Menu({ menu }) {
   const state = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
+  const { getAccessToken } = UseAccessToken();
 
   useEffect(() => {
     if (!menu.price) setHasPrice(false);
@@ -35,36 +36,17 @@ export default function Menu({ menu }) {
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
-      const access_token = localStorage.getItem("access_token");
-      if (isLiked === false) {
-        await axios
-          .post(
-            `${APIendpoint()}/menus/${menu.id}/like`,
-            {},
-            { headers: { "authorization-token": `Bearer ${access_token}` } },
-          )
-          .then((res) => {
-            setIsLiked(res.data.is_liked);
-            setLikeCount(res.data.like_cnt);
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-      } else {
-        await axios
-          .post(
-            `${APIendpoint()}/menus/${menu.id}/unlike`,
-            {},
-            { headers: { "authorization-token": `Bearer ${access_token}` } },
-          )
-          .then((res) => {
-            setIsLiked(res.data.is_liked);
-            setLikeCount(res.data.like_cnt);
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-      }
+      const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
+
+      return getAccessToken()
+        .then((accessToken) => handleLikeAction(menu.id, accessToken))
+        .then(({ isLiked, likeCount }) => {
+          setIsLiked(isLiked);
+          setLikeCount(likeCount);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
     }
   };
 

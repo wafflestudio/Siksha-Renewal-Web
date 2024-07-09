@@ -1,14 +1,14 @@
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import axios from "axios";
-import APIendpoint from "../../../constants/constants";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
-import { log } from "console";
 import { useRouter } from "next/router";
+import UseAccessToken from "hooks/UseAccessToken";
+import { updateMyData } from "utils/api/auth";
 
 export default function Setting_Nickname({ userInfo }) {
   const [newNickname, setNewNickname] = useState("");
+  const { getAccessToken } = UseAccessToken();
 
   const router = useRouter();
   const state = useStateContext();
@@ -16,30 +16,23 @@ export default function Setting_Nickname({ userInfo }) {
   const { loginStatus } = state;
 
   const handleSetClick = async () => {
-    if (loginStatus === false) {
+    if (newNickname === null) return;
+    else if (loginStatus === false) {
       router.push(`/`);
       setLoginModal(true);
-    } else {
-      const access_token = localStorage.getItem("access_token");
-
-      if (newNickname !== "") {
-        let formData = new FormData();
-        formData.append("nickname", newNickname);
-        try {
-          await axios
-            .patch(`${APIendpoint()}/auth/me/profile`, formData, {
-              headers: { "authorization-token": `Bearer ${access_token}` },
-            })
-            .then((res) => {
-              console.log(res);
-              router.push(`/account`);
-            });
-        } catch (e) {
-          console.log(e);
-          router.push(`/account/nickname`);
-        }
-      }
     }
+
+    const formData = new FormData();
+    formData.append("nickname", newNickname);
+
+    getAccessToken()
+      .then((accessToken) => {
+        updateMyData(formData, accessToken);
+      })
+      .then(() => {
+        router.push(`/account`);
+      })
+      .catch((e) => console.error(e));
   };
 
   return (
