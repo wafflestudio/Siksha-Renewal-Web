@@ -1,13 +1,9 @@
 import styled from "styled-components";
-import { GlobalStyle } from "../../styles/globalstyle";
-import Header from "../../components/Header";
 import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function AccountLayout({ children }) {
   return (
     <>
-      <GlobalStyle />
-      <Header />
       <Content>{children}</Content>
       <MobileNavigationBar />
     </>
