@@ -2,14 +2,15 @@ import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvi
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import axios from "axios";
-import APIendpoint from "../../../constants/constants";
+import UseAccessToken from "hooks/UseAccessToken";
+import { deleteAccount } from "utils/api/auth";
 
 export default function UserSetting() {
   const router = useRouter();
   const state = useStateContext();
   const { setLoginStatus, setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
+  const { getAccessToken } = UseAccessToken();
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -17,7 +18,7 @@ export default function UserSetting() {
     router.push(`/`);
   };
 
-  const handleExit = async () => {
+  const handleExit = () => {
     const confirmExit = window.confirm(
       "앱 계정을 삭제합니다. \n 이 계정으로 등록된 리뷰 정보들도 모두 함께 삭제됩니다.",
     );
@@ -26,25 +27,21 @@ export default function UserSetting() {
     if (loginStatus === false) {
       router.push(`/`);
       setLoginModal(true);
-    } else {
-      const access_token = localStorage.getItem("access_token");
-
-      try {
-        await axios
-          .delete(`${APIendpoint()}/auth/`, {
-            headers: { "authorization-token": `Bearer ${access_token}` },
-          })
-          .then((res) => {
-            console.log(res);
-            localStorage.removeItem("access_token");
-            setLoginStatus(!!localStorage.getItem("access_token"));
-            router.push(`/`);
-          });
-      } catch (e) {
-        console.log(e);
-        router.push(`/account/user`);
-      }
     }
+
+    return getAccessToken()
+      .then((accessToken) => {
+        deleteAccount(accessToken);
+      })
+      .then(() => {
+        localStorage.removeItem("access_token");
+        setLoginStatus(!!localStorage.getItem("access_token"));
+        router.push(`/`);
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push(`/account/user`);
+      });
   };
 
   return (

@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useCallback, useContext, useReducer, useState } from "react";
-import { State, Action, Data } from "../types";
+import { State, Action, RawMenuList } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
 const initDate = new Date();
@@ -19,6 +19,7 @@ const initialState = {
     id: null,
     nickname: null,
   },
+  isFilterFavorite: false,
   favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
 };
@@ -26,7 +27,7 @@ const initialState = {
 interface dispatchers {
   setDate: (date: Date) => void;
   setMeal: (meal: string) => void;
-  setData: (data: Data) => void;
+  setData: (data: RawMenuList) => void;
   setLoading: (loading: boolean) => void;
   setInfoData: (info: any) => void;
   toggleShowCal: () => void;
@@ -34,6 +35,7 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setLoginModal: (isLoginModal: boolean) => void;
   setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
 }
@@ -47,7 +49,7 @@ const ContextProvider = ({ children }) => {
   // dispatch functions
   const setDate = (date: Date) => setState((prevState) => ({ ...prevState, date: date }));
   const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
-  const setData = (data: Data) => setState((prevState) => ({ ...prevState, data: data }));
+  const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
   const setLoading = (loading: boolean) =>
     setState((prevState) => ({ ...prevState, loading: loading }));
   const setInfoData = (infoData) => setState((prevState) => ({ ...prevState, infoData: infoData }));
@@ -60,6 +62,8 @@ const ContextProvider = ({ children }) => {
   const setLoginModal = (isLoginModal: boolean) =>
     setState((prevState) => ({ ...prevState, isLoginModal: isLoginModal }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
+  const setIsFilterFavorite = (value) =>
+    setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
   const setFavoriteRestaurant = (favoriteRestaurant) =>
     setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
   const setIsExceptEmptyRestaurant = (except: boolean) =>
@@ -78,6 +82,7 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setLoginModal,
         setUserInfo,
+        setIsFilterFavorite,
         setFavoriteRestaurant,
         setIsExceptEmptyRestaurant,
       }}
