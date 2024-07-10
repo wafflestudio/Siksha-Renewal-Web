@@ -1,19 +1,19 @@
 import styled, { css } from "styled-components";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
-import APIendpoint from "../../constants/constants";
 import LoginModal from "../../components/Auth/LoginModal";
-import Header from "../../components/Header";
 import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
 import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
 import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
-import { GlobalStyle } from "../../styles/globalstyle";
 import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
 import Image from "next/image";
+import MobileNavigationBar from "components/MobileNavigationBar";
+import { getMenu } from "utils/api/menus";
+import { getRestaurantList } from "../../utils/api/restaurants";
+import { getReviews, getReviewScore } from "utils/api/reviews";
 
 interface MenuType {
   id: number;
@@ -39,19 +39,7 @@ export interface ReviewType {
   user_id: number;
   score: number | null;
   comment: string;
-  etc: ReviewEtcType | null;
-  created_at: string;
-  updated_at: string;
-}
-
-interface RestaurantType {
-  id: number;
-  code: string;
-  name_kr: string;
-  name_en: string;
-  addr: string;
-  tel: string;
-  etc: {};
+  etc: Record<string, any>;
   created_at: string;
   updated_at: string;
 }
@@ -59,10 +47,6 @@ interface RestaurantType {
 interface ReviewListType {
   result: ReviewType[];
   total_count: number;
-}
-
-interface ReviewEtcType {
-  images: string[];
 }
 
 export default function Menu() {
@@ -88,50 +72,50 @@ export default function Menu() {
       return;
     }
 
-    async function fetchMenu() {
+    const fetchReview = () => {
       setLoading(true);
-      try {
-        const res = await axios.get(`${APIendpoint()}/menus/plain/${id}`).then((res) => {
-          setMenu(res.data);
-          fetchReviews();
+
+      getReviews(Number(id))
+        .then(({ totalCount, result }) => {
+          setReviews({
+            result,
+            total_count: totalCount,
+          });
+        })
+        .catch((e) => {
+          router.push("/");
+        })
+        .finally(() => setLoading(false));
+    };
+
+    const fetchMenu = () => {
+      setLoading(true);
+      getMenu(Number(id))
+        .then((data) => {
+          setMenu(data);
+          fetchReview();
           fetchRestaurantName({
-            restaurantId: res.data.restaurant_id,
+            restaurantId: data.restaurant_id,
           });
           fetchReviewDistribution({
-            menuId: res.data.id,
+            menuId: data.id,
           });
-        });
-      } catch (e) {
-        console.log(e);
-        router.push("/");
-      }
-    }
-    async function fetchReviews() {
-      setLoading(true);
-      try {
-        const res = await axios
-          .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=100`)
-          .then((res) => {
-            setReviews(res.data);
-          });
-      } catch (e) {
-        console.log(e);
-        router.push("/");
-      } finally {
-        setLoading(false);
-      }
-    }
+        })
+        .catch((e) => {
+          console.error(e);
+          router.push("/");
+        })
+        .finally(() => setLoading(false));
+    };
 
     const fetchRestaurantName = async ({ restaurantId }: { restaurantId: number }) => {
       try {
-        await axios.get(`${APIendpoint()}/restaurants/`).then((res) => {
-          const restaurantName = res.data.result.find(
-            (restaurant) => restaurant.id === restaurantId,
-          );
-          setRestaurantName(restaurantName.name_kr);
+        getRestaurantList().then((data) => {
+          const restaurantName = data.result.find((restaurant) => restaurant.id === restaurantId);
+          if (restaurantName) setRestaurantName(restaurantName.name_kr);
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         router.push("/");
       } finally {
         setLoading(false);
@@ -140,11 +124,11 @@ export default function Menu() {
 
     const fetchReviewDistribution = async ({ menuId }: { menuId: number }) => {
       try {
-        await axios.get(`${APIendpoint()}/reviews/dist?menu_id=${menuId}`).then((res) => {
-          setReviewDistribution(res.data.dist);
+        getReviewScore(menuId).then((dist) => {
+          setReviewDistribution(dist);
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         router.push("/");
       }
     };
@@ -179,72 +163,73 @@ export default function Menu() {
 
   return (
     <>
-      <GlobalStyle />
       {isLoginModal && <LoginModal />}
-      <Header />
       {!isLoading && !!menu && (
-        <Info>
-          <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} />}
-            <MenuInfoContainer>
-              <MenuHeader>
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                  <MenuTitle>{menu.name_kr}</MenuTitle>
-                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                </div>
-                <Likes menu={menu} />
-              </MenuHeader>
-              <HLine />
-              <ReviewDistribution
-                totalReviewCount={reviews.total_count}
-                score={menu.score || 0}
-                distribution={reviewDistribution}
+        <>
+          <Info>
+            <MenuContainer>
+              {images.length > 0 && <ReviewImageSwiper images={images} />}
+              <MenuInfoContainer>
+                <MenuHeader>
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <MenuTitle>{menu.name_kr}</MenuTitle>
+                    <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                  </div>
+                  <Likes menu={menu} />
+                </MenuHeader>
+                <HLine />
+                <ReviewDistribution
+                  totalReviewCount={reviews.total_count}
+                  score={menu.score || 0}
+                  distribution={reviewDistribution}
+                />
+              </MenuInfoContainer>
+            </MenuContainer>
+            {!isReviewPostModalOpen && (
+              <ReviewContainer>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+                <ReviewHeader>
+                  <div style={{ display: "flex" }}>
+                    <ReviewTitle>리뷰</ReviewTitle>
+                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                  </div>
+                  <Link href="#" style={{ textDecoration: "none" }}>
+                    <ImageReviewButton>
+                      <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
+                      <Image
+                        src="/img/right-arrow-grey.svg"
+                        alt="오른쪽 화살표"
+                        width={10}
+                        height={16}
+                      />
+                    </ImageReviewButton>
+                  </Link>
+                </ReviewHeader>
+                <ReviewList>
+                  {reviews.result.length > 0 &&
+                    reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
+                  {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
+                </ReviewList>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+              </ReviewContainer>
+            )}
+            {isReviewPostModalOpen && (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id,
+                }}
+                onClose={() => setReviewPostModalOpen(false)}
               />
-            </MenuInfoContainer>
-          </MenuContainer>
-          {!isReviewPostModalOpen && (
-            <ReviewContainer>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-                나의 평가 남기기
-              </ReviewPostButton>
-              <ReviewHeader>
-                <div style={{ display: "flex" }}>
-                  <ReviewTitle>리뷰</ReviewTitle>
-                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                </div>
-                <Link href="#" style={{ textDecoration: "none" }}>
-                  <ImageReviewButton>
-                    <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
-                    <Image
-                      src="/img/right-arrow-grey.svg"
-                      alt="오른쪽 화살표"
-                      width={10}
-                      height={16}
-                    />
-                  </ImageReviewButton>
-                </Link>
-              </ReviewHeader>
-              <ReviewList>
-                {reviews.result.length > 0 &&
-                  reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
-                {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
-              </ReviewList>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
-                나의 평가 남기기
-              </ReviewPostButton>
-            </ReviewContainer>
-          )}
-          {isReviewPostModalOpen && (
-            <ReviewPostModal
-              isOpen={isReviewPostModalOpen}
-              menu={{
-                menuName: menu.name_kr,
-                menuId: menu.id,
-              }}
-              onClose={() => setReviewPostModalOpen(false)}
-            />
-          )}
-        </Info>
+            )}
+          </Info>
+          <MobileNavigationBar />
+        </>
       )}
     </>
   );

@@ -4,10 +4,9 @@ import { BoardMenu } from "components/Community/BoardMenu";
 
 import Layout from "../layout";
 
-import APIendpoint from "constants/constants";
-import axios from "axios";
-import { Board as BoardType, Post, RawPost, RawBoard } from "types";
+import { Board as BoardType, RawBoard } from "types";
 import { boardParser } from "utils/DataUtil";
+import { getBoardList } from "utils/api/community";
 
 interface BoardProps {
   selectedBoardId?: number;
@@ -22,25 +21,21 @@ export default function Board({ selectedBoardId, children }: BoardProps) {
     function setParsedBoards(board: RawBoard) {
       setBoards((prev) => [...prev, boardParser(board)]);
     }
-    async function fetchBoards() {
-      await axios
-        .get(`${APIendpoint()}/community/boards`)
-        .then((res) => {
-          setBoards([]);
-          res.data.map(setParsedBoards);
-        })
-        .catch((e) => console.log(e));
-    }
 
-    fetchBoards();
+    getBoardList().then((data) => {
+      setBoards([]);
+      data.map(setParsedBoards);
+    });
   }, []);
 
   return (
     <Layout>
-      <Container>
-        <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
-        {children}
-      </Container>
+      <>
+        <Container>
+          <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
+          {children}
+        </Container>
+      </>
     </Layout>
   );
 }
