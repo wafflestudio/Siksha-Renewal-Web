@@ -44,6 +44,7 @@ const Container = styled.div`
   background: #ffffff;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+  box-sizing: border-box;
 `;
 
 const Header = styled.div`
