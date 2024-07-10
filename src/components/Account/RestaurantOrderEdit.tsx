@@ -62,6 +62,13 @@ const Container = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    width: calc(100dvw - 40px);
+    margin-bottom: 83px; // footer height to prevent overflow
+    background: none;
+    border: none;
+  }
 `;
 
 const Title = styled.h2`
@@ -71,6 +78,10 @@ const Title = styled.h2`
   font-size: 20px;
   line-height: 23px;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Description = styled.p`
@@ -81,6 +92,21 @@ const Description = styled.p`
   font-size: 11px;
   line-height: 19px;
   color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    position: sticky;
+    height: 50px;
+    top: 60px;
+    margin-top: 0;
+    margin-left: -20px;
+    width: 100vw;
+
+    background-color: #ffffff;
+  }
 `;
 
 const DragContainer = styled.div<{ dragging: boolean }>`
@@ -97,6 +123,12 @@ const DragBox = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   margin: 7.92px 22.15px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 7.92px 0px;
+    overflow: scroll;
+  }
 `;
 
 const Restaurant = styled.p`

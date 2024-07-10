@@ -6,6 +6,7 @@ import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit
 import { GlobalStyle } from "../../../styles/globalstyle";
 import Header from "../../../components/Header";
 import styled from "styled-components";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 interface Restaurant {
   id: number;
@@ -66,6 +67,7 @@ export default function Setting_NonFavorite() {
       <Container>
         <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
       </Container>
+      <MobileNavigationBar />
     </>
   );
 }
@@ -75,4 +77,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 36.92px;
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
 `;

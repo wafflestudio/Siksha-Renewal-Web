@@ -49,6 +49,7 @@ export default function UserSetting() {
 
   return (
     <AccountLayout>
+      <MobileSpace />
       <Container>
         <Title>계정 관리</Title>
         <ContentDiv onClick={handleLogout}>
@@ -65,11 +66,23 @@ export default function UserSetting() {
   );
 }
 
+const MobileSpace = styled.div`
+  height: 24px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
 const Container = styled.div`
   width: 544px;
   background-color: white;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: calc(100dvw - 40px);
+  }
 `;
 
 const Title = styled.div`
@@ -77,6 +90,10 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ContentDiv = styled.div`
@@ -92,18 +109,31 @@ const Text = styled.span`
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
 `;
 
 const LogoutText = styled(Text)`
   margin-top: 30.43px;
   margin-bottom: 9.97px;
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
 `;
 
 const WithdrawalText = styled(Text)`
   margin-top: 10.97px;
   margin-bottom: 14px;
-
   color: #8a8a8a;
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
 `;
 
 const BreakLine = styled.hr`
@@ -118,4 +148,8 @@ const ArrowButton = styled.img`
   width: 6.25px;
   height: 10px;
   margin-right: 15.47px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

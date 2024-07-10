@@ -106,7 +106,7 @@ export default function LoginModal() {
 }
 
 const Background = styled.div`
-  z-index: 1;
+  z-index: 99;
   position: fixed;
   top: 0;
   left: 0;
@@ -135,7 +135,7 @@ const MainContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0px;
   }
 `;

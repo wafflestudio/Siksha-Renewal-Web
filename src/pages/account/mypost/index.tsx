@@ -45,6 +45,11 @@ const Container = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border: 0;
+  }
 `;
 
 const Header = styled.div`
@@ -54,6 +59,10 @@ const Header = styled.div`
   font-weight: 700;
   line-height: 23px;
   letter-spacing: -0.3px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const BreakLine = styled.hr`

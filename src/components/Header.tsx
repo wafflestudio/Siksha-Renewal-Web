@@ -124,6 +124,9 @@ const Container = styled.div`
     height: 60px;
     min-height: 0;
     min-width: 0;
+    top: 0;
+    position: sticky;
+    z-index: 1;
   }
 `;
 
