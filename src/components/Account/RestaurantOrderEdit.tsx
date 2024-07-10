@@ -21,7 +21,7 @@ export default function RestaurantOrderEdit({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
-        <Title>즐겨찾기 순서 변경</Title>
+        <Title>식당 순서 변경</Title>
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (

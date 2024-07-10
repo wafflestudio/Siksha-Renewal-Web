@@ -15,7 +15,7 @@ export default function Setting_Nickname({ userInfo }) {
   const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
 
-  const handleSetClick = async () => {
+  const handleSetClick = () => {
     if (newNickname === null) return;
     else if (loginStatus === false) {
       router.push(`/`);
@@ -25,7 +25,7 @@ export default function Setting_Nickname({ userInfo }) {
     const formData = new FormData();
     formData.append("nickname", newNickname);
 
-    getAccessToken()
+    return getAccessToken()
       .then((accessToken) => {
         updateMyData(formData, accessToken);
       })
@@ -45,7 +45,7 @@ export default function Setting_Nickname({ userInfo }) {
             type="text"
             value={newNickname}
             onChange={(e) => setNewNickname(e.target.value)}
-          ></Input>
+          />
           <Button onClick={handleSetClick}>완료</Button>
         </InputBox>
       </Container>
@@ -79,6 +79,7 @@ const InputBox = styled.div`
 const Input = styled.input`
   width: 433px;
   height: 40px;
+  font-weight: 700;
   border: none;
   &:focus {
     outline: none;
