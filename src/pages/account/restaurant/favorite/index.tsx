@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderEdit";
 import styled from "styled-components";
-import { GlobalStyle } from "../../../../styles/globalstyle";
-import Header from "components/Header";
 import MobileNavigationBar from "components/MobileNavigationBar";
 import { getRestaurantList } from "utils/api/restaurants";
 
@@ -59,8 +57,6 @@ export default function Setting_Favorite() {
 
   return (
     <>
-      <GlobalStyle />
-      <Header />
       <Container>
         <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
       </Container>
