@@ -54,7 +54,10 @@ export default function Inquire() {
     <AccountLayout>
       <Container>
         <Title>1:1 문의하기</Title>
-        <Description>문의할 내용을 남겨주세요.</Description>
+        <MobileBox>
+          <Icon src="/img/comment.svg" />
+          <Description>문의할 내용을 남겨주세요.</Description>
+        </MobileBox>
         <UserBox>
           <Profile src={profileURL} />
           <Nickname>{userInfo.nickname ?? `ID ${userInfo.id}`}</Nickname>
@@ -83,7 +86,6 @@ const Container = styled.div`
     flex-direction: column;
     width: 100%;
     height: 100%;
-    margin-bottom: 83px; // to prevent footer from blocking the content
     border: 0;
   }
 `;
@@ -98,14 +100,28 @@ const Title = styled.div`
   }
 `;
 
-const Description = styled.p`
-  margin-top: 44px;
-  margin-bottom: 35px;
-  text-align: center;
-
-  @media (min-width: 768px) {
-    display: none;
+const MobileBox = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 44px;
+    margin-bottom: 35px;
   }
+`;
+
+const Icon = styled.img`
+  width: 18px;
+  height: 18px;
+`;
+
+const Description = styled.p`
+  text-align: center;
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: 700;
 `;
 
 const UserBox = styled.div`
@@ -122,6 +138,10 @@ const Profile = styled.img`
   width: 24px;
   height: 24px;
   margin-left: 23.5px;
+
+  @media (max-width: 768px) {
+    margin-left: 28px;
+  }
 `;
 
 const Nickname = styled.div`
@@ -176,7 +196,7 @@ const ButtonBox = styled.div`
 
   @media (max-width: 768px) {
     margin-top: auto;
-    margin-bottom: 32px;
+    padding: 0 16px;
   }
 `;
 

@@ -7,7 +7,7 @@ export function BoardHeader() {
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const router = useRouter();
-  
+
   function handleClickWriteButton() {
     if (loginStatus === false) {
       setLoginModal(true);
@@ -19,22 +19,11 @@ export function BoardHeader() {
   return (
     <Container>
       <HotPost>
-        {/* <Text> */}
-        <Title>
-          {" "}
-          제목
-          제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목
-        </Title>
-        <ContentPreview>
-          {" "}
-          본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문본문 본문 본문본문 본문
-          본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문 본문본문 본문
-          본문본문 본문 본문본문 본문 본문본문 본문 본문
-        </ContentPreview>
-        {/* </Text> */}
+        <Title>개발중입니다.</Title>
+        <ContentPreview>개발중입니다. </ContentPreview>
         <Likes>
           <Icon src="/img/post-like.svg" />
-          12
+          2356
         </Likes>
       </HotPost>
       <WriteButton>

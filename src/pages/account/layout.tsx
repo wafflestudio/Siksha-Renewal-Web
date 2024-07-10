@@ -1,19 +1,17 @@
 import styled from "styled-components";
-import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function AccountLayout({ children }) {
   return (
     <Container>
       <Content>{children}</Content>
-      <MobileNavigationBar />
     </Container>
   );
 }
 const Container = styled.div`
   @media (max-width: 768px) {
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 `;
 const Content = styled.div`
@@ -26,7 +24,5 @@ const Content = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 0px;
-    height: 100%;
-    overflow: scroll;
   }
 `;

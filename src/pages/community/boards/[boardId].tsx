@@ -46,7 +46,6 @@ export default function Posts() {
       <>
         <BoardHeader />
         <PostList posts={posts} />
-        <MobileNavigationBar />
       </>
     </Board>
   );

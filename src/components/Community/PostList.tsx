@@ -18,5 +18,9 @@ export function PostList({ posts }: PropsPostList) {
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  @media (max-width: 768px) {
+    overflow: scroll;
+  }
+`;
 const EmptyText = styled.div``;

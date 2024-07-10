@@ -25,7 +25,7 @@ export default function RestaurantOrderEdit({
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <DragZone {...provided.droppableProps} ref={provided.innerRef}>
               {orderData.map(({ id, name_kr, name_en }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
                   {(provided, snapshot) => (
@@ -47,7 +47,7 @@ export default function RestaurantOrderEdit({
                   )}
                 </Draggable>
               ))}
-            </div>
+            </DragZone>
           )}
         </Droppable>
       </Container>
@@ -64,10 +64,9 @@ const Container = styled.div`
   background-color: #ffffff;
 
   @media (max-width: 768px) {
-    width: calc(100dvw - 40px);
-    margin-bottom: 83px; // footer height to prevent overflow
-    background: none;
+    width: 100%;
     border: none;
+    background: none;
   }
 `;
 
@@ -94,21 +93,24 @@ const Description = styled.p`
   color: #a6a6a6;
 
   @media (max-width: 768px) {
+    position: fixed; // 여기만 fixed안걸면 스크롤이이동함...
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
-    position: sticky;
+    width: 100%;
     height: 50px;
-    top: 60px;
-    margin-top: 0;
-    margin-left: -20px;
-    width: 100vw;
-
+    margin: 0;
     background-color: #ffffff;
   }
 `;
 
+const DragZone = styled.div`
+  @media (max-width: 768px) {
+    margin-top: 54px;
+    height: 100px; // 이게 있어야 오버플로우 안됨
+  }
+`;
 const DragContainer = styled.div<{ dragging: boolean }>`
   &:hover {
     background-color: #f2f2f2;
@@ -125,9 +127,9 @@ const DragBox = styled.div`
   margin: 7.92px 22.15px;
 
   @media (max-width: 768px) {
-    width: 100%;
-    margin: 7.92px 0px;
-    overflow: scroll;
+    width: calc(100% - 40px);
+    margin: 7.92px 0px 0px 20px;
+    background-color: white;
   }
 `;
 

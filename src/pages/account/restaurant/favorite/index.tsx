@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderEdit";
 import styled from "styled-components";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { getRestaurantList } from "utils/api/restaurants";
 
 interface FavoriteRestaurant {
@@ -60,7 +59,6 @@ export default function Setting_Favorite() {
       <Container>
         <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
       </Container>
-      <MobileNavigationBar />
     </>
   );
 }

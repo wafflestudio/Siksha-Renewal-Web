@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
 import Header from "../../../components/Header";
 import styled from "styled-components";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { getRestaurantList } from "utils/api/restaurants";
 
 interface FavoriteRestaurant {
@@ -21,7 +20,8 @@ export default function Setting_NonFavorite() {
 
     getRestaurantList()
       .then(({ result }) => {
-        const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
+        console.log(result);
+        const favoriteList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
 
         for (let i = 0; i < orderList.length; i++) {
           if (
@@ -32,11 +32,13 @@ export default function Setting_NonFavorite() {
             i--;
           }
         }
+        console.log(orderList);
+
         result.forEach(({ id, name_kr, name_en }) => {
-          if (!orderList.some((menu) => Number(menu.id) === id) && favoriteList.includes(id))
+          if (!orderList.some((menu) => Number(menu.id) === id))
             orderList.push({ id, name_kr, name_en });
         });
-
+        console.log(orderList);
         setOrderData(orderList);
       })
       .catch((e) => {
@@ -58,13 +60,9 @@ export default function Setting_NonFavorite() {
   };
 
   return (
-    <>
-      <Header />
-      <Container>
-        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
-      </Container>
-      <MobileNavigationBar />
-    </>
+    <Container>
+      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+    </Container>
   );
 }
 
@@ -76,5 +74,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 0px;
+    min-height: 100%;
+    overflow-x: hidden; //왜 이속성이 있어야 오버플로우 안나는지 모르겠음
   }
 `;
