@@ -119,7 +119,7 @@ export default function Post() {
           {
             name: "수정",
             handleClick: () => router.push(`/community/write/?postId=${postId}`),
-          }, // 수정 관련 미비 사항이 많아 일단은 비활성화
+          },
           { name: "삭제", handleClick: () => removePost(post.id) },
         ]
       : [{ name: "신고", handleClick: () => {} }];
