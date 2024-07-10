@@ -48,10 +48,9 @@ export default function LoginModal() {
       .then((res: SigninResponse) => {
         const { code, id_token } = res.authorization;
         router.push(`/auth/apple?code=${code}&id_token=${id_token}`);
-        console.log(res);
       })
       .catch((error: SigninError) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

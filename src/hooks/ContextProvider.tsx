@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useCallback, useContext, useReducer, useState } from "react";
-import { State, Action, Data } from "../types";
+import { State, Action, RawMenuList } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
 const initDate = new Date();
@@ -27,7 +27,7 @@ const initialState = {
 interface dispatchers {
   setDate: (date: Date) => void;
   setMeal: (meal: string) => void;
-  setData: (data: Data) => void;
+  setData: (data: RawMenuList) => void;
   setLoading: (loading: boolean) => void;
   setInfoData: (info: any) => void;
   toggleShowCal: () => void;
@@ -49,7 +49,7 @@ const ContextProvider = ({ children }) => {
   // dispatch functions
   const setDate = (date: Date) => setState((prevState) => ({ ...prevState, date: date }));
   const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
-  const setData = (data: Data) => setState((prevState) => ({ ...prevState, data: data }));
+  const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
   const setLoading = (loading: boolean) =>
     setState((prevState) => ({ ...prevState, loading: loading }));
   const setInfoData = (infoData) => setState((prevState) => ({ ...prevState, infoData: infoData }));

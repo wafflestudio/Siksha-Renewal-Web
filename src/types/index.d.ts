@@ -1,15 +1,8 @@
 // types/index.d.ts
-export interface Data {
-  BR: Array<any>;
-  DN: Array<any>;
-  LU: Array<any>;
-  date: string;
-}
-
 export interface State {
   date: Date;
   meal: string;
-  data: Data;
+  data: RawMenuList;
   today: Date;
   showCal: boolean;
   showInfo: boolean;
@@ -29,7 +22,7 @@ export interface State {
 export type Action =
   | { type: "SET_DATE"; date: Date }
   | { type: "SET_MEAL"; meal: string }
-  | { type: "SET_DATA"; data: Data }
+  | { type: "SET_DATA"; data: RawMenuList }
   | { type: "SET_LOADING"; loading: boolean }
   | { type: "SET_INFODATA"; infoData: any }
   | { type: "TOGGLE_SHOWCAL" }
@@ -160,4 +153,64 @@ export interface RawComment {
   is_mine: boolean;
   like_cnt: number;
   is_liked: boolean;
+}
+
+export interface RawRestaurant {
+  created_at: string;
+  updated_at: string;
+  id: number;
+  code: string;
+  name_kr: string;
+  name_en: string;
+  addr: string;
+  lat: number;
+  lng: number;
+  etc: Record<string, any>;
+}
+export interface RawMenuList {
+  BR: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
+  DN: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
+  LU: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
+  date: string;
+}
+
+export interface RawMenu {
+  created_at: string;
+  updated_at: string;
+  id: number;
+  restaurant_id: number;
+  code: string;
+  date: string;
+  type: string;
+  name_kr: string;
+  name_en: string;
+  price: number;
+  etc: string[];
+  score: number;
+  review_cnt: number;
+  is_liked: boolean;
+  like_cnt: number;
+}
+
+export interface RawReview {
+  created_at: string;
+  updated_at: string;
+  id: number;
+  menu_id: number;
+  user_id: number;
+  score: number;
+  comment: string;
+  etc: Record<string, any>;
 }

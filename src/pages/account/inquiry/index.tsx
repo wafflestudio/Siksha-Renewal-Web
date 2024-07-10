@@ -3,14 +3,16 @@ import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useState } from "react";
 import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
-import APIendpoint from "../../../constants/constants";
-import axios from "axios";
+import { setInquiry } from "utils/api/voc";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export default function Inquire() {
   const router = useRouter();
   const state = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const { loginStatus, userInfo } = state;
+
+  const { getAccessToken } = UseAccessToken();
 
   // 프로필 이미지 기능 구현 대비
   const profileURL = "/img/default-profile.svg";
@@ -28,39 +30,24 @@ export default function Inquire() {
     router.push(`/account`);
   };
 
-  const handlePost = async () => {
+  const handlePost = () => {
     if (loginStatus === false) {
       router.push(`/`);
       setLoginModal(true);
       return;
-    } else {
-      if (voc === "") {
-        return;
-      }
+    } else if (voc === "") return;
 
-      const access_token = localStorage.getItem("access_token");
-
-      await axios
-        .post(
-          `${APIendpoint()}/voc`,
-          {
-            voc: voc,
-            platform: "WEB",
-          },
-          {
-            headers: { "authorization-token": `Bearer ${access_token}` },
-          },
-        )
-        .then((res) => {
-          console.log(res);
-          setVoc("");
-          router.push(`/account`);
-        })
-        .catch((e) => {
-          console.log(e);
-          router.push(`/account/inquiry`);
-        });
-    }
+    return getAccessToken()
+      .then((accessToken) => setInquiry(voc, accessToken))
+      .then((res) => {
+        console.log(res);
+        setVoc("");
+        router.push(`/account`);
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push(`/account/inquiry`);
+      });
   };
 
   return (

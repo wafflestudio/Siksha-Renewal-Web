@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import APIendpoint from "../../constants/constants";
-import axios from "axios";
 import Image from "next/image";
+import { setReview } from "utils/api/reviews";
 
 export default function ReviewPostModal({
   isOpen,
@@ -23,26 +22,13 @@ export default function ReviewPostModal({
 
   const accessToken = localStorage.getItem("access_token");
 
-  const onReviewSubmit = async () => {
-    await axios
-      .post(
-        `${APIendpoint()}/reviews/`,
-        {
-          menu_id: menu.menuId,
-          score,
-          comment,
-        },
-        {
-          headers: {
-            "authorization-token": `Bearer ${accessToken}`,
-          },
-        },
-      )
+  const onReviewSubmit = () => {
+    return setReview(menu.menuId, score, comment, accessToken!)
       .then((res) => {
         onClose();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         window.alert(`리뷰 등록에 실패했습니다.`);
       });
   };

@@ -1,30 +1,27 @@
 import { PostList } from "components/Community/PostList";
 import AccountLayout from "../layout";
-import APIendpoint from "constants/constants";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Post, RawPost } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
+import { getMyPostList } from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const { getAccessToken } = UseAccessToken();
 
-  async function fetchMyPosts() {
-    await axios
-      .get(`${APIendpoint()}/community/posts/me`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-      })
-      .then((res) => {
-        res.data.result.map((parsedPost: RawPost) =>
-          setPosts((prev) => [...prev, postParser(parsedPost)]),
-        );
-      })
-      .catch((e) => console.log(e));
+  function setParsedPosts(rawPost: RawPost) {
+    setPosts((prev) => [...prev, postParser(rawPost)]);
   }
 
   useEffect(() => {
-    fetchMyPosts();
+    getAccessToken()
+      .then((accessToken) => getMyPostList(accessToken))
+      .then((res) => {
+        res.result.map(setParsedPosts);
+      })
+      .catch((e) => console.error(e));
   }, []);
 
   return (
