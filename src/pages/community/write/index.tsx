@@ -53,7 +53,7 @@ export default function PostWriter() {
       setInputs({ ...inputs, photos: [...inputs.photos, photo] });
     }
   }
-  function hanldlePhotoDelete(index: number) {
+  function handlePhotoDelete(index: number) {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   }
   function handleCancel() {
@@ -103,8 +103,6 @@ export default function PostWriter() {
 
     async function convertToBlob(image: string | File) {
       if (typeof image === "string") {
-        // 기존 업로드 이미지 url을 blob 객체로 변환하며 fetch 시에 CORS 발생
-        // TODO: 기존 이미지 재업로드(?) 방법 찾기
         const response = await fetch("https://cors-anywhere.herokuapp.com/" + image);
         const blob = await response.blob();
         return blob;
@@ -195,7 +193,7 @@ export default function PostWriter() {
           {inputs.photos.map((photo, i) => (
             <PhotoContainer key={i}>
               <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-              <DeleteButton onClick={() => hanldlePhotoDelete(i)}>
+              <DeleteButton onClick={() => handlePhotoDelete(i)}>
                 <Icon src="/img/photo-delete.svg" />
               </DeleteButton>
             </PhotoContainer>
