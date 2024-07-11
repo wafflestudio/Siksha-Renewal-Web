@@ -28,8 +28,7 @@ const Content = styled.div`
     margin-bottom: 0;
     padding-bottom: 0;
     width: 100%;
-    min-height: 100%;
-    max-height: 100px; //왜 임의의 작은px을 주어야만 overflow가 안되는지 모르겠음
+    min-height: auto;
     box-sizing: border-box;
     overflow-x: hidden;
   }

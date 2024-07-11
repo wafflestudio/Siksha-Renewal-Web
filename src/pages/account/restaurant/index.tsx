@@ -74,7 +74,6 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 0px;
-    min-height: 100%;
-    overflow-x: hidden; //왜 이속성이 있어야 오버플로우 안나는지 모르겠음
+    height: 100%;
   }
 `;

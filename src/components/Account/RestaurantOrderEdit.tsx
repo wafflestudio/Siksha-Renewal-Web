@@ -65,6 +65,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    height: 100%;
     border: none;
     background: none;
   }
@@ -93,7 +94,6 @@ const Description = styled.p`
   color: #a6a6a6;
 
   @media (max-width: 768px) {
-    position: fixed; // 여기만 fixed안걸면 스크롤이이동함...
     display: flex;
     justify-content: center;
     align-items: center;
@@ -102,13 +102,14 @@ const Description = styled.p`
     height: 50px;
     margin: 0;
     background-color: #ffffff;
+    z-index: 1;
   }
 `;
 
 const DragZone = styled.div`
   @media (max-width: 768px) {
-    margin-top: 54px;
-    height: 100px; // 이게 있어야 오버플로우 안됨
+    height: 100%;
+    overflow: scroll;
   }
 `;
 const DragContainer = styled.div<{ dragging: boolean }>`
