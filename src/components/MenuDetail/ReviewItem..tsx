@@ -87,6 +87,9 @@ const ReviewImageList = styled.div`
   height: 192px;
   padding-left: 23px;
   padding-top: 12px;
+  @media (max-width: 768px) {
+    height: 102px;
+  }
 `;
 
 const ReviewImage = styled.img`
@@ -95,6 +98,10 @@ const ReviewImage = styled.img`
   width: 192px;
   margin: 0 9px;
   border-radius: 8px;
+  @media (max-width: 768px) {
+    height: 102px;
+    width: 102px;
+  }
 `;
 
 export default ReviewItem;

@@ -15,6 +15,7 @@ import MobileNavigationBar from "components/MobileNavigationBar";
 import { getMenu } from "utils/api/menus";
 import { getRestaurantList } from "../../utils/api/restaurants";
 import { getReviews, getReviewScore } from "utils/api/reviews";
+import useIsMobile from "hooks/UseIsMobile";
 
 interface MenuType {
   id: number;
@@ -45,7 +46,7 @@ export interface ReviewType {
   updated_at: string;
 }
 
-interface ReviewListType {
+export interface ReviewListType {
   result: ReviewType[];
   total_count: number;
 }
@@ -77,7 +78,9 @@ export default function Menu() {
   const [images, setImages] = useState<string[]>([]);
   const [imageCount, SetImageCount] = useState<number>(0);
 
+  const isMobile = useIsMobile();
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
+  const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) {
@@ -175,11 +178,22 @@ export default function Menu() {
     }
     setMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
     setIsReviewPostModalOpen(isOpen);
-  }
+  };
+
+  const handleReviewListPage = (isOpen: boolean) => {
+    if (!menu) {
+      console.error('menu is not loaded');
+      return;
+    }
+    setMobileSubHeaderTitle(isOpen ? "리뷰" : menu.name_kr);
+    setIsReviewListPageOpen(isOpen);
+  };
 
   const handleMobileSubHeaderBack = () => {
-    if(isReviewPostModalOpen) { 
+    if (isReviewPostModalOpen) {
       handleReviewPostModal(false);
+    } else if (isReviewListPageOpen) {
+      handleReviewListPage(false);
     } else {
       router.push('/');
     }
@@ -226,29 +240,46 @@ export default function Menu() {
               </ReviewPostButton>
             </MenuContainer>
             <MobileHLine />
-            {!isReviewPostModalOpen && (
+            {!isReviewPostModalOpen && (!isMobile || !isReviewListPageOpen) && (
               <ReviewContainer>
                 <ReviewHeader>
                   <MobilePhotoReviewHeader>
-                    <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
-                    <Link href="#" style={{ textDecoration: "none" }}>
+                    <Link href="#" style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      textDecoration: "none",
+                      cursor: "pointer"
+                    }}>
+                      <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                       <PhotoReviewButton>
                         <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
                         <img
                           src="/img/right-arrow-darkgrey.svg"
                           alt="사진 리뷰 모아보기"
+                          width="7.5"
                         />
                       </PhotoReviewButton>
                     </Link>
                   </MobilePhotoReviewHeader>
                   <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={imageCount} />
-                  <MobileReviewHeader>
-                    <div style={{ display: "flex" }}>
-                      <ReviewTitle>리뷰</ReviewTitle>
-                      <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                    </div>
-                    <MoreReviewsButtonImage src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" />
-                  </MobileReviewHeader>
+                  <div style={{
+                    width: "100%",
+                    display: "flex",
+                    cursor: "pointer"
+                  }} onClick={() => handleReviewListPage(true)}>
+                    <MobileReviewHeader>
+                      <div style={{ display: "flex" }}>
+                        <ReviewTitle>리뷰</ReviewTitle>
+                        <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                      </div>
+                      <MoreReviewsButtonImage
+                        src="/img/right-arrow-darkgrey.svg"
+                        alt="리뷰 더보기"
+                        width="7.5"
+                      />
+                    </MobileReviewHeader>
+                  </div>
                 </ReviewHeader>
                 <ReviewList>
                   {reviews.result.length > 0
@@ -273,6 +304,16 @@ export default function Menu() {
             )}
             <Padding />
           </Info>
+          {isReviewListPageOpen && (
+            <MobileReviewListPage>
+              <ReviewList>
+                {reviews.result.length > 0
+                  ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+                  : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+                }
+              </ReviewList>
+            </MobileReviewListPage>
+          )}
         </>
       )}
     </>
@@ -509,7 +550,6 @@ const ReviewTotalCount = styled.div`
 
 const MoreReviewsButtonImage = styled.img`
   display: none;
-  cursor: pointer;
   @media (max-width: 768px) {
     display: inherit;
   }
@@ -520,7 +560,7 @@ const ReviewHeader = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   width: 100%;
-  padding: 0 24px 0 24px;
+  padding: 0 24px;
   align-items: center;
   margin-bottom: 40px;
   @media (max-width: 768px) {
@@ -566,6 +606,21 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
             display: none;
           }
         `}
+`;
+
+
+const MobileReviewListPage = styled.div`
+  display: none;
+  position: absolute;
+  top: 60px;
+  background-color: white;
+  min-height: calc(100vh - 60px);
+  padding: 24px 16px;
+  width: 100vw;
+  box-sizing: border-box;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
 `;
 
 const Padding = styled.div`
