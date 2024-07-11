@@ -87,6 +87,7 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: #ff9522;
+  margin-bottom: 30.43px;
 
   @media (max-width: 768px) {
     display: none;
@@ -113,9 +114,6 @@ const Text = styled.span`
 `;
 
 const LogoutText = styled(Text)`
-  margin-top: 30.43px;
-  margin-bottom: 9.97px;
-
   @media (max-width: 768px) {
     margin-top: 8px;
     margin-bottom: 8px;
@@ -138,6 +136,11 @@ const BreakLine = styled.hr`
   height: 1px;
   background: #e8e8e8;
   margin: 0 6px;
+
+  margin-top: 9.97px;
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
 `;
 
 const ArrowButton = styled.img`

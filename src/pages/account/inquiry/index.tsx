@@ -173,7 +173,7 @@ const TextArea = styled.textarea`
   }
 `;
 const WordCnt = styled.div`
-  width: 635px;
+  width: 650px;
   margin-top: -26.46px;
   padding-right: 35.95px;
   text-align: right;
