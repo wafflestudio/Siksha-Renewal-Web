@@ -105,6 +105,7 @@ export default function Menu() {
       try {
         const res = await axios.get(`${APIendpoint()}/menus/plain/${id}`).then((res) => {
           setMenu(res.data);
+          SetMobileSubHeaderTitle(res.data.name_kr);
           fetchReviews();
           fetchRestaurantName({
             restaurantId: res.data.restaurant_id,
@@ -125,7 +126,6 @@ export default function Menu() {
           .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=100`)
           .then((res) => {
             setReviews(res.data);
-            console.log(res.data);
           });
       } catch (e) {
         console.log(e);
@@ -186,6 +186,7 @@ export default function Menu() {
 
   const handleReviewPostModal = (isOpen: boolean) => {
     if (!menu) {
+      console.error('menu is not loaded');
       return;
     }
     SetMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
@@ -196,7 +197,7 @@ export default function Menu() {
     if(isReviewPostModalOpen) { 
       handleReviewPostModal(false);
     } else {
-      router.back();
+      router.push('/');
     }
   }
 
