@@ -73,7 +73,7 @@ export default function Layout({ children }: LayoutProps) {
 const Container = styled.div`
   @media (max-width: 768px) {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
   }
