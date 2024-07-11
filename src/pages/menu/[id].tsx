@@ -215,9 +215,11 @@ export default function Menu() {
                     reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)}
                   {reviews.result.length === 0 && <div>리뷰가 없습니다.</div>}
                 </ReviewList>
-                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
-                  나의 평가 남기기
-                </ReviewPostButton>
+                <ReviewPostButtonWrapper>
+                  <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                    나의 평가 남기기
+                  </ReviewPostButton>
+                </ReviewPostButtonWrapper>
               </ReviewContainer>
             )}
             {isReviewPostModalOpen && (
@@ -370,13 +372,26 @@ const ReviewHeader = styled.div`
   margin-bottom: 40px;
 `;
 
+const ReviewPostButtonWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 46px;
+  bottom: 17px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
+  position: absolute;
   background: #ff9522;
+  width: 200px;
   color: white;
   text-align: center;
-  padding: 10px 25px;
+  padding: 14px 25px;
   border: none;
-  margin-bottom: 17px;
   cursor: pointer;
   ${(props) =>
     props.mobile
@@ -388,12 +403,17 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
           font-size: 14px;
           font-weight: 800;
           line-height: 16px;
+          margin: auto;
+          margin-bottom: 16px;
           border-radius: 50px;
+          padding: 8px 25px;
           @media (max-width: 768px) {
-            display: inline-block;
+            display: block;
           }
         `
       : css`
+          left: 50%;
+          transform: translateX(-50%);
           font-size: 16px;
           font-weight: 700;
           line-height: 18px;

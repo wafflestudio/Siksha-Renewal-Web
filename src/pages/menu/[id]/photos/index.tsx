@@ -98,13 +98,14 @@ export default function PhotoReviews() {
     const fetchReview = () => {
       getReviews(Number(id))
         .then(({ totalCount, result }) => {
-          const photoReviews = result.filter((review) => review.etc)
+          let photoReviews = result.filter((review) => review.etc)
           setReviews({
             result: photoReviews,
             total_count: photoReviews.length
           });
         })
         .catch((e) => {
+          console.error(e);
           router.push("/");
         });
     };
@@ -132,14 +133,16 @@ export default function PhotoReviews() {
             {reviews.result.length > 0 ?
               reviews.result.map((review) => (
                 isMobile
-                ? <ReviewItem key={review.id} review={review} />
-                : <PhotoReviewItem key={review.id} review={review} />
-            ))
+                  ? <ReviewItem key={review.id} review={review} />
+                  : <PhotoReviewItem key={review.id} review={review} />
+              ))
               : "리뷰 없어용"}
           </Gallery>
-          <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-            나의 평가 남기기
-          </ReviewPostButton>
+          <ReviewPostButtonWrapper>
+            <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+              나의 평가 남기기
+            </ReviewPostButton>
+          </ReviewPostButtonWrapper>
         </GalleryWrapper>
       </Container>
     </>
@@ -151,13 +154,17 @@ const Container = styled.div`
   background-color: white;
   width: 100%;
   min-height: calc(100vh - 271px);
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 60px);
+  }
 `;
 
 const GalleryWrapper = styled.main`
+  position: relative;
   width: 862px;
   height: 100%;
-  margin: auto;
   padding: 32px 0;
+  margin: auto;
   box-sizing: border-box;
   @media (max-width: 768px) {
       width: 100%;
@@ -203,10 +210,20 @@ const Gallery = styled.section`
   }
 `;
 
+const ReviewPostButtonWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 46px;
+  bottom: 17px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
   position: absolute;
   left: 50%;
-  bottom: 17px;
   transform: translateX(-50%);
   background: #ff9522;
   width: 200px;
@@ -221,7 +238,4 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
   font-weight: 700;
   line-height: 18px;
   cursor: pointer;
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
