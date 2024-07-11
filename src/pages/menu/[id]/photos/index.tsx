@@ -1,5 +1,7 @@
+import ReviewItem from "components/MenuDetail/ReviewItem.";
 import Stars from "components/MenuDetail/Stars";
 import { useDispatchContext } from "hooks/ContextProvider";
+import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/router";
 import { ReviewListType, ReviewType } from "pages/menu/[id]";
 import { useEffect, useState } from "react";
@@ -86,6 +88,7 @@ export default function PhotoReviews() {
   });
 
   const { setLoginModal } = useDispatchContext();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!id) {
@@ -127,7 +130,11 @@ export default function PhotoReviews() {
           </GalleryHeader>
           <Gallery>
             {reviews.result.length > 0 ?
-              reviews.result.map((review) => <PhotoReviewItem key={review.id} review={review} />)
+              reviews.result.map((review) => (
+                isMobile
+                ? <ReviewItem key={review.id} review={review} />
+                : <PhotoReviewItem key={review.id} review={review} />
+            ))
               : "리뷰 없어용"}
           </Gallery>
           <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
@@ -160,6 +167,9 @@ const GalleryWrapper = styled.main`
 
 const GalleryHeader = styled.div`
   display: flex;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const GalleryTitle = styled.h1`
@@ -183,6 +193,14 @@ const Gallery = styled.section`
   grid-template-columns: repeat(auto-fill, 192px);
   column-gap: 30px;
   row-gap: 38px;
+  @media (max-width: 768px) {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: auto;
+  }
 `;
 
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
