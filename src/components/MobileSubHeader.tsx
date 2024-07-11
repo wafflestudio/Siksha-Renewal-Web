@@ -1,12 +1,11 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-export default function MobileSubHeader({ title }: { title: string }) {
-  const router = useRouter()
-
+export default function MobileSubHeader({ title, handleBack }: { title: string, handleBack: () => void }) {
   return (
     <MobileHeader>
-      <BackButton src="/img/left-arrow-white.svg" onClick={router.back}/>
+      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack}/>
       <Title>{title}</Title>
     </MobileHeader>
   );
@@ -44,4 +43,5 @@ const Title = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  cursor: pointer;
 `;

@@ -42,7 +42,7 @@ export default function NavigationBar() {
 
 const NaviBar = styled.nav`
   margin-top: auto;
-  margin-left: auto;
+  margin-left: 325px;
   margin-right: 386px;
   width: 394px;
   white-space: nowrap;
@@ -51,7 +51,7 @@ const NaviBar = styled.nav`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 918px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
