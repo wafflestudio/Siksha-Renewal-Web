@@ -1,19 +1,20 @@
 import styled, { css } from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LoginModal from "../../components/Auth/LoginModal";
-import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
-import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
-import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
-import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
-import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
+import LoginModal from "components/Auth/LoginModal";
+import { ReviewItem } from "components/MenuDetail/ReviewItem.";
+import ReviewDistribution from "components/MenuDetail/ReviewDistribution";
+import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import ReviewImageSwiper from "components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
-import Likes from "../../components/MenuDetail/Likes";
+import Likes from "components/MenuDetail/Likes";
 import Image from "next/image";
 import MobileNavigationBar from "components/MobileNavigationBar";
 import { getMenu } from "utils/api/menus";
-import { getRestaurantList } from "../../utils/api/restaurants";
+import { getRestaurantList } from "utils/api/restaurants";
 import { getReviews, getReviewScore } from "utils/api/reviews";
+import { useSearchParams } from 'next/navigation'
 
 interface MenuType {
   id: number;
@@ -44,7 +45,7 @@ export interface ReviewType {
   updated_at: string;
 }
 
-interface ReviewListType {
+export interface ReviewListType {
   result: ReviewType[];
   total_count: number;
 }
@@ -52,6 +53,8 @@ interface ReviewListType {
 export default function Menu() {
   const router = useRouter();
   const { id } = router.query;
+  const searchParams = useSearchParams();
+  const writeReview = !!searchParams.get('writeReview');
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
@@ -61,7 +64,7 @@ export default function Menu() {
   const [images, setImages] = useState<string[]>([]);
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
-  const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
+  const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(writeReview);
 
   const state = useStateContext();
   const { isLoginModal } = state;
@@ -195,7 +198,7 @@ export default function Menu() {
                     <ReviewTitle>리뷰</ReviewTitle>
                     <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
                   </div>
-                  <Link href="#" style={{ textDecoration: "none" }}>
+                  <Link href={`/menu/${id}/photos`} style={{ textDecoration: "none" }}>
                     <ImageReviewButton>
                       <ImageReviewButtonText>사진 리뷰 모아보기</ImageReviewButtonText>
                       <Image
