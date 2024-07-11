@@ -25,5 +25,7 @@
       "form_factor": "narrow",
       "label": "Application"
     }
-  ]
+  ],
+  "background_color": "#ff9522",
+  "theme-color": "#ff9522"
 }
