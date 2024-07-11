@@ -13,6 +13,9 @@ export default function Account() {
 
   const [isLoading, setLoading] = useState(false);
 
+  // 프로필 이미지 기능 구현 대비
+  const profileURL = "/img/default-profile.svg";
+
   useEffect(() => {
     if (loginStatus === false) {
       router.push(`/`);
@@ -30,82 +33,141 @@ export default function Account() {
 
   return (
     <AccountLayout>
-      <Container>
-        <Nickname
+      <ListGroup>
+        <ContentDiv
           onClick={() => {
             router.push("/account/nickname");
           }}
         >
-          {isLoading ? "잠시만 기다려주세요..." : nickname}
-        </Nickname>
-
-        <MyPost
+          <Profile src={profileURL} />
+          <ProfileText>{isLoading ? "잠시만 기다려주세요..." : nickname}</ProfileText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+      </ListGroup>
+      <ListGroup>
+        <ContentDiv
           onClick={() => {
             router.push("/account/mypost");
           }}
         >
-          내가 쓴 글
-        </MyPost>
-
-        <Package>
-          <FirstDiv
-            onClick={() => {
-              router.push("/account/restaurant");
-            }}
-          >
-            식당 순서 변경
-          </FirstDiv>
-          <MiddleDiv
-            onClick={() => {
-              router.push("/account/restaurant/favorite");
-            }}
-          >
-            즐겨찾기 식당 순서 변경
-          </MiddleDiv>
-          <MiddleDiv>
-            메뉴 없는 식당 숨기기{" "}
-            {isExceptEmptyRestaurant ? (
-              <Icon src="/img/hide-circle-active.svg" onClick={toggle} />
-            ) : (
-              <Icon src="/img/hide-circle-inactive.svg" onClick={toggle} />
-            )}
-          </MiddleDiv>
-          <LastDiv
-            onClick={() => {
-              router.push("/account/user");
-            }}
-          >
-            계정관리
-          </LastDiv>
-        </Package>
-
-        <Inquiry
+          <DefaultText>내가 쓴 글</DefaultText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+      </ListGroup>
+      <ListGroup>
+        <ContentDiv
           onClick={() => {
-            router.push("/account/inquiry");
+            router.push("/account/restaurant");
           }}
         >
-          1:1 문의하기
-        </Inquiry>
-      </Container>
+          <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/restaurant/favorite");
+          }}
+        >
+          <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv>
+          <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
+          {isExceptEmptyRestaurant ? (
+            <CheckButton src="/img/hide-circle-active.svg" onClick={toggle} />
+          ) : (
+            <CheckButton src="/img/hide-circle-inactive.svg" onClick={toggle} />
+          )}
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/user");
+          }}
+        >
+          <DefaultText isLast={true}>계정관리</DefaultText>
+          <ArrowButton src="/img/right-arrow-grey.svg" />
+        </ContentDiv>
+      </ListGroup>
+
+      <ListGroup
+        onClick={() => {
+          router.push("/account/inquiry");
+        }}
+      >
+        <InquiryText>1:1 문의하기</InquiryText>
+      </ListGroup>
     </AccountLayout>
   );
 }
 
-const Container = styled.div``;
-
-const Box = styled.div`
+const ListGroup = styled.div`
   cursor: pointer;
+  background-color: #ffffff;
+  width: 544px;
+  margin-bottom: 19px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
 `;
 
-const Nickname = styled(Box)``;
-const MyPost = styled(Box)``;
+const ContentDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
 
-const Package = styled.div``;
-const FirstDiv = styled(Box)``;
-const MiddleDiv = styled(Box)``;
+const Profile = styled.img`
+  width: 48.17px;
+  height: 48.17px;
+  margin: 11px 0 11px 16px;
+`;
 
-const Icon = styled.img``;
+const Text = styled.span`
+  display: inline-block;
+  margin: 11.5px 0 11.5px 16px;
+  line-height: 23px;
+  font-size: 16px;
+  font-weight: 400;
+`;
 
-const LastDiv = styled(Box)``;
+const ProfileText = styled(Text)`
+  margin-left: 11px;
+  font-weight: 700;
+`;
 
-const Inquiry = styled(Box)``;
+const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
+  margin-top: ${(props) => (props.isFirst ? "13px" : "10.5px")};
+  margin-bottom: ${(props) => (props.isLast ? "13px" : "10.5px")};
+`;
+
+const InquiryText = styled(Text)`
+  margin-left: 13px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff9522;
+`;
+
+const BreakLine = styled.hr`
+  border: 0;
+  height: 1px;
+  background: #e8e8e8;
+  margin: 0 6px;
+`;
+
+const Button = styled.img`
+  margin-left: auto;
+`;
+
+const ArrowButton = styled(Button)`
+  width: 6.25px;
+  height: 10px;
+  margin-right: 15.47px;
+`;
+
+const CheckButton = styled(Button)`
+  width: 19px;
+  height: 19px;
+  margin-right: 12.22px;
+`;

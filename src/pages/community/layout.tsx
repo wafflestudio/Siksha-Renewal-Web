@@ -1,5 +1,3 @@
-import Header from "components/Header";
-import { GlobalStyle } from "styles/globalstyle";
 import styled from "styled-components";
 
 interface LayoutProps {
@@ -7,13 +5,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  return (
-    <>
-      <GlobalStyle />
-      <Header />
-      <Content>{children}</Content>
-    </>
-  );
+  return <Content>{children}</Content>;
 }
 
 const Content = styled.div`

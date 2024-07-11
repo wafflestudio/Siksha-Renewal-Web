@@ -1,87 +1,48 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
-import APIendpoint from "../constants/constants";
-import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginStatus, setLoginModal, setUserInfo, setIsExceptEmptyRestaurant } =
-    useDispatchContext();
+  const { setLoginStatus, setLoginModal } = useDispatchContext();
 
-  const { loginStatus, isExceptEmptyRestaurant } = state;
+  const { loginStatus } = state;
 
-  useEffect(() => {
-    setLoginStatus(!!localStorage.getItem("access_token"));
-
-    const access_token = localStorage.getItem("access_token");
-
-    async function fetchUserInfo() {
-      try {
-        const res = await axios.get(`${APIendpoint()}/auth/me`, {
-          headers: { "authorization-token": `Bearer ${access_token}` },
-        });
-        setUserInfo({ id: res.data.id, nickname: res.data.nickname });
-      } catch (e) {
-        setUserInfo({ id: null, nickname: null });
-      }
-    }
-
-    fetchUserInfo();
-  }, [loginStatus]);
-
-  useEffect(() => {
-    if (loginStatus) {
-      const value = localStorage.getItem("isExceptEmptyRestaurant");
-
-      if (value !== null) {
-        setIsExceptEmptyRestaurant(JSON.parse(value));
-      } else {
-        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
-      }
-    }
-  }, [loginStatus]);
-
-  if (loginStatus !== undefined) {
-    return (
-      <>
-        <Background>
-          <Container>
-            <SikshaIcon
-              src={"/img/sikshaSplash.svg"}
-              onClick={() => {
-                router.push("/");
-              }}
-            />
-            <Title
-              onClick={() => {
-                router.push("/");
-              }}
-            >
-              서울대학교 식단 알리미
-            </Title>
-            <NavigationBar />
-            {loginStatus ? (
-              <LoginButton
-                onClick={() => {
-                  localStorage.removeItem("access_token");
-                  router.push(`/`);
-                  setLoginStatus(false);
-                }}
-              >
-                로그아웃
-              </LoginButton>
-            ) : (
-              <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
-            )}
-          </Container>
-        </Background>
-      </>
-    );
-  }
+  return (
+    <Background>
+      <Container>
+        <SikshaIcon
+          src={"/img/sikshaSplash.svg"}
+          onClick={() => {
+            router.push("/");
+          }}
+        />
+        <Title
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          서울대학교 식단 알리미
+        </Title>
+        <NavigationBar />
+        {loginStatus ? (
+          <LoginButton
+            onClick={() => {
+              localStorage.removeItem("access_token");
+              router.push(`/`);
+              setLoginStatus(false);
+            }}
+          >
+            로그아웃
+          </LoginButton>
+        ) : (
+          <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
+        )}
+      </Container>
+    </Background>
+  );
 }
 const LoginButton = styled.div`
   position: absolute;
@@ -89,7 +50,6 @@ const LoginButton = styled.div`
   bottom: 23px;
   background: none;
   font-size: 20px;
-  font-family: NanumSquare;
   font-weight: 400;
   color: #ffffff;
   cursor: pointer;
@@ -146,7 +106,6 @@ const SikshaIcon = styled.img`
 `;
 
 const Title = styled.div`
-  font-family: "NIXGONFONTS V2.0";
   font-size: 20px;
   line-height: 20px;
   color: white;
@@ -161,3 +120,13 @@ const Title = styled.div`
     display: none;
   }
 `;
+// const NavBarContainer = styled.div`
+//   width: 100%;
+//   display: flex;
+//   align-items: flex-end;
+//   justify-content: center;
+//   margin-right: 368px;
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;

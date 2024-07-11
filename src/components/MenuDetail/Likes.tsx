@@ -1,9 +1,8 @@
-import axios from "axios";
-import APIendpoint from "../../constants/constants";
+import UseAccessToken from "hooks/UseAccessToken";
 import { useStateContext } from "../../hooks/ContextProvider";
 import { useState } from "react";
-import router from "next/router";
 import styled from "styled-components";
+import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -14,40 +13,23 @@ export default function Likes({ menu }) {
   const state = useStateContext();
   const { loginStatus } = state;
 
+  const { getAccessToken } = UseAccessToken();
+
   const isLikedToggle = async () => {
     if (loginStatus === false) {
-      router.push("/login");
+      setLoginModal(true);
     } else {
-      const access_token = localStorage.getItem("access_token");
-      if (isLiked === false) {
-        await axios
-          .post(
-            `${APIendpoint()}/menus/${menu!!.id}/like`,
-            {},
-            { headers: { "authorization-token": `Bearer ${access_token}` } },
-          )
-          .then((res) => {
-            setIsLiked(res.data.is_liked);
-            setLikeCount(res.data.like_cnt);
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-      } else {
-        await axios
-          .post(
-            `${APIendpoint()}/menus/${menu!!.id}/unlike`,
-            {},
-            { headers: { "authorization-token": `Bearer ${access_token}` } },
-          )
-          .then((res) => {
-            setIsLiked(res.data.is_liked);
-            setLikeCount(res.data.like_cnt);
-          })
-          .catch((res) => {
-            console.log(res);
-          });
-      }
+      const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
+
+      return getAccessToken()
+        .then((accessToekn) => handleLikeAction(menu.id, accessToekn))
+        .then(({ isLiked, likeCount }) => {
+          setIsLiked(isLiked);
+          setLikeCount(likeCount);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
     }
   };
 
@@ -101,3 +83,6 @@ const LikesText = styled.div`
     color: #000000;
   }
 `;
+function setLoginModal(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

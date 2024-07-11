@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import APIendpoint from "constants/constants";
 import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "types";
 import Board from "../../index";
 import CommentList from "components/Community/CommentList";
@@ -12,12 +10,21 @@ import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
 import { commentParser, postParser } from "utils/DataUtil";
+import {
+  deletePost,
+  getCommentList,
+  getPost,
+  setPostLike,
+  setPostUnlike,
+} from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
+  const { getAccessToken, checkAccessToken } = UseAccessToken();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
@@ -29,90 +36,72 @@ export default function Post() {
     setPost(postParser(rawPost));
   }
 
-  async function fetchPost() {
-    const apiUrl = loginStatus
-      ? `${APIendpoint()}/community/posts/${postId}`
-      : `${APIendpoint()}/community/posts/${postId}/web`;
-    const config = loginStatus
-      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
-      : {};
-
-    try {
-      await axios.get(apiUrl, config).then((res) => {
-        setParsedPost(res.data);
+  const fetchPost = () => {
+    return checkAccessToken()
+      .then((result: string | null) => getPost(Number(postId), result ?? undefined))
+      .then((data) => {
+        setParsedPost(data);
+      })
+      .catch((e) => {
+        console.error(e);
+        setIsError(true);
       });
-    } catch (e) {
-      console.error(e);
-      setIsError(true);
-    }
-  }
+  };
 
-  function setParsedComments(comment: RawComment) {
+  const setParsedComments = (comment: RawComment) => {
     setComments((prev) => [...prev, commentParser(comment)]);
-  }
+  };
 
-  async function fetchComments() {
-    const apiUrl = loginStatus
-      ? `${APIendpoint()}/community/comments?post_id=${postId}&per_page=100`
-      : `${APIendpoint()}/community/comments/web?post_id=${postId}&per_page=100`;
-    const config = loginStatus
-      ? { headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` } }
-      : {};
-
-    try {
-      await axios.get(apiUrl, config).then((res) => {
-        res.data.result.map(setParsedComments);
+  const fetchComments = () => {
+    return checkAccessToken()
+      .then((result: string | null) => getCommentList(Number(postId), result ?? undefined))
+      .then((data) => {
+        const { result } = data;
+        result.map(setParsedComments);
+      })
+      .catch((e) => {
+        console.error(e);
+        setIsError(true);
       });
-    } catch (e) {
-      console.error(e);
-      setIsError(true);
-    }
-  }
-  async function fetchLike() {
+  };
+
+  const fetchLike = () => {
     if (loginStatus === false) {
       setLoginModal(true);
     } else if (post) {
-      const apiUrl = post.isLiked
-        ? `${APIendpoint()}/community/posts/${post.id}/unlike`
-        : `${APIendpoint()}/community/posts/${post.id}/like`;
-      try {
-        await axios
-          .post(
-            apiUrl,
-            {},
-            {
-              headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-            },
-          )
-          .then((res) =>
-            setPost({ ...post, isLiked: res.data.is_liked, likeCount: res.data.like_cnt }),
-          );
-      } catch (e) {
-        console.error(e);
-        setIsError(true);
-      }
+      const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
+      return getAccessToken()
+        .then((accessToken) => handleLikeAction(post.id, accessToken))
+        .then(({ isLiked, likeCount }) => {
+          setPost({
+            ...post,
+            isLiked: isLiked,
+            likeCount: likeCount,
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          setIsError(true);
+        });
     }
-  }
+  };
 
-  async function deletePost(postId: number) {
+  const removePost = (postId: number) => {
     if (loginStatus === false) {
       setLoginModal(true);
     } else if (confirm("이 글을 삭제하시겠습니까?")) {
-      try {
-        await axios
-          .delete(`${APIendpoint()}/community/posts/${postId}`, {
-            headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-          })
-          .then(() => router.push(`/community/boards/${boardId}`));
-      } catch (e) {
-        console.error(e);
-      }
+      return getAccessToken()
+        .then((accessToken) => deletePost(postId, accessToken))
+        .then(() => router.push(`/community/boards/${boardId}`))
+        .catch((e) => {
+          console.error(e);
+        });
     }
-  }
+  };
 
-  async function updatePost(postId: number) {
+  const updatePost = (postId: number) => {
     router.push(`/community/write/?postId=${postId}`);
-  }
+  };
 
   useEffect(() => {
     if (boardId && postId) {
@@ -128,7 +117,7 @@ export default function Post() {
     const actions: ModalAction[] = post.isMine
       ? [
           { name: "수정", handleClick: () => {} }, // 수정 관련 미비 사항이 많아 일단은 비활성화
-          { name: "삭제", handleClick: () => deletePost(post.id) },
+          { name: "삭제", handleClick: () => removePost(post.id) },
         ]
       : [{ name: "신고", handleClick: () => {} }];
 

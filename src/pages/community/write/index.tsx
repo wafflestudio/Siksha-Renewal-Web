@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import Layout from "../layout";
 import { useEffect, useState } from "react";
-import APIendpoint from "../../../constants/constants";
 import { useDispatchContext, useStateContext } from "../../../hooks/ContextProvider";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { Board, RawBoard } from "../../../types";
 import { boardParser } from "utils/DataUtil";
+import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export type inputs = {
   title: string;
@@ -17,6 +17,7 @@ export type inputs = {
     anonymous: boolean;
   };
 };
+
 type option = {
   anonymous: boolean;
 };
@@ -41,25 +42,30 @@ export default function PostWriter() {
 
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
+  const { getAccessToken } = UseAccessToken();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
-  function handleClickMenuItem(id: number) {
+  const handleClickMenuItem = (id: number) => {
     setInputs({ ...inputs, boardId: id });
     setClicked(false);
-  }
-  function handlePhotoAttach(photo: File | undefined) {
+  };
+
+  const handlePhotoAttach = (photo: File | undefined) => {
     if (photo) {
       setInputs({ ...inputs, photos: [...inputs.photos, photo] });
     }
-  }
-  function handlePhotoDelete(index: number) {
+  };
+
+  const handlePhotoDelete = (index: number) => {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
-  }
-  function handleCancel() {
+  };
+
+  const handleCancel = () => {
     router.back();
-  }
-  async function handleSubmit() {
+  };
+
+  const handleSubmit = () => {
     if (isSubmitting) {
       return;
     }
@@ -74,31 +80,30 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
 
-      await Promise.all(inputs.photos.map(convertToBlob)).then((blobs) => {
-        for (let i = 0; i < blobs.length; i++) {
-          body.append("images", blobs[i]);
-        }
-      });
+      return Promise.all(inputs.photos.map(convertToBlob))
+        .then((blobs) => {
+          for (let i = 0; i < blobs.length; i++) {
+            body.append("images", blobs[i]);
+          }
+        })
+        .then(getAccessToken)
+        .then((accessToken) => {
+          const actionFunction = isUpdate
+            ? () => updatePost(Number(postId), body, accessToken)
+            : () => setPost(body, accessToken);
 
-      try {
-        const res = isUpdate
-          ? await axios.patch(`${APIendpoint()}/community/posts/${postId}`, body, {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            })
-          : await axios.post(`${APIendpoint()}/community/posts`, body, {
-              headers: {
-                "authorization-token": `Bearer ${localStorage.getItem("access_token")}`,
-              },
-            });
-        const { board_id, id } = res.data;
-        router.push(`/community/boards/${board_id}/posts/${id}`);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        SetIsSubmitting(false);
-      }
+          return actionFunction();
+        })
+        .then((data) => {
+          const { board_id, id } = data;
+          router.push(`/community/boards/${board_id}/posts/${id}`);
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          SetIsSubmitting(false);
+        });
     }
 
     async function convertToBlob(image: string | File) {
@@ -110,26 +115,26 @@ export default function PostWriter() {
         return image;
       }
     }
-  }
+  };
 
   function setParsedBoards(board: RawBoard) {
     setBoards((prev) => [...prev, boardParser(board)]);
   }
-  async function fetchBoards() {
-    const res = await axios.get(`${APIendpoint()}/community/boards`);
-    setBoards([]);
-    res.data.map(setParsedBoards);
-  }
 
-  async function fetchPreviousPost() {
+  const fetchBoards = () => {
+    return getBoardList().then((data) => {
+      setBoards([]);
+      data.map(setParsedBoards);
+    });
+  };
+
+  const fetchPreviousPost = () => {
     if (!postId) return;
 
-    await axios
-      .get(`${APIendpoint()}/community/posts/${postId}`, {
-        headers: { "authorization-token": `Bearer ${localStorage.getItem("access_token")}` },
-      })
-      .then((res) => {
-        const { title, content, board_id, etc, anonymous, is_mine } = res.data;
+    return getAccessToken()
+      .then((accessToken) => getPost(Number(postId), accessToken))
+      .then((data) => {
+        const { title, content, board_id, etc, anonymous, is_mine } = data;
         if (is_mine) {
           setInputs({
             title: title,
@@ -141,7 +146,7 @@ export default function PostWriter() {
           setIsUpdate(true);
         }
       });
-  }
+  };
 
   useEffect(() => {
     if (loginStatus === false) {

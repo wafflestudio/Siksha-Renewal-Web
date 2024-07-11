@@ -1,11 +1,10 @@
 import React, { useId, useState } from "react";
 import styled from "styled-components";
-import APIendpoint from "../../constants/constants";
-import axios from "axios";
 import Image from "next/image";
 import { v4 as uuidv4 } from 'uuid';
+import { setReview } from "utils/api/reviews";
 
-type ReviewInputs = {
+export type ReviewInputs = {
   score: number;
   comment: string;
   photos: {
@@ -52,24 +51,12 @@ export default function ReviewPostModal({
     setInputs({ ...inputs, photos: inputs.photos.filter((photoObj) => photoObj.id !== id) });
   };
   const handleSubmit = async () => {
-    await axios
-      .post(
-        `${APIendpoint()}/reviews/images/`,
-        {
-          menu_id: menu.menuId,
-          ...inputs
-        },
-        {
-          headers: {
-            "authorization-token": `Bearer ${accessToken}`,
-          },
-        },
-      )
+    return setReview(menu.menuId, inputs, accessToken!)
       .then((res) => {
         onClose();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         window.alert(`리뷰 등록에 실패했습니다.`);
       });
   };
@@ -485,26 +472,26 @@ const ReviewPostButton = styled.button`
   height: 46px;
   margin: 0 7px;
   border-radius: 8px;
+  color: black;
   background-color: #ff9522;
   justify-content: center;
   align-items: center;
   color: white;
   border: none;
-  cursor: pointer;
   font-size: 16px;
   font-weight: 700;
+  cursor: pointer;
 
   &:before {
-    content: '평가\00a0';
+    content: '평가';
     display: none;
+    padding-right: 5px;
   }
   &:disabled {
     background-color: #adadad;
   }
-
   @media (max-width: 768px) {
     width: 100%;
-
     &:before {
       display: inherit;
     }
