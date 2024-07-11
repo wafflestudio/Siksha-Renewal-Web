@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import APIendpoint from "../../constants/constants";
@@ -13,9 +13,7 @@ import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider
 import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
-import Image from "next/image";
 import MobileSubHeader from "components/MobileSubHeader";
-import useEmblaCarousel from "embla-carousel-react";
 import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
 
 interface MenuType {
@@ -79,7 +77,7 @@ export default function Menu() {
   const [menu, setMenu] = useState<MenuType>();
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
-  const [isReviewPostModalOpen, setReviewPostModalOpen] = useState(false);
+  const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
   const state = useStateContext();
   const { isLoginModal } = state;
@@ -94,6 +92,8 @@ export default function Menu() {
   const MOBILE_IMAGE_LIST_LIMIT = 5;
   const [images, setImages] = useState<string[]>([]);
   const [imageCount, SetImageCount] = useState<number>(0);
+
+  const [mobileSubHeaderTitle, SetMobileSubHeaderTitle] = useState<string>("");
 
   useEffect(() => {
     if (!id) {
@@ -125,6 +125,7 @@ export default function Menu() {
           .get(`${APIendpoint()}/reviews/?menu_id=${id}&page=1&per_page=100`)
           .then((res) => {
             setReviews(res.data);
+            console.log(res.data);
           });
       } catch (e) {
         console.log(e);
@@ -177,11 +178,27 @@ export default function Menu() {
 
   const handleReviewPostButtonClick = () => {
     if (!!localStorage.getItem("access_token")) {
-      setReviewPostModalOpen(true);
+      handleReviewPostModal(true);
     } else {
       setLoginModal(true);
     }
   };
+
+  const handleReviewPostModal = (isOpen: boolean) => {
+    if (!menu) {
+      return;
+    }
+    SetMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
+    setIsReviewPostModalOpen(isOpen);
+  }
+
+  const handleMobileSubHeaderBack = () => {
+    if(isReviewPostModalOpen) { 
+      handleReviewPostModal(false);
+    } else {
+      router.back();
+    }
+  }
 
   useEffect(() => {
     if (menuTitleDivRef.current) {
@@ -197,116 +214,130 @@ export default function Menu() {
       {isLoginModal && <LoginModal />}
       <Header />
       {!isLoading && !!menu && (
-        <Info>
-          <MobileSubHeader title={menu.name_kr} />
-          <MenuContainer>
-            {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount} />}
-            <MenuInfoContainer>
-              <MenuHeader>
-                <MenuTitleContainer>
-                  <MenuTitleWrapper>
-                    <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>{menu.name_kr}</MenuTitle>
-                    <MenuTitleAccordionButton isOpen={isAccordionOpen} isTitleLong={isOverflow} onClick={toggleAccordion} />
-                  </MenuTitleWrapper>
-                  <MenuSubTitle>{restaurantName}</MenuSubTitle>
-                </MenuTitleContainer>
-                <Likes menu={menu} />
-              </MenuHeader>
-              <HLine />
-              <ReviewDistribution
-                totalReviewCount={reviews.total_count}
-                score={menu.score || 0}
-                distribution={reviewDistribution}
-              />
-            </MenuInfoContainer>
-            <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-              나의 평가 남기기
-            </ReviewPostButton>
-          </MenuContainer>
-          <MobileHLine />
-          {!isReviewPostModalOpen && (
-            <ReviewContainer>
-              <ReviewHeader>
-                <MobilePhotoReviewHeader>
-                  <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
-                  <Link href="#" style={{ textDecoration: "none" }}>
-                    <PhotoReviewButton>
-                      <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                      <img
-                        src="/img/right-arrow-darkgrey.svg"
-                        alt="사진 리뷰 모아보기"
-                      />
-                    </PhotoReviewButton>
-                  </Link>
-                </MobilePhotoReviewHeader>
-                <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={imageCount} />
-                <MobileReviewHeader>
-                  <div style={{ display: "flex" }}>
-                    <ReviewTitle>리뷰</ReviewTitle>
-                    <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                  </div>
-                  <MoreReviewsButtonImage src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" />
-                </MobileReviewHeader>
-              </ReviewHeader>
-              <ReviewList>
-                {reviews.result.length > 0
-                  ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-                  : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-                }
-              </ReviewList>
-              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+        <>
+          <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
+          <Info>
+            <Padding />
+            <MenuContainer>
+              {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={imageCount} />}
+              <MenuInfoContainer>
+                <MenuHeader>
+                  <MenuTitleContainer>
+                    <MenuTitleWrapper>
+                      <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>{menu.name_kr}</MenuTitle>
+                      <MenuTitleAccordionButton isOpen={isAccordionOpen} isTitleLong={isOverflow} onClick={toggleAccordion} />
+                    </MenuTitleWrapper>
+                    <MenuSubTitle>{restaurantName}</MenuSubTitle>
+                  </MenuTitleContainer>
+                  <Likes menu={menu} />
+                </MenuHeader>
+                <HLine />
+                <ReviewDistribution
+                  totalReviewCount={reviews.total_count}
+                  score={menu.score || 0}
+                  distribution={reviewDistribution}
+                />
+              </MenuInfoContainer>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
                 나의 평가 남기기
               </ReviewPostButton>
-            </ReviewContainer>
-          )}
-          {isReviewPostModalOpen && (
-            <ReviewPostModal
-              isOpen={isReviewPostModalOpen}
-              menu={{
-                menuName: menu.name_kr,
-                menuId: menu.id,
-              }}
-              onClose={() => setReviewPostModalOpen(false)}
-            />
-          )}
-        </Info>
+            </MenuContainer>
+            <MobileHLine />
+            {!isReviewPostModalOpen && (
+              <ReviewContainer>
+                <ReviewHeader>
+                  <MobilePhotoReviewHeader>
+                    <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
+                    <Link href="#" style={{ textDecoration: "none" }}>
+                      <PhotoReviewButton>
+                        <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
+                        <img
+                          src="/img/right-arrow-darkgrey.svg"
+                          alt="사진 리뷰 모아보기"
+                        />
+                      </PhotoReviewButton>
+                    </Link>
+                  </MobilePhotoReviewHeader>
+                  <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={imageCount} />
+                  <MobileReviewHeader>
+                    <div style={{ display: "flex" }}>
+                      <ReviewTitle>리뷰</ReviewTitle>
+                      <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
+                    </div>
+                    <MoreReviewsButtonImage src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" />
+                  </MobileReviewHeader>
+                </ReviewHeader>
+                <ReviewList>
+                  {reviews.result.length > 0
+                    ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+                    : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+                  }
+                </ReviewList>
+                <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={false}>
+                  나의 평가 남기기
+                </ReviewPostButton>
+              </ReviewContainer>
+            )}
+            {isReviewPostModalOpen && (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id,
+                }}
+                onClose={() => handleReviewPostModal(false)}
+              />
+            )}
+            <Padding />
+          </Info>
+        </>
       )}
     </>
   );
 }
 
 const Info = styled.div`
+  position: relative;
   background-color: white;
   display: flex;
-  height: max(910px, 100vh);
+  height: max(809px, calc(100vh - 271px));
   @media (max-width: 768px) {
     flex-direction: column;
+    height: max(724px, calc(100vh - 60px));
   }
 `;
 
 const MenuContainer = styled.section`
+  position: relative;
   background-color: white;
-  flex-grow: 1;
+  width: 1185px;
   @media (max-width: 768px) {
     flex-grow: 0;
     width: auto;
+    min-width: 0;
+    margin-left: 0;
   }
 `;
 
 const MenuInfoContainer = styled.div`
-  padding: 41px 30px 26px calc(max(100vw - max(1221px,min(73vw,1417px)),0px) / 2);
+  padding: 41px 30px 26px 258px;
+  width: 897px;
+  margin-left: auto;
   @media (max-width: 768px) {
     padding: 18px 15px 16px 17px;
+    width: auto;
+    margin-left: 0;
   }
 `;
 
 const ReviewContainer = styled.section`
+  position: relative;
   box-sizing: border-box;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 38%;
+  min-width: 735px;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
@@ -314,9 +345,11 @@ const ReviewContainer = styled.section`
   @media (max-width: 768px) {
     flex-grow: 1;
     width: auto;
+    min-width: 0;
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 0;
+    margin-right: 0;
   }
 `;
 
@@ -334,7 +367,6 @@ const ReviewList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 800px;
   overflow-y: scroll;
   overflow-x: auto;
 `;
@@ -344,7 +376,7 @@ const NoReviewMessage = styled.div`
   font-size: 20px;
   font-weight: 400;
   color: #797979;
-  margin-top: 300px;
+  margin: 300px 0;
   @media (max-width: 768px) {
     font-size: 18px;
   }
@@ -515,7 +547,7 @@ const ReviewHeader = styled.div`
 `;
 
 const ReviewPostButton = styled.button<{ mobile: boolean }>`
-  position: fixed;
+  position: absolute;
   background: #ff9522;
   width: 200px;
   color: white;
@@ -551,4 +583,11 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
             display: none;
           }
         `}
+`;
+
+const Padding = styled.div`
+  flex-grow: 1;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

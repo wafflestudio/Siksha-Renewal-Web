@@ -46,7 +46,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 24px 33px 0 33px;
   @media (max-width: 768px) {
-    padding: 14px 0;
+    padding: 14px 0 16px 0;
   }
 `;
 
@@ -75,7 +75,7 @@ const ScoreContainer = styled.div`
   margin-right: 10%;
   @media (max-width: 768px) {
     width: 90px;
-    height: 90px;
+    height: fit-content;
     margin-right: 26px;
   }
 `;

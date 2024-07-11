@@ -127,7 +127,11 @@ const ReviewImage = styled.img`
 `;
 
 const NoReviewMessage = styled.div`
-  text-align: center;
+  height: var(--slide-height);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 20px;
   font-weight: 400;
   color: #797979;
