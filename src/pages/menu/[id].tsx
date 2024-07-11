@@ -361,7 +361,7 @@ const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 735px;
+  width: 735px;
   border-left: 1px solid #eeeeee;
   padding-left: 50px;
   padding-right: 50px;
