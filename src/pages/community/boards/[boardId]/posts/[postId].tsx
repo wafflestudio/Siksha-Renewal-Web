@@ -57,7 +57,8 @@ export default function Post() {
       .then((result: string | null) => getCommentList(Number(postId), result ?? undefined))
       .then((data) => {
         const { result } = data;
-        result.map(setParsedComments);
+        const newComments = result.map(commentParser);
+        setComments(newComments);
       })
       .catch((e) => {
         console.error(e);
