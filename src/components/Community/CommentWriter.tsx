@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { setComment } from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
 
 interface CommentWriterProps {
   postId: number;
@@ -13,19 +14,24 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
+  const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
+
+  function initialize() {
+    setCommentInput("");
+    setIsAnonymous(false);
+  }
+
   const submit = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (commentInput !== "") {
-      setComment(postId, commentInput, isAnonymous, localStorage.getItem("accessToken")!)
-        .then(refetch)
-        .then(() => {
-          setCommentInput("");
-          setIsAnonymous(false);
-        });
-    }
+    return checkAccessToken()
+      .then((res: string | null) => {
+        if (res !== null) {
+          setComment(postId, commentInput, isAnonymous, res);
+        }
+      })
+      .then(refetch)
+      .then(initialize);
   };
 
   return (
