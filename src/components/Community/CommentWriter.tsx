@@ -122,6 +122,7 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
 const MobileAnonymousButton = styled(AnonymousButton)`
   display: none;
   position: absolute;
+  top: -2px;
   height: 100%;
   font-size: 10px;
   line-height: 11.35px;
