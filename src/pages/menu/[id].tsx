@@ -238,6 +238,7 @@ const Info = styled.div`
   display: flex;
   height: max(910px, 100vh);
   @media (max-width: 768px) {
+    height: 100%;
     flex-direction: column;
   }
 `;
