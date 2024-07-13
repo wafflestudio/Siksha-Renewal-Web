@@ -116,7 +116,10 @@ export default function Post() {
 
     const actions: ModalAction[] = post.isMine
       ? [
-          { name: "수정", handleClick: () => {} }, // 수정 관련 미비 사항이 많아 일단은 비활성화
+          {
+            name: "수정",
+            handleClick: () => router.push(`/community/write/?postId=${postId}`),
+          },
           { name: "삭제", handleClick: () => removePost(post.id) },
         ]
       : [{ name: "신고", handleClick: () => {} }];
