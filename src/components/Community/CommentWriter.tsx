@@ -51,8 +51,14 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
 }
 
 const Container = styled.div`
-  position: relative;
+  position: sticky;
+  padding-top: 18.7px;
+  padding-bottom: 24.7px;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  z-index: 99;
+  background-color: white;
 `;
 const CommentInput = styled.input`
   box-sizing: border-box;
