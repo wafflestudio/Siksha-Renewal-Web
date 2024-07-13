@@ -86,70 +86,32 @@ export default function Menu() {
     if (!id) {
       return;
     }
+    setLoading(true);
 
-    const fetchReview = () => {
-      setLoading(true);
-
-      getReviews(Number(id))
-        .then(({ totalCount, result }) => {
-          setReviews({
-            result,
-            total_count: totalCount,
-          });
-        })
-        .catch((e) => {
-          router.push("/");
-        })
-        .finally(() => setLoading(false));
-    };
-
-    const fetchMenu = () => {
-      setLoading(true);
-      getMenu(Number(id))
-        .then((data) => {
-          setMenu(data);
-          setMobileSubHeaderTitle(data.name_kr);
-          fetchReview();
-          fetchRestaurantName({
-            restaurantId: data.restaurant_id,
-          });
-          fetchReviewDistribution({
-            menuId: data.id,
-          });
-        })
-        .catch((e) => {
-          console.error(e);
-          router.push("/");
-        })
-        .finally(() => setLoading(false));
-    };
-
-    const fetchRestaurantName = async ({ restaurantId }: { restaurantId: number }) => {
-      try {
-        getRestaurantList().then((data) => {
-          const restaurantName = data.result.find((restaurant) => restaurant.id === restaurantId);
-          if (restaurantName) setRestaurantName(restaurantName.name_kr);
-        });
-      } catch (e) {
-        console.error(e);
-        router.push("/");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchReviewDistribution = async ({ menuId }: { menuId: number }) => {
-      try {
-        getReviewScore(menuId).then((dist) => {
-          setReviewDistribution(dist);
-        });
-      } catch (e) {
-        console.error(e);
-        router.push("/");
-      }
-    };
-
-    fetchMenu();
+    Promise.all([
+      getMenu(Number(id)),
+      getReviews(Number(id)),
+      getRestaurantList(),
+      getReviewScore(Number(id)),
+    ])
+    .then(([menuData, reviewsData, restaurantListData, reviewScoreData]) => {
+      setMenu(menuData);
+      setMobileSubHeaderTitle(menuData.name_kr);
+      setReviews({
+        result: reviewsData.result,
+        total_count: reviewsData.totalCount,
+      });
+      const restaurantName = restaurantListData.result.find((restaurant) => restaurant.id === menuData.restaurant_id);
+      if (restaurantName)
+        setRestaurantName(restaurantName.name_kr);
+      setReviewDistribution(reviewScoreData);
+    })
+    .catch((e) => {
+      console.error(e);
+      router.push("/");
+    })
+    .finally(() => setLoading(false));
+    
   }, [id, setLoading]);
 
   useEffect(() => {
