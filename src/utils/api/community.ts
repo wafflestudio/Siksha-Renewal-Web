@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import APIendpoint from "constants/constants";
 import { RawBoard, RawComment, RawPost } from "types";
 
@@ -169,14 +169,16 @@ export const setPostUnlike = (
 export const getCommentList = (
   postID: number,
   accessToken?: string,
+  size: number = 10,
+  page: number = 1,
 ): Promise<{
   result: RawComment[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   const apiUrl = accessToken
-    ? `${APIendpoint()}/community/comments?post_id=${postID}&per_page=100`
-    : `${APIendpoint()}/community/comments/web?post_id=${postID}&per_page=100`;
+    ? `${APIendpoint()}/community/comments?post_id=${postID}&page=${page}&per_page=${size}`
+    : `${APIendpoint()}/community/comments/web?post_id=${postID}&page=${page}&per_page=${size}`;
 
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
@@ -198,17 +200,20 @@ export const setComment = (
   content: string,
   isAnonymous: boolean,
   accessToken: string,
-): Promise<void> => {
-  return axios
-    .post(
-      `${APIendpoint()}/community/comments`,
-      { post_id: postID, content, anonymous: isAnonymous },
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
-    )
-    .then(() => {})
-    .catch((e) => {
-      throw new Error(e);
-    });
+  // updateCallback: (raw: RawComment) => Promise<any>,
+): Promise<AxiosResponse<any>> => {
+  return (
+    axios
+      .post(
+        `${APIendpoint()}/community/comments`,
+        { post_id: postID, content, anonymous: isAnonymous },
+        { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      )
+      // .then((res: AxiosResponse<RawComment>) => updateCallback(res.data))
+      .catch((e) => {
+        throw new Error(e);
+      })
+  );
 };
 
 export const deleteComment = (commentID: number, accessToken: string): Promise<void> => {
