@@ -4,8 +4,6 @@ import React, { useCallback } from "react";
 import { useRouter } from "next/router";
 
 export default function LoginModal() {
-  const router = useRouter();
-
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -21,6 +19,7 @@ export default function LoginModal() {
     window.location.href = googleUrl;
   };
 
+  // js 스크립트안쓰고 href로 처리하면 apple passkey제공시 지멋대로 "/login"으로 리다이렉트됨 -> js로 처리
   const handleAppleLogin = () => {
     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENTID!;
     const redirectUri = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI!;
@@ -34,24 +33,13 @@ export default function LoginModal() {
       usePopup: true,
     });
 
-    const signIn = () =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const response = await window.AppleID.auth.signIn();
-          resolve(response);
-        } catch (error) {
-          reject(error);
-        }
-      });
+    window.AppleID.auth.signIn().then((response: any) => {
+      const {
+        authorization: { id_token },
+      } = response;
 
-    signIn()
-      .then((res: SigninResponse) => {
-        const { code, id_token } = res.authorization;
-        router.push(`/auth/apple?code=${code}&id_token=${id_token}`);
-      })
-      .catch((error: SigninError) => {
-        console.error(error);
-      });
+      window.location.href = `/auth/apple?id_token=${id_token}`;
+    });
   };
 
   const dispatch = useDispatchContext();
@@ -105,7 +93,7 @@ export default function LoginModal() {
 }
 
 const Background = styled.div`
-  z-index: 99;
+  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;
@@ -134,7 +122,7 @@ const MainContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 100dvh;
+    height: 100vh;
     border-radius: 0px;
   }
 `;
