@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { loginApple } from "utils/api/auth";
+import { useDispatchContext } from "hooks/ContextProvider";
 
 export default function Auth() {
   const router = useRouter();
+  const { setLoginStatus } = useDispatchContext();
+
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const id_token = params.get("id_token");
@@ -15,19 +17,15 @@ export default function Auth() {
     }
 
     loginApple(id_token)
-      .then((res: any) => {
-        localStorage.setItem("access_token", res.data.access_token);
+      .then((accessToken) => {
+        localStorage.setItem("access_token", accessToken);
+        setLoginStatus(true);
         router.push("/");
       })
       .catch((res: any) => {
-        console.dir(res);
-        console.log(res.response);
+        console.error(res);
       });
   }, []);
 
-  return <Container>apple</Container>;
+  return <></>;
 }
-
-const Container = styled.div`
-  text-align: center;
-`;
