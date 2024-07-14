@@ -25,39 +25,8 @@ export default function LoginModal() {
     // apple login시 code로 id token요청시 secret를 요구하기 때문에 직접 id token을 받아와야함
     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENTID!;
     const redirectUri = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI!;
-<<<<<<< HEAD
     const appleUrl = `https://appleid.apple.com/auth/authorize?response_type=code id_token&client_id=${clientId}&redirect_uri=${redirectUri}`;
     window.location.href = appleUrl;
-=======
-
-    window.AppleID.auth.init({
-      clientId: clientId,
-      scope: "email",
-      redirectURI: redirectUri,
-      state: "[STATE]",
-      nonce: "[NONCE]",
-      usePopup: true,
-    });
-
-    const signIn = () =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const response = await window.AppleID.auth.signIn();
-          resolve(response);
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-    signIn()
-      .then((res: SigninResponse) => {
-        const { code, id_token } = res.authorization;
-        router.push(`/auth/apple?code=${code}&id_token=${id_token}`);
-      })
-      .catch((error: SigninError) => {
-        console.error(error);
-      });
->>>>>>> a26d3fc62bdefb85758791f55dfe33f7b87d3f58
   };
 
   const dispatch = useDispatchContext();
