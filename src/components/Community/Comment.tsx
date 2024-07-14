@@ -9,10 +9,10 @@ import UseAccessToken from "hooks/UseAccessToken";
 
 interface CommentProps {
   comment: CommentType;
-  refetch: () => Promise<void>;
+  update: (id: number) => void;
 }
 
-export default function Comment({ comment, refetch }: CommentProps) {
+export default function Comment({ comment, update }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
   const { loginStatus } = useStateContext();
@@ -50,7 +50,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
       setLoginModal(true);
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       return getAccessToken()
-        .then((accessToken) => deleteComment(id, accessToken).then(refetch))
+        .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
         .catch((e) => {
           console.error(e);
         });

@@ -3,17 +3,16 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { setComment } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import { RawComment } from "types";
 
 interface CommentWriterProps {
   postId: number;
-  refetch: () => Promise<void>;
+  update: (raw: RawComment) => void;
 }
 
-export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
+export default function CommentWriter({ postId, update }: CommentWriterProps) {
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
@@ -24,14 +23,13 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
   }
 
   const submit = () => {
-    return checkAccessToken()
-      .then((res: string | null) => {
-        if (res !== null) {
-          setComment(postId, commentInput, isAnonymous, res);
-        }
-      })
-      .then(refetch)
-      .then(initialize);
+    return checkAccessToken().then((res: string | null) => {
+      if (res !== null)
+        setComment(postId, commentInput, isAnonymous, res)
+          .then((res) => update(res.data))
+          .then(initialize)
+          .catch((e) => console.error(e));
+    });
   };
 
   return (
