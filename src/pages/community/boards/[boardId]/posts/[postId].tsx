@@ -150,7 +150,9 @@ export default function Post() {
             {actionsModal && (
               <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
             )}
-            {reportModal && <ReportModal postID={post.id} setReportModal={setReportModal} />}
+            {reportModal && (
+              <ReportModal type="post" targetID={post.id} setReportModal={setReportModal} />
+            )}
           </Header>
           <Content>
             <Title>{post.title}</Title>

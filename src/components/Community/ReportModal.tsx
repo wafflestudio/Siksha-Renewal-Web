@@ -2,14 +2,15 @@ import BackClickable from "components/general/BackClickable";
 import UseAccessToken from "hooks/UseAccessToken";
 import { useState } from "react";
 import styled from "styled-components";
-import { reportPost } from "utils/api/community";
+import { reportComment, reportPost } from "utils/api/community";
 
 interface ReporyModalProps {
-  postID: number;
+  type: "post" | "comment";
+  targetID: number;
   setReportModal: (value: boolean) => void;
 }
 
-export function ReportModal({ postID, setReportModal }: ReporyModalProps) {
+export function ReportModal({ type, targetID, setReportModal }: ReporyModalProps) {
   const [reason, setReason] = useState("");
   const { checkAccessToken } = UseAccessToken();
 
@@ -17,12 +18,21 @@ export function ReportModal({ postID, setReportModal }: ReporyModalProps) {
 
   function report() {
     if (isValid) {
-      checkAccessToken().then((res) =>
-        reportPost(postID, reason, res).then(() => {
-          setReason("");
-          setReportModal(false);
-        }),
-      );
+      if (type === "post") {
+        checkAccessToken().then((res) =>
+          reportPost(targetID, reason, res).then(() => {
+            setReason("");
+            setReportModal(false);
+          }),
+        );
+      } else if (type === "comment") {
+        checkAccessToken().then((res) =>
+          reportComment(targetID, reason, res).then(() => {
+            setReason("");
+            setReportModal(false);
+          }),
+        );
+      }
     }
   }
 
@@ -30,9 +40,9 @@ export function ReportModal({ postID, setReportModal }: ReporyModalProps) {
     <BackClickable onClickBackground={() => setReportModal(false)}>
       <MainContainer>
         <Header>
-          <Title>게시글 신고</Title>
+          <Title>{type === "post" ? "게시물" : "댓글"} 신고</Title>
           <CloseButton onClick={() => setReportModal(false)}>
-            <Image src="/img/modal-close.svg" alt="모달 닫기" />
+            <Image src="/img/modal-close.svg" alt="닫기" />
           </CloseButton>
         </Header>
         <InputBox placeholder="이유" value={reason} onChange={(e) => setReason(e.target.value)} />

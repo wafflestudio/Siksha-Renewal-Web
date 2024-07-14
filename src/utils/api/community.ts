@@ -274,3 +274,14 @@ export const setCommentUnlike = (
       throw new Error(e);
     });
 };
+
+export const reportComment = (commentID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/comments/${commentID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
+};
