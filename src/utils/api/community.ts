@@ -275,7 +275,7 @@ export const setCommentUnlike = (
     });
 };
 
-export const reportComment = (commentID: number, reason: string, accessToken: string) => {
+export const setReportComment = (commentID: number, reason: string, accessToken: string) => {
   const apiUrl = `${APIendpoint()}/community/comments/${commentID}/report`;
   const data = { reason };
   const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
