@@ -2,7 +2,7 @@ import BackClickable from "components/general/BackClickable";
 import UseAccessToken from "hooks/UseAccessToken";
 import { useState } from "react";
 import styled from "styled-components";
-import { reportComment, reportPost } from "utils/api/community";
+import { reportComment, setReportPost } from "utils/api/community";
 
 interface ReporyModalProps {
   type: "post" | "comment";
@@ -20,7 +20,7 @@ export function ReportModal({ type, targetID, setReportModal }: ReporyModalProps
     if (isValid) {
       if (type === "post") {
         checkAccessToken().then((res) =>
-          reportPost(targetID, reason, res).then(() => {
+          setReportPost(targetID, reason, res).then(() => {
             setReason("");
             setReportModal(false);
           }),
