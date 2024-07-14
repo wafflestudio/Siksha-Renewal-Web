@@ -55,8 +55,7 @@ export default function ReviewSection({ reviews, images, isReviewListPageOpen, h
             <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
             <div style={{
               width: "100%",
-              display: "flex",
-              cursor: "pointer"
+              display: "flex"
             }} onClick={() => handleReviewListPage(true)}>
               <MobileReviewHeader>
                 <div style={{ display: "flex" }}>
@@ -146,6 +145,9 @@ const MobileReviewHeader = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    cursor: pointer;
+  }
 `;
 
 const ReviewTitle = styled.div`
