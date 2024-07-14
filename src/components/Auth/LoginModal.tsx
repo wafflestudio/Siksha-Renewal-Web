@@ -105,7 +105,7 @@ export default function LoginModal() {
 }
 
 const Background = styled.div`
-  z-index: 1;
+  z-index: 99;
   position: fixed;
   top: 0;
   left: 0;
