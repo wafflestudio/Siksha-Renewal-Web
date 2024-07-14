@@ -63,7 +63,13 @@ export default function Comment({ comment, refetch }: CommentProps) {
     { name: "공감", handleClick: isLikeToggle },
     comment.isMine
       ? { name: "삭제", handleClick: removeComment }
-      : { name: "신고", handleClick: () => setReportModal(true) },
+      : {
+          name: "신고",
+          handleClick: () => {
+            if (loginStatus) setReportModal(true);
+            else setLoginModal(true);
+          },
+        },
   ];
 
   return (

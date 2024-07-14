@@ -124,7 +124,15 @@ export default function Post() {
           },
           { name: "삭제", handleClick: () => removePost(post.id) },
         ]
-      : [{ name: "신고", handleClick: () => setReportModal(true) }];
+      : [
+          {
+            name: "신고",
+            handleClick: () => {
+              if (loginStatus) setReportModal(true);
+              else setLoginModal(true);
+            },
+          },
+        ];
 
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
