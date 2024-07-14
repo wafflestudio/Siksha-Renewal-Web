@@ -29,7 +29,7 @@ export default function Post() {
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [hasNextComments, setHasNextComments] = useState(true);
+  const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
   const [actionsModal, setActionsModal] = useState<boolean>(false);
@@ -108,6 +108,7 @@ export default function Post() {
 
   useEffect(() => {
     if (boardId && postId) {
+      setComments((prev) => []);
       fetchPost();
       fetchComments(10, 1);
     }

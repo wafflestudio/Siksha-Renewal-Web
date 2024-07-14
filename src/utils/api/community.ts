@@ -17,14 +17,16 @@ export const getBoardList = (): Promise<RawBoard[]> => {
 export const getPostList = (
   boardID: number,
   accessToken?: string,
+  size: number = 10,
+  page: number = 1,
 ): Promise<{
   result: RawPost[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   const apiUrl = accessToken
-    ? `${APIendpoint()}/community/posts?board_id=${boardID}`
-    : `${APIendpoint()}/community/posts/web?board_id=${boardID}`;
+    ? `${APIendpoint()}/community/posts?board_id=${boardID}&page=${page}&per_page=${size}`
+    : `${APIendpoint()}/community/posts/web?board_id=${boardID}&page=${page}&per_page=${size}`;
 
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
@@ -43,13 +45,15 @@ export const getPostList = (
 
 export const getMyPostList = (
   accessToken: string,
+  size: number,
+  page: number,
 ): Promise<{
   result: RawPost[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   return axios
-    .get(`${APIendpoint()}/community/posts/me`, {
+    .get(`${APIendpoint()}/community/posts/me?page=${page}&per_page=${size}`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
