@@ -23,6 +23,7 @@ export default function MyPost() {
   }
 
   useEffect(() => {
+    // 새로고침 시, loginStatus가 false이므로, 글이 불러와지지 않는 이슈가 있음
     fetchMyPosts(10, 1);
   }, []);
 
