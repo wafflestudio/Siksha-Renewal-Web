@@ -26,18 +26,55 @@ export default function MyPost() {
 
   return (
     <AccountLayout>
-      <Header>내가 쓴 글</Header>
-      <PostList posts={posts} />
+      <Container>
+        {posts.length ? (
+          <>
+            <Header>내가 쓴 글</Header>
+            <PostList posts={posts} />
+            <BreakLine />
+          </>
+        ) : (
+          <NoPost>내가 쓴 글이 없어요.</NoPost>
+        )}
+      </Container>
     </AccountLayout>
   );
 }
 
+const Container = styled.div`
+  padding: 0 18.5px;
+  width: 701px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  box-sizing: border-box;
+`;
+
 const Header = styled.div`
-  margin-top: 23px;
-  margin-bottom: 30px;
+  margin: 24.08px 0 29.42px 4.5px;
   color: var(--Main-Orange, #ff9522);
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 23px;
-  letter-spacing: -0.3;
+  letter-spacing: -0.3px;
+`;
+
+const NoPost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+`;
+
+const BreakLine = styled.hr`
+  margin-bottom: 29.4px;
+  border: 0;
+  height: 1px;
+  background: #eeeeee;
 `;
