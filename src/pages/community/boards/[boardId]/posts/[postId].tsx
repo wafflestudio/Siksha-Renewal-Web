@@ -18,6 +18,7 @@ import {
   setPostUnlike,
 } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import { ReportModal } from "components/Community/ReportModal";
 
 export default function Post() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function Post() {
 
   const [isError, setIsError] = useState<boolean>(false);
   const [actionsModal, setActionsModal] = useState<boolean>(false);
+  const [reportModal, setReportModal] = useState(false);
 
   function setParsedPost(rawPost: RawPost) {
     setPost(postParser(rawPost));
@@ -122,7 +124,7 @@ export default function Post() {
           },
           { name: "삭제", handleClick: () => removePost(post.id) },
         ]
-      : [{ name: "신고", handleClick: () => {} }];
+      : [{ name: "신고", handleClick: () => setReportModal(true) }];
 
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
@@ -148,6 +150,7 @@ export default function Post() {
             {actionsModal && (
               <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
             )}
+            {reportModal && <ReportModal postID={post.id} setReportModal={setReportModal} />}
           </Header>
           <Content>
             <Title>{post.title}</Title>
