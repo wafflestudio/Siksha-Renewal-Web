@@ -25,6 +25,11 @@ const Content = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 0;
-    padding: 18px 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 100%;
+    min-height: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 `;

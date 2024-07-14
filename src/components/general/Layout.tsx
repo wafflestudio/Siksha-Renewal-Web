@@ -1,4 +1,5 @@
 import Header from "components/Header";
+import MobileNavigationBar from "components/MobileNavigationBar";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
@@ -63,9 +64,24 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <Container>
       <Header />
-      {children}
+      <Content>{children}</Content>
+      <MobileNavigationBar />
     </Container>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  @media (max-width: 768px) {
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const Content = styled.div`
+  @media (max-width: 768px) {
+    flex: 1;
+    height: calc(100% - 143px);
+  }
+`;

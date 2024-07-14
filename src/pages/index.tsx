@@ -9,7 +9,6 @@ import Meal from "components/Meal";
 import MenuList from "components/MenuList";
 import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { getMenuList } from "utils/api/menus";
 
 export default function Home() {
@@ -80,7 +79,6 @@ export default function Home() {
         )}
         <Meal />
         <MenuList />
-        <MobileNavigationBar />
       </MobileContainer>
       {showInfo && (
         <Info>
@@ -110,6 +108,7 @@ const MobileContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
   }
 `;
 

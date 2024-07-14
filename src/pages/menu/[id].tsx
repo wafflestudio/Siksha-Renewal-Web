@@ -10,7 +10,6 @@ import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
 import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
 import Image from "next/image";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { getMenu } from "utils/api/menus";
 import { getRestaurantList } from "../../utils/api/restaurants";
 import { getReviews, getReviewScore } from "utils/api/reviews";
@@ -228,7 +227,6 @@ export default function Menu() {
               />
             )}
           </Info>
-          <MobileNavigationBar />
         </>
       )}
     </>
@@ -240,6 +238,7 @@ const Info = styled.div`
   display: flex;
   height: max(910px, 100vh);
   @media (max-width: 768px) {
+    height: 100%;
     flex-direction: column;
   }
 `;

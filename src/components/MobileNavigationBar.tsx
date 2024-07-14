@@ -57,9 +57,6 @@ export default function MobileNavigationBar() {
 }
 
 const Container = styled.div`
-  position: fixed;
-  left: 0;
-  bottom: 0;
   display: flex;
   justify-content: space-evenly;
   padding: 14px 0 46px;
@@ -68,7 +65,7 @@ const Container = styled.div`
   height: 83px;
   background-color: white;
   border-top: 0.5px solid #b7b7b7;
-  z-index: 99;
+  z-index: 1;
 
   @media (min-width: 768px) {
     display: none;
