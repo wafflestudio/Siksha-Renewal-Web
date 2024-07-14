@@ -1,4 +1,4 @@
-import { LegacyRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface InfiniteScrollableProps {
@@ -39,7 +39,6 @@ export default function InfiniteScrollable({
 
   useEffect(() => {
     fetchMoreData(size, page);
-    console.log(page, "is requested");
   }, [page]);
 
   return (
