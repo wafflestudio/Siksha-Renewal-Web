@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import APIendpoint from "constants/constants";
 import { RawBoard, RawComment, RawPost } from "types";
 
@@ -17,14 +17,16 @@ export const getBoardList = (): Promise<RawBoard[]> => {
 export const getPostList = (
   boardID: number,
   accessToken?: string,
+  size: number = 10,
+  page: number = 1,
 ): Promise<{
   result: RawPost[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   const apiUrl = accessToken
-    ? `${APIendpoint()}/community/posts?board_id=${boardID}`
-    : `${APIendpoint()}/community/posts/web?board_id=${boardID}`;
+    ? `${APIendpoint()}/community/posts?board_id=${boardID}&page=${page}&per_page=${size}`
+    : `${APIendpoint()}/community/posts/web?board_id=${boardID}&page=${page}&per_page=${size}`;
 
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
@@ -43,13 +45,15 @@ export const getPostList = (
 
 export const getMyPostList = (
   accessToken: string,
+  size: number,
+  page: number,
 ): Promise<{
   result: RawPost[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   return axios
-    .get(`${APIendpoint()}/community/posts/me`, {
+    .get(`${APIendpoint()}/community/posts/me?page=${page}&per_page=${size}`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
@@ -166,17 +170,30 @@ export const setPostUnlike = (
     });
 };
 
+export const setReportPost = (postID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/posts/${postID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
+};
+
 export const getCommentList = (
   postID: number,
   accessToken?: string,
+  size: number = 10,
+  page: number = 1,
 ): Promise<{
   result: RawComment[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   const apiUrl = accessToken
-    ? `${APIendpoint()}/community/comments?post_id=${postID}&per_page=100`
-    : `${APIendpoint()}/community/comments/web?post_id=${postID}&per_page=100`;
+    ? `${APIendpoint()}/community/comments?post_id=${postID}&page=${page}&per_page=${size}`
+    : `${APIendpoint()}/community/comments/web?post_id=${postID}&page=${page}&per_page=${size}`;
 
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
@@ -198,17 +215,20 @@ export const setComment = (
   content: string,
   isAnonymous: boolean,
   accessToken: string,
-): Promise<void> => {
-  return axios
-    .post(
-      `${APIendpoint()}/community/comments`,
-      { post_id: postID, content, anonymous: isAnonymous },
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
-    )
-    .then(() => {})
-    .catch((e) => {
-      throw new Error(e);
-    });
+  // updateCallback: (raw: RawComment) => Promise<any>,
+): Promise<AxiosResponse<any>> => {
+  return (
+    axios
+      .post(
+        `${APIendpoint()}/community/comments`,
+        { post_id: postID, content, anonymous: isAnonymous },
+        { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      )
+      // .then((res: AxiosResponse<RawComment>) => updateCallback(res.data))
+      .catch((e) => {
+        throw new Error(e);
+      })
+  );
 };
 
 export const deleteComment = (commentID: number, accessToken: string): Promise<void> => {
@@ -262,4 +282,15 @@ export const setCommentUnlike = (
     .catch((e) => {
       throw new Error(e);
     });
+};
+
+export const setReportComment = (commentID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/comments/${commentID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
 };

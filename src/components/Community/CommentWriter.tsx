@@ -2,30 +2,34 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { setComment } from "utils/api/community";
+import UseAccessToken from "hooks/UseAccessToken";
+import { RawComment } from "types";
 
 interface CommentWriterProps {
   postId: number;
-  refetch: () => Promise<void>;
+  update: (raw: RawComment) => void;
 }
 
-export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
+export default function CommentWriter({ postId, update }: CommentWriterProps) {
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
+  const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
+
+  function initialize() {
+    setCommentInput("");
+    setIsAnonymous(false);
+  }
+
   const submit = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (commentInput !== "") {
-      setComment(postId, commentInput, isAnonymous, localStorage.getItem("accessToken")!)
-        .then(refetch)
-        .then(() => {
-          setCommentInput("");
-          setIsAnonymous(false);
-        });
-    }
+    return checkAccessToken().then((res: string | null) => {
+      if (res !== null)
+        setComment(postId, commentInput, isAnonymous, res)
+          .then((res) => update(res.data))
+          .then(initialize)
+          .catch((e) => console.error(e));
+    });
   };
 
   return (
@@ -51,8 +55,14 @@ export default function CommentWriter({ postId, refetch }: CommentWriterProps) {
 }
 
 const Container = styled.div`
-  position: relative;
+  position: sticky;
+  padding-top: 18.7px;
+  padding-bottom: 24.7px;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  z-index: 1;
+  background-color: white;
 `;
 const CommentInput = styled.input`
   box-sizing: border-box;
@@ -110,6 +120,7 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
 const MobileAnonymousButton = styled(AnonymousButton)`
   display: none;
   position: absolute;
+  top: -2px;
   height: 100%;
   font-size: 10px;
   line-height: 11.35px;

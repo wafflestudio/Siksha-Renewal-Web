@@ -12,6 +12,7 @@ import Likes from "../../components/MenuDetail/Likes";
 import MobileSubHeader from "components/MobileSubHeader";
 import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
 import MobileNavigationBar from "components/MobileNavigationBar";
+import Image from "next/image";
 import { getMenu } from "utils/api/menus";
 import { getRestaurantList } from "../../utils/api/restaurants";
 import { getReviews, getReviewScore } from "utils/api/reviews";
@@ -188,6 +189,12 @@ export default function Menu() {
 
 const Background = styled.div`
   background-color: white;
+  display: flex;
+  height: max(910px, 100vh);
+  @media (max-width: 768px) {
+    height: 100%;
+    flex-direction: column;
+  }
 `;
 
 const Info = styled.div`

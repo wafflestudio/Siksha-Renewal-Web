@@ -20,11 +20,16 @@ const Content = styled.div`
   max-height: 100%;
   background: white;
   border-radius: 10px;
-  padding: 20px 19px;
+  padding: 20px 19px 0 19px;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
     margin-top: 0;
-    padding: 18px 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 100%;
+    min-height: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 `;

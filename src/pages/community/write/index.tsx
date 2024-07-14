@@ -38,7 +38,7 @@ export default function PostWriter() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [isSubmitting, SetIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
@@ -73,7 +73,7 @@ export default function PostWriter() {
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
-      SetIsSubmitting(true);
+      setIsSubmitting(true);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
       body.append("title", inputs.title);
@@ -102,13 +102,13 @@ export default function PostWriter() {
           console.error(e);
         })
         .finally(() => {
-          SetIsSubmitting(false);
+          setIsSubmitting(false);
         });
     }
 
     async function convertToBlob(image: string | File) {
       if (typeof image === "string") {
-        const response = await fetch("https://cors-anywhere.herokuapp.com/" + image);
+        const response = await fetch(image);
         const blob = await response.blob();
         return blob;
       } else {

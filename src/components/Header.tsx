@@ -82,9 +82,9 @@ const Container = styled.div`
   @media (max-width: 768px) {
     background: #ff9522;
     height: 60px;
-    min-height: 0;
-    min-width: 0;
     width: auto;
+    top: 0;
+    z-index: 1;
   }
 `;
 
