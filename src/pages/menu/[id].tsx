@@ -189,6 +189,7 @@ export default function Menu() {
 
 const Background = styled.div`
   background-color: white;
+  overflow: scroll;
   display: flex;
   height: max(910px, 100vh);
   @media (max-width: 768px) {
