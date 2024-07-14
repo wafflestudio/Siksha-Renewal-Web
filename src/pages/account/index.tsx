@@ -33,6 +33,7 @@ export default function Account() {
 
   return (
     <AccountLayout>
+      <MobileSpace />
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -103,6 +104,14 @@ export default function Account() {
   );
 }
 
+const MobileSpace = styled.div`
+  height: 24px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
 const ListGroup = styled.div`
   cursor: pointer;
   background-color: #ffffff;
@@ -110,6 +119,10 @@ const ListGroup = styled.div`
   margin-bottom: 19px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: calc(100dvw - 40px);
+  }
 `;
 
 const ContentDiv = styled.div`

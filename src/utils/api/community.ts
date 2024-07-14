@@ -170,6 +170,17 @@ export const setPostUnlike = (
     });
 };
 
+export const setReportPost = (postID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/posts/${postID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
+};
+
 export const getCommentList = (
   postID: number,
   accessToken?: string,
@@ -271,4 +282,15 @@ export const setCommentUnlike = (
     .catch((e) => {
       throw new Error(e);
     });
+};
+
+export const setReportComment = (commentID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/comments/${commentID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
 };

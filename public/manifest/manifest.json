@@ -1,0 +1,31 @@
+{
+  "name": "식샤: 서울대학교 식단 앱",
+  "short_name": "식샤",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "640x363",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Application"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "327x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Application"
+    }
+  ],
+  "background_color": "#ff9522",
+  "theme-color": "#ff9522"
+}
