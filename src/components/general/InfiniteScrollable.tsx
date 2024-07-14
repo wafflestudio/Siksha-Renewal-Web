@@ -1,10 +1,10 @@
-import { LegacyRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface InfiniteScrollableProps {
   fetchMoreData: (size: number, page: number) => Promise<any>;
   hasNext: boolean;
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[] | [];
 }
 
 export default function InfiniteScrollable({
@@ -38,8 +38,10 @@ export default function InfiniteScrollable({
   }, [observerCallback]);
 
   useEffect(() => {
-    fetchMoreData(size, page);
-    console.log(page, "is requested");
+    if (page >= 2) {
+      fetchMoreData(size, page);
+      console.log(page, "is requested");
+    }
   }, [page]);
 
   return (
