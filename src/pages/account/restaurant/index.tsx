@@ -20,7 +20,6 @@ export default function Setting_NonFavorite() {
 
     getRestaurantList()
       .then(({ result }) => {
-        console.log(result);
         const favoriteList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
 
         for (let i = 0; i < orderList.length; i++) {
