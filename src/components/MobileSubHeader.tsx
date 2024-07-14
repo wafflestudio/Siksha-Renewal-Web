@@ -20,6 +20,7 @@ const MobileHeader = styled.div`
   position: absolute;
   width: 100%;
   height: 60px;
+  z-index: 1;
   @media (max-width: 768px) {
     display: flex;
     justify-content: center;
