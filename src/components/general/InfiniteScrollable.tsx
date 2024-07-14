@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -14,6 +15,9 @@ export default function InfiniteScrollable({
 }: InfiniteScrollableProps) {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
+  const router = useRouter();
+  const currentPath = router.asPath;
+
   const observerElement = useRef<HTMLDivElement | null>(null);
 
   const observerCallback = useCallback(
@@ -43,6 +47,10 @@ export default function InfiniteScrollable({
       console.log(page, "is requested");
     }
   }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [currentPath]);
 
   return (
     <Container>

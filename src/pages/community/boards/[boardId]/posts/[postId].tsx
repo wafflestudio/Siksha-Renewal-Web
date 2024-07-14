@@ -106,6 +106,7 @@ export default function Post() {
 
   useEffect(() => {
     if (boardId && postId) {
+      setComments((prev) => []);
       fetchPost();
       fetchComments(10, 1);
     }

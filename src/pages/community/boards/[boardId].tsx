@@ -38,6 +38,7 @@ export default function Posts() {
 
   useEffect(() => {
     if (boardId) {
+      setPosts((prev) => []);
       fetchPosts(10, 1);
     }
   }, [boardId]);
