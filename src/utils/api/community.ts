@@ -45,13 +45,15 @@ export const getPostList = (
 
 export const getMyPostList = (
   accessToken: string,
+  size: number,
+  page: number,
 ): Promise<{
   result: RawPost[];
   totalCount: number;
   hasNext: boolean;
 }> => {
   return axios
-    .get(`${APIendpoint()}/community/posts/me`, {
+    .get(`${APIendpoint()}/community/posts/me?page=${page}&per_page=${size}`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {

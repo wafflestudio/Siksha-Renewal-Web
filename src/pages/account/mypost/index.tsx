@@ -9,25 +9,27 @@ import UseAccessToken from "hooks/UseAccessToken";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [hasNextPosts, setHasNextPosts] = useState(false);
   const { getAccessToken } = UseAccessToken();
 
-  function setParsedPosts(rawPost: RawPost) {
-    setPosts((prev) => [...prev, postParser(rawPost)]);
+  function fetchMyPosts(size: number, page: number) {
+    return getAccessToken()
+      .then((accessToken) => getMyPostList(accessToken, size, page))
+      .then((res) => {
+        setHasNextPosts(res.hasNext);
+        res.result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+      })
+      .catch((e) => console.error(e));
   }
 
   useEffect(() => {
-    getAccessToken()
-      .then((accessToken) => getMyPostList(accessToken))
-      .then((res) => {
-        res.result.map(setParsedPosts);
-      })
-      .catch((e) => console.error(e));
+    fetchMyPosts(10, 1);
   }, []);
 
   return (
     <AccountLayout>
       <Header>내가 쓴 글</Header>
-      <PostList posts={posts} />
+      <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
     </AccountLayout>
   );
 }

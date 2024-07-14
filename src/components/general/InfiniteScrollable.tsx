@@ -26,7 +26,7 @@ export default function InfiniteScrollable({
         setPage((prevPage) => prevPage + 1);
       }
     },
-    [hasNext],
+    [hasNext, currentPath],
   );
 
   useEffect(() => {
