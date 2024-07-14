@@ -166,6 +166,17 @@ export const setPostUnlike = (
     });
 };
 
+export const reportPost = (postID: number, reason: string, accessToken: string) => {
+  const apiUrl = `${APIendpoint()}/community/posts/${postID}/report`;
+  const data = { reason };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
+
+  return axios
+    .post(apiUrl, data, config)
+    .then(() => {})
+    .catch((e) => console.error(e));
+};
+
 export const getCommentList = (
   postID: number,
   accessToken?: string,
