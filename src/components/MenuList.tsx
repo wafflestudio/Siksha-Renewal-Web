@@ -50,9 +50,8 @@ const Container = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-    height: calc(100vh - 169px);
-    position: absolute;
-    top: 169px;
+    height: 100px;
+    flex-grow: 1;
   }
 
   ${(props: { showCal: boolean }) =>

@@ -21,11 +21,11 @@ export default function RestaurantOrderEdit({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
-        <Title>즐겨찾기 순서 변경</Title>
+        <Title>식당 순서 변경</Title>
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <DragZone {...provided.droppableProps} ref={provided.innerRef}>
               {orderData.map(({ id, name_kr, name_en }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
                   {(provided, snapshot) => (
@@ -47,7 +47,7 @@ export default function RestaurantOrderEdit({
                   )}
                 </Draggable>
               ))}
-            </div>
+            </DragZone>
           )}
         </Droppable>
       </Container>
@@ -58,9 +58,17 @@ export default function RestaurantOrderEdit({
 const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
+  padding-bottom: 12.68px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+  }
 `;
 
 const Title = styled.h2`
@@ -70,6 +78,10 @@ const Title = styled.h2`
   font-size: 20px;
   line-height: 23px;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Description = styled.p`
@@ -80,8 +92,26 @@ const Description = styled.p`
   font-size: 11px;
   line-height: 19px;
   color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+    background-color: #ffffff;
+    z-index: 1;
+  }
 `;
 
+const DragZone = styled.div`
+  @media (max-width: 768px) {
+    height: 100%;
+    overflow: scroll;
+  }
+`;
 const DragContainer = styled.div<{ dragging: boolean }>`
   &:hover {
     background-color: #f2f2f2;
@@ -96,6 +126,12 @@ const DragBox = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   margin: 7.92px 22.15px;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 40px);
+    margin: 7.92px 0px 0px 20px;
+    background-color: white;
+  }
 `;
 
 const Restaurant = styled.p`

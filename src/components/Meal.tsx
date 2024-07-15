@@ -57,8 +57,6 @@ const Container = styled.div`
   @media (max-width: 768px) {
     padding-top: 11px;
     padding-bottom: 11px;
-    position: absolute;
-    top: 113px;
   }
 `;
 

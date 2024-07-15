@@ -38,8 +38,6 @@ const Container = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
-    position: absolute;
-    top: 60px;
   }
 `;
 

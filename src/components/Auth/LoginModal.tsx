@@ -4,8 +4,6 @@ import React, { useCallback } from "react";
 import { useRouter } from "next/router";
 
 export default function LoginModal() {
-  const router = useRouter();
-
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -21,12 +19,27 @@ export default function LoginModal() {
     window.location.href = googleUrl;
   };
 
+  // js 스크립트안쓰고 href로 처리하면 apple passkey제공시 지멋대로 "/login"으로 리다이렉트됨 -> js로 처리
   const handleAppleLogin = () => {
     // apple login시 code로 id token요청시 secret를 요구하기 때문에 직접 id token을 받아와야함
     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENTID!;
     const redirectUri = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI!;
-    const appleUrl = `https://appleid.apple.com/auth/authorize?response_type=code id_token&client_id=${clientId}&redirect_uri=${redirectUri}`;
-    window.location.href = appleUrl;
+
+    window.AppleID.auth.init({
+      clientId: clientId,
+      scope: "email",
+      redirectURI: redirectUri,
+      state: String(new Date().getTime()),
+      usePopup: true,
+    });
+
+    window.AppleID.auth.signIn().then((response: any) => {
+      const {
+        authorization: { id_token },
+      } = response;
+
+      window.location.href = `/auth/apple?id_token=${id_token}`;
+    });
   };
 
   const dispatch = useDispatchContext();

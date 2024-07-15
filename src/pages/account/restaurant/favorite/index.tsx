@@ -55,9 +55,11 @@ export default function Setting_Favorite() {
   };
 
   return (
-    <Container>
-      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
-    </Container>
+    <>
+      <Container>
+        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+      </Container>
+    </>
   );
 }
 
@@ -65,5 +67,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 36.92px 0 40.92px 0;
+  margin-top: 36.92px;
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
 `;
