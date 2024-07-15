@@ -28,8 +28,7 @@ export default function LoginModal() {
       clientId: clientId,
       scope: "email",
       redirectURI: redirectUri,
-      state: "[STATE]",
-      nonce: "[NONCE]",
+      state: String(new Date().getTime()),
       usePopup: true,
     });
 
