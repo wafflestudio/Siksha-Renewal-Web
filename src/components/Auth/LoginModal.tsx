@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useDispatchContext } from "../../hooks/ContextProvider";
 import React, { useCallback } from "react";
-import { useRouter } from "next/router";
 
 export default function LoginModal() {
   const handleKakaoLogin = () => {
