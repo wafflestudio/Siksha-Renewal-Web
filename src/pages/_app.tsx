@@ -23,6 +23,10 @@ function MyApp({ Component, pageProps }) {
             type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
           />
+          <script
+            type="text/javascript"
+            src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+          />
         </Head>
         <Layout>
           <Component {...pageProps} />
