@@ -38,7 +38,7 @@ export default function LoginModal() {
         authorization: { id_token },
       } = response;
 
-      window.location.href = `/auth/apple?id_token=${id_token}`;
+      window.location.href = `/auth/apple/?id_token=${id_token}`;
     });
   };
 
