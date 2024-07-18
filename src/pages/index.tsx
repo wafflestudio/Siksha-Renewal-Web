@@ -10,12 +10,15 @@ import MenuList from "components/MenuList";
 import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export default function Home() {
   const state = useStateContext();
   const { setLoading, setData } = useDispatchContext();
 
   const { date, showCal, showInfo, loginStatus, meal } = state;
+
+  const { getAccessToken } = UseAccessToken();
 
   useEffect(() => {
     async function fetchData() {
@@ -29,7 +32,8 @@ export default function Home() {
         return map;
       }, new Map());
 
-      if (!localStorage.getItem("access_token")) {
+      const accessToken = await getAccessToken().catch((error) => "");
+      if (!accessToken) {
         getMenuList(dateString, true)
           .then(({ result }) => {
             setData(result[0]);
@@ -38,7 +42,7 @@ export default function Home() {
             console.error(e);
           });
       } else {
-        getMenuList(dateString, localStorage.getItem("isExceptEmptyRestaurant") === "true")
+        getMenuList(dateString, localStorage.getItem("isExceptEmptyRestaurant") === "true", accessToken)
           .then(({ result }) => {
             const { BR, LU, DN } = result[0];
 
