@@ -21,11 +21,11 @@ export default function Setting_NonFavorite() {
     getRestaurantList()
       .then(({ result }) => {
         const favoriteList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
-
+        console.log(favoriteList);
         for (let i = 0; i < orderList.length; i++) {
           if (
-            !result.find(({ id }) => id === orderList[i].id) ||
-            !favoriteList.includes(orderList[i].id)
+            !result.find(({ id }) => id === orderList[i].id) &&
+            favoriteList.includes(orderList[i].id)
           ) {
             orderList.splice(i, 1);
             i--;
