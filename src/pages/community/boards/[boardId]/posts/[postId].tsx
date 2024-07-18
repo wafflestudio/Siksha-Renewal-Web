@@ -18,6 +18,7 @@ import {
   setPostUnlike,
 } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import { ReportModal } from "components/Community/ReportModal";
 
 export default function Post() {
   const router = useRouter();
@@ -28,41 +29,43 @@ export default function Post() {
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
+  const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
   const [actionsModal, setActionsModal] = useState<boolean>(false);
-
-  function setParsedPost(rawPost: RawPost) {
-    setPost(postParser(rawPost));
-  }
+  const [reportModal, setReportModal] = useState(false);
 
   const fetchPost = () => {
     return checkAccessToken()
       .then((result: string | null) => getPost(Number(postId), result ?? undefined))
-      .then((data) => {
-        setParsedPost(data);
-      })
+      .then((data) => setPost(postParser(data)))
       .catch((e) => {
         console.error(e);
         setIsError(true);
       });
   };
 
-  const setParsedComments = (comment: RawComment) => {
-    setComments((prev) => [...prev, commentParser(comment)]);
-  };
-
-  const fetchComments = () => {
+  const fetchComments = (size: number, page: number) => {
     return checkAccessToken()
-      .then((result: string | null) => getCommentList(Number(postId), result ?? undefined))
+      .then((result: string | null) =>
+        getCommentList(Number(postId), result ?? undefined, size, page),
+      )
       .then((data) => {
-        const { result } = data;
-        result.map(setParsedComments);
+        const { result, hasNext } = data;
+        setHasNextComments(hasNext);
+        const newComments = result.map(commentParser);
+        setComments((prev) => [...prev, ...newComments]);
       })
       .catch((e) => {
         console.error(e);
         setIsError(true);
       });
+  };
+  const addComment = (rawComment: RawComment) => {
+    setComments((prev) => [...prev, commentParser(rawComment)]);
+  };
+  const deleteComment = (id: number) => {
+    setComments((prev) => prev.filter((comment) => comment.id !== id));
   };
 
   const fetchLike = () => {
@@ -105,8 +108,9 @@ export default function Post() {
 
   useEffect(() => {
     if (boardId && postId) {
+      setComments((prev) => []);
       fetchPost();
-      fetchComments();
+      fetchComments(10, 1);
     }
   }, [boardId, postId]);
 
@@ -122,7 +126,15 @@ export default function Post() {
           },
           { name: "삭제", handleClick: () => removePost(post.id) },
         ]
-      : [{ name: "신고", handleClick: () => {} }];
+      : [
+          {
+            name: "신고",
+            handleClick: () => {
+              if (loginStatus) setReportModal(true);
+              else setLoginModal(true);
+            },
+          },
+        ];
 
     return (
       <Board selectedBoardId={Number(boardId) ?? 1}>
@@ -147,6 +159,9 @@ export default function Post() {
             <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
             {actionsModal && (
               <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
+            )}
+            {reportModal && (
+              <ReportModal type="post" targetID={post.id} setReportModal={setReportModal} />
             )}
           </Header>
           <Content>
@@ -179,8 +194,13 @@ export default function Post() {
             </BackToBoardButton>
           </Footer>
           <CommentContainer>
-            <CommentList comments={comments} refetch={fetchComments} />
-            <CommentWriter postId={post.id} refetch={fetchComments} />
+            <CommentList
+              comments={comments}
+              update={deleteComment}
+              fetch={fetchComments}
+              hasNext={hasNextComments}
+            />
+            <CommentWriter postId={post.id} update={addComment} />
           </CommentContainer>
         </Container>
       </Board>

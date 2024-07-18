@@ -9,19 +9,22 @@ import UseAccessToken from "hooks/UseAccessToken";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [hasNextPosts, setHasNextPosts] = useState(false);
   const { getAccessToken } = UseAccessToken();
 
-  function setParsedPosts(rawPost: RawPost) {
-    setPosts((prev) => [...prev, postParser(rawPost)]);
+  function fetchMyPosts(size: number, page: number) {
+    return getAccessToken()
+      .then((accessToken) => getMyPostList(accessToken, size, page))
+      .then((res) => {
+        setHasNextPosts(res.hasNext);
+        res.result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+      })
+      .catch((e) => console.error(e));
   }
 
   useEffect(() => {
-    getAccessToken()
-      .then((accessToken) => getMyPostList(accessToken))
-      .then((res) => {
-        res.result.map(setParsedPosts);
-      })
-      .catch((e) => console.error(e));
+    // 새로고침 시, loginStatus가 false이므로, 글이 불러와지지 않는 이슈가 있음
+    fetchMyPosts(10, 1);
   }, []);
 
   return (
@@ -30,7 +33,7 @@ export default function MyPost() {
         {posts.length ? (
           <>
             <Header>내가 쓴 글</Header>
-            <PostList posts={posts} />
+            <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
             <BreakLine />
           </>
         ) : (

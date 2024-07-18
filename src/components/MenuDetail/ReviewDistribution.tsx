@@ -43,9 +43,11 @@ export default function ReviewDistribution({
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-top: 23px;
-  margin-left: 26px;
+  justify-content: center;
+  padding: 24px 33px 0 33px;
+  @media (max-width: 768px) {
+    padding: 14px 0 16px 0;
+  }
 `;
 
 const Score = styled.div`
@@ -73,7 +75,7 @@ const ScoreContainer = styled.div`
   margin-right: 10%;
   @media (max-width: 768px) {
     width: 90px;
-    height: 90px;
+    height: fit-content;
     margin-right: 26px;
   }
 `;
@@ -84,7 +86,8 @@ const DistributionChart = styled.div`
   width: 100%;
   gap: 20px;
   @media (max-width: 768px) {
-    gap: 8px;
+    gap: 5px;
+    width: max-content;
   }
 `;
 
