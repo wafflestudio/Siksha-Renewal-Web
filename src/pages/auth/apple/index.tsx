@@ -9,7 +9,7 @@ export default function Auth() {
 
   useEffect(() => {
     console.log(document.location);
-    console.log(document.href);
+    console.log(document.location.href);
     const params = new URL(document.location.toString()).searchParams;
     const id_token = params.get("id_token");
 
