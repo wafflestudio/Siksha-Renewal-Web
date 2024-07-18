@@ -39,7 +39,7 @@ export default function LoginModal() {
         authorization: { id_token },
       } = response;
 
-      const authURL = `/auth/apple?id_token=${id_token}`;
+      const authURL = `/auth/apple/?id_token=${id_token}`;
       console.log(authURL);
 
       console.log("now move");
