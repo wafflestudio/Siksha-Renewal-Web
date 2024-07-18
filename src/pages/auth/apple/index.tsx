@@ -12,7 +12,7 @@ export default function Auth() {
     const id_token = params.get("id_token");
 
     if (!id_token) {
-      router.push("/login");
+      router.push("/");
       return;
     }
 
