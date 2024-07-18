@@ -10,8 +10,6 @@ export default function RestaurantOrderEdit({
 }) {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
-    console.log(destination?.index);
-    console.log(source?.index);
 
     if (source && destination && source !== destination) {
       setNewOrderData(source?.index, destination?.index);
