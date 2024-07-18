@@ -21,19 +21,19 @@ const StarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: ${(props) => (props.theme.width ? props.theme.width : 60)}px;
+  width: ${(props) => (props.theme.width ? props.theme.width : 73.18)}px;
   gap: 1px;
   @media (max-width: 768px) {
-    width: 60px;
+    width: 73.18px;
   }
 `;
 
 const Star = styled.img`
-  width: ${(props) => (props.theme.width ? props.theme.width / 5 : 12)}px;
-  height: ${(props) => (props.theme.width ? props.theme.width / 5 : 12)}px;
+  width: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
+  height: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
   fill: #ffd600;
   @media (max-width: 768px) {
-    width: 12px;
-    height: 12px;
+    width: 14.18px;
+    height: 14.18px;
   }
 `;

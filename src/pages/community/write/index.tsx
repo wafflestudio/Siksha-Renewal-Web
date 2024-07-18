@@ -57,7 +57,7 @@ export default function PostWriter() {
     }
   };
 
-  const hanldlePhotoDelete = (index: number) => {
+  const handlePhotoDelete = (index: number) => {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   };
 
@@ -198,7 +198,7 @@ export default function PostWriter() {
           {inputs.photos.map((photo, i) => (
             <PhotoContainer key={i}>
               <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-              <DeleteButton onClick={() => hanldlePhotoDelete(i)}>
+              <DeleteButton onClick={() => handlePhotoDelete(i)}>
                 <Icon src="/img/photo-delete.svg" />
               </DeleteButton>
             </PhotoContainer>

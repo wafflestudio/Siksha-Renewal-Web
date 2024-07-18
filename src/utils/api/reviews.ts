@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ReviewInputs } from "components/MenuDetail/ReviewPostModal";
 import APIendpoint from "constants/constants";
 import { RawReview } from "types";
 
@@ -22,17 +23,15 @@ export const getReviews = (
 
 export const setReview = (
   menuID: number,
-  score: number,
-  comment: string,
+  inputs: ReviewInputs,
   accessToken: string,
 ): Promise<void> => {
   return axios
     .post(
-      `${APIendpoint()}/reviews/`,
+      `${APIendpoint()}/reviews/images/`,
       {
         menu_id: menuID,
-        score,
-        comment,
+        ...inputs
       },
       {
         headers: {

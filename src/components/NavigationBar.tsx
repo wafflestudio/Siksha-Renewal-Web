@@ -42,7 +42,7 @@ export default function NavigationBar() {
 
 const NaviBar = styled.nav`
   margin-top: auto;
-  margin-left: auto;
+  margin-left: 325px;
   margin-right: 386px;
   width: 394px;
   white-space: nowrap;
