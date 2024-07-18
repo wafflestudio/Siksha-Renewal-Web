@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useDispatchContext } from "../../hooks/ContextProvider";
 import React, { useCallback } from "react";
+import BackClickable from "components/general/BackClickable";
 
 export default function LoginModal() {
   const handleKakaoLogin = () => {
@@ -46,7 +47,7 @@ export default function LoginModal() {
   const closeModal = useCallback(() => dispatch.setLoginModal(false), [dispatch]);
 
   return (
-    <Background>
+    <BackClickable onClickBackground={closeModal}>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
@@ -87,24 +88,24 @@ export default function LoginModal() {
         </SocialContainer>
         <WaffleLogo src={"/img/waffle-typo.svg"} />
       </MainContainer>
-    </Background>
+    </BackClickable>
   );
 }
 
-const Background = styled.div`
-  z-index: 99;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100dvh;
-  background: rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+// const Background = styled.div`
+//   z-index: 99;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100dvh;
+//   background: rgba(0, 0, 0, 0.3);
+//   overflow: hidden;
 
-  @media (max-width: 768px) {
-    overflow: scroll;
-  }
-`;
+//   @media (max-width: 768px) {
+//     overflow: scroll;
+//   }
+// `;
 
 const MainContainer = styled.div`
   position: fixed;
