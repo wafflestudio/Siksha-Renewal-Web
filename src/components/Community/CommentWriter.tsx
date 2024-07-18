@@ -55,6 +55,8 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
 }
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
   position: sticky;
   padding-top: 18.7px;
   padding-bottom: 24.7px;
@@ -90,9 +92,7 @@ const CommentInput = styled.input`
 
 const Options = styled.div`
   position: absolute;
-  top: 50%;
   right: 0;
-  transform: translateY(-50%);
 
   padding: 0 6.5px;
 
