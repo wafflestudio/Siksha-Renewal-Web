@@ -8,11 +8,13 @@ export default function Auth() {
   const { setLoginStatus } = useDispatchContext();
 
   useEffect(() => {
+    console.log(document.location);
+    console.log(document.href);
     const params = new URL(document.location.toString()).searchParams;
     const id_token = params.get("id_token");
 
     if (!id_token) {
-      router.push("/login");
+      // router.push("/login");
       return;
     }
 
