@@ -1,31 +1,36 @@
 import { PostList } from "components/Community/PostList";
 import AccountLayout from "../layout";
 import { useEffect, useState } from "react";
-import { Post, RawPost } from "types";
+import { Post } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasNextPosts, setHasNextPosts] = useState(false);
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken, authGuard } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
-  function fetchMyPosts(size: number, page: number) {
-    return getAccessToken()
+  useEffect(authGuard, [authStatus]);
+
+  const fetchMyPosts = (size: number, page: number) =>
+    getAccessToken()
       .then((accessToken) => getMyPostList(accessToken, size, page))
       .then((res) => {
         setHasNextPosts(res.hasNext);
         res.result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+        setIsLoading(false);
       })
       .catch((e) => console.error(e));
-  }
 
   useEffect(() => {
-    // 새로고침 시, loginStatus가 false이므로, 글이 불러와지지 않는 이슈가 있음
-    fetchMyPosts(10, 1);
-  }, []);
+    if (authStatus === "login") {
+      setIsLoading(true);
+      fetchMyPosts(10, 1);
+    }
+  }, [authStatus]);
 
   return (
     <AccountLayout>
@@ -36,6 +41,8 @@ export default function MyPost() {
             <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
             <BreakLine />
           </>
+        ) : authStatus === "loading" || isLoading ? (
+          <NoPost>글을 불러오는 중입니다.</NoPost>
         ) : (
           <NoPost>내가 쓴 글이 없어요.</NoPost>
         )}

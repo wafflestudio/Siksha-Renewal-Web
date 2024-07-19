@@ -1,28 +1,23 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
+import { useEffect } from "react";
 
 export default function Account() {
   const router = useRouter();
 
   const state = useStateContext();
-  const { setLoginModal, setIsExceptEmptyRestaurant } = useDispatchContext();
-  const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
+  const { setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { userInfo, isExceptEmptyRestaurant } = state;
 
-  const [isLoading, setLoading] = useState(false);
+  const { authStatus, authGuard } = useAuth();
+
+  useEffect(authGuard, [authStatus]);
 
   // 프로필 이미지 기능 구현 대비
   const profileURL = "/img/default-profile.svg";
-
-  useEffect(() => {
-    if (loginStatus === false) {
-      router.push(`/`);
-      setLoginModal(true);
-      return;
-    }
-  }, []);
 
   const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
 
@@ -41,7 +36,9 @@ export default function Account() {
           }}
         >
           <Profile src={profileURL} />
-          <ProfileText>{isLoading ? "잠시만 기다려주세요..." : nickname}</ProfileText>
+          <ProfileText>
+            {authStatus === "loading" ? "잠시만 기다려주세요..." : nickname}
+          </ProfileText>
           <ArrowButton src="/img/right-arrow-grey.svg" />
         </ContentDiv>
       </ListGroup>

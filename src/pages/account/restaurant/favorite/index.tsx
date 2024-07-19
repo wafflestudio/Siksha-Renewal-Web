@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderEdit";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
+import useAuth from "hooks/UseAuth";
 
 interface FavoriteRestaurant {
   id: number;
@@ -11,6 +12,9 @@ interface FavoriteRestaurant {
 
 export default function Setting_Favorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
+  const { authStatus, authGuard } = useAuth();
+
+  useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
     const orderList: FavoriteRestaurant[] = JSON.parse(

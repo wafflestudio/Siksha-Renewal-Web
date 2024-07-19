@@ -1,20 +1,24 @@
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import UseAccessToken from "hooks/UseAccessToken";
 import { deleteAccount } from "utils/api/auth";
+import useAuth from "hooks/UseAuth";
+import { useEffect, useState } from "react";
 
 export default function UserSetting() {
   const router = useRouter();
-  const state = useStateContext();
-  const { setLoginStatus, setLoginModal } = useDispatchContext();
-  const { loginStatus } = state;
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken, authGuard, signOut } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (authStatus === "login") {
+      setIsLoading(false);
+    }
+    if (isLoading) authGuard();
+  }, [authStatus]);
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    setLoginStatus(!!localStorage.getItem("access_token"));
+    signOut();
     router.push(`/`);
   };
 
@@ -24,18 +28,12 @@ export default function UserSetting() {
     );
     if (!confirmExit) return;
 
-    if (loginStatus === false) {
-      router.push(`/`);
-      setLoginModal(true);
-    }
-
     return getAccessToken()
       .then((accessToken) => {
         deleteAccount(accessToken);
       })
       .then(() => {
-        localStorage.removeItem("access_token");
-        setLoginStatus(!!localStorage.getItem("access_token"));
+        signOut();
         router.push(`/`);
       })
       .catch((e) => {

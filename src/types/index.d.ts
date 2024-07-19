@@ -8,6 +8,10 @@ export interface State {
   showInfo: boolean;
   loading: boolean;
   infoData: any;
+  authStatus: "loading" | "login" | "logout";
+  /**
+   * @deprecated safety is not guaranteed on loading
+   */
   loginStatus: boolean;
   isLoginModal: boolean;
   userInfo: {
