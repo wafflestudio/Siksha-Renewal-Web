@@ -74,12 +74,14 @@ const Container = styled.div`
   @media (max-width: 768px) {
     margin: 10px 0;
   }
+  & > a {
+    width: min(100% - 56px, 573px);
+  }
 `;
 
 const HotPost = styled.div`
   display: flex;
   gap: 15px 10px;
-  width: min(100% - 56px, 573px);
   height: 100%;
   background-color: #ff952233;
   padding: 15px 17px;
