@@ -92,8 +92,8 @@ const Container = styled.div`
   flex-direction: column;
   position: fixed;
   left: 50%;
-  top: 35%;
-  transform: translateX(-50%);
+  top: 40%;
+  transform: translate(-50%, -40%);
 `;
 
 const InfoBox = styled.div`
