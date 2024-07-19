@@ -1,12 +1,33 @@
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import UseAccessToken from "hooks/UseAccessToken";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Post } from "types";
+import { getPopularPosts } from "utils/api/community";
+import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const router = useRouter();
+  const { checkAccessToken } = UseAccessToken();
+
+  const [popularPost, setPopularPost] = useState<Post | null>(null);
+
+  async function fetchPopularPost() {
+    const accessToken = await checkAccessToken();
+
+    if (accessToken) {
+      return getPopularPosts(accessToken)
+        .then((res) => {
+          const { result } = res;
+          setPopularPost(postParser(result[0]));
+        })
+        .catch((e) => console.error(e));
+    }
+  }
 
   function handleClickWriteButton() {
     if (loginStatus === false) {
@@ -16,16 +37,29 @@ export function BoardHeader() {
     router.push("/community/write");
   }
 
+  useEffect(() => {
+    fetchPopularPost();
+  }, []);
+
   return (
     <Container>
-      <HotPost>
-        <Title>개발중입니다.</Title>
-        <ContentPreview>개발중입니다. </ContentPreview>
-        <Likes>
-          <Icon src="/img/post-like.svg" />
-          2356
-        </Likes>
-      </HotPost>
+      <Link
+        href={
+          popularPost ? `/community/boards/${popularPost?.boardId}/posts/${popularPost?.id}` : "/"
+        }
+      >
+        <HotPost>
+          <Title>{popularPost?.title}asdfasdfadasdfasdffasdfasdfasdfadsfdsfasdfasdfasdf</Title>
+          <ContentPreview>
+            {popularPost?.content}asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
+            aasdfasdfasdfasdf asdfasfdasasdfasdfasdf
+          </ContentPreview>
+          <Likes>
+            <Icon src="/img/post-like.svg" />
+            {popularPost?.likeCount}
+          </Likes>
+        </HotPost>
+      </Link>
       <WriteButton>
         <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
       </WriteButton>
@@ -44,8 +78,7 @@ const Container = styled.div`
 
 const HotPost = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 15px 10px;
   width: min(100% - 56px, 573px);
   height: 100%;
   background-color: #ff952233;
@@ -63,13 +96,13 @@ const HotPost = styled.div`
 `;
 
 const Title = styled.div`
-  width: 100%;
+  max-width: 220px;
   font-weight: bold;
-  margin-right: 14px;
   white-space: nowrap;
   overflow: hidden;
 `;
 const ContentPreview = styled.div`
+  flex: 1;
   width: 100%;
   color: #393939;
   overflow: hidden;
@@ -78,6 +111,7 @@ const ContentPreview = styled.div`
 `;
 const Likes = styled.div`
   display: flex;
+  align-items: center;
   color: #ff9522;
   font-size: 12px;
   @media (max-width: 768px) {
