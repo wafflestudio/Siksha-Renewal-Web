@@ -166,6 +166,7 @@ export default function Menu() {
                 />
               ) : (
                 <ReviewSection
+                  menuId={menu.id}
                   reviews={reviews}
                   images={images}
                   isReviewListPageOpen={isReviewListPageOpen}

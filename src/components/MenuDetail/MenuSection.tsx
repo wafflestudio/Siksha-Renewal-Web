@@ -55,7 +55,7 @@ export default function MenuSection({ menu, reviewsTotalCount, images, handleRev
 
   return (
     <MenuContainer>
-      {images.length > 0 && <ReviewImageSwiper images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={images.length} />}
+      {images.length > 0 && <ReviewImageSwiper menuId={menu.id} images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={images.length} />}
       <MenuInfoContainer>
         <MenuHeader>
           <MenuTitleContainer>
