@@ -90,12 +90,14 @@ export default function Account() {
         </ContentDiv>
       </ListGroup>
 
-      <ListGroup
-        onClick={() => {
-          router.push("/account/inquiry");
-        }}
-      >
-        <InquiryText>1:1 문의하기</InquiryText>
+      <ListGroup>
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/inquiry");
+          }}
+        >
+          <InquiryText>1:1 문의하기</InquiryText>
+        </ContentDiv>
       </ListGroup>
     </AccountLayout>
   );
@@ -122,7 +124,10 @@ const ListGroup = styled.div`
   }
 `;
 
-const ContentDiv = styled.div`
+const ContentDiv = styled.button`
+  width: 100%;
+  border: none;
+  background-color: transparent;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -136,10 +141,14 @@ const Profile = styled.img`
 
 const Text = styled.span`
   display: inline-block;
-  margin: 11.5px 0 11.5px 16px;
+  margin: 11.5px 0 11.5px 13px;
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
 `;
 
 const ProfileText = styled(Text)`
@@ -157,6 +166,10 @@ const InquiryText = styled(Text)`
   font-size: 16px;
   font-weight: 700;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
 `;
 
 const BreakLine = styled.hr`
