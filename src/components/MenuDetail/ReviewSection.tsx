@@ -56,7 +56,7 @@ export default function ReviewSection({ menuId, reviews, images, isReviewListPag
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>
-            <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
+            <MobileReviewImageSwiper menuId={menuId} images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
             <div style={{
               width: "100%",
               display: "flex"
