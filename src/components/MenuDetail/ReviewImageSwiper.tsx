@@ -6,10 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface ReviewImageSwiperProps {
-  menuId: number,
-  images: string[],
-  swiperImagesLimit: number,
-  imageCount: number
+  menuId: number;
+  images: string[];
+  swiperImagesLimit: number;
+  imageCount: number;
 };
 
 export default function ReviewImageSwiper({ menuId, images, swiperImagesLimit, imageCount }: ReviewImageSwiperProps) {

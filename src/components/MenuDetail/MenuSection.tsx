@@ -10,18 +10,18 @@ import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
 
 interface MenuSectionProps {
-  menu: MenuType,
-  reviewsTotalCount: number,
-  images: string[],
-  handleReviewPostButtonClick: () => void
+  menu: MenuType;
+  reviewsTotalCount: number;
+  images: string[];
+  handleReviewPostButtonClick: () => void;
 }
 
 export default function MenuSection({ menu, reviewsTotalCount, images, handleReviewPostButtonClick }: MenuSectionProps) {
   const router = useRouter();
-  
+
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
-  
+
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const toggleAccordion = () => setIsAccordionOpen(!isAccordionOpen);
   const [isOverflow, setIsOverflow] = useState(false);
@@ -34,15 +34,15 @@ export default function MenuSection({ menu, reviewsTotalCount, images, handleRev
       getRestaurantList(),
       getReviewScore(menu.id),
     ])
-    .then(([restaurantListData, reviewScoreData]) => {
-      const restaurantName = restaurantListData.result.find((restaurant) => restaurant.id === menu.restaurant_id);
-      if (restaurantName)
-        setRestaurantName(restaurantName.name_kr);
-      setReviewDistribution(reviewScoreData);
-    }).catch((e) => {
-      console.error(e);
-      router.push("/");
-    })
+      .then(([restaurantListData, reviewScoreData]) => {
+        const restaurantName = restaurantListData.result.find((restaurant) => restaurant.id === menu.restaurant_id);
+        if (restaurantName)
+          setRestaurantName(restaurantName.name_kr);
+        setReviewDistribution(reviewScoreData);
+      }).catch((e) => {
+        console.error(e);
+        router.push("/");
+      })
   }, [menu]);
 
   useEffect(() => {
@@ -55,7 +55,14 @@ export default function MenuSection({ menu, reviewsTotalCount, images, handleRev
 
   return (
     <MenuContainer>
-      {images.length > 0 && <ReviewImageSwiper menuId={menu.id} images={images} swiperImagesLimit={SWIPER_IMAGES_LIMIT} imageCount={images.length} />}
+      {images.length > 0 &&
+        <ReviewImageSwiper
+          menuId={menu.id}
+          images={images}
+          swiperImagesLimit={SWIPER_IMAGES_LIMIT}
+          imageCount={images.length}
+        />
+      }
       <MenuInfoContainer>
         <MenuHeader>
           <MenuTitleContainer>

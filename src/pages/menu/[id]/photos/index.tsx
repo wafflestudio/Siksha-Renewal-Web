@@ -1,5 +1,6 @@
 import ReviewItem from "components/MenuDetail/ReviewItem.";
 import Stars from "components/MenuDetail/Stars";
+import MobileSubHeader from "components/MobileSubHeader";
 import { useDispatchContext } from "hooks/ContextProvider";
 import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/router";
@@ -89,6 +90,7 @@ export default function PhotoReviews() {
 
   const { setLoginModal } = useDispatchContext();
   const isMobile = useIsMobile();
+  const mobileSubHeaderTitle = "사진 리뷰 모아보기";
 
   useEffect(() => {
     if (!id) {
@@ -98,7 +100,7 @@ export default function PhotoReviews() {
     const fetchReview = () => {
       getReviews(Number(id))
         .then(({ totalCount, result }) => {
-          let photoReviews = result.filter((review) => review.etc)
+          const photoReviews = result.filter((review) => review.etc)
           setReviews({
             result: photoReviews,
             total_count: photoReviews.length
@@ -121,8 +123,11 @@ export default function PhotoReviews() {
     }
   };
 
+  const handleMobileSubHeaderBack = () => router.push(`/menu/${id}`);
+
   return (
     <>
+      <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
       <Container>
         <GalleryWrapper>
           <GalleryHeader>
@@ -155,7 +160,8 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 271px);
   @media (max-width: 768px) {
-    min-height: calc(100vh - 60px);
+    height: max(724px, calc(100vh - 60px));
+    overflow-y: scroll;
   }
 `;
 

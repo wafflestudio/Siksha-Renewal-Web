@@ -4,17 +4,16 @@ import Link from "next/link";
 import { ReviewListType } from "pages/menu/[id]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
-import { ParsedUrlQuery } from "querystring";
 
 interface ReviewSectionProps {
-  menuId: number,
-  reviews: ReviewListType,
-  images: string[],
-  isReviewListPageOpen: boolean,
-  handleReviewPostButtonClick: () => void,
-  handleReviewListPage: (isOpen: boolean) => void,
+  menuId: number;
+  reviews: ReviewListType;
+  images: string[];
+  isReviewListPageOpen: boolean;
+  handleReviewPostButtonClick: () => void;
+  handleReviewListPage: (isOpen: boolean) => void;
 }
-export default function ReviewSection({ menuId: id, reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
+export default function ReviewSection({ menuId, reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
   const isMobile = useIsMobile();
 
   const MOBILE_IMAGE_LIST_LIMIT = 5;
@@ -36,13 +35,16 @@ export default function ReviewSection({ menuId: id, reviews, images, isReviewLis
         <ReviewContainer>
           <ReviewHeader>
             <MobilePhotoReviewHeader>
-              <Link href={`/menu/${id}/photos`} style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                textDecoration: "none",
-                cursor: "pointer"
-              }}>
+              <Link
+                href={`/menu/${menuId}/photos`}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textDecoration: "none",
+                  cursor: "pointer"
+                }}
+              >
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
