@@ -16,7 +16,7 @@ interface ReviewSectionProps {
 export default function ReviewSection({ menuId, reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
   const isMobile = useIsMobile();
 
-  const MOBILE_IMAGE_LIST_LIMIT = 5;
+  const MOBILE_IMAGE_LIST_LIMIT = 3;
 
   console.log(isReviewListPageOpen);
   
