@@ -75,32 +75,14 @@ export const loginGoogle = async (code: string): Promise<string> => {
     });
 };
 
-export const loginApple = async (code: string): Promise<string> => {
-  const grantType = "authorization_code";
-  const CLIENT_ID = process.env.NEXT_PUBLIC_APPLE_CLIENTID;
-  const REST_SECRET_KEY = process.env.NEXT_PUBLIC_APPLE_SECRET;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECTURI;
-
+export const loginApple = async (id_token: string): Promise<string> => {
   return axios
     .post(
-      `https://appleid.apple.com/auth/token?grant_type=${grantType}&client_id=${CLIENT_ID}&client_secret=${REST_SECRET_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+      `${APIendpoint()}/auth/login/apple`,
       {},
-      { headers: { "Content-type": "application/x-www-form-urlencoded;charset=utf-8" } },
-    )
-    .then((res) => {
-      const {
-        data: { id_token },
-      } = res;
-      return id_token;
-    })
-    .then((id_token: string) =>
-      axios.post(
-        `${APIendpoint()}/auth/login/apple`,
-        {},
-        {
-          headers: { "apple-token": `Bearer ${id_token}` },
-        },
-      ),
+      {
+        headers: { "apple-token": `Bearer ${id_token}` },
+      },
     )
     .then((res) => {
       const {

@@ -21,7 +21,14 @@ jobs:
       - name: .env setting
         run: |
           echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
-          echo "NEXT_PUBLIC_KAKAO_REDIRECTURI=${{ secrets.NEXT_PUBLIC_REDIRECTURI_DEV }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_REDIRECTURI=${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECTURI_DEV }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_CLIENTID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENTID }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI_DEV }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_DEV }}" >> .env
+          
         
       - name: Install dependencies
         run: yarn install

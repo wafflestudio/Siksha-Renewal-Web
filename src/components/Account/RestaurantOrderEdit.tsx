@@ -10,8 +10,6 @@ export default function RestaurantOrderEdit({
 }) {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
-    console.log(destination?.index);
-    console.log(source?.index);
 
     if (source && destination && source !== destination) {
       setNewOrderData(source?.index, destination?.index);
@@ -25,7 +23,7 @@ export default function RestaurantOrderEdit({
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <DragZone {...provided.droppableProps} ref={provided.innerRef}>
               {orderData.map(({ id, name_kr, name_en }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
                   {(provided, snapshot) => (
@@ -47,7 +45,7 @@ export default function RestaurantOrderEdit({
                   )}
                 </Draggable>
               ))}
-            </div>
+            </DragZone>
           )}
         </Droppable>
       </Container>
@@ -62,6 +60,13 @@ const Container = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+  }
 `;
 
 const Title = styled.h2`
@@ -71,6 +76,10 @@ const Title = styled.h2`
   font-size: 20px;
   line-height: 23px;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Description = styled.p`
@@ -81,8 +90,26 @@ const Description = styled.p`
   font-size: 11px;
   line-height: 19px;
   color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+    background-color: #ffffff;
+    z-index: 1;
+  }
 `;
 
+const DragZone = styled.div`
+  @media (max-width: 768px) {
+    height: 100%;
+    overflow: scroll;
+  }
+`;
 const DragContainer = styled.div<{ dragging: boolean }>`
   &:hover {
     background-color: #f2f2f2;
@@ -97,6 +124,12 @@ const DragBox = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   margin: 7.92px 22.15px;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 40px);
+    margin: 7.92px 0px 0px 20px;
+    background-color: white;
+  }
 `;
 
 const Restaurant = styled.p`

@@ -23,8 +23,8 @@ export default function Setting_Favorite() {
 
         for (let i = 0; i < orderList.length; i++) {
           if (
-            !result.find(({ id }) => id === orderList[i].id) ||
-            !favoriteList.includes(orderList[i].id)
+            !result.find(({ id }) => id === orderList[i].id) &&
+            favoriteList.includes(orderList[i].id)
           ) {
             orderList.splice(i, 1);
             i--;
@@ -55,9 +55,11 @@ export default function Setting_Favorite() {
   };
 
   return (
-    <Container>
-      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
-    </Container>
+    <>
+      <Container>
+        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+      </Container>
+    </>
   );
 }
 
@@ -66,4 +68,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 36.92px;
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
 `;

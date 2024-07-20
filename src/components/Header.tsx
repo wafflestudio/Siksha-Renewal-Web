@@ -11,68 +11,80 @@ export default function Header() {
   const { loginStatus } = state;
 
   return (
-    <Container>
-      <SikshaIcon
-        src={"/img/sikshaSplash.svg"}
-        onClick={() => {
-          router.push("/");
-        }}
-      />
-      <Title
-        onClick={() => {
-          router.push("/");
-        }}
-      >
-        서울대학교 식단 알리미
-      </Title>
-      <NavigationBar />
-      {loginStatus ? (
-        <LoginButton
+    <Background>
+      <Container>
+        <SikshaIcon
+          src={"/img/sikshaSplash.svg"}
           onClick={() => {
-            localStorage.removeItem("access_token");
-            router.push(`/`);
-            setLoginStatus(false);
+            router.push("/");
+          }}
+        />
+        <Title
+          onClick={() => {
+            router.push("/");
           }}
         >
-          로그아웃
-        </LoginButton>
-      ) : (
-        <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
-      )}
-    </Container>
+          서울대학교 식단 알리미
+        </Title>
+        <NavigationBar />
+        {loginStatus ? (
+          <LoginButton
+            onClick={() => {
+              localStorage.removeItem("access_token");
+              router.push(`/`);
+              setLoginStatus(false);
+            }}
+          >
+            로그아웃
+          </LoginButton>
+        ) : (
+          <LoginButton onClick={() => setLoginModal(true)}>로그인</LoginButton>
+        )}
+      </Container>
+    </Background>
   );
 }
 const LoginButton = styled.div`
+  position: absolute;
+  right: 97px;
+  bottom: 23px;
   background: none;
-  cursor: pointer;
   font-size: 20px;
   font-weight: 400;
   color: #ffffff;
-  position: absolute;
-  bottom: 16px;
-  right: 97px;
+  cursor: pointer;
 
   @media (max-width: 768px) {
+    position: absolute;
     right: 5vw;
     font-size: 16px;
     top: 21px;
   }
 `;
 
-const Container = styled.div`
+const Background = styled.div`
   background: #ff9522;
+  min-width: 1920px;
+  @media (max-width: 768px) {
+    min-width: 0;
+  }
+`;
+
+const Container = styled.div`
   position: relative;
-  height: 25vh;
-  min-height: 100px;
+  height: 271px;
+  width: 1920px;
+  box-sizing: border-box;
   display: flex;
-  max-height: 271px;
-  padding: 0 calc(max(100vw - max(1221px, min(73vw, 1417px)), 0px) / 2);
+	padding-left: 258px;
+	margin: auto;
 
   @media (max-width: 768px) {
     background: #ff9522;
     height: 60px;
-    min-height: 0;
-    min-width: 0;
+    width: auto;
+    top: 0;
+    z-index: 1;
   }
 `;
 

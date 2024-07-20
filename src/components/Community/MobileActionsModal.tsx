@@ -1,3 +1,4 @@
+import BackClickable from "components/general/BackClickable";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
@@ -14,27 +15,19 @@ export default function MobileActionsModal({
   setActionsModal: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <Background onClick={()=>setActionsModal(false)}>
+    <BackClickable onClickBackground={() => setActionsModal(false)}>
       <MainContainer>
-        {actions.map((action) => action.name !== "공감" && (
-          <ActionWrapper onClick={action.handleClick}>{action.name + "하기"}</ActionWrapper>
-        ))}
-        <CancelWrapper onClick={()=>setActionsModal(false)}>취소</CancelWrapper>
+        {actions.map(
+          (action) =>
+            action.name !== "공감" && (
+              <ActionWrapper onClick={action.handleClick}>{action.name + "하기"}</ActionWrapper>
+            ),
+        )}
+        <CancelWrapper onClick={() => setActionsModal(false)}>취소</CancelWrapper>
       </MainContainer>
-    </Background>
+    </BackClickable>
   );
 }
-
-const Background = styled.div`
-  z-index: 99;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-`;
 
 const MainContainer = styled.div`
   position: fixed;

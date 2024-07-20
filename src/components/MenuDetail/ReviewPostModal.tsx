@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { v4 as uuidv4 } from 'uuid';
 import { setReview } from "utils/api/reviews";
+
+export type ReviewInputs = {
+  score: number;
+  comment: string;
+  photos: {
+    id: number,
+    photo: string | File
+  }[];
+};
+
+const emptyReviewInputs: ReviewInputs = {
+  score: 3,
+  comment: "",
+  photos: []
+};
 
 export default function ReviewPostModal({
   isOpen,
@@ -15,15 +31,27 @@ export default function ReviewPostModal({
   };
   onClose: () => void;
 }) {
-  const [score, setScore] = useState(3);
-  const [comment, setComment] = useState("");
+  const id = useId();
+  const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
 
   const MAX_COMMENT_LENGTH = 150;
 
   const accessToken = localStorage.getItem("access_token");
 
-  const onReviewSubmit = () => {
-    return setReview(menu.menuId, score, comment, accessToken!)
+  const handlePhotoAttach = (photo: File | undefined) => {
+    if (photo) {
+      const newPhoto = {
+        id: uuidv4(),
+        photo: photo
+      }
+      setInputs({ ...inputs, photos: [...inputs.photos, newPhoto] });
+    }
+  };
+  const handlePhotoDelete = (id: number) => {
+    setInputs({ ...inputs, photos: inputs.photos.filter((photoObj) => photoObj.id !== id) });
+  };
+  const handleSubmit = async () => {
+    return setReview(menu.menuId, inputs, accessToken!)
       .then((res) => {
         onClose();
       })
@@ -36,8 +64,10 @@ export default function ReviewPostModal({
   if (!isOpen) return null;
   return (
     <Container>
-      <ModalTitle>나의 평가 남기기</ModalTitle>
-      <HLine />
+      <ModalHeader>
+        <ModalTitle>나의 평가 남기기</ModalTitle>
+        <HLine />
+      </ModalHeader>
       <ReviewTitle>
         &apos; <MenuNameText>{menu.menuName} </MenuNameText>&apos;{" "}
         <ReviewTitleText>는 어땠나요?</ReviewTitleText>
@@ -47,12 +77,12 @@ export default function ReviewPostModal({
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            src={i <= score ? "/img/star.svg" : "/img/star-empty.svg"}
-            onClick={() => setScore(i)}
+            src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
+            onClick={() => setInputs({ ...inputs, score: i })}
           />
         ))}
       </StarsContainer>
-      <Score>{score}</Score>
+      <Score>{inputs.score}</Score>
       <CommentContainer>
         <div style={{ display: "flex" }}>
           <Image src="/img/comment.svg" alt="코멘트 이미지" width={18} height={18} />
@@ -60,16 +90,46 @@ export default function ReviewPostModal({
         </div>
         <div style={{ position: "relative" }}>
           <CommentTextArea
-            value={comment}
+            value={inputs.comment}
             placeholder={"맛은 어땠나요?"}
-            onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
+            onChange={(e) => setInputs({ ...inputs, comment: e.target.value.slice(0, MAX_COMMENT_LENGTH) })}
           />
           <CommentLength>
-            {comment.length} 자 / {MAX_COMMENT_LENGTH} 자
+            {inputs.comment.length} 자 / {MAX_COMMENT_LENGTH} 자
           </CommentLength>
         </div>
       </CommentContainer>
-      {/* TODO: 리뷰 내 이미지 첨부 구현 */}
+      <PhotoSection>
+        <PhotoViewer>
+          {inputs.photos.map((photoObj, i) => (
+            <PhotoContainer key={photoObj.id}>
+              <Photo src={typeof photoObj.photo === "string" ? photoObj.photo : URL.createObjectURL(photoObj.photo)} />
+              <DeleteButton onClick={() => handlePhotoDelete(photoObj.id)}>
+              </DeleteButton>
+            </PhotoContainer>
+          ))}
+          {inputs.photos.length < 5 && (
+            <PhotoAttacher photosLength={inputs.photos.length}>
+              {inputs.photos.length === 0 && <AddImageText> 사진 추가 + </AddImageText>}
+              <FileInput
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
+              />
+            </PhotoAttacher>
+          )}
+        </PhotoViewer>
+        {inputs.photos.length < 5 && (
+          <MobilePhotoAttacher>
+            <AddImageText> 사진 추가 </AddImageText>
+            <FileInput
+              type="file"
+              accept="image/*"
+              onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
+            />
+          </MobilePhotoAttacher>
+        )}
+      </PhotoSection>
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {
@@ -80,9 +140,9 @@ export default function ReviewPostModal({
         </ReviewCancelButton>
         <ReviewPostButton
           onClick={() => {
-            onReviewSubmit();
+            handleSubmit();
           }}
-          disabled={comment.length === 0}
+          disabled={inputs.comment.length === 0}
         >
           등록
         </ReviewPostButton>
@@ -92,12 +152,13 @@ export default function ReviewPostModal({
 }
 
 const Container = styled.div`
+  position: relative;
   box-sizing: border-box;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 38%;
+  min-width: 735px;
   border-left: 1px solid #eeeeee;
   padding-left: 37px;
   padding-right: 36px;
@@ -105,9 +166,21 @@ const Container = styled.div`
   padding-bottom: 22px;
   @media (max-width: 768px) {
     position: absolute;
-    flex-grow: 1;
     width: 100vw;
+    height: 100%;
+    min-width: 0;
     box-sizing: border-box;
+    padding-top: 44px;
+  }
+`;
+
+const ModalHeader = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -131,6 +204,7 @@ const ReviewTitle = styled.div`
   display: flex;
   margin: 30px 0 22px 0;
   @media (max-width: 768px) {
+    margin-top: 0;
     margin-bottom: 26px;
   }
 `;
@@ -250,77 +324,177 @@ const CommentLength = styled.span`
   }
 `;
 
-const ImagesContainer = styled.div`
+const PhotoSection = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
+  padding-left: 17px;
+  box-sizing: border-box;
 `;
 
-const AddImageButton = styled.div`
-  box-sizing: border-box;
+const PhotoViewer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
+  column-gap: 13px;
+  overflow: visible;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, 80px);
+  }
+`;
+
+const PhotoContainer = styled.div`
+  position: relative;
+  height: 80px;
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+`;
+
+const PhotoAttacher = styled.label<{ photosLength: number }>`
   width: 120px;
   height: 120px;
   flex: 0 0 auto;
-  background-color: #ff9522;
+  background-color: ${(props) => props.photosLength > 0 ? "#dfdfdf" : "#ff9522"};
+  background-image: ${(props) => props.photosLength > 0 ? "url('/img/plus-angled.svg')" : ""};
+  background-repeat: no-repeat;
+  background-position: center center;
   border-radius: 8px;
-  padding: 35px 26px;
-  margin: 0 5px;
+  margin-right: 13px;
   text-align: center;
   cursor: pointer;
 
   @media (max-width: 768px) {
-    display: flex;
-    width: 134px;
-    height: 32px;
-    border-radius: 50px;
-    padding: 8px 25px;
+    display: none;
   }
 `;
 
-const PhotoImg = styled.img`
-  width: 28px;
-  height: 28px;
-`;
-
 const AddImageText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   color: white;
   font-size: 14px;
   font-weight: 800;
   line-height: 16px;
 
-  &:after {
-    content: " +";
-    @media (max-width: 768px) {
-      display: none;
+  &:before {
+    content: " ";
+    display: block;
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    background-image: url('/img/photo.svg');
+    margin: 0 0 6px 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      background-size: 16px 16px;
+      margin: 0 8px 0 0;
     }
   }
 `;
 
+const MobilePhotoAttacher = styled.label`
+  box-sizing: border-box;
+  display: none;
+  width: 134px;
+  height: 32px;
+  flex: 0 0 auto;
+  background-color: #ff9522;
+  border-radius: 50px;
+  padding: 8px 25px;
+  text-align: center;
+  cursor: pointer;
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+const Photo = styled.img`
+  width: 120px;
+  height: 120px;
+  margin-right: 13px;
+  border-radius: 8px;
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+    margin-right: 8px;
+  }
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: -8px;
+  right: -5px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-image: url("/img/photo-delete.svg");
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+    background-image: url("/img/photo-delete-mobile.svg");
+  }
+`;
+
 const ModalFooter = styled.div`
+  position: absolute;
   display: flex;
   width: 100%;
-  padding-bottom: 30px;
+  box-sizing: border-box;
+  padding-left: 37px;
+  padding-right: 36px;
+  bottom: 30px;
   @media (max-width: 768px) {
     display: inherit;
   }
 `;
 
 const ReviewPostButton = styled.button`
+  display: flex;
   width: 50%;
   height: 46px;
   margin: 0 7px;
   border-radius: 8px;
+  color: black;
   background-color: #ff9522;
-  text-align: center;
+  justify-content: center;
+  align-items: center;
   color: white;
   border: none;
-  cursor: pointer;
   font-size: 16px;
   font-weight: 700;
+  cursor: pointer;
 
+  &:before {
+    content: '평가';
+    display: none;
+    padding-right: 5px;
+  }
   &:disabled {
     background-color: #adadad;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    &:before {
+      display: inherit;
+    }
   }
 `;
 
@@ -336,4 +510,8 @@ const ReviewCancelButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

@@ -15,6 +15,7 @@ function MyApp({ Component, pageProps }) {
           <title>서울대학교 식단 알리미 : 식샤</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
+          <link rel="manifest" href="/manifest/manifest.json" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}

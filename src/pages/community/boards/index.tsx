@@ -31,10 +31,8 @@ export default function Board({ selectedBoardId, children }: BoardProps) {
   return (
     <Layout>
       <>
-        <Container>
-          <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
-          {children}
-        </Container>
+        <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
+        {children}
       </>
     </Layout>
   );

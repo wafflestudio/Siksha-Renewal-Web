@@ -6,13 +6,14 @@ import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import { ReportModal } from "./ReportModal";
 
 interface CommentProps {
   comment: CommentType;
-  refetch: () => Promise<void>;
+  update: (id: number) => void;
 }
 
-export default function Comment({ comment, refetch }: CommentProps) {
+export default function Comment({ comment, update }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
   const { loginStatus } = useStateContext();
@@ -23,6 +24,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
   const [actionsModal, setActionsModal] = useState<boolean>(false);
+  const [reportModal, setReportModal] = useState(false);
 
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
   const profileImg = "/img/default-profile.svg";
@@ -50,7 +52,7 @@ export default function Comment({ comment, refetch }: CommentProps) {
       setLoginModal(true);
     } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       return getAccessToken()
-        .then((accessToken) => deleteComment(id, accessToken).then(refetch))
+        .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
         .catch((e) => {
           console.error(e);
         });
@@ -61,7 +63,13 @@ export default function Comment({ comment, refetch }: CommentProps) {
     { name: "공감", handleClick: isLikeToggle },
     comment.isMine
       ? { name: "삭제", handleClick: removeComment }
-      : { name: "신고", handleClick: () => {} },
+      : {
+          name: "신고",
+          handleClick: () => {
+            if (loginStatus) setReportModal(true);
+            else setLoginModal(true);
+          },
+        },
   ];
 
   return (
@@ -89,6 +97,9 @@ export default function Comment({ comment, refetch }: CommentProps) {
             <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
             {actionsModal && (
               <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
+            )}
+            {reportModal && (
+              <ReportModal type="comment" targetID={comment.id} setReportModal={setReportModal} />
             )}
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}

@@ -1,28 +1,42 @@
 import styled from "styled-components";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
-const SWIPER_ALIGNMENT_OFFSET = 90;
-/**
- * swiper의 element 정렬 기준축 위치를 조정
- * 기준측이 element의 우측 모서리와 일치하도록 정렬
- * @param viewSize swiper 길이 (스크롤 방향 기준)
- * @param snapSize swiper 내 element 길이 (스크롤 방향 기준)
- * @param index 각 element의 index
- * @returns swiper의 좌측 모서리 기준 기준축의 위치
- */
-const setAlignment = (viewSize: number, snapSize: number, index: number) => {
-  return viewSize - SWIPER_ALIGNMENT_OFFSET;
-};
-
-export default function ReviewImageSwiper({ images }: { images: string[] }) {
-  const OPTIONS: EmblaOptionsType = { align: setAlignment, loop: true };
+export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
+  const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+  const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
+
+  if(images.length > swiperImagesLimit) {
+    images = images.slice(0, swiperImagesLimit);
+  }
+
+  useEffect(() => {
+    if (emblaApi) {
+      const viewportElement = emblaApi.rootNode();
+      const containerElement = emblaApi.containerNode();
+      const updateWidthComparison = () => {
+        const viewportWidth = viewportElement.offsetWidth;
+        const containerWidth = containerElement.scrollWidth;
+        SetIsContainerSmaller(viewportWidth + 4 >= containerWidth);
+      }
+
+      const resizeObserver = new ResizeObserver(updateWidthComparison);
+      resizeObserver.observe(viewportElement);
+      updateWidthComparison();
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, [emblaApi]);
 
   const onPrevButtonClick = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
+    if (emblaApi) {
+      emblaApi.scrollPrev();
+    }
   }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
@@ -31,21 +45,27 @@ export default function ReviewImageSwiper({ images }: { images: string[] }) {
 
   return (
     <Swiper>
-      <SwiperViewport ref={emblaRef}>
+      <SwiperViewport ref={emblaRef} isContainerSmaller={isContainerSmaller}>
         <SwiperContainer>
           {images.map((image, index) => (
-            <ReviewImageContainer key={index}>
+            <ReviewImageContainer key={image}>
+              {
+                imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
+                <Link href="#">
+                  <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
+                </Link>
+              }
               <ReviewImage src={image} />
             </ReviewImageContainer>
           ))}
         </SwiperContainer>
       </SwiperViewport>
-      <SwiperPrevButton type="button" onClick={onPrevButtonClick}>
+      <PrevButton type="button" onClick={onPrevButtonClick}>
         <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
-      </SwiperPrevButton>
-      <SwiperNextButton type="button" onClick={onNextButtonClick}>
+      </PrevButton>
+      <NextButton type="button" onClick={onNextButtonClick}>
         <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
-      </SwiperNextButton>
+      </NextButton>
     </Swiper>
   );
 }
@@ -63,43 +83,50 @@ const Swiper = styled.div`
   --slide-spacing: 4px;
 `;
 
-const SwiperViewport = styled.div`
+const SwiperViewport = styled.div<{ isContainerSmaller: boolean }>`
+  background-color: #f0f0f0;
   position: absolute;
   width: 100%;
+  height: 100%;
   overflow: hidden;
+  ${(props) =>
+    props.isContainerSmaller
+    && `
+          display: flex;
+          justify-content: center;
+        `
+  }
 `;
 
 const SwiperContainer = styled.div`
+  height: 100%;
   backface-visibility: hidden;
   display: flex;
-  touch-action: pan-y;
   margin-left: calc(var(--slide-spacing) * -1);
 `;
 
-const SwiperPrevButton = styled.button`
+const transitionButton = styled.button`
   position: absolute;
-  left: 0;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: 24px;
   border: none;
   background-color: transparent;
   cursor: pointer;
 `;
 
-const SwiperNextButton = styled.button`
-  position: absolute;
+const PrevButton = styled(transitionButton)`
+  left: 0;
+  margin-left: 24px;
+`;
+
+const NextButton = styled(transitionButton)`
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
   margin-right: 24px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 `;
 
 const ReviewImageContainer = styled.div`
   height: var(--slide-height);
+  width: var(--slide-width);
   flex: 0 0 var(--slide-width);
   min-width: 0;
   padding-left: var(--slide-spacing);
@@ -109,4 +136,17 @@ const ReviewImage = styled.img`
   object-fit: cover;
   height: var(--slide-height);
   width: 100%;
+`;
+
+const MoreImages = styled.button`
+  position: absolute;
+  height: var(--slide-height);
+  width: var(--slide-width);
+  background: #00000080;
+  border: none;
+  box-shadow: none;
+  font-weight: 700;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
 `;

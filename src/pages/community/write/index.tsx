@@ -38,7 +38,7 @@ export default function PostWriter() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [isSubmitting, SetIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
@@ -57,7 +57,7 @@ export default function PostWriter() {
     }
   };
 
-  const hanldlePhotoDelete = (index: number) => {
+  const handlePhotoDelete = (index: number) => {
     setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
   };
 
@@ -73,7 +73,7 @@ export default function PostWriter() {
     if (loginStatus === false) {
       setLoginModal(true);
     } else {
-      SetIsSubmitting(true);
+      setIsSubmitting(true);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));
       body.append("title", inputs.title);
@@ -102,15 +102,13 @@ export default function PostWriter() {
           console.error(e);
         })
         .finally(() => {
-          SetIsSubmitting(false);
+          setIsSubmitting(false);
         });
     }
 
     async function convertToBlob(image: string | File) {
       if (typeof image === "string") {
-        // 기존 업로드 이미지 url을 blob 객체로 변환하며 fetch 시에 CORS 발생
-        // TODO: 기존 이미지 재업로드(?) 방법 찾기
-        const response = await fetch("https://cors-anywhere.herokuapp.com/" + image);
+        const response = await fetch(image);
         const blob = await response.blob();
         return blob;
       } else {
@@ -200,7 +198,7 @@ export default function PostWriter() {
           {inputs.photos.map((photo, i) => (
             <PhotoContainer key={i}>
               <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-              <DeleteButton onClick={() => hanldlePhotoDelete(i)}>
+              <DeleteButton onClick={() => handlePhotoDelete(i)}>
                 <Icon src="/img/photo-delete.svg" />
               </DeleteButton>
             </PhotoContainer>
