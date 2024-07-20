@@ -89,7 +89,7 @@ const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 271px);
   @media (max-width: 768px) {
-    height: max(724px, calc(100vh - 60px));
+    height: 100%;
     overflow-y: scroll;
   }
 `;
