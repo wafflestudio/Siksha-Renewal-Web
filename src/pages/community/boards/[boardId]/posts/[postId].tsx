@@ -19,6 +19,7 @@ import {
 } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
+import DeleteModal from "components/Community/DeleteModal";
 
 export default function Post() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function Post() {
   const [isError, setIsError] = useState<boolean>(false);
   const [actionsModal, setActionsModal] = useState<boolean>(false);
   const [reportModal, setReportModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -92,7 +94,7 @@ export default function Post() {
   const removePost = (postId: number) => {
     if (loginStatus === false) {
       setLoginModal(true);
-    } else if (confirm("이 글을 삭제하시겠습니까?")) {
+    } else {
       return getAccessToken()
         .then((accessToken) => deletePost(postId, accessToken))
         .then(() => router.push(`/community/boards/${boardId}`))
@@ -124,7 +126,13 @@ export default function Post() {
             name: "수정",
             handleClick: () => router.push(`/community/write/?postId=${postId}`),
           },
-          { name: "삭제", handleClick: () => removePost(post.id) },
+          {
+            name: "삭제",
+            handleClick: () => {
+              if (loginStatus) setDeleteModal(true);
+              else setLoginModal(true);
+            },
+          },
         ]
       : [
           {
@@ -162,6 +170,13 @@ export default function Post() {
             )}
             {reportModal && (
               <ReportModal type="post" targetID={post.id} setReportModal={setReportModal} />
+            )}
+            {deleteModal && (
+              <DeleteModal
+                type="post"
+                onDelete={() => removePost(post.id)}
+                setDeleteModal={setDeleteModal}
+              ></DeleteModal>
             )}
           </Header>
           <Content>
