@@ -4,22 +4,21 @@ import AccountLayout from "./layout";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
+import UseProfile from "hooks/UseProfile";
 
 export default function Account() {
   const router = useRouter();
 
-  const state = useStateContext();
+  const { isExceptEmptyRestaurant } = useStateContext();
   const { setIsExceptEmptyRestaurant } = useDispatchContext();
-  const { userInfo, isExceptEmptyRestaurant } = state;
+  const { userInfo } = UseProfile();
 
   const { authStatus, authGuard } = useAuth();
 
   useEffect(authGuard, [authStatus]);
 
-  // 프로필 이미지 기능 구현 대비
-  const profileURL = "/img/default-profile.svg";
-
-  const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
+  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
+  const nickname = userInfo?.nickname ?? `ID ${userInfo?.id}`;
 
   function toggle() {
     localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(!isExceptEmptyRestaurant));
@@ -137,6 +136,7 @@ const Profile = styled.img`
   width: 48.17px;
   height: 48.17px;
   margin: 11px 0 11px 16px;
+  border-radius: 50%;
 `;
 
 const Text = styled.span`

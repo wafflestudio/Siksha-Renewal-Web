@@ -76,8 +76,8 @@ const Container = styled.div`
   width: 1920px;
   box-sizing: border-box;
   display: flex;
-	padding-left: 258px;
-	margin: auto;
+  padding-left: 258px;
+  margin: auto;
 
   @media (max-width: 768px) {
     background: #ff9522;

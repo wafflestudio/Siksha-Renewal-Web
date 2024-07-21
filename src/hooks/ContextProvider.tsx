@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { State, RawMenuList } from "../types";
+import { State, RawMenuList, User } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
 const initDate = new Date();
@@ -19,10 +19,7 @@ const initialState: State = {
    */
   loginStatus: false,
   isLoginModal: false,
-  userInfo: {
-    id: null,
-    nickname: null,
-  },
+  userInfo: null,
   isFilterFavorite: false,
   favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
@@ -42,7 +39,7 @@ interface dispatchers {
    */
   setLoginStatus: (loginStatus: boolean) => void;
   setLoginModal: (isLoginModal: boolean) => void;
-  setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;

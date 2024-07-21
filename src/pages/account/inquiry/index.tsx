@@ -57,7 +57,7 @@ export default function Inquire() {
         </MobileBox>
         <UserBox>
           <Profile src={profileURL} />
-          <Nickname>{userInfo.nickname ?? `ID ${userInfo.id}`}</Nickname>
+          <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
           <TextArea value={voc} onChange={handleTextAreaChange} />

@@ -1,47 +1,66 @@
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { updateMyData } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
+import ProfileEdit from "components/Account/ProfileEdit";
+import UseProfile from "hooks/UseProfile";
 
-export default function Setting_Nickname({ userInfo }) {
-  const [newNickname, setNewNickname] = useState("");
+export default function Setting_Nickname() {
+  const { userInfo, setProfile } = UseProfile();
+
+  const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const imgRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
-  const { getAccessToken, authStatus, authGuard } = useAuth();
 
+  const { getAccessToken, authStatus, authGuard } = useAuth();
   useEffect(authGuard, [authStatus]);
 
-  const handleSetClick = () => {
-    if (newNickname === null) return;
+  useEffect(() => {
+    setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
+    if (userInfo?.image)
+      fetch(userInfo?.image)
+        .then((res) => res.blob())
+        .then((blob) => setImageBlob(blob));
+
+    setImageBlob(null);
+  }, [imgRef, userInfo]);
+
+  const updateProfile = async () => {
+    if (nickname === null) return;
+    if (imgRef.current === null) return;
 
     const formData = new FormData();
-    formData.append("nickname", newNickname);
+    formData.append("nickname", nickname);
+    if (imageBlob) formData.append("image", imageBlob);
 
-    return getAccessToken()
-      .then((accessToken) => {
-        updateMyData(formData, accessToken);
+    getAccessToken()
+      .then((token) => {
+        updateMyData(formData, token).then(({ nickname: newNickname, image: newImage }) => {
+          setProfile(newNickname, newImage ?? undefined);
+          router.push(`/account`);
+        });
       })
-      .then(() => {
-        router.push(`/account`);
-      })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   return (
     <AccountLayout>
       <Container>
         <Title>닉네임 설정</Title>
-        <InputBox>
-          <Input
-            placeholder="닉네임"
-            type="text"
-            value={newNickname}
-            onChange={(e) => setNewNickname(e.target.value)}
-          />
-          <Button onClick={handleSetClick}>완료</Button>
-        </InputBox>
+        <ProfileEdit
+          nickname={nickname}
+          setNickname={setNickname}
+          imageBlob={imageBlob}
+          setImageBlob={setImageBlob}
+          imgRef={imgRef}
+          updateProfile={updateProfile}
+        />
       </Container>
     </AccountLayout>
   );
@@ -58,38 +77,4 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: #ff9522;
-`;
-
-const InputBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 30px 22.48px 24px 22.48px;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
-  overflow: hidden; // border 잘림 해결
-`;
-
-const Input = styled.input`
-  width: 433px;
-  height: 40px;
-  font-weight: 700;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const Button = styled.button`
-  width: 52px;
-  height: 34px;
-  background-color: #ff9522;
-  border: none;
-  border-radius: 8px;
-  margin-right: 7.52px;
-  font-size: 15px;
-  font-weight: 400;
-  color: #ffffff;
-  line-height: 14px;
-  cursor: pointer;
 `;
