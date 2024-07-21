@@ -6,6 +6,7 @@ import useIsMobile from "hooks/UseIsMobile";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { getMyData, loginRefresh } from "utils/api/auth";
+import Modals from "./Modals";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -62,11 +63,14 @@ export default function Layout({ children }: LayoutProps) {
   }, [loginStatus]);
 
   return (
-    <Container>
-      <Header />
-      <Content>{children}</Content>
-      <MobileNavigationBar />
-    </Container>
+    <>
+      <Container>
+        <Header />
+        <Content>{children}</Content>
+        <MobileNavigationBar />
+      </Container>
+      <Modals />
+    </>
   );
 }
 
