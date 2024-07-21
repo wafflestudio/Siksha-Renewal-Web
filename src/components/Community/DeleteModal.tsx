@@ -3,26 +3,26 @@ import styled from "styled-components";
 
 interface DeleteModalProps {
   type: "post" | "comment";
-  onDelete: () => void;
-  setDeleteModal: (value: boolean) => void;
+  onClose: () => void;
+  onSubmit: () => void;
 }
 
-export default function DeleteModal({ type, onDelete, setDeleteModal }: DeleteModalProps) {
+export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProps) {
   const target = type === "post" ? "게시물" : "댓글";
 
   return (
-    <BackClickable onClickBackground={() => setDeleteModal(false)}>
+    <BackClickable onClickBackground={onClose}>
       <Container>
         <Header>
           <Title>{target} 삭제</Title>
-          <CloseButton onClick={() => setDeleteModal(false)}>
+          <CloseButton onClick={onClose}>
             <Icon src="/img/modal-close.svg" />
           </CloseButton>
         </Header>
         <Message>해당 {target}을 삭제하시겠습니까?</Message>
         <Footer>
-          <CancelButton onClick={() => setDeleteModal(false)}>취소</CancelButton>
-          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+          <CancelButton onClick={onClose}>취소</CancelButton>
+          <DeleteButton onClick={onSubmit}>삭제</DeleteButton>
         </Footer>
       </Container>
     </BackClickable>
