@@ -122,7 +122,7 @@ const CloseIcon = styled.img`
   width: 25px;
   position: absolute;
   padding-top: 16px;
-  padding-right: 2vw;
+  padding-right: 16px;
   right: 0;
   cursor: pointer;
 `;
