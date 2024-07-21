@@ -3,13 +3,16 @@ import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function Account() {
   const router = useRouter();
 
   const state = useStateContext();
-  const { setLoginModal, setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { setIsExceptEmptyRestaurant } = useDispatchContext();
   const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
+  const { openModal } = useModals();
 
   const [isLoading, setLoading] = useState(false);
 
@@ -17,9 +20,9 @@ export default function Account() {
   const profileURL = "/img/default-profile.svg";
 
   useEffect(() => {
-    if (loginStatus === false) {
+    if (!loginStatus) {
       router.push(`/`);
-      setLoginModal(true);
+      openModal(LoginModal, { onClose: () => {} });
       return;
     }
   }, []);

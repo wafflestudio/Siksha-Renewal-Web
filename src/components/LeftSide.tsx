@@ -4,11 +4,22 @@ import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import useModals from "hooks/UseModals";
+import LoginModal from "./Auth/LoginModal";
 
 export default function LeftSide() {
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
+
   const { loginStatus } = state;
+  const { openModal } = useModals();
+
+  function onClickMyPostsButton() {
+    if (!loginStatus)
+      openModal(LoginModal, {
+        onClose: () => {},
+        onSubmit: () => {},
+      });
+  }
 
   return (
     <Container>
@@ -18,7 +29,7 @@ export default function LeftSide() {
       </div>
       <div style={{ marginTop: "32px", marginBottom: "69px" }}>
         <Link href={loginStatus ? "/account/mypost/" : "/"}>
-          <MyPostsButton onClick={() => (!loginStatus ? setLoginModal(true) : null)}>
+          <MyPostsButton onClick={onClickMyPostsButton}>
             <Image
               src="/img/posts.svg"
               alt="글 목록 이미지"

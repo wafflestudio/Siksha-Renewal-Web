@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import useModals from "./UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function useFavorite() {
   const state = useStateContext();
   const dispatch = useDispatchContext();
 
   const { favoriteRestaurant, loginStatus } = state;
-  const { setFavoriteRestaurant, setLoginModal } = dispatch;
+  const { setFavoriteRestaurant } = dispatch;
+  const { openModal } = useModals();
 
   useEffect(() => {
     if (loginStatus === false) {
@@ -19,16 +22,14 @@ export default function useFavorite() {
   }, [loginStatus]);
 
   const toggleFavorite = (restaurantId: number) => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-      return;
+    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    else {
+      const newFavoriteList = favoriteRestaurant.includes(restaurantId)
+        ? favoriteRestaurant.filter((id) => id !== restaurantId)
+        : [...favoriteRestaurant, restaurantId];
+      setFavoriteRestaurant(newFavoriteList);
+      localStorage.setItem("favorite_restaurant", JSON.stringify(newFavoriteList));
     }
-
-    const newFavoriteList = favoriteRestaurant.includes(restaurantId)
-      ? favoriteRestaurant.filter((id) => id !== restaurantId)
-      : [...favoriteRestaurant, restaurantId];
-    setFavoriteRestaurant(newFavoriteList);
-    localStorage.setItem("favorite_restaurant", JSON.stringify(newFavoriteList));
   };
 
   const isFavorite = (restaurantId: number) => favoriteRestaurant.includes(restaurantId);

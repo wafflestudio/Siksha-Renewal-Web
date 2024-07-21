@@ -3,6 +3,8 @@ import { useStateContext } from "../../hooks/ContextProvider";
 import { useState } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -14,11 +16,11 @@ export default function Likes({ menu }) {
   const { loginStatus } = state;
 
   const { getAccessToken } = UseAccessToken();
+  const { openModal } = useModals();
 
-  const isLikedToggle = async () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else {
+  const onClickLike = async () => {
+    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
 
       return getAccessToken()
@@ -38,7 +40,7 @@ export default function Likes({ menu }) {
       <HeartIcon
         src={isLikedImg}
         onClick={(e) => {
-          isLikedToggle();
+          onClickLike();
           e.stopPropagation();
         }}
       />
@@ -83,6 +85,3 @@ const LikesText = styled.div`
     color: #000000;
   }
 `;
-function setLoginModal(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

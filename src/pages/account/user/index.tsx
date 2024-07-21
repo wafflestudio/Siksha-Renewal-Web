@@ -4,13 +4,16 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import UseAccessToken from "hooks/UseAccessToken";
 import { deleteAccount } from "utils/api/auth";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function UserSetting() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginStatus, setLoginModal } = useDispatchContext();
+  const { setLoginStatus } = useDispatchContext();
   const { loginStatus } = state;
   const { getAccessToken } = UseAccessToken();
+  const { openModal } = useModals();
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -24,9 +27,9 @@ export default function UserSetting() {
     );
     if (!confirmExit) return;
 
-    if (loginStatus === false) {
+    if (!loginStatus) {
       router.push(`/`);
-      setLoginModal(true);
+      openModal(LoginModal, { onClose: () => {} });
     }
 
     return getAccessToken()

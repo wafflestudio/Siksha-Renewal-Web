@@ -1,19 +1,23 @@
+import LoginModal from "components/Auth/LoginModal";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import useModals from "hooks/UseModals";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
 export function BoardHeader() {
-  const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const router = useRouter();
 
+  const { loginStatus } = useStateContext();
+  const { openModal } = useModals();
+
   function handleClickWriteButton() {
-    if (loginStatus === false) {
-      setLoginModal(true);
-      return;
-    }
-    router.push("/community/write");
+    if (loginStatus) router.push("/community/write");
+    else
+      openModal(LoginModal, {
+        onClose: () => {},
+        onSubmit: () => {},
+      });
   }
 
   return (

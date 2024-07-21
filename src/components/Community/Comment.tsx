@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "./ReportModal";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 interface CommentProps {
   comment: CommentType;
@@ -17,22 +19,21 @@ export default function Comment({ comment, update }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
   const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { getAccessToken } = UseAccessToken();
+  const { openModal } = useModals();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
-  const [actionsModal, setActionsModal] = useState<boolean>(false);
-  const [reportModal, setReportModal] = useState(false);
-
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
   const profileImg = "/img/default-profile.svg";
 
-  const isLikeToggle = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else {
+  const onClickLike = () => {
+    if (!loginStatus)
+      openModal(LoginModal, {
+        onClose: () => {},
+      });
+    else {
       const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
 
       return getAccessToken()
@@ -47,10 +48,32 @@ export default function Comment({ comment, update }: CommentProps) {
     }
   };
 
+  const onClickReport = () => {
+    if (!loginStatus)
+      openModal(LoginModal, {
+        onClose: () => {},
+        onSubmit: () => {},
+      });
+    else
+      openModal(ReportModal, {
+        type: "comment",
+        targetID: comment.id,
+        onClose: () => {},
+        onSubmit: () => {},
+      });
+  };
+
+  const onClickMoreActions = () => {
+    openModal(MobileActionsModal, { actions: actions, onClose: () => {} });
+  };
+
   const removeComment = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (confirm("이 댓글을 삭제하시겠습니까?")) {
+    if (!loginStatus)
+      openModal(LoginModal, {
+        onClose: () => {},
+        onSubmit: () => {},
+      });
+    else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       return getAccessToken()
         .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
         .catch((e) => {
@@ -60,15 +83,12 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const actions: ModalAction[] = [
-    { name: "공감", handleClick: isLikeToggle },
+    { name: "공감", handleClick: onClickLike },
     comment.isMine
       ? { name: "삭제", handleClick: removeComment }
       : {
           name: "신고",
-          handleClick: () => {
-            if (loginStatus) setReportModal(true);
-            else setLoginModal(true);
-          },
+          handleClick: onClickReport,
         },
   ];
 
@@ -94,13 +114,7 @@ export default function Comment({ comment, update }: CommentProps) {
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
-            {actionsModal && (
-              <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
-            )}
-            {reportModal && (
-              <ReportModal type="comment" targetID={comment.id} setReportModal={setReportModal} />
-            )}
+            <MobileMoreActionsButton src="/img/etc.svg" onClick={onClickMoreActions} />
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>
@@ -114,7 +128,7 @@ export default function Comment({ comment, update }: CommentProps) {
         </div>
         <MobileLikeButton
           onClick={(e) => {
-            isLikeToggle();
+            onClickLike();
             e.preventDefault();
           }}
         >
