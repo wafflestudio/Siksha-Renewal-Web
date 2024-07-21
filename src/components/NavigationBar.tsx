@@ -11,17 +11,11 @@ export default function NavigationBar() {
 
   const state = useStateContext();
   const { loginStatus } = state;
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   const onToggleAccount = () => {
-    if (!loginStatus)
-      openModal(LoginModal, {
-        onClose: () => {},
-        onSubmit: () => {},
-      });
-    else {
-      router.push(`/account`);
-    }
+    if (!loginStatus) openLoginModal();
+    else router.push(`/account`);
   };
 
   return (

@@ -43,7 +43,7 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { loginStatus } = useStateContext();
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
   const { getAccessToken } = UseAccessToken();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
@@ -72,7 +72,7 @@ export default function PostWriter() {
       return;
     }
 
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else {
       setIsSubmitting(true);
       const body = new FormData();

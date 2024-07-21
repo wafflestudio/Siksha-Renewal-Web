@@ -12,7 +12,7 @@ export default function Account() {
   const state = useStateContext();
   const { setIsExceptEmptyRestaurant } = useDispatchContext();
   const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   const [isLoading, setLoading] = useState(false);
 
@@ -22,7 +22,7 @@ export default function Account() {
   useEffect(() => {
     if (!loginStatus) {
       router.push(`/`);
-      openModal(LoginModal, { onClose: () => {} });
+      openLoginModal();
       return;
     }
   }, []);

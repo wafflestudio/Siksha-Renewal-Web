@@ -13,11 +13,12 @@ interface CommentWriterProps {
 }
 
 export default function CommentWriter({ postId, update }: CommentWriterProps) {
+  const { loginStatus } = useStateContext();
+  const { openLoginModal } = useModals();
+  const { checkAccessToken } = UseAccessToken();
+
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const { loginStatus } = useStateContext();
-  const { openModal } = useModals();
-  const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
 
@@ -27,7 +28,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   }
 
   const submit = () => {
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else
       checkAccessToken().then((res: string | null) => {
         if (res !== null)

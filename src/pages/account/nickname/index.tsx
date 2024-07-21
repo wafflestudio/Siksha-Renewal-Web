@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import UseAccessToken from "hooks/UseAccessToken";
 import { updateMyData } from "utils/api/auth";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
 
 export default function SettingNickname() {
   const [newNickname, setNewNickname] = useState("");
@@ -15,13 +14,13 @@ export default function SettingNickname() {
   const router = useRouter();
   const state = useStateContext();
   const { loginStatus } = state;
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   const handleSetClick = () => {
     if (newNickname === null) return;
     else if (loginStatus === false) {
       router.push(`/`);
-      openModal(LoginModal, { onClose: () => {} });
+      openLoginModal();
     }
 
     const formData = new FormData();

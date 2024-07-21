@@ -1,7 +1,5 @@
-import LoginModal from "components/Auth/LoginModal";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -9,15 +7,11 @@ export function BoardHeader() {
   const router = useRouter();
 
   const { loginStatus } = useStateContext();
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   function handleClickWriteButton() {
-    if (loginStatus) router.push("/community/write");
-    else
-      openModal(LoginModal, {
-        onClose: () => {},
-        onSubmit: () => {},
-      });
+    if (!loginStatus) openLoginModal();
+    else router.push("/community/write");
   }
 
   return (

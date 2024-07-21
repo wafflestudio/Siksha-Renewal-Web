@@ -3,22 +3,25 @@ import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import Link from "next/link";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
-import LoginModal from "./Auth/LoginModal";
+import { useRouter } from "next/router";
 
 export default function LeftSide() {
+  const router = useRouter();
   const state = useStateContext();
 
   const { loginStatus } = state;
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   function onClickMyPostsButton() {
-    if (!loginStatus)
-      openModal(LoginModal, {
-        onClose: () => {},
-        onSubmit: () => {},
-      });
+    if (!loginStatus) openLoginModal();
+    else router.push(`/account/mypost`);
+  }
+
+  function onClickWriteButton() {
+    if (!loginStatus) openLoginModal();
+    else router.push(`/community/write`);
   }
 
   return (
@@ -28,30 +31,26 @@ export default function LeftSide() {
         <RestaurantList />
       </div>
       <div style={{ marginTop: "32px", marginBottom: "69px" }}>
-        <Link href={loginStatus ? "/account/mypost/" : "/"}>
-          <MyPostsButton onClick={onClickMyPostsButton}>
-            <Image
-              src="/img/posts.svg"
-              alt="글 목록 이미지"
-              width="16"
-              height="12"
-              style={{ marginRight: "10px" }}
-            />
-            내가 쓴 글
-          </MyPostsButton>
-        </Link>
-        <Link href="/community/write">
-          <WritePostButton>
-            <Image
-              src="/img/posts-white.svg"
-              alt="글 목록 이미지"
-              width="16"
-              height="12"
-              style={{ marginRight: "10px" }}
-            />
-            게시판 글쓰기
-          </WritePostButton>
-        </Link>
+        <MyPostsButton onClick={onClickMyPostsButton}>
+          <Image
+            src="/img/posts.svg"
+            alt="글 목록 이미지"
+            width="16"
+            height="12"
+            style={{ marginRight: "10px" }}
+          />
+          내가 쓴 글
+        </MyPostsButton>
+        <WritePostButton onClick={onClickWriteButton}>
+          <Image
+            src="/img/posts-white.svg"
+            alt="글 목록 이미지"
+            width="16"
+            height="12"
+            style={{ marginRight: "10px" }}
+          />
+          게시판 글쓰기
+        </WritePostButton>
       </div>
     </Container>
   );

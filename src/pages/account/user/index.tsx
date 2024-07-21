@@ -10,10 +10,11 @@ import LoginModal from "components/Auth/LoginModal";
 export default function UserSetting() {
   const router = useRouter();
   const state = useStateContext();
+
   const { setLoginStatus } = useDispatchContext();
   const { loginStatus } = state;
   const { getAccessToken } = UseAccessToken();
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -29,7 +30,7 @@ export default function UserSetting() {
 
     if (!loginStatus) {
       router.push(`/`);
-      openModal(LoginModal, { onClose: () => {} });
+      openLoginModal();
     }
 
     return getAccessToken()

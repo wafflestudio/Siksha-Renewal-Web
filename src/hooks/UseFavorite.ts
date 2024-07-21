@@ -9,7 +9,7 @@ export default function useFavorite() {
 
   const { favoriteRestaurant, loginStatus } = state;
   const { setFavoriteRestaurant } = dispatch;
-  const { openModal } = useModals();
+  const { openModal, openLoginModal } = useModals();
 
   useEffect(() => {
     if (loginStatus === false) {
@@ -22,7 +22,7 @@ export default function useFavorite() {
   }, [loginStatus]);
 
   const toggleFavorite = (restaurantId: number) => {
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else {
       const newFavoriteList = favoriteRestaurant.includes(restaurantId)
         ? favoriteRestaurant.filter((id) => id !== restaurantId)

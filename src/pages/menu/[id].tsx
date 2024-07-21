@@ -67,9 +67,8 @@ export default function Menu() {
   const [images, setImages] = useState<string[]>([]);
   const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
-  const { openModal } = useModals();
+  const { openLoginModal } = useModals();
 
-  const isMobile = useIsMobile();
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
@@ -108,7 +107,7 @@ export default function Menu() {
   const handleReviewPostButtonClick = () => {
     if (!!localStorage.getItem("access_token")) {
       handleReviewPostModal(true);
-    } else openModal(LoginModal, { onClose: () => {} });
+    } else openLoginModal();
   };
 
   const handleReviewPostModal = (isOpen: boolean) => {

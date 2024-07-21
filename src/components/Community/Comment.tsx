@@ -20,7 +20,7 @@ export default function Comment({ comment, update }: CommentProps) {
 
   const { loginStatus } = useStateContext();
   const { getAccessToken } = UseAccessToken();
-  const { openModal } = useModals();
+  const { openModal, openLoginModal } = useModals();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
@@ -29,10 +29,7 @@ export default function Comment({ comment, update }: CommentProps) {
   const profileImg = "/img/default-profile.svg";
 
   const onClickLike = () => {
-    if (!loginStatus)
-      openModal(LoginModal, {
-        onClose: () => {},
-      });
+    if (!loginStatus) openLoginModal();
     else {
       const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
 
@@ -49,11 +46,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const onClickReport = () => {
-    if (!loginStatus)
-      openModal(LoginModal, {
-        onClose: () => {},
-        onSubmit: () => {},
-      });
+    if (!loginStatus) openLoginModal();
     else
       openModal(ReportModal, {
         type: "comment",
@@ -68,11 +61,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const removeComment = () => {
-    if (!loginStatus)
-      openModal(LoginModal, {
-        onClose: () => {},
-        onSubmit: () => {},
-      });
+    if (!loginStatus) openLoginModal();
     else if (confirm("이 댓글을 삭제하시겠습니까?")) {
       return getAccessToken()
         .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))

@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
 import useModals from "hooks/UseModals";
-import LoginModal from "./Auth/LoginModal";
 
 export default function Header() {
   const router = useRouter();
@@ -11,14 +10,7 @@ export default function Header() {
   const { setLoginStatus } = useDispatchContext();
 
   const { loginStatus } = state;
-  const { openModal } = useModals();
-
-  function openLoginModal() {
-    openModal(LoginModal, {
-      onClose: () => {},
-      onSubmit: () => {},
-    });
-  }
+  const { openLoginModal } = useModals();
 
   return (
     <Background>
@@ -48,7 +40,7 @@ export default function Header() {
             로그아웃
           </LoginButton>
         ) : (
-          <LoginButton onClick={openLoginModal}>로그인</LoginButton>
+          <LoginButton onClick={() => openLoginModal()}>로그인</LoginButton>
         )}
       </Container>
     </Background>

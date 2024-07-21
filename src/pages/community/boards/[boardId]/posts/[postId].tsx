@@ -28,16 +28,13 @@ export default function Post() {
   const { boardId, postId } = router.query;
   const { loginStatus } = useStateContext();
   const { getAccessToken, checkAccessToken } = UseAccessToken();
-  const { openModal } = useModals();
+  const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
-  const [actionsModal, setActionsModal] = useState<boolean>(false);
-  const [reportModal, setReportModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -73,7 +70,7 @@ export default function Post() {
   };
 
   const fetchLike = () => {
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else if (post) {
       const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
       getAccessToken()
@@ -93,7 +90,7 @@ export default function Post() {
   };
 
   const removePost = (postId: number) => {
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else
       getAccessToken()
         .then((accessToken) => deletePost(postId, accessToken))
@@ -104,7 +101,7 @@ export default function Post() {
   };
 
   const reportPost = (postId: number) => {
-    if (!loginStatus) openModal(LoginModal, { onClose: () => {} });
+    if (!loginStatus) openLoginModal();
     else openModal(ReportModal, { type: "post", targetID: postId, onClose: () => {} });
   };
 
