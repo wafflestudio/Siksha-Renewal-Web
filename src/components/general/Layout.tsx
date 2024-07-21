@@ -73,6 +73,7 @@ export default function Layout({ children }: LayoutProps) {
 const Container = styled.div`
   width: 100%;
   min-width: 1920px;
+  height: 100dvh;
   @media (max-width: 768px) {
     min-width: 0;
     width: 100vw;
