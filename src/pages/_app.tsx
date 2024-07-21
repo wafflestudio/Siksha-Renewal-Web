@@ -1,7 +1,6 @@
 import Head from "next/head";
 import "styles/calendar.css";
 import ContextProvider from "../hooks/ContextProvider";
-import LoginModalProvider from "components/LoginModalProvider";
 import Layout from "components/general/Layout";
 import { GlobalStyle } from "styles/globalstyle";
 import { ModalsProvider } from "context/ModalsProvider";
