@@ -58,7 +58,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding-top: 12px;
-  width: calc(90vw - 35px);
+  width: 100%;
 `;
 
 const LeftSide = styled.div`
