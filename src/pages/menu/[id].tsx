@@ -20,6 +20,7 @@ import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
 import useModals from "hooks/UseModals";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export interface MenuType {
   id: number;
@@ -72,13 +73,18 @@ export default function Menu() {
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
+  const { getAccessToken } = UseAccessToken();
+
   useEffect(() => {
     if (!id) {
       return;
     }
     setLoading(true);
 
-    Promise.all([getMenu(Number(id)), getReviews(Number(id))])
+    async function fetchData() {
+      const accessToken = await getAccessToken().catch((error) => "");
+
+      Promise.all([getMenu(Number(id), accessToken), getReviews(Number(id))])
       .then(([menuData, reviewsData]) => {
         setMenu(menuData);
         setMobileSubHeaderTitle(menuData.name_kr);
@@ -92,6 +98,8 @@ export default function Menu() {
         router.push("/");
       })
       .finally(() => setLoading(false));
+    }
+    fetchData();
   }, [id, setLoading]);
 
   useEffect(() => {

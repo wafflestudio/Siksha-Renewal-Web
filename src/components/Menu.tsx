@@ -22,6 +22,14 @@ export default function Menu({ menu }) {
   const { openLoginModal } = useModals();
 
   useEffect(() => {
+    setIsLiked(menu?.is_liked);
+  }, [menu?.is_liked]);
+
+  useEffect(() => {
+    setLikeCount(menu.like_cnt);
+  }, [menu.like_cnt]);
+
+  useEffect(() => {
     if (!menu.price) setHasPrice(false);
   }, [menu.price]);
 
@@ -44,8 +52,8 @@ export default function Menu({ menu }) {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
         })
-        .catch((res) => {
-          console.log(res);
+        .catch((error) => {
+          console.log(error);
         });
     }
   };
