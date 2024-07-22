@@ -1,9 +1,9 @@
 import LoginModal from "components/Auth/LoginModal";
-import { ModlasDispatchContext } from "context/ModalsProvider";
+import { ModalDispatchContext } from "context/ModalsProvider";
 import { ComponentType, useContext } from "react";
 
 export default function useModals() {
-  const { open, close } = useContext(ModlasDispatchContext);
+  const { open, close } = useContext(ModalDispatchContext);
 
   const openModal = <P extends {}>(Component: ComponentType<P>, props: P) => {
     open(Component, props);

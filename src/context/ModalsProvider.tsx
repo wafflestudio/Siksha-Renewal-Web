@@ -15,7 +15,7 @@ interface ModalProviderProps {
   children: ReactNode;
 }
 
-export const ModlasDispatchContext = createContext<ModalsDispatchContextProps>({
+export const ModalDispatchContext = createContext<ModalsDispatchContextProps>({
   open: () => {},
   close: () => {},
 });
@@ -36,7 +36,7 @@ export const ModalsProvider = ({ children }: ModalProviderProps) => {
 
   return (
     <ModalsStateContext.Provider value={openedModals}>
-      <ModlasDispatchContext.Provider value={dispatch}>{children}</ModlasDispatchContext.Provider>
+      <ModalDispatchContext.Provider value={dispatch}>{children}</ModalDispatchContext.Provider>
     </ModalsStateContext.Provider>
   );
 };
