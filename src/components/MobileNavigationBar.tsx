@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
 
 export default function MobileNavigationBar() {
   const router = useRouter();
@@ -10,6 +12,12 @@ export default function MobileNavigationBar() {
   const state = useStateContext();
   const { isFilterFavorite } = state;
   const { setIsFilterFavorite } = useDispatchContext();
+
+  const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setRootElement(document.getElementById("root-layout"));
+  }, []);
 
   const active =
     isFilterFavorite === true
@@ -22,7 +30,8 @@ export default function MobileNavigationBar() {
       ? "account"
       : null;
 
-  return (
+  if (!rootElement) return null;
+  return createPortal(
     <Container>
       <Link href="/" onClick={() => setIsFilterFavorite(true)}>
         {active === "favorite" ? (
@@ -52,7 +61,8 @@ export default function MobileNavigationBar() {
           <Icon src="/img/mobile-nav-account-inactive.svg" />
         )}
       </Link>
-    </Container>
+    </Container>,
+    rootElement,
   );
 }
 

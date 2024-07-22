@@ -62,10 +62,9 @@ export default function Layout({ children }: LayoutProps) {
   }, [loginStatus]);
 
   return (
-    <Container>
+    <Container id="root-layout">
       <Header />
       <Content>{children}</Content>
-      <MobileNavigationBar />
     </Container>
   );
 }
