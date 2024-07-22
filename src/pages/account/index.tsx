@@ -145,6 +145,7 @@ const Text = styled.span`
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
+  color: black;
 
   @media (max-width: 768px) {
     margin-left: 16px;
