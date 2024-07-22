@@ -34,7 +34,6 @@ export default function LoginModal() {
     });
 
     window.AppleID.auth.signIn().then((response: any) => {
-      console.log(response);
       const {
         authorization: { id_token },
       } = response;
