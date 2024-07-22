@@ -1,25 +1,26 @@
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useState } from "react";
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
+import { useStateContext } from "../../../hooks/ContextProvider";
 import { useRouter } from "next/router";
 import UseAccessToken from "hooks/UseAccessToken";
 import { updateMyData } from "utils/api/auth";
+import useModals from "hooks/UseModals";
 
-export default function Setting_Nickname({ userInfo }) {
+export default function SettingNickname() {
   const [newNickname, setNewNickname] = useState("");
   const { getAccessToken } = UseAccessToken();
 
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
+  const { openLoginModal } = useModals();
 
   const handleSetClick = () => {
     if (newNickname === null) return;
     else if (loginStatus === false) {
       router.push(`/`);
-      setLoginModal(true);
+      openLoginModal();
     }
 
     const formData = new FormData();

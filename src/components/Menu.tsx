@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import UseAccessToken from "hooks/UseAccessToken";
+import useModals from "hooks/UseModals";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -16,9 +17,9 @@ export default function Menu({ menu }) {
   const router = useRouter();
 
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { loginStatus } = state;
   const { getAccessToken } = UseAccessToken();
+  const { openLoginModal } = useModals();
 
   useEffect(() => {
     setIsLiked(menu?.is_liked);
@@ -41,9 +42,8 @@ export default function Menu({ menu }) {
   }, [menu.score]);
 
   const isLikedToggle = async () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else {
+    if (!loginStatus) openLoginModal();
+    else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
 
       return getAccessToken()

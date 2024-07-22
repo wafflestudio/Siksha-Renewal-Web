@@ -2,15 +2,16 @@ import { useRouter } from "next/router";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useState } from "react";
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
+import { useStateContext } from "../../../hooks/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import UseAccessToken from "hooks/UseAccessToken";
+import useModals from "hooks/UseModals";
 
 export default function Inquire() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { loginStatus, userInfo } = state;
+  const { openLoginModal } = useModals();
 
   const { getAccessToken } = UseAccessToken();
 
@@ -31,9 +32,9 @@ export default function Inquire() {
   };
 
   const handlePost = () => {
-    if (loginStatus === false) {
+    if (!loginStatus) {
       router.push(`/`);
-      setLoginModal(true);
+      openLoginModal();
       return;
     } else if (voc === "") return;
 

@@ -19,6 +19,7 @@ import { getReviews, getReviewScore } from "utils/api/reviews";
 import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
+import useModals from "hooks/UseModals";
 import UseAccessToken from "hooks/UseAccessToken";
 
 export interface MenuType {
@@ -67,11 +68,8 @@ export default function Menu() {
   const [images, setImages] = useState<string[]>([]);
   const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
-  const state = useStateContext();
-  const { isLoginModal } = state;
-  const { setLoginModal } = useDispatchContext();
+  const { openLoginModal } = useModals();
 
-  const isMobile = useIsMobile();
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
@@ -117,9 +115,7 @@ export default function Menu() {
   const handleReviewPostButtonClick = () => {
     if (!!localStorage.getItem("access_token")) {
       handleReviewPostModal(true);
-    } else {
-      setLoginModal(true);
-    }
+    } else openLoginModal();
   };
 
   const handleReviewPostModal = (isOpen: boolean) => {
@@ -152,7 +148,6 @@ export default function Menu() {
 
   return (
     <>
-      {isLoginModal && <LoginModal />}
       {!isLoading && !!menu && (
         <>
           <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />

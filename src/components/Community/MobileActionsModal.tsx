@@ -9,21 +9,30 @@ export interface ModalAction {
 
 export default function MobileActionsModal({
   actions,
-  setActionsModal,
+  onClose,
+  onSubmit,
 }: {
   actions: ModalAction[];
-  setActionsModal: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
+  onSubmit?: () => void;
 }) {
   return (
-    <BackClickable onClickBackground={() => setActionsModal(false)}>
+    <BackClickable onClickBackground={onClose}>
       <MainContainer>
         {actions.map(
           (action) =>
             action.name !== "공감" && (
-              <ActionWrapper onClick={action.handleClick}>{action.name + "하기"}</ActionWrapper>
+              <ActionWrapper
+                onClick={() => {
+                  action.handleClick();
+                  onSubmit?.();
+                }}
+              >
+                {action.name + "하기"}
+              </ActionWrapper>
             ),
         )}
-        <CancelWrapper onClick={() => setActionsModal(false)}>취소</CancelWrapper>
+        <CancelWrapper onClick={onClose}>취소</CancelWrapper>
       </MainContainer>
     </BackClickable>
   );
