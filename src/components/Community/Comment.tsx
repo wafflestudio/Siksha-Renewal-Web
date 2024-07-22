@@ -8,7 +8,7 @@ import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/commu
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import DeleteModal from "./DeleteModal";
 
 interface CommentProps {
   comment: CommentType;
@@ -62,12 +62,15 @@ export default function Comment({ comment, update }: CommentProps) {
 
   const removeComment = () => {
     if (!loginStatus) openLoginModal();
-    else if (confirm("이 댓글을 삭제하시겠습니까?")) {
-      return getAccessToken()
-        .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
-        .catch((e) => {
-          console.error(e);
-        });
+    else {
+      openModal(DeleteModal, {
+        type: "comment",
+        onClose: () => {},
+        onSubmit: () =>
+          getAccessToken()
+            .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
+            .catch((e) => console.error(e)),
+      });
     }
   };
 
