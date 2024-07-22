@@ -159,7 +159,7 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
-    .delete(`${APIendpoint()}/auth/me`, {
+    .delete(`${APIendpoint()}/auth`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
