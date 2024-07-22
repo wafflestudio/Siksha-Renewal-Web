@@ -8,8 +8,6 @@ export default function Auth() {
   const { setLoginStatus } = useDispatchContext();
 
   useEffect(() => {
-    console.log(document.location);
-    console.log(document.location.href);
     const params = new URL(document.location.toString()).searchParams;
     const id_token = params.get("id_token");
 
