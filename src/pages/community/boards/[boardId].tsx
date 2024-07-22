@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { BoardHeader } from "components/Community/BoardHeader";
 import { PostList } from "components/Community/PostList";
 
-import { Post, RawPost } from "types";
+import { Post } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
-import { useStateContext } from "hooks/ContextProvider";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
@@ -45,11 +43,8 @@ export default function Posts() {
 
   return (
     <Board selectedBoardId={Number(boardId) ?? 1}>
-      <>
-        <BoardHeader />
-        <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
-        <MobileNavigationBar />
-      </>
+      <BoardHeader />
+      <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
     </Board>
   );
 }
