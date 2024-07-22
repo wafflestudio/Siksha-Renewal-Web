@@ -45,7 +45,7 @@ export default function UserSetting() {
 
   return (
     <AccountLayout>
-      <MobileSubHeader title="내가 쓴 글" handleBack={() => router.push("/account")} />
+      <MobileSubHeader title="계정 관리" handleBack={() => router.push("/account")} />
       <MobileSpace />
       <Container>
         <Title>계정 관리</Title>
