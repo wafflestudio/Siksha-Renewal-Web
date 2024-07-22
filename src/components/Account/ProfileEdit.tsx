@@ -57,6 +57,12 @@ export default function ProfileEdit({
           onChange={(e) => setNickname(e.target.value)}
         />
         <Button onClick={() => updateProfile()}>완료</Button>
+        <CloseButton
+          src="/img/close-circle-gray.svg"
+          alt="reset nickname"
+          role="button"
+          onClick={() => setNickname("")}
+        />
       </InputBox>
     </Container>
   );
@@ -78,14 +84,14 @@ const Profile = styled.img`
   }
 `;
 
-const InputBox = styled.div`
+const InputBox = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 30px 22.48px 24px 22.48px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
-  overflow: hidden; // border 잘림 해결
+  padding-left: 14px;
 
   @media (max-width: 768px) {
     width: calc(100% - 39px);
@@ -103,7 +109,6 @@ const Input = styled.input`
   }
 
   @media (max-width: 768px) {
-    text-align: center;
     width: 100%;
   }
 `;
@@ -123,5 +128,16 @@ const Button = styled.button`
 
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+const CloseButton = styled.img`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: fixed;
+    width: 18px;
+    height: 18px;
+    margin-right: 18px;
   }
 `;

@@ -120,7 +120,6 @@ export const getMyData = async (accessToken: string): Promise<User> => {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res: { data: RawUser }) => {
-      console.log(res);
       const {
         data: { id, nickname, etc },
       } = res;
