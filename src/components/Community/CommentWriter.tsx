@@ -35,18 +35,22 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   return (
     <Container>
       <MobileAnonymousButton isAnonymous={isAnonymous}>
-        <Option src={checkBoxImg} onClick={() => setIsAnonymous(!isAnonymous)} />
-        <span>익명</span>
+        <Option onClick={() => setIsAnonymous(!isAnonymous)}>
+          <Icon src={checkBoxImg} />
+          <span>익명</span>
+        </Option>
       </MobileAnonymousButton>
       <CommentInput
         placeholder="댓글을 입력하세요."
         value={commentInput}
         onChange={(e) => setCommentInput(e.target.value)}
-      ></CommentInput>
+      />
       <Options>
         <DesktopAnonymousButton isAnonymous={isAnonymous}>
-          <Option src={checkBoxImg} onClick={() => setIsAnonymous(!isAnonymous)} />
-          <span>익명</span>
+          <Option onClick={() => setIsAnonymous(!isAnonymous)}>
+            <Icon src={checkBoxImg} />
+            <span>익명</span>
+          </Option>
         </DesktopAnonymousButton>
         <SubmitButton onClick={submit}>올리기</SubmitButton>
       </Options>
@@ -137,7 +141,12 @@ const DesktopAnonymousButton = styled(AnonymousButton)`
     display: none;
   }
 `;
-const Option = styled.img``;
+const Option = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Icon = styled.img``;
+
 const SubmitButton = styled.button`
   background-color: #ff9522;
   color: #fff;
