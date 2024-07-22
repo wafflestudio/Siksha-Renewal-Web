@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
-import MobileNavigationBar from "components/MobileNavigationBar";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 
 export default function Posts() {
   const router = useRouter();

@@ -11,7 +11,7 @@ import Link from "next/link";
 import Likes from "../../components/MenuDetail/Likes";
 import MobileSubHeader from "components/MobileSubHeader";
 import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
-import MobileNavigationBar from "components/MobileNavigationBar";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import Image from "next/image";
 import { getMenu } from "utils/api/menus";
 import { getRestaurantList } from "../../utils/api/restaurants";

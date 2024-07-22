@@ -1,5 +1,5 @@
 import Header from "components/Header";
-import MobileNavigationBar from "components/MobileNavigationBar";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
