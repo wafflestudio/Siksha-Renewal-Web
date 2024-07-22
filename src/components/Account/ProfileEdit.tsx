@@ -1,3 +1,4 @@
+import UseProfile from "hooks/UseProfile";
 import styled from "styled-components";
 
 export default function ProfileEdit({
@@ -15,6 +16,7 @@ export default function ProfileEdit({
   imgRef: any;
   updateProfile: () => Promise<void>;
 }) {
+  const { userInfo } = UseProfile();
   const onImageLoad = () => {
     const file = imgRef.current.files[0];
     if (!file) return;
@@ -29,9 +31,11 @@ export default function ProfileEdit({
   };
 
   return (
-    <>
+    <Container>
       <Profile
-        src={imageBlob ? URL.createObjectURL(imageBlob) : "/img/default-profile.svg"}
+        src={
+          imageBlob ? URL.createObjectURL(imageBlob) : userInfo?.image ?? "/img/default-profile.svg"
+        }
         alt="userProfile"
         onClick={() => {
           if (imgRef.current) imgRef.current.click();
@@ -54,14 +58,24 @@ export default function ProfileEdit({
         />
         <Button onClick={() => updateProfile()}>완료</Button>
       </InputBox>
-    </>
+    </Container>
   );
 }
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const Profile = styled.img`
   width: 171px;
   height: 171px;
   border-radius: 50%;
+  margin-top: 65px;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
 `;
 
 const InputBox = styled.div`
@@ -72,6 +86,11 @@ const InputBox = styled.div`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   overflow: hidden; // border 잘림 해결
+
+  @media (max-width: 768px) {
+    width: calc(100% - 39px);
+    margin: 15px 19.5px 18px 19.5px;
+  }
 `;
 
 const Input = styled.input`
@@ -81,6 +100,11 @@ const Input = styled.input`
   border: none;
   &:focus {
     outline: none;
+  }
+
+  @media (max-width: 768px) {
+    text-align: center;
+    width: 100%;
   }
 `;
 
@@ -96,4 +120,8 @@ const Button = styled.button`
   color: #ffffff;
   line-height: 14px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

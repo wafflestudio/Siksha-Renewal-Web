@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../../../hooks/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import useAuth from "hooks/UseAuth";
+import MobileSubHeader from "components/MobileSubHeader";
 
-export default function Inquire() {
+export default function Inquiry() {
   const router = useRouter();
   const state = useStateContext();
   const { userInfo } = state;
@@ -14,9 +15,6 @@ export default function Inquire() {
   const { getAccessToken, authStatus, authGuard } = useAuth();
 
   useEffect(authGuard, [authStatus]);
-
-  // 프로필 이미지 기능 구현 대비
-  const profileURL = "/img/default-profile.svg";
 
   const [voc, setVoc] = useState("");
 
@@ -49,6 +47,7 @@ export default function Inquire() {
 
   return (
     <AccountLayout>
+      <MobileSubHeader title="1:1 문의하기" handleBack={() => router.push("/account")} />
       <Container>
         <Title>1:1 문의하기</Title>
         <MobileBox>
@@ -56,7 +55,7 @@ export default function Inquire() {
           <Description>문의할 내용을 남겨주세요.</Description>
         </MobileBox>
         <UserBox>
-          <Profile src={profileURL} />
+          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} />
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
@@ -135,6 +134,7 @@ const Profile = styled.img`
   width: 24px;
   height: 24px;
   margin-left: 23.5px;
+  border-radius: 50%;
 
   @media (max-width: 768px) {
     margin-left: 28px;

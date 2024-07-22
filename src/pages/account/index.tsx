@@ -31,7 +31,7 @@ export default function Account() {
       <ListGroup>
         <ContentDiv
           onClick={() => {
-            router.push("/account/nickname");
+            router.push("/account/profile");
           }}
         >
           <Profile src={profileURL} />

@@ -3,6 +3,8 @@ import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderE
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
+import MobileSubHeader from "components/MobileSubHeader";
+import { useRouter } from "next/router";
 
 interface FavoriteRestaurant {
   id: number;
@@ -13,6 +15,7 @@ interface FavoriteRestaurant {
 export default function Setting_Favorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
   const { authStatus, authGuard } = useAuth();
+  const router = useRouter();
 
   useEffect(authGuard, [authStatus]);
 
@@ -60,6 +63,7 @@ export default function Setting_Favorite() {
 
   return (
     <>
+      <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
         <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
       </Container>
