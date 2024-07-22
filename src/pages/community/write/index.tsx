@@ -7,6 +7,7 @@ import { Board, RawBoard } from "../../../types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import MobileSubHeader from "components/MobileSubHeader";
 
 export type inputs = {
   title: string;
@@ -156,77 +157,82 @@ export default function PostWriter() {
     fetchPreviousPost();
   }, []);
   return (
-    <Layout>
-      <Container>
-        <Header>글쓰기</Header>
-        <BoardMenu onClick={() => setClicked(!clicked)}>
-          {boards?.filter((board) => board.id === inputs.boardId)[0]?.name}
-          <Icon src="/img/down-arrow.svg" />
-        </BoardMenu>
-        {clicked && (
-          <BoardMenuList>
-            {boards?.map((board, i) => (
-              <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
-                {board.name}
-              </BoardMenuItem>
-            ))}
-          </BoardMenuList>
-        )}
-        <TitleInput
-          type="text"
-          placeholder="제목"
-          value={inputs.title}
-          onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-        />
-        <ContentInput
-          placeholder="내용을 입력하세요."
-          value={inputs.content}
-          onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
-        />
-        <Options>
-          <Option
-            className={inputs.options.anonymous ? "active" : ""}
-            onClick={() =>
-              setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
-            }
-          >
-            <Icon src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"} />
-            익명
-          </Option>
-        </Options>
-        <PhotoViewer>
-          {inputs.photos.map((photo, i) => (
-            <PhotoContainer key={i}>
-              <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-              <DeleteButton onClick={() => handlePhotoDelete(i)}>
-                <Icon src="/img/photo-delete.svg" />
-              </DeleteButton>
-            </PhotoContainer>
-          ))}
-          {inputs.photos.length < 5 ? (
-            <PhotoAttacher>
-              <Icon src={inputs.photos.length === 0 ? "/img/file.svg" : "/img/file-big.svg"} />
-              <FileInput
-                type="file"
-                accept="image/*"
-                onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
+    <>
+      <MobileSubHeader title="글쓰기" handleBack={router.back} />
+      <Layout>
+        <Container>
+          <Header>글쓰기</Header>
+          <BoardMenu onClick={() => setClicked(!clicked)}>
+            {boards?.filter((board) => board.id === inputs.boardId)[0]?.name}
+            <Icon src="/img/down-arrow.svg" />
+          </BoardMenu>
+          {clicked && (
+            <BoardMenuList>
+              {boards?.map((board, i) => (
+                <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
+                  {board.name}
+                </BoardMenuItem>
+              ))}
+            </BoardMenuList>
+          )}
+          <TitleInput
+            type="text"
+            placeholder="제목"
+            value={inputs.title}
+            onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
+          />
+          <ContentInput
+            placeholder="내용을 입력하세요."
+            value={inputs.content}
+            onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+          />
+          <Options>
+            <Option
+              className={inputs.options.anonymous ? "active" : ""}
+              onClick={() =>
+                setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
+              }
+            >
+              <Icon
+                src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
               />
-            </PhotoAttacher>
-          ) : null}
-        </PhotoViewer>
-        <ButtonContainer>
-          <Button className="cancel" onClick={handleCancel}>
-            취소
-          </Button>
-          <Button
-            className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-            onClick={handleSubmit}
-          >
-            등록
-          </Button>
-        </ButtonContainer>
-      </Container>
-    </Layout>
+              익명
+            </Option>
+          </Options>
+          <PhotoViewer>
+            {inputs.photos.map((photo, i) => (
+              <PhotoContainer key={i}>
+                <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
+                <DeleteButton onClick={() => handlePhotoDelete(i)}>
+                  <Icon src="/img/photo-delete.svg" />
+                </DeleteButton>
+              </PhotoContainer>
+            ))}
+            {inputs.photos.length < 5 ? (
+              <PhotoAttacher>
+                <Icon src={inputs.photos.length === 0 ? "/img/file.svg" : "/img/file-big.svg"} />
+                <FileInput
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
+                />
+              </PhotoAttacher>
+            ) : null}
+          </PhotoViewer>
+          <ButtonContainer>
+            <Button className="cancel" onClick={handleCancel}>
+              취소
+            </Button>
+            <Button
+              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+              onClick={handleSubmit}
+            >
+              등록
+            </Button>
+          </ButtonContainer>
+        </Container>
+      </Layout>
+    </>
   );
 }
 
