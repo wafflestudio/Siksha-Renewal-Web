@@ -18,6 +18,7 @@ const Content = styled.div`
   margin-bottom: 80px;
   min-height: 100vh;
   max-height: 100%;
+  height: 100vh;
   background: white;
   border-radius: 10px;
   padding: 20px 19px 0 19px;

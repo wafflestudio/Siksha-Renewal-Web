@@ -8,6 +8,7 @@ import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import MobileSubHeader from "components/MobileSubHeader";
+import useIsMobile from "hooks/UseIsMobile";
 
 export type inputs = {
   title: string;
@@ -40,12 +41,15 @@ export default function PostWriter() {
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
+  const isMobile = useIsMobile();
   const { loginStatus } = useStateContext();
   const { setLoginModal } = useDispatchContext();
   const { getAccessToken } = UseAccessToken();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
+  const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
   const handleClickMenuItem = (id: number) => {
     setInputs({ ...inputs, boardId: id });
@@ -149,6 +153,19 @@ export default function PostWriter() {
       });
   };
 
+  const resize = () => {
+    let textarea = document.querySelector(".content-input") as HTMLTextAreaElement | null;
+    const offset = isMobile ? 113 : 284;
+
+    console.log(offset);
+
+    if (textarea && textarea.scrollHeight > offset) {
+      textarea.style.height = "auto";
+      const height = textarea.scrollHeight;
+      textarea.style.height = `${height + 8}px`;
+    }
+  };
+
   useEffect(() => {
     if (loginStatus === false) {
       router.push("/community/boards/1");
@@ -156,88 +173,134 @@ export default function PostWriter() {
     fetchBoards();
     fetchPreviousPost();
   }, []);
-  return (
-    <>
-      <MobileSubHeader title="글쓰기" handleBack={router.back} />
-      <Layout>
-        <Container>
-          <Header>글쓰기</Header>
-          <BoardMenu onClick={() => setClicked(!clicked)}>
-            {boards?.filter((board) => board.id === inputs.boardId)[0]?.name}
-            <Icon src="/img/down-arrow.svg" />
-          </BoardMenu>
-          {clicked && (
-            <BoardMenuList>
-              {boards?.map((board, i) => (
-                <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
-                  {board.name}
-                </BoardMenuItem>
-              ))}
-            </BoardMenuList>
-          )}
-          <TitleInput
-            type="text"
-            placeholder="제목"
-            value={inputs.title}
-            onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-          />
-          <ContentInput
-            placeholder="내용을 입력하세요."
-            value={inputs.content}
-            onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
-          />
-          <Options>
-            <Option
-              className={inputs.options.anonymous ? "active" : ""}
-              onClick={() =>
-                setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
-              }
-            >
-              <Icon
-                src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
-              />
-              익명
-            </Option>
-          </Options>
-          <PhotoViewer>
-            {inputs.photos.map((photo, i) => (
-              <PhotoContainer key={i}>
-                <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-                <DeleteButton onClick={() => handlePhotoDelete(i)}>
-                  <Icon src="/img/photo-delete.svg" />
-                </DeleteButton>
-              </PhotoContainer>
-            ))}
-            {inputs.photos.length < 5 ? (
-              <PhotoAttacher>
-                <Icon src={inputs.photos.length === 0 ? "/img/file.svg" : "/img/file-big.svg"} />
-                <FileInput
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
-                />
-              </PhotoAttacher>
-            ) : null}
-          </PhotoViewer>
-          <ButtonContainer>
-            <Button className="cancel" onClick={handleCancel}>
-              취소
-            </Button>
-            <Button
-              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-              onClick={handleSubmit}
-            >
-              등록
-            </Button>
-          </ButtonContainer>
-        </Container>
-      </Layout>
-    </>
-  );
+
+  // hydration mismatch를 피하기 위해 isClient state로 pre-rendering을 막습니다.
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (isClient)
+    return (
+      <>
+        <MobileSubHeader title="글쓰기" handleBack={router.back} />
+        <Layout>
+          <Container>
+            <DesktopHeader>글쓰기</DesktopHeader>
+            <BoardMenu onClick={() => setClicked(!clicked)}>
+              {selectedBoardName}
+              <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} />
+            </BoardMenu>
+            {clicked && (
+              <BoardMenuList>
+                {boards?.map((board, i) => (
+                  <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
+                    {board.name}
+                  </BoardMenuItem>
+                ))}
+              </BoardMenuList>
+            )}
+            <TitleInput
+              type="text"
+              placeholder="제목"
+              value={inputs.title}
+              onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
+            />
+            <ContentInput
+              className="content-input"
+              placeholder="내용을 입력하세요."
+              value={inputs.content}
+              onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+              onKeyDown={resize}
+              onKeyUp={resize}
+            />
+            <Footer>
+              <Options>
+                <Option
+                  className={inputs.options.anonymous ? "active" : ""}
+                  onClick={() =>
+                    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
+                  }
+                >
+                  <Icon
+                    src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
+                    style={{ width: "13px" }}
+                  />
+                  익명
+                </Option>
+              </Options>
+              <PhotoViewer>
+                {inputs.photos.map((photo, i) => (
+                  <PhotoContainer key={i}>
+                    <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
+                    <DeleteButton onClick={() => handlePhotoDelete(i)}>
+                      <Icon src="/img/photo-delete.svg" />
+                    </DeleteButton>
+                  </PhotoContainer>
+                ))}
+                {inputs.photos.length < 5 ? (
+                  <PhotoAttacher>
+                    <Icon
+                      style={{
+                        width: !isMobile && inputs.photos.length === 0 ? "25px" : "",
+                        height: !isMobile && inputs.photos.length === 0 ? "25px" : "",
+                      }}
+                      src={
+                        inputs.photos.length === 0
+                          ? !isMobile
+                            ? "/img/file.svg"
+                            : "/img/file-big.svg"
+                          : "/img/file-big.svg"
+                      }
+                    />
+                    <FileInput
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
+                    />
+                  </PhotoAttacher>
+                ) : null}
+              </PhotoViewer>
+            </Footer>
+            {!isMobile ? (
+              <ButtonContainer>
+                <Button className="cancel" onClick={handleCancel} isMobile>
+                  취소
+                </Button>
+                <Button
+                  className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+                  onClick={handleSubmit}
+                  isMobile
+                >
+                  등록
+                </Button>
+              </ButtonContainer>
+            ) : (
+              <ButtonContainer>
+                <Button
+                  className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+                  onClick={handleSubmit}
+                  isMobile
+                >
+                  올리기
+                </Button>
+              </ButtonContainer>
+            )}
+          </Container>
+        </Layout>
+      </>
+    );
 }
 
-const Container = styled.div``;
-const Header = styled.div`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* gap: 12px 12px 25px 51px 25px; */
+
+  @media (max-width: 768px) {
+    /* gap: 6px 14px 37px 13px; */
+  }
+`;
+const DesktopHeader = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: #ff9522;
@@ -245,6 +308,10 @@ const Header = styled.div`
   padding-bottom: 16px;
   border-bottom: 1px solid #ff9522;
   margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 const BoardMenu = styled.div`
   display: flex;
@@ -252,11 +319,16 @@ const BoardMenu = styled.div`
   align-items: center;
   gap: 9px;
   width: 100%;
-  height: 39px;
   border: 1px solid #dfdfdf;
   border-radius: 8px;
-  margin-bottom: 12px;
   cursor: pointer;
+  height: 39px;
+  margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 6px;
+    height: 35px;
+  }
 `;
 const BoardMenuList = styled.div`
   display: flex;
@@ -266,6 +338,10 @@ const BoardMenuList = styled.div`
   border-radius: 8px;
   margin-top: -8px;
   margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 6px;
+  }
 `;
 const BoardMenuItem = styled.div`
   display: flex;
@@ -289,11 +365,13 @@ const BoardMenuItem = styled.div`
     border-radius: 0 0 8px 8px;
   }
 `;
+const Icon = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 
-const Icon = styled.img``;
 const TitleInput = styled.input`
   width: 100%;
-  font-size: 18px;
   padding: 15px 14px;
   background-color: #f8f8f8;
   border: none;
@@ -301,31 +379,58 @@ const TitleInput = styled.input`
   border-radius: 8px;
   box-sizing: border-box;
   margin-bottom: 25px;
+  font-size: 18px;
 
   &::placeholder {
     color: #b7b7b7;
     font-weight: bold;
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
 `;
+
 const ContentInput = styled.textarea`
   width: 100%;
-  height: 284px;
-  font-size: 16px;
   padding: 0px 14px;
   border: none;
   outline: none;
   resize: none;
   box-sizing: border-box;
+  min-height: 284px;
+  margin-bottom: 51px;
+  font-size: 16px;
 
   &::placeholder {
     color: #b7b7b7;
     font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    min-height: 113px;
+    margin-bottom: 37px;
+    font-size: 12px;
+  }
+`;
+
+const Footer = styled.div`
+  margin-bottom: 71px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 13px;
   }
 `;
 const Options = styled.div`
   height: 36px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid #b7b7b7;
+
+  @media (max-width: 768px) {
+    margin-bottom: 13px;
+    font-size: 12px;
+  }
 `;
 const Option = styled.label`
   display: inline-flex;
@@ -334,16 +439,23 @@ const Option = styled.label`
   margin-left: 4px;
   user-select: none;
   cursor: pointer;
+
   &.active {
     color: #ff9522;
   }
 `;
 const PhotoViewer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
   gap: 13px;
   padding: 0px 3px;
-  margin-bottom: 70px;
+  overflow-x: auto;
+  z-index: 2;
+  height: 135px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const PhotoContainer = styled.div`
   position: relative;
@@ -352,6 +464,12 @@ const Photo = styled.img`
   width: 120px;
   height: 120px;
   border-radius: 8px;
+  object-fit: cover;
+
+  @media (max-width: 768px) {
+    width: 106px;
+    height: 106px;
+  }
 `;
 const DeleteButton = styled.button`
   position: absolute;
@@ -366,20 +484,37 @@ const DeleteButton = styled.button`
 `;
 
 const PhotoAttacher = styled.label`
+  width: 120px;
+  height: 120px;
   margin-left: 15px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 106px;
+    height: 106px;
+  }
 `;
 const FileInput = styled.input`
   display: none;
 `;
 
 const ButtonContainer = styled.div`
+  position: fixed;
+  bottom: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 14px;
+
+  @media (max-width: 768px) {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 23px;
+  }
 `;
-const Button = styled.button`
+
+const Button = styled.button<{ isMobile: boolean }>`
   width: 324px;
   height: 46px;
   font-size: 16px;
@@ -387,6 +522,7 @@ const Button = styled.button`
   border-radius: 8px;
   border: none;
   outline: none;
+  box-sizing: border-box;
   cursor: pointer;
 
   &.cancel {
@@ -398,5 +534,9 @@ const Button = styled.button`
     &.active {
       background-color: #ff9522;
     }
+  }
+
+  @media (max-width: 768px) {
+    width: 343px;
   }
 `;
