@@ -92,12 +92,15 @@ export default function Post() {
   const removePost = (postId: number) => {
     if (!loginStatus) openLoginModal();
     else
-      getAccessToken()
-        .then((accessToken) => deletePost(postId, accessToken))
-        .then(() => router.push(`/community/boards/${boardId}`))
-        .catch((e) => {
-          console.error(e);
-        });
+      openModal(DeleteModal, {
+        type: "post",
+        onClose: () => {},
+        onSubmit: () =>
+          getAccessToken()
+            .then((accessToken) => deletePost(postId, accessToken))
+            .then(() => router.push(`/community/boards/${boardId}`))
+            .catch((e) => console.error(e)),
+      });
   };
 
   const reportPost = (postId: number) => {
