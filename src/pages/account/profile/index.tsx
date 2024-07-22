@@ -6,8 +6,9 @@ import { updateMyData } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
 import ProfileEdit from "components/Account/ProfileEdit";
 import UseProfile from "hooks/UseProfile";
+import MobileSubHeader from "components/MobileSubHeader";
 
-export default function Setting_Nickname() {
+export default function Setting_Profile() {
   const { userInfo, setProfile } = UseProfile();
 
   const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
@@ -20,13 +21,8 @@ export default function Setting_Nickname() {
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
+    console.log(userInfo?.image);
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
-    if (userInfo?.image)
-      fetch(userInfo?.image)
-        .then((res) => res.blob())
-        .then((blob) => setImageBlob(blob));
-
-    setImageBlob(null);
   }, [imgRef, userInfo]);
 
   const updateProfile = async () => {
@@ -51,6 +47,7 @@ export default function Setting_Nickname() {
 
   return (
     <AccountLayout>
+      <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
       <Container>
         <Title>닉네임 설정</Title>
         <ProfileEdit
@@ -61,6 +58,10 @@ export default function Setting_Nickname() {
           imgRef={imgRef}
           updateProfile={updateProfile}
         />
+        <ButtonGroup>
+          <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
+          <CompleteButton onClick={updateProfile}>완료</CompleteButton>
+        </ButtonGroup>
       </Container>
     </AccountLayout>
   );
@@ -71,10 +72,56 @@ const Container = styled.div`
   background-color: white;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+  }
 `;
 const Title = styled.div`
   margin: 24px 0 0 22.48px;
   font-size: 20px;
   font-weight: 700;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 39px);
+    margin: 0 19.5px 18px 19.5px;
+  }
+`;
+
+const Button = styled.button`
+  width: calc(50% - 4px);
+  height: 44px;
+  background-color: #ff9522;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+
+  @media (max-width: 768px) {
+    height: 48px;
+  }
+`;
+
+const CancelButton = styled(Button)`
+  background-color: #adadad;
+`;
+
+const CompleteButton = styled(Button)`
+  background-color: #ff9522;
 `;
