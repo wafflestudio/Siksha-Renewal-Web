@@ -80,10 +80,7 @@ export default function Menu() {
     }
     setLoading(true);
 
-    Promise.all([
-      getMenu(Number(id)),
-      getReviews(Number(id)),
-    ])
+    Promise.all([getMenu(Number(id)), getReviews(Number(id))])
       .then(([menuData, reviewsData]) => {
         setMenu(menuData);
         setMobileSubHeaderTitle(menuData.name_kr);
@@ -97,7 +94,6 @@ export default function Menu() {
         router.push("/");
       })
       .finally(() => setLoading(false));
-
   }, [id, setLoading]);
 
   useEffect(() => {
@@ -120,7 +116,7 @@ export default function Menu() {
 
   const handleReviewPostModal = (isOpen: boolean) => {
     if (!menu) {
-      console.error('menu is not loaded');
+      console.error("menu is not loaded");
       return;
     }
     setMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
@@ -129,7 +125,7 @@ export default function Menu() {
 
   const handleReviewListPage = (isOpen: boolean) => {
     if (!menu) {
-      console.error('menu is not loaded');
+      console.error("menu is not loaded");
       return;
     }
     setMobileSubHeaderTitle(isOpen ? "리뷰" : menu.name_kr);
@@ -142,9 +138,9 @@ export default function Menu() {
     } else if (isReviewListPageOpen) {
       handleReviewListPage(false);
     } else {
-      router.push('/');
+      router.push("/");
     }
-  }
+  };
 
   return (
     <>
@@ -181,6 +177,7 @@ export default function Menu() {
               )}
             </Info>
           </Background>
+          <MobileNavigationBar />
         </>
       )}
     </>
@@ -214,7 +211,7 @@ const Info = styled.div`
 
 const MobileHLine = styled.div`
   display: none;
-  background: #9191911A;
+  background: #9191911a;
   padding: 5px 0;
   margin-bottom: 16px;
   @media (max-width: 768px) {

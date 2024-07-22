@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function Posts() {
   const router = useRouter();
@@ -45,6 +46,7 @@ export default function Posts() {
     <Board selectedBoardId={Number(boardId) ?? 1}>
       <BoardHeader />
       <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
+      <MobileNavigationBar />
     </Board>
   );
 }

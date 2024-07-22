@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function Account() {
   const router = useRouter();
@@ -100,6 +101,7 @@ export default function Account() {
       >
         <InquiryText>1:1 문의하기</InquiryText>
       </ListGroup>
+      <MobileNavigationBar />
     </AccountLayout>
   );
 }

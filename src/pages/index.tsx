@@ -10,6 +10,7 @@ import MenuList from "components/MenuList";
 import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
+import MobileNavigationBar from "components/MobileNavigationBar";
 
 export default function Home() {
   const state = useStateContext();
@@ -85,6 +86,7 @@ export default function Home() {
           <RestaurantInfo />
         </Info>
       )}
+      <MobileNavigationBar />
     </>
   );
 }
