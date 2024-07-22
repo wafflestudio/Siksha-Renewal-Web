@@ -120,14 +120,11 @@ export const getMyData = async (accessToken: string): Promise<User> => {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res: { data: RawUser }) => {
+      console.log(res);
       const {
-        data: {
-          id,
-          nickname,
-          etc: { image },
-        },
+        data: { id, nickname, etc },
       } = res;
-      return { id, nickname, image: image ?? null };
+      return { id, nickname, image: etc?.image ?? null };
     })
     .catch((e) => {
       throw new Error(e);
@@ -144,13 +141,9 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
     })
     .then((res: { data: RawUser }) => {
       const {
-        data: {
-          id,
-          nickname,
-          etc: { image },
-        },
+        data: { id, nickname, etc },
       } = res;
-      return { id, nickname, image: image ?? null };
+      return { id, nickname, image: etc?.image ?? null };
     })
     .catch((e) => {
       throw new Error(e);
@@ -159,7 +152,7 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
-    .delete(`${APIendpoint()}/auth`, {
+    .delete(`${APIendpoint()}/auth/`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})

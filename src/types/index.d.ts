@@ -183,7 +183,7 @@ export interface RawUser {
   nickname: string;
   etc: {
     image?: string;
-  };
+  } | null;
   created_at: string;
   updated_at: string;
 }
