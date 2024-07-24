@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import UseProfile from "hooks/UseProfile";
@@ -9,8 +10,9 @@ import UseProfile from "hooks/UseProfile";
 export default function Account() {
   const router = useRouter();
 
-  const { isExceptEmptyRestaurant } = useStateContext();
+  const state = useStateContext();
   const { setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { isExceptEmptyRestaurant } = state;
   const { userInfo } = UseProfile();
 
   const { authStatus, authGuard } = useAuth();

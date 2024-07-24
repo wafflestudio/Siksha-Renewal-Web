@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { setComment } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { RawComment } from "types";
+import { useStateContext } from "hooks/ContextProvider";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 interface CommentWriterProps {
   postId: number;
@@ -11,9 +13,12 @@ interface CommentWriterProps {
 }
 
 export default function CommentWriter({ postId, update }: CommentWriterProps) {
+  const { loginStatus } = useStateContext();
+  const { openLoginModal } = useModals();
+  const { checkAccessToken } = UseAccessToken();
+
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
 
@@ -23,13 +28,15 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   }
 
   const submit = () => {
-    return checkAccessToken().then((res: string | null) => {
-      if (res !== null)
-        setComment(postId, commentInput, isAnonymous, res)
-          .then((res) => update(res.data))
-          .then(initialize)
-          .catch((e) => console.error(e));
-    });
+    if (!loginStatus) openLoginModal();
+    else
+      checkAccessToken().then((res: string | null) => {
+        if (res !== null)
+          setComment(postId, commentInput, isAnonymous, res)
+            .then((res) => update(res.data))
+            .then(initialize)
+            .catch((e) => console.error(e));
+      });
   };
 
   return (

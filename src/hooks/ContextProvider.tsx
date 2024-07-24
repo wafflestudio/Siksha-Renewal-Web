@@ -38,8 +38,7 @@ interface dispatchers {
    * @deprecated safety is not guaranteed on loading
    */
   setLoginStatus: (loginStatus: boolean) => void;
-  setLoginModal: (isLoginModal: boolean) => void;
-  setUserInfo: (userInfo: User | null) => void;
+  setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
@@ -69,8 +68,6 @@ const ContextProvider = ({ children }) => {
    */
   const setLoginStatus = (loginStatus: boolean) =>
     setState((prevState) => ({ ...prevState, loginStatus: loginStatus }));
-  const setLoginModal = (isLoginModal: boolean) =>
-    setState((prevState) => ({ ...prevState, isLoginModal: isLoginModal }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
@@ -91,7 +88,6 @@ const ContextProvider = ({ children }) => {
         toggleShowInfo,
         setAuthStatus,
         setLoginStatus,
-        setLoginModal,
         setUserInfo,
         setIsFilterFavorite,
         setFavoriteRestaurant,

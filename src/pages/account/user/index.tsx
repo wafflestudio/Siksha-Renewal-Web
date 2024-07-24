@@ -5,7 +5,6 @@ import { deleteAccount } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/MobileSubHeader";
-
 export default function UserSetting() {
   const router = useRouter();
   const { authStatus, getAccessToken, authGuard, signOut } = useAuth();

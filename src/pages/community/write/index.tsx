@@ -7,6 +7,8 @@ import { Board, RawBoard } from "../../../types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export type inputs = {
   title: string;
@@ -41,7 +43,7 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
+  const { openLoginModal } = useModals();
   const { getAccessToken } = UseAccessToken();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
@@ -70,9 +72,8 @@ export default function PostWriter() {
       return;
     }
 
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else {
+    if (!loginStatus) openLoginModal();
+    else {
       setIsSubmitting(true);
       const body = new FormData();
       body.append("board_id", String(inputs.boardId));

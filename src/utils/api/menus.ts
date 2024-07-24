@@ -5,14 +5,18 @@ import { RawMenuList, RawMenu } from "types";
 export const getMenuList = (
   date: string,
   isExceptEmptyRestaurant: boolean,
+  accessToken: string = "",
 ): Promise<{
   count: number;
   result: RawMenuList[];
 }> => {
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus/lo?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
+    : `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const config = !!accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
+  
   return axios
-    .get(
-      `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`,
-    )
+    .get(apiUrl, config)
     .then((res) => {
       const {
         data: { count, result },
@@ -24,9 +28,14 @@ export const getMenuList = (
     });
 };
 
-export const getMenu = (menuID: number): Promise<RawMenu> => {
+export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus/${menuID}`
+    : `${APIendpoint()}/menus/plain/${menuID}`;
+  const config = !!accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
+  
   return axios
-    .get(`${APIendpoint()}/menus/plain/${menuID}`)
+    .get(apiUrl, config)
     .then((res) => {
       const { data } = res;
       return data;

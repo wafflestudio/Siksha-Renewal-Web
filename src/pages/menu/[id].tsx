@@ -19,6 +19,8 @@ import { getReviews, getReviewScore } from "utils/api/reviews";
 import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
+import useModals from "hooks/UseModals";
+import UseAccessToken from "hooks/UseAccessToken";
 
 export interface MenuType {
   id: number;
@@ -66,13 +68,12 @@ export default function Menu() {
   const [images, setImages] = useState<string[]>([]);
   const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
-  const state = useStateContext();
-  const { isLoginModal } = state;
-  const { setLoginModal } = useDispatchContext();
+  const { openLoginModal } = useModals();
 
-  const isMobile = useIsMobile();
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
+
+  const { getAccessToken } = UseAccessToken();
 
   useEffect(() => {
     if (!id) {
@@ -80,10 +81,10 @@ export default function Menu() {
     }
     setLoading(true);
 
-    Promise.all([
-      getMenu(Number(id)),
-      getReviews(Number(id)),
-    ])
+    async function fetchData() {
+      const accessToken = await getAccessToken().catch((error) => "");
+
+      Promise.all([getMenu(Number(id), accessToken), getReviews(Number(id))])
       .then(([menuData, reviewsData]) => {
         setMenu(menuData);
         setMobileSubHeaderTitle(menuData.name_kr);
@@ -97,7 +98,8 @@ export default function Menu() {
         router.push("/");
       })
       .finally(() => setLoading(false));
-
+    }
+    fetchData();
   }, [id, setLoading]);
 
   useEffect(() => {
@@ -113,14 +115,12 @@ export default function Menu() {
   const handleReviewPostButtonClick = () => {
     if (!!localStorage.getItem("access_token")) {
       handleReviewPostModal(true);
-    } else {
-      setLoginModal(true);
-    }
+    } else openLoginModal();
   };
 
   const handleReviewPostModal = (isOpen: boolean) => {
     if (!menu) {
-      console.error('menu is not loaded');
+      console.error("menu is not loaded");
       return;
     }
     setMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
@@ -129,7 +129,7 @@ export default function Menu() {
 
   const handleReviewListPage = (isOpen: boolean) => {
     if (!menu) {
-      console.error('menu is not loaded');
+      console.error("menu is not loaded");
       return;
     }
     setMobileSubHeaderTitle(isOpen ? "리뷰" : menu.name_kr);
@@ -142,13 +142,12 @@ export default function Menu() {
     } else if (isReviewListPageOpen) {
       handleReviewListPage(false);
     } else {
-      router.push('/');
+      router.push("/");
     }
-  }
+  };
 
   return (
     <>
-      {isLoginModal && <LoginModal />}
       {!isLoading && !!menu && (
         <>
           <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
@@ -214,7 +213,7 @@ const Info = styled.div`
 
 const MobileHLine = styled.div`
   display: none;
-  background: #9191911A;
+  background: #9191911a;
   padding: 5px 0;
   margin-bottom: 16px;
   @media (max-width: 768px) {
