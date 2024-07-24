@@ -1,19 +1,17 @@
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
-import Link from "next/link";
+import { useStateContext } from "hooks/ContextProvider";
+import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
 export function BoardHeader() {
-  const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const router = useRouter();
 
+  const { loginStatus } = useStateContext();
+  const { openLoginModal } = useModals();
+
   function handleClickWriteButton() {
-    if (loginStatus === false) {
-      setLoginModal(true);
-      return;
-    }
-    router.push("/community/write");
+    if (!loginStatus) openLoginModal();
+    else router.push("/community/write");
   }
 
   return (

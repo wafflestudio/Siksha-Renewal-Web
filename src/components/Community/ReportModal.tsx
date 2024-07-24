@@ -7,39 +7,41 @@ import { setReportComment, setReportPost } from "utils/api/community";
 interface ReporyModalProps {
   type: "post" | "comment";
   targetID: number;
-  setReportModal: (value: boolean) => void;
+  onClose: () => void;
+  onSubmit?: () => void;
 }
 
-export function ReportModal({ type, targetID, setReportModal }: ReporyModalProps) {
+export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalProps) {
   const [reason, setReason] = useState("");
   const { checkAccessToken } = UseAccessToken();
 
   const isValid = reason.length >= 1;
 
   const reportFunction = type === "post" ? setReportPost : setReportComment;
+
   function report() {
     if (isValid) {
       checkAccessToken().then((res) =>
         reportFunction(targetID, reason, res).then(() => {
           setReason("");
-          setReportModal(false);
+          onSubmit?.();
         }),
       );
     }
   }
 
   return (
-    <BackClickable onClickBackground={() => setReportModal(false)}>
+    <BackClickable onClickBackground={onClose}>
       <MainContainer>
         <Header>
           <Title>{type === "post" ? "게시물" : "댓글"} 신고</Title>
-          <CloseButton onClick={() => setReportModal(false)}>
+          <CloseButton onClick={onClose}>
             <Image src="/img/modal-close.svg" alt="닫기" />
           </CloseButton>
         </Header>
         <InputBox placeholder="이유" value={reason} onChange={(e) => setReason(e.target.value)} />
         <Footer>
-          <CancelButton onClick={() => setReportModal(false)}>취소</CancelButton>
+          <CancelButton onClick={onClose}>취소</CancelButton>
           <ReportButton disabled={!isValid} onClick={report}>
             신고
           </ReportButton>

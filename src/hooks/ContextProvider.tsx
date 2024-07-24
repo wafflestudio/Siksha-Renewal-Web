@@ -14,7 +14,6 @@ const initialState = {
   loading: false,
   infoData: null,
   loginStatus: false,
-  isLoginModal: false,
   userInfo: {
     id: null,
     nickname: null,
@@ -33,7 +32,6 @@ interface dispatchers {
   toggleShowCal: () => void;
   toggleShowInfo: () => void;
   setLoginStatus: (loginStatus: boolean) => void;
-  setLoginModal: (isLoginModal: boolean) => void;
   setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
@@ -59,8 +57,6 @@ const ContextProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
   const setLoginStatus = (loginStatus: boolean) =>
     setState((prevState) => ({ ...prevState, loginStatus: loginStatus }));
-  const setLoginModal = (isLoginModal: boolean) =>
-    setState((prevState) => ({ ...prevState, isLoginModal: isLoginModal }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
@@ -80,7 +76,6 @@ const ContextProvider = ({ children }) => {
         toggleShowCal,
         toggleShowInfo,
         setLoginStatus,
-        setLoginModal,
         setUserInfo,
         setIsFilterFavorite,
         setFavoriteRestaurant,

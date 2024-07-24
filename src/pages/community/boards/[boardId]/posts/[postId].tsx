@@ -5,7 +5,7 @@ import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "t
 import Board from "../../index";
 import CommentList from "components/Community/CommentList";
 import CommentWriter from "components/Community/CommentWriter";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
@@ -20,21 +20,22 @@ import {
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
 import MobileSubHeader from "components/MobileSubHeader";
+import DeleteModal from "components/Community/DeleteModal";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
   const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { getAccessToken, checkAccessToken } = UseAccessToken();
+  const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
-  const [actionsModal, setActionsModal] = useState<boolean>(false);
-  const [reportModal, setReportModal] = useState(false);
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -70,11 +71,10 @@ export default function Post() {
   };
 
   const fetchLike = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (post) {
+    if (!loginStatus) openLoginModal();
+    else if (post) {
       const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
-      return getAccessToken()
+      getAccessToken()
         .then((accessToken) => handleLikeAction(post.id, accessToken))
         .then(({ isLiked, likeCount }) => {
           setPost({
@@ -91,20 +91,30 @@ export default function Post() {
   };
 
   const removePost = (postId: number) => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (confirm("이 글을 삭제하시겠습니까?")) {
-      return getAccessToken()
-        .then((accessToken) => deletePost(postId, accessToken))
-        .then(() => router.push(`/community/boards/${boardId}`))
-        .catch((e) => {
-          console.error(e);
-        });
-    }
+    if (!loginStatus) openLoginModal();
+    else
+      openModal(DeleteModal, {
+        type: "post",
+        onClose: () => {},
+        onSubmit: () =>
+          getAccessToken()
+            .then((accessToken) => deletePost(postId, accessToken))
+            .then(() => router.push(`/community/boards/${boardId}`))
+            .catch((e) => console.error(e)),
+      });
+  };
+
+  const reportPost = (postId: number) => {
+    if (!loginStatus) openLoginModal();
+    else openModal(ReportModal, { type: "post", targetID: postId, onClose: () => {} });
   };
 
   const updatePost = (postId: number) => {
     router.push(`/community/write/?postId=${postId}`);
+  };
+
+  const onClickMoreActions = (actions: ModalAction[]) => {
+    openModal(MobileActionsModal, { actions: actions, onClose: () => {} });
   };
 
   useEffect(() => {
@@ -123,17 +133,17 @@ export default function Post() {
       ? [
           {
             name: "수정",
-            handleClick: () => router.push(`/community/write/?postId=${postId}`),
+            handleClick: () => updatePost(post.id),
           },
-          { name: "삭제", handleClick: () => removePost(post.id) },
+          {
+            name: "삭제",
+            handleClick: () => removePost(post.id),
+          },
         ]
       : [
           {
             name: "신고",
-            handleClick: () => {
-              if (loginStatus) setReportModal(true);
-              else setLoginModal(true);
-            },
+            handleClick: () => reportPost(post.id),
           },
         ];
 
@@ -162,13 +172,10 @@ export default function Post() {
                   </DesktopActionButton>
                 ))}
               </DesktopPostActions>
-              <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
-              {actionsModal && (
-                <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
-              )}
-              {reportModal && (
-                <ReportModal type="post" targetID={post.id} setReportModal={setReportModal} />
-              )}
+              <MobileMoreActionsButton
+                src="/img/etc.svg"
+                onClick={() => onClickMoreActions(actions)}
+              />
             </Header>
             <Content>
               <Title>{post.title}</Title>
