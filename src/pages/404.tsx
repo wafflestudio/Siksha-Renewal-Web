@@ -2,16 +2,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function Page404() {
-  const redirectPath = /^\/posts\/.+/g;
+  const redirectPath =
+    /^\/(menu\/\d+|menu\/\d+\/photos|community\/boards\/[01]\/?|community\/boards\/[01]\/posts\/\d+)\/?$/g;
 
   const router = useRouter();
 
   useEffect(() => {
-    // Your condition that can validate the URL
     const pathName = window.location.pathname;
 
     if (pathName.match(redirectPath)) {
-      router.push(pathName); // Redirect to the right page...
+      router.push(pathName);
     } else {
       router.push("/");
     }
