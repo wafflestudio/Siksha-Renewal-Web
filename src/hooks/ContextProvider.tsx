@@ -38,7 +38,7 @@ interface dispatchers {
    * @deprecated safety is not guaranteed on loading
    */
   setLoginStatus: (loginStatus: boolean) => void;
-  setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
