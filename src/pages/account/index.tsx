@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
-import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import UseProfile from "hooks/UseProfile";
@@ -40,7 +39,7 @@ export default function Account() {
           <ProfileText>
             {authStatus === "loading" ? "잠시만 기다려주세요..." : nickname}
           </ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -50,7 +49,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -60,7 +59,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -69,15 +68,19 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
           {isExceptEmptyRestaurant ? (
-            <CheckButton src="/img/hide-circle-active.svg" onClick={toggle} />
+            <CheckButton src="/img/account/hide-circle-active.svg" alt="active" onClick={toggle} />
           ) : (
-            <CheckButton src="/img/hide-circle-inactive.svg" onClick={toggle} />
+            <CheckButton
+              src="/img/account/hide-circle-inactive.svg"
+              alt="inactive"
+              onClick={toggle}
+            />
           )}
         </ContentDiv>
         <BreakLine />
@@ -87,7 +90,7 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
 

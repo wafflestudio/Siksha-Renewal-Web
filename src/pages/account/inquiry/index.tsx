@@ -51,11 +51,11 @@ export default function Inquiry() {
       <Container>
         <Title>1:1 문의하기</Title>
         <MobileBox>
-          <Icon src="/img/comment.svg" />
+          <Icon src="/img/comment.svg" alt="comment" />
           <Description>문의할 내용을 남겨주세요.</Description>
         </MobileBox>
         <UserBox>
-          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} />
+          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="profile" />
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
