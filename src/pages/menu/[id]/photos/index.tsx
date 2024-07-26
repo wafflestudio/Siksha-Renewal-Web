@@ -2,6 +2,7 @@ import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
 import ReviewItem from "components/MenuDetail/ReviewItem.";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useDispatchContext } from "hooks/ContextProvider";
+import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/router";
 import { ReviewListType } from "pages/menu/[id]";
@@ -20,6 +21,7 @@ export default function PhotoReviews() {
   const { setLoginModal } = useDispatchContext();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
+  const { getAccessToken } = UseAccessToken();
 
   useEffect(() => {
     if (!id) {
@@ -45,11 +47,9 @@ export default function PhotoReviews() {
   }, [id]);
 
   const handleReviewPostButtonClick = () => {
-    if (!!localStorage.getItem("access_token")) {
-      router.push(`/menu/${id}?writeReview=true`)
-    } else {
-      setLoginModal(true);
-    }
+    getAccessToken()
+      .then(() => router.push(`/menu/${id}?writeReview=true`))
+      .catch(() => setLoginModal(true))
   };
 
   const handleMobileSubHeaderBack = () => router.push(`/menu/${id}`);
@@ -65,14 +65,14 @@ export default function PhotoReviews() {
           </GalleryHeader>
           {
             reviews.result.length > 0 ?
-            <Gallery>
-              {reviews.result.map((review) => (
-                isMobile
-                  ? <ReviewItem key={review.id} review={review} />
-                  : <PhotoReviewItem key={review.id} review={review} />
-              ))}
-            </Gallery>
-            : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+              <Gallery>
+                {reviews.result.map((review) => (
+                  isMobile
+                    ? <ReviewItem key={review.id} review={review} />
+                    : <PhotoReviewItem key={review.id} review={review} />
+                ))}
+              </Gallery>
+              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
           }
           <ReviewPostButtonWrapper>
             <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
