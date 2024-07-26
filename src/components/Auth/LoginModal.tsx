@@ -1,9 +1,13 @@
 import styled from "styled-components";
-import { useDispatchContext } from "../../hooks/ContextProvider";
-import React, { useCallback } from "react";
+import React from "react";
 import BackClickable from "components/general/BackClickable";
 
-export default function LoginModal() {
+interface LoginModalProps {
+  onClose: () => void;
+  onSubmit?: () => void;
+}
+
+export default function LoginModal({ onClose }: LoginModalProps) {
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -42,16 +46,12 @@ export default function LoginModal() {
     });
   };
 
-  const dispatch = useDispatchContext();
-
-  const closeModal = useCallback(() => dispatch.setLoginModal(false), [dispatch]);
-
   return (
-    <BackClickable onClickBackground={closeModal}>
+    <BackClickable onClickBackground={onClose}>
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={() => closeModal()} />
+          <CloseButton src={"/img/close-auth.svg"} onClick={onClose} />
         </TopContainer>
         <SikshaLogo src={"/img/siksha-typo.svg"} />
         <SocialContainer>
@@ -91,21 +91,6 @@ export default function LoginModal() {
     </BackClickable>
   );
 }
-
-// const Background = styled.div`
-//   z-index: 99;
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100dvh;
-//   background: rgba(0, 0, 0, 0.3);
-//   overflow: hidden;
-
-//   @media (max-width: 768px) {
-//     overflow: scroll;
-//   }
-// `;
 
 const MainContainer = styled.div`
   position: fixed;

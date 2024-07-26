@@ -17,8 +17,6 @@ export default function ReviewSection({ menuId, reviews, images, isReviewListPag
   const isMobile = useIsMobile();
 
   const MOBILE_IMAGE_LIST_LIMIT = 3;
-
-  console.log(isReviewListPageOpen);
   
   return (
     <>

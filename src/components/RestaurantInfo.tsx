@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { useEffect } from "react";
 import MobileOperatingHour from "./MobileOperatingHour";
+import BackClickable from "./general/BackClickable";
 
 export default function RestaurantInfo() {
   const state = useStateContext();
@@ -27,10 +28,9 @@ export default function RestaurantInfo() {
   }, [infoData]);
 
   return (
-    <Container>
-      <ClickArea onClick={() => toggleShowInfo()} />
-      <FlexBox>
-        <ClickArea onClick={() => toggleShowInfo()} />
+    <BackClickable onClickBackground={() => toggleShowInfo()}>
+      <Container>
+        {/* <FlexBox> */}
         <InfoBox>
           <RestName>{infoData.name_kr}</RestName>
           <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} />
@@ -81,43 +81,32 @@ export default function RestaurantInfo() {
             </Wrapper>
           </ScrollArea>
         </InfoBox>
-        <ClickArea onClick={() => toggleShowInfo()} />
-      </FlexBox>
-      <ClickArea onClick={() => toggleShowInfo()} />
-    </Container>
+        {/* </FlexBox> */}
+      </Container>
+    </BackClickable>
   );
 }
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.5);
   position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
-const ClickArea = styled.div`
-  flex: 1;
-`;
-
-const FlexBox = styled.div`
-  display: flex;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -40%);
 `;
 
 const InfoBox = styled.div`
   background: white;
   border-radius: 15px;
   width: 90vw;
+  max-width: 1000px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: auto;
+  padding: 0 16px;
 `;
 
 const RestName = styled.div`
@@ -133,13 +122,13 @@ const CloseIcon = styled.img`
   width: 25px;
   position: absolute;
   padding-top: 16px;
-  padding-right: calc(5vw + 21.3px);
+  padding-right: 16px;
   right: 0;
   cursor: pointer;
 `;
 
 const HLine = styled.div<{ color: string; margin: string }>`
-  width: calc(90vw - 32px);
+  width: 100%;
   height: 1px;
   background: ${(props) => props.color};
   margin-top: ${(props) => props.margin};
@@ -147,6 +136,7 @@ const HLine = styled.div<{ color: string; margin: string }>`
 
 const ScrollArea = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
@@ -155,12 +145,14 @@ const ScrollArea = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  width: 100%;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
 `;
 
 const AboveMap = styled.div`
-  width: calc(90vw - 32px);
+  width: 100%;
   padding-bottom: 12px;
   display: flex;
   justify-content: space-between;
@@ -190,20 +182,21 @@ const LocationText = styled.div`
 `;
 
 const Map = styled.div`
-  width: calc(90vw - 32px);
+  width: 100%;
+  width: 100%;
   height: 247px;
   min-height: 247px;
 `;
 
 const Division = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 10px;
   background: rgba(145, 145, 145, 0.1);
   margin: 24px 0;
 `;
 
 const BelowMap = styled.div`
-  width: calc(90vw - 32px);
+  width: 100%;
   display: flex;
   justify-content: flex-start;
 `;

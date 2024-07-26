@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReviewImageSwiper from "./ReviewImageSwiper";
-import { MenuType, ReviewListType } from "pages/menu/[id]";
+import { MenuType } from "pages/menu/[id]";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
-import { useDispatchContext } from "hooks/ContextProvider";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
@@ -16,7 +15,12 @@ interface MenuSectionProps {
   handleReviewPostButtonClick: () => void;
 }
 
-export default function MenuSection({ menu, reviewsTotalCount, images, handleReviewPostButtonClick }: MenuSectionProps) {
+export default function MenuSection({
+  menu,
+  reviewsTotalCount,
+  images,
+  handleReviewPostButtonClick,
+}: MenuSectionProps) {
   const router = useRouter();
 
   const [restaurantName, setRestaurantName] = useState("");
@@ -30,45 +34,50 @@ export default function MenuSection({ menu, reviewsTotalCount, images, handleRev
   const SWIPER_IMAGES_LIMIT = 5;
 
   useEffect(() => {
-    Promise.all([
-      getRestaurantList(),
-      getReviewScore(menu.id),
-    ])
+    Promise.all([getRestaurantList(), getReviewScore(menu.id)])
       .then(([restaurantListData, reviewScoreData]) => {
-        const restaurantName = restaurantListData.result.find((restaurant) => restaurant.id === menu.restaurant_id);
-        if (restaurantName)
-          setRestaurantName(restaurantName.name_kr);
+        const restaurantName = restaurantListData.result.find(
+          (restaurant) => restaurant.id === menu.restaurant_id,
+        );
+        if (restaurantName) setRestaurantName(restaurantName.name_kr);
         setReviewDistribution(reviewScoreData);
-      }).catch((e) => {
+      })
+      .catch((e) => {
         console.error(e);
         router.push("/");
-      })
+      });
   }, [menu]);
 
   useEffect(() => {
     if (menuTitleDivRef.current) {
-      const { current } = menuTitleDivRef
-      const { offsetWidth, scrollWidth } = current
-      setIsOverflow(offsetWidth < scrollWidth)
+      const { current } = menuTitleDivRef;
+      const { offsetWidth, scrollWidth } = current;
+      setIsOverflow(offsetWidth < scrollWidth);
     }
-  }, [menuTitleDivRef.current])
+  }, [menuTitleDivRef.current]);
 
   return (
     <MenuContainer>
-      {images.length > 0 &&
+      {images.length > 0 && (
         <ReviewImageSwiper
           menuId={menu.id}
           images={images}
           swiperImagesLimit={SWIPER_IMAGES_LIMIT}
           imageCount={images.length}
         />
-      }
+      )}
       <MenuInfoContainer>
         <MenuHeader>
           <MenuTitleContainer>
             <MenuTitleWrapper>
-              <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>{menu.name_kr}</MenuTitle>
-              <MenuTitleAccordionButton isOpen={isAccordionOpen} isTitleLong={isOverflow} onClick={toggleAccordion} />
+              <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>
+                {menu.name_kr}
+              </MenuTitle>
+              <MenuTitleAccordionButton
+                isOpen={isAccordionOpen}
+                isTitleLong={isOverflow}
+                onClick={toggleAccordion}
+              />
             </MenuTitleWrapper>
             <MenuSubTitle>{restaurantName}</MenuSubTitle>
           </MenuTitleContainer>
@@ -92,6 +101,7 @@ const MenuContainer = styled.section`
   position: relative;
   background-color: white;
   width: 1185px;
+  height: 100%;
   @media (max-width: 768px) {
     flex-grow: 0;
     width: auto;
@@ -110,7 +120,6 @@ const MenuInfoContainer = styled.div`
     margin-left: 0;
   }
 `;
-
 
 const MenuHeader = styled.div`
   display: flex;
@@ -149,10 +158,10 @@ const MenuTitle = styled.div<{ isOpen: boolean }>`
   line-height: 45.4px;
   margin-right: 3px;
   margin-left: 7px;
-  width: ${props => props.isOpen ? '492px' : 'auto'};
+  width: ${(props) => (props.isOpen ? "492px" : "auto")};
   max-width: 492px;
   text-overflow: ellipsis;
-  white-space: ${props => props.isOpen ? 'normal' : 'nowrap'};
+  white-space: ${(props) => (props.isOpen ? "normal" : "nowrap")};
   word-break: break-word;
   overflow: hidden;
   @media (max-width: 768px) {
@@ -161,17 +170,17 @@ const MenuTitle = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-const MenuTitleAccordionButton = styled.button<{ isOpen: boolean, isTitleLong: boolean }>`
-  display: ${props => props.isTitleLong ? 'inherit' : 'none'};
+const MenuTitleAccordionButton = styled.button<{ isOpen: boolean; isTitleLong: boolean }>`
+  display: ${(props) => (props.isTitleLong ? "inherit" : "none")};
   height: 45.4px;
   width: 21.75px;
   border: none;
   background-color: transparent;
-  background-image: url(${props => props.isOpen ? '"/img/up-arrow-orange.svg"' : '"/img/down-arrow-orange.svg"'});
+  background-image: url(${({ isOpen }) => `img/${isOpen ? "up" : "down"}-arrow.orange.svg`});
   background-repeat: no-repeat;
   background-position-y: center;
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     display: none;
   }
