@@ -4,6 +4,7 @@ import MobileSubHeader from "components/MobileSubHeader";
 import { useDispatchContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
+import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
 import { ReviewListType } from "pages/menu/[id]";
 import { useEffect, useState } from "react";
@@ -18,7 +19,7 @@ export default function PhotoReviews() {
     total_count: 0,
   });
 
-  const { setLoginModal } = useDispatchContext();
+  const { openLoginModal } = useModals();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
   const { getAccessToken } = UseAccessToken();
@@ -49,7 +50,7 @@ export default function PhotoReviews() {
   const handleReviewPostButtonClick = () => {
     getAccessToken()
       .then(() => router.push(`/menu/${id}?writeReview=true`))
-      .catch(() => setLoginModal(true))
+      .catch(() => openLoginModal())
   };
 
   const handleMobileSubHeaderBack = () => router.push(`/menu/${id}`);
