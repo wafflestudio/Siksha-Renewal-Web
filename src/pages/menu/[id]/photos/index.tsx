@@ -63,15 +63,17 @@ export default function PhotoReviews() {
             <GalleryTitle>사진 리뷰</GalleryTitle>
             <PhotoReviewsCount>{reviews.total_count}</PhotoReviewsCount>
           </GalleryHeader>
-          <Gallery>
-            {reviews.result.length > 0 ?
-              reviews.result.map((review) => (
+          {
+            reviews.result.length > 0 ?
+            <Gallery>
+              {reviews.result.map((review) => (
                 isMobile
                   ? <ReviewItem key={review.id} review={review} />
                   : <PhotoReviewItem key={review.id} review={review} />
-              ))
-              : "리뷰 없어용"}
-          </Gallery>
+              ))}
+            </Gallery>
+            : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+          }
           <ReviewPostButtonWrapper>
             <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
               나의 평가 남기기
@@ -96,14 +98,17 @@ const Container = styled.div`
 
 const GalleryWrapper = styled.main`
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: 862px;
-  height: 100%;
+  min-height: calc(100vh - 271px);
   padding: 32px 0;
   margin: auto;
   box-sizing: border-box;
   @media (max-width: 768px) {
-      width: 100%;
-      padding: 0 16px;
+    width: 100%;
+    padding: 0 16px;
+    height: 100%;
   }
 `;
 
@@ -145,10 +150,26 @@ const Gallery = styled.section`
   }
 `;
 
+const NoReviewMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 400;
+  color: #797979;
+  flex-grow: 1;
+  justify-content: center;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
 const ReviewPostButtonWrapper = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
+  height: 100%;
   height: 46px;
   bottom: 17px;
   @media (max-width: 768px) {
