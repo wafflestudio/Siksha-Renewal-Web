@@ -156,11 +156,10 @@ export default function PostWriter() {
 
   const resize = () => {
     let textarea = document.querySelector(".content-input") as HTMLTextAreaElement | null;
-    const offset = isMobile ? 113 : 284;
+    const minHeight = isMobile ? 113 : 284;
+    const maxHeight = isMobile ? 305 : 500;
 
-    console.log(offset);
-
-    if (textarea && textarea.scrollHeight > offset) {
+    if (textarea && textarea.scrollHeight > minHeight && textarea.scrollHeight < maxHeight) {
       textarea.style.height = "auto";
       const height = textarea.scrollHeight;
       textarea.style.height = `${height + 8}px`;
@@ -450,9 +449,9 @@ const PhotoViewer = styled.div`
   align-items: end;
   gap: 13px;
   padding: 0px 3px;
-  overflow-x: auto;
+  /* overflow-x: auto; */
   z-index: 2;
-  height: 135px;
+  /* height: 135px; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -501,7 +500,8 @@ const FileInput = styled.input`
 `;
 
 const ButtonContainer = styled.div`
-  position: fixed;
+  position: absolute;
+  /* position: relative; */
   bottom: 65px;
   display: flex;
   justify-content: center;
