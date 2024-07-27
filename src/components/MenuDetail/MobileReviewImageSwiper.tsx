@@ -4,7 +4,14 @@ import Link from "next/link";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
-export default function MobileReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
+interface MobileReviewImageSwiperProps {
+  menuId: number;
+  images: string[];
+  swiperImagesLimit: number;
+  imageCount: number;
+};
+
+export default function MobileReviewImageSwiper({ menuId, images, swiperImagesLimit, imageCount }: MobileReviewImageSwiperProps) {
 	const OPTIONS: EmblaOptionsType = { loop: false, watchDrag: false };
 	const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
 
@@ -41,7 +48,7 @@ export default function MobileReviewImageSwiper({ images, swiperImagesLimit, ima
 								<ReviewImageContainer key={image}>
 									{
 										imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
-										<Link href="#">
+										<Link href={`/menu/${menuId}/photos`}>
 											<MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
 										</Link>
 									}

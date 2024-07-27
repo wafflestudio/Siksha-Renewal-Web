@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReviewImageSwiper from "./ReviewImageSwiper";
-import { MenuType, ReviewListType } from "pages/menu/[id]";
+import { MenuType } from "pages/menu/[id]";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
-import { useDispatchContext } from "hooks/ContextProvider";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
@@ -61,6 +60,7 @@ export default function MenuSection({
     <MenuContainer>
       {images.length > 0 && (
         <ReviewImageSwiper
+          menuId={menu.id}
           images={images}
           swiperImagesLimit={SWIPER_IMAGES_LIMIT}
           imageCount={images.length}
