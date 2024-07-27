@@ -42,13 +42,14 @@ export default function Posts() {
     }
   }, [boardId]);
 
-  return (
-    <Board selectedBoardId={Number(boardId) ?? 1}>
-      <BoardHeader />
-      <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
-      <MobileNavigationBar />
-    </Board>
-  );
+  if (boardId)
+    return (
+      <Board selectedBoardId={Number(boardId)}>
+        <BoardHeader />
+        <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
+        <MobileNavigationBar />
+      </Board>
+    );
 }
 
 const Container = styled.div``;
