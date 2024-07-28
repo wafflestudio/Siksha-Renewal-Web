@@ -67,7 +67,6 @@ export default function Layout({ children }: LayoutProps) {
       <Container id="root-layout">
         <Header />
         <Content>{children}</Content>
-        <MobileNavigationBar />
       </Container>
       <Modals />
     </>
