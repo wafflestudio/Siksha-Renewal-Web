@@ -1,21 +1,16 @@
-import styled, { css } from "styled-components";
-import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LoginModal from "../../components/Auth/LoginModal";
-import { ReviewItem } from "../../components/MenuDetail/ReviewItem.";
-import ReviewDistribution from "../../components/MenuDetail/ReviewDistribution";
-import ReviewPostModal from "../../components/MenuDetail/ReviewPostModal";
-import { useDispatchContext, useStateContext } from "../../hooks/ContextProvider";
-import ReviewImageSwiper from "../../components/MenuDetail/ReviewImageSwiper";
-import Link from "next/link";
-import Likes from "../../components/MenuDetail/Likes";
+import LoginModal from "components/Auth/LoginModal";
+import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import MobileSubHeader from "components/MobileSubHeader";
 import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import Image from "next/image";
 import { getMenu } from "utils/api/menus";
-import { getRestaurantList } from "../../utils/api/restaurants";
 import { getReviews, getReviewScore } from "utils/api/reviews";
+import { useSearchParams } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
@@ -59,6 +54,8 @@ export interface ReviewListType {
 export default function Menu() {
   const router = useRouter();
   const { id } = router.query;
+  const searchParams = useSearchParams();
+  const writeReview = !!searchParams.get("writeReview");
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
@@ -171,6 +168,7 @@ export default function Menu() {
                 />
               ) : (
                 <ReviewSection
+                  menuId={menu.id}
                   reviews={reviews}
                   images={images}
                   isReviewListPageOpen={isReviewListPageOpen}

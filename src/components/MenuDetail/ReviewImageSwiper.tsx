@@ -5,12 +5,19 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
+interface ReviewImageSwiperProps {
+  menuId: number;
+  images: string[];
+  swiperImagesLimit: number;
+  imageCount: number;
+};
+
+export default function ReviewImageSwiper({ menuId, images, swiperImagesLimit, imageCount }: ReviewImageSwiperProps) {
   const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
 
-  if(images.length > swiperImagesLimit) {
+  if (images.length > swiperImagesLimit) {
     images = images.slice(0, swiperImagesLimit);
   }
 
@@ -51,7 +58,7 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
             <ReviewImageContainer key={image}>
               {
                 imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
-                <Link href="#">
+                <Link href={`/menu/${menuId}/photos`}>
                   <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
                 </Link>
               }

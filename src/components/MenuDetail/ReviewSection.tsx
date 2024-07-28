@@ -6,16 +6,17 @@ import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
 
 interface ReviewSectionProps {
-  reviews: ReviewListType,
-  images: string[],
-  isReviewListPageOpen: boolean,
-  handleReviewPostButtonClick: () => void,
-  handleReviewListPage: (isOpen: boolean) => void,
+  menuId: number;
+  reviews: ReviewListType;
+  images: string[];
+  isReviewListPageOpen: boolean;
+  handleReviewPostButtonClick: () => void;
+  handleReviewListPage: (isOpen: boolean) => void;
 }
-export default function ReviewSection({ reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
+export default function ReviewSection({ menuId, reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
   const isMobile = useIsMobile();
 
-  const MOBILE_IMAGE_LIST_LIMIT = 5;
+  const MOBILE_IMAGE_LIST_LIMIT = 3;
   
   return (
     <>
@@ -32,13 +33,16 @@ export default function ReviewSection({ reviews, images, isReviewListPageOpen, h
         <ReviewContainer>
           <ReviewHeader>
             <MobilePhotoReviewHeader>
-              <Link href="#" style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                textDecoration: "none",
-                cursor: "pointer"
-              }}>
+              <Link
+                href={`/menu/${menuId}/photos`}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textDecoration: "none",
+                  cursor: "pointer"
+                }}
+              >
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
@@ -50,7 +54,7 @@ export default function ReviewSection({ reviews, images, isReviewListPageOpen, h
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>
-            <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
+            <MobileReviewImageSwiper menuId={menuId} images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
             <div style={{
               width: "100%",
               display: "flex"
