@@ -21,7 +21,6 @@ export default function Setting_Profile() {
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    console.log(userInfo?.image);
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
 
@@ -46,24 +45,26 @@ export default function Setting_Profile() {
   };
 
   return (
-    <AccountLayout>
+    <>
       <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
-      <Container>
-        <Title>닉네임 설정</Title>
-        <ProfileEdit
-          nickname={nickname}
-          setNickname={setNickname}
-          imageBlob={imageBlob}
-          setImageBlob={setImageBlob}
-          imgRef={imgRef}
-          updateProfile={updateProfile}
-        />
-        <ButtonGroup>
-          <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
-          <CompleteButton onClick={updateProfile}>완료</CompleteButton>
-        </ButtonGroup>
-      </Container>
-    </AccountLayout>
+      <AccountLayout>
+        <Container>
+          <Title>닉네임 설정</Title>
+          <ProfileEdit
+            nickname={nickname}
+            setNickname={setNickname}
+            imageBlob={imageBlob}
+            setImageBlob={setImageBlob}
+            imgRef={imgRef}
+            updateProfile={updateProfile}
+          />
+          <ButtonGroup>
+            <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
+            <CompleteButton onClick={updateProfile}>완료</CompleteButton>
+          </ButtonGroup>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 

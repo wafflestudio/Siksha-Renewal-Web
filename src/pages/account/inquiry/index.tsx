@@ -46,28 +46,30 @@ export default function Inquiry() {
   };
 
   return (
-    <AccountLayout>
+    <>
       <MobileSubHeader title="1:1 문의하기" handleBack={() => router.push("/account")} />
-      <Container>
-        <Title>1:1 문의하기</Title>
-        <MobileBox>
-          <Icon src="/img/comment.svg" alt="comment" />
-          <Description>문의할 내용을 남겨주세요.</Description>
-        </MobileBox>
-        <UserBox>
-          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="profile" />
-          <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
-        </UserBox>
-        <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} />
-          <WordCnt>{`${voc.length} / 500자`}</WordCnt>
-        </InquireBox>
-        <ButtonBox>
-          <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
-          <ButtonConfirm onClick={handlePost}>등록</ButtonConfirm>
-        </ButtonBox>
-      </Container>
-    </AccountLayout>
+      <AccountLayout>
+        <Container>
+          <Title>1:1 문의하기</Title>
+          <MobileBox>
+            <Icon src="/img/comment.svg" alt="comment" />
+            <Description>문의할 내용을 남겨주세요.</Description>
+          </MobileBox>
+          <UserBox>
+            <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="profile" />
+            <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
+          </UserBox>
+          <InquireBox>
+            <TextArea value={voc} onChange={handleTextAreaChange} />
+            <WordCnt>{`${voc.length} / 500자`}</WordCnt>
+          </InquireBox>
+          <ButtonBox>
+            <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
+            <ButtonConfirm onClick={handlePost}>등록</ButtonConfirm>
+          </ButtonBox>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 

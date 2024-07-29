@@ -44,22 +44,24 @@ export default function UserSetting() {
   };
 
   return (
-    <AccountLayout>
+    <>
       <MobileSubHeader title="계정 관리" handleBack={() => router.push("/account")} />
-      <MobileSpace />
-      <Container>
-        <Title>계정 관리</Title>
-        <ContentDiv onClick={handleLogout}>
-          <LogoutText>로그아웃</LogoutText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-        <BreakLine />
-        <ContentDiv onClick={handleExit}>
-          <WithdrawalText>회원 탈퇴</WithdrawalText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-      </Container>
-    </AccountLayout>
+      <AccountLayout>
+        <MobileSpace />
+        <Container>
+          <Title>계정 관리</Title>
+          <ContentDiv onClick={handleLogout}>
+            <LogoutText>로그아웃</LogoutText>
+            <ArrowButton src="/img/right-arrow-grey.svg" />
+          </ContentDiv>
+          <BreakLine />
+          <ContentDiv onClick={handleExit}>
+            <WithdrawalText>회원 탈퇴</WithdrawalText>
+            <ArrowButton src="/img/right-arrow-grey.svg" />
+          </ContentDiv>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 

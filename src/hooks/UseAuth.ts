@@ -38,6 +38,13 @@ export default function useAuth() {
     });
   };
 
+  const checkAccessToken = () => {
+    if (authStatus !== "login") {
+      return Promise.resolve(null);
+    }
+    return getAccessToken();
+  };
+
   const signIn = (accessToken: string) => {
     localStorage.setItem("access_token", accessToken);
     setAuthStatus("login");
@@ -50,5 +57,5 @@ export default function useAuth() {
     setLoginStatus(false);
   };
 
-  return { authStatus, authGuard, getAccessToken, signIn, signOut };
+  return { authStatus, authGuard, getAccessToken, checkAccessToken, signIn, signOut };
 }

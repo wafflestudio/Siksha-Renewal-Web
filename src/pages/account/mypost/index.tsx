@@ -36,22 +36,25 @@ export default function MyPost() {
   }, [authStatus]);
 
   return (
-    <AccountLayout>
+    <>
       <MobileSubHeader title="내가 쓴 글" handleBack={() => router.push("/account")} />
-      <Container>
-        {posts.length ? (
-          <>
-            <Header>내가 쓴 글</Header>
-            <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
-            <BreakLine />
-          </>
-        ) : authStatus === "loading" || isLoading ? (
-          <NoPost>글을 불러오는 중입니다.</NoPost>
-        ) : (
-          <NoPost>내가 쓴 글이 없어요.</NoPost>
-        )}
-      </Container>
-    </AccountLayout>
+
+      <AccountLayout>
+        <Container>
+          {posts.length ? (
+            <>
+              <Header>내가 쓴 글</Header>
+              <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
+              <BreakLine />
+            </>
+          ) : authStatus === "loading" || isLoading ? (
+            <NoPost>글을 불러오는 중입니다.</NoPost>
+          ) : (
+            <NoPost>내가 쓴 글이 없어요.</NoPost>
+          )}
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 

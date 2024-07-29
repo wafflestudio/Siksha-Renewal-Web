@@ -13,11 +13,9 @@ export default function UseProfile() {
     if (authStatus === "logout") {
       setUserInfo(null);
     } else {
-      getAccessToken().then((token) => {
-        getMyData(token).then((profile) => {
-          setUserInfo(profile);
-        });
-      });
+      getAccessToken()
+        .then((token) => getMyData(token))
+        .then((profile) => setUserInfo(profile));
     }
   }, [authStatus]);
 
