@@ -1,5 +1,5 @@
 import Header from "components/Header";
-import MobileNavigationBar from "components/MobileNavigationBar";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
@@ -51,10 +51,9 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <>
-      <Container>
+      <Container id="root-layout">
         <Header />
         <Content>{children}</Content>
-        <MobileNavigationBar />
       </Container>
       <Modals />
     </>

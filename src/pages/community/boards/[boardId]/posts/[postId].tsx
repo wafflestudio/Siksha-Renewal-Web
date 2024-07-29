@@ -19,6 +19,7 @@ import {
 } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
+import MobileSubHeader from "components/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
 import LoginModal from "components/Auth/LoginModal";
@@ -147,76 +148,88 @@ export default function Post() {
         ];
 
     return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>
-          <Header>
-            <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
-              <div>
-                <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
-                <PostDate>
-                  {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
-                </PostDate>
-              </div>
-            </WriterInfoContainer>
-            <DesktopPostActions>
-              {actions.map((action) => (
-                <DesktopActionButton key={action.name} onClick={action.handleClick}>
-                  {action.name}
-                </DesktopActionButton>
-              ))}
-            </DesktopPostActions>
-            <MobileMoreActionsButton
-              src="/img/etc.svg"
-              onClick={() => onClickMoreActions(actions)}
-            />
-          </Header>
-          <Content>
-            <Title>{post.title}</Title>
-            <Text>{post.content}</Text>
-            {post.images && <PostImageSwiper images={post.images} />}
-          </Content>
-          <LikesAndComments>
-            <Likes>
-              <Icon src="/img/post-like.svg" />
-              {post.likeCount}
-            </Likes>
-            <Comments>
-              <Icon src="/img/post-comment.svg" />
-              {post.commentCount}
-            </Comments>
-          </LikesAndComments>
-          <Footer>
-            <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
-              공감
-            </LikeButton>
-            <BackToBoardButton
-              onClick={() => {
-                router.push(`/community/boards/${boardId}`);
-              }}
-            >
-              <FooterIcon src="/img/posts-orange.svg" />
-              목록보기
-            </BackToBoardButton>
-          </Footer>
-          <CommentContainer>
-            <CommentList
-              comments={comments}
-              update={deleteComment}
-              fetch={fetchComments}
-              hasNext={hasNextComments}
-            />
-            <CommentWriter postId={post.id} update={addComment} />
-          </CommentContainer>
-        </Container>
-      </Board>
+      <>
+        <MobileSubHeader
+          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+          handleBack={router.back}
+        />
+        <Board selectedBoardId={Number(boardId) ?? 1}>
+          <Container>
+            <Header>
+              <WriterInfoContainer>
+                <ProfileImage src={profileImg} />
+                <div>
+                  <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                  <PostDate>
+                    {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                  </PostDate>
+                </div>
+              </WriterInfoContainer>
+              <DesktopPostActions>
+                {actions.map((action) => (
+                  <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                    {action.name}
+                  </DesktopActionButton>
+                ))}
+              </DesktopPostActions>
+              <MobileMoreActionsButton
+                src="/img/etc.svg"
+                onClick={() => onClickMoreActions(actions)}
+              />
+            </Header>
+            <Content>
+              <Title>{post.title}</Title>
+              <Text>{post.content}</Text>
+              {post.images && <PostImageSwiper images={post.images} />}
+            </Content>
+            <LikesAndComments>
+              <Likes>
+                <Icon src="/img/post-like.svg" />
+                {post.likeCount}
+              </Likes>
+              <Comments>
+                <Icon src="/img/post-comment.svg" />
+                {post.commentCount}
+              </Comments>
+            </LikesAndComments>
+            <Footer>
+              <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
+                공감
+              </LikeButton>
+              <BackToBoardButton
+                onClick={() => {
+                  router.push(`/community/boards/${boardId}`);
+                }}
+              >
+                <FooterIcon src="/img/posts-orange.svg" />
+                목록보기
+              </BackToBoardButton>
+            </Footer>
+            <CommentContainer>
+              <CommentList
+                comments={comments}
+                update={deleteComment}
+                fetch={fetchComments}
+                hasNext={hasNextComments}
+              />
+              <CommentWriter postId={post.id} update={addComment} />
+            </CommentContainer>
+          </Container>
+        </Board>
+      </>
     );
   } else {
     return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
-      </Board>
+      <>
+        <MobileSubHeader
+          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+          handleBack={router.back}
+        />
+        <Board selectedBoardId={Number(boardId) ?? 1}>
+          <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
+        </Board>
+      </>
     );
   }
 }
