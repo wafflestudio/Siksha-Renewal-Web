@@ -5,9 +5,12 @@ import LoginModal from "components/Auth/LoginModal";
 import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import MobileSubHeader from "components/MobileSubHeader";
+import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
+import Image from "next/image";
 import { getMenu } from "utils/api/menus";
 import { getReviews, getReviewScore } from "utils/api/reviews";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
@@ -52,7 +55,7 @@ export default function Menu() {
   const router = useRouter();
   const { id } = router.query;
   const searchParams = useSearchParams();
-  const writeReview = !!searchParams.get('writeReview');
+  const writeReview = !!searchParams.get("writeReview");
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
@@ -79,19 +82,19 @@ export default function Menu() {
       const accessToken = await getAccessToken().catch((error) => "");
 
       Promise.all([getMenu(Number(id), accessToken), getReviews(Number(id))])
-      .then(([menuData, reviewsData]) => {
-        setMenu(menuData);
-        setMobileSubHeaderTitle(menuData.name_kr);
-        setReviews({
-          result: reviewsData.result,
-          total_count: reviewsData.totalCount,
-        });
-      })
-      .catch((e) => {
-        console.error(e);
-        router.push("/");
-      })
-      .finally(() => setLoading(false));
+        .then(([menuData, reviewsData]) => {
+          setMenu(menuData);
+          setMobileSubHeaderTitle(menuData.name_kr);
+          setReviews({
+            result: reviewsData.result,
+            total_count: reviewsData.totalCount,
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          router.push("/");
+        })
+        .finally(() => setLoading(false));
     }
     fetchData();
   }, [id, setLoading]);
@@ -175,6 +178,7 @@ export default function Menu() {
               )}
             </Info>
           </Background>
+          <MobileNavigationBar />
         </>
       )}
     </>

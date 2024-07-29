@@ -10,6 +10,7 @@ import MenuList from "components/MenuList";
 import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import UseAccessToken from "hooks/UseAccessToken";
 
 export default function Home() {
@@ -42,7 +43,11 @@ export default function Home() {
             console.error(e);
           });
       } else {
-        getMenuList(dateString, localStorage.getItem("isExceptEmptyRestaurant") === "true", accessToken)
+        getMenuList(
+          dateString,
+          localStorage.getItem("isExceptEmptyRestaurant") === "true",
+          accessToken,
+        )
           .then(({ result }) => {
             const { BR, LU, DN } = result[0];
 
@@ -89,6 +94,7 @@ export default function Home() {
           <RestaurantInfo />
         </Info>
       )}
+      <MobileNavigationBar />
     </>
   );
 }

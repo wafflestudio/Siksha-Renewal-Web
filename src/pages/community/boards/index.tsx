@@ -10,7 +10,7 @@ import { getBoardList } from "utils/api/community";
 
 interface BoardProps {
   selectedBoardId?: number;
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 }
 
 export default function Board({ selectedBoardId, children }: BoardProps) {
