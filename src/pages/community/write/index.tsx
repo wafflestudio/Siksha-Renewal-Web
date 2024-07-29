@@ -158,10 +158,17 @@ export default function PostWriter() {
     const minHeight = isMobile ? 113 : 284;
     const maxHeight = isMobile ? 305 : 500;
 
-    if (textarea && textarea.scrollHeight > minHeight && textarea.scrollHeight < maxHeight) {
+    if (textarea) {
       textarea.style.height = "auto";
       const height = textarea.scrollHeight;
-      textarea.style.height = `${height + 8}px`;
+
+      if (height > minHeight && height < maxHeight) {
+        textarea.style.height = `${height}px`;
+      } else if (height >= maxHeight) {
+        textarea.style.height = `${maxHeight}px`;
+      } else {
+        textarea.style.height = `${minHeight}px`;
+      }
     }
   };
 
