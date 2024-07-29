@@ -20,6 +20,14 @@
     "isolatedModules": true,
     "baseUrl": "src"
   },
-  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/**/*.ts", "**/**/*.tsx"],
+  "include": [
+    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/**/*.ts",
+    "**/**/*.tsx",
+    "src/types"
+  ],
   "exclude": ["node_modules"]
 }

@@ -3,6 +3,9 @@ import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit
 import Header from "../../../components/Header";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
+import useAuth from "hooks/UseAuth";
+import MobileSubHeader from "components/MobileSubHeader";
+import { useRouter } from "next/router";
 
 interface FavoriteRestaurant {
   id: number;
@@ -12,6 +15,10 @@ interface FavoriteRestaurant {
 
 export default function Setting_NonFavorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
+  const { authStatus, authGuard } = useAuth();
+  const router = useRouter();
+
+  useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
     const orderList: FavoriteRestaurant[] = JSON.parse(
@@ -59,9 +66,12 @@ export default function Setting_NonFavorite() {
   };
 
   return (
-    <Container>
-      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
-    </Container>
+    <>
+      <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
+      <Container>
+        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+      </Container>
+    </>
   );
 }
 

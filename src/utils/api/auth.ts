@@ -1,5 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
+import { User, RawUser } from "types";
 
 export const loginKakao = async (code: string): Promise<string> => {
   const grantType = "authorization_code";
@@ -113,28 +114,36 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     });
 };
 
-export const getMyData = async (accessToken: string): Promise<{ id: number; nickname: string }> => {
+export const getMyData = async (accessToken: string): Promise<User> => {
   return axios
     .get(`${APIendpoint()}/auth/me`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
-    .then((res) => {
+    .then((res: { data: RawUser }) => {
       const {
-        data: { id, nickname },
+        data: { id, nickname, etc },
       } = res;
-      return { id, nickname };
+      return { id, nickname, image: etc?.image ?? null };
     })
     .catch((e) => {
       throw new Error(e);
     });
 };
 
-export const updateMyData = async (formData: FormData, accessToken: string): Promise<void> => {
+export const updateMyData = async (formData: FormData, accessToken: string): Promise<User> => {
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: {
+        "authorization-token": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
     })
-    .then(() => {})
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, etc },
+      } = res;
+      return { id, nickname, image: etc?.image ?? null };
+    })
     .catch((e) => {
       throw new Error(e);
     });
@@ -142,7 +151,7 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
-    .delete(`${APIendpoint()}/auth/me`, {
+    .delete(`${APIendpoint()}/auth/`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})

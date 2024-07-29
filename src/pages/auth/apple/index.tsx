@@ -5,7 +5,7 @@ import { useDispatchContext } from "hooks/ContextProvider";
 
 export default function Auth() {
   const router = useRouter();
-  const { setLoginStatus } = useDispatchContext();
+  const { setLoginStatus, setAuthStatus } = useDispatchContext();
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -20,6 +20,7 @@ export default function Auth() {
       .then((accessToken) => {
         localStorage.setItem("access_token", accessToken);
         setLoginStatus(true);
+        setAuthStatus("login");
         router.push("/");
       })
       .catch((res: any) => {

@@ -1,5 +1,9 @@
 import { useDispatchContext, useStateContext } from "./ContextProvider";
 
+/**
+ *
+ * @deprecated use useAuth instead
+ */
 export default function UseAccessToken() {
   const { loginStatus } = useStateContext();
   const { setLoginStatus } = useDispatchContext();
