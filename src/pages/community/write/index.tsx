@@ -43,7 +43,6 @@ export default function PostWriter() {
   const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   const isMobile = useIsMobile();
   const { loginStatus } = useStateContext();
@@ -174,12 +173,8 @@ export default function PostWriter() {
     fetchPreviousPost();
   }, []);
 
-  // hydration mismatch를 피하기 위해 isClient state로 pre-rendering을 막습니다.
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (isClient)
+  // hydration mismatch를 피하기 위해 loginStatus state로 pre-rendering을 막습니다.
+  if (loginStatus)
     return (
       <>
         <MobileSubHeader title="글쓰기" handleBack={router.back} />
