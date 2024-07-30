@@ -12,7 +12,7 @@ export default function InfiniteScrollable({
   children,
   setIsLoading,
 }: InfiniteScrollableProps) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [size] = useState(10);
 
   const [hasNext, setHasNext] = useState(false);
@@ -50,19 +50,16 @@ export default function InfiniteScrollable({
         observer.unobserve(observerElement.current);
       }
     };
-  }, [observerCallback, currentPath]);
+  }, [observerCallback]);
 
   useEffect(() => {
-    loadingWrapper(handleFetchMoreData);
+    setPage((_) => 0);
+  }, [currentPath]);
+
+  useEffect(() => {
+    if (page === 0) setPage((_) => 1);
+    else loadingWrapper(handleFetchMoreData);
   }, [page]);
-
-  useEffect(() => {
-    if (page === 1) loadingWrapper(handleFetchMoreData);
-  }, [currentPath]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [currentPath]);
 
   return (
     <Container>
