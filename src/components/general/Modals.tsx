@@ -23,6 +23,10 @@ export default function Modals() {
       handleClose();
     };
 
-    return i === 0 && <Component key={i} {...rest} onClose={handleClose} onSubmit={handleSubmit} />;
+    return (
+      i === openedModals.length - 1 && (
+        <Component key={i} {...rest} onClose={handleClose} onSubmit={handleSubmit} />
+      )
+    );
   });
 }
