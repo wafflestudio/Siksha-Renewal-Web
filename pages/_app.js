@@ -3,16 +3,14 @@ import "/styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
-import { getAnalytics, isSupported } from "./firebase";
+import { analytics } from "../utils/firebase";
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    isSupported().then(() => {
-      analytics.logEvent("page_view", {
-        page_location: window.location.href,
-        page_path: window.location.pathname,
-        page_title: document.title,
-      });
-    })
+    analytics.logEvent("page_view", {
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      page_title: document.title,
+    });
   }, []);
 
   useEffect(() => {

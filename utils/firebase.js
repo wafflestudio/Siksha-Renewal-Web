@@ -23,10 +23,10 @@ const analyticsMock = {
   logEvent: () => {},
   setCurrentScreen: () => {},
   setUserId: () => {},
-}
+};
 
 export let analytics = analyticsMock;
-  
-isSupported().then(supported => {
+
+isSupported().then((supported) => {
   analytics = supported ? getAnalytics(app) : analyticsMock;
 });
