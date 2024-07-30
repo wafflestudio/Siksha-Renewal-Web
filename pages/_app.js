@@ -6,16 +6,12 @@ import APIendpoint from "../constants/constants";
 import { analytics } from "../utils/firebase";
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    analytics.logEvent("page_view", {
-      page_location: window.location.href,
-      page_path: window.location.pathname,
-      page_title: document.title,
-    });
-    analytics.logEvent("page_view", {
-      page_location: window.location.href,
-      page_path: window.location.pathname,
-      page_title: document.title,
-    });
+    if (analytics.logEvent instanceof Function)
+      analytics.logEvent("page_view", {
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+        page_title: document.title,
+      });
   }, []);
 
   useEffect(() => {
