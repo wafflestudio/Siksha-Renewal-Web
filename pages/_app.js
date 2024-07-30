@@ -11,6 +11,11 @@ function MyApp({ Component, pageProps }) {
       page_path: window.location.pathname,
       page_title: document.title,
     });
+    analytics.logEvent("page_view", {
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      page_title: document.title,
+    });
   }, []);
 
   useEffect(() => {
