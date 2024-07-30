@@ -33,7 +33,6 @@ export default function Post() {
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -52,17 +51,17 @@ export default function Post() {
       .then((result: string | null) =>
         getCommentList(Number(postId), result ?? undefined, size, page),
       )
-      .then((data) => {
-        const { result, hasNext } = data;
-        setHasNextComments(hasNext);
+      .then(({ result, hasNext }) => {
         const newComments = result.map(commentParser);
         setComments((prev) => [...prev, ...newComments]);
+        return hasNext;
       })
       .catch((e) => {
         console.error(e);
         setIsError(true);
       });
   };
+
   const addComment = (rawComment: RawComment) => {
     setComments((prev) => [...prev, commentParser(rawComment)]);
   };
@@ -207,12 +206,7 @@ export default function Post() {
               </BackToBoardButton>
             </Footer>
             <CommentContainer>
-              <CommentList
-                comments={comments}
-                update={deleteComment}
-                fetch={fetchComments}
-                hasNext={hasNextComments}
-              />
+              <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
               <CommentWriter postId={post.id} update={addComment} />
             </CommentContainer>
           </Container>

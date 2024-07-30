@@ -3,10 +3,15 @@ import styled from "styled-components";
 
 interface InfiniteScrollableProps {
   fetchMoreData: (size: number, page: number) => Promise<boolean | void>;
-  children: JSX.Element | JSX.Element[] | [];
+  children: JSX.Element | JSX.Element[];
+  setIsLoading?: (value: boolean) => void;
 }
 
-export default function InfiniteScrollable({ fetchMoreData, children }: InfiniteScrollableProps) {
+export default function InfiniteScrollable({
+  fetchMoreData,
+  children,
+  setIsLoading,
+}: InfiniteScrollableProps) {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
 
@@ -35,13 +40,18 @@ export default function InfiniteScrollable({ fetchMoreData, children }: Infinite
     };
   }, [observerCallback]);
 
+  async function loadingWrapper(callback: () => Promise<void>) {
+    if (page === 1) setIsLoading?.(true);
+    await callback();
+    setIsLoading?.(false);
+  }
+
   useEffect(() => {
     async function fetch() {
       const hasNext = await fetchMoreData(size, page);
-      console.log(page, "is requested");
       if (typeof hasNext === "boolean") setHasNext(hasNext);
     }
-    fetch();
+    loadingWrapper(fetch);
   }, [page]);
 
   useEffect(() => {

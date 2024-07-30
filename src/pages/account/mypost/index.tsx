@@ -13,10 +13,8 @@ import { useRouter } from "next/router";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [hasNextPosts, setHasNextPosts] = useState(false);
 
   const { authStatus, getAccessToken, authGuard } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(authGuard, [authStatus]);
@@ -25,8 +23,6 @@ export default function MyPost() {
     getAccessToken()
       .then((accessToken) => getMyPostList(accessToken, size, page))
       .then(({ result, hasNext }) => {
-        console.log(result);
-        setIsLoading(false);
         result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
         return hasNext;
       })
@@ -35,10 +31,6 @@ export default function MyPost() {
   useEffect(() => {
     setPosts([]);
   }, []);
-
-  useEffect(() => {
-    if (authStatus === "login") setIsLoading(true);
-  }, [authStatus]);
 
   if (authStatus === "login")
     return (
