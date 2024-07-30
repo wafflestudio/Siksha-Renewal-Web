@@ -1,3 +1,5 @@
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
 import useModals from "hooks/UseModals";
@@ -6,23 +8,27 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Post } from "types";
-import { getPopularPosts } from "utils/api/community";
+import { getTrendingPosts } from "utils/api/community";
 import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
   const { checkAccessToken } = UseAccessToken();
+  
+  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
+    Autoplay({ delay: 3000 })
+  ]);
 
-  const [popularPost, setPopularPost] = useState<Post | null>(null);
-
-  async function fetchPopularPost() {
+  async function fetchTrendingPosts() {
     const accessToken = await checkAccessToken();
 
     if (accessToken) {
-      return getPopularPosts(accessToken)
+      return getTrendingPosts(accessToken)
         .then((res) => {
           const { result } = res;
-          setPopularPost(postParser(result[0]));
+          console.log(result);
+          setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
         })
         .catch((e) => console.error(e));
     }
@@ -37,28 +43,39 @@ export function BoardHeader() {
   }
 
   useEffect(() => {
-    fetchPopularPost();
+    fetchTrendingPosts();
   }, []);
 
   return (
     <Container>
-      <Link
-        href={
-          popularPost ? `/community/boards/${popularPost?.boardId}/posts/${popularPost?.id}` : "/"
-        }
-      >
-        <HotPost>
-          <Title>{popularPost?.title}asdfasdfadasdfasdffasdfasdfasdfadsfdsfasdfasdfasdf</Title>
-          <ContentPreview>
-            {popularPost?.content}asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
-            aasdfasdfasdfasdf asdfasfdasasdfasdfasdf
-          </ContentPreview>
-          <Likes>
-            <Icon src="/img/post-like.svg" />
-            {popularPost?.likeCount}
-          </Likes>
-        </HotPost>
-      </Link>
+      {
+        // TODO: trending post 없으면 띄우지 말기
+        <TrendingPostWrapper>
+          <PostSwiperViewport ref={emblaRef}>
+            <PostSwiperContainer>
+            {
+            trendingPosts.length > 0 && trendingPosts.map((trendingPost) => (
+              <Link
+                key={trendingPost.id}
+                href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+              >
+                <TrendingPost>
+                  <Title>{trendingPost.title}</Title>
+                  <ContentPreview>
+                    {trendingPost.content}
+                  </ContentPreview>
+                  <Likes>
+                    <Icon src="/img/post-like.svg" />
+                    {trendingPost.likeCount}
+                  </Likes>
+                </TrendingPost>
+              </Link>
+            ))
+          }
+            </PostSwiperContainer>
+          </PostSwiperViewport>
+        </TrendingPostWrapper>
+      }
       <WriteButton>
         <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
       </WriteButton>
@@ -73,26 +90,46 @@ const Container = styled.div`
   @media (max-width: 768px) {
     margin: 10px 0;
   }
-  & > a {
-    width: min(100% - 56px, 573px);
-  }
 `;
 
-const HotPost = styled.div`
-  display: flex;
-  gap: 15px 10px;
-  height: 100%;
+const TrendingPostWrapper = styled.div`
   background-color: #ff952233;
   padding: 15px 17px;
   border-radius: 8px;
   box-sizing: border-box;
-  font-size: 16px;
-  cursor: pointer;
+  width: min(100% - 56px, 573px);
   @media (max-width: 768px) {
     width: 100%;
     padding: 10px 15px;
     border-radius: 12px;
+  }
+`;
+
+const PostSwiperViewport = styled.div`
+  overflow: hidden;
+  & > a {
+    position: relative;
+  }
+`;
+
+const PostSwiperContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 18px;
+  @media (max-width: 768px) {
+    height: 14px;
+  }
+`;
+
+const TrendingPost = styled.div`
+  display: flex;
+  gap: 15px 10px;
+  font-size: 16px;
+  height: 18px;
+  cursor: pointer;
+  @media (max-width: 768px) {
     font-size: 12px;
+    height: 14px;
   }
 `;
 
@@ -101,12 +138,14 @@ const Title = styled.div`
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const ContentPreview = styled.div`
   flex: 1;
   width: 100%;
   color: #393939;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin-right: 14px;
   white-space: nowrap;
 `;

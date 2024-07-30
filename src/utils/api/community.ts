@@ -89,7 +89,7 @@ export const getTrendingPosts = (
   accessToken: string,
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
   return axios
-    .get(`${APIendpoint()}/community/posts/popular/trending`, {
+    .get(`${APIendpoint()}/community/posts/popular/trending?per_page=5`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
