@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
-import { useStateContext, useDispatchContext } from "../hooks/ContextProvider";
+import { useStateContext } from "../hooks/ContextProvider";
+import useModals from "hooks/UseModals";
+import LoginModal from "./Auth/LoginModal";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -10,15 +11,11 @@ export default function NavigationBar() {
 
   const state = useStateContext();
   const { loginStatus } = state;
+  const { openLoginModal } = useModals();
 
-  const { setLoginModal } = useDispatchContext();
-
-  const isAccountToggle = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else {
-      router.push(`/account`);
-    }
+  const onToggleAccount = () => {
+    if (!loginStatus) openLoginModal();
+    else router.push(`/account`);
   };
 
   return (
@@ -33,7 +30,7 @@ export default function NavigationBar() {
           <NavLink $cur={addr.startsWith(`/community`)}>게시판</NavLink>
         </Link>
       </NavItem>
-      <NavItem onClick={isAccountToggle}>
+      <NavItem onClick={onToggleAccount}>
         <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>

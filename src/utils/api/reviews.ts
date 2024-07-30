@@ -16,7 +16,6 @@ export const getReviews = (
       const {
         data: { total_count: totalCount, has_next: hasNext, result },
       } = res;
-      console.log(result);
       return { totalCount, hasNext, result };
     });
 };

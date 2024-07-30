@@ -5,7 +5,7 @@ import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "t
 import Board from "../../index";
 import CommentList from "components/Community/CommentList";
 import CommentWriter from "components/Community/CommentWriter";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
@@ -19,21 +19,23 @@ import {
 } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
+import MobileSubHeader from "components/MobileSubHeader";
+import DeleteModal from "components/Community/DeleteModal";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
   const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const { getAccessToken, checkAccessToken } = UseAccessToken();
+  const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
-  const [actionsModal, setActionsModal] = useState<boolean>(false);
-  const [reportModal, setReportModal] = useState(false);
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -69,11 +71,10 @@ export default function Post() {
   };
 
   const fetchLike = () => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (post) {
+    if (!loginStatus) openLoginModal();
+    else if (post) {
       const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
-      return getAccessToken()
+      getAccessToken()
         .then((accessToken) => handleLikeAction(post.id, accessToken))
         .then(({ isLiked, likeCount }) => {
           setPost({
@@ -90,20 +91,30 @@ export default function Post() {
   };
 
   const removePost = (postId: number) => {
-    if (loginStatus === false) {
-      setLoginModal(true);
-    } else if (confirm("이 글을 삭제하시겠습니까?")) {
-      return getAccessToken()
-        .then((accessToken) => deletePost(postId, accessToken))
-        .then(() => router.push(`/community/boards/${boardId}`))
-        .catch((e) => {
-          console.error(e);
-        });
-    }
+    if (!loginStatus) openLoginModal();
+    else
+      openModal(DeleteModal, {
+        type: "post",
+        onClose: () => {},
+        onSubmit: () =>
+          getAccessToken()
+            .then((accessToken) => deletePost(postId, accessToken))
+            .then(() => router.push(`/community/boards/${boardId}`))
+            .catch((e) => console.error(e)),
+      });
+  };
+
+  const reportPost = (postId: number) => {
+    if (!loginStatus) openLoginModal();
+    else openModal(ReportModal, { type: "post", targetID: postId, onClose: () => {} });
   };
 
   const updatePost = (postId: number) => {
     router.push(`/community/write/?postId=${postId}`);
+  };
+
+  const onClickMoreActions = (actions: ModalAction[]) => {
+    openModal(MobileActionsModal, { actions: actions, onClose: () => {} });
   };
 
   useEffect(() => {
@@ -122,94 +133,103 @@ export default function Post() {
       ? [
           {
             name: "수정",
-            handleClick: () => router.push(`/community/write/?postId=${postId}`),
+            handleClick: () => updatePost(post.id),
           },
-          { name: "삭제", handleClick: () => removePost(post.id) },
+          {
+            name: "삭제",
+            handleClick: () => removePost(post.id),
+          },
         ]
       : [
           {
             name: "신고",
-            handleClick: () => {
-              if (loginStatus) setReportModal(true);
-              else setLoginModal(true);
-            },
+            handleClick: () => reportPost(post.id),
           },
         ];
 
     return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>
-          <Header>
-            <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
-              <div>
-                <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
-                <PostDate>
-                  {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
-                </PostDate>
-              </div>
-            </WriterInfoContainer>
-            <DesktopPostActions>
-              {actions.map((action) => (
-                <DesktopActionButton key={action.name} onClick={action.handleClick}>
-                  {action.name}
-                </DesktopActionButton>
-              ))}
-            </DesktopPostActions>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={() => setActionsModal(true)} />
-            {actionsModal && (
-              <MobileActionsModal actions={actions} setActionsModal={setActionsModal} />
-            )}
-            {reportModal && (
-              <ReportModal type="post" targetID={post.id} setReportModal={setReportModal} />
-            )}
-          </Header>
-          <Content>
-            <Title>{post.title}</Title>
-            <Text>{post.content}</Text>
-            {post.images && <PostImageSwiper images={post.images} />}
-          </Content>
-          <LikesAndComments>
-            <Likes>
-              <Icon src="/img/post-like.svg" />
-              {post.likeCount}
-            </Likes>
-            <Comments>
-              <Icon src="/img/post-comment.svg" />
-              {post.commentCount}
-            </Comments>
-          </LikesAndComments>
-          <Footer>
-            <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
-              공감
-            </LikeButton>
-            <BackToBoardButton
-              onClick={() => {
-                router.push(`/community/boards/${boardId}`);
-              }}
-            >
-              <FooterIcon src="/img/posts-orange.svg" />
-              목록보기
-            </BackToBoardButton>
-          </Footer>
-          <CommentContainer>
-            <CommentList
-              comments={comments}
-              update={deleteComment}
-              fetch={fetchComments}
-              hasNext={hasNextComments}
-            />
-            <CommentWriter postId={post.id} update={addComment} />
-          </CommentContainer>
-        </Container>
-      </Board>
+      <>
+        <MobileSubHeader
+          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+          handleBack={router.back}
+        />
+        <Board selectedBoardId={Number(boardId) ?? 1}>
+          <Container>
+            <Header>
+              <WriterInfoContainer>
+                <ProfileImage src={profileImg} />
+                <div>
+                  <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                  <PostDate>
+                    {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                  </PostDate>
+                </div>
+              </WriterInfoContainer>
+              <DesktopPostActions>
+                {actions.map((action) => (
+                  <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                    {action.name}
+                  </DesktopActionButton>
+                ))}
+              </DesktopPostActions>
+              <MobileMoreActionsButton
+                src="/img/etc.svg"
+                onClick={() => onClickMoreActions(actions)}
+              />
+            </Header>
+            <Content>
+              <Title>{post.title}</Title>
+              <Text>{post.content}</Text>
+              {post.images && <PostImageSwiper images={post.images} />}
+            </Content>
+            <LikesAndComments>
+              <Likes>
+                <Icon src="/img/post-like.svg" />
+                {post.likeCount}
+              </Likes>
+              <Comments>
+                <Icon src="/img/post-comment.svg" />
+                {post.commentCount}
+              </Comments>
+            </LikesAndComments>
+            <Footer>
+              <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
+                공감
+              </LikeButton>
+              <BackToBoardButton
+                onClick={() => {
+                  router.push(`/community/boards/${boardId}`);
+                }}
+              >
+                <FooterIcon src="/img/posts-orange.svg" />
+                목록보기
+              </BackToBoardButton>
+            </Footer>
+            <CommentContainer>
+              <CommentList
+                comments={comments}
+                update={deleteComment}
+                fetch={fetchComments}
+                hasNext={hasNextComments}
+              />
+              <CommentWriter postId={post.id} update={addComment} />
+            </CommentContainer>
+          </Container>
+        </Board>
+      </>
     );
   } else {
     return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
-      </Board>
+      <>
+        <MobileSubHeader
+          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+          handleBack={router.back}
+        />
+        <Board selectedBoardId={Number(boardId) ?? 1}>
+          <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
+        </Board>
+      </>
     );
   }
 }

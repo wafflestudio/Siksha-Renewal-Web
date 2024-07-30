@@ -1,11 +1,13 @@
 import Header from "components/Header";
-import MobileNavigationBar from "components/MobileNavigationBar";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
+import UseProfile from "hooks/UseProfile";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { getMyData, loginRefresh } from "utils/api/auth";
+import { loginRefresh } from "utils/api/auth";
+import Modals from "./Modals";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -13,12 +15,12 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const state = useStateContext();
-  const { setLoginStatus, setUserInfo, setIsFilterFavorite, setIsExceptEmptyRestaurant } =
-    useDispatchContext();
+  const { setIsFilterFavorite, setIsExceptEmptyRestaurant } = useDispatchContext();
   const isMobile = useIsMobile();
-  const { getAccessToken } = UseAccessToken();
+  const { getAccessToken } = useAuth();
+  UseProfile();
 
-  const { loginStatus, isExceptEmptyRestaurant } = state;
+  const { authStatus, isExceptEmptyRestaurant } = state;
 
   useEffect(() => {
     getAccessToken()
@@ -32,25 +34,11 @@ export default function Layout({ children }: LayoutProps) {
   }, []);
 
   useEffect(() => {
-    setLoginStatus(!!localStorage.getItem("access_token"));
-
-    getAccessToken()
-      .then((accessToken) => getMyData(accessToken))
-      .then(({ id, nickname }) => {
-        setUserInfo({ id, nickname });
-      })
-      .catch((e) => {
-        console.error(e);
-        setUserInfo({ id: null, nickname: null });
-      });
-  }, [loginStatus]);
-
-  useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
 
   useEffect(() => {
-    if (loginStatus) {
+    if (authStatus === "login") {
       const value = localStorage.getItem("isExceptEmptyRestaurant");
 
       if (value !== null) {
@@ -59,20 +47,23 @@ export default function Layout({ children }: LayoutProps) {
         localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
       }
     }
-  }, [loginStatus]);
+  }, [authStatus]);
 
   return (
-    <Container>
-      <Header />
-      <Content>{children}</Content>
-      <MobileNavigationBar />
-    </Container>
+    <>
+      <Container id="root-layout">
+        <Header />
+        <Content>{children}</Content>
+      </Container>
+      <Modals />
+    </>
   );
 }
 
 const Container = styled.div`
   width: 100%;
   min-width: 1920px;
+  height: 100dvh;
   @media (max-width: 768px) {
     min-width: 0;
     width: 100vw;

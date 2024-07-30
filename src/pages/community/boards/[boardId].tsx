@@ -3,14 +3,13 @@ import styled from "styled-components";
 import { BoardHeader } from "components/Community/BoardHeader";
 import { PostList } from "components/Community/PostList";
 
-import { Post, RawPost } from "types";
+import { Post } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
-import { useStateContext } from "hooks/ContextProvider";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 
 export default function Posts() {
   const router = useRouter();
@@ -43,15 +42,14 @@ export default function Posts() {
     }
   }, [boardId]);
 
-  return (
-    <Board selectedBoardId={Number(boardId) ?? 1}>
-      <>
+  if (boardId)
+    return (
+      <Board selectedBoardId={Number(boardId)}>
         <BoardHeader />
         <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
         <MobileNavigationBar />
-      </>
-    </Board>
-  );
+      </Board>
+    );
 }
 
 const Container = styled.div``;

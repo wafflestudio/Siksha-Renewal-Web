@@ -1,21 +1,20 @@
 import { useRouter } from "next/router";
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import { useState } from "react";
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
+import { useEffect, useState } from "react";
+import { useStateContext } from "../../../hooks/ContextProvider";
 import { setInquiry } from "utils/api/voc";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
+import MobileSubHeader from "components/MobileSubHeader";
 
-export default function Inquire() {
+export default function Inquiry() {
   const router = useRouter();
   const state = useStateContext();
-  const { setLoginModal } = useDispatchContext();
-  const { loginStatus, userInfo } = state;
+  const { userInfo } = state;
 
-  const { getAccessToken } = UseAccessToken();
+  const { getAccessToken, authStatus, authGuard } = useAuth();
 
-  // 프로필 이미지 기능 구현 대비
-  const profileURL = "/img/default-profile.svg";
+  useEffect(authGuard, [authStatus]);
 
   const [voc, setVoc] = useState("");
 
@@ -25,17 +24,13 @@ export default function Inquire() {
     }
   };
 
-  const handleCancle = () => {
+  const handleCancel = () => {
     setVoc("");
     router.push(`/account`);
   };
 
   const handlePost = () => {
-    if (loginStatus === false) {
-      router.push(`/`);
-      setLoginModal(true);
-      return;
-    } else if (voc === "") return;
+    if (voc === "") return;
 
     return getAccessToken()
       .then((accessToken) => setInquiry(voc, accessToken))
@@ -51,27 +46,30 @@ export default function Inquire() {
   };
 
   return (
-    <AccountLayout>
-      <Container>
-        <Title>1:1 문의하기</Title>
-        <MobileBox>
-          <Icon src="/img/comment.svg" />
-          <Description>문의할 내용을 남겨주세요.</Description>
-        </MobileBox>
-        <UserBox>
-          <Profile src={profileURL} />
-          <Nickname>{userInfo.nickname ?? `ID ${userInfo.id}`}</Nickname>
-        </UserBox>
-        <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} />
-          <WordCnt>{`${voc.length} / 500자`}</WordCnt>
-        </InquireBox>
-        <ButtonBox>
-          <ButtonCancel onClick={handleCancle}>취소</ButtonCancel>
-          <ButtonConfirm onClick={handlePost}>등록</ButtonConfirm>
-        </ButtonBox>
-      </Container>
-    </AccountLayout>
+    <>
+      <MobileSubHeader title="1:1 문의하기" handleBack={() => router.push("/account")} />
+      <AccountLayout>
+        <Container>
+          <Title>1:1 문의하기</Title>
+          <MobileBox>
+            <Icon src="/img/comment.svg" alt="comment" />
+            <Description>문의할 내용을 남겨주세요.</Description>
+          </MobileBox>
+          <UserBox>
+            <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="profile" />
+            <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
+          </UserBox>
+          <InquireBox>
+            <TextArea value={voc} onChange={handleTextAreaChange} />
+            <WordCnt>{`${voc.length} / 500자`}</WordCnt>
+          </InquireBox>
+          <ButtonBox>
+            <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
+            <ButtonConfirm onClick={handlePost}>등록</ButtonConfirm>
+          </ButtonBox>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 
@@ -138,6 +136,7 @@ const Profile = styled.img`
   width: 24px;
   height: 24px;
   margin-left: 23.5px;
+  border-radius: 50%;
 
   @media (max-width: 768px) {
     margin-left: 28px;

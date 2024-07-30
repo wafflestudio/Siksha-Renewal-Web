@@ -1,20 +1,25 @@
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import UseAccessToken from "hooks/UseAccessToken";
 import { deleteAccount } from "utils/api/auth";
+import useAuth from "hooks/UseAuth";
+import { useEffect, useState } from "react";
+import MobileSubHeader from "components/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();
-  const state = useStateContext();
-  const { setLoginStatus, setLoginModal } = useDispatchContext();
-  const { loginStatus } = state;
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken, authGuard, signOut } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (authStatus === "login") {
+      setIsLoading(false);
+    }
+    if (isLoading) authGuard();
+  }, [authStatus]);
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    setLoginStatus(!!localStorage.getItem("access_token"));
+    signOut();
     router.push(`/`);
   };
 
@@ -24,18 +29,12 @@ export default function UserSetting() {
     );
     if (!confirmExit) return;
 
-    if (loginStatus === false) {
-      router.push(`/`);
-      setLoginModal(true);
-    }
-
     return getAccessToken()
       .then((accessToken) => {
         deleteAccount(accessToken);
       })
       .then(() => {
-        localStorage.removeItem("access_token");
-        setLoginStatus(!!localStorage.getItem("access_token"));
+        signOut();
         router.push(`/`);
       })
       .catch((e) => {
@@ -45,21 +44,24 @@ export default function UserSetting() {
   };
 
   return (
-    <AccountLayout>
-      <MobileSpace />
-      <Container>
-        <Title>계정 관리</Title>
-        <ContentDiv onClick={handleLogout}>
-          <LogoutText>로그아웃</LogoutText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-        <BreakLine />
-        <ContentDiv onClick={handleExit}>
-          <WithdrawalText>회원 탈퇴</WithdrawalText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-      </Container>
-    </AccountLayout>
+    <>
+      <MobileSubHeader title="계정 관리" handleBack={() => router.push("/account")} />
+      <AccountLayout>
+        <MobileSpace />
+        <Container>
+          <Title>계정 관리</Title>
+          <ContentDiv onClick={handleLogout}>
+            <LogoutText>로그아웃</LogoutText>
+            <ArrowButton src="/img/right-arrow-grey.svg" />
+          </ContentDiv>
+          <BreakLine />
+          <ContentDiv onClick={handleExit}>
+            <WithdrawalText>회원 탈퇴</WithdrawalText>
+            <ArrowButton src="/img/right-arrow-grey.svg" />
+          </ContentDiv>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 

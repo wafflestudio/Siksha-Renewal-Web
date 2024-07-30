@@ -1,5 +1,6 @@
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
+import useModals from "hooks/UseModals";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,8 +10,6 @@ import { getPopularPosts } from "utils/api/community";
 import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
-  const { loginStatus } = useStateContext();
-  const { setLoginModal } = useDispatchContext();
   const router = useRouter();
   const { checkAccessToken } = UseAccessToken();
 
@@ -29,12 +28,12 @@ export function BoardHeader() {
     }
   }
 
+  const { loginStatus } = useStateContext();
+  const { openLoginModal } = useModals();
+
   function handleClickWriteButton() {
-    if (loginStatus === false) {
-      setLoginModal(true);
-      return;
-    }
-    router.push("/community/write");
+    if (!loginStatus) openLoginModal();
+    else router.push("/community/write");
   }
 
   useEffect(() => {

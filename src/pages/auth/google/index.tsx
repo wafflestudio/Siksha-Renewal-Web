@@ -4,7 +4,7 @@ import { loginGoogle } from "utils/api/auth";
 import { useDispatchContext } from "hooks/ContextProvider";
 
 export default function Auth() {
-  const { setLoginStatus } = useDispatchContext();
+  const { setLoginStatus, setAuthStatus } = useDispatchContext();
 
   const router = useRouter();
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function Auth() {
       .then((accessToken) => {
         localStorage.setItem("access_token", accessToken);
         setLoginStatus(true);
+        setAuthStatus("login");
         router.push("/");
       })
       .catch((res: any) => {

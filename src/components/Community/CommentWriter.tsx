@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { setComment } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { RawComment } from "types";
+import { useStateContext } from "hooks/ContextProvider";
+import useModals from "hooks/UseModals";
+import LoginModal from "components/Auth/LoginModal";
 
 interface CommentWriterProps {
   postId: number;
@@ -11,9 +13,12 @@ interface CommentWriterProps {
 }
 
 export default function CommentWriter({ postId, update }: CommentWriterProps) {
+  const { loginStatus } = useStateContext();
+  const { openLoginModal } = useModals();
+  const { checkAccessToken } = UseAccessToken();
+
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const { checkAccessToken } = UseAccessToken();
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
 
@@ -23,30 +28,36 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   }
 
   const submit = () => {
-    return checkAccessToken().then((res: string | null) => {
-      if (res !== null)
-        setComment(postId, commentInput, isAnonymous, res)
-          .then((res) => update(res.data))
-          .then(initialize)
-          .catch((e) => console.error(e));
-    });
+    if (!loginStatus) openLoginModal();
+    else
+      checkAccessToken().then((res: string | null) => {
+        if (res !== null)
+          setComment(postId, commentInput, isAnonymous, res)
+            .then((res) => update(res.data))
+            .then(initialize)
+            .catch((e) => console.error(e));
+      });
   };
 
   return (
     <Container>
       <MobileAnonymousButton isAnonymous={isAnonymous}>
-        <Option src={checkBoxImg} onClick={() => setIsAnonymous(!isAnonymous)} />
-        <span>익명</span>
+        <Option onClick={() => setIsAnonymous(!isAnonymous)}>
+          <Icon src={checkBoxImg} />
+          <span>익명</span>
+        </Option>
       </MobileAnonymousButton>
       <CommentInput
         placeholder="댓글을 입력하세요."
         value={commentInput}
         onChange={(e) => setCommentInput(e.target.value)}
-      ></CommentInput>
+      />
       <Options>
         <DesktopAnonymousButton isAnonymous={isAnonymous}>
-          <Option src={checkBoxImg} onClick={() => setIsAnonymous(!isAnonymous)} />
-          <span>익명</span>
+          <Option onClick={() => setIsAnonymous(!isAnonymous)}>
+            <Icon src={checkBoxImg} />
+            <span>익명</span>
+          </Option>
         </DesktopAnonymousButton>
         <SubmitButton onClick={submit}>올리기</SubmitButton>
       </Options>
@@ -137,7 +148,12 @@ const DesktopAnonymousButton = styled(AnonymousButton)`
     display: none;
   }
 `;
-const Option = styled.img``;
+const Option = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Icon = styled.img``;
+
 const SubmitButton = styled.button`
   background-color: #ff9522;
   color: #fff;
