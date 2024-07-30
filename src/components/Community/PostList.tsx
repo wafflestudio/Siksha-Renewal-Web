@@ -5,13 +5,12 @@ import InfiniteScrollable from "components/general/InfiniteScrollable";
 
 interface PropsPostList {
   posts: PostType[];
-  fetch: (size: number, page: number) => Promise<void>;
-  hasNext: boolean;
+  fetch: (size: number, page: number) => Promise<boolean | void>;
 }
 
-export function PostList({ posts, fetch, hasNext }: PropsPostList) {
+export function PostList({ posts, fetch }: PropsPostList) {
   return (
-    <InfiniteScrollable fetchMoreData={fetch} hasNext={hasNext}>
+    <InfiniteScrollable fetchMoreData={fetch}>
       {posts ? (
         posts.map((post, i) => <Post key={i} post={post} />)
       ) : (

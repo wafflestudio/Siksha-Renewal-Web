@@ -1,22 +1,16 @@
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface InfiniteScrollableProps {
-  fetchMoreData: (size: number, page: number) => Promise<any>;
-  hasNext: boolean;
+  fetchMoreData: (size: number, page: number) => Promise<boolean | void>;
   children: JSX.Element | JSX.Element[] | [];
 }
 
-export default function InfiniteScrollable({
-  fetchMoreData,
-  hasNext,
-  children,
-}: InfiniteScrollableProps) {
+export default function InfiniteScrollable({ fetchMoreData, children }: InfiniteScrollableProps) {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
-  const router = useRouter();
-  const currentPath = router.asPath;
+
+  const [hasNext, setHasNext] = useState(false);
 
   const observerElement = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +20,7 @@ export default function InfiniteScrollable({
         setPage((prevPage) => prevPage + 1);
       }
     },
-    [hasNext, currentPath],
+    [hasNext],
   );
 
   useEffect(() => {
@@ -42,15 +36,17 @@ export default function InfiniteScrollable({
   }, [observerCallback]);
 
   useEffect(() => {
-    if (page >= 2) {
-      fetchMoreData(size, page);
+    async function fetch() {
+      const hasNext = await fetchMoreData(size, page);
       console.log(page, "is requested");
+      if (typeof hasNext === "boolean") setHasNext(hasNext);
     }
+    fetch();
   }, [page]);
 
   useEffect(() => {
     setPage(1);
-  }, [currentPath]);
+  }, []);
 
   return (
     <Container>
