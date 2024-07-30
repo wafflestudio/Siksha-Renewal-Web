@@ -7,11 +7,15 @@ import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { useStateContext } from "hooks/ContextProvider";
+import MobileSubHeader from "components/MobileSubHeader";
+import { useRouter } from "next/router";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
+
   const { getAccessToken } = UseAccessToken();
   const { loginStatus } = useStateContext();
+  const router = useRouter();
 
   function fetchMyPosts(size: number, page: number) {
     return getAccessToken()
@@ -30,13 +34,16 @@ export default function MyPost() {
 
   if (loginStatus)
     return (
-      <AccountLayout>
-        <Container>
-          <Header>내가 쓴 글</Header>
-          <PostList posts={posts} fetch={fetchMyPosts} />
-          <BreakLine />
-        </Container>
-      </AccountLayout>
+      <>
+        <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
+        <AccountLayout>
+          <Container>
+            <Header>내가 쓴 글</Header>
+            <PostList posts={posts} fetch={fetchMyPosts} />
+            <BreakLine />
+          </Container>
+        </AccountLayout>
+      </>
     );
 }
 
@@ -50,6 +57,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    padding-top: 24px;
     border: 0;
   }
 `;
