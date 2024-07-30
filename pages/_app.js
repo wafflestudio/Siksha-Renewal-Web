@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
         page_path: window.location.pathname,
         page_title: document.title,
       });
-  }, []);
+  }, [analytics.logEvent]);
 
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
