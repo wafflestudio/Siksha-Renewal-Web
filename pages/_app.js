@@ -6,13 +6,13 @@ import APIendpoint from "../constants/constants";
 import { getAnalytics, isSupported } from "./firebase";
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    if(isSupported()) {
+    isSupported().then(() => {
       analytics.logEvent("page_view", {
         page_location: window.location.href,
         page_path: window.location.pathname,
         page_title: document.title,
       });
-    }
+    })
   }, []);
 
   useEffect(() => {
