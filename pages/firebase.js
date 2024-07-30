@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,4 +18,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+
+const analyticsMock = {
+    logEvent: () => {},
+    setCurrentScreen: () => {},
+    setUserId: () => {},
+}
+
+export let analytics = analyticsMock;
+  
+isSupported().then(supported => {
+  analytics = supported ? getAnalytics(app) : analyticsMock;
+});
