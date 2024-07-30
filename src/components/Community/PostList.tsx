@@ -11,7 +11,7 @@ interface PropsPostList {
 export function PostList({ posts, fetch }: PropsPostList) {
   return (
     <InfiniteScrollable fetchMoreData={fetch}>
-      {posts ? (
+      {posts.length >= 1 ? (
         posts.map((post, i) => <Post key={i} post={post} />)
       ) : (
         <EmptyText> 게시물이 없습니다 </EmptyText>
@@ -20,9 +20,19 @@ export function PostList({ posts, fetch }: PropsPostList) {
   );
 }
 
-const Container = styled.div`
+const EmptyText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+
   @media (max-width: 768px) {
-    overflow: scroll;
+    height: calc(100dvh - 60px);
   }
 `;
-const EmptyText = styled.div``;
