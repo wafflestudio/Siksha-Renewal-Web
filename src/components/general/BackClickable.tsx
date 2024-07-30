@@ -1,22 +1,27 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 interface BackClickableProps {
   children: JSX.Element;
   onClickBackground: () => void;
+  style?: string;
 }
 
-export default function BackClickable({ children, onClickBackground }: BackClickableProps) {
+export default function BackClickable({ children, onClickBackground, style }: BackClickableProps) {
   const handleBackgroundClick = (event) => {
     if (event.target === event.currentTarget) {
       onClickBackground();
     }
   };
 
-  return <Background onClick={handleBackgroundClick}>{children}</Background>;
+  return (
+    <Background customStyle={style ?? undefined} onClick={handleBackgroundClick}>
+      {children}
+    </Background>
+  );
 }
 
-const Background = styled.div`
-  z-index: 99;
+const Background = styled.div<{ customStyle: string | undefined }>`
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -24,4 +29,10 @@ const Background = styled.div`
   height: 100dvh;
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
+
+  ${(props) =>
+    props.customStyle &&
+    css`
+      ${props.customStyle}
+    `}
 `;
