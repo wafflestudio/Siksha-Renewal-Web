@@ -52,10 +52,12 @@ export default function InfiniteScrollable({
     };
   }, [observerCallback]);
 
+  // 게시판 변경시(주소가 바뀔 시), 새로고침 시 page를 0으로 설정
   useEffect(() => {
     setPage((_) => 0);
   }, [currentPath]);
 
+  // page가 0일 때 page를 1로 변경, page가 1일 때부터 fetch 요청 시작
   useEffect(() => {
     if (page === 0) setPage((_) => 1);
     else loadingWrapper(handleFetchMoreData);
