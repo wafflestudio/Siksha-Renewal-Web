@@ -99,7 +99,7 @@ export default function Post() {
         onSubmit: () =>
           getAccessToken()
             .then((accessToken) => deletePost(postId, accessToken))
-            .then(() => router.push(`/community/boards/${boardId}`))
+            .then(() => router.back())
             .catch((e) => console.error(e)),
       });
   };
