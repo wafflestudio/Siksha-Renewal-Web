@@ -85,26 +85,6 @@ export const getPost = (postID: number, accessToken?: string): Promise<RawPost> 
     });
 };
 
-export const getPopularPosts = (
-  accessToken: string,
-): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
-  return axios
-    .get(`${APIendpoint()}/community/posts/popular/recent`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
-    })
-    .then((res) => {
-      const { data } = res;
-      return {
-        result: data.result,
-        totalCount: data.total_count,
-        hasNext: data.has_next,
-      };
-    })
-    .catch((e) => {
-      throw new Error(e);
-    });
-};
-
 export const getTrendingPosts = (
   accessToken: string,
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
@@ -128,7 +108,7 @@ export const getBestPosts = (
   accessToken: string,
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
   return axios
-    .get(`${APIendpoint()}/community/posts/popular/recent`, {
+    .get(`${APIendpoint()}/community/posts/popular/best`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
