@@ -8,13 +8,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Post } from "types";
-import { getTrendingPosts } from "utils/api/community";
+import { getPostList, getTrendingPosts } from "utils/api/community";
 import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
   const { checkAccessToken } = UseAccessToken();
-  
+
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
     Autoplay({ delay: 3000 })
@@ -27,7 +27,6 @@ export function BoardHeader() {
       return getTrendingPosts(accessToken)
         .then((res) => {
           const { result } = res;
-          console.log(result);
           setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
         })
         .catch((e) => console.error(e));
@@ -49,29 +48,28 @@ export function BoardHeader() {
   return (
     <Container>
       {
-        // TODO: trending post 없으면 띄우지 말기
         <TrendingPostWrapper>
           <PostSwiperViewport ref={emblaRef}>
             <PostSwiperContainer>
-            {
-            trendingPosts.length > 0 && trendingPosts.map((trendingPost) => (
-              <Link
-                key={trendingPost.id}
-                href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
-              >
-                <TrendingPost>
-                  <Title>{trendingPost.title}</Title>
-                  <ContentPreview>
-                    {trendingPost.content}
-                  </ContentPreview>
-                  <Likes>
-                    <Icon src="/img/post-like.svg" />
-                    {trendingPost.likeCount}
-                  </Likes>
-                </TrendingPost>
-              </Link>
-            ))
-          }
+              {
+                trendingPosts.length > 0 ? trendingPosts.map((trendingPost) => (
+                  <Link
+                    key={trendingPost.id}
+                    href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+                  >
+                    <TrendingPost>
+                      <Title>{trendingPost.title}</Title>
+                      <ContentPreview>
+                        {trendingPost.content}
+                      </ContentPreview>
+                      <Likes>
+                        <Icon src="/img/post-like.svg" />
+                        {trendingPost.likeCount}
+                      </Likes>
+                    </TrendingPost>
+                  </Link>
+                )) : <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
+              }
             </PostSwiperContainer>
           </PostSwiperViewport>
         </TrendingPostWrapper>
@@ -165,6 +163,16 @@ const Icon = styled.img`
     height: 11px;
   }
 `;
+
+const NoTrendingPostsMessage = styled.span`
+  font-size: 16px;
+  height: 18px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    height: 14px;
+  }
+`;
+
 const WriteButton = styled.button`
   margin: 0;
   padding: 0;
