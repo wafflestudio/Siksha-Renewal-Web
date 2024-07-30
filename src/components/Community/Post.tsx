@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
+import { LoadingAnimation } from "styles/globalstyle";
 
 interface PropsPost {
   post: PostType;
@@ -27,7 +28,9 @@ export function Post({ post }: PropsPost) {
           </LikesAndComments>
         </Info>
         <PhotoZone>
-          {images ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null)) : null}
+          {images
+            ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null))
+            : null}
         </PhotoZone>
       </Container>
     </Link>
@@ -35,6 +38,7 @@ export function Post({ post }: PropsPost) {
 }
 
 const Container = styled.div`
+  ${LoadingAnimation}
   display: flex;
   position: relative;
   width: 100%;
@@ -48,7 +52,7 @@ const Container = styled.div`
   }
 
   &::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     width: 100%;
     height: 1px;
