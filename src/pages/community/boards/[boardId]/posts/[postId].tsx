@@ -120,7 +120,6 @@ export default function Post() {
     if (boardId && postId) {
       setComments((prev) => []);
       fetchPost();
-      fetchComments(10, 1);
     }
   }, [boardId, postId]);
 
