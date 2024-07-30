@@ -16,7 +16,10 @@ function MyApp({ Component, pageProps }) {
             <meta charSet="utf-8" />
             <link rel="icon" href="/favicon.ico" />
             <link rel="manifest" href="/manifest/manifest.json" />
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta
+              name="viewport"
+              content="initial-scale=1.0, width=device-width viewport-fit=cover"
+            />
             <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
             <script

@@ -1,34 +1,26 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useEffect, useState } from "react";
 import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
+import { useEffect } from "react";
+import UseProfile from "hooks/UseProfile";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
-import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
 
 export default function Account() {
   const router = useRouter();
 
   const state = useStateContext();
   const { setIsExceptEmptyRestaurant } = useDispatchContext();
-  const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
-  const { openLoginModal } = useModals();
+  const { isExceptEmptyRestaurant } = state;
+  const { userInfo } = UseProfile();
 
-  const [isLoading, setLoading] = useState(false);
+  const { authStatus, authGuard } = useAuth();
 
-  // 프로필 이미지 기능 구현 대비
-  const profileURL = "/img/default-profile.svg";
+  useEffect(authGuard, [authStatus]);
 
-  useEffect(() => {
-    if (!loginStatus) {
-      router.push(`/`);
-      openLoginModal();
-      return;
-    }
-  }, []);
-
-  const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
+  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
+  const nickname = userInfo?.nickname ?? `ID ${userInfo?.id}`;
 
   function toggle() {
     localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(!isExceptEmptyRestaurant));
@@ -41,12 +33,14 @@ export default function Account() {
       <ListGroup>
         <ContentDiv
           onClick={() => {
-            router.push("/account/nickname");
+            router.push("/account/profile");
           }}
         >
           <Profile src={profileURL} />
-          <ProfileText>{isLoading ? "잠시만 기다려주세요..." : nickname}</ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ProfileText>
+            {authStatus === "loading" ? "잠시만 기다려주세요..." : nickname}
+          </ProfileText>
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -56,7 +50,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -66,7 +60,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -75,15 +69,19 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
           {isExceptEmptyRestaurant ? (
-            <CheckButton src="/img/hide-circle-active.svg" onClick={toggle} />
+            <CheckButton src="/img/account/hide-circle-active.svg" alt="active" onClick={toggle} />
           ) : (
-            <CheckButton src="/img/hide-circle-inactive.svg" onClick={toggle} />
+            <CheckButton
+              src="/img/account/hide-circle-inactive.svg"
+              alt="inactive"
+              onClick={toggle}
+            />
           )}
         </ContentDiv>
         <BreakLine />
@@ -93,16 +91,18 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
 
-      <ListGroup
-        onClick={() => {
-          router.push("/account/inquiry");
-        }}
-      >
-        <InquiryText>1:1 문의하기</InquiryText>
+      <ListGroup>
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/inquiry");
+          }}
+        >
+          <InquiryText>1:1 문의하기</InquiryText>
+        </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
     </AccountLayout>
@@ -130,7 +130,10 @@ const ListGroup = styled.div`
   }
 `;
 
-const ContentDiv = styled.div`
+const ContentDiv = styled.button`
+  width: 100%;
+  border: none;
+  background-color: transparent;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,14 +143,20 @@ const Profile = styled.img`
   width: 48.17px;
   height: 48.17px;
   margin: 11px 0 11px 16px;
+  border-radius: 50%;
 `;
 
 const Text = styled.span`
   display: inline-block;
-  margin: 11.5px 0 11.5px 16px;
+  margin: 11.5px 0 11.5px 13px;
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
+  color: black;
+
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
 `;
 
 const ProfileText = styled(Text)`
@@ -165,6 +174,10 @@ const InquiryText = styled(Text)`
   font-size: 16px;
   font-weight: 700;
   color: #ff9522;
+
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
 `;
 
 const BreakLine = styled.hr`

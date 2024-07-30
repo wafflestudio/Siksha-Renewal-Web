@@ -7,32 +7,40 @@ import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { useStateContext } from "hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [hasNextPosts, setHasNextPosts] = useState(false);
 
-  const { getAccessToken } = UseAccessToken();
-  const { loginStatus } = useStateContext();
+  const { authStatus, getAccessToken, authGuard } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  function fetchMyPosts(size: number, page: number) {
-    return getAccessToken()
+  useEffect(authGuard, [authStatus]);
+
+  const fetchMyPosts = (size: number, page: number) =>
+    getAccessToken()
       .then((accessToken) => getMyPostList(accessToken, size, page))
       .then(({ result, hasNext }) => {
         console.log(result);
+        setIsLoading(false);
         result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
         return hasNext;
       })
       .catch((e) => console.error(e));
-  }
 
   useEffect(() => {
     setPosts([]);
   }, []);
 
-  if (loginStatus)
+  useEffect(() => {
+    if (authStatus === "login") setIsLoading(true);
+  }, [authStatus]);
+
+  if (authStatus === "login")
     return (
       <>
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />

@@ -1,10 +1,10 @@
-import { createContext, Dispatch, useCallback, useContext, useReducer, useState } from "react";
-import { State, Action, RawMenuList } from "../types";
+import { createContext, useContext, useState } from "react";
+import { State, RawMenuList, User } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
 const initDate = new Date();
 
-const initialState = {
+const initialState: State = {
   date: initDate,
   meal: initDate.getHours() < 9 ? "BR" : initDate.getHours() < 16 ? "LU" : "DN",
   data: { BR: [], LU: [], DN: [], date: formatISODate(initDate) },
@@ -13,11 +13,13 @@ const initialState = {
   showInfo: false,
   loading: false,
   infoData: null,
+  authStatus: "loading",
+  /**
+   * @deprecated safety is not guaranteed on loading
+   */
   loginStatus: false,
-  userInfo: {
-    id: null,
-    nickname: null,
-  },
+  isLoginModal: false,
+  userInfo: null,
   isFilterFavorite: false,
   favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
@@ -31,8 +33,12 @@ interface dispatchers {
   setInfoData: (info: any) => void;
   toggleShowCal: () => void;
   toggleShowInfo: () => void;
+  setAuthStatus: (status: "loading" | "login" | "logout") => void;
+  /**
+   * @deprecated safety is not guaranteed on loading
+   */
   setLoginStatus: (loginStatus: boolean) => void;
-  setUserInfo: (userInfo: { id: number | null; nickname: string | null }) => void;
+  setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
@@ -55,6 +61,11 @@ const ContextProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, showCal: !prevState.showCal }));
   const toggleShowInfo = () =>
     setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
+  const setAuthStatus = (status: "loading" | "login" | "logout") =>
+    setState((prevState) => ({ ...prevState, authStatus: status }));
+  /**
+   * @deprecated safety is not guaranteed on loading
+   */
   const setLoginStatus = (loginStatus: boolean) =>
     setState((prevState) => ({ ...prevState, loginStatus: loginStatus }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
@@ -75,6 +86,7 @@ const ContextProvider = ({ children }) => {
         setInfoData,
         toggleShowCal,
         toggleShowInfo,
+        setAuthStatus,
         setLoginStatus,
         setUserInfo,
         setIsFilterFavorite,
