@@ -3,8 +3,16 @@ import "/styles/calendar.css";
 import axios from "axios";
 import { useEffect } from "react";
 import APIendpoint from "../constants/constants";
-
+import { analytics } from "./firebase";
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    analytics.logEvent("page_view", {
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      page_title: document.title,
+    });
+  }, []);
+
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
     axios
