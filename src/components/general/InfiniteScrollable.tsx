@@ -16,6 +16,7 @@ export default function InfiniteScrollable({
   const [size] = useState(10);
 
   const [hasNext, setHasNext] = useState(false);
+  const currentPath = typeof window !== "undefined" ? window.location.href : null;
 
   const observerElement = useRef<HTMLDivElement | null>(null);
 
@@ -25,8 +26,19 @@ export default function InfiniteScrollable({
         setPage((prevPage) => prevPage + 1);
       }
     },
-    [hasNext],
+    [hasNext, currentPath],
   );
+
+  async function loadingWrapper(callback: () => Promise<void>) {
+    if (page === 1) setIsLoading?.(true);
+    await callback();
+    setIsLoading?.(false);
+  }
+
+  async function handleFetchMoreData() {
+    const hasNext = await fetchMoreData(size, page);
+    if (typeof hasNext === "boolean") setHasNext(hasNext);
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback);
@@ -38,25 +50,19 @@ export default function InfiniteScrollable({
         observer.unobserve(observerElement.current);
       }
     };
-  }, [observerCallback]);
-
-  async function loadingWrapper(callback: () => Promise<void>) {
-    if (page === 1) setIsLoading?.(true);
-    await callback();
-    setIsLoading?.(false);
-  }
+  }, [observerCallback, currentPath]);
 
   useEffect(() => {
-    async function fetch() {
-      const hasNext = await fetchMoreData(size, page);
-      if (typeof hasNext === "boolean") setHasNext(hasNext);
-    }
-    loadingWrapper(fetch);
+    loadingWrapper(handleFetchMoreData);
   }, [page]);
 
   useEffect(() => {
+    if (page === 1) loadingWrapper(handleFetchMoreData);
+  }, [currentPath]);
+
+  useEffect(() => {
     setPage(1);
-  }, []);
+  }, [currentPath]);
 
   return (
     <Container>
