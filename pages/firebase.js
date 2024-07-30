@@ -20,9 +20,9 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 const analyticsMock = {
-    logEvent: () => {},
-    setCurrentScreen: () => {},
-    setUserId: () => {},
+  logEvent: () => {},
+  setCurrentScreen: () => {},
+  setUserId: () => {},
 }
 
 export let analytics = analyticsMock;
