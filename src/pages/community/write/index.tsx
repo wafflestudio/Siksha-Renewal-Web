@@ -10,7 +10,7 @@ import UseAccessToken from "hooks/UseAccessToken";
 import MobileSubHeader from "components/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useAuth from "hooks/UseAuth";
 
 export type inputs = {
   title: string;
@@ -45,9 +45,8 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isMobile = useIsMobile();
-  const { loginStatus } = useStateContext();
+  const { authStatus, getAccessToken } = useAuth();
   const { openLoginModal } = useModals();
-  const { getAccessToken } = UseAccessToken();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
@@ -76,7 +75,7 @@ export default function PostWriter() {
       return;
     }
 
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       setIsSubmitting(true);
       const body = new FormData();
@@ -173,7 +172,7 @@ export default function PostWriter() {
   };
 
   useEffect(() => {
-    if (loginStatus === false) {
+    if (authStatus === "logout") {
       router.push("/community/boards/1");
     }
     fetchBoards();
@@ -181,7 +180,7 @@ export default function PostWriter() {
   }, []);
 
   // hydration mismatch를 피하기 위해 loginStatus state로 pre-rendering을 막습니다.
-  if (loginStatus)
+  if (authStatus === "login")
     return (
       <>
         <MobileSubHeader title="글쓰기" handleBack={router.back} />
