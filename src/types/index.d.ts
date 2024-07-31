@@ -128,6 +128,20 @@ export interface RawRestaurant {
   lng: number;
   etc: Record<string, any>;
 }
+
+export interface Restaurant {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  code: string;
+  nameKr: string;
+  nameEn: string;
+  addr: string;
+  lat: number;
+  lng: number;
+  etc: Record<string, any>;
+}
+
 export interface RawMenuList {
   BR: Array<
     RawRestaurant & {
