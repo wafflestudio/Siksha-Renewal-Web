@@ -43,7 +43,7 @@ interface dispatchers {
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
-  setIsAnonymous: () => void;
+  setIsAnonymous: (isAnonymous: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
