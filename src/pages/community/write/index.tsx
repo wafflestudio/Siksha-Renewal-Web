@@ -11,6 +11,7 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { ImagePreview } from "components/Community/write/ImagePreview";
 import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 
 export type inputs = {
   title: string;
@@ -47,6 +48,8 @@ export default function PostWriter() {
   const isMobile = useIsMobile();
   const { authStatus, getAccessToken } = useAuth();
   const { openLoginModal, openModal } = useModals();
+  const { isAnonymous } = useStateContext();
+  const { setIsAnonymous } = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
@@ -62,7 +65,10 @@ export default function PostWriter() {
     });
   };
 
-  console.log(inputs);
+  const onClickAnonymousOption = () => {
+    setIsAnonymous(!inputs.options.anonymous);
+    localStorage.setItem("isAnonymous", JSON.stringify(!inputs.options.anonymous));
+  };
 
   const handleSubmit = () => {
     if (isSubmitting) {
@@ -161,6 +167,14 @@ export default function PostWriter() {
     }
   };
 
+  // update inputs' isAnoymous state
+  useEffect(() => {
+    console.log(isAnonymous);
+    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymous } }));
+  }, [isAnonymous]);
+
+  console.log(isAnonymous);
+
   useEffect(() => {
     if (authStatus === "logout") {
       router.push("/community/boards/1");
@@ -199,9 +213,7 @@ export default function PostWriter() {
               <Options>
                 <Option
                   className={inputs.options.anonymous ? "active" : ""}
-                  onClick={() =>
-                    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
-                  }
+                  onClick={onClickAnonymousOption}
                 >
                   <Icon
                     src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}

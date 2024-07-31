@@ -15,12 +15,12 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const state = useStateContext();
-  const { setIsFilterFavorite, setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { setIsFilterFavorite, setIsExceptEmptyRestaurant, setIsAnonymous } = useDispatchContext();
   const isMobile = useIsMobile();
   const { getAccessToken } = useAuth();
   UseProfile();
 
-  const { authStatus, isExceptEmptyRestaurant } = state;
+  const { authStatus, isExceptEmptyRestaurant, isAnonymous } = state;
 
   useEffect(() => {
     getAccessToken()
@@ -46,6 +46,16 @@ export default function Layout({ children }: LayoutProps) {
       } else {
         localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
       }
+    }
+  }, [authStatus]);
+
+  useEffect(() => {
+    if (authStatus === "login") {
+      const value = localStorage.getItem("isAnonymous");
+      console.log(value);
+      console.log(value === "true" ? true : false);
+      if (value !== null) setIsAnonymous(value === "true" ? true : false);
+      else localStorage.setItem("isAnonymous", JSON.stringify(isAnonymous));
     }
   }, [authStatus]);
 
