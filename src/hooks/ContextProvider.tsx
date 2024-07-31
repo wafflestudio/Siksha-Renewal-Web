@@ -78,8 +78,7 @@ const ContextProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
   const setIsExceptEmptyRestaurant = (except: boolean) =>
     setState((prevState) => ({ ...prevState, isExceptEmptyRestaurant: except }));
-  const setIsAnonymous = () =>
-    setState((prevState) => ({ ...prevState, isAnonymous: !prevState.isAnonymous }));
+  const setIsAnonymous = (value) => setState((prevState) => ({ ...prevState, isAnonymous: value }));
 
   return (
     <dispatchContext.Provider
