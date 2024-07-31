@@ -1,49 +1,58 @@
 import BackClickable from "components/general/BackClickable";
 import { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Board } from "types";
 
 interface BoardSelectModalProps {
   boards: Board[];
   onClose: () => void;
-  onSubmit: (boardId: number) => void;
+  onSubmit: (board: Board) => void;
 }
 
 export function BoardSelectModal({ boards, onClose, onSubmit }: BoardSelectModalProps) {
-  const [boardSelectMenuElement, setBoardSelectMenuElement] = useState<HTMLElement | null>(null);
-
-  const currentPath = typeof window ? window.location.href : null;
+  const [menuPosition, setMenuPosition] = useState<{
+    bottom: number;
+    left: number;
+    width: number;
+  } | null>(null);
 
   useEffect(() => {
-    setBoardSelectMenuElement(document.getElementById("board-select-menu"));
-  }, []);
+    const updatePosition = () => {
+      const element = document.getElementById("board-select-menu");
+      if (element) {
+        const { bottom, left, width } = element.getBoundingClientRect();
+        setMenuPosition({ bottom: bottom + 10, left, width });
+      }
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition);
+    };
+  }, [boards]);
 
   const backgroundStyle = `
     background: transparent;
   `;
 
-  if (boardSelectMenuElement) {
-    const { top, left, width } = boardSelectMenuElement.getBoundingClientRect();
-
+  if (menuPosition) {
+    const { bottom, left, width } = menuPosition;
     return (
       <BackClickable onClickBackground={onClose} style={backgroundStyle}>
         <Container
           style={{
-            top: top,
+            top: bottom,
             left: left,
             width: width,
           }}
         >
           <BoardMenuList>
             {boards.map((board, i) => (
-              <BoardMenuItem
-                key={i}
-                onClick={() => {
-                  const boardId = board.id;
-                  console.log(boardId, "is boardid in boardSelectMenu");
-                  onSubmit(boardId);
-                }}
-              >
+              <BoardMenuItem key={i} onClick={() => onSubmit(board)}>
                 {board.name}
               </BoardMenuItem>
             ))}

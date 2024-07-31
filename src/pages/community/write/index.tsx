@@ -51,18 +51,16 @@ export default function PostWriter() {
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  const handleClickBoardSelectMenu = useCallback(() => {
+  const handleClickBoardSelectMenu = () => {
     openModal(BoardSelectModal, {
       boards: boards,
       onClose: () => {},
-      onSubmit: (boardId: number) => {
-        console.log(boardId, "is postWriter");
+      onSubmit: (board) =>
         setInputs((prev) => {
-          return { ...prev, boardId: boardId };
-        });
-      },
+          return { ...prev, boardId: board.id };
+        }),
     });
-  }, [boards, setInputs]);
+  };
 
   console.log(inputs);
 
