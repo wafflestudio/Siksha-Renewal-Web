@@ -1,10 +1,20 @@
 import { ModalsStateContext } from "context/ModalsProvider";
 import useModals from "hooks/UseModals";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Modals() {
   const openedModals = useContext(ModalsStateContext);
   const { closeModal } = useModals();
+
+  const currentPath = typeof window !== "undefined" ? window.location.href : null;
+
+  // 주소 변경(주로 뒤로가기) 시 closeModal
+  useEffect(() => {
+    if (openedModals.length >= 1) {
+      const { Component } = openedModals[openedModals.length - 1];
+      closeModal(Component);
+    }
+  }, [currentPath]);
 
   return (
     <>
