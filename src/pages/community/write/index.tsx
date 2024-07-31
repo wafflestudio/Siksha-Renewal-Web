@@ -41,7 +41,6 @@ export default function PostWriter() {
 
   const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
-  const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,7 +53,7 @@ export default function PostWriter() {
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  const handleClickBoardSelectMenu = () => {
+  const onClickBoardSelectMenu = () => {
     openModal(BoardSelectModal, {
       boards: boards,
       onClose: () => {},
@@ -169,11 +168,8 @@ export default function PostWriter() {
 
   // update inputs' isAnoymous state
   useEffect(() => {
-    console.log(isAnonymous);
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymous } }));
   }, [isAnonymous]);
-
-  console.log(isAnonymous);
 
   useEffect(() => {
     if (authStatus === "logout") {
@@ -191,7 +187,7 @@ export default function PostWriter() {
         <Layout>
           <Container>
             <DesktopHeader>글쓰기</DesktopHeader>
-            <BoardMenu id="board-select-menu" onClick={handleClickBoardSelectMenu}>
+            <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
               {selectedBoardName}
               <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} />
             </BoardMenu>
