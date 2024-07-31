@@ -259,6 +259,7 @@ export default function PostWriter() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
   /* gap: 12px 12px 25px 51px 25px; */
 
   @media (max-width: 768px) {
@@ -354,11 +355,9 @@ const Footer = styled.div`
 `;
 const Options = styled.div`
   height: 36px;
-  margin-bottom: 20px;
   border-bottom: 0.5px solid #b7b7b7;
 
   @media (max-width: 768px) {
-    margin-bottom: 13px;
     font-size: 12px;
   }
 `;
@@ -376,18 +375,18 @@ const Option = styled.label`
 `;
 
 const ButtonContainer = styled.div`
-  position: absolute;
-  /* position: relative; */
-  bottom: 65px;
+  position: sticky;
+  padding-bottom: 65px;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   gap: 14px;
+  background-color: white;
 
   @media (max-width: 768px) {
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 23px;
+    padding-bottom: 23px;
   }
 `;
 

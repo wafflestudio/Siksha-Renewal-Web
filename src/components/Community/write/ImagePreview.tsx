@@ -27,28 +27,23 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
   return (
     <Container>
       {images.map((image, i) => (
-        <ImageContainer key={i}>
+        <Preview key={i}>
           <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
           <DeleteButton onClick={() => handleImageDelete(i)}>
             <Icon src="/img/photo-delete.svg" />
           </DeleteButton>
-        </ImageContainer>
+        </Preview>
       ))}
       {images.length < 5 ? (
         <ImageAttacher>
-          <Icon
-            style={{
-              width: !isMobile && images.length === 0 ? "25px" : "",
-              height: !isMobile && images.length === 0 ? "25px" : "",
-            }}
-            src={
-              images.length === 0
-                ? !isMobile
-                  ? "/img/file.svg"
-                  : "/img/file-big.svg"
-                : "/img/file-big.svg"
-            }
-          />
+          {images.length > 0 ? (
+            <Icon
+              style={{ width: isMobile ? 107 : 120, height: isMobile ? 107 : 120 }}
+              src="/img/file-big.svg"
+            />
+          ) : (
+            <Icon style={{ width: 28, height: 30 }} src="/img/file.svg" />
+          )}
           <FileInput
             type="file"
             accept="image/*"
@@ -60,21 +55,22 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
   );
 }
 
-const Icon = styled.img``;
 const Container = styled.div`
   display: flex;
-  align-items: end;
+  align-items: start;
   gap: 13px;
   padding: 0px 3px;
-  /* overflow-x: auto; */
-  z-index: 2;
-  /* height: 135px; */
+  overflow-x: scroll;
+  padding-top: 20px;
 
-  &::-webkit-scrollbar {
-    display: none;
+  @media (max-width: 768px) {
+    padding-top: 13px;
   }
 `;
-const ImageContainer = styled.div`
+
+const Icon = styled.img``;
+
+const Preview = styled.div`
   position: relative;
 `;
 const Image = styled.img`
@@ -84,8 +80,8 @@ const Image = styled.img`
   object-fit: cover;
 
   @media (max-width: 768px) {
-    width: 106px;
-    height: 106px;
+    width: 107px;
+    height: 107px;
   }
 `;
 const DeleteButton = styled.button`
@@ -103,7 +99,6 @@ const DeleteButton = styled.button`
 const ImageAttacher = styled.label`
   width: 120px;
   height: 120px;
-  margin-left: 15px;
   cursor: pointer;
 
   @media (max-width: 768px) {
