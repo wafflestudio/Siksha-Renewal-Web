@@ -4,6 +4,7 @@ import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
 import useModals from "hooks/UseModals";
 
+// 추후 디렉토리 변경(/components/general) 필요해보입니다.
 export default function Header() {
   const router = useRouter();
   const state = useStateContext();
