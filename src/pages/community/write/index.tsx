@@ -37,7 +37,7 @@ const emptyInputs: inputs = {
 
 export default function PostWriter() {
   const router = useRouter();
-  const { postId } = router.query;
+  const { boardId, postId } = router.query;
 
   const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
@@ -170,6 +170,12 @@ export default function PostWriter() {
   useEffect(() => {
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymous } }));
   }, [isAnonymous]);
+
+  // 게시판 초기 선택
+  useEffect(() => {
+    if (boardId && typeof boardId === "string")
+      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
+  }, [boardId]);
 
   useEffect(() => {
     if (authStatus === "logout") {

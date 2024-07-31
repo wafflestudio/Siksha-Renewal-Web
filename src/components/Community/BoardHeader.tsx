@@ -5,13 +5,17 @@ import styled from "styled-components";
 
 export function BoardHeader() {
   const router = useRouter();
+  const { boardId } = router.query;
 
   const { loginStatus } = useStateContext();
   const { openLoginModal } = useModals();
 
   function handleClickWriteButton() {
     if (!loginStatus) openLoginModal();
-    else router.push("/community/write");
+    else {
+      if (boardId) router.push(`/community/write?boardId=${boardId}`);
+      else router.push("/community/write");
+    }
   }
 
   return (
