@@ -5,8 +5,6 @@ import { Post } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
-import { useStateContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
