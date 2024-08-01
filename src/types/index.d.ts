@@ -207,3 +207,9 @@ export interface User {
   nickname: string;
   image: string | null;
 }
+
+export interface FavoriteRestaurant {
+  id: number;
+  nameKr: string;
+  nameEn: string;
+}
