@@ -130,6 +130,20 @@ export interface RawRestaurant {
   lng: number;
   etc: Record<string, any>;
 }
+
+export interface Restaurant {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  code: string;
+  nameKr: string;
+  nameEn: string;
+  addr: string;
+  lat: number;
+  lng: number;
+  etc: Record<string, any>;
+}
+
 export interface RawMenuList {
   BR: Array<
     RawRestaurant & {
@@ -194,4 +208,10 @@ export interface User {
   id: number;
   nickname: string;
   image: string | null;
+}
+
+export interface FavoriteRestaurant {
+  id: number;
+  nameKr: string;
+  nameEn: string;
 }

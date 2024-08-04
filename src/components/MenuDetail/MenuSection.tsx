@@ -39,7 +39,7 @@ export default function MenuSection({
         const restaurantName = restaurantListData.result.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
-        if (restaurantName) setRestaurantName(restaurantName.name_kr);
+        if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
       })
       .catch((e) => {

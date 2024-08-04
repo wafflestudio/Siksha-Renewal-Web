@@ -16,7 +16,7 @@ jobs:
       - name: Setup node version
         uses: actions/setup-node@v3
         with:
-          node-version: 16.14.2
+          node-version: 18.20.4
 
       - name: .env setting
         run: |
@@ -50,3 +50,4 @@ jobs:
           AWS_REGION: "ap-northeast-2"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
