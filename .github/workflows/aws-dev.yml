@@ -43,12 +43,30 @@ jobs:
           AWS_REGION: "ap-northeast-2"
 
       - name: Compress Lambda Function
-        run: zip -r serverless.zip ./serverless/index.js # 모듈 설치시 "./serverless/node_modules" 추가
+        run: zip -j serverless.zip ./serverless/index.mjs # 모듈 설치시 "./serverless/node_modules" 추가
 
       - name: Deploy Lambda function
         run: |
           aws lambda update-function-code --function-name $LAMBDA_NAME_ROUTE --zip-file fileb://serverless.zip
-          aws lambda publish-version --function-name $LAMBDA_NAME_ROUTE --query 'Version'
+
+          # 함수 업데이트 대기 및 재시도
+          MAX_RETRIES=3  # 최대 재시도 횟수
+          SLEEP_TIME=5  # 재시도 간격 (초)
+          for ((i=0; i<$MAX_RETRIES; i++)); do
+            STATUS=$(aws lambda get-function --function-name $LAMBDA_NAME_ROUTE --query 'Configuration.LastUpdateStatus' --output text)
+            if [ "$STATUS" == "Successful" ]; then
+              echo "Lambda function is ready for update."
+              break
+            fi
+            if [ "$i" -eq "$(($MAX_RETRIES - 1))" ]; then
+              echo "Reached max retries, exiting."
+              exit 1
+            fi
+            echo "Lambda function update in progress, waiting for $SLEEP_TIME seconds..."
+            sleep $SLEEP_TIME
+          done
+
+          aws lambda publish-version --function-name $LAMBDA_NAME_ROUTE
         env: 
           LAMBDA_NAME_ROUTE: ${{ secrets.AWS_LAMBDA_NAME_ROUTE_DEV }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -57,8 +75,29 @@ jobs:
       
       - name: Update Cloudfront Distribution
         run: |
-          LAMBDA_ARN=$(aws lambda get-function --function-name $LAMBDA_NAME_ROUTE --query 'Configuration.FunctionArn')
-          aws cloudfront update-distribution --id $DISTRIBUTION --default-cache-behavior '{"LambdaFunctionAssociations": {"Quantity": 1, "Items": [{"EventType": "origin-request", "LambdaFunctionARN": $LAMBDA_ARN}]}}'
+          LAMBDA_ARN=$(aws lambda get-function --function-name $LAMBDA_NAME_ROUTE --query 'Configuration.FunctionArn' --output text)
+          VERSION=$(aws lambda publish-version --function-name $LAMBDA_NAME_ROUTE --query 'Version' --output text)
+
+          # CloudFront 배포 구성 가져오기
+          CONFIG=$(aws cloudfront get-distribution-config --id $DISTRIBUTION)
+          ETAG=$(echo "$CONFIG" | jq -r '.ETag')
+          DISTRIBUTION_CONFIG=$(echo "$CONFIG" | jq '.DistributionConfig')
+
+          # Lambda@Edge 함수 추가 (기존 트리거 유지)
+          NEW_CONFIG=$(echo "$DISTRIBUTION_CONFIG" | jq --arg LAMBDA_ARN "${LAMBDA_ARN}:${VERSION}" '
+            .DefaultCacheBehavior.LambdaFunctionAssociations.Items |= map(
+              if .EventType == "origin-request" then
+                {"EventType": "origin-request", "LambdaFunctionARN": $LAMBDA_ARN}
+              else
+                .
+              end
+            )
+          ')
+          NEW_CONFIG=$(echo "$NEW_CONFIG" | jq '.DefaultCacheBehavior.LambdaFunctionAssociations.Quantity = (.DefaultCacheBehavior.LambdaFunctionAssociations.Items | length)')
+
+          # CloudFront 배포 업데이트
+          aws cloudfront update-distribution --id $DISTRIBUTION --distribution-config "$NEW_CONFIG" --if-match $ETAG
+
           aws cloudfront create-invalidation --distribution-id $DISTRIBUTION --paths $PATHS
         env:
           LAMBDA_NAME_ROUTE: ${{ secrets.AWS_LAMBDA_NAME_ROUTE_DEV }}
