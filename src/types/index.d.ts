@@ -197,9 +197,7 @@ export interface RawUser {
   type: string;
   identity: string;
   nickname: string;
-  etc: {
-    image?: string;
-  } | null;
+  profile_url: string | null;
   created_at: string;
   updated_at: string;
 }
