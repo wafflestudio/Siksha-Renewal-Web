@@ -1,4 +1,4 @@
-name: Deploy Dev
+name: Lambda Deploy Dev
 
 on:
   push:
@@ -17,30 +17,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.20.4
-
-      - name: .env setting
-        run: |
-          echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
-          echo "NEXT_PUBLIC_KAKAO_REDIRECTURI=${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECTURI_DEV }}" >> .env
-          echo "NEXT_PUBLIC_GOOGLE_CLIENTID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENTID }}" >> .env
-          echo "NEXT_PUBLIC_GOOGLE_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_SECRET }}" >> .env
-          echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI_DEV }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_DEV }}" >> .env          
-        
-      - name: Install dependencies
-        run: yarn install
-        
-      - name: Build
-        run: yarn devbuild
-
-      - name: S3 Deploy
-        run: aws s3 sync ./out s3://siksha-dev.wafflestudio.com/ --acl bucket-owner-full-control
-        env: 
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "ap-northeast-2"
 
       - name: Compress Lambda Function
         run: zip -j serverless.zip ./serverless/index.mjs # 모듈 설치시 "./serverless/node_modules" 추가
@@ -83,7 +59,7 @@ jobs:
           ETAG=$(echo "$CONFIG" | jq -r '.ETag')
           DISTRIBUTION_CONFIG=$(echo "$CONFIG" | jq '.DistributionConfig')
 
-          # Lambda@Edge 함수 추가 (기존 트리거 유지)
+          # Lambda@Edge 트리거 설정
           NEW_CONFIG=$(echo "$DISTRIBUTION_CONFIG" | jq --arg LAMBDA_ARN "${LAMBDA_ARN}:${VERSION}" '
             .DefaultCacheBehavior.LambdaFunctionAssociations.Items |= map(
               if .EventType == "origin-request" then
