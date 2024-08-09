@@ -79,6 +79,9 @@ const Container = styled.div`
     height: 100%;
     border: none;
     border-radius: 0;
+
+    display: flex;
+    flex-direction: column;
   }
 `;
 const Title = styled.div`
@@ -93,36 +96,46 @@ const Title = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  display: none;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 39px);
+  margin: 0 19.5px 18px 19.5px;
 
   @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    width: calc(100% - 39px);
-    margin: 0 19.5px 18px 19.5px;
+    margin-bottom: 32.06px;
   }
 `;
 
 const Button = styled.button`
   width: calc(50% - 4px);
-  height: 44px;
+  height: 46px;
   background-color: #ff9522;
   border: none;
   border-radius: 8px;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 22px;
 
   @media (max-width: 768px) {
-    height: 48px;
+    font-size: 17px;
+    height: 56px;
   }
 `;
 
 const CancelButton = styled(Button)`
-  background-color: #adadad;
+  background-color: #eeeeee;
+  color: #8e8e8e;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const CompleteButton = styled(Button)`
   background-color: #ff9522;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;

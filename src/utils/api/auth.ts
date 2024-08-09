@@ -152,6 +152,35 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
     });
 };
 
+/**
+ *
+ * @deprecated api 미완성으로 보임, 아직 사용하지 말것
+ */
+export const updateMyProfileImage = async (
+  formData: FormData,
+  accessToken: string,
+): Promise<User> => {
+  if (!formData.get("image")) {
+    throw new Error("image is required");
+  }
+  return axios
+    .patch(`${APIendpoint()}/auth/me/image/profile/`, formData, {
+      headers: {
+        "authorization-token": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, profile_url },
+      } = res;
+      return { id, nickname, image: profile_url };
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
+};
+
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
     .delete(`${APIendpoint()}/auth/`, {
@@ -160,5 +189,17 @@ export const deleteAccount = async (accessToken: string): Promise<void> => {
     .then(() => {})
     .catch((e) => {
       throw new Error(e);
+    });
+};
+
+export const validateNickname = async (nickname: string): Promise<boolean> => {
+  return axios
+    .get(`${APIendpoint()}/auth/nicknames/validate`, {
+      params: { nickname },
+    })
+    .then(({ status }) => (status === 200 ? true : false))
+    .catch((e) => {
+      console.error(e);
+      return false;
     });
 };

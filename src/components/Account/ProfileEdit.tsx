@@ -1,5 +1,7 @@
 import UseProfile from "hooks/UseProfile";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { validateNickname } from "utils/api/auth";
 
 export default function ProfileEdit({
   nickname,
@@ -17,6 +19,13 @@ export default function ProfileEdit({
   updateProfile: () => Promise<void>;
 }) {
   const { userInfo } = UseProfile();
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
+
+  useEffect(() => {
+    if (nickname === userInfo?.nickname) setIsNicknameValid(true);
+    else validateNickname(nickname).then((res) => setIsNicknameValid(res));
+  }, [nickname]);
+
   const onImageLoad = () => {
     const file = imgRef.current.files[0];
     if (!file) return;
@@ -32,23 +41,32 @@ export default function ProfileEdit({
 
   return (
     <Container>
-      <Profile
-        src={
-          imageBlob ? URL.createObjectURL(imageBlob) : userInfo?.image ?? "/img/default-profile.svg"
-        }
-        alt="userProfile"
+      <ProfileFrame
         onClick={() => {
           if (imgRef.current) imgRef.current.click();
         }}
-      />
-      <input
-        type="file"
-        id="imageUpload"
-        accept="image/*"
-        ref={imgRef}
-        onChange={onImageLoad}
-        hidden
-      />
+      >
+        <Profile
+          src={
+            imageBlob
+              ? URL.createObjectURL(imageBlob)
+              : userInfo?.image ?? "/img/default-profile.svg"
+          }
+          alt="userProfile"
+        />
+        <CameraFrame>
+          <Camera src="/img/account/photo_camera.svg" />
+        </CameraFrame>
+        <input
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+          ref={imgRef}
+          onChange={onImageLoad}
+          hidden
+        />
+      </ProfileFrame>
+
       <InputBox>
         <Input
           placeholder="닉네임"
@@ -56,12 +74,21 @@ export default function ProfileEdit({
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         />
-        <Button onClick={() => updateProfile()}>완료</Button>
+        <DuplicateCheck>
+          <ResultImage
+            isDuplicate={isNicknameValid}
+            src={isNicknameValid ? "/img/account/check-ok.svg" : "/img/account/check-fail.svg"}
+          />
+          <ResultText isDuplicate={isNicknameValid}>
+            {isNicknameValid ? "사용가능" : "사용불가능"}
+          </ResultText>
+        </DuplicateCheck>
         <CloseButton
           src="/img/close-circle-gray.svg"
           alt="reset nickname"
           role="button"
           onClick={() => setNickname("")}
+          hidden={false} // TODO: 스펙사항 확인
         />
       </InputBox>
     </Container>
@@ -72,23 +99,59 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex: 1;
+  }
 `;
-const Profile = styled.img`
+
+const ProfileFrame = styled.div`
+  position: relative;
+
   width: 171px;
   height: 171px;
-  border-radius: 50%;
-  margin-top: 65px;
+  margin-top: 53.41px;
 
-  @media (min-width: 769px) {
-    display: none;
+  @media (max-width: 768px) {
+    margin-top: 65px;
   }
+`;
+
+const Profile = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+`;
+
+const CameraFrame = styled.div`
+  position: absolute;
+  top: 12.8px;
+  right: 13.57px;
+  box-sizing: border-box;
+  width: 41.607px;
+  height: 41.607px;
+  padding: 10px 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--grey-05, #f0f0f0);
+  background: var(--Main-White, #fff);
+`;
+
+const Camera = styled.img`
+  width: 22.5px;
+  height: 18px;
+  flex-shrink: 0;
 `;
 
 const InputBox = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 30px 22.48px 24px 22.48px;
+  margin: 36.51px 22.48px 36.51px 22.48px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   padding-left: 14px;
@@ -102,7 +165,10 @@ const InputBox = styled.label`
 const Input = styled.input`
   width: 433px;
   height: 40px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: -0.3px;
   border: none;
   &:focus {
     outline: none;
@@ -113,22 +179,31 @@ const Input = styled.input`
   }
 `;
 
-const Button = styled.button`
-  width: 52px;
-  height: 34px;
-  background-color: #ff9522;
-  border: none;
-  border-radius: 8px;
-  margin-right: 7.52px;
-  font-size: 15px;
-  font-weight: 400;
-  color: #ffffff;
-  line-height: 14px;
-  cursor: pointer;
+const DuplicateCheck = styled.div`
+  display: inline-flex;
+  align-items: center;
+  height: 23px;
+  margin-right: 15.95px;
+  flex-shrink: 0;
+  gap: 5px;
 
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+const ResultImage = styled.img<{ isDuplicate: boolean }>`
+  width: ${(props) => (props.isDuplicate ? "11px" : "9.15px")};
+  width: ${(props) => (props.isDuplicate ? "8px" : "9.15px")};
+`;
+
+const ResultText = styled.span<{ isDuplicate: boolean }>`
+  color: ${(props) =>
+    props.isDuplicate ? "var(--Main-Orange, #ff9522)" : "var(--Main-Gray, #ADADAD)"};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: -0.3px;
 `;
 
 const CloseButton = styled.img`
