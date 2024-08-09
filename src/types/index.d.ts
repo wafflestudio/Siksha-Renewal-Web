@@ -62,6 +62,7 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   nickname: string | null;
+  profileUrl: string | null;
   anonymous: boolean;
   available: boolean;
   isMine: boolean;
@@ -79,6 +80,7 @@ export interface RawPost {
   created_at: string;
   updated_at: string;
   nickname: string | null;
+  profile_url: string | null;
   anonymous: boolean;
   available: boolean;
   is_mine: boolean;
@@ -128,6 +130,20 @@ export interface RawRestaurant {
   lng: number;
   etc: Record<string, any>;
 }
+
+export interface Restaurant {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  code: string;
+  nameKr: string;
+  nameEn: string;
+  addr: string;
+  lat: number;
+  lng: number;
+  etc: Record<string, any>;
+}
+
 export interface RawMenuList {
   BR: Array<
     RawRestaurant & {
@@ -181,9 +197,7 @@ export interface RawUser {
   type: string;
   identity: string;
   nickname: string;
-  etc: {
-    image?: string;
-  } | null;
+  profile_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -192,4 +206,10 @@ export interface User {
   id: number;
   nickname: string;
   image: string | null;
+}
+
+export interface FavoriteRestaurant {
+  id: number;
+  nameKr: string;
+  nameEn: string;
 }

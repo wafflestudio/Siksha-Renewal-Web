@@ -127,7 +127,7 @@ export default function Post() {
 
   if (post) {
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
-    const profileImg = "/img/default-profile.svg";
+    const profileImg = post.profileUrl || "/img/default-profile.svg";
 
     const actions: ModalAction[] = post.isMine
       ? [

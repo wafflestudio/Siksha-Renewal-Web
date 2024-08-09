@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReviewImageSwiper from "./ReviewImageSwiper";
-import { MenuType } from "pages/menu/[id]";
+import { MenuType } from "pages/menu/[menuId]";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
@@ -39,7 +39,7 @@ export default function MenuSection({
         const restaurantName = restaurantListData.result.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
-        if (restaurantName) setRestaurantName(restaurantName.name_kr);
+        if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
       })
       .catch((e) => {

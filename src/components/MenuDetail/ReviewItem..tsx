@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Stars from "./Stars";
-import { ReviewType } from "../../pages/menu/[id]";
+import { ReviewType } from "../../pages/menu/[menuId]";
 
 export function ReviewItem({ review }: { review: ReviewType }) {
   return (

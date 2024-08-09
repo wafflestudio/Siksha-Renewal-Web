@@ -11,15 +11,15 @@ import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 
 export default function Home() {
   const state = useStateContext();
   const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, loginStatus, meal } = state;
+  const { date, showCal, showInfo, meal } = state;
 
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
@@ -71,7 +71,7 @@ export default function Home() {
       setLoading(false);
     }
     fetchData();
-  }, [date, loginStatus, meal]);
+  }, [date, authStatus, meal]);
 
   return (
     <>

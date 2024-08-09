@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
-import Header from "../../../components/Header";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
-
-interface FavoriteRestaurant {
-  id: number;
-  name_kr: string;
-  name_en: string;
-}
+import { FavoriteRestaurant } from "types";
 
 export default function Setting_NonFavorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
@@ -40,9 +34,9 @@ export default function Setting_NonFavorite() {
         }
         console.log(orderList);
 
-        result.forEach(({ id, name_kr, name_en }) => {
+        result.forEach(({ id, nameKr, nameEn }) => {
           if (!orderList.some((menu) => Number(menu.id) === id))
-            orderList.push({ id, name_kr, name_en });
+            orderList.push({ id, nameKr, nameEn });
         });
         console.log(orderList);
         setOrderData(orderList);

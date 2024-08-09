@@ -5,7 +5,7 @@ export default function RestaurantOrderEdit({
   orderData,
   setNewOrderData,
 }: {
-  orderData: { id: number; name_kr: string; name_en: string }[];
+  orderData: { id: number; nameKr: string; nameEn: string }[];
   setNewOrderData: (dragStartIndex: number, dragEndIndex: number) => void;
 }) {
   const onDragEnd = (result: DropResult) => {
@@ -24,7 +24,7 @@ export default function RestaurantOrderEdit({
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <DragZone {...provided.droppableProps} ref={provided.innerRef}>
-              {orderData.map(({ id, name_kr, name_en }, index) => (
+              {orderData.map(({ id, nameKr, nameEn }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
                   {(provided, snapshot) => (
                     <DragContainer
@@ -34,7 +34,7 @@ export default function RestaurantOrderEdit({
                       dragging={snapshot.isDragging}
                     >
                       <DragBox>
-                        <Restaurant>{name_kr}</Restaurant>
+                        <Restaurant>{nameKr}</Restaurant>
                         <DragButton dragging={snapshot.isDragging}>
                           <Line />
                           <Line />

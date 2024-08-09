@@ -1,4 +1,4 @@
-name: Deploy Dev
+name: S3 Deploy Dev
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup node version
         uses: actions/setup-node@v3
         with:
-          node-version: 16.14.2
+          node-version: 18.20.4
 
       - name: .env setting
         run: |
@@ -27,8 +27,7 @@ jobs:
           echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI_DEV }}" >> .env
           echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
           echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_DEV }}" >> .env
-          
+          echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_DEV }}" >> .env          
         
       - name: Install dependencies
         run: yarn install
@@ -42,11 +41,3 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-northeast-2"
-      - name: Invalidate Cloudfront cache
-        uses: chetan/invalidate-cloudfront-action@v2
-        env:
-          DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_DEV }}
-          PATHS: "/*"
-          AWS_REGION: "ap-northeast-2"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

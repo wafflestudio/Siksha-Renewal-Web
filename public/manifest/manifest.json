@@ -7,8 +7,14 @@
       "src": "icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
+
   "start_url": "/",
   "screenshots": [
     {
