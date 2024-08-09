@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import MobileReviewImageSwiper from "./MobileReviewImageSwiper";
 import Link from "next/link";
-import { ReviewListType } from "pages/menu/[id]";
+import { ReviewListType } from "pages/menu/[menuId]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
 
@@ -13,20 +13,28 @@ interface ReviewSectionProps {
   handleReviewPostButtonClick: () => void;
   handleReviewListPage: (isOpen: boolean) => void;
 }
-export default function ReviewSection({ menuId, reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
+export default function ReviewSection({
+  menuId,
+  reviews,
+  images,
+  isReviewListPageOpen,
+  handleReviewPostButtonClick,
+  handleReviewListPage,
+}: ReviewSectionProps) {
   const isMobile = useIsMobile();
 
   const MOBILE_IMAGE_LIST_LIMIT = 3;
-  
+
   return (
     <>
-      {(isMobile && isReviewListPageOpen) ? (
+      {isMobile && isReviewListPageOpen ? (
         <MobileReviewListPage>
           <ReviewList>
-            {reviews.result.length > 0
-              ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-            }
+            {reviews.result.length > 0 ? (
+              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+            ) : (
+              <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+            )}
           </ReviewList>
         </MobileReviewListPage>
       ) : (
@@ -40,25 +48,29 @@ export default function ReviewSection({ menuId, reviews, images, isReviewListPag
                   display: "flex",
                   justifyContent: "space-between",
                   textDecoration: "none",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
               >
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                  <img
-                    src="/img/right-arrow-darkgrey.svg"
-                    alt="사진 리뷰 모아보기"
-                    width="7.5"
-                  />
+                  <img src="/img/right-arrow-darkgrey.svg" alt="사진 리뷰 모아보기" width="7.5" />
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>
-            <MobileReviewImageSwiper menuId={menuId} images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
-            <div style={{
-              width: "100%",
-              display: "flex"
-            }} onClick={() => handleReviewListPage(true)}>
+            <MobileReviewImageSwiper
+              menuId={menuId}
+              images={images}
+              swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT}
+              imageCount={images.length}
+            />
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+              }}
+              onClick={() => handleReviewListPage(true)}
+            >
               <MobileReviewHeader>
                 <div style={{ display: "flex" }}>
                   <ReviewTitle>리뷰</ReviewTitle>
@@ -73,10 +85,11 @@ export default function ReviewSection({ menuId, reviews, images, isReviewListPag
             </div>
           </ReviewHeader>
           <ReviewList>
-            {reviews.result.length > 0
-              ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-            }
+            {reviews.result.length > 0 ? (
+              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+            ) : (
+              <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+            )}
           </ReviewList>
           <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
             나의 평가 남기기
@@ -226,7 +239,7 @@ const DesktopReviewPostButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   @media (max-width: 768px) {
-  display: none;
+    display: none;
   }
 `;
 
