@@ -47,33 +47,31 @@ export function BoardHeader() {
 
   return (
     <Container>
-      {
-        <TrendingPostWrapper>
-          <PostSwiperViewport ref={emblaRef}>
-            <PostSwiperContainer>
-              {
-                trendingPosts.length > 0 ? trendingPosts.map((trendingPost) => (
-                  <Link
-                    key={trendingPost.id}
-                    href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
-                  >
-                    <TrendingPost>
-                      <Title>{trendingPost.title}</Title>
-                      <ContentPreview>
-                        {trendingPost.content}
-                      </ContentPreview>
-                      <Likes>
-                        <Icon src="/img/post-like.svg" />
-                        {trendingPost.likeCount}
-                      </Likes>
-                    </TrendingPost>
-                  </Link>
-                )) : <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
-              }
-            </PostSwiperContainer>
-          </PostSwiperViewport>
-        </TrendingPostWrapper>
-      }
+      <TrendingPostWrapper>
+        <PostSwiperViewport ref={emblaRef}>
+          <PostSwiperContainer>
+            {
+              trendingPosts.length > 0 ? trendingPosts.map((trendingPost) => (
+                <Link
+                  key={trendingPost.id}
+                  href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+                >
+                  <TrendingPost>
+                    <Title>{trendingPost.title}</Title>
+                    <ContentPreview>
+                      {trendingPost.content}
+                    </ContentPreview>
+                    <Likes>
+                      <Icon src="/img/post-like.svg" />
+                      {trendingPost.likeCount}
+                    </Likes>
+                  </TrendingPost>
+                </Link>
+              )) : <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
+            }
+          </PostSwiperContainer>
+        </PostSwiperViewport>
+      </TrendingPostWrapper>
       <WriteButton>
         <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
       </WriteButton>
