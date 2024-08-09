@@ -83,13 +83,6 @@ export default function ProfileEdit({
             {isNicknameValid ? "사용가능" : "사용불가능"}
           </ResultText>
         </DuplicateCheck>
-        <CloseButton
-          src="/img/close-circle-gray.svg"
-          alt="reset nickname"
-          role="button"
-          onClick={() => setNickname("")}
-          hidden={false} // TODO: 스펙사항 확인
-        />
       </InputBox>
     </Container>
   );
@@ -204,15 +197,4 @@ const ResultText = styled.span<{ isDuplicate: boolean }>`
   font-weight: 400;
   line-height: 23px;
   letter-spacing: -0.3px;
-`;
-
-const CloseButton = styled.img`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: fixed;
-    width: 18px;
-    height: 18px;
-    margin-right: 18px;
-  }
 `;
