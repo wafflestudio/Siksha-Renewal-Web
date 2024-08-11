@@ -118,8 +118,8 @@ const Profile = styled.img`
 
 const CameraFrame = styled.div`
   position: absolute;
-  top: 12.8px;
-  right: 13.57px;
+  top: 2.8px;
+  right: 3.57px;
   box-sizing: border-box;
   width: 41.607px;
   height: 41.607px;
