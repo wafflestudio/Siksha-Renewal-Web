@@ -4,8 +4,20 @@ import ContextProvider from "../hooks/ContextProvider";
 import Layout from "components/general/Layout";
 import { GlobalStyle } from "styles/globalstyle";
 import { ModalsProvider } from "context/ModalsProvider";
+import { useEffect } from "react";
+import { analytics } from "utils/api/firebase";
+import { logEvent } from "firebase/analytics";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    if (!analytics) return;
+    logEvent(analytics, "page_view", {
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      page_title: document.title,
+    });
+  }, [analytics]);
+
   return (
     <>
       <GlobalStyle />
