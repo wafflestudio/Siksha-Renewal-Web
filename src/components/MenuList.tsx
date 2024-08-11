@@ -2,6 +2,7 @@ import MenuCard from "./MenuCard";
 import styled, { css } from "styled-components";
 import { useStateContext } from "../hooks/ContextProvider";
 import { useEffect, useState } from "react";
+import { LoadingAnimation } from "styles/globalstyle";
 
 export default function MenuList() {
   const state = useStateContext();
@@ -21,7 +22,7 @@ export default function MenuList() {
   }, [data, meal, isFilterFavorite]);
 
   return (
-    <Container showCal={showCal} key={date + meal}>
+    <Container key={date + meal}>
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
@@ -54,58 +55,7 @@ const Container = styled.div`
     flex-grow: 1;
   }
 
-  ${(props: { showCal: boolean }) =>
-    !props.showCal &&
-    css`
-      animation: menuSlide 0.75s;
-      -moz-animation: menuSlide 0.75s;
-      -webkit-animation: menuSlide 0.75s;
-      -o-animation: menuSlide 0.75s;
-
-      @keyframes menuSlide {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-moz-keyframes menuSlide {
-        /* Firefox */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-webkit-keyframes menuSlide {
-        /* Safari and Chrome */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-o-keyframes menuSlide {
-        /* Opera */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    `}
+  ${LoadingAnimation}
 `;
 
 const EmptyText = styled.div`
