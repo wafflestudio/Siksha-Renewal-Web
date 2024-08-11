@@ -21,16 +21,13 @@ export function BoardHeader() {
   ]);
 
   async function fetchTrendingPosts() {
-    const accessToken = await checkAccessToken();
-
-    if (accessToken) {
-      return getTrendingPosts(accessToken)
-        .then((res) => {
-          const { result } = res;
-          setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
-        })
-        .catch((e) => console.error(e));
-    }
+    return checkAccessToken()
+      .then((accessToken) => getTrendingPosts(accessToken))
+      .then((res) => {
+        const { result } = res;
+        setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
+      })
+      .catch((e) => console.error(e));
   }
 
   const { loginStatus } = useStateContext();
