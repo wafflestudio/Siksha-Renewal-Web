@@ -1,33 +1,23 @@
 import UseProfile from "hooks/UseProfile";
-import { useEffect, useState } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 import styled from "styled-components";
-import { validateNickname } from "utils/api/auth";
 
-export default function ProfileEdit({
-  nickname,
-  setNickname,
-  imageBlob,
-  setImageBlob,
-  imgRef,
-  updateProfile,
-}: {
+interface ProfileEditProps {
   nickname: string;
   setNickname: (nickname: string) => void;
   imageBlob: Blob | null;
   setImageBlob: (imageBlob: Blob | null) => void;
-  imgRef: any;
-  updateProfile: () => Promise<void>;
-}) {
-  const { userInfo } = UseProfile();
-  const [isNicknameValid, setIsNicknameValid] = useState(true);
+  imgRef: RefObject<HTMLInputElement>;
+  isNicknameValid: boolean;
+  setIsNicknameValid: Dispatch<SetStateAction<boolean>>;
+}
 
-  useEffect(() => {
-    if (nickname === userInfo?.nickname) setIsNicknameValid(true);
-    else validateNickname(nickname).then((res) => setIsNicknameValid(res));
-  }, [nickname]);
+export default function ProfileEdit(props: ProfileEditProps) {
+  const { nickname, setNickname, imageBlob, setImageBlob, imgRef, isNicknameValid } = props;
+  const { userInfo } = UseProfile();
 
   const onImageLoad = () => {
-    const file = imgRef.current.files[0];
+    const file = imgRef.current?.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.readAsDataURL(file);

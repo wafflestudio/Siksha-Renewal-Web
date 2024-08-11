@@ -2,19 +2,19 @@ import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { updateMyData } from "utils/api/auth";
+import { updateProfile, updateProfileWithImage, validateNickname } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
 import ProfileEdit from "components/Account/ProfileEdit";
 import UseProfile from "hooks/UseProfile";
 import MobileSubHeader from "components/MobileSubHeader";
 
-export default function Setting_Profile() {
+export default function SettingProfile() {
   const { userInfo, setProfile } = UseProfile();
 
   const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-
   const router = useRouter();
 
   const { getAccessToken, authStatus, authGuard } = useAuth();
@@ -24,17 +24,22 @@ export default function Setting_Profile() {
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
 
-  const updateProfile = async () => {
-    if (nickname === null) return;
-    if (imgRef.current === null) return;
+  useEffect(() => {
+    if (nickname === userInfo?.nickname) setIsNicknameValid(true);
+    else validateNickname(nickname).then((res) => setIsNicknameValid(res));
+  }, [nickname]);
+
+  const onUpdateProfile = async () => {
+    if (nickname === null || !isNicknameValid || imgRef.current === null) return;
 
     const formData = new FormData();
-    formData.append("nickname", nickname);
+    if (nickname !== userInfo?.nickname) formData.append("nickname", nickname);
     if (imageBlob) formData.append("image", imageBlob);
 
+    const updateFunction = imageBlob ? updateProfileWithImage : updateProfile;
     getAccessToken()
       .then((token) => {
-        updateMyData(formData, token).then(({ nickname: newNickname, image: newImage }) => {
+        updateFunction(formData, token).then(({ nickname: newNickname, image: newImage }) => {
           setProfile(newNickname, newImage ?? undefined);
           router.push(`/account`);
         });
@@ -56,11 +61,12 @@ export default function Setting_Profile() {
             imageBlob={imageBlob}
             setImageBlob={setImageBlob}
             imgRef={imgRef}
-            updateProfile={updateProfile}
+            isNicknameValid={isNicknameValid}
+            setIsNicknameValid={setIsNicknameValid}
           />
           <ButtonGroup>
             <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
-            <CompleteButton onClick={updateProfile}>완료</CompleteButton>
+            <CompleteButton onClick={onUpdateProfile}>완료</CompleteButton>
           </ButtonGroup>
         </Container>
       </AccountLayout>

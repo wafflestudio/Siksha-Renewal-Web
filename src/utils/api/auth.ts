@@ -130,7 +130,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     });
 };
 
-export const updateMyData = async (formData: FormData, accessToken: string): Promise<User> => {
+export const updateProfile = async (formData: FormData, accessToken: string): Promise<User> => {
   if (!formData.get("nickname")) {
     throw new Error("nickname is required");
   }
@@ -152,17 +152,14 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
     });
 };
 
-/**
- *
- * @deprecated api 미완성으로 보임, 아직 사용하지 말것
- */
-export const updateMyProfileImage = async (
+export const updateProfileWithImage = async (
   formData: FormData,
   accessToken: string,
 ): Promise<User> => {
   if (!formData.get("image")) {
     throw new Error("image is required");
   }
+
   return axios
     .patch(`${APIendpoint()}/auth/me/image/profile/`, formData, {
       headers: {
