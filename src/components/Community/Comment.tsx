@@ -46,8 +46,8 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const onClickReport = () => {
-    if (!loginStatus) openLoginModal();
-    else
+    /*if (!loginStatus) openLoginModal();
+    else*/
       openModal(ReportModal, {
         type: "comment",
         targetID: comment.id,
