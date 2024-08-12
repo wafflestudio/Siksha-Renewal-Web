@@ -11,9 +11,8 @@ import { useRouter } from "next/router";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [hasNextPosts, setHasNextPosts] = useState(false);
+
   const { authStatus, getAccessToken, authGuard } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(authGuard, [authStatus]);
@@ -21,41 +20,29 @@ export default function MyPost() {
   const fetchMyPosts = (size: number, page: number) =>
     getAccessToken()
       .then((accessToken) => getMyPostList(accessToken, size, page))
-      .then((res) => {
-        setHasNextPosts(res.hasNext);
-        res.result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
-        setIsLoading(false);
+      .then(({ result, hasNext }) => {
+        result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+        return hasNext;
       })
       .catch((e) => console.error(e));
 
   useEffect(() => {
-    if (authStatus === "login") {
-      setIsLoading(true);
-      fetchMyPosts(10, 1);
-    }
-  }, [authStatus]);
+    setPosts([]);
+  }, []);
 
-  return (
-    <>
-      <MobileSubHeader title="내가 쓴 글" handleBack={() => router.push("/account")} />
-
-      <AccountLayout>
-        <Container>
-          {posts.length ? (
-            <>
-              <Header>내가 쓴 글</Header>
-              <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
-              <BreakLine />
-            </>
-          ) : authStatus === "loading" || isLoading ? (
-            <NoPost>글을 불러오는 중입니다.</NoPost>
-          ) : (
-            <NoPost>내가 쓴 글이 없어요.</NoPost>
-          )}
-        </Container>
-      </AccountLayout>
-    </>
-  );
+  if (authStatus === "login")
+    return (
+      <>
+        <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
+        <AccountLayout>
+          <Container>
+            <Header>내가 쓴 글</Header>
+            <PostList posts={posts} fetch={fetchMyPosts} />
+            <BreakLine />
+          </Container>
+        </AccountLayout>
+      </>
+    );
 }
 
 const Container = styled.div`
@@ -68,7 +55,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 100%;
+    padding-top: 24px;
     border: 0;
   }
 `;

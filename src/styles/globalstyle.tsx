@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -66,4 +66,55 @@ export const GlobalStyle = createGlobalStyle`
 
   /* constants */
   /* --main-orange-color: #FF9522 */
+`;
+
+export const LoadingAnimation = css`
+  animation: menuSlide 0.75s;
+  -moz-animation: menuSlide 0.75s;
+  -webkit-animation: menuSlide 0.75s;
+  -o-animation: menuSlide 0.75s;
+
+  @keyframes menuSlide {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-moz-keyframes menuSlide {
+    /* Firefox */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-webkit-keyframes menuSlide {
+    /* Safari and Chrome */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-o-keyframes menuSlide {
+    /* Opera */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
