@@ -312,11 +312,15 @@ const MobileMoreActionsButton = styled.img`
 
 const Content = styled.div`
   margin-bottom: 15.5px;
+  word-wrap: break-word;
 `;
 const Title = styled.div`
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 30px;
+  width: 100%;
+  word-wrap: break-word;
+
   @media (max-width: 768px) {
     font-weight: 800;
     font-size: 16px;
