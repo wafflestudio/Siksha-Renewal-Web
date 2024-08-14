@@ -77,10 +77,8 @@ const BoardMenuList = styled.div`
   border: 1px solid #dfdfdf;
   border-radius: 8px;
   margin-top: -8px;
-  margin-bottom: 12px;
 
   @media (max-width: 768px) {
-    margin-bottom: 6px;
   }
 `;
 const BoardMenuItem = styled.div`
