@@ -3,6 +3,7 @@ import RestaurantTime from "components/RestaurantTime";
 import Menu from "components/Menu";
 import { useDispatchContext } from "hooks/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
+import { LoadingAnimation } from "styles/globalstyle";
 
 export default function MenuCard({ data }) {
   const { setInfoData, toggleShowInfo } = useDispatchContext();
@@ -90,6 +91,7 @@ const RestInfo = styled.div`
 `;
 
 const DesktopContainer = styled.div`
+  ${LoadingAnimation}
   display: flex;
   flex-direction: column;
   background: white;
@@ -106,6 +108,7 @@ const DesktopContainer = styled.div`
 `;
 
 const MobileContainer = styled.div`
+  ${LoadingAnimation}
   display: none;
 
   @media (max-width: 768px) {

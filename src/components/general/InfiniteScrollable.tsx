@@ -1,22 +1,22 @@
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface InfiniteScrollableProps {
-  fetchMoreData: (size: number, page: number) => Promise<any>;
-  hasNext: boolean;
-  children: JSX.Element | JSX.Element[] | [];
+  fetchMoreData: (size: number, page: number) => Promise<boolean | void>;
+  children: JSX.Element | JSX.Element[];
+  setIsLoading?: (value: boolean) => void;
 }
 
 export default function InfiniteScrollable({
   fetchMoreData,
-  hasNext,
   children,
+  setIsLoading,
 }: InfiniteScrollableProps) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [size] = useState(10);
-  const router = useRouter();
-  const currentPath = router.asPath;
+
+  const [hasNext, setHasNext] = useState(false);
+  const currentPath = typeof window !== "undefined" ? window.location.href : null;
 
   const observerElement = useRef<HTMLDivElement | null>(null);
 
@@ -28,6 +28,17 @@ export default function InfiniteScrollable({
     },
     [hasNext, currentPath],
   );
+
+  async function loadingWrapper(callback: () => Promise<void>) {
+    if (page === 1) setIsLoading?.(true);
+    await callback();
+    setIsLoading?.(false);
+  }
+
+  async function handleFetchMoreData() {
+    const hasNext = await fetchMoreData(size, page);
+    if (typeof hasNext === "boolean") setHasNext(hasNext);
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback);
@@ -41,16 +52,16 @@ export default function InfiniteScrollable({
     };
   }, [observerCallback]);
 
+  // 게시판 변경시(주소가 바뀔 시), 새로고침 시 page를 0으로 설정
   useEffect(() => {
-    if (page >= 2) {
-      fetchMoreData(size, page);
-      console.log(page, "is requested");
-    }
-  }, [page]);
-
-  useEffect(() => {
-    setPage(1);
+    setPage(0);
   }, [currentPath]);
+
+  // page가 0일 때 page를 1로 변경, page가 1일 때부터 fetch 요청 시작
+  useEffect(() => {
+    if (page === 0) setPage(1);
+    else loadingWrapper(handleFetchMoreData);
+  }, [page]);
 
   return (
     <Container>

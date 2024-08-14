@@ -5,12 +5,7 @@ import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
-
-interface FavoriteRestaurant {
-  id: number;
-  name_kr: string;
-  name_en: string;
-}
+import { FavoriteRestaurant } from "types";
 
 export default function Setting_Favorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
@@ -37,9 +32,9 @@ export default function Setting_Favorite() {
             i--;
           }
         }
-        result.forEach(({ id, name_kr, name_en }) => {
+        result.forEach(({ id, nameKr, nameEn }) => {
           if (!orderList.some((menu) => Number(menu.id) === id) && favoriteList.includes(id))
-            orderList.push({ id, name_kr, name_en });
+            orderList.push({ id, nameKr, nameEn });
         });
 
         setOrderData(orderList);

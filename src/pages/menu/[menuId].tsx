@@ -1,17 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LoginModal from "components/Auth/LoginModal";
 import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import MobileSubHeader from "components/MobileSubHeader";
-import MobileReviewImageSwiper from "components/MenuDetail/MobileReviewImageSwiper";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
-import Image from "next/image";
 import { getMenu } from "utils/api/menus";
-import { getReviews, getReviewScore } from "utils/api/reviews";
+import { getReviews } from "utils/api/reviews";
 import { useSearchParams } from "next/navigation";
-import useIsMobile from "hooks/UseIsMobile";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
 import useModals from "hooks/UseModals";

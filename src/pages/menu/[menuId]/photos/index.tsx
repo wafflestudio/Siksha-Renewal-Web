@@ -1,12 +1,11 @@
 import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
 import ReviewItem from "components/MenuDetail/ReviewItem.";
 import MobileSubHeader from "components/MobileSubHeader";
-import { useDispatchContext } from "hooks/ContextProvider";
 import UseAccessToken from "hooks/UseAccessToken";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
-import { ReviewListType } from "pages/menu/[id]";
+import { ReviewListType } from "pages/menu/[menuId]";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviews } from "utils/api/reviews";
@@ -32,10 +31,10 @@ export default function PhotoReviews() {
     const fetchReview = () => {
       getReviews(Number(id))
         .then(({ totalCount, result }) => {
-          const photoReviews = result.filter((review) => review.etc)
+          const photoReviews = result.filter((review) => review.etc);
           setReviews({
             result: photoReviews,
-            total_count: photoReviews.length
+            total_count: photoReviews.length,
           });
         })
         .catch((e) => {
@@ -50,7 +49,7 @@ export default function PhotoReviews() {
   const handleReviewPostButtonClick = () => {
     getAccessToken()
       .then(() => router.push(`/menu/${id}?writeReview=true`))
-      .catch(() => openLoginModal())
+      .catch(() => openLoginModal());
   };
 
   const handleMobileSubHeaderBack = () => router.push(`/menu/${id}`);
@@ -64,17 +63,19 @@ export default function PhotoReviews() {
             <GalleryTitle>사진 리뷰</GalleryTitle>
             <PhotoReviewsCount>{reviews.total_count}</PhotoReviewsCount>
           </GalleryHeader>
-          {
-            reviews.result.length > 0 ?
-              <Gallery>
-                {reviews.result.map((review) => (
-                  isMobile
-                    ? <ReviewItem key={review.id} review={review} />
-                    : <PhotoReviewItem key={review.id} review={review} />
-                ))}
-              </Gallery>
-              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-          }
+          {reviews.result.length > 0 ? (
+            <Gallery>
+              {reviews.result.map((review) =>
+                isMobile ? (
+                  <ReviewItem key={review.id} review={review} />
+                ) : (
+                  <PhotoReviewItem key={review.id} review={review} />
+                ),
+              )}
+            </Gallery>
+          ) : (
+            <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+          )}
           <ReviewPostButtonWrapper>
             <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
               나의 평가 남기기

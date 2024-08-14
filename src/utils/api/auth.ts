@@ -121,9 +121,9 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     })
     .then((res: { data: RawUser }) => {
       const {
-        data: { id, nickname, etc },
+        data: { id, nickname, profile_url },
       } = res;
-      return { id, nickname, image: etc?.image ?? null };
+      return { id, nickname, image: profile_url };
     })
     .catch((e) => {
       throw new Error(e);
@@ -131,6 +131,9 @@ export const getMyData = async (accessToken: string): Promise<User> => {
 };
 
 export const updateMyData = async (formData: FormData, accessToken: string): Promise<User> => {
+  if (!formData.get("nickname")) {
+    throw new Error("nickname is required");
+  }
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
@@ -140,9 +143,9 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
     })
     .then((res: { data: RawUser }) => {
       const {
-        data: { id, nickname, etc },
+        data: { id, nickname, profile_url },
       } = res;
-      return { id, nickname, image: etc?.image ?? null };
+      return { id, nickname, image: profile_url };
     })
     .catch((e) => {
       throw new Error(e);
