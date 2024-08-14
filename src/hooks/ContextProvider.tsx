@@ -21,9 +21,7 @@ const initialState: State = {
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
-  favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
-  isAnonymous: false,
 };
 
 interface dispatchers {
@@ -41,9 +39,7 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
-  setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
-  setIsAnonymous: (isAnonymous: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -94,9 +90,7 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setUserInfo,
         setIsFilterFavorite,
-        setFavoriteRestaurant,
         setIsExceptEmptyRestaurant,
-        setIsAnonymous,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>

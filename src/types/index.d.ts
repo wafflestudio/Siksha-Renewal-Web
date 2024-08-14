@@ -16,9 +16,7 @@ export interface State {
   isLoginModal: boolean;
   userInfo: User | null;
   isFilterFavorite: boolean;
-  favoriteRestaurant: number[];
   isExceptEmptyRestaurant: boolean;
-  isAnonymous: boolean;
 }
 
 export type Action =

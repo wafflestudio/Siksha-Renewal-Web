@@ -12,6 +12,7 @@ import useAuth from "hooks/UseAuth";
 import { ImagePreview } from "components/Community/write/ImagePreview";
 import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
 
 export type inputs = {
   title: string;
@@ -45,10 +46,12 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isMobile = useIsMobile();
+
   const { authStatus, getAccessToken } = useAuth();
+
   const { openLoginModal, openModal } = useModals();
-  const { isAnonymous } = useStateContext();
-  const { setIsAnonymous } = useDispatchContext();
+
+  const { isAnonymousWriter, toggleIsAnonymousWriter } = useIsAnonymousWriter();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
@@ -62,11 +65,6 @@ export default function PostWriter() {
           return { ...prev, boardId: board.id };
         }),
     });
-  };
-
-  const onClickAnonymousOption = () => {
-    setIsAnonymous(!inputs.options.anonymous);
-    localStorage.setItem("isAnonymous", JSON.stringify(!inputs.options.anonymous));
   };
 
   const handleSubmit = () => {
@@ -168,8 +166,8 @@ export default function PostWriter() {
 
   // update inputs' isAnoymous state
   useEffect(() => {
-    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymous } }));
-  }, [isAnonymous]);
+    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
+  }, [isAnonymousWriter]);
 
   // 게시판 초기 선택
   useEffect(() => {
@@ -215,7 +213,7 @@ export default function PostWriter() {
               <Options>
                 <Option
                   className={inputs.options.anonymous ? "active" : ""}
-                  onClick={onClickAnonymousOption}
+                  onClick={toggleIsAnonymousWriter}
                 >
                   <Icon
                     src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}

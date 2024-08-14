@@ -6,11 +6,14 @@ import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
 import { FavoriteRestaurant } from "types";
+import useFavorite from "hooks/UseFavorite";
 
 export default function Setting_Favorite() {
   const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
+
+  const { favoriteRestaurants, toggleFavorite, isFavorite } = useFavorite();
 
   useEffect(authGuard, [authStatus]);
 

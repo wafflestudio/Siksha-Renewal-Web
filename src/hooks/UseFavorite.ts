@@ -1,38 +1,43 @@
-import { useEffect } from "react";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useEffect, useState } from "react";
 import useModals from "./UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useLocalStorage from "./UseLocalStorage";
+import useAuth from "./UseAuth";
 
 export default function useFavorite() {
-  const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { authStatus } = useAuth();
 
-  const { favoriteRestaurant, loginStatus } = state;
-  const { setFavoriteRestaurant } = dispatch;
-  const { openModal, openLoginModal } = useModals();
+  const [favoriteRestaurants, setFavoriteRestaurants] = useState<number[]>([]);
+
+  const { openLoginModal } = useModals();
+
+  // favoriteList는 로컬 스토리지에 저장된 favorite restaurant id list입니다
+  const { value, set: setStorage } = useLocalStorage("favorite_restaurant", "[]");
+  const favoriteList = JSON.parse(value);
 
   useEffect(() => {
-    if (loginStatus === false) {
-      setFavoriteRestaurant([]);
+    if (authStatus === "logout") {
+      setFavoriteRestaurants([]);
       return;
     }
 
-    const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
-    setFavoriteRestaurant(favoriteList);
-  }, [loginStatus]);
+    // 초깃값 세팅
+    setFavoriteRestaurants(favoriteList);
+  }, [authStatus]);
 
   const toggleFavorite = (restaurantId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
-      const newFavoriteList = favoriteRestaurant.includes(restaurantId)
-        ? favoriteRestaurant.filter((id) => id !== restaurantId)
-        : [...favoriteRestaurant, restaurantId];
-      setFavoriteRestaurant(newFavoriteList);
-      localStorage.setItem("favorite_restaurant", JSON.stringify(newFavoriteList));
+      const newFavoriteList = favoriteRestaurants.includes(restaurantId)
+        ? favoriteRestaurants.filter((id) => id !== restaurantId)
+        : [...favoriteRestaurants, restaurantId];
+      setFavoriteRestaurants(newFavoriteList);
+
+      // 변경값 반영
+      setStorage(newFavoriteList);
     }
   };
 
-  const isFavorite = (restaurantId: number) => favoriteRestaurant.includes(restaurantId);
+  const isFavorite = (restaurantId: number) => favoriteRestaurants.includes(restaurantId);
 
-  return { favoriteRestaurant, toggleFavorite, isFavorite };
+  return { favoriteRestaurants, toggleFavorite, isFavorite };
 }
