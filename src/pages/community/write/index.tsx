@@ -260,10 +260,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  /* gap: 12px 12px 25px 51px 25px; */
+  flex: 1;
 
   @media (max-width: 768px) {
-    /* gap: 6px 14px 37px 13px; */
   }
 `;
 const DesktopHeader = styled.div`
@@ -384,6 +383,8 @@ const ButtonContainer = styled.div`
   width: 100%;
   gap: 14px;
   background-color: white;
+  flex: 1;
+  align-items: end;
 
   @media (max-width: 768px) {
     padding-bottom: 23px;
