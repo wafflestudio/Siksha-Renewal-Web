@@ -1,22 +1,23 @@
 import styled from "styled-components";
 import Layout from "../layout";
-import { useEffect, useState } from "react";
-import { useStateContext } from "../../../hooks/ContextProvider";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Board, RawBoard } from "../../../types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import MobileSubHeader from "components/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useAuth from "hooks/UseAuth";
+import { ImagePreview } from "components/Community/write/ImagePreview";
+import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 
 export type inputs = {
   title: string;
   content: string;
   boardId: number;
-  photos: (File | string)[];
+  images: (File | string)[];
   options: {
     anonymous: boolean;
   };
@@ -30,45 +31,42 @@ const emptyInputs: inputs = {
   title: "",
   content: "",
   boardId: 1,
-  photos: [],
+  images: [],
   options: { anonymous: false },
 };
 
 export default function PostWriter() {
   const router = useRouter();
-  const { postId } = router.query;
+  const { boardId, postId } = router.query;
 
   const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
-  const [clicked, setClicked] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isMobile = useIsMobile();
-  const { loginStatus } = useStateContext();
-  const { openLoginModal } = useModals();
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth();
+  const { openLoginModal, openModal } = useModals();
+  const { isAnonymous } = useStateContext();
+  const { setIsAnonymous } = useDispatchContext();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  const handleClickMenuItem = (id: number) => {
-    setInputs({ ...inputs, boardId: id });
-    setClicked(false);
+  const onClickBoardSelectMenu = () => {
+    openModal(BoardSelectModal, {
+      boards: boards,
+      onClose: () => {},
+      onSubmit: (board) =>
+        setInputs((prev) => {
+          return { ...prev, boardId: board.id };
+        }),
+    });
   };
 
-  const handlePhotoAttach = (photo: File | undefined) => {
-    if (photo) {
-      setInputs({ ...inputs, photos: [...inputs.photos, photo] });
-    }
-  };
-
-  const handlePhotoDelete = (index: number) => {
-    setInputs({ ...inputs, photos: inputs.photos.filter((_, i) => i !== index) });
-  };
-
-  const handleCancel = () => {
-    router.back();
+  const onClickAnonymousOption = () => {
+    setIsAnonymous(!inputs.options.anonymous);
+    localStorage.setItem("isAnonymous", JSON.stringify(!inputs.options.anonymous));
   };
 
   const handleSubmit = () => {
@@ -76,7 +74,7 @@ export default function PostWriter() {
       return;
     }
 
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       setIsSubmitting(true);
       const body = new FormData();
@@ -85,7 +83,7 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
 
-      return Promise.all(inputs.photos.map(convertToBlob))
+      return Promise.all(inputs.images.map(convertToBlob))
         .then((blobs) => {
           for (let i = 0; i < blobs.length; i++) {
             body.append("images", blobs[i]);
@@ -122,14 +120,10 @@ export default function PostWriter() {
     }
   };
 
-  function setParsedBoards(board: RawBoard) {
-    setBoards((prev) => [...prev, boardParser(board)]);
-  }
-
   const fetchBoards = () => {
     return getBoardList().then((data) => {
       setBoards([]);
-      data.map(setParsedBoards);
+      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
     });
   };
 
@@ -145,7 +139,7 @@ export default function PostWriter() {
             title: title,
             content: content,
             boardId: board_id,
-            photos: etc ? etc.images : [],
+            images: etc ? etc.images : [],
             options: { anonymous: anonymous },
           });
           setIsUpdate(true);
@@ -172,35 +166,37 @@ export default function PostWriter() {
     }
   };
 
+  // update inputs' isAnoymous state
   useEffect(() => {
-    if (loginStatus === false) {
+    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymous } }));
+  }, [isAnonymous]);
+
+  // 게시판 초기 선택
+  useEffect(() => {
+    if (boardId && typeof boardId === "string")
+      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
+  }, [boardId]);
+
+  useEffect(() => {
+    if (authStatus === "logout") {
       router.push("/community/boards/1");
     }
     fetchBoards();
     fetchPreviousPost();
   }, []);
 
-  // hydration mismatch를 피하기 위해 loginStatus state로 pre-rendering을 막습니다.
-  if (loginStatus)
+  // hydration mismatch를 피하기 위해 authStatus state로 pre-rendering을 막습니다.
+  if (authStatus === "login")
     return (
       <>
         <MobileSubHeader title="글쓰기" handleBack={router.back} />
         <Layout>
           <Container>
             <DesktopHeader>글쓰기</DesktopHeader>
-            <BoardMenu onClick={() => setClicked(!clicked)}>
+            <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
               {selectedBoardName}
               <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} />
             </BoardMenu>
-            {clicked && (
-              <BoardMenuList>
-                {boards?.map((board, i) => (
-                  <BoardMenuItem key={i} onClick={() => handleClickMenuItem(board.id)}>
-                    {board.name}
-                  </BoardMenuItem>
-                ))}
-              </BoardMenuList>
-            )}
             <TitleInput
               type="text"
               placeholder="제목"
@@ -219,9 +215,7 @@ export default function PostWriter() {
               <Options>
                 <Option
                   className={inputs.options.anonymous ? "active" : ""}
-                  onClick={() =>
-                    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } })
-                  }
+                  onClick={onClickAnonymousOption}
                 >
                   <Icon
                     src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
@@ -230,42 +224,11 @@ export default function PostWriter() {
                   익명
                 </Option>
               </Options>
-              <PhotoViewer>
-                {inputs.photos.map((photo, i) => (
-                  <PhotoContainer key={i}>
-                    <Photo src={typeof photo === "string" ? photo : URL.createObjectURL(photo)} />
-                    <DeleteButton onClick={() => handlePhotoDelete(i)}>
-                      <Icon src="/img/photo-delete.svg" />
-                    </DeleteButton>
-                  </PhotoContainer>
-                ))}
-                {inputs.photos.length < 5 ? (
-                  <PhotoAttacher>
-                    <Icon
-                      style={{
-                        width: !isMobile && inputs.photos.length === 0 ? "25px" : "",
-                        height: !isMobile && inputs.photos.length === 0 ? "25px" : "",
-                      }}
-                      src={
-                        inputs.photos.length === 0
-                          ? !isMobile
-                            ? "/img/file.svg"
-                            : "/img/file-big.svg"
-                          : "/img/file-big.svg"
-                      }
-                    />
-                    <FileInput
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handlePhotoAttach(e.target?.files?.[0])}
-                    />
-                  </PhotoAttacher>
-                ) : null}
-              </PhotoViewer>
+              <ImagePreview images={inputs.images} setInputs={setInputs} />
             </Footer>
             {!isMobile ? (
               <ButtonContainer>
-                <Button className="cancel" onClick={handleCancel} isMobile>
+                <Button className="cancel" onClick={router.back} isMobile>
                   취소
                 </Button>
                 <Button
@@ -296,10 +259,10 @@ export default function PostWriter() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* gap: 12px 12px 25px 51px 25px; */
+  position: relative;
+  flex: 1;
 
   @media (max-width: 768px) {
-    /* gap: 6px 14px 37px 13px; */
   }
 `;
 const DesktopHeader = styled.div`
@@ -330,41 +293,6 @@ const BoardMenu = styled.div`
   @media (max-width: 768px) {
     margin-bottom: 6px;
     height: 35px;
-  }
-`;
-const BoardMenuList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  border: 1px solid #dfdfdf;
-  border-radius: 8px;
-  margin-top: -8px;
-  margin-bottom: 12px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 6px;
-  }
-`;
-const BoardMenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 39px;
-  background: #ffffff;
-  cursor: pointer;
-
-  &:hover {
-    background: #f6f6f6;
-  }
-  &:not(:last-child) {
-    border-bottom: 1px solid #dfdfdf;
-  }
-  &:first-child {
-    border-radius: 8px 8px 0 0;
-  }
-  &:last-child {
-    border-radius: 0 0 8px 8px;
   }
 `;
 const Icon = styled.img`
@@ -426,11 +354,9 @@ const Footer = styled.div`
 `;
 const Options = styled.div`
   height: 36px;
-  margin-bottom: 20px;
   border-bottom: 0.5px solid #b7b7b7;
 
   @media (max-width: 768px) {
-    margin-bottom: 13px;
     font-size: 12px;
   }
 `;
@@ -446,74 +372,22 @@ const Option = styled.label`
     color: #ff9522;
   }
 `;
-const PhotoViewer = styled.div`
-  display: flex;
-  align-items: end;
-  gap: 13px;
-  padding: 0px 3px;
-  /* overflow-x: auto; */
-  z-index: 2;
-  /* height: 135px; */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const PhotoContainer = styled.div`
-  position: relative;
-`;
-const Photo = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 8px;
-  object-fit: cover;
-
-  @media (max-width: 768px) {
-    width: 106px;
-    height: 106px;
-  }
-`;
-const DeleteButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateX(36%) translateY(-36%);
-  padding: 0;
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-`;
-
-const PhotoAttacher = styled.label`
-  width: 120px;
-  height: 120px;
-  margin-left: 15px;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    width: 106px;
-    height: 106px;
-  }
-`;
-const FileInput = styled.input`
-  display: none;
-`;
 
 const ButtonContainer = styled.div`
-  position: absolute;
-  /* position: relative; */
-  bottom: 65px;
+  position: sticky;
+  padding-bottom: 65px;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   gap: 14px;
+  background-color: white;
+  flex: 1;
+  align-items: end;
 
   @media (max-width: 768px) {
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 23px;
+    padding-bottom: 23px;
   }
 `;
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { State, RawMenuList, User } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
@@ -23,6 +23,7 @@ const initialState: State = {
   isFilterFavorite: false,
   favoriteRestaurant: [],
   isExceptEmptyRestaurant: true,
+  isAnonymous: false,
 };
 
 interface dispatchers {
@@ -42,6 +43,7 @@ interface dispatchers {
   setIsFilterFavorite: (value: boolean) => void;
   setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
   setIsExceptEmptyRestaurant: (except: boolean) => void;
+  setIsAnonymous: (isAnonymous: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -51,6 +53,7 @@ const ContextProvider = ({ children }) => {
   const [state, setState] = useState<State>(initialState);
 
   // dispatch functions
+  // 추후 useCallback으로 memorization 해두는 건 어떨까요?
   const setDate = (date: Date) => setState((prevState) => ({ ...prevState, date: date }));
   const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
   const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
@@ -75,6 +78,7 @@ const ContextProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
   const setIsExceptEmptyRestaurant = (except: boolean) =>
     setState((prevState) => ({ ...prevState, isExceptEmptyRestaurant: except }));
+  const setIsAnonymous = (value) => setState((prevState) => ({ ...prevState, isAnonymous: value }));
 
   return (
     <dispatchContext.Provider
@@ -92,6 +96,7 @@ const ContextProvider = ({ children }) => {
         setIsFilterFavorite,
         setFavoriteRestaurant,
         setIsExceptEmptyRestaurant,
+        setIsAnonymous,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>

@@ -18,6 +18,7 @@ export interface State {
   isFilterFavorite: boolean;
   favoriteRestaurant: number[];
   isExceptEmptyRestaurant: boolean;
+  isAnonymous: boolean;
 }
 
 export type Action =
