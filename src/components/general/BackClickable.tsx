@@ -20,7 +20,7 @@ export default function BackClickable({ children, onClickBackground, style }: Ba
   );
 }
 
-const Background = styled.div<{ customStyle: string | undefined }>`
+const Background = styled.div<{ customStyle?: string }>`
   z-index: 100;
   position: fixed;
   top: 0;
