@@ -1,4 +1,5 @@
 import { useDispatchContext, useStateContext } from "./ContextProvider";
+import useLocalStorage from "./UseLocalStorage";
 
 /**
  *
@@ -8,13 +9,13 @@ export default function UseAccessToken() {
   const { loginStatus } = useStateContext();
   const { setLoginStatus } = useDispatchContext();
 
+  const { value: accessToken } = useLocalStorage("access_token", null);
+
   const getAccessToken = (): Promise<string> => {
     return new Promise((resolve, reject) => {
       if (loginStatus === false) {
         reject(new Error("Login required"));
       }
-
-      const accessToken = localStorage.getItem("access_token");
 
       if (!accessToken) {
         setLoginStatus(false);

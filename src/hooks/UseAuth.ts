@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatchContext, useStateContext } from "./ContextProvider";
 import { useRouter } from "next/router";
 import useModals from "./UseModals";
+import useLocalStorage from "./UseLocalStorage";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
@@ -9,8 +10,13 @@ export default function useAuth() {
   const { openLoginModal } = useModals();
   const router = useRouter();
 
+  const {
+    value: accessToken,
+    set: setStorage,
+    remove: removeStorage,
+  } = useLocalStorage("access_token", null);
+
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
     setAuthStatus(accessToken ? "login" : "logout");
     setLoginStatus(accessToken ? true : false);
   }, []);
@@ -28,8 +34,6 @@ export default function useAuth() {
         reject(new Error("Login required"));
       }
 
-      const accessToken = localStorage.getItem("access_token");
-
       if (!accessToken) {
         setAuthStatus("logout");
         setLoginStatus(false);
@@ -46,13 +50,13 @@ export default function useAuth() {
   };
 
   const signIn = (accessToken: string) => {
-    localStorage.setItem("access_token", accessToken);
+    setStorage(accessToken);
     setAuthStatus("login");
     setLoginStatus(true);
   };
 
   const signOut = () => {
-    localStorage.removeItem("access_token");
+    removeStorage();
     setAuthStatus("logout");
     setLoginStatus(false);
   };
