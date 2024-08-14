@@ -1,4 +1,5 @@
 import { useStateContext } from "hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -7,13 +8,13 @@ export function BoardHeader() {
   const router = useRouter();
   const { boardId } = router.query;
 
-  const { loginStatus } = useStateContext();
+  const {authStatus} = useAuth()
   const { openLoginModal } = useModals();
 
   function handleClickWriteButton() {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === 'logout') openLoginModal();
     else {
-      if (boardId) router.push(`/community/write?boardId=${boardId}`);
+      if (boardId) router.push({ pathname: "/community/write", query: { boardId } }, "/community/write"); 
       else router.push("/community/write");
     }
   }
