@@ -70,11 +70,8 @@ const ContextProvider = ({ children }) => {
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
-  const setFavoriteRestaurant = (favoriteRestaurant) =>
-    setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
   const setIsExceptEmptyRestaurant = (except: boolean) =>
     setState((prevState) => ({ ...prevState, isExceptEmptyRestaurant: except }));
-  const setIsAnonymous = (value) => setState((prevState) => ({ ...prevState, isAnonymous: value }));
 
   return (
     <dispatchContext.Provider
