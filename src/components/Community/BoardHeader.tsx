@@ -1,15 +1,36 @@
-import { useStateContext } from "hooks/ContextProvider";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Post } from "types";
+import { getPostList, getTrendingPosts } from "utils/api/community";
+import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
+  const { checkAccessToken, authStatus } = useAuth();
   const { boardId } = router.query;
-
-  const {authStatus} = useAuth()
   const { openLoginModal } = useModals();
+
+  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
+    Autoplay({ delay: 3000 })
+  ]);
+
+  async function fetchTrendingPosts() {
+    return checkAccessToken()
+      .then((accessToken) => getTrendingPosts(accessToken))
+      .then((res) => {
+        const { result } = res;
+        setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
+      })
+      .catch((e) => console.error(e));
+  }
 
   function handleClickWriteButton() {
     if (authStatus === 'logout') openLoginModal();
@@ -19,16 +40,37 @@ export function BoardHeader() {
     }
   }
 
+  useEffect(() => {
+    fetchTrendingPosts();
+  }, []);
+
   return (
     <Container>
-      <HotPost>
-        <Title>개발중입니다.</Title>
-        <ContentPreview>개발중입니다. </ContentPreview>
-        <Likes>
-          <Icon src="/img/post-like.svg" />
-          2356
-        </Likes>
-      </HotPost>
+      <TrendingPostWrapper>
+        <PostSwiperViewport ref={emblaRef}>
+          <PostSwiperContainer>
+            {
+              trendingPosts.length > 0 ? trendingPosts.map((trendingPost) => (
+                <Link
+                  key={trendingPost.id}
+                  href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+                >
+                  <TrendingPost>
+                    <Title>{trendingPost.title}</Title>
+                    <ContentPreview>
+                      {trendingPost.content}
+                    </ContentPreview>
+                    <Likes>
+                      <Icon src="/img/post-like.svg" />
+                      {trendingPost.likeCount}
+                    </Likes>
+                  </TrendingPost>
+                </Link>
+              )) : <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
+            }
+          </PostSwiperContainer>
+        </PostSwiperViewport>
+      </TrendingPostWrapper>
       <WriteButton>
         <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
       </WriteButton>
@@ -45,42 +87,66 @@ const Container = styled.div`
   }
 `;
 
-const HotPost = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: min(100% - 56px, 573px);
-  height: 100%;
+const TrendingPostWrapper = styled.div`
   background-color: #ff952233;
   padding: 15px 17px;
   border-radius: 8px;
   box-sizing: border-box;
-  font-size: 16px;
-  cursor: pointer;
+  width: min(100% - 56px, 573px);
   @media (max-width: 768px) {
     width: 100%;
     padding: 10px 15px;
     border-radius: 12px;
+  }
+`;
+
+const PostSwiperViewport = styled.div`
+  overflow: hidden;
+  & > a {
+    position: relative;
+  }
+`;
+
+const PostSwiperContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 18px;
+  @media (max-width: 768px) {
+    height: 14px;
+  }
+`;
+
+const TrendingPost = styled.div`
+  display: flex;
+  gap: 15px 10px;
+  font-size: 16px;
+  height: 18px;
+  cursor: pointer;
+  @media (max-width: 768px) {
     font-size: 12px;
+    height: 14px;
   }
 `;
 
 const Title = styled.div`
-  width: 100%;
+  max-width: 220px;
   font-weight: bold;
-  margin-right: 14px;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const ContentPreview = styled.div`
+  flex: 1;
   width: 100%;
   color: #393939;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin-right: 14px;
   white-space: nowrap;
 `;
 const Likes = styled.div`
   display: flex;
+  align-items: center;
   color: #ff9522;
   font-size: 12px;
   @media (max-width: 768px) {
@@ -94,6 +160,16 @@ const Icon = styled.img`
     height: 11px;
   }
 `;
+
+const NoTrendingPostsMessage = styled.span`
+  font-size: 16px;
+  height: 18px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    height: 14px;
+  }
+`;
+
 const WriteButton = styled.button`
   margin: 0;
   padding: 0;

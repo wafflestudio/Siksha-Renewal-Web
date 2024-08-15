@@ -85,6 +85,47 @@ export const getPost = (postID: number, accessToken?: string): Promise<RawPost> 
     });
 };
 
+export const getTrendingPosts = (
+  accessToken: string,
+  likes: number = 5,
+  per_page: number = 5,
+): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
+  return axios
+    .get(`${APIendpoint()}/community/posts/popular/trending?likes=${likes}&per_page=${per_page}`, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
+    .then((res) => {
+      const { data } = res;
+      return {
+        result: data.result,
+        totalCount: data.total_count,
+        hasNext: data.has_next,
+      };
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
+};
+export const getBestPosts = (
+  accessToken: string,
+): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
+  return axios
+    .get(`${APIendpoint()}/community/posts/popular/best`, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
+    .then((res) => {
+      const { data } = res;
+      return {
+        result: data.result,
+        totalCount: data.total_count,
+        hasNext: data.has_next,
+      };
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
+};
+
 export const setPost = (body: FormData, accessToken: string): Promise<RawPost> => {
   return axios
     .post(`${APIendpoint()}/community/posts`, body, {

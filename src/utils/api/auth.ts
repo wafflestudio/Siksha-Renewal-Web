@@ -130,12 +130,38 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     });
 };
 
-export const updateMyData = async (formData: FormData, accessToken: string): Promise<User> => {
+export const updateProfile = async (formData: FormData, accessToken: string): Promise<User> => {
   if (!formData.get("nickname")) {
     throw new Error("nickname is required");
   }
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
+      headers: {
+        "authorization-token": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, profile_url },
+      } = res;
+      return { id, nickname, image: profile_url };
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
+};
+
+export const updateProfileWithImage = async (
+  formData: FormData,
+  accessToken: string,
+): Promise<User> => {
+  if (!formData.get("image")) {
+    throw new Error("image is required");
+  }
+
+  return axios
+    .patch(`${APIendpoint()}/auth/me/image/profile/`, formData, {
       headers: {
         "authorization-token": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
@@ -160,5 +186,17 @@ export const deleteAccount = async (accessToken: string): Promise<void> => {
     .then(() => {})
     .catch((e) => {
       throw new Error(e);
+    });
+};
+
+export const validateNickname = async (nickname: string): Promise<boolean> => {
+  return axios
+    .get(`${APIendpoint()}/auth/nicknames/validate`, {
+      params: { nickname },
+    })
+    .then(({ status }) => (status === 200 ? true : false))
+    .catch((e) => {
+      console.error(e);
+      return false;
     });
 };

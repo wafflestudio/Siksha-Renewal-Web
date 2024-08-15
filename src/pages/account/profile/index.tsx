@@ -2,19 +2,19 @@ import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { updateMyData } from "utils/api/auth";
+import { updateProfile, updateProfileWithImage, validateNickname } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
 import ProfileEdit from "components/Account/ProfileEdit";
 import UseProfile from "hooks/UseProfile";
 import MobileSubHeader from "components/MobileSubHeader";
 
-export default function Setting_Profile() {
+export default function SettingProfile() {
   const { userInfo, setProfile } = UseProfile();
 
   const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-
   const router = useRouter();
 
   const { getAccessToken, authStatus, authGuard } = useAuth();
@@ -24,17 +24,31 @@ export default function Setting_Profile() {
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
 
-  const updateProfile = async () => {
-    if (nickname === null) return;
-    if (imgRef.current === null) return;
+  // debouncing nickname validation
+  let timerRef = useRef<NodeJS.Timeout | null>(null); // rerendering으로 인한 timer 리셋 방지
+  const nicknameCheck = (delay = 500) => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+
+      timerRef.current = setTimeout(() => {
+        if (nickname === userInfo?.nickname) setIsNicknameValid(true);
+        else validateNickname(nickname).then((res) => setIsNicknameValid(res));
+      }, delay);
+    };
+  };
+  useEffect(nicknameCheck, [nickname]);
+
+  const onUpdateProfile = async () => {
+    if (nickname === null || !isNicknameValid || imgRef.current === null) return;
 
     const formData = new FormData();
-    formData.append("nickname", nickname);
+    if (nickname !== userInfo?.nickname) formData.append("nickname", nickname);
     if (imageBlob) formData.append("image", imageBlob);
 
+    const updateFunction = imageBlob ? updateProfileWithImage : updateProfile;
     getAccessToken()
       .then((token) => {
-        updateMyData(formData, token).then(({ nickname: newNickname, image: newImage }) => {
+        updateFunction(formData, token).then(({ nickname: newNickname, image: newImage }) => {
           setProfile(newNickname, newImage ?? undefined);
           router.push(`/account`);
         });
@@ -56,11 +70,12 @@ export default function Setting_Profile() {
             imageBlob={imageBlob}
             setImageBlob={setImageBlob}
             imgRef={imgRef}
-            updateProfile={updateProfile}
+            isNicknameValid={isNicknameValid}
+            setIsNicknameValid={setIsNicknameValid}
           />
           <ButtonGroup>
             <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
-            <CompleteButton onClick={updateProfile}>완료</CompleteButton>
+            <CompleteButton onClick={onUpdateProfile}>완료</CompleteButton>
           </ButtonGroup>
         </Container>
       </AccountLayout>
@@ -79,6 +94,9 @@ const Container = styled.div`
     height: 100%;
     border: none;
     border-radius: 0;
+
+    display: flex;
+    flex-direction: column;
   }
 `;
 const Title = styled.div`
@@ -93,36 +111,46 @@ const Title = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  display: none;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 39px);
+  margin: 0 19.5px 18px 19.5px;
 
   @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    width: calc(100% - 39px);
-    margin: 0 19.5px 18px 19.5px;
+    margin-bottom: 32.06px;
   }
 `;
 
 const Button = styled.button`
   width: calc(50% - 4px);
-  height: 44px;
+  height: 46px;
   background-color: #ff9522;
   border: none;
   border-radius: 8px;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 22px;
 
   @media (max-width: 768px) {
-    height: 48px;
+    font-size: 17px;
+    height: 56px;
   }
 `;
 
 const CancelButton = styled(Button)`
-  background-color: #adadad;
+  background-color: #eeeeee;
+  color: #8e8e8e;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const CompleteButton = styled(Button)`
   background-color: #ff9522;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
