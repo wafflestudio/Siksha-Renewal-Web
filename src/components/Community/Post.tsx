@@ -91,6 +91,7 @@ const Title = styled.div`
   overflow: hidden;
   font-size: 18px;
   font-weight: bold;
+  white-space: nowrap;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
     font-size: 12px;
@@ -99,6 +100,7 @@ const Title = styled.div`
 const ContentPreview = styled.div`
   color: #393939;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
     font-size: 12px;
