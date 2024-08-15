@@ -1,13 +1,15 @@
 import MenuCard from "./MenuCard";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useStateContext } from "../hooks/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
+import useFavorite from "hooks/UseFavorite";
 
 export default function MenuList() {
   const state = useStateContext();
 
-  const { meal, data, showCal, date, loading, favoriteRestaurant, isFilterFavorite } = state;
+  const { meal, data, date, loading, isFilterFavorite } = state;
+  const { favoriteRestaurants } = useFavorite();
 
   const [hasData, setHasData] = useState(false);
 
@@ -15,7 +17,7 @@ export default function MenuList() {
     if (!data[meal] || data[meal].length == 0) setHasData(false);
     else if (
       isFilterFavorite &&
-      data[meal].filter((res) => favoriteRestaurant.includes(res.id)).length === 0
+      data[meal].filter((res) => favoriteRestaurants.includes(res.id)).length === 0
     )
       setHasData(false);
     else setHasData(true);
@@ -28,7 +30,7 @@ export default function MenuList() {
       ) : hasData ? (
         data[meal].map((restaurant) => {
           if (isFilterFavorite) {
-            return favoriteRestaurant.includes(restaurant.id) ? (
+            return favoriteRestaurants.includes(restaurant.id) ? (
               <MenuCard data={restaurant} key={restaurant.id + meal} />
             ) : null;
           } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
