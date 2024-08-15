@@ -28,7 +28,7 @@ export default function useLocalStorage(key: string, initialValue: any) {
     return () => window.removeEventListener("storage", listener);
   };
 
-  const store = useSyncExternalStore(subsribe, getSnapshot, getServerSnapshot);
+  const store: string | null = useSyncExternalStore(subsribe, getSnapshot, getServerSnapshot);
 
   return {
     value: store,

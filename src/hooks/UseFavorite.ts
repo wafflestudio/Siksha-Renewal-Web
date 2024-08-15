@@ -9,7 +9,7 @@ export default function useFavorite() {
   const { openLoginModal } = useModals();
 
   const { value, set: setStorage } = useLocalStorage("favorite_restaurant", "[]");
-  const parsedValue = JSON.parse(value);
+  const parsedValue = JSON.parse(value ? value : "[]");
 
   const [favoriteRestaurants, setFavoriteRestaurants] = useState<number[]>(parsedValue);
 
