@@ -21,7 +21,6 @@ const initialState: State = {
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
-  isExceptEmptyRestaurant: true,
 };
 
 interface dispatchers {
@@ -39,7 +38,6 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
-  setIsExceptEmptyRestaurant: (except: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -70,8 +68,6 @@ const ContextProvider = ({ children }) => {
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
-  const setIsExceptEmptyRestaurant = (except: boolean) =>
-    setState((prevState) => ({ ...prevState, isExceptEmptyRestaurant: except }));
 
   return (
     <dispatchContext.Provider
@@ -87,7 +83,6 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setUserInfo,
         setIsFilterFavorite,
-        setIsExceptEmptyRestaurant,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>

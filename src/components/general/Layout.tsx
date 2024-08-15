@@ -1,5 +1,5 @@
 import Header from "components/Header";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useDispatchContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import UseProfile from "hooks/UseProfile";
@@ -13,14 +13,11 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const state = useStateContext();
-  const { setIsFilterFavorite, setIsExceptEmptyRestaurant } = useDispatchContext();
+  const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
-  const { getAccessToken } = useAuth();
-  const { login } = useAuth();
-  UseProfile();
+  const { getAccessToken, login } = useAuth();
 
-  const { authStatus, isExceptEmptyRestaurant } = state;
+  UseProfile();
 
   useEffect(() => {
     getAccessToken()
@@ -36,18 +33,6 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
-
-  useEffect(() => {
-    if (authStatus === "login") {
-      const value = localStorage.getItem("isExceptEmptyRestaurant");
-
-      if (value !== null) {
-        setIsExceptEmptyRestaurant(JSON.parse(value));
-      } else {
-        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
-      }
-    }
-  }, [authStatus]);
 
   return (
     <>
