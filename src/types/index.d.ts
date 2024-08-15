@@ -207,7 +207,7 @@ export interface User {
   image: string | null;
 }
 
-export interface FavoriteRestaurant {
+export interface RestaurantPreview {
   id: number;
   nameKr: string;
   nameEn: string;
