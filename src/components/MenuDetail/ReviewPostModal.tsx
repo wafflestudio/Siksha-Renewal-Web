@@ -1,22 +1,23 @@
 import React, { useId, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { setReview } from "utils/api/reviews";
+import useAuth from "hooks/UseAuth";
 
 export type ReviewInputs = {
   score: number;
   comment: string;
   photos: {
-    id: number,
-    photo: string | File
+    id: number;
+    photo: string | File;
   }[];
 };
 
 const emptyReviewInputs: ReviewInputs = {
   score: 3,
   comment: "",
-  photos: []
+  photos: [],
 };
 
 export default function ReviewPostModal({
@@ -36,14 +37,14 @@ export default function ReviewPostModal({
 
   const MAX_COMMENT_LENGTH = 150;
 
-  const accessToken = localStorage.getItem("access_token");
+  const { getAccessToken } = useAuth();
 
   const handlePhotoAttach = (photo: File | undefined) => {
     if (photo) {
       const newPhoto = {
         id: uuidv4(),
-        photo: photo
-      }
+        photo: photo,
+      };
       setInputs({ ...inputs, photos: [...inputs.photos, newPhoto] });
     }
   };
@@ -51,14 +52,16 @@ export default function ReviewPostModal({
     setInputs({ ...inputs, photos: inputs.photos.filter((photoObj) => photoObj.id !== id) });
   };
   const handleSubmit = async () => {
-    return setReview(menu.menuId, inputs, accessToken!)
-      .then((res) => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-        window.alert(`리뷰 등록에 실패했습니다.`);
-      });
+    return getAccessToken().then((accessToken) => {
+      setReview(menu.menuId, inputs, accessToken!)
+        .then((res) => {
+          onClose();
+        })
+        .catch((err) => {
+          console.error(err);
+          window.alert(`리뷰 등록에 실패했습니다.`);
+        });
+    });
   };
 
   if (!isOpen) return null;
@@ -92,7 +95,9 @@ export default function ReviewPostModal({
           <CommentTextArea
             value={inputs.comment}
             placeholder={"맛은 어땠나요?"}
-            onChange={(e) => setInputs({ ...inputs, comment: e.target.value.slice(0, MAX_COMMENT_LENGTH) })}
+            onChange={(e) =>
+              setInputs({ ...inputs, comment: e.target.value.slice(0, MAX_COMMENT_LENGTH) })
+            }
           />
           <CommentLength>
             {inputs.comment.length} 자 / {MAX_COMMENT_LENGTH} 자
@@ -103,9 +108,14 @@ export default function ReviewPostModal({
         <PhotoViewer>
           {inputs.photos.map((photoObj, i) => (
             <PhotoContainer key={photoObj.id}>
-              <Photo src={typeof photoObj.photo === "string" ? photoObj.photo : URL.createObjectURL(photoObj.photo)} />
-              <DeleteButton onClick={() => handlePhotoDelete(photoObj.id)}>
-              </DeleteButton>
+              <Photo
+                src={
+                  typeof photoObj.photo === "string"
+                    ? photoObj.photo
+                    : URL.createObjectURL(photoObj.photo)
+                }
+              />
+              <DeleteButton onClick={() => handlePhotoDelete(photoObj.id)}></DeleteButton>
             </PhotoContainer>
           ))}
           {inputs.photos.length < 5 && (
@@ -353,8 +363,8 @@ const PhotoAttacher = styled.label<{ photosLength: number }>`
   width: 120px;
   height: 120px;
   flex: 0 0 auto;
-  background-color: ${(props) => props.photosLength > 0 ? "#dfdfdf" : "#ff9522"};
-  background-image: ${(props) => props.photosLength > 0 ? "url('/img/plus-angled.svg')" : ""};
+  background-color: ${(props) => (props.photosLength > 0 ? "#dfdfdf" : "#ff9522")};
+  background-image: ${(props) => (props.photosLength > 0 ? "url('/img/plus-angled.svg')" : "")};
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 8px;
@@ -384,7 +394,7 @@ const AddImageText = styled.div`
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
-    background-image: url('/img/photo.svg');
+    background-image: url("/img/photo.svg");
     margin: 0 0 6px 0;
   }
 
@@ -411,7 +421,7 @@ const MobilePhotoAttacher = styled.label`
   padding: 8px 25px;
   text-align: center;
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     display: flex;
   }
@@ -483,7 +493,7 @@ const ReviewPostButton = styled.button`
   cursor: pointer;
 
   &:before {
-    content: '평가';
+    content: "평가";
     display: none;
     padding-right: 5px;
   }
