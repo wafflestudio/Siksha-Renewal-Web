@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import NavigationBar from "./NavigationBar";
 import useModals from "hooks/UseModals";
+import useLocalStorage from "hooks/UseLocalStorage";
+import useAuth from "hooks/UseAuth";
 
 // 추후 디렉토리 변경(/components/general) 필요해보입니다.
 export default function Header() {
@@ -12,6 +14,7 @@ export default function Header() {
 
   const { loginStatus } = state;
   const { openLoginModal } = useModals();
+  const { logout } = useAuth();
 
   return (
     <Background>
@@ -31,15 +34,7 @@ export default function Header() {
         </Title>
         <NavigationBar />
         {loginStatus ? (
-          <LoginButton
-            onClick={() => {
-              localStorage.removeItem("access_token");
-              router.push(`/`);
-              setLoginStatus(false);
-            }}
-          >
-            로그아웃
-          </LoginButton>
+          <LoginButton onClick={logout}>로그아웃</LoginButton>
         ) : (
           <LoginButton onClick={() => openLoginModal()}>로그인</LoginButton>
         )}

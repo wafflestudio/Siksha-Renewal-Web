@@ -23,8 +23,7 @@ export default function useAuth() {
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
-      router.push(`/`);
-      openLoginModal();
+      router.push(`/`).then(() => openLoginModal());
     }
   }, [authStatus]);
 
@@ -49,17 +48,17 @@ export default function useAuth() {
     return getAccessToken();
   };
 
-  const signIn = (accessToken: string) => {
+  const login = (accessToken: string) => {
     setStorage(accessToken);
     setAuthStatus("login");
     setLoginStatus(true);
   };
 
-  const signOut = () => {
+  const logout = () => {
     removeStorage();
     setAuthStatus("logout");
     setLoginStatus(false);
   };
 
-  return { authStatus, authGuard, getAccessToken, checkAccessToken, signIn, signOut };
+  return { authStatus, authGuard, getAccessToken, checkAccessToken, login, logout };
 }
