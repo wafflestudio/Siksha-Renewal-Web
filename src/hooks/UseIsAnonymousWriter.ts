@@ -5,9 +5,9 @@ export default function useIsAnonymousWriter() {
   const { value, set: setStorage } = useLocalStorage("isAnonymousWriter", "false");
   const isAnonymousWriter = JSON.parse(value ? value : "false");
 
-  function toggleIsAnonymousWriter() {
-    setStorage(JSON.stringify(!isAnonymousWriter));
+  function setIsAnonymousWriter(anonymous: boolean) {
+    setStorage(JSON.stringify(anonymous));
   }
 
-  return { isAnonymousWriter, toggleIsAnonymousWriter };
+  return { isAnonymousWriter, setIsAnonymousWriter };
 }

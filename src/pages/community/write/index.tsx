@@ -11,7 +11,6 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { ImagePreview } from "components/Community/write/ImagePreview";
 import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
 
 export type inputs = {
@@ -51,7 +50,7 @@ export default function PostWriter() {
 
   const { openLoginModal, openModal } = useModals();
 
-  const { isAnonymousWriter, toggleIsAnonymousWriter } = useIsAnonymousWriter();
+  const { isAnonymousWriter, setIsAnonymousWriter } = useIsAnonymousWriter();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
@@ -65,6 +64,11 @@ export default function PostWriter() {
           return { ...prev, boardId: board.id };
         }),
     });
+  };
+
+  const toggleAnonymous = () => {
+    setIsAnonymousWriter(!inputs.options.anonymous);
+    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
   };
 
   const handleSubmit = () => {
@@ -167,7 +171,7 @@ export default function PostWriter() {
   // update inputs' isAnoymous state
   useEffect(() => {
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
-  }, [isAnonymousWriter]);
+  }, []);
 
   // 게시판 초기 선택
   useEffect(() => {
@@ -213,7 +217,7 @@ export default function PostWriter() {
               <Options>
                 <Option
                   className={inputs.options.anonymous ? "active" : ""}
-                  onClick={toggleIsAnonymousWriter}
+                  onClick={toggleAnonymous}
                 >
                   <Icon
                     src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
