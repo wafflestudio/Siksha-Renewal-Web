@@ -120,8 +120,8 @@ const CameraFrame = styled.div`
   gap: 10px;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 1px solid var(--grey-05, #f0f0f0);
-  background: var(--Main-White, #fff);
+  border: 1px solid #f0f0f0;
+  background: #ffffff;
 `;
 
 const Camera = styled.img`
@@ -177,12 +177,11 @@ const DuplicateCheck = styled.div`
 
 const ResultImage = styled.img<{ isDuplicate: boolean }>`
   width: ${(props) => (props.isDuplicate ? "11px" : "9.15px")};
-  width: ${(props) => (props.isDuplicate ? "8px" : "9.15px")};
+  height: ${(props) => (props.isDuplicate ? "8px" : "9.15px")};
 `;
 
 const ResultText = styled.span<{ isDuplicate: boolean }>`
-  color: ${(props) =>
-    props.isDuplicate ? "var(--Main-Orange, #ff9522)" : "var(--Main-Gray, #ADADAD)"};
+  color: ${(props) => (props.isDuplicate ? "#ff9522" : "#ADADAD")};
   font-size: 14px;
   font-weight: 400;
   line-height: 23px;

@@ -24,10 +24,19 @@ export default function SettingProfile() {
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
 
-  useEffect(() => {
-    if (nickname === userInfo?.nickname) setIsNicknameValid(true);
-    else validateNickname(nickname).then((res) => setIsNicknameValid(res));
-  }, [nickname]);
+  // debouncing nickname validation
+  let timerRef = useRef<NodeJS.Timeout | null>(null); // rerendering으로 인한 timer 리셋 방지
+  const nicknameCheck = (delay = 500) => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+
+      timerRef.current = setTimeout(() => {
+        if (nickname === userInfo?.nickname) setIsNicknameValid(true);
+        else validateNickname(nickname).then((res) => setIsNicknameValid(res));
+      }, delay);
+    };
+  };
+  useEffect(nicknameCheck, [nickname]);
 
   const onUpdateProfile = async () => {
     if (nickname === null || !isNicknameValid || imgRef.current === null) return;
