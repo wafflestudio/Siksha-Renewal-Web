@@ -2,14 +2,14 @@ import axios from "axios";
 import APIendpoint from "constants/constants";
 import { Restaurant, RawRestaurant } from "types";
 
-export const getRestaurantList = (): Promise<{
-  count: number;
-  result: Restaurant[];
-}> => {
+export const getRestaurantList = (): Promise<Restaurant[]> => {
   return axios
     .get(`${APIendpoint()}/restaurants/`)
     .then((res) => {
-      const { data: rawData } = res;
+      const {
+        data: { result: rawData },
+      } = res;
+      console.log(rawData);
       const data = rawData.map((restaurant: RawRestaurant) => ({
         createdAt: restaurant.created_at,
         updatedAt: restaurant.updated_at,
