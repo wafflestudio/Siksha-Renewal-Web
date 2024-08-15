@@ -9,7 +9,7 @@ export default function useIsAnonymousWriter() {
 
   function toggleIsAnonymousWriter() {
     setIsAnonymousWriter(!isAnonymousWriter);
-    setStorage(!isAnonymousWriter);
+    setStorage(JSON.stringify(!isAnonymousWriter));
   }
 
   return { isAnonymousWriter, toggleIsAnonymousWriter };

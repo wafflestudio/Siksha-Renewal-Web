@@ -1,5 +1,4 @@
 import Header from "components/Header";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
@@ -18,6 +17,7 @@ export default function Layout({ children }: LayoutProps) {
   const { setIsFilterFavorite, setIsExceptEmptyRestaurant } = useDispatchContext();
   const isMobile = useIsMobile();
   const { getAccessToken } = useAuth();
+  const { login } = useAuth();
   UseProfile();
 
   const { authStatus, isExceptEmptyRestaurant } = state;
@@ -26,7 +26,7 @@ export default function Layout({ children }: LayoutProps) {
     getAccessToken()
       .then((accessToken) => loginRefresh(accessToken))
       .then((newAccessToken) => {
-        localStorage.setItem("access_token", newAccessToken);
+        login(newAccessToken);
       })
       .catch((res) => {
         console.error(res);

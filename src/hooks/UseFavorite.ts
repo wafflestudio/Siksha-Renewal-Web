@@ -22,7 +22,7 @@ export default function useFavorite() {
       setFavoriteRestaurants(newFavoriteList);
 
       // 변경값 반영
-      setStorage(newFavoriteList);
+      setStorage(JSON.stringify(newFavoriteList));
     }
   };
 

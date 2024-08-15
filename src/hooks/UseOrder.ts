@@ -13,7 +13,7 @@ export default function useOrder(type: "favorite" | "nonFavorite") {
 
   function setNewOrderList(newOrderList: RestaurantPreview[]) {
     setOrderList(newOrderList);
-    setStorage(newOrderList);
+    setStorage(JSON.stringify(newOrderList));
   }
 
   return { orderList, setNewOrderList };

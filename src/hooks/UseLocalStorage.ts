@@ -3,8 +3,8 @@ import { useCallback, useSyncExternalStore } from "react";
 export default function useLocalStorage(key: string, initialValue: any) {
   // set localStorage item
   const setStorage = useCallback(
-    (newValue: any) => {
-      localStorage.setItem(key, JSON.stringify(newValue));
+    (newValue: string) => {
+      localStorage.setItem(key, newValue);
       dispatchEvent(new StorageEvent("storage", { key: key, newValue }));
     },
     [key],
