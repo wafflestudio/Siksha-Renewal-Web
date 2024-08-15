@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
 import useAuth from "./UseAuth";
+import { RestaurantPreview } from "types";
 
 export default function useFavorite() {
   const { authStatus } = useAuth();
@@ -9,9 +10,8 @@ export default function useFavorite() {
   const { openLoginModal } = useModals();
 
   const { value, set: setStorage } = useLocalStorage("favorite_restaurant", "[]");
-  const parsedValue = JSON.parse(value ? value : "[]");
-
-  const [favoriteRestaurants, setFavoriteRestaurants] = useState<number[]>(parsedValue);
+  // localStorage가 구독되어 변화를 감지하므로, 따로 state를 만들어주기 보다는 JSON parse 결과를 바로 이용해야 합니다.
+  const favoriteRestaurants: number[] = JSON.parse(value ? value : "[]");
 
   const toggleFavorite = (restaurantId: number) => {
     if (authStatus === "logout") openLoginModal();
@@ -19,7 +19,6 @@ export default function useFavorite() {
       const newFavoriteList = favoriteRestaurants.includes(restaurantId)
         ? favoriteRestaurants.filter((id) => id !== restaurantId)
         : [...favoriteRestaurants, restaurantId];
-      setFavoriteRestaurants(newFavoriteList);
 
       // 변경값 반영
       setStorage(JSON.stringify(newFavoriteList));
