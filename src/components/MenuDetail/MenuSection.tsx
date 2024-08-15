@@ -36,7 +36,7 @@ export default function MenuSection({
   useEffect(() => {
     Promise.all([getRestaurantList(), getReviewScore(menu.id)])
       .then(([restaurantListData, reviewScoreData]) => {
-        const restaurantName = restaurantListData.result.find(
+        const restaurantName = restaurantListData.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
         if (restaurantName) setRestaurantName(restaurantName.nameKr);

@@ -6,7 +6,6 @@ import MobileSubHeader from "components/MobileSubHeader";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { getMenu } from "utils/api/menus";
 import { getReviews } from "utils/api/reviews";
-import { useSearchParams } from "next/navigation";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
 import useModals from "hooks/UseModals";
@@ -48,9 +47,7 @@ export interface ReviewListType {
 
 export default function Menu() {
   const router = useRouter();
-  const { id } = router.query;
-  const searchParams = useSearchParams();
-  const writeReview = !!searchParams.get("writeReview");
+  const { menuId } = router.query;
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
@@ -68,7 +65,7 @@ export default function Menu() {
   const { getAccessToken } = UseAccessToken();
 
   useEffect(() => {
-    if (!id) {
+    if (!menuId) {
       return;
     }
     setLoading(true);
@@ -76,7 +73,7 @@ export default function Menu() {
     async function fetchData() {
       const accessToken = await getAccessToken().catch((error) => "");
 
-      Promise.all([getMenu(Number(id), accessToken), getReviews(Number(id))])
+      Promise.all([getMenu(Number(menuId), accessToken), getReviews(Number(menuId))])
         .then(([menuData, reviewsData]) => {
           setMenu(menuData);
           setMobileSubHeaderTitle(menuData.name_kr);
@@ -92,7 +89,7 @@ export default function Menu() {
         .finally(() => setLoading(false));
     }
     fetchData();
-  }, [id, setLoading]);
+  }, [menuId, setLoading]);
 
   useEffect(() => {
     var updatedImages: string[] = [];
