@@ -19,7 +19,7 @@ export default function NonFavoriteOrderSetting() {
 
   useEffect(() => {
     getRestaurantList()
-      .then(({ result }) => {
+      .then((result) => {
         // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
         let ghostRestaurantIds: number[] = [];
         orderList.forEach((res) => {
