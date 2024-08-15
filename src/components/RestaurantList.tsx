@@ -17,7 +17,7 @@ export default function RestaurantList() {
 
   const { meal, data } = state;
 
-  const { favoriteRestaurant, toggleFavorite, isFavorite } = useFavorite();
+  const { favoriteRestaurants, toggleFavorite, isFavorite } = useFavorite();
   const [favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function RestaurantList() {
 
     const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
-  }, [data, favoriteRestaurant]);
+  }, [data, favoriteRestaurants]);
 
   return (
     <Container>

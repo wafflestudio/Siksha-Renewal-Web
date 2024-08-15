@@ -1,69 +1,63 @@
-import { useEffect, useState } from "react";
-import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
+import { useEffect } from "react";
+import RestaurantOrderEditer from "../../../components/Account/RestaurantOrderEditer";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
 import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
-import { FavoriteRestaurant } from "types";
+import { RestaurantPreview } from "types";
+import useOrder from "hooks/UseOrder";
 
-export default function Setting_NonFavorite() {
-  const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
+export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
+  const { orderList, setNewOrderList } = useOrder("nonFavorite");
+
+  console.log(orderList);
 
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    const orderList: FavoriteRestaurant[] = JSON.parse(
-      localStorage.getItem("orderList_nonFavorite") ?? "[]",
-    );
-
     getRestaurantList()
       .then(({ result }) => {
-        const favoriteList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
-        console.log(favoriteList);
-        for (let i = 0; i < orderList.length; i++) {
-          if (
-            !result.find(({ id }) => id === orderList[i].id) &&
-            favoriteList.includes(orderList[i].id)
-          ) {
-            orderList.splice(i, 1);
-            i--;
+        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
+        let ghostRestaurantIds: number[] = [];
+        orderList.forEach((res) => {
+          if (!result.find(({ id }) => id === res.id)) {
+            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
           }
-        }
-        console.log(orderList);
-
-        result.forEach(({ id, nameKr, nameEn }) => {
-          if (!orderList.some((menu) => Number(menu.id) === id))
-            orderList.push({ id, nameKr, nameEn });
         });
-        console.log(orderList);
-        setOrderData(orderList);
+
+        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+
+        // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
+        let newRestaurants: RestaurantPreview[] = [];
+        result.forEach(({ id, nameKr, nameEn }) => {
+          if (!newOrderList.find((res) => res.id === id)) {
+            newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
+          }
+        });
+
+        setNewOrderList([...newOrderList, ...newRestaurants]);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
 
-  useEffect(() => {
-    if (!!orderData.length)
-      localStorage.setItem("orderList_nonFavorite", JSON.stringify(orderData));
-  }, [orderData]);
-
-  const setNewOrderData = (source: number, destination: number) => {
-    const copyData = [...orderData];
+  const reorder = (source: number, destination: number) => {
+    const copyData = [...orderList];
     const sourceData = copyData[source];
     copyData.splice(source, 1);
     copyData.splice(destination, 0, sourceData);
-    setOrderData(copyData);
+    setNewOrderList(copyData);
   };
 
   return (
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
+        <RestaurantOrderEditer order={orderList} reorder={reorder} />
       </Container>
     </>
   );

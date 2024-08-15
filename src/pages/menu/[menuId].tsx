@@ -9,7 +9,7 @@ import { getReviews } from "utils/api/reviews";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
 import useModals from "hooks/UseModals";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 
 export interface MenuType {
   id: number;
@@ -62,7 +62,7 @@ export default function Menu() {
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth();
 
   useEffect(() => {
     if (!menuId) {
@@ -102,9 +102,8 @@ export default function Menu() {
   }, [reviews]);
 
   const handleReviewPostButtonClick = () => {
-    if (!!localStorage.getItem("access_token")) {
-      handleReviewPostModal(true);
-    } else openLoginModal();
+    if (authStatus === "login") handleReviewPostModal(true);
+    else openLoginModal();
   };
 
   const handleReviewPostModal = (isOpen: boolean) => {

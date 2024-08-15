@@ -1,19 +1,20 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
+import { useStateContext } from "../../hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import UseProfile from "hooks/UseProfile";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
+import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Account() {
   const router = useRouter();
 
   const state = useStateContext();
-  const { setIsExceptEmptyRestaurant } = useDispatchContext();
-  const { isExceptEmptyRestaurant } = state;
+
   const { userInfo } = UseProfile();
+  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
   const { authStatus, authGuard } = useAuth();
 
@@ -21,11 +22,6 @@ export default function Account() {
 
   const profileURL = userInfo?.image ?? "/img/default-profile.svg";
   const nickname = userInfo?.nickname ?? `ID ${userInfo?.id}`;
-
-  function toggle() {
-    localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(!isExceptEmptyRestaurant));
-    setIsExceptEmptyRestaurant(!isExceptEmptyRestaurant);
-  }
 
   return (
     <AccountLayout>
@@ -74,13 +70,17 @@ export default function Account() {
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
-          {isExceptEmptyRestaurant ? (
-            <CheckButton src="/img/account/hide-circle-active.svg" alt="active" onClick={toggle} />
+          {isExceptEmpty ? (
+            <CheckButton
+              src="/img/account/hide-circle-active.svg"
+              alt="active"
+              onClick={toggleIsExceptEmpty}
+            />
           ) : (
             <CheckButton
               src="/img/account/hide-circle-inactive.svg"
               alt="inactive"
-              onClick={toggle}
+              onClick={toggleIsExceptEmpty}
             />
           )}
         </ContentDiv>

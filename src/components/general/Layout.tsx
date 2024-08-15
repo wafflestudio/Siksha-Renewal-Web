@@ -1,6 +1,5 @@
 import Header from "components/Header";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
+import { useDispatchContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import UseProfile from "hooks/UseProfile";
@@ -14,19 +13,17 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const state = useStateContext();
-  const { setIsFilterFavorite, setIsExceptEmptyRestaurant, setIsAnonymous } = useDispatchContext();
+  const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
-  const { getAccessToken } = useAuth();
-  UseProfile();
+  const { getAccessToken, login } = useAuth();
 
-  const { authStatus, isExceptEmptyRestaurant, isAnonymous } = state;
+  UseProfile();
 
   useEffect(() => {
     getAccessToken()
       .then((accessToken) => loginRefresh(accessToken))
       .then((newAccessToken) => {
-        localStorage.setItem("access_token", newAccessToken);
+        login(newAccessToken);
       })
       .catch((res) => {
         console.error(res);
@@ -36,28 +33,6 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
-
-  useEffect(() => {
-    if (authStatus === "login") {
-      const value = localStorage.getItem("isExceptEmptyRestaurant");
-
-      if (value !== null) {
-        setIsExceptEmptyRestaurant(JSON.parse(value));
-      } else {
-        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
-      }
-    }
-  }, [authStatus]);
-
-  useEffect(() => {
-    if (authStatus === "login") {
-      const value = localStorage.getItem("isAnonymous");
-      console.log(value);
-      console.log(value === "true" ? true : false);
-      if (value !== null) setIsAnonymous(value === "true" ? true : false);
-      else localStorage.setItem("isAnonymous", JSON.stringify(isAnonymous));
-    }
-  }, [authStatus]);
 
   return (
     <>

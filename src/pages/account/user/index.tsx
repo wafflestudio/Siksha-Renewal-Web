@@ -8,7 +8,7 @@ import MobileSubHeader from "components/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();
-  const { authStatus, getAccessToken, authGuard, signOut } = useAuth();
+  const { authStatus, getAccessToken, authGuard, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function UserSetting() {
   }, [authStatus]);
 
   const handleLogout = () => {
-    signOut();
+    logout();
     router.push(`/`);
   };
 
@@ -34,7 +34,7 @@ export default function UserSetting() {
         deleteAccount(accessToken);
       })
       .then(() => {
-        signOut();
+        logout();
         router.push(`/`);
       })
       .catch((e) => {

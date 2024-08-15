@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginGoogle } from "utils/api/auth";
-import { useDispatchContext } from "hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
 
 export default function Auth() {
-  const { setLoginStatus, setAuthStatus } = useDispatchContext();
+  const { login } = useAuth();
 
   const router = useRouter();
   useEffect(() => {
@@ -18,9 +18,7 @@ export default function Auth() {
 
     loginGoogle(code)
       .then((accessToken) => {
-        localStorage.setItem("access_token", accessToken);
-        setLoginStatus(true);
-        setAuthStatus("login");
+        login(accessToken);
         router.push("/");
       })
       .catch((res: any) => {

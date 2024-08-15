@@ -16,9 +16,6 @@ export interface State {
   isLoginModal: boolean;
   userInfo: User | null;
   isFilterFavorite: boolean;
-  favoriteRestaurant: number[];
-  isExceptEmptyRestaurant: boolean;
-  isAnonymous: boolean;
 }
 
 export type Action =
@@ -209,7 +206,7 @@ export interface User {
   image: string | null;
 }
 
-export interface FavoriteRestaurant {
+export interface RestaurantPreview {
   id: number;
   nameKr: string;
   nameEn: string;

@@ -1,4 +1,13 @@
-import { Post, RawComment, RawPost, Comment, RawBoard, Board } from "types";
+import {
+  Post,
+  RawComment,
+  RawPost,
+  Comment,
+  RawBoard,
+  Board,
+  RawRestaurant,
+  Restaurant,
+} from "types";
 
 export function boardParser(board: RawBoard): Board {
   const { created_at, updated_at, id, type, name, description } = board;
@@ -85,4 +94,21 @@ export function commentParser(comment: RawComment): Comment {
   };
 
   return parsedComment;
+}
+
+export function restaurantParser(restaurant: RawRestaurant) {
+  const parsedRestaurant: Restaurant = {
+    createdAt: restaurant.created_at,
+    updatedAt: restaurant.updated_at,
+    id: restaurant.id,
+    code: restaurant.code,
+    nameKr: restaurant.name_kr,
+    nameEn: restaurant.name_en,
+    addr: restaurant.addr,
+    lat: restaurant.lat,
+    lng: restaurant.lng,
+    etc: restaurant.etc,
+  };
+
+  return parsedRestaurant;
 }

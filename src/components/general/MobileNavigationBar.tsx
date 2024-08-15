@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
+import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
 
 export default function MobileNavigationBar() {
   const router = useRouter();
@@ -12,6 +14,8 @@ export default function MobileNavigationBar() {
   const state = useStateContext();
   const { isFilterFavorite } = state;
   const { setIsFilterFavorite } = useDispatchContext();
+  const { authStatus } = useAuth();
+  const { openLoginModal } = useModals();
 
   const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
 
@@ -33,7 +37,13 @@ export default function MobileNavigationBar() {
   if (!rootElement) return null;
   return createPortal(
     <Container>
-      <Link href="/" onClick={() => setIsFilterFavorite(true)}>
+      <Link
+        href="/"
+        onClick={() => {
+          if (authStatus === "login") setIsFilterFavorite(true);
+          else openLoginModal();
+        }}
+      >
         {active === "favorite" ? (
           <Icon src="/img/mobile-nav-star-active.svg" />
         ) : (

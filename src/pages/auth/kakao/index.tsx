@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginKakao } from "utils/api/auth";
-import { useDispatchContext } from "hooks/ContextProvider";
+import useAuth from "hooks/UseAuth";
 
 export default function Auth() {
   const router = useRouter();
-  const { setLoginStatus, setAuthStatus } = useDispatchContext();
+  const { login } = useAuth();
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -18,9 +18,7 @@ export default function Auth() {
 
     loginKakao(code)
       .then((accessToken) => {
-        localStorage.setItem("access_token", accessToken);
-        setLoginStatus(true);
-        setAuthStatus("login");
+        login(accessToken);
         router.push("/");
       })
       .catch((res: any) => {

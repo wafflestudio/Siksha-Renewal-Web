@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatchContext, useStateContext } from "./ContextProvider";
 import { useRouter } from "next/router";
 import useModals from "./UseModals";
+import useLocalStorage from "./UseLocalStorage";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
@@ -9,16 +10,20 @@ export default function useAuth() {
   const { openLoginModal } = useModals();
   const router = useRouter();
 
+  const {
+    value: accessToken,
+    set: setStorage,
+    remove: removeStorage,
+  } = useLocalStorage("access_token", null);
+
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
     setAuthStatus(accessToken ? "login" : "logout");
     setLoginStatus(accessToken ? true : false);
   }, []);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
-      router.push(`/`);
-      openLoginModal();
+      router.push(`/`).then(() => openLoginModal());
     }
   }, [authStatus]);
 
@@ -27,8 +32,6 @@ export default function useAuth() {
       if (authStatus !== "login") {
         reject(new Error("Login required"));
       }
-
-      const accessToken = localStorage.getItem("access_token");
 
       if (!accessToken) {
         setAuthStatus("logout");
@@ -45,17 +48,17 @@ export default function useAuth() {
     return getAccessToken();
   };
 
-  const signIn = (accessToken: string) => {
-    localStorage.setItem("access_token", accessToken);
+  const login = (accessToken: string) => {
+    setStorage(accessToken);
     setAuthStatus("login");
     setLoginStatus(true);
   };
 
-  const signOut = () => {
-    localStorage.removeItem("access_token");
+  const logout = () => {
+    removeStorage();
     setAuthStatus("logout");
     setLoginStatus(false);
   };
 
-  return { authStatus, authGuard, getAccessToken, checkAccessToken, signIn, signOut };
+  return { authStatus, authGuard, getAccessToken, checkAccessToken, login, logout };
 }

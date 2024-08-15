@@ -12,6 +12,8 @@ import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useAuth from "hooks/UseAuth";
+import useOrder from "hooks/UseOrder";
+import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Home() {
   const state = useStateContext();
@@ -20,6 +22,8 @@ export default function Home() {
   const { date, showCal, showInfo, meal } = state;
 
   const { authStatus, getAccessToken } = useAuth();
+  const { orderList } = useOrder("nonFavorite");
+  const { isExceptEmpty } = useIsExceptEmpty();
 
   useEffect(() => {
     async function fetchData() {
@@ -27,7 +31,6 @@ export default function Home() {
 
       setLoading(true);
 
-      const orderList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
       const orderHash = orderList.reduce((map, obj, idx) => {
         map.set(obj.id, { ...obj, order: idx });
         return map;
@@ -43,11 +46,7 @@ export default function Home() {
             console.error(e);
           });
       } else {
-        getMenuList(
-          dateString,
-          localStorage.getItem("isExceptEmptyRestaurant") === "true",
-          accessToken,
-        )
+        getMenuList(dateString, isExceptEmpty, accessToken)
           .then(({ result }) => {
             const { BR, LU, DN } = result[0];
 

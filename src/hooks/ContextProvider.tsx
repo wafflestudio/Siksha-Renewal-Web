@@ -21,9 +21,6 @@ const initialState: State = {
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
-  favoriteRestaurant: [],
-  isExceptEmptyRestaurant: true,
-  isAnonymous: false,
 };
 
 interface dispatchers {
@@ -41,9 +38,6 @@ interface dispatchers {
   setLoginStatus: (loginStatus: boolean) => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
-  setFavoriteRestaurant: (favoriteRestaurant: number[]) => void;
-  setIsExceptEmptyRestaurant: (except: boolean) => void;
-  setIsAnonymous: (isAnonymous: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -74,11 +68,6 @@ const ContextProvider = ({ children }) => {
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
-  const setFavoriteRestaurant = (favoriteRestaurant) =>
-    setState((prevState) => ({ ...prevState, favoriteRestaurant: favoriteRestaurant }));
-  const setIsExceptEmptyRestaurant = (except: boolean) =>
-    setState((prevState) => ({ ...prevState, isExceptEmptyRestaurant: except }));
-  const setIsAnonymous = (value) => setState((prevState) => ({ ...prevState, isAnonymous: value }));
 
   return (
     <dispatchContext.Provider
@@ -94,9 +83,6 @@ const ContextProvider = ({ children }) => {
         setLoginStatus,
         setUserInfo,
         setIsFilterFavorite,
-        setFavoriteRestaurant,
-        setIsExceptEmptyRestaurant,
-        setIsAnonymous,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>
