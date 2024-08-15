@@ -1,18 +1,18 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
 import styled from "styled-components";
+import { RestaurantPreview } from "types";
 
-export default function RestaurantOrderEdit({
-  orderData,
-  setNewOrderData,
-}: {
-  orderData: { id: number; nameKr: string; nameEn: string }[];
-  setNewOrderData: (dragStartIndex: number, dragEndIndex: number) => void;
-}) {
+interface RestaurantOrderEditerProps {
+  order: RestaurantPreview[];
+  reorder: (dragStartIndex: number, dragEndIndex: number) => void;
+}
+
+export default function RestaurantOrderEditer({ order, reorder }: RestaurantOrderEditerProps) {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
     if (source && destination && source !== destination) {
-      setNewOrderData(source?.index, destination?.index);
+      reorder(source?.index, destination?.index);
     }
   };
 
@@ -24,7 +24,7 @@ export default function RestaurantOrderEdit({
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <DragZone {...provided.droppableProps} ref={provided.innerRef}>
-              {orderData.map(({ id, nameKr, nameEn }, index) => (
+              {order.map(({ id, nameKr }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
                   {(provided, snapshot) => (
                     <DragContainer
