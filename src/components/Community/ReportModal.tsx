@@ -121,9 +121,6 @@ const CloseButton = styled.button`
   cursor: pointer;
   width: 27px;
   height: 30px;
-
-  @media (max-width: 768px) {
-  }
 `;
 
 const WriterBox = styled.div`
