@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RestaurantOrderEdit from "../../../../components/Account/RestaurantOrderEditer";
+import RestaurantOrderEditer from "../../../../components/Account/RestaurantOrderEditer";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
@@ -65,7 +65,7 @@ export default function FavoriteOrderSetting() {
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEdit order={orderList} reorder={reorder} />
+        <RestaurantOrderEditer order={orderList} reorder={reorder} />
       </Container>
     </>
   );
