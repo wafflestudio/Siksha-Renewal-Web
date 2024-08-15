@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
+import { LoadingAnimation } from "styles/globalstyle";
 
 interface PropsPost {
   post: PostType;
@@ -12,7 +13,7 @@ export function Post({ post }: PropsPost) {
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
       <Container>
-        <Info>
+        <Info isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
@@ -27,7 +28,9 @@ export function Post({ post }: PropsPost) {
           </LikesAndComments>
         </Info>
         <PhotoZone>
-          {images ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null)) : null}
+          {images
+            ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null))
+            : null}
         </PhotoZone>
       </Container>
     </Link>
@@ -35,6 +38,7 @@ export function Post({ post }: PropsPost) {
 }
 
 const Container = styled.div`
+  ${LoadingAnimation}
   display: flex;
   position: relative;
   width: 100%;
@@ -48,7 +52,7 @@ const Container = styled.div`
   }
 
   &::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     width: 100%;
     height: 1px;
@@ -63,14 +67,23 @@ const Container = styled.div`
     }
   }
 `;
-const Info = styled.div`
+const Info = styled.div<{ isImages: boolean | null }>`
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 16px;
   max-width: 540px;
+  box-sizing: border-box;
+
   @media (max-width: 768px) {
     gap: 12px;
     height: min-content;
+
+    ${(props) =>
+      props.isImages !== null &&
+      css`
+        max-width: calc(100% - 71.5px);
+      `}
   }
 `;
 
@@ -78,6 +91,7 @@ const Title = styled.div`
   overflow: hidden;
   font-size: 18px;
   font-weight: bold;
+  text-overflow: ellipsis;
   @media (max-width: 768px) {
     font-size: 12px;
   }
@@ -85,6 +99,7 @@ const Title = styled.div`
 const ContentPreview = styled.div`
   color: #393939;
   overflow: hidden;
+  text-overflow: ellipsis;
   @media (max-width: 768px) {
     font-size: 12px;
   }
@@ -117,14 +132,20 @@ const Icon = styled.img`
 `;
 const PhotoZone = styled.div`
   display: flex;
-  gap: 5px;
+  position: relative;
+
+  @media (max-width: 768px) {
+    right: -12.5px;
+  }
 `;
 
 const Photo = styled.img`
+  position: relative;
   width: 84px;
   height: 84px;
   border-radius: 8px;
   background-color: #d9d9d9;
+
   @media (max-width: 768px) {
     width: 61px;
     height: 61px;

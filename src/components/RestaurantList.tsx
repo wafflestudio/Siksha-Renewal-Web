@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useStateContext } from "hooks/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
+import { LoadingAnimation } from "styles/globalstyle";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + restaurant);
@@ -17,11 +18,11 @@ export default function RestaurantList() {
   const { meal, data } = state;
 
   const { favoriteRestaurant, toggleFavorite, isFavorite } = useFavorite();
-  const [ favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
+  const [favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
 
   useEffect(() => {
-    const favorites = data[meal].filter(restaurant => isFavorite(restaurant.id))
-    const nonFavorites = data[meal].filter(restaurant => isFavorite(restaurant.id) === false)
+    const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
+    const nonFavorites = data[meal].filter((restaurant) => isFavorite(restaurant.id) === false);
 
     const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);

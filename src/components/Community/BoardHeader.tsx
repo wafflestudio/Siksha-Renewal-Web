@@ -1,7 +1,7 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,7 +13,9 @@ import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
-  const { checkAccessToken } = UseAccessToken();
+  const { checkAccessToken, authStatus } = useAuth();
+  const { boardId } = router.query;
+  const { openLoginModal } = useModals();
 
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
@@ -30,12 +32,12 @@ export function BoardHeader() {
       .catch((e) => console.error(e));
   }
 
-  const { loginStatus } = useStateContext();
-  const { openLoginModal } = useModals();
-
   function handleClickWriteButton() {
-    if (!loginStatus) openLoginModal();
-    else router.push("/community/write");
+    if (authStatus === 'logout') openLoginModal();
+    else {
+      if (boardId) router.push({ pathname: "/community/write", query: { boardId } }, "/community/write"); 
+      else router.push("/community/write");
+    }
   }
 
   useEffect(() => {

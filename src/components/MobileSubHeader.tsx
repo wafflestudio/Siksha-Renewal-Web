@@ -2,10 +2,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-export default function MobileSubHeader({ title, handleBack }: { title: string, handleBack: () => void }) {
+// 추후 디렉토리 변경(/components/general) 필요해보입니다.
+export default function MobileSubHeader({
+  title,
+  handleBack,
+}: {
+  title: string;
+  handleBack: () => void;
+}) {
   return (
     <MobileHeader>
-      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack}/>
+      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} />
       <Title>{title}</Title>
     </MobileHeader>
   );
