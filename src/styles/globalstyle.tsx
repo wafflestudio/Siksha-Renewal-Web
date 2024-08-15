@@ -64,6 +64,12 @@ export const GlobalStyle = createGlobalStyle`
     font-family: "NanumSquare", "NIXGONFONTS V2.0";
   }
 
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 일부 안드로이드 브라우저를 위한 설정 */
+    -webkit-focus-ring-color: transparent; /* 일부 최신 버전의 크롬을 위한 설정 */
+  }
+
   /* constants */
   /* --main-orange-color: #FF9522 */
 `;
