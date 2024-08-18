@@ -12,13 +12,15 @@ export default function MobileSubHeader({
   handleBack: () => void;
 }) {
   const router = useRouter();
+  const { boardId } = router.query;
 
   // write page로 router.back하지 않도록
   useEffect(() => {
     router.beforePopState(({ as }) => {
       console.log(as);
       if (as.includes("/write")) {
-        router.push(`/community/boards/${1}`);
+        if (boardId) router.push(`/community/boards/${boardId}`);
+        else router.push("/");
         return false;
       }
 
