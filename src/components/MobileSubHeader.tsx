@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 // 추후 디렉토리 변경(/components/general) 필요해보입니다.
@@ -11,27 +8,6 @@ export default function MobileSubHeader({
   title: string;
   handleBack: () => void;
 }) {
-  const router = useRouter();
-  const { boardId } = router.query;
-
-  // write page로 router.back하지 않도록
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      console.log(as);
-      if (as.includes("/write")) {
-        if (boardId) router.push(`/community/boards/${boardId}`);
-        else router.push("/");
-        return false;
-      }
-
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, []);
-
   return (
     <MobileHeader>
       <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} />

@@ -7,12 +7,16 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
+import { useRouter } from "next/router";
 
 interface LayoutProps {
   children: JSX.Element;
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const router = useRouter();
+  const { boardId } = router.query;
+
   const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
   const { getAccessToken, login } = useAuth();
@@ -33,6 +37,26 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
+
+  console.log("rerender of Layout component");
+
+  // write page로 router.back하지 않도록
+  useEffect(() => {
+    router.beforePopState(({ as }) => {
+      console.log(as);
+      if (as.includes("/write")) {
+        if (boardId) router.push(`/community/boards/${boardId}`);
+        else router.push("/");
+        return false;
+      }
+
+      return true;
+    });
+
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, []);
 
   return (
     <>
