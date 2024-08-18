@@ -48,11 +48,23 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
       </SwiperViewport>
       {images.length > 1 && (
         <>
-          <PrevButton type="button" onClick={onPrevButtonClick}>
-            <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
+          <PrevButton type="button" onClick={onPrevButtonClick} isHovered={isHovered}>
+            <Image
+              src="/img/left-arrow-white.svg"
+              alt="왼쪽 화살표"
+              width={14}
+              height={22}
+              style={{ filter: "drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5))" }}
+            />
           </PrevButton>
-          <NextButton type="button" onClick={onNextButtonClick}>
-            <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
+          <NextButton type="button" onClick={onNextButtonClick} isHovered={isHovered}>
+            <Image
+              src="/img/right-arrow-white.svg"
+              alt="오른쪽 화살표"
+              width={14}
+              height={22}
+              style={{ filter: "drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5))" }}
+            />
           </NextButton>
           <SelectedSnapDisplay isHovered={isHovered}>
             {selectedSnap + 1}/{images.length}
@@ -85,13 +97,16 @@ const SwiperContainer = styled.div`
   touch-action: pan-y;
 `;
 
-const transitionButton = styled.button`
+const transitionButton = styled.button<{ isHovered: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background-color: transparent;
   cursor: pointer;
+
+  display: ${(props) => (props.isHovered ? "flex" : "none")};
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -107,7 +122,7 @@ const NextButton = styled(transitionButton)`
   margin-right: 24px;
 `;
 
-const SelectedSnapDisplay = styled.div<{isHovered: boolean}>`
+const SelectedSnapDisplay = styled.div<{ isHovered: boolean }>`
   position: absolute;
   display: ${(props) => (props.isHovered ? "flex" : "none")};
   top: 20px;
