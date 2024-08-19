@@ -45,6 +45,11 @@ export default function SettingProfile() {
   const onUpdateProfile = async () => {
     if (nickname === null || !isNicknameValid || imgRef.current === null) return;
 
+    if (nickname === userInfo?.nickname && !imageBlob) {
+      router.push(`/account`);
+      return;
+    }
+
     const formData = new FormData();
     if (nickname !== userInfo?.nickname) formData.append("nickname", nickname);
     if (imageBlob) formData.append("image", imageBlob);
