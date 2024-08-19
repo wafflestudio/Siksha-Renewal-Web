@@ -46,7 +46,6 @@ export const GlobalStyle = createGlobalStyle`
     background: #F8F8F8;
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
-    min-width: 1221px;
 
     @media (max-width: 768px) {
       min-width: 0;

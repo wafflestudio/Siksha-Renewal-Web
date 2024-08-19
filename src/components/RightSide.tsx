@@ -18,7 +18,6 @@ const Container = styled.div`
   justify-content: flex-start;
   margin-left: 18px;
   box-sizing: border-box;
-  min-width: 785px;
   max-width: 818px;
   height: 100%;
   flex-grow: 1;
