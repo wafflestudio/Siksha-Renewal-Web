@@ -38,12 +38,9 @@ export default function Layout({ children }: LayoutProps) {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
 
-  console.log("rerender of Layout component");
-
   // write page로 router.back하지 않도록
   useEffect(() => {
     router.beforePopState(({ as }) => {
-      console.log(as);
       if (as.includes("/write")) {
         if (boardId) router.push(`/community/boards/${boardId}`);
         else router.push("/");
