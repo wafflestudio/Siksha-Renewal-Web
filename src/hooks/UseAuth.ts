@@ -14,7 +14,7 @@ export default function useAuth() {
     value: accessToken,
     set: setStorage,
     remove: removeStorage,
-  } = useLocalStorage("access_token", null);
+  } = useLocalStorage("access_token", "loading");
 
   useEffect(() => {
     setAuthStatus(accessToken ? "login" : "logout");
