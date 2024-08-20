@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import RestaurantOrderEditer from "../../../components/Account/RestaurantOrderEditer";
+import RestaurantOrderEditor from "../../../components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
@@ -12,8 +12,6 @@ export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
   const { orderList, setNewOrderList } = useOrder("nonFavorite");
-
-  console.log(orderList);
 
   useEffect(authGuard, [authStatus]);
 
@@ -57,7 +55,7 @@ export default function NonFavoriteOrderSetting() {
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditer order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor order={orderList} reorder={reorder} />
       </Container>
     </>
   );

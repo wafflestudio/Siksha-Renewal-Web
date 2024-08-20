@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RestaurantOrderEditer from "../../../../components/Account/RestaurantOrderEditer";
+import RestaurantOrderEditor from "../../../../components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
@@ -18,13 +18,10 @@ export default function FavoriteOrderSetting() {
 
   useEffect(authGuard, [authStatus]);
 
-  console.log(favoriteRestaurants);
-
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
         // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
-        console.log(orderList);
 
         let ghostRestaurantIds: number[] = [];
         orderList.forEach((res) => {
@@ -33,11 +30,8 @@ export default function FavoriteOrderSetting() {
           }
         });
 
-        console.log("ghost:", ghostRestaurantIds);
-
         const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
 
-        console.log(newOrderList);
         // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
         let newRestaurants: RestaurantPreview[] = [];
         result.forEach(({ id, nameKr, nameEn }) => {
@@ -65,7 +59,7 @@ export default function FavoriteOrderSetting() {
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditer order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor order={orderList} reorder={reorder} />
       </Container>
     </>
   );

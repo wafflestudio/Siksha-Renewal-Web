@@ -1,13 +1,17 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { RestaurantPreview } from "types";
 
-interface RestaurantOrderEditerProps {
+interface RestaurantOrderEditorProps {
   order: RestaurantPreview[];
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
-export default function RestaurantOrderEditer({ order, reorder }: RestaurantOrderEditerProps) {
+export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
+  const router = useRouter();
+  const isFavorite = router.pathname.includes("favorite");
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -19,7 +23,7 @@ export default function RestaurantOrderEditer({ order, reorder }: RestaurantOrde
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
-        <Title>식당 순서 변경</Title>
+        <Title>{`${isFavorite ? "즐겨찾기 " : ""}식당 순서 변경`}</Title>
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
