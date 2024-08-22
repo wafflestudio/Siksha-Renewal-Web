@@ -16,7 +16,6 @@ const Content = styled.div`
   margin: 0 auto;
   margin-top: 37px;
   margin-bottom: 80px;
-  min-height: calc(100vh - 271px);
   height: 100%;
   background: white;
   border-radius: 10px;

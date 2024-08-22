@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { setComment } from "utils/api/community";
 import UseAccessToken from "hooks/UseAccessToken";
 import { RawComment } from "types";
 import { useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
 
 interface CommentWriterProps {
   postId: number;
@@ -21,6 +20,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   const [isAnonymous, setIsAnonymous] = useState(false);
 
   const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
+  const isValid = commentInput.length >= 1;
 
   function initialize() {
     setCommentInput("");
@@ -29,7 +29,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
 
   const submit = () => {
     if (!loginStatus) openLoginModal();
-    else
+    else if (isValid)
       checkAccessToken().then((res: string | null) => {
         if (res !== null)
           setComment(postId, commentInput, isAnonymous, res)
@@ -59,7 +59,9 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
             <span>익명</span>
           </Option>
         </DesktopAnonymousButton>
-        <SubmitButton onClick={submit}>올리기</SubmitButton>
+        <SubmitButton isValid={isValid} onClick={submit}>
+          올리기
+        </SubmitButton>
       </Options>
     </Container>
   );
@@ -154,8 +156,9 @@ const Option = styled.div`
 `;
 const Icon = styled.img``;
 
-const SubmitButton = styled.button`
-  background-color: #ff9522;
+const SubmitButton = styled.button<{ isValid: boolean }>`
+  background-color: ${(props) => (props.isValid ? "#ff9522" : "#adadad")};
+
   color: #fff;
   padding: 8.5px 11.5px;
   border: none;
