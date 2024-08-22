@@ -319,6 +319,7 @@ const Title = styled.div`
   font-size: 20px;
   margin-bottom: 30px;
   width: 100%;
+  white-space: pre-wrap;
   word-wrap: break-word;
 
   @media (max-width: 768px) {
@@ -331,13 +332,12 @@ const Text = styled.div`
   font-weight: 400;
   font-size: 16px;
   margin-bottom: 20px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+
   @media (max-width: 768px) {
     font-size: 12px;
   }
-`;
-const Photos = styled.div``;
-const Photo = styled.img`
-  width: 100%;
 `;
 
 const LikesAndComments = styled.div`
