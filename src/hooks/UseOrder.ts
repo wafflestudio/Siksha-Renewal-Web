@@ -7,12 +7,9 @@ export default function useOrder(type: "favorite" | "nonFavorite") {
   const key = type === "favorite" ? "orderList_favorite" : "orderList_nonFavorite";
 
   const { value, set: setStorage } = useLocalStorage(key, "[]");
-  const parsedValue = JSON.parse(value ? value : "[]");
-
-  const [orderList, setOrderList] = useState<RestaurantPreview[]>(parsedValue);
+  const orderList = JSON.parse(value || "[]");
 
   function setNewOrderList(newOrderList: RestaurantPreview[]) {
-    setOrderList(newOrderList);
     setStorage(JSON.stringify(newOrderList));
   }
 
