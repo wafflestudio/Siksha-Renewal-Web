@@ -374,6 +374,7 @@ const Option = styled.label`
 const ButtonContainer = styled.div`
   position: sticky;
   padding-bottom: 65px;
+  padding-top: 10px;
   bottom: 0;
   display: flex;
   justify-content: center;

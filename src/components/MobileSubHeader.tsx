@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 
 // 추후 디렉토리 변경(/components/general) 필요해보입니다.
