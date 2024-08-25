@@ -1,7 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { Restaurant, RawRestaurant } from "types";
-import { restaurantParser } from "utils/DataUtil";
 
 export const getRestaurantList = (): Promise<Restaurant[]> => {
   return axios
@@ -10,7 +9,6 @@ export const getRestaurantList = (): Promise<Restaurant[]> => {
       const {
         data: { result: rawData },
       } = res;
-      console.log(rawData);
       const data = rawData.map((restaurant: RawRestaurant) => ({
         createdAt: restaurant.created_at,
         updatedAt: restaurant.updated_at,
