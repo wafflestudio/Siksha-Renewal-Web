@@ -141,7 +141,7 @@ const InputBox = styled.label`
 
   @media (max-width: 768px) {
     width: calc(100% - 39px);
-    margin: 15px 19.5px 18px 19.5px;
+    margin: 15px 0 18px 0;
   }
 `;
 
@@ -169,10 +169,6 @@ const DuplicateCheck = styled.div`
   margin-right: 15.95px;
   flex-shrink: 0;
   gap: 5px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const ResultImage = styled.img<{ isDuplicate: boolean }>`

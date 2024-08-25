@@ -116,7 +116,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
 
 export const getMyData = async (accessToken: string): Promise<User> => {
   return axios
-    .get(`${APIendpoint()}/auth/me`, {
+    .get(`${APIendpoint()}/auth/me/image`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res: { data: RawUser }) => {
@@ -161,7 +161,7 @@ export const updateProfileWithImage = async (
   }
 
   return axios
-    .patch(`${APIendpoint()}/auth/me/image/profile/`, formData, {
+    .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
       headers: {
         "authorization-token": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
