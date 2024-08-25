@@ -162,6 +162,8 @@ const InquireBox = styled.div`
 const TextArea = styled.textarea`
   width: 100%;
   height: 100%;
+  padding: 15.73px 16px;
+  box-sizing: border-box;
   background-color: #fafafa;
   border: 0;
   border-radius: 8px;
