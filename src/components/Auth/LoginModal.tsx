@@ -89,7 +89,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
             Login with Apple
           </SocialButton>
         </SocialContainer>
-        <WaffleLogo src={"/img/modal/login/waffle-typo.svg"} alt="waffle studio logo"/>
+        <WaffleLogo src={"/img/modal/login/waffle-typo.svg"} alt="waffle studio logo" />
       </MainContainer>
     </BackClickable>
   );

@@ -16,7 +16,6 @@ export default function useAuth() {
     remove: removeStorage,
   } = useLocalStorage("access_token", "loading");
 
-
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
       router.push(`/`).then(() => openLoginModal());

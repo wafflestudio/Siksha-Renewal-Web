@@ -17,9 +17,13 @@ export default function MenuCard({ data }) {
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="rate"/>
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="rate" />
             ) : (
-              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} alt="no rate"/>
+              <Star
+                src="/img/star-empty-white.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt="no rate"
+              />
             )}
           </HeaderContainer>
           <Location>
@@ -58,9 +62,13 @@ export default function MenuCard({ data }) {
               alt="info"
             />
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="rate"/>
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="rate" />
             ) : (
-              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} alt="no rate"/>
+              <Star
+                src="/img/star-empty-white.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt="no rate"
+              />
             )}
           </HeaderContainer>
           <MenuInfoLabels>

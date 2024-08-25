@@ -8,7 +8,7 @@ export function ReviewItem({ review }: { review: ReviewType }) {
     <ReviewItemContainer>
       <ReviewInfo>
         <ReviewerInfo>
-          <ReviwerProfile src={"/img/default-profile.svg"} alt="profile"/>
+          <ReviwerProfile src={"/img/default-profile.svg"} alt="profile" />
           <div>
             <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
             <Stars score={review.score || 0} />

@@ -32,7 +32,7 @@ const Menu = styled.div`
   left: -118px;
   top: 32px;
   width: 118px;
-  
+
   @media (max-width: 768px) {
     flex-direction: row;
     position: relative;
@@ -42,7 +42,7 @@ const Menu = styled.div`
     padding-bottom: 19px;
 
     &::after {
-      content: ' ';
+      content: " ";
       position: absolute;
       width: calc(100% + 25px);
       height: 1px;

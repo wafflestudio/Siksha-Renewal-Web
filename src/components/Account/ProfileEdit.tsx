@@ -45,7 +45,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
           alt="user profile"
         />
         <CameraFrame>
-          <Camera src="/img/account/photo_camera.svg" alt="input image"/>
+          <Camera src="/img/account/photo_camera.svg" alt="input image" />
         </CameraFrame>
         <input
           type="file"

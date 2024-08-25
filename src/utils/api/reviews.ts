@@ -30,7 +30,7 @@ export const setReview = (
       `${APIendpoint()}/reviews/images/`,
       {
         menu_id: menuID,
-        ...inputs
+        ...inputs,
       },
       {
         headers: {

@@ -30,7 +30,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
         <Preview key={i}>
           <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
           <DeleteButton onClick={() => handleImageDelete(i)}>
-            <Icon src="/img/photo-delete.svg" alt="delete"/>
+            <Icon src="/img/photo-delete.svg" alt="delete" />
           </DeleteButton>
         </Preview>
       ))}

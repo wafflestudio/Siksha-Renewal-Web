@@ -198,7 +198,7 @@ export default function Post() {
                   router.push(`/community/boards/${boardId}`);
                 }}
               >
-                <FooterIcon src="/img/posts-orange.svg" alt="get list"/>
+                <FooterIcon src="/img/posts-orange.svg" alt="get list" />
                 목록보기
               </BackToBoardButton>
             </Footer>

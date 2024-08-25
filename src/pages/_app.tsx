@@ -26,7 +26,10 @@ function MyApp({ Component, pageProps }) {
           <Head>
             <title>서울대학교 식단 알리미 : 식샤</title>
             <meta charSet="utf-8" />
-            <meta name="description" content="매일 밥 시간마다 바로바로 오늘 메뉴를 보여주는 서울대학교 식단 알리미, 식샤를 만나보세요!" />
+            <meta
+              name="description"
+              content="매일 밥 시간마다 바로바로 오늘 메뉴를 보여주는 서울대학교 식단 알리미, 식샤를 만나보세요!"
+            />
             <meta
               name="viewport"
               content="initial-scale=1.0, width=device-width viewport-fit=cover"
@@ -40,15 +43,15 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </Layout>
           <script
-              type="text/javascript"
-              rel="dns-prefetch"
-              src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
-            />
-            <script
-              type="text/javascript"
-              rel="dns-prefetch"
-              src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
-            />
+            type="text/javascript"
+            rel="dns-prefetch"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
+          />
+          <script
+            type="text/javascript"
+            rel="dns-prefetch"
+            src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+          />
         </ModalsProvider>
       </ContextProvider>
     </>

@@ -6,11 +6,11 @@ export default function Stars({ score }: { score: number }) {
     <StarContainer>
       {Array.from(Array(5).keys()).map((i) => {
         if (score >= i + 1) {
-          return <Star src="/img/star.svg" key={i} alt="rated"/>;
+          return <Star src="/img/star.svg" key={i} alt="rated" />;
         } else if (score >= i + 0.5) {
-          return <Star src="/img/star.svg" key={i} alt="rated"/>;
+          return <Star src="/img/star.svg" key={i} alt="rated" />;
         } else {
-          return <Star src="/img/star-empty.svg" key={i} alt="no rated"/>;
+          return <Star src="/img/star-empty.svg" key={i} alt="no rated" />;
         }
       })}
     </StarContainer>

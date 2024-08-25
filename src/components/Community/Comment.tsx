@@ -104,7 +104,11 @@ export default function Comment({ comment, update }: CommentProps) {
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={onClickMoreActions} alt="more actions" />
+            <MobileMoreActionsButton
+              src="/img/etc.svg"
+              onClick={onClickMoreActions}
+              alt="more actions"
+            />
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>

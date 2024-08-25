@@ -64,7 +64,9 @@ export default function Menu({ menu }) {
     >
       <MenuName>
         {menu.name_kr}
-        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} alt="no meat"/>}
+        {menu.etc && menu.etc.find((e) => e == "No meat") && (
+          <NoMeat src={"/img/no-meat.svg"} alt="no meat" />
+        )}
       </MenuName>
       <MenuInfo>
         <Dots>.........</Dots>
