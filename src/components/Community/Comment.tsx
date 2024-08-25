@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import { useStateContext } from "hooks/ContextProvider";
 import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
 import DeleteModal from "./DeleteModal";
+import useAuth from "hooks/UseAuth";
 
 interface CommentProps {
   comment: CommentType;
@@ -18,8 +17,7 @@ interface CommentProps {
 export default function Comment({ comment, update }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id } = comment;
 
-  const { loginStatus } = useStateContext();
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
@@ -29,7 +27,7 @@ export default function Comment({ comment, update }: CommentProps) {
   const profileImg = "/img/default-profile.svg";
 
   const onClickLike = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
 
@@ -46,7 +44,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const onClickReport = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else
       openModal(ReportModal, {
         type: "comment",
@@ -61,7 +59,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const removeComment = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       openModal(DeleteModal, {
         type: "comment",

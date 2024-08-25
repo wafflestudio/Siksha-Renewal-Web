@@ -1,20 +1,18 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useStateContext } from "../hooks/ContextProvider";
 import useModals from "hooks/UseModals";
-import LoginModal from "./Auth/LoginModal";
+import useAuth from "hooks/UseAuth";
 
 export default function NavigationBar() {
   const router = useRouter();
   const addr = router.pathname;
 
-  const state = useStateContext();
-  const { loginStatus } = state;
+  const { authStatus } = useAuth();
   const { openLoginModal } = useModals();
 
   const onToggleAccount = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else router.push(`/account`);
   };
 

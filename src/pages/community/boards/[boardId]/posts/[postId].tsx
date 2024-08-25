@@ -5,7 +5,6 @@ import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "t
 import Board from "../../index";
 import CommentList from "components/Community/CommentList";
 import CommentWriter from "components/Community/CommentWriter";
-import { useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
@@ -17,18 +16,16 @@ import {
   setPostLike,
   setPostUnlike,
 } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
 import MobileSubHeader from "components/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useAuth from "hooks/UseAuth";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { loginStatus } = useStateContext();
-  const { getAccessToken, checkAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken, checkAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);
@@ -70,7 +67,7 @@ export default function Post() {
   };
 
   const fetchLike = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else if (post) {
       const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
       getAccessToken()
@@ -90,7 +87,7 @@ export default function Post() {
   };
 
   const removePost = (postId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else
       openModal(DeleteModal, {
         type: "post",
@@ -104,7 +101,7 @@ export default function Post() {
   };
 
   const reportPost = (postId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else openModal(ReportModal, { type: "post", targetID: postId, onClose: () => {} });
   };
 
