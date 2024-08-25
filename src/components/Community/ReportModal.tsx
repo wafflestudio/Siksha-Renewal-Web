@@ -45,7 +45,7 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalPr
         </Header>
         <WriterBox>
           <WriterInfoContainer>
-            <ProfileImage src={profileImg} />
+            <ProfileImage src={profileImg} alt="profile" />
             <Nickname>{!userInfo?.nickname ? `ID ${userInfo?.id}` : userInfo.nickname}</Nickname>
           </WriterInfoContainer>
         </WriterBox>

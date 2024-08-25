@@ -15,6 +15,7 @@ export default function Date() {
         onClick={() => {
           !showCal && setDate(getYesterday(date));
         }}
+        alt="left arrow"
       />
       <FlexBox onClick={() => toggleShowCal()}>
         <DateText>{formatDate(date)}</DateText>
@@ -24,6 +25,7 @@ export default function Date() {
         onClick={() => {
           !showCal && setDate(getTomorrow(date));
         }}
+        alt="right arrow"
       />
     </Container>
   );

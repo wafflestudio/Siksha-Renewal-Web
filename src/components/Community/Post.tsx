@@ -18,11 +18,11 @@ export function Post({ post }: PropsPost) {
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
             <Likes>
-              <Icon src="/img/post-like.svg" />
+              <Icon src="/img/post-like.svg" alt="like" />
               {likeCount}
             </Likes>
             <Comments>
-              <Icon src="/img/post-comment.svg" />
+              <Icon src="/img/post-comment.svg" alt="comment" />
               {commentCount}
             </Comments>
           </LikesAndComments>

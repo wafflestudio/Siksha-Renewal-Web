@@ -34,8 +34,8 @@ export default function Calendar() {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} />}
+          prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} alt="left arrow" />}
+          nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} alt="right arrow" />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
@@ -53,8 +53,8 @@ export default function Calendar() {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
+          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} alt="left arrow" />}
+          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} alt="right arrow" />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}

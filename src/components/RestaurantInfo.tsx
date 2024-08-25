@@ -33,14 +33,14 @@ export default function RestaurantInfo() {
         {/* <FlexBox> */}
         <InfoBox>
           <RestName>{infoData.name_kr}</RestName>
-          <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} />
+          <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} alt="close" />
           <HLine color={"#FE8C59"} margin={"10px"} />
           <ScrollArea>
             <Wrapper>
               <AboveMap>
                 <Text>식당 위치</Text>
                 <LocationBox>
-                  <LocationIcon src={"/img/mobile-location.svg"} />
+                  <LocationIcon src={"/img/mobile-location.svg"} alt="location" />
                   <LocationText>{infoData.addr ? infoData.addr.slice(19) : ""}</LocationText>
                 </LocationBox>
               </AboveMap>

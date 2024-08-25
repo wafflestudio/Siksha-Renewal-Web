@@ -197,7 +197,7 @@ export default function PostWriter() {
             <DesktopHeader>글쓰기</DesktopHeader>
             <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
               {selectedBoardName}
-              <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} />
+              <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="board select" />
             </BoardMenu>
             <TitleInput
               type="text"
@@ -222,6 +222,7 @@ export default function PostWriter() {
                   <Icon
                     src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
                     style={{ width: "13px" }}
+                    alt="anonymous"
                   />
                   익명
                 </Option>

@@ -20,7 +20,7 @@ export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProp
           <Header>
             <Title>{target} 삭제</Title>
             <CloseButton onClick={onClose}>
-              <Icon src="/img/modal-close.svg" />
+              <Icon src="/img/modal-close.svg" alt="close" />
             </CloseButton>
           </Header>
           <Message>해당 {target}을 삭제하시겠습니까?</Message>

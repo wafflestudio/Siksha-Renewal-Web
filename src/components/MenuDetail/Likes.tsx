@@ -41,6 +41,7 @@ export default function Likes({ menu }) {
           onClickLike();
           e.stopPropagation();
         }}
+        alt="like number"
       />
       <LikesText>좋아요 {likeCount}개</LikesText>
     </Container>

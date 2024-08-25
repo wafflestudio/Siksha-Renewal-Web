@@ -20,6 +20,7 @@ export default function Header() {
           onClick={() => {
             router.push("/");
           }}
+          alt="siksha logo"
         />
         <Title
           onClick={() => {

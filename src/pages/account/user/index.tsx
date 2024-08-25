@@ -52,12 +52,12 @@ export default function UserSetting() {
           <Title>계정 관리</Title>
           <ContentDiv onClick={handleLogout}>
             <LogoutText>로그아웃</LogoutText>
-            <ArrowButton src="/img/right-arrow-grey.svg" />
+            <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
           </ContentDiv>
           <BreakLine />
           <ContentDiv onClick={handleExit}>
             <WithdrawalText>회원 탈퇴</WithdrawalText>
-            <ArrowButton src="/img/right-arrow-grey.svg" />
+            <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
           </ContentDiv>
         </Container>
       </AccountLayout>

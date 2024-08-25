@@ -82,6 +82,7 @@ export default function ReviewPostModal({
             key={i}
             src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
             onClick={() => setInputs({ ...inputs, score: i })}
+            alt="star"
           />
         ))}
       </StarsContainer>

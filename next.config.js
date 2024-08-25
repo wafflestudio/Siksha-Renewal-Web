@@ -8,5 +8,9 @@ module.exports = {
   trailingSlash: true,
   compiler: {
     styledComponents: true,   
-  }
+  },
+  i18n: {
+    locales: ['ko'],
+    defaultLocale: 'ko',
+  },
 }  

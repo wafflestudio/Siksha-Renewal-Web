@@ -30,7 +30,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
         <Preview key={i}>
           <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
           <DeleteButton onClick={() => handleImageDelete(i)}>
-            <Icon src="/img/photo-delete.svg" />
+            <Icon src="/img/photo-delete.svg" alt="delete"/>
           </DeleteButton>
         </Preview>
       ))}
@@ -42,7 +42,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
               src="/img/file-big.svg"
             />
           ) : (
-            <Icon style={{ width: 28, height: 30 }} src="/img/file.svg" />
+            <Icon style={{ width: 28, height: 30 }} src="/img/file.svg" alt="file upload" />
           )}
           <FileInput
             type="file"

@@ -152,7 +152,7 @@ export default function Post() {
           <Container>
             <Header>
               <WriterInfoContainer>
-                <ProfileImage src={profileImg} />
+                <ProfileImage src={profileImg} alt="profile" />
                 <div>
                   <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
                   <PostDate>
@@ -170,6 +170,7 @@ export default function Post() {
               <MobileMoreActionsButton
                 src="/img/etc.svg"
                 onClick={() => onClickMoreActions(actions)}
+                alt="more actions"
               />
             </Header>
             <Content>
@@ -179,11 +180,11 @@ export default function Post() {
             </Content>
             <LikesAndComments>
               <Likes>
-                <Icon src="/img/post-like.svg" />
+                <Icon src="/img/post-like.svg" alt="likes" />
                 {post.likeCount}
               </Likes>
               <Comments>
-                <Icon src="/img/post-comment.svg" />
+                <Icon src="/img/post-comment.svg" alt="comment" />
                 {post.commentCount}
               </Comments>
             </LikesAndComments>
@@ -197,7 +198,7 @@ export default function Post() {
                   router.push(`/community/boards/${boardId}`);
                 }}
               >
-                <FooterIcon src="/img/posts-orange.svg" />
+                <FooterIcon src="/img/posts-orange.svg" alt="get list"/>
                 목록보기
               </BackToBoardButton>
             </Footer>

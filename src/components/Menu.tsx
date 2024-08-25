@@ -64,7 +64,7 @@ export default function Menu({ menu }) {
     >
       <MenuName>
         {menu.name_kr}
-        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} />}
+        {menu.etc && menu.etc.find((e) => e == "No meat") && <NoMeat src={"/img/no-meat.svg"} alt="no meat"/>}
       </MenuName>
       <MenuInfo>
         <Dots>.........</Dots>
@@ -76,6 +76,7 @@ export default function Menu({ menu }) {
             isLikedToggle();
             e.stopPropagation();
           }}
+          alt="set like"
         />
         <Likes>{likeCount}개</Likes>
       </MenuInfo>

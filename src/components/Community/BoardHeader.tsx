@@ -61,7 +61,7 @@ export function BoardHeader() {
                       {trendingPost.content}
                     </ContentPreview>
                     <Likes>
-                      <Icon src="/img/post-like.svg" />
+                      <Icon src="/img/post-like.svg" alt="like number" />
                       {trendingPost.likeCount}
                     </Likes>
                   </TrendingPost>
@@ -72,7 +72,7 @@ export function BoardHeader() {
         </PostSwiperViewport>
       </TrendingPostWrapper>
       <WriteButton>
-        <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
+        <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} alt="write post" />
       </WriteButton>
     </Container>
   );

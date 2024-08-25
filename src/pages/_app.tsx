@@ -26,15 +26,15 @@ function MyApp({ Component, pageProps }) {
           <Head>
             <title>서울대학교 식단 알리미 : 식샤</title>
             <meta charSet="utf-8" />
-            <link rel="icon" href="/favicon.ico" />
-            <link rel="manifest" href="/manifest/manifest.json" />
+            <meta name="description" content="매일 밥 시간마다 바로바로 오늘 메뉴를 보여주는 서울대학교 식단 알리미, 식샤를 만나보세요!" />
             <meta
               name="viewport"
               content="initial-scale=1.0, width=device-width viewport-fit=cover"
             />
             <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-            
+            <link rel="icon" href="/favicon.ico" />
+            <link rel="manifest" href="/manifest/manifest.json" />
           </Head>
           <Layout>
             <Component {...pageProps} />

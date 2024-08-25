@@ -32,20 +32,20 @@ export default function LeftSide() {
         <MyPostsButton onClick={onClickMyPostsButton}>
           <Image
             src="/img/posts.svg"
-            alt="글 목록 이미지"
             width="16"
             height="12"
             style={{ marginRight: "10px" }}
+            alt="my post"
           />
           내가 쓴 글
         </MyPostsButton>
         <WritePostButton onClick={onClickWriteButton}>
           <Image
             src="/img/posts-white.svg"
-            alt="글 목록 이미지"
             width="16"
             height="12"
             style={{ marginRight: "10px" }}
+            alt="write post"
           />
           게시판 글쓰기
         </WritePostButton>
