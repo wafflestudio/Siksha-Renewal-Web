@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
-import { formatDate, formatWeekday } from "../utils/FormatUtil";
+import { formatDate, formatMonth, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import { useCallback } from "react";
 
@@ -42,12 +42,14 @@ export default function Calendar() {
         />
       </DesktopContainer>
       <MobileContainer>
+        <DateText>{formatMonth(date)}</DateText>
         <ReactCalendar
           onChange={(day: Date) => {
             setDate(day);
             toggleShowCal();
           }}
           onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate as Date)}
+          activeStartDate={date}
           defaultActiveStartDate={today}
           value={date}
           defaultValue={today}
@@ -111,7 +113,8 @@ const DateText = styled.div`
 
   @media (max-width: 768px) {
     cursor: pointer;
-    top: 4px;
+    top: 0;
+    font-size: 15px;
   }
 `;
 
