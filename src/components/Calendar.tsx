@@ -67,7 +67,6 @@ export default function Calendar() {
 
 const DesktopContainer = styled.div`
   width: 100%;
-  height: 400px;
   background: white;
   display: flex;
   flex-direction: column;
