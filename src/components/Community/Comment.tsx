@@ -16,7 +16,7 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, update }: CommentProps) {
-  const { nickname, content, createdAt, updatedAt, id } = comment;
+  const { nickname, content, createdAt, updatedAt, id, profileUrl } = comment;
 
   const { loginStatus } = useStateContext();
   const { getAccessToken } = UseAccessToken();
@@ -26,7 +26,7 @@ export default function Comment({ comment, update }: CommentProps) {
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
-  const profileImg = "/img/default-profile.svg";
+  const profileImg = profileUrl || "/img/default-profile.svg";
 
   const onClickLike = () => {
     if (!loginStatus) openLoginModal();
