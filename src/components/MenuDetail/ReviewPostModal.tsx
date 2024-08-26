@@ -2,7 +2,7 @@ import React, { useId, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import { setReview } from "utils/api/reviews";
+import { getReviews, setReview } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
 
 export type ReviewInputs = {
@@ -20,6 +20,7 @@ const emptyReviewInputs: ReviewInputs = {
 export default function ReviewPostModal({
   isOpen,
   menu,
+  onSubmit,
   onClose,
 }: {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export default function ReviewPostModal({
     menuId: number;
     menuName: string;
   };
+  onSubmit: () => void;
   onClose: () => void;
 }) {
   const id = useId();
@@ -45,17 +47,18 @@ export default function ReviewPostModal({
     setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
   const handleSubmit = async () => {
-    return getAccessToken().then((accessToken) => {
-      const body = new FormData();
-      body.append("menu_id", String(menu.menuId));
-      body.append("score", String(inputs.score));
-      body.append("comment", inputs.comment);
-      inputs.images.forEach((image) => {
-        body.append("images", image);
-      });
+    const body = new FormData();
+    body.append("menu_id", String(menu.menuId));
+    body.append("score", String(inputs.score));
+    body.append("comment", inputs.comment);
+    inputs.images.forEach((image) => {
+      body.append("images", image);
+    });
 
+    return getAccessToken().then((accessToken) => {
       setReview(body, accessToken!)
         .then((res) => {
+          onSubmit();
           onClose();
         })
         .catch((err) => {
