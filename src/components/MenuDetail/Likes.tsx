@@ -1,9 +1,9 @@
-import UseAccessToken from "hooks/UseAccessToken";
 import { useStateContext } from "../../hooks/ContextProvider";
 import { useState } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
+import useAuth from "hooks/UseAuth";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -12,13 +12,12 @@ export default function Likes({ menu }) {
   const isLikedImg = isLiked ? "/img/heart-on.svg" : "/img/heart-off.svg";
 
   const state = useStateContext();
-  const { loginStatus } = state;
+  const { authStatus, getAccessToken } = useAuth();
 
-  const { getAccessToken } = UseAccessToken();
   const { openLoginModal } = useModals();
 
   const onClickLike = async () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
 

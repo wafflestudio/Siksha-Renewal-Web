@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useStateContext } from "../hooks/ContextProvider";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 
