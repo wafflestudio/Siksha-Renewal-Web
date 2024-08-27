@@ -2,27 +2,25 @@ import React, { useId, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import { setReview } from "utils/api/reviews";
+import { getReviews, setReview } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
 
 export type ReviewInputs = {
   score: number;
   comment: string;
-  photos: {
-    id: number;
-    photo: string | File;
-  }[];
+  images: File[];
 };
 
 const emptyReviewInputs: ReviewInputs = {
   score: 3,
   comment: "",
-  photos: [],
+  images: [],
 };
 
 export default function ReviewPostModal({
   isOpen,
   menu,
+  onSubmit,
   onClose,
 }: {
   isOpen: boolean;
@@ -30,6 +28,7 @@ export default function ReviewPostModal({
     menuId: number;
     menuName: string;
   };
+  onSubmit: () => void;
   onClose: () => void;
 }) {
   const id = useId();
@@ -39,22 +38,27 @@ export default function ReviewPostModal({
 
   const { getAccessToken } = useAuth();
 
-  const handlePhotoAttach = (photo: File | undefined) => {
-    if (photo) {
-      const newPhoto = {
-        id: uuidv4(),
-        photo: photo,
-      };
-      setInputs({ ...inputs, photos: [...inputs.photos, newPhoto] });
+  const handlePhotoAttach = (newPhoto: File | undefined) => {
+    if (newPhoto) {
+      setInputs({ ...inputs, images: [...inputs.images, newPhoto] });
     }
   };
-  const handlePhotoDelete = (id: number) => {
-    setInputs({ ...inputs, photos: inputs.photos.filter((photoObj) => photoObj.id !== id) });
+  const handlePhotoDelete = (index: number) => {
+    setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
   const handleSubmit = async () => {
+    const body = new FormData();
+    body.append("menu_id", String(menu.menuId));
+    body.append("score", String(inputs.score));
+    body.append("comment", inputs.comment);
+    inputs.images.forEach((image) => {
+      body.append("images", image);
+    });
+
     return getAccessToken().then((accessToken) => {
-      setReview(menu.menuId, inputs, accessToken!)
+      setReview(body, accessToken!)
         .then((res) => {
+          onSubmit();
           onClose();
         })
         .catch((err) => {
@@ -106,21 +110,15 @@ export default function ReviewPostModal({
       </CommentContainer>
       <PhotoSection>
         <PhotoViewer>
-          {inputs.photos.map((photoObj, i) => (
-            <PhotoContainer key={photoObj.id}>
-              <Photo
-                src={
-                  typeof photoObj.photo === "string"
-                    ? photoObj.photo
-                    : URL.createObjectURL(photoObj.photo)
-                }
-              />
-              <DeleteButton onClick={() => handlePhotoDelete(photoObj.id)}></DeleteButton>
+          {inputs.images.map((photoObj, i) => (
+            <PhotoContainer key={i}>
+              <Photo src={URL.createObjectURL(photoObj)} />
+              <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
             </PhotoContainer>
           ))}
-          {inputs.photos.length < 5 && (
-            <PhotoAttacher photosLength={inputs.photos.length}>
-              {inputs.photos.length === 0 && <AddImageText> 사진 추가 + </AddImageText>}
+          {inputs.images.length < 5 && (
+            <PhotoAttacher photosLength={inputs.images.length}>
+              {inputs.images.length === 0 && <AddImageText> 사진 추가 + </AddImageText>}
               <FileInput
                 type="file"
                 accept="image/*"
@@ -129,7 +127,7 @@ export default function ReviewPostModal({
             </PhotoAttacher>
           )}
         </PhotoViewer>
-        {inputs.photos.length < 5 && (
+        {inputs.images.length < 5 && (
           <MobilePhotoAttacher>
             <AddImageText> 사진 추가 </AddImageText>
             <FileInput
@@ -139,7 +137,7 @@ export default function ReviewPostModal({
             />
           </MobilePhotoAttacher>
         )}
-      </PhotoSection>
+      </PhotoSection>`
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {
