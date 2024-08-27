@@ -190,9 +190,10 @@ const Info = styled.div`
   position: relative;
   background-color: white;
   display: flex;
+  justify-content: center;
   height: max(809px, calc(100vh - 271px));
-  width: fit-content;
-  margin: auto;
+  width: 100%;
+  margin: 0 auto;
   @media (max-width: 768px) {
     flex-direction: column;
     height: max(724px, calc(100vh - 60px));

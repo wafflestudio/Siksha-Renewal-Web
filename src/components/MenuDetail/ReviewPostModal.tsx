@@ -168,7 +168,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 735px;
+  width: 735px;
   border-left: 1px solid #eeeeee;
   padding-left: 37px;
   padding-right: 36px;
