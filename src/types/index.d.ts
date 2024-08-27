@@ -9,10 +9,6 @@ export interface State {
   loading: boolean;
   infoData: any;
   authStatus: "loading" | "login" | "logout";
-  /**
-   * @deprecated safety is not guaranteed on loading
-   */
-  loginStatus: boolean;
   isLoginModal: boolean;
   userInfo: User | null;
   isFilterFavorite: boolean;
@@ -26,7 +22,6 @@ export type Action =
   | { type: "SET_INFODATA"; infoData: any }
   | { type: "TOGGLE_SHOWCAL" }
   | { type: "TOGGLE_SHOWINFO" }
-  | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
   | { type: "SET_LOGINMODAL"; isLoginModal: boolean }
   | {
       type: "SET_USERINFO";
