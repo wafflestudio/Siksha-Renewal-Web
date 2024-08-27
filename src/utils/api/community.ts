@@ -95,7 +95,7 @@ export const getTrendingPosts = (
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
-    .get(`${apiUrl}?likes=1&created_before=50`, config)
+    .get(apiUrl, config)
     .then((res) => {
       const { data } = res;
       return {
