@@ -15,19 +15,10 @@ export default function Header() {
   return (
     <Background>
       <Container>
-        <SikshaIcon
-          src={"/img/sikshaSplash.svg"}
-          onClick={() => {
-            router.push("/");
-          }}
-        />
-        <Title
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          서울대학교 식단 알리미
-        </Title>
+        <CIContainer>
+          <SikshaIcon src={"/img/sikshaSplash.svg"} onClick={() => router.push("/")} />
+          <Title onClick={() => router.push("/")}>서울대학교 식단 알리미</Title>
+        </CIContainer>
         <NavigationBar />
         {authStatus === "login" ? (
           <LoginButton onClick={logout}>로그아웃</LoginButton>
@@ -38,39 +29,17 @@ export default function Header() {
     </Background>
   );
 }
-const LoginButton = styled.div`
-  position: absolute;
-  right: 97px;
-  bottom: 23px;
-  background: none;
-  font-size: 20px;
-  font-weight: 400;
-  color: #ffffff;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    position: absolute;
-    right: 5vw;
-    font-size: 16px;
-    top: 21px;
-  }
-`;
 
 const Background = styled.div`
   background: #ff9522;
-  min-width: 1920px;
-  @media (max-width: 768px) {
-    min-width: 0;
-  }
 `;
 
 const Container = styled.div`
   position: relative;
   height: 271px;
-  width: 1920px;
   box-sizing: border-box;
   display: flex;
-  padding-left: 258px;
+  justify-content: space-evenly;
   margin: auto;
 
   @media (max-width: 768px) {
@@ -80,6 +49,10 @@ const Container = styled.div`
     top: 0;
     z-index: 1;
   }
+`;
+
+const CIContainer = styled.div`
+  display: flex;
 `;
 
 const SikshaIcon = styled.img`
@@ -114,13 +87,23 @@ const Title = styled.div`
     display: none;
   }
 `;
-// const NavBarContainer = styled.div`
-//   width: 100%;
-//   display: flex;
-//   align-items: flex-end;
-//   justify-content: center;
-//   margin-right: 368px;
-//   @media (max-width: 768px) {
-//     display: none;
-//   }
-// `;
+
+const LoginButton = styled.button`
+  margin-top: auto;
+  padding-bottom: 21.5px;
+  background: none;
+  font-size: 20px;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    right: 5vw;
+    font-size: 16px;
+    top: 21px;
+  }
+`;

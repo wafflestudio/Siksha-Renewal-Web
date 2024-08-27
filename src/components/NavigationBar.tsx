@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 
+// directory 변경 필요
 export default function NavigationBar() {
   const router = useRouter();
   const addr = router.pathname;
@@ -11,7 +12,7 @@ export default function NavigationBar() {
   const { authStatus } = useAuth();
   const { openLoginModal } = useModals();
 
-  const onToggleAccount = () => {
+  const toggleAccount = () => {
     if (authStatus === "logout") openLoginModal();
     else router.push(`/account`);
   };
@@ -28,7 +29,7 @@ export default function NavigationBar() {
           <NavLink $cur={addr.startsWith(`/community`)}>게시판</NavLink>
         </Link>
       </NavItem>
-      <NavItem onClick={onToggleAccount}>
+      <NavItem onClick={toggleAccount}>
         <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>
@@ -37,8 +38,6 @@ export default function NavigationBar() {
 
 const NaviBar = styled.nav`
   margin-top: auto;
-  margin-left: 325px;
-  margin-right: 386px;
   width: 394px;
   white-space: nowrap;
   cursor: pointer;

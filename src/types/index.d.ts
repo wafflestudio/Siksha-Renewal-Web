@@ -90,6 +90,7 @@ export interface Comment {
   updatedAt: string;
   id: number;
   nickname: string;
+  profileUrl: string | null;
   avaliable: boolean;
   anonymous: boolean;
   isMine: boolean;
@@ -104,6 +105,7 @@ export interface RawComment {
   updated_at: string;
   id: number;
   nickname: string;
+  profile_url: string | null;
   avaliable: boolean;
   anonymous: boolean;
   is_mine: boolean;

@@ -13,6 +13,7 @@ export default function SettingProfile() {
 
   const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   const [isNicknameValid, setIsNicknameValid] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -24,22 +25,30 @@ export default function SettingProfile() {
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
 
-  // debouncing nickname validation
-  let timerRef = useRef<NodeJS.Timeout | null>(null); // rerendering으로 인한 timer 리셋 방지
-  const nicknameCheck = (delay = 500) => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+  useEffect(() => {
+    setIsLoading(true);
+    // debouncing nickname check
+    const nicknameCheck = setTimeout(() => {
+      if (nickname === userInfo?.nickname) {
+        setIsNicknameValid(true);
+        setIsLoading(false);
+      } else
+        validateNickname(nickname).then((res) => {
+          setIsNicknameValid(res);
+          setIsLoading(false);
+        });
+    }, 500);
 
-      timerRef.current = setTimeout(() => {
-        if (nickname === userInfo?.nickname) setIsNicknameValid(true);
-        else validateNickname(nickname).then((res) => setIsNicknameValid(res));
-      }, delay);
-    };
-  };
-  useEffect(nicknameCheck, [nickname]);
+    return () => clearTimeout(nicknameCheck);
+  }, [nickname]);
 
   const onUpdateProfile = async () => {
     if (nickname === null || !isNicknameValid || imgRef.current === null) return;
+
+    if (nickname === userInfo?.nickname && !imageBlob) {
+      router.push(`/account`);
+      return;
+    }
 
     const formData = new FormData();
     if (nickname !== userInfo?.nickname) formData.append("nickname", nickname);
@@ -75,7 +84,12 @@ export default function SettingProfile() {
           />
           <ButtonGroup>
             <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
-            <CompleteButton onClick={onUpdateProfile}>완료</CompleteButton>
+            <CompleteButton
+              isValid={!isLoading && isNicknameValid}
+              onClick={!isLoading && isNicknameValid ? onUpdateProfile : undefined}
+            >
+              완료
+            </CompleteButton>
           </ButtonGroup>
         </Container>
       </AccountLayout>
@@ -147,8 +161,8 @@ const CancelButton = styled(Button)`
   }
 `;
 
-const CompleteButton = styled(Button)`
-  background-color: #ff9522;
+const CompleteButton = styled(Button)<{ isValid: boolean }>`
+  background-color: ${({ isValid }) => (isValid ? "#ff9522" : "#8e8e8e")};
 
   @media (max-width: 768px) {
     width: 100%;

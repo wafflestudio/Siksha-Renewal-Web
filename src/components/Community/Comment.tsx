@@ -15,7 +15,7 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, update }: CommentProps) {
-  const { nickname, content, createdAt, updatedAt, id } = comment;
+  const { nickname, content, createdAt, updatedAt, id, profileUrl } = comment;
 
   const { authStatus, getAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
@@ -24,7 +24,7 @@ export default function Comment({ comment, update }: CommentProps) {
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
-  const profileImg = "/img/default-profile.svg";
+  const profileImg = profileUrl || "/img/default-profile.svg";
 
   const onClickLike = () => {
     if (authStatus === "logout") openLoginModal();
@@ -168,6 +168,7 @@ const WriterInfoContainer = styled.div`
 const ProfileImage = styled.img`
   width: 23px;
   height: 23px;
+  border-radius: 50%;
   @media (max-width: 768px) {
     width: 16px;
     height: 16px;

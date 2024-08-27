@@ -58,7 +58,7 @@ const Container = styled.div`
   margin-right: 18px;
   height: fit-content;
   box-sizing: border-box;
-  min-width: 400px;
+  min-width: 315px;
   max-width: 563px;
   flex-grow: 1;
 `;
