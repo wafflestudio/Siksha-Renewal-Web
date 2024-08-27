@@ -64,6 +64,34 @@ export default function Menu() {
 
   const { authStatus, getAccessToken } = useAuth();
 
+  const fetchMenu = async () => {
+    const accessToken = await getAccessToken().catch((error) => "");
+
+    getMenu(Number(menuId), accessToken)
+    .then((menuData) => {
+      setMenu(menuData);
+      setMobileSubHeaderTitle(menuData.name_kr);
+    })
+    .catch((e) => {
+      console.error(e);
+      router.push("/");
+    })
+  };
+
+  const fetchReviews = async () => {
+    getReviews(Number(menuId))
+    .then((reviewsData) => {
+      setReviews({
+        result: reviewsData.result,
+        total_count: reviewsData.totalCount,
+      });
+    })
+    .catch((e) => {
+      console.error(e);
+      router.push("/");
+    });
+  };
+
   useEffect(() => {
     if (!menuId) {
       return;
@@ -71,21 +99,9 @@ export default function Menu() {
     setLoading(true);
 
     async function fetchData() {
-      const accessToken = await getAccessToken().catch((error) => "");
-
-      Promise.all([getMenu(Number(menuId), accessToken), getReviews(Number(menuId))])
-        .then(([menuData, reviewsData]) => {
-          setMenu(menuData);
-          setMobileSubHeaderTitle(menuData.name_kr);
-          setReviews({
-            result: reviewsData.result,
-            total_count: reviewsData.totalCount,
-          });
-        })
-        .catch((e) => {
-          console.error(e);
-          router.push("/");
-        })
+      Promise.all([fetchMenu(), fetchReviews()])
+        .then(() => {})
+        .catch((e) => {})
         .finally(() => setLoading(false));
     }
     fetchData();
@@ -155,6 +171,7 @@ export default function Menu() {
                     menuName: menu.name_kr,
                     menuId: menu.id,
                   }}
+                  onSubmit={fetchReviews}
                   onClose={() => handleReviewPostModal(false)}
                 />
               ) : (
@@ -190,9 +207,10 @@ const Info = styled.div`
   position: relative;
   background-color: white;
   display: flex;
+  justify-content: center;
   height: max(809px, calc(100vh - 271px));
-  width: fit-content;
-  margin: auto;
+  width: 100%;
+  margin: 0 auto;
   @media (max-width: 768px) {
     flex-direction: column;
     height: max(724px, calc(100vh - 60px));

@@ -6,7 +6,7 @@ import useLocalStorage from "./UseLocalStorage";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
-  const { setAuthStatus, setLoginStatus } = useDispatchContext();
+  const { setAuthStatus } = useDispatchContext();
   const { openLoginModal } = useModals();
   const router = useRouter();
 
@@ -14,12 +14,13 @@ export default function useAuth() {
     value: accessToken,
     set: setStorage,
     remove: removeStorage,
-  } = useLocalStorage("access_token", "loading");
+  } = useLocalStorage("access_token", undefined);
 
   useEffect(() => {
-    setAuthStatus(accessToken ? "login" : "logout");
-    setLoginStatus(accessToken ? true : false);
-  }, []);
+    if (accessToken === undefined) setAuthStatus("loading");
+    else if (accessToken) setAuthStatus("login");
+    else setAuthStatus("logout");
+  }, [accessToken]);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
@@ -35,7 +36,6 @@ export default function useAuth() {
 
       if (!accessToken) {
         setAuthStatus("logout");
-        setLoginStatus(false);
         reject(new Error("Access token not found"));
       } else resolve(accessToken);
     });
@@ -51,13 +51,11 @@ export default function useAuth() {
   const login = (accessToken: string) => {
     setStorage(accessToken);
     setAuthStatus("login");
-    setLoginStatus(true);
   };
 
   const logout = () => {
     removeStorage();
     setAuthStatus("logout");
-    setLoginStatus(false);
   };
 
   return { authStatus, authGuard, getAccessToken, checkAccessToken, login, logout };

@@ -2,25 +2,23 @@ import Calendar from "./Calendar";
 import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
-import Link from "next/link";
-import { useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
+import useAuth from "hooks/UseAuth";
 
 export default function LeftSide() {
   const router = useRouter();
-  const state = useStateContext();
 
-  const { loginStatus } = state;
+  const { authStatus } = useAuth();
   const { openLoginModal } = useModals();
 
   function onClickMyPostsButton() {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else router.push(`/account/mypost`);
   }
 
   function onClickWriteButton() {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else router.push(`/community/write`);
   }
 
@@ -60,7 +58,7 @@ const Container = styled.div`
   margin-right: 18px;
   height: fit-content;
   box-sizing: border-box;
-  min-width: 400px;
+  min-width: 315px;
   max-width: 563px;
   flex-grow: 1;
 `;

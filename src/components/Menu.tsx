@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
-import UseAccessToken from "hooks/UseAccessToken";
 import useModals from "hooks/UseModals";
+import useAuth from "hooks/UseAuth";
 
 export default function Menu({ menu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -16,9 +16,7 @@ export default function Menu({ menu }) {
   const isLikedImg = isLiked ? "/img/heart-on.svg" : "/img/heart-off.svg";
   const router = useRouter();
 
-  const state = useStateContext();
-  const { loginStatus } = state;
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth();
   const { openLoginModal } = useModals();
 
   useEffect(() => {
@@ -42,7 +40,7 @@ export default function Menu({ menu }) {
   }, [menu.score]);
 
   const isLikedToggle = async () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
 
@@ -93,9 +91,12 @@ const Container = styled.div`
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  &:hover {
-    background: #f5f5f5;
+  @media (pointer: fine) {
+    &:hover {
+      background: #f5f5f5;
+    }
   }
+
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
   }

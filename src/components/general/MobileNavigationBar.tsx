@@ -44,32 +44,32 @@ export default function MobileNavigationBar() {
           else openLoginModal();
         }}
       >
-        {active === "favorite" ? (
-          <Icon src="/img/mobile-nav-star-active.svg" />
-        ) : (
-          <Icon src="/img/mobile-nav-star-inactive.svg" />
-        )}
+        <Icon
+          isActive={active === "favorite"}
+          srcActive="/img/mobile-nav-star-active.svg"
+          srcInactive="/img/mobile-nav-star-inactive.svg"
+        />
       </Link>
       <Link href="/" onClick={() => setIsFilterFavorite(false)}>
-        {active === "menu" ? (
-          <Icon src="/img/mobile-nav-menu-active.svg" />
-        ) : (
-          <Icon src="/img/mobile-nav-menu-inactive.svg" />
-        )}
+        <Icon
+          isActive={active === "menu"}
+          srcActive="/img/mobile-nav-menu-active.svg"
+          srcInactive="/img/mobile-nav-menu-inactive.svg"
+        />
       </Link>
       <Link href="/community/boards/1" onClick={() => setIsFilterFavorite(false)}>
-        {active === "community" ? (
-          <Icon src="/img/mobile-nav-community-active.svg" />
-        ) : (
-          <Icon src="/img/mobile-nav-community-inactive.svg" />
-        )}
+        <Icon
+          isActive={active === "community"}
+          srcActive="/img/mobile-nav-community-active.svg"
+          srcInactive="/img/mobile-nav-community-inactive.svg"
+        />
       </Link>
       <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
-        {active === "account" ? (
-          <Icon src="/img/mobile-nav-account-active.svg" />
-        ) : (
-          <Icon src="/img/mobile-nav-account-inactive.svg" />
-        )}
+        <Icon
+          isActive={active === "account"}
+          srcActive="/img/mobile-nav-account-active.svg"
+          srcInactive="/img/mobile-nav-account-inactive.svg"
+        />
       </Link>
     </Container>,
     rootElement,
@@ -92,5 +92,14 @@ const Container = styled.div`
   }
 `;
 
-const Button = styled.div``;
-const Icon = styled.img``;
+const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
+  width: 24px;
+  height: 24px;
+  background-image: ${({ isActive, srcActive, srcInactive }) =>
+    `url(${isActive ? srcActive : srcInactive})`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translateZ(0);
+  opacity: 0.99;
+`;

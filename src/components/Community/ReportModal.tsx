@@ -1,5 +1,5 @@
 import BackClickable from "components/general/BackClickable";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth from "hooks/UseAuth";
 import UseProfile from "hooks/UseProfile";
 import { useState } from "react";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ interface ReporyModalProps {
 export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalProps) {
   const [reason, setReason] = useState("");
   const { userInfo } = UseProfile();
-  const { checkAccessToken } = UseAccessToken();
+  const { checkAccessToken } = useAuth();
 
   const isValid = reason.length >= 1;
 
