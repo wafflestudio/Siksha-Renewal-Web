@@ -104,7 +104,7 @@ const DistributionBar = styled.div<{ percentage: number }>`
   border-radius: 0 5px 5px 0;
   margin-left: 9px;
   @media (max-width: 768px) {
-    width: ${(props) => props.percentage * 2.3 + 4}px;
+    width: ${(props) => props.percentage * 2 + 4}px;
     height: 8px;
     border-radius: 0 5px 5px 0;
   }

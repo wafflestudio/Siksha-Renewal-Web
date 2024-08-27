@@ -127,6 +127,7 @@ const MenuHeader = styled.div`
   align-items: last baseline;
   padding-bottom: 13px;
   @media (max-width: 768px) {
+    
     flex-direction: column;
     align-items: center;
     padding-bottom: 18px;

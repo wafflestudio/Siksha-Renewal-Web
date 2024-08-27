@@ -68,28 +68,28 @@ export default function Menu() {
     const accessToken = await getAccessToken().catch((error) => "");
 
     getMenu(Number(menuId), accessToken)
-    .then((menuData) => {
-      setMenu(menuData);
-      setMobileSubHeaderTitle(menuData.name_kr);
-    })
-    .catch((e) => {
-      console.error(e);
-      router.push("/");
-    })
+      .then((menuData) => {
+        setMenu(menuData);
+        setMobileSubHeaderTitle(menuData.name_kr);
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push("/");
+      });
   };
 
   const fetchReviews = async () => {
     getReviews(Number(menuId))
-    .then((reviewsData) => {
-      setReviews({
-        result: reviewsData.result,
-        total_count: reviewsData.totalCount,
+      .then((reviewsData) => {
+        setReviews({
+          result: reviewsData.result,
+          total_count: reviewsData.totalCount,
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push("/");
       });
-    })
-    .catch((e) => {
-      console.error(e);
-      router.push("/");
-    });
   };
 
   useEffect(() => {
@@ -197,6 +197,8 @@ const Background = styled.div`
   background-color: white;
   overflow: scroll;
   display: flex;
+  flex-direction: column;
+
   @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
