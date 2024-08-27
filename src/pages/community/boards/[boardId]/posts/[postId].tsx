@@ -245,6 +245,8 @@ const WriterInfoContainer = styled.div`
 const ProfileImage = styled.img`
   width: 43px;
   height: 43px;
+  border-radius: 50%;
+  object-fit: cover;
   @media (max-width: 768px) {
     width: 30px;
     height: 30px;
