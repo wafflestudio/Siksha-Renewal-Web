@@ -14,8 +14,13 @@ export default function useAuth() {
     value: accessToken,
     set: setStorage,
     remove: removeStorage,
-  } = useLocalStorage("access_token", "loading");
+  } = useLocalStorage("access_token", undefined);
 
+  useEffect(() => {
+    if (accessToken === undefined) setAuthStatus("loading");
+    else if (accessToken) setAuthStatus("login");
+    else setAuthStatus("logout");
+  }, [accessToken]);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
