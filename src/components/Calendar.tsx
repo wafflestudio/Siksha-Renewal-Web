@@ -3,8 +3,9 @@ import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { formatDate, formatMonth, formatWeekday } from "../utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import { useCallback } from "react";
+import BackClickable from "./general/BackClickable";
 
-export default function Calendar() {
+export default function Calendar({ onClose }: { onClose: () => {}}) {
   const state = useStateContext();
   const { date, today } = state;
 
@@ -41,28 +42,37 @@ export default function Calendar() {
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
         />
       </DesktopContainer>
-      <MobileContainer>
-        <DateText>{formatMonth(date)}</DateText>
-        <ReactCalendar
-          onChange={(day: Date) => {
-            setDate(day);
-            toggleShowCal();
-          }}
-          onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate as Date)}
-          activeStartDate={date}
-          defaultActiveStartDate={today}
-          value={date}
-          defaultValue={today}
-          showNeighboringMonth={false}
-          navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
-          formatDay={(locale, date) => String(date.getDate())}
-          formatShortWeekday={(locale, date) => formatWeekday(date)}
-          tileClassName={({ date }) => (isToday(date) ? "today" : null)}
-        />
-        <ClickArea onClick={() => toggleShowCal()} />
-      </MobileContainer>
+      <BackClickable
+          onClickBackground={toggleShowCal}
+          style={`
+            z-index: auto;
+            width: 100vw;
+            height: calc(100vh - 113px);
+            position: initial;
+          `}
+        >
+        <MobileContainer>
+          <DateText>{formatMonth(date)}</DateText>
+            <ReactCalendar
+              onChange={(day: Date) => {
+                setDate(day);
+                toggleShowCal();
+              }}
+              onActiveStartDateChange={({ activeStartDate }) => setDate(activeStartDate as Date)}
+              activeStartDate={date}
+              defaultActiveStartDate={today}
+              value={date}
+              defaultValue={today}
+              showNeighboringMonth={false}
+              navigationLabel={() => formatDate(date)}
+              prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
+              nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
+              formatDay={(locale, date) => String(date.getDate())}
+              formatShortWeekday={(locale, date) => formatWeekday(date)}
+              tileClassName={({ date }) => (isToday(date) ? "today" : null)}
+            />
+        </MobileContainer>
+      </BackClickable>
     </>
   );
 }
@@ -85,9 +95,6 @@ const MobileContainer = styled.div`
   display: none;
 
   @media (max-width: 768px) {
-    width: 100vw;
-    height: calc(100vh - 113px);
-    background: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
