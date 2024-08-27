@@ -3,13 +3,14 @@ import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import Link from "next/link";
-import { useStateContext } from "hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
 
 export default function LeftSide() {
   const router = useRouter();
   const state = useStateContext();
+  const { toggleShowCal } = useDispatchContext();
 
   const { loginStatus } = state;
   const { openLoginModal } = useModals();
@@ -26,7 +27,7 @@ export default function LeftSide() {
 
   return (
     <Container>
-      <Calendar />
+      <Calendar onClose={toggleShowCal}/>
       <div style={{ marginTop: "35px" }}>
         <RestaurantList />
       </div>
