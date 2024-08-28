@@ -38,6 +38,8 @@ const ReviewItemContainer = styled.div`
 const ReviwerProfile = styled.img`
   width: 43px;
   height: 43px;
+  border-radius: 50%;
+  object-fit: cover;
   margin-right: 15px;
 `;
 

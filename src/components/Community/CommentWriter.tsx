@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { setComment } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import { RawComment } from "types";
-import { useStateContext } from "hooks/ContextProvider";
 import useModals from "hooks/UseModals";
+import useAuth from "hooks/UseAuth";
 
 interface CommentWriterProps {
   postId: number;
@@ -12,9 +11,8 @@ interface CommentWriterProps {
 }
 
 export default function CommentWriter({ postId, update }: CommentWriterProps) {
-  const { loginStatus } = useStateContext();
+  const { authStatus, checkAccessToken } = useAuth();
   const { openLoginModal } = useModals();
-  const { checkAccessToken } = UseAccessToken();
 
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -28,7 +26,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
   }
 
   const submit = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else if (isValid)
       checkAccessToken().then((res: string | null) => {
         if (res !== null)

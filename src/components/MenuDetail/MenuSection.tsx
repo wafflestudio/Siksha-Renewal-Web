@@ -100,7 +100,7 @@ export default function MenuSection({
 const MenuContainer = styled.section`
   position: relative;
   background-color: white;
-  width: 1185px;
+  width: 897px;
   height: 100%;
   @media (max-width: 768px) {
     flex-grow: 0;
@@ -111,9 +111,8 @@ const MenuContainer = styled.section`
 `;
 
 const MenuInfoContainer = styled.div`
-  padding: 41px 30px 26px 258px;
-  width: 897px;
-  margin-left: auto;
+  padding: 41px 30px 26px 0px;
+
   @media (max-width: 768px) {
     padding: 18px 15px 16px 17px;
     width: auto;

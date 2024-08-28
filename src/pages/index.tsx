@@ -96,7 +96,6 @@ const DesktopContainer = styled.div`
   display: flex;
   justify-content: center;
   height: max(780px, 100vh - min(25vh, 271px));
-  width: min(73vw, 1417px);
   margin: 39px auto 0 auto;
 
   @media (max-width: 768px) {

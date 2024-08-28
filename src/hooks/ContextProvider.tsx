@@ -13,10 +13,6 @@ const initialState: State = {
   loading: false,
   infoData: null,
   authStatus: "loading",
-  /**
-   * @deprecated safety is not guaranteed on loading
-   */
-  loginStatus: false,
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
@@ -30,10 +26,6 @@ interface dispatchers {
   setInfoData: (info: any) => void;
   toggleShowInfo: () => void;
   setAuthStatus: (status: "loading" | "login" | "logout") => void;
-  /**
-   * @deprecated safety is not guaranteed on loading
-   */
-  setLoginStatus: (loginStatus: boolean) => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
 }
@@ -56,11 +48,6 @@ const ContextProvider = ({ children }) => {
     setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
   const setAuthStatus = (status: "loading" | "login" | "logout") =>
     setState((prevState) => ({ ...prevState, authStatus: status }));
-  /**
-   * @deprecated safety is not guaranteed on loading
-   */
-  const setLoginStatus = (loginStatus: boolean) =>
-    setState((prevState) => ({ ...prevState, loginStatus: loginStatus }));
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
@@ -75,7 +62,6 @@ const ContextProvider = ({ children }) => {
         setInfoData,
         toggleShowInfo,
         setAuthStatus,
-        setLoginStatus,
         setUserInfo,
         setIsFilterFavorite,
       }}

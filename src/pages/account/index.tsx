@@ -144,6 +144,7 @@ const Profile = styled.img`
   height: 48.17px;
   margin: 11px 0 11px 16px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const Text = styled.span`

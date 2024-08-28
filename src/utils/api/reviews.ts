@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ReviewInputs } from "components/MenuDetail/ReviewPostModal";
 import APIendpoint from "constants/constants";
+import { inputs } from "pages/community/write";
 import { RawReview } from "types";
 
 export const getReviews = (
@@ -21,17 +22,13 @@ export const getReviews = (
 };
 
 export const setReview = (
-  menuID: number,
-  inputs: ReviewInputs,
+  body: FormData,
   accessToken: string,
 ): Promise<void> => {
   return axios
     .post(
-      `${APIendpoint()}/reviews/images/`,
-      {
-        menu_id: menuID,
-        ...inputs
-      },
+      `${APIendpoint()}/reviews/images`,
+      body,
       {
         headers: {
           "authorization-token": `Bearer ${accessToken}`,

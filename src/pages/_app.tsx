@@ -34,18 +34,21 @@ function MyApp({ Component, pageProps }) {
             />
             <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-            <script
-              type="text/javascript"
-              src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
-            />
-            <script
-              type="text/javascript"
-              src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
-            />
+            
           </Head>
           <Layout>
             <Component {...pageProps} />
           </Layout>
+          <script
+              type="text/javascript"
+              rel="dns-prefetch"
+              src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
+            />
+            <script
+              type="text/javascript"
+              rel="dns-prefetch"
+              src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+            />
         </ModalsProvider>
       </ContextProvider>
     </>
