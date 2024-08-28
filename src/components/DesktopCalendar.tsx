@@ -37,6 +37,7 @@ export default function DesktopCalendar() {
         formatDay={(locale, date) => String(date.getDate())}
         formatShortWeekday={(locale, date) => formatWeekday(date)}
         tileClassName={({ date }) => (isToday(date) ? "today" : null)}
+        locale={'ko'}
       />
     </Container>
   );
