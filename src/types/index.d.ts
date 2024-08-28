@@ -4,7 +4,6 @@ export interface State {
   meal: string;
   data: RawMenuList;
   today: Date;
-  showCal: boolean;
   showInfo: boolean;
   loading: boolean;
   infoData: any;

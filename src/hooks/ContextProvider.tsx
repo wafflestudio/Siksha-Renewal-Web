@@ -9,7 +9,6 @@ const initialState: State = {
   meal: initDate.getHours() < 9 ? "BR" : initDate.getHours() < 16 ? "LU" : "DN",
   data: { BR: [], LU: [], DN: [], date: formatISODate(initDate) },
   today: initDate,
-  showCal: false,
   showInfo: false,
   loading: false,
   infoData: null,
@@ -29,7 +28,6 @@ interface dispatchers {
   setData: (data: RawMenuList) => void;
   setLoading: (loading: boolean) => void;
   setInfoData: (info: any) => void;
-  toggleShowCal: () => void;
   toggleShowInfo: () => void;
   setAuthStatus: (status: "loading" | "login" | "logout") => void;
   /**
@@ -54,8 +52,6 @@ const ContextProvider = ({ children }) => {
   const setLoading = (loading: boolean) =>
     setState((prevState) => ({ ...prevState, loading: loading }));
   const setInfoData = (infoData) => setState((prevState) => ({ ...prevState, infoData: infoData }));
-  const toggleShowCal = () =>
-    setState((prevState) => ({ ...prevState, showCal: !prevState.showCal }));
   const toggleShowInfo = () =>
     setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
   const setAuthStatus = (status: "loading" | "login" | "logout") =>
@@ -77,7 +73,6 @@ const ContextProvider = ({ children }) => {
         setData,
         setLoading,
         setInfoData,
-        toggleShowCal,
         toggleShowInfo,
         setAuthStatus,
         setLoginStatus,

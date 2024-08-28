@@ -1,28 +1,47 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
+import useModals from "hooks/UseModals";
+import MobileCalendar from "./MobileCalendar";
+import { useContext, useEffect, useState } from "react";
+import { ModalsStateContext } from "context/ModalsProvider";
 
 export default function Date() {
   const state = useStateContext();
-  const { date, showCal } = state;
+  const { date } = state;
 
-  const { setDate, toggleShowCal } = useDispatchContext();
+  const { setDate } = useDispatchContext();
+  const { openModal, closeModal } = useModals();
+  const openedModals = useContext(ModalsStateContext);
+  const [ isCalOpened, setIsCalOpened ] = useState(false);
+
+  const onClickDate = () => {
+    if (!isCalOpened) {
+      openModal(MobileCalendar, {onClose: () => {}});
+    } else {
+      closeModal(MobileCalendar);
+    }
+  };
+
+  useEffect(() => {
+    setIsCalOpened(openedModals.map((modal) => modal.Component).includes(MobileCalendar));
+  }, [openedModals]);
 
   return (
     <Container>
       <Arrow
-        src={showCal ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
+        src={isCalOpened ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
         onClick={() => {
-          !showCal && setDate(getYesterday(date));
+          !isCalOpened && setDate(getYesterday(date));
         }}
       />
-      <FlexBox onClick={() => toggleShowCal()}>
+      <FlexBox onClick={onClickDate}>
         <DateText>{formatDate(date)}</DateText>
       </FlexBox>
       <Arrow
-        src={showCal ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
+        src={isCalOpened ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
         onClick={() => {
-          !showCal && setDate(getTomorrow(date));
+          !isCalOpened && setDate(getTomorrow(date));
         }}
       />
     </Container>
