@@ -7,7 +7,7 @@ import styled from "styled-components";
 export default function DesktopCalendar() {
   const state = useStateContext();
   const { date, today } = state;
-  const { setDate, toggleShowCal } = useDispatchContext();
+  const { setDate } = useDispatchContext();
 
   const isToday = useCallback(
     (date) => {
