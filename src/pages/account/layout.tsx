@@ -19,7 +19,7 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding: 31.4px 0;
+  padding: 37px 0 31.4px 0;
   height: 100%;
 
   @media (max-width: 768px) {
