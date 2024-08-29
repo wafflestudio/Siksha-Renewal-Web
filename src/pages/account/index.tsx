@@ -94,8 +94,7 @@ export default function Account() {
           <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
         </ContentDiv>
       </ListGroup>
-
-      <ListGroup>
+      <ListGroup isLast={true}>
         <ContentDiv
           onClick={() => {
             router.push("/account/inquiry");
@@ -117,11 +116,11 @@ const MobileSpace = styled.div`
   }
 `;
 
-const ListGroup = styled.div`
+const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
   background-color: #ffffff;
   width: 544px;
-  margin-bottom: 19px;
+  margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 

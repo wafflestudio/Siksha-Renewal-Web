@@ -19,10 +19,10 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  margin-top: 37px;
+  padding: 31.4px 0;
   height: 100%;
 
   @media (max-width: 768px) {
-    margin-top: 0px;
+    padding: 0;
   }
 `;
