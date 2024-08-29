@@ -120,11 +120,13 @@ const TrendingPost = styled.div`
   display: flex;
   gap: 15px 10px;
   font-size: 16px;
+  line-height: 20px;
   cursor: pointer;
   height: 22px;
   @media (max-width: 768px) {
     font-size: 12px;
     height: 18px;
+    line-height: 16px;
   }
 `;
 
