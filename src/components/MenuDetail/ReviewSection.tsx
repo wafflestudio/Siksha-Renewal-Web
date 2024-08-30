@@ -113,6 +113,7 @@ const ReviewContainer = styled.section`
   padding-right: 50px;
   padding-top: 36px;
   @media (max-width: 768px) {
+    overflow-x:hidden;
     flex-grow: 1;
     width: auto;
     min-width: 0;
