@@ -7,6 +7,7 @@ import MobileSubHeader from "components/MobileSubHeader";
 import { useRouter } from "next/router";
 import { RestaurantPreview } from "types";
 import useOrder from "hooks/UseOrder";
+import AccountLayout from "../layout";
 
 export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
@@ -54,9 +55,11 @@ export default function NonFavoriteOrderSetting() {
   return (
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
-      <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
-      </Container>
+      <AccountLayout>
+        <Container>
+          <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        </Container>
+      </AccountLayout>
     </>
   );
 }
