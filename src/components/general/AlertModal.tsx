@@ -56,7 +56,6 @@ const Container = styled.div`
 
 const DesktopContainer = styled(Container)`
   gap: 47px 30px;
-  top: 423px;
   width: 497px;
   height: 230px;
   border-radius: 13px;
@@ -99,8 +98,6 @@ const Button = styled.button`
 `;
 
 const MobileContainer = styled(Container)`
-  top: 50%;
-  transform: translate(-50%, -50%);
   gap: 11px 17px;
   width: calc(100% - 60px);
   height: 130px;
