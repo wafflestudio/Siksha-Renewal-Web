@@ -81,7 +81,7 @@ export default function Comment({ comment, update }: CommentProps) {
           handleClick: onClickReport,
         },
   ];
-  console.log(available);
+
   if (available === true)
     return (
       <>
