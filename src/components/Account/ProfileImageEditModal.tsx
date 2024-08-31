@@ -91,6 +91,7 @@ const Container = styled.div<{ modalPosition: ModalPosition}>`
 
   @media (max-width: 768px) {
     position: fixed;
+    top: initial;
     bottom: 40px;
     left: 50%;
     width: calc(100% - 60px);
@@ -113,6 +114,9 @@ const EditOption = styled.button`
 
   &:hover {
     background-color: #f0f0f0;
+    @media (max-width: 768px) {
+      background: none;
+    }
   }
 
   @media (max-width: 768px) {
