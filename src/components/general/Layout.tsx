@@ -29,8 +29,9 @@ export default function Layout({ children }: LayoutProps) {
       .then((newAccessToken) => {
         login(newAccessToken);
       })
-      .catch((res) => {
-        console.error(res);
+      .catch((error) => {
+        const { message } = error;
+        if (message !== "Login required") console.error(error);
       });
   }, []);
 

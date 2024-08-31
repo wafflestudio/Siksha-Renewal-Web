@@ -1,9 +1,9 @@
-import Calendar from "./Calendar";
 import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import useModals from "hooks/UseModals";
 import { useRouter } from "next/router";
+import DesktopCalendar from "./DesktopCalendar";
 import useAuth from "hooks/UseAuth";
 
 export default function LeftSide() {
@@ -24,7 +24,7 @@ export default function LeftSide() {
 
   return (
     <Container>
-      <Calendar />
+      <DesktopCalendar />
       <div style={{ marginTop: "35px" }}>
         <RestaurantList />
       </div>

@@ -7,7 +7,6 @@ import { formatISODate } from "../utils/FormatUtil";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import Meal from "components/Meal";
 import MenuList from "components/MenuList";
-import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
@@ -19,10 +18,10 @@ export default function Home() {
   const state = useStateContext();
   const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, meal } = state;
+  const { date, showInfo, meal, isFilterFavorite } = state;
 
   const { authStatus, getAccessToken } = useAuth();
-  const { orderList } = useOrder("nonFavorite");
+  const { orderList } = useOrder(isFilterFavorite ? "favorite" : "nonFavorite");
   const { isExceptEmpty } = useIsExceptEmpty();
 
   useEffect(() => {
@@ -44,6 +43,9 @@ export default function Home() {
           })
           .catch((e) => {
             console.error(e);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       } else {
         getMenuList(dateString, isExceptEmpty, accessToken)
@@ -65,12 +67,15 @@ export default function Home() {
           })
           .catch((e) => {
             console.error(e);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
-      setLoading(false);
     }
+
     fetchData();
-  }, [date, authStatus, meal]);
+  }, [date, authStatus, meal, isFilterFavorite]);
 
   return (
     <>
@@ -80,11 +85,6 @@ export default function Home() {
       </DesktopContainer>
       <MobileContainer>
         <Date />
-        {showCal && (
-          <MobileCalendar>
-            <Calendar />
-          </MobileCalendar>
-        )}
         <Meal />
         <MenuList />
       </MobileContainer>
@@ -120,7 +120,7 @@ const MobileContainer = styled.div`
   }
 `;
 
-const MobileCalendar = styled.div`
+const MobileCalendarWrapper = styled.div`
   display: none;
 
   @media (max-width: 768px) {
