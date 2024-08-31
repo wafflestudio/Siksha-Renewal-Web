@@ -22,7 +22,6 @@ export default function InfiniteScrollable({
 
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log("observed!");
       if (entries[0].isIntersecting && hasNext) {
         setPage((prevPage) => prevPage + 1);
       }
