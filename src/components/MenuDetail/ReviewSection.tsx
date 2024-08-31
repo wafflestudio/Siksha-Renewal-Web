@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import MobileReviewImageSwiper from "./MobileReviewImageSwiper";
 import Link from "next/link";
 import { ReviewListType } from "pages/menu/[menuId]";
@@ -33,7 +33,9 @@ export default function ReviewSection({
             {reviews.result.length > 0 ? (
               reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
             ) : (
-              <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+              <NoReviewMessage $isReviewListPageOpen={isReviewListPageOpen}>
+                아직 등록된 리뷰가 없어요.
+              </NoReviewMessage>
             )}
           </ReviewList>
         </MobileReviewListPage>
@@ -113,7 +115,7 @@ const ReviewContainer = styled.section`
   padding-right: 50px;
   padding-top: 36px;
   @media (max-width: 768px) {
-    overflow-x:hidden;
+    overflow-x: hidden;
     flex-grow: 1;
     width: auto;
     min-width: 0;
@@ -214,7 +216,7 @@ const ReviewList = styled.div`
   overflow-x: auto;
 `;
 
-const NoReviewMessage = styled.div`
+const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   text-align: center;
   font-size: 20px;
   font-weight: 400;
@@ -222,6 +224,17 @@ const NoReviewMessage = styled.div`
   margin: 300px 0;
   @media (max-width: 768px) {
     font-size: 18px;
+
+    ${(props) =>
+      !props.$isReviewListPageOpen &&
+      css`
+        margin-top: 17px;
+        margin-bottom: 0;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `}
   }
 `;
 
@@ -255,6 +268,5 @@ const MobileReviewListPage = styled.div`
     padding: 24px 16px;
     width: 100vw;
     box-sizing: border-box;
-    
   }
 `;
