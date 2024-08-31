@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ReviewListType } from "pages/menu/[menuId]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
-import { useStateContext } from "context/ContextProvider";
 import { formatDate } from "utils/FormatUtil";
 
 export interface MenuType {
@@ -42,7 +41,6 @@ export default function ReviewSection({
   handleReviewListPage,
 }: ReviewSectionProps) {
   const { id: menuId, date: menuDate } = menu;
-  const { date } = useStateContext();
   const isMobile = useIsMobile();
 
   const MOBILE_IMAGE_LIST_LIMIT = 3;
@@ -119,7 +117,7 @@ export default function ReviewSection({
             onClick={handleReviewPostButtonClick}
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-            hidden={formatDate(date).split(" ")[0] !== menuDate}
+            hidden={formatDate(new Date()).split(" ")[0] !== menuDate}
           >
             나의 평가 남기기
           </DesktopReviewPostButton>

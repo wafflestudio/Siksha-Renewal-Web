@@ -8,6 +8,7 @@ import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
 import useIsMobile from "hooks/UseIsMobile";
+import { formatDate } from "utils/FormatUtil";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -95,7 +96,11 @@ export default function MenuSection({
           distribution={reviewDistribution}
         />
       </MenuInfoContainer>
-      <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
+      <MobileReviewPostButton
+        onClick={handleReviewPostButtonClick} // formateDate -> "2021-08-01 (수)" 식으로 나옴
+        // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
+        hidden={formatDate(new Date()).split(" ")[0] !== menu.date}
+      >
         나의 평가 남기기
       </MobileReviewPostButton>
     </MenuContainer>
