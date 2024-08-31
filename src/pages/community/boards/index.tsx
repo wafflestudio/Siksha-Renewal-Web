@@ -10,10 +10,11 @@ import { getBoardList } from "utils/api/community";
 
 interface BoardProps {
   selectedBoardId?: number;
+  showBoardMenu: boolean;
   children?: JSX.Element | JSX.Element[];
 }
 
-export default function Board({ selectedBoardId, children }: BoardProps) {
+export default function Board({ selectedBoardId, showBoardMenu, children }: BoardProps) {
   const [boardId, setBoardId] = useState(1);
   const [boards, setBoards] = useState<BoardType[]>([]);
 
@@ -31,7 +32,9 @@ export default function Board({ selectedBoardId, children }: BoardProps) {
   return (
     <Layout>
       <>
-        <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
+        {showBoardMenu && (
+          <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
+        )}
         {children}
       </>
     </Layout>

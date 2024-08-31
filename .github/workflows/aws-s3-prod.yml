@@ -25,8 +25,8 @@ jobs:
           echo "NEXT_PUBLIC_GOOGLE_CLIENTID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENTID }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_SECRET }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI_PROD }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
-          echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID_PROD }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET_PROD }}" >> .env
           echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_PROD }}" >> .env
 
         
