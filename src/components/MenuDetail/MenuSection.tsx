@@ -62,7 +62,7 @@ export default function MenuSection({
   }, [menuTitleDivRef.current]);
 
   return (
-    <MenuContainer $isNotshow={isReviewListPageOpen && isMobile}>
+    <MenuContainer $isNotShow={isReviewListPageOpen && isMobile}>
       {images.length > 0 && (
         <ReviewImageSwiper
           menuId={menu.id}
