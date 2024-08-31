@@ -50,6 +50,11 @@ export const GlobalStyle = createGlobalStyle`
     @media (max-width: 768px) {
       min-width: 0;
     }
+
+    @media (max-width: 1024px) {
+      overflow-x: scroll;
+      min-width: 1024px;
+    }
   }
 
   ::-webkit-scrollbar {
