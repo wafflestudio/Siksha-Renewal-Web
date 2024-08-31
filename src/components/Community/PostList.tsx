@@ -18,7 +18,8 @@ export function PostList({ posts, fetch }: PropsPostList) {
   return (
     <InfiniteScrollable fetchMoreData={fetch} setIsLoading={setIsLoading}>
       {posts.length >= 1 ? (
-        posts.map((post, i) => <Post key={i} post={post} />)
+        // available(신고 많이 받으면 false)한 경우만 보여지게 합니다.
+        posts.map((post, i) => <>{post.available ? <Post key={i} post={post} /> : null}</>)
       ) : (
         <>
           {isLoading ? (
