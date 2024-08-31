@@ -121,6 +121,7 @@ export default function Post() {
   }, [boardId, postId]);
 
   if (post) {
+    const isLikedImg = post.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
     const profileImg = post.profileUrl || "/img/default-profile.svg";
 
@@ -180,7 +181,7 @@ export default function Post() {
             </Content>
             <LikesAndComments>
               <Likes>
-                <Icon src="/img/post-like.svg" alt="좋아요" />
+                <Icon src={isLikedImg} alt="좋아요" />
                 {post.likeCount}
               </Likes>
               <Comments>
