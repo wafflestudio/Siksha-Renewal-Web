@@ -19,7 +19,7 @@ export function BoardHeader() {
 
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
-    Autoplay({ delay: 3000 })
+    Autoplay({ delay: 3000 }),
   ]);
 
   async function fetchTrendingPosts() {
@@ -33,9 +33,10 @@ export function BoardHeader() {
   }
 
   function handleClickWriteButton() {
-    if (authStatus === 'logout') openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
-      if (boardId) router.push({ pathname: "/community/write", query: { boardId } }, "/community/write"); 
+      if (boardId)
+        router.push({ pathname: "/community/write", query: { boardId } }, "/community/write");
       else router.push("/community/write");
     }
   }
@@ -49,25 +50,25 @@ export function BoardHeader() {
       <TrendingPostWrapper>
         <PostSwiperViewport ref={emblaRef}>
           <PostSwiperContainer>
-            {
-              trendingPosts.length > 0 ? trendingPosts.map((trendingPost) => (
+            {trendingPosts.length > 0 ? (
+              trendingPosts.map((trendingPost) => (
                 <Link
                   key={trendingPost.id}
                   href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
                 >
                   <TrendingPost>
                     <Title>{trendingPost.title}</Title>
-                    <ContentPreview>
-                      {trendingPost.content}
-                    </ContentPreview>
+                    <ContentPreview>{trendingPost.content}</ContentPreview>
                     <Likes>
                       <Icon src="/img/post-like.svg" />
                       {trendingPost.likeCount}
                     </Likes>
                   </TrendingPost>
                 </Link>
-              )) : <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
-            }
+              ))
+            ) : (
+              <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
+            )}
           </PostSwiperContainer>
         </PostSwiperViewport>
       </TrendingPostWrapper>
@@ -166,6 +167,7 @@ const Icon = styled.img`
 const NoTrendingPostsMessage = styled.span`
   font-size: 16px;
   height: 18px;
+  cursor: default;
   @media (max-width: 768px) {
     font-size: 12px;
     height: 14px;
