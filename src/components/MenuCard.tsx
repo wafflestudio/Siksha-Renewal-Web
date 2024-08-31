@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import RestaurantTime from "components/RestaurantTime";
 import Menu from "components/Menu";
-import { useDispatchContext } from "hooks/ContextProvider";
+import { useDispatchContext } from "context/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
 import { LoadingAnimation } from "styles/globalstyle";
 

@@ -1,29 +1,24 @@
 import BackClickable from "components/general/BackClickable";
-import { Dispatch, RefObject, SetStateAction, useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import styled from "styled-components";
 import useModals from "hooks/UseModals";
 
 interface ModalPosition {
   top: number;
   left: number;
-};
+}
 
 interface ProfieImageEditModalProps {
   imgRef: RefObject<HTMLInputElement>;
   profileFrameRef: RefObject<HTMLDivElement>;
   setChangeToDefaultImage: (changeToDefaultImage: boolean) => void;
   onClose: () => void;
-};
+}
 
 export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
-  const {
-    imgRef,
-    profileFrameRef,
-    setChangeToDefaultImage,
-    onClose,
-  } = props;
+  const { imgRef, profileFrameRef, setChangeToDefaultImage, onClose } = props;
   const { closeModal } = useModals();
-  
+
   const [modalPosition, SetModalPosition] = useState<ModalPosition | null>(null);
 
   useEffect(() => {
@@ -48,13 +43,15 @@ export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
   if (modalPosition) {
     const { top, left } = modalPosition;
     return (
-      <BackClickable onClickBackground={onClose}
-      style={`
+      <BackClickable
+        onClickBackground={onClose}
+        style={`
         background: transparent;
         @media (max-width: 768px) {
           background: rgba(0, 0, 0, 0.3);
         }
-      `}>
+      `}
+      >
         <Container modalPosition={modalPosition}>
           <EditOption
             onClick={() => {
@@ -79,7 +76,7 @@ export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
   }
 }
 
-const Container = styled.div<{ modalPosition: ModalPosition}>`
+const Container = styled.div<{ modalPosition: ModalPosition }>`
   position: fixed;
   top: ${(props) => `${props.modalPosition.top}px`};
   left: ${(props) => `${props.modalPosition.left}px`};

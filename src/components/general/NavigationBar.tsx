@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 
-// directory 변경 필요
 export default function NavigationBar() {
   const router = useRouter();
   const addr = router.pathname;

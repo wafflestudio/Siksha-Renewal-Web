@@ -4,7 +4,7 @@ import RightSide from "components/RightSide";
 import Date from "components/Date";
 import { useEffect } from "react";
 import { formatISODate } from "../utils/FormatUtil";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../context/ContextProvider";
 import Meal from "components/Meal";
 import MenuList from "components/MenuList";
 import RestaurantInfo from "components/RestaurantInfo";

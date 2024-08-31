@@ -1,6 +1,5 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Post } from "types";
-import { getPostList, getTrendingPosts } from "utils/api/community";
+import { getTrendingPosts } from "utils/api/community";
 import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
@@ -52,7 +51,9 @@ export function BoardHeader() {
           <PostSwiperContainer>
             {trendingPosts.length > 0 ? (
               trendingPosts.map((trendingPost) => {
-                const isLikedImg = trendingPost.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
+                const isLikedImg = trendingPost.isLiked
+                  ? "/img/post-like-fill.svg"
+                  : "/img/post-like.svg";
                 return (
                   <Link
                     key={trendingPost.id}
@@ -67,7 +68,7 @@ export function BoardHeader() {
                       </Likes>
                     </TrendingPost>
                   </Link>
-                )
+                );
               })
             ) : (
               <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>

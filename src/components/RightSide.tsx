@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Meal from "./Meal";
-import MenuList from "./MenuList";
+import MenuList from "components/MenuList";
 
 export default function RightSide() {
   return (

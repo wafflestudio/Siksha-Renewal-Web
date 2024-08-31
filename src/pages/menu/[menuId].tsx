@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import { getMenu } from "utils/api/menus";
 import { getReviews } from "utils/api/reviews";

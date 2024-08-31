@@ -1,5 +1,5 @@
-import Header from "components/Header";
-import { useDispatchContext } from "hooks/ContextProvider";
+import Header from "components/general/Header";
+import { useDispatchContext } from "context/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import UseProfile from "hooks/UseProfile";

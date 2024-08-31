@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { deleteAccount } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
 import { useEffect, useState } from "react";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();

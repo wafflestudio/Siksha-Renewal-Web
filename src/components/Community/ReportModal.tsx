@@ -1,10 +1,9 @@
 import AlertModal from "components/general/AlertModal";
 import BackClickable from "components/general/BackClickable";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import UseProfile from "hooks/UseProfile";
-import router from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 import { setReportComment, setReportPost } from "utils/api/community";
