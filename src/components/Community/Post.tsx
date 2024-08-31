@@ -8,7 +8,8 @@ interface PropsPost {
 }
 
 export function Post({ post }: PropsPost) {
-  const { boardId, id, title, content, likeCount, commentCount, images } = post;
+  const { boardId, id, title, content, isLiked, likeCount, commentCount, images } = post;
+  const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
 
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
@@ -18,7 +19,7 @@ export function Post({ post }: PropsPost) {
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
             <Likes>
-              <Icon src="/img/post-like.svg" alt="좋아요" />
+              <Icon src={isLikedImg} alt="좋아요" />
               {likeCount}
             </Likes>
             <Comments>

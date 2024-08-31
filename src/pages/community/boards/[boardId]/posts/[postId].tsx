@@ -23,6 +23,7 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import AlertModal from "components/general/AlertModal";
 import { LoadingAnimation } from "styles/globalstyle";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Post() {
   const router = useRouter();
@@ -34,6 +35,8 @@ export default function Post() {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   const [isError, setIsError] = useState<boolean>(false);
+
+  const isMobile = useIsMobile();
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -123,6 +126,7 @@ export default function Post() {
   }, [boardId, postId]);
 
   if (post) {
+    const isLikedImg = post.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
     const profileImg = post.profileUrl || "/img/default-profile.svg";
 
@@ -159,7 +163,7 @@ export default function Post() {
             title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
             handleBack={router.back}
           />
-          <Board selectedBoardId={Number(boardId) ?? 1}>
+          <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
             <Container>
               <Header>
                 <WriterInfoContainer>
@@ -191,7 +195,7 @@ export default function Post() {
               </Content>
               <LikesAndComments>
                 <Likes>
-                  <Icon src="/img/post-like.svg" alt="좋아요" />
+                  <Icon src={isLikedImg} alt="좋아요" />
                   {post.likeCount}
                 </Likes>
                 <Comments>
@@ -228,7 +232,7 @@ export default function Post() {
           title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
           handleBack={router.back}
         />
-        <Board selectedBoardId={Number(boardId) ?? 1}>
+        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
           <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
         </Board>
       </>

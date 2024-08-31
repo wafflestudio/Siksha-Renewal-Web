@@ -19,7 +19,7 @@ const Content = styled.div`
   height: 100%;
   background: white;
   border-radius: 10px;
-  padding: 20px 19px 0 19px;
+  padding: 0 20px;
   box-sizing: border-box;
 
   @media (max-width: 768px) {

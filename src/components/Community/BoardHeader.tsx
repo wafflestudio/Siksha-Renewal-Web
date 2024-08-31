@@ -51,21 +51,24 @@ export function BoardHeader() {
         <PostSwiperViewport ref={emblaRef}>
           <PostSwiperContainer>
             {trendingPosts.length > 0 ? (
-              trendingPosts.map((trendingPost) => (
-                <Link
-                  key={trendingPost.id}
-                  href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
-                >
-                  <TrendingPost>
-                    <Title>{trendingPost.title}</Title>
-                    <ContentPreview>{trendingPost.content}</ContentPreview>
-                    <Likes>
-                      <Icon src="/img/post-like.svg" alt="좋아요" />
-                      {trendingPost.likeCount}
-                    </Likes>
-                  </TrendingPost>
-                </Link>
-              ))
+              trendingPosts.map((trendingPost) => {
+                const isLikedImg = trendingPost.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
+                return (
+                  <Link
+                    key={trendingPost.id}
+                    href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+                  >
+                    <TrendingPost>
+                      <Title>{trendingPost.title}</Title>
+                      <ContentPreview>{trendingPost.content}</ContentPreview>
+                      <Likes>
+                        <Icon src={isLikedImg} alt="좋아요" />
+                        {trendingPost.likeCount}
+                      </Likes>
+                    </TrendingPost>
+                  </Link>
+                )
+              })
             ) : (
               <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
             )}

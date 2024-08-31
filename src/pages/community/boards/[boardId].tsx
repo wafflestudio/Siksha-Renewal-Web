@@ -36,7 +36,7 @@ export default function Posts() {
 
   if (boardId)
     return (
-      <Board selectedBoardId={Number(boardId)}>
+      <Board selectedBoardId={Number(boardId)} showBoardMenu={true}>
         <BoardHeader />
         <PostList posts={posts} fetch={fetchPosts} />
         <MobileNavigationBar />
