@@ -19,10 +19,10 @@ export default function Home() {
   const state = useStateContext();
   const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, meal } = state;
+  const { date, showCal, showInfo, meal, isFilterFavorite } = state;
 
   const { authStatus, getAccessToken } = useAuth();
-  const { orderList } = useOrder("nonFavorite");
+  const { orderList } = useOrder(isFilterFavorite ? "favorite" : "nonFavorite");
   const { isExceptEmpty } = useIsExceptEmpty();
 
   useEffect(() => {
@@ -44,6 +44,9 @@ export default function Home() {
           })
           .catch((e) => {
             console.error(e);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       } else {
         getMenuList(dateString, isExceptEmpty, accessToken)
@@ -65,12 +68,15 @@ export default function Home() {
           })
           .catch((e) => {
             console.error(e);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
-      setLoading(false);
     }
+
     fetchData();
-  }, [date, authStatus, meal]);
+  }, [date, authStatus, meal, isFilterFavorite]);
 
   return (
     <>

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useStateContext } from "hooks/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
-import { LoadingAnimation } from "styles/globalstyle";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + restaurant);
