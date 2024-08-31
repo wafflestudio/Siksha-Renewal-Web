@@ -4,9 +4,29 @@ import Link from "next/link";
 import { ReviewListType } from "pages/menu/[menuId]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
+import { useStateContext } from "context/ContextProvider";
+import { formatDate } from "utils/FormatUtil";
+
+export interface MenuType {
+  id: number;
+  restaurant_id: number;
+  code: string;
+  date: string;
+  type: string;
+  name_kr: string;
+  name_en: string;
+  price: number;
+  etc: {};
+  created_at: string;
+  updated_at: string;
+  score: number | null;
+  review_cnt: number;
+  is_liked: boolean;
+  like_cnt: number;
+}
 
 interface ReviewSectionProps {
-  menuId: number;
+  menu: MenuType;
   reviews: ReviewListType;
   images: string[];
   isReviewListPageOpen: boolean;
@@ -14,13 +34,15 @@ interface ReviewSectionProps {
   handleReviewListPage: (isOpen: boolean) => void;
 }
 export default function ReviewSection({
-  menuId,
+  menu,
   reviews,
   images,
   isReviewListPageOpen,
   handleReviewPostButtonClick,
   handleReviewListPage,
 }: ReviewSectionProps) {
+  const { id: menuId, date: menuDate } = menu;
+  const { date } = useStateContext();
   const isMobile = useIsMobile();
 
   const MOBILE_IMAGE_LIST_LIMIT = 3;
@@ -93,7 +115,12 @@ export default function ReviewSection({
               <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
             )}
           </ReviewList>
-          <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
+          <DesktopReviewPostButton
+            onClick={handleReviewPostButtonClick}
+            // formateDate -> "2021-08-01 (수)" 식으로 나옴
+            // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
+            hidden={formatDate(date).split(" ")[0] !== menuDate}
+          >
             나의 평가 남기기
           </DesktopReviewPostButton>
         </ReviewContainer>
