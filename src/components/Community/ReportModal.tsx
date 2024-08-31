@@ -1,23 +1,26 @@
+import AlertModal from "components/general/AlertModal";
 import BackClickable from "components/general/BackClickable";
 import MobileSubHeader from "components/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
 import UseProfile from "hooks/UseProfile";
 import router from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 import { setReportComment, setReportPost } from "utils/api/community";
 
-interface ReporyModalProps {
+interface ReportModalProps {
   type: "post" | "comment";
   targetID: number;
   onClose: () => void;
   onSubmit?: () => void;
 }
 
-export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalProps) {
+export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalProps) {
   const [reason, setReason] = useState("");
   const { userInfo } = UseProfile();
-  const { checkAccessToken } = useAuth();
+  const { getAccessToken } = useAuth();
+  const { openModal } = useModals();
 
   const isValid = reason.length >= 1;
 
@@ -25,11 +28,38 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalPr
 
   function report() {
     if (isValid) {
-      checkAccessToken().then((res) =>
-        reportFunction(targetID, reason, res).then(() => {
-          setReason("");
-          onSubmit?.();
-        }),
+      getAccessToken().then((accessToken) =>
+        reportFunction(targetID, reason, accessToken)
+          .then(() => {
+            setReason("");
+            onSubmit?.();
+            openModal(AlertModal, {
+              title: "신고 완료",
+              message: "신고가 접수되었습니다",
+              onClose: () => {},
+            });
+          })
+          .catch((err) => {
+            const { response } = err;
+            if (!response) console.log(err);
+            else {
+              const {
+                status,
+                data: { message },
+              } = err.response;
+              // 이전 신고한 이력이 있을 때
+              if (status === 409) {
+                onClose();
+                openModal(AlertModal, {
+                  title: "이미 신고한 글",
+                  message: message,
+                  onClose: () => {},
+                });
+              } else {
+                console.log(err);
+              }
+            }
+          }),
       );
     }
   }
