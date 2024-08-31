@@ -156,7 +156,7 @@ export const updateProfileWithImage = async (
   formData: FormData,
   accessToken: string,
 ): Promise<User> => {
-  if (!formData.get("image")) {
+  if (!formData.get("change_to_default_image") && !formData.get("image")) {
     throw new Error("image is required");
   }
 

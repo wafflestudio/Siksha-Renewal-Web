@@ -89,7 +89,7 @@ export function BoardHeader() {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin: 20px 0 16px 0;
   @media (max-width: 768px) {
     margin: 10px 0;
   }

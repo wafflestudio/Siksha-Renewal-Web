@@ -90,7 +90,7 @@ export interface Comment {
   id: number;
   nickname: string;
   profileUrl: string | null;
-  avaliable: boolean;
+  available: boolean;
   anonymous: boolean;
   isMine: boolean;
   likeCount: number;
@@ -105,7 +105,7 @@ export interface RawComment {
   id: number;
   nickname: string;
   profile_url: string | null;
-  avaliable: boolean;
+  available: boolean;
   anonymous: boolean;
   is_mine: boolean;
   like_cnt: number;

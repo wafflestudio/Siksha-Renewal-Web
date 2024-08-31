@@ -21,6 +21,9 @@ import MobileSubHeader from "components/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import AlertModal from "components/general/AlertModal";
+import { LoadingAnimation } from "styles/globalstyle";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Post() {
   const router = useRouter();
@@ -32,6 +35,8 @@ export default function Post() {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   const [isError, setIsError] = useState<boolean>(false);
+
+  const isMobile = useIsMobile();
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -142,78 +147,92 @@ export default function Post() {
             handleClick: () => reportPost(post.id),
           },
         ];
-
-    return (
-      <>
-        <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
-        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={false}>
-          <Container>
-            <Header>
-              <WriterInfoContainer>
-                <ProfileImage src={profileImg} alt="프로필 이미지" />
-                <div>
-                  <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
-                  <PostDate>
-                    {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
-                  </PostDate>
-                </div>
-              </WriterInfoContainer>
-              <DesktopPostActions>
-                {actions.map((action) => (
-                  <DesktopActionButton key={action.name} onClick={action.handleClick}>
-                    {action.name}
-                  </DesktopActionButton>
-                ))}
-              </DesktopPostActions>
-              <MobileMoreActionsButton
-                src="/img/etc.svg"
-                onClick={() => onClickMoreActions(actions)}
-                alt="더보기"
-              />
-            </Header>
-            <Content>
-              <Title>{post.title}</Title>
-              <Text>{post.content}</Text>
-              {post.images && <PostImageSwiper images={post.images} />}
-            </Content>
-            <LikesAndComments>
-              <Likes>
-                <Icon src={isLikedImg} alt="좋아요" />
-                {post.likeCount}
-              </Likes>
-              <Comments>
-                <Icon src="/img/post-comment.svg" alt="댓글" />
-                {post.commentCount}
-              </Comments>
-            </LikesAndComments>
-            <Footer>
-              <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
-                공감
-              </LikeButton>
-              <BackToBoardButton
-                onClick={() => {
-                  router.push(`/community/boards/${boardId}`);
-                }}
-              >
-                <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
-                목록보기
-              </BackToBoardButton>
-            </Footer>
-            <CommentContainer>
-              <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
-              <CommentWriter postId={post.id} update={addComment} />
-            </CommentContainer>
-          </Container>
-        </Board>
-      </>
-    );
+    // availiable 여부에 따라 게시물을 보여줄지 보여주지 않을지 결정합니다.
+    if (post.available === false)
+      openModal(AlertModal, {
+        title: "신고 누적 게시글",
+        message: "신고가 누적되어 숨겨진 게시글입니다.",
+        onClose: () => router.push(`/community/boards/${boardId}/`),
+      });
+    // available한 경우만 게시물을 보여줍니다.
+    else if (post.available === true)
+      return (
+        <>
+          <MobileSubHeader
+            title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+            handleBack={router.back}
+          />
+          <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
+            <Container>
+              <Header>
+                <WriterInfoContainer>
+                  <ProfileImage src={profileImg} alt="프로필 이미지" />
+                  <div>
+                    <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                    <PostDate>
+                      {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                    </PostDate>
+                  </div>
+                </WriterInfoContainer>
+                <DesktopPostActions>
+                  {actions.map((action) => (
+                    <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                      {action.name}
+                    </DesktopActionButton>
+                  ))}
+                </DesktopPostActions>
+                <MobileMoreActionsButton
+                  src="/img/etc.svg"
+                  onClick={() => onClickMoreActions(actions)}
+                  alt="더보기"
+                />
+              </Header>
+              <Content>
+                <Title>{post.title}</Title>
+                <Text>{post.content}</Text>
+                {post.images && <PostImageSwiper images={post.images} />}
+              </Content>
+              <LikesAndComments>
+                <Likes>
+                  <Icon src={isLikedImg} alt="좋아요" />
+                  {post.likeCount}
+                </Likes>
+                <Comments>
+                  <Icon src="/img/post-comment.svg" alt="댓글" />
+                  {post.commentCount}
+                </Comments>
+              </LikesAndComments>
+              <Footer>
+                <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+                  <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
+                  공감
+                </LikeButton>
+                <BackToBoardButton
+                  onClick={() => {
+                    router.push(`/community/boards/${boardId}`);
+                  }}
+                >
+                  <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
+                  목록보기
+                </BackToBoardButton>
+              </Footer>
+              <CommentContainer>
+                <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
+                <CommentWriter postId={post.id} update={addComment} />
+              </CommentContainer>
+            </Container>
+          </Board>
+        </>
+      );
   } else {
     return (
       <>
-        <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
-        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={false}>
-          <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
+        <MobileSubHeader
+          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
+          handleBack={router.back}
+        />
+        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
+          <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
         </Board>
       </>
     );
@@ -222,10 +241,30 @@ export default function Post() {
 
 const Container = styled.div`
   width: 100%;
+  padding-top: 18.83px;
   @media (max-width: 768px) {
     padding-top: 16px;
   }
 `;
+
+const ErrorContainer = styled.div`
+  ${LoadingAnimation}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    height: calc(100dvh - 60px);
+  }
+`;
+const EmptyText = styled.div``;
 
 const Header = styled.div`
   display: flex;
