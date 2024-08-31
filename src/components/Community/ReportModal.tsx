@@ -100,6 +100,8 @@ const MainContainer = styled.div`
 
   @media (max-width: 768px) {
     top: 0;
+    left: 0;
+    transform: none;
     display: flex;
     flex-direction: column;
     width: 100%;
