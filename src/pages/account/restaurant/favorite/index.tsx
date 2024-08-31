@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { RestaurantPreview } from "types";
 import useFavorite from "hooks/UseFavorite";
 import useOrder from "hooks/UseOrder";
+import AccountLayout from "pages/account/layout";
 
 export default function FavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
@@ -58,9 +59,11 @@ export default function FavoriteOrderSetting() {
   return (
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
-      <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
-      </Container>
+      <AccountLayout>
+        <Container>
+          <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        </Container>
+      </AccountLayout>
     </>
   );
 }
