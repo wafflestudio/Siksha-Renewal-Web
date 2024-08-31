@@ -148,7 +148,7 @@ export default function Post() {
           title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
           handleBack={router.back}
         />
-        <Board selectedBoardId={Number(boardId) ?? 1}>
+        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={false}>
           <Container>
             <Header>
               <WriterInfoContainer>
@@ -217,7 +217,7 @@ export default function Post() {
           title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
           handleBack={router.back}
         />
-        <Board selectedBoardId={Number(boardId) ?? 1}>
+        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={false}>
           <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
         </Board>
       </>
