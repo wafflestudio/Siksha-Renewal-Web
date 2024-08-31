@@ -1,17 +1,39 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Board as BoardType, RawBoard } from "types";
+import { getBoardList } from "utils/api/community";
+import { boardParser } from "utils/DataUtil";
 
 // 추후 디렉토리 변경(/components/general) 필요해보입니다.
 export default function MobileSubHeader({
   title,
+  selectedBoardId,
   handleBack,
 }: {
-  title: string;
+    title?: string;
+  selectedBoardId?: number;
   handleBack: () => void;
 }) {
+  const [boardId, setBoardId] = useState(1);
+  const [boards, setBoards] = useState<BoardType[]>([]);
+
+  useEffect(() => {
+    function setParsedBoards(board: RawBoard) {
+      setBoards((prev) => [...prev, boardParser(board)]);
+    }
+
+    getBoardList().then((data) => {
+      setBoards([]);
+      data.map(setParsedBoards);
+    });
+  }, []);
+
+  const boardTitle = boards?.filter((board) => board.id === selectedBoardId)[0]?.name;
+
   return (
     <MobileHeader>
       <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
-      <Title>{title}</Title>
+      <Title>{title || boardTitle}</Title>
     </MobileHeader>
   );
 }
