@@ -19,7 +19,7 @@ jobs:
           node-version: 18.20.4
 
       - name: Compress Lambda Function
-        run: zip -r serverless.zip ./serverless/index.js # 모듈 설치시 "./serverless/node_modules" 추가
+        run: zip -j serverless.zip ./serverless/index.mjs # 모듈 설치시 "./serverless/node_modules" 추가
   
       - name: Deploy Lambda function
         run: |
