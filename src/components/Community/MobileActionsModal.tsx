@@ -1,5 +1,4 @@
 import BackClickable from "components/general/BackClickable";
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 export interface ModalAction {
