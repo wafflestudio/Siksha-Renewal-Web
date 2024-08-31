@@ -7,7 +7,6 @@ import { formatISODate } from "../utils/FormatUtil";
 import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
 import Meal from "components/Meal";
 import MenuList from "components/MenuList";
-import Calendar from "components/Calendar";
 import RestaurantInfo from "components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
@@ -19,7 +18,7 @@ export default function Home() {
   const state = useStateContext();
   const { setLoading, setData } = useDispatchContext();
 
-  const { date, showCal, showInfo, meal, isFilterFavorite } = state;
+  const { date, showInfo, meal, isFilterFavorite } = state;
 
   const { authStatus, getAccessToken } = useAuth();
   const { orderList } = useOrder(isFilterFavorite ? "favorite" : "nonFavorite");
@@ -86,11 +85,6 @@ export default function Home() {
       </DesktopContainer>
       <MobileContainer>
         <Date />
-        {showCal && (
-          <MobileCalendar>
-            <Calendar />
-          </MobileCalendar>
-        )}
         <Meal />
         <MenuList />
       </MobileContainer>
@@ -126,7 +120,7 @@ const MobileContainer = styled.div`
   }
 `;
 
-const MobileCalendar = styled.div`
+const MobileCalendarWrapper = styled.div`
   display: none;
 
   @media (max-width: 768px) {
