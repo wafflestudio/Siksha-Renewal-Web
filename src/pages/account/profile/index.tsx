@@ -155,6 +155,7 @@ const Button = styled.button`
 const CancelButton = styled(Button)`
   background-color: #eeeeee;
   color: #8e8e8e;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     display: none;
@@ -163,7 +164,8 @@ const CancelButton = styled(Button)`
 
 const CompleteButton = styled(Button)<{ isValid: boolean }>`
   background-color: ${({ isValid }) => (isValid ? "#ff9522" : "#8e8e8e")};
-
+  cursor: pointer;
+  
   @media (max-width: 768px) {
     width: 100%;
   }

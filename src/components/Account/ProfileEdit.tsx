@@ -95,6 +95,7 @@ const ProfileFrame = styled.div`
   width: 171px;
   height: 171px;
   margin-top: 53.41px;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     margin-top: 65px;
