@@ -7,12 +7,14 @@ import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
+import useIsMobile from "hooks/UseIsMobile";
 
 interface MenuSectionProps {
   menu: MenuType;
   reviewsTotalCount: number;
   images: string[];
   handleReviewPostButtonClick: () => void;
+  isReviewListPageOpen: boolean;
 }
 
 export default function MenuSection({
@@ -20,6 +22,7 @@ export default function MenuSection({
   reviewsTotalCount,
   images,
   handleReviewPostButtonClick,
+  isReviewListPageOpen
 }: MenuSectionProps) {
   const router = useRouter();
 
@@ -32,6 +35,8 @@ export default function MenuSection({
   const menuTitleDivRef = useRef<HTMLDivElement>(null);
 
   const SWIPER_IMAGES_LIMIT = 5;
+
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     Promise.all([getRestaurantList(), getReviewScore(menu.id)])
@@ -57,7 +62,7 @@ export default function MenuSection({
   }, [menuTitleDivRef.current]);
 
   return (
-    <MenuContainer>
+    <MenuContainer $isReviewListPageOpen={isReviewListPageOpen} $isMobile={isMobile}>
       {images.length > 0 && (
         <ReviewImageSwiper
           menuId={menu.id}
@@ -97,7 +102,7 @@ export default function MenuSection({
   );
 }
 
-const MenuContainer = styled.section`
+const MenuContainer = styled.section<{ $isReviewListPageOpen: boolean; $isMobile: boolean; }>`
   position: relative;
   background-color: white;
   width: 897px;
@@ -105,9 +110,11 @@ const MenuContainer = styled.section`
   @media (max-width: 768px) {
     flex-grow: 0;
     width: auto;
+    height: auto;
     min-width: 0;
     margin-left: 0;
   }
+    ${(props) => props.$isReviewListPageOpen && props.$isMobile && `display:none;`}
 `;
 
 const MenuInfoContainer = styled.div`

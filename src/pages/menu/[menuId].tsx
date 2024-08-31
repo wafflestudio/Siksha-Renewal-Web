@@ -162,8 +162,9 @@ export default function Menu() {
                 reviewsTotalCount={reviews.total_count}
                 images={images}
                 handleReviewPostButtonClick={handleReviewPostButtonClick}
+                isReviewListPageOpen={isReviewListPageOpen}
               />
-              <MobileHLine />
+              <MobileHLine $isReviewListPageOpen={isReviewListPageOpen} />
               {isReviewPostModalOpen ? (
                 <ReviewPostModal
                   isOpen={isReviewPostModalOpen}
@@ -221,7 +222,7 @@ const Info = styled.div`
   }
 `;
 
-const MobileHLine = styled.div`
+const MobileHLine = styled.div<{ $isReviewListPageOpen: boolean }>`
   display: none;
   background: #9191911a;
   padding: 5px 0;
@@ -229,4 +230,5 @@ const MobileHLine = styled.div`
   @media (max-width: 768px) {
     display: inherit;
   }
+  ${(props) => props.$isReviewListPageOpen && `display:none;`}
 `;

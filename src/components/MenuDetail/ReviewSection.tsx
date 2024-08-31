@@ -246,13 +246,15 @@ const DesktopReviewPostButton = styled.button`
 
 const MobileReviewListPage = styled.div`
   display: none;
-  position: absolute;
-  background-color: white;
-  min-height: calc(100vh - 60px);
-  padding: 24px 16px;
-  width: 100vw;
-  box-sizing: border-box;
+
   @media (max-width: 768px) {
-    display: inherit;
+    display: flex;
+    position: relative;
+    background-color: white;
+    min-height: calc(100vh - 60px);
+    padding: 24px 16px;
+    width: 100vw;
+    box-sizing: border-box;
+    
   }
 `;
