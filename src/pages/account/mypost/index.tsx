@@ -38,7 +38,7 @@ export default function MyPost() {
           <Container>
             <Header>내가 쓴 글</Header>
             <PostList posts={posts} fetch={fetchMyPosts} />
-            <BreakLine />
+            {posts.length >= 1 ? <BreakLine /> : null}
           </Container>
         </AccountLayout>
       </>

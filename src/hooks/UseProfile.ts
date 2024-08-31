@@ -9,7 +9,6 @@ export default function UseProfile() {
   const { getAccessToken, authStatus } = useAuth();
 
   useEffect(() => {
-    console.log(authStatus)
     if (authStatus === "loading") return;
     if (authStatus === "logout") {
       setUserInfo(null);

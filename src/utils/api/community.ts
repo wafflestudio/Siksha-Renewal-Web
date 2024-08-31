@@ -86,14 +86,16 @@ export const getPost = (postID: number, accessToken?: string): Promise<RawPost> 
 };
 
 export const getTrendingPosts = (
-  accessToken: string,
-  likes: number = 5,
-  per_page: number = 5,
+  accessToken?: string,
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
+  const apiUrl = accessToken
+  ? `${APIendpoint()}/community/posts/popular/trending`
+  : `${APIendpoint()}/community/posts/popular/trending/web`;
+
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
+
   return axios
-    .get(`${APIendpoint()}/community/posts/popular/trending?likes=${likes}&per_page=${per_page}`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
-    })
+    .get(apiUrl, config)
     .then((res) => {
       const { data } = res;
       return {
