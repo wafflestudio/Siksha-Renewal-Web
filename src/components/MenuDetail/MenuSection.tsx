@@ -22,7 +22,7 @@ export default function MenuSection({
   reviewsTotalCount,
   images,
   handleReviewPostButtonClick,
-  isReviewListPageOpen
+  isReviewListPageOpen,
 }: MenuSectionProps) {
   const router = useRouter();
 
@@ -62,7 +62,7 @@ export default function MenuSection({
   }, [menuTitleDivRef.current]);
 
   return (
-    <MenuContainer $isReviewListPageOpen={isReviewListPageOpen} $isMobile={isMobile}>
+    <MenuContainer $isNotShow={isReviewListPageOpen && isMobile}>
       {images.length > 0 && (
         <ReviewImageSwiper
           menuId={menu.id}
@@ -102,7 +102,7 @@ export default function MenuSection({
   );
 }
 
-const MenuContainer = styled.section<{ $isReviewListPageOpen: boolean; $isMobile: boolean; }>`
+const MenuContainer = styled.section<{ $isNotShow: boolean }>`
   position: relative;
   background-color: white;
   width: 897px;
@@ -114,7 +114,7 @@ const MenuContainer = styled.section<{ $isReviewListPageOpen: boolean; $isMobile
     min-width: 0;
     margin-left: 0;
   }
-    ${(props) => props.$isReviewListPageOpen && props.$isMobile && `display:none;`}
+  display: ${(props) => props.$isNotShow && `none`};
 `;
 
 const MenuInfoContainer = styled.div`
@@ -134,7 +134,6 @@ const MenuHeader = styled.div`
   align-items: last baseline;
   padding-bottom: 13px;
   @media (max-width: 768px) {
-    
     flex-direction: column;
     align-items: center;
     padding-bottom: 18px;
