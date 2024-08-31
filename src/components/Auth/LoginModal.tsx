@@ -51,9 +51,9 @@ export default function LoginModal({ onClose }: LoginModalProps) {
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/modal/login/close-auth.svg"} alt="close" onClick={onClose} />
+          <CloseButton src={"/img/modal/login/close-auth.svg"} alt="닫기" onClick={onClose} />
         </TopContainer>
-        <SikshaLogo src={"/img/modal/login/siksha-typo.svg"} alt="siksha logo" />
+        <SikshaLogo src={"/img/modal/login/siksha-typo.svg"} alt="식샤 로고" />
         <SocialContainer>
           <SocialButton provider="kakao" onClick={handleKakaoLogin}>
             <SocialUnion
@@ -62,7 +62,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               left={14}
               right={74}
               src={"/img/modal/login/kakao-union.svg"}
-              alt="kakao login"
+              alt="카카오 로그인"
             />
             Login with Kakao
           </SocialButton>
@@ -73,7 +73,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               left={10.5}
               right={74}
               src={"/img/modal/login/google-union.svg"}
-              alt="google login"
+              alt="구글 로그인"
             />
             Login with Google
           </SocialButton>
@@ -84,12 +84,12 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               left={16.5}
               right={77}
               src={"/img/modal/login/apple-union.svg"}
-              alt="apple login"
+              alt="애플 로그인"
             />
             Login with Apple
           </SocialButton>
         </SocialContainer>
-        <WaffleLogo src={"/img/modal/login/waffle-typo.svg"} />
+        <WaffleLogo src={"/img/modal/login/waffle-typo.svg"} alt="와플스튜디오 로고" />
       </MainContainer>
     </BackClickable>
   );

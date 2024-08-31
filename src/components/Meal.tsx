@@ -31,15 +31,15 @@ export default function Meal() {
   return (
     <Container>
       <MealButton onClick={() => setMeal("BR")}>
-        <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} />
+        <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} alt="아침" />
         <MealText active={isBR}>아침</MealText>
       </MealButton>
       <MealButton onClick={() => setMeal("LU")}>
-        <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} />
+        <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} alt="점심" />
         <MealText active={isLU}>점심</MealText>
       </MealButton>
       <MealButton onClick={() => setMeal("DN")}>
-        <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} />
+        <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} alt="저녁" />
         <MealText active={isDN}>저녁</MealText>
       </MealButton>
     </Container>

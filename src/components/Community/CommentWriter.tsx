@@ -41,7 +41,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
     <Container>
       <MobileAnonymousButton isAnonymous={isAnonymous}>
         <Option onClick={() => setIsAnonymous(!isAnonymous)}>
-          <Icon src={checkBoxImg} />
+          <Icon src={checkBoxImg} alt="익명 여부 선택" />
           <span>익명</span>
         </Option>
       </MobileAnonymousButton>
@@ -53,7 +53,7 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
       <Options>
         <DesktopAnonymousButton isAnonymous={isAnonymous}>
           <Option onClick={() => setIsAnonymous(!isAnonymous)}>
-            <Icon src={checkBoxImg} />
+            <Icon src={checkBoxImg} alt="익명 여부 선택" />
             <span>익명</span>
           </Option>
         </DesktopAnonymousButton>

@@ -6,7 +6,7 @@ export default function PhotoReviewItem({ review }: { review: ReviewType }) {
   return (
     <>
       <ItemContainer>
-        <Thumbnail src={review.etc.images[0]} />
+        <Thumbnail src={review.etc.images[0]} alt="리뷰 이미지" />
         <ReviewInfo>
           <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
           <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>

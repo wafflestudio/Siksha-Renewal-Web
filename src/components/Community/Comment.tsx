@@ -88,7 +88,7 @@ export default function Comment({ comment, update }: CommentProps) {
         <div>
           <Header>
             <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
+              <ProfileImage src={profileImg} alt="프로필 이미지" />
               <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
             </WriterInfoContainer>
             <MobileCommentDate>
@@ -104,13 +104,17 @@ export default function Comment({ comment, update }: CommentProps) {
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={onClickMoreActions} />
+            <MobileMoreActionsButton
+              src="/img/etc.svg"
+              onClick={onClickMoreActions}
+              alt="기타 옵션"
+            />
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>
             {likeCount > 0 && (
               <DesktopLikeContainer>
-                <DesktopLikeIcon src="/img/post-like.svg" />
+                <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
                 <DesktopLikes>{likeCount}</DesktopLikes>
               </DesktopLikeContainer>
             )}
@@ -122,7 +126,7 @@ export default function Comment({ comment, update }: CommentProps) {
             e.preventDefault();
           }}
         >
-          <MobileLikeIcon src={isLikedImg} />
+          <MobileLikeIcon src={isLikedImg} alt="좋아요" />
           <MobileLikes>{likeCount}</MobileLikes>
         </MobileLikeButton>
       </Container>

@@ -86,6 +86,7 @@ export default function ReviewPostModal({
             key={i}
             src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
             onClick={() => setInputs({ ...inputs, score: i })}
+            alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
           />
         ))}
       </StarsContainer>
@@ -112,7 +113,7 @@ export default function ReviewPostModal({
         <PhotoViewer>
           {inputs.images.map((photoObj, i) => (
             <PhotoContainer key={i}>
-              <Photo src={URL.createObjectURL(photoObj)} />
+              <Photo src={URL.createObjectURL(photoObj)} alt="리뷰 이미지" />
               <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
             </PhotoContainer>
           ))}
@@ -137,7 +138,8 @@ export default function ReviewPostModal({
             />
           </MobilePhotoAttacher>
         )}
-      </PhotoSection>`
+      </PhotoSection>
+      `
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {

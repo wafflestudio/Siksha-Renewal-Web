@@ -16,7 +16,11 @@ export default function Header() {
     <Background>
       <Container>
         <CIContainer>
-          <SikshaIcon src={"/img/sikshaSplash.svg"} onClick={() => router.push("/")} />
+          <SikshaIcon
+            src={"/img/sikshaSplash.svg"}
+            onClick={() => router.push("/")}
+            alt="식샤 로고"
+          />
           <Title onClick={() => router.push("/")}>서울대학교 식단 알리미</Title>
         </CIContainer>
         <NavigationBar />

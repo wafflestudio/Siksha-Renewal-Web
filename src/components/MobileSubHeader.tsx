@@ -10,7 +10,7 @@ export default function MobileSubHeader({
 }) {
   return (
     <MobileHeader>
-      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} />
+      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
       <Title>{title}</Title>
     </MobileHeader>
   );

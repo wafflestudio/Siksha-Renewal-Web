@@ -42,10 +42,10 @@ export default function ProfileEdit(props: ProfileEditProps) {
               ? URL.createObjectURL(imageBlob)
               : userInfo?.image ?? "/img/default-profile.svg"
           }
-          alt="userProfile"
+          alt="프로필 사진"
         />
         <CameraFrame>
-          <Camera src="/img/account/photo_camera.svg" />
+          <Camera src="/img/account/photo_camera.svg" alt="사진 업로드" />
         </CameraFrame>
         <input
           type="file"
@@ -68,6 +68,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
           <ResultImage
             isDuplicate={isNicknameValid}
             src={isNicknameValid ? "/img/account/check-ok.svg" : "/img/account/check-fail.svg"}
+            alt={isNicknameValid ? "사용가능" : "사용불가능"}
           />
           <ResultText isDuplicate={isNicknameValid}>
             {isNicknameValid ? "사용가능" : "사용불가능"}
