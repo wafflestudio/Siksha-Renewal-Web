@@ -113,14 +113,15 @@ export default function ReviewSection({
               <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
             )}
           </ReviewList>
-          <DesktopReviewPostButton
-            onClick={handleReviewPostButtonClick}
+          {
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-            hidden={formatDate(new Date()).split(" ")[0] !== menuDate}
-          >
-            나의 평가 남기기
-          </DesktopReviewPostButton>
+            formatDate(new Date()).split(" ")[0] === menuDate && (
+              <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
+                나의 평가 남기기
+              </DesktopReviewPostButton>
+            )
+          }
         </ReviewContainer>
       )}
     </>

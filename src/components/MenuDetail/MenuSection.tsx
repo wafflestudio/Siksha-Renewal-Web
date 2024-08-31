@@ -96,13 +96,15 @@ export default function MenuSection({
           distribution={reviewDistribution}
         />
       </MenuInfoContainer>
-      <MobileReviewPostButton
-        onClick={handleReviewPostButtonClick} // formateDate -> "2021-08-01 (수)" 식으로 나옴
+      {
+        // formateDate -> "2021-08-01 (수)" 식으로 나옴
         // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-        hidden={formatDate(new Date()).split(" ")[0] !== menu.date}
-      >
-        나의 평가 남기기
-      </MobileReviewPostButton>
+        formatDate(new Date()).split(" ")[0] === menu.date && (
+          <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
+            나의 평가 남기기
+          </MobileReviewPostButton>
+        )
+      }
     </MenuContainer>
   );
 }
