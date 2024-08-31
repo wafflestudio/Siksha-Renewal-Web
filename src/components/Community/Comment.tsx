@@ -84,54 +84,52 @@ export default function Comment({ comment, update }: CommentProps) {
 
   if (available === true)
     return (
-      <>
-        <Container>
-          <div>
-            <Header>
-              <WriterInfoContainer>
-                <ProfileImage src={profileImg} alt="프로필 이미지" />
-                <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
-              </WriterInfoContainer>
-              <MobileCommentDate>
-                {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
-              </MobileCommentDate>
-              <DesktopCommentActions>
-                {actions.map((action, i) => (
-                  <DesktopActionButton key={i} onClick={action.handleClick}>
-                    {action.name}
-                  </DesktopActionButton>
-                ))}
-              </DesktopCommentActions>
-            </Header>
-            <Content>{content}</Content>
-            <Footer>
-              <MobileMoreActionsButton
-                src="/img/etc.svg"
-                onClick={onClickMoreActions}
-                alt="기타 옵션"
-              />
-              <DesktopCommentDate>
-                {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
-              </DesktopCommentDate>
-              {likeCount > 0 && (
-                <DesktopLikeContainer>
-                  <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
-                  <DesktopLikes>{likeCount}</DesktopLikes>
-                </DesktopLikeContainer>
-              )}
-            </Footer>
-          </div>
-          <MobileLikeButton
-            onClick={(e) => {
-              onClickLike();
-              e.preventDefault();
-            }}
-          >
-            <MobileLikeIcon src={isLikedImg} alt="좋아요" />
-            <MobileLikes>{likeCount}</MobileLikes>
-          </MobileLikeButton>
-        </Container>
-      </>
+      <Container>
+        <div>
+          <Header>
+            <WriterInfoContainer>
+              <ProfileImage src={profileImg} alt="프로필 이미지" />
+              <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
+            </WriterInfoContainer>
+            <MobileCommentDate>
+              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+            </MobileCommentDate>
+            <DesktopCommentActions>
+              {actions.map((action, i) => (
+                <DesktopActionButton key={i} onClick={action.handleClick}>
+                  {action.name}
+                </DesktopActionButton>
+              ))}
+            </DesktopCommentActions>
+          </Header>
+          <Content>{content}</Content>
+          <Footer>
+            <MobileMoreActionsButton
+              src="/img/etc.svg"
+              onClick={onClickMoreActions}
+              alt="기타 옵션"
+            />
+            <DesktopCommentDate>
+              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+            </DesktopCommentDate>
+            {likeCount > 0 && (
+              <DesktopLikeContainer>
+                <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
+                <DesktopLikes>{likeCount}</DesktopLikes>
+              </DesktopLikeContainer>
+            )}
+          </Footer>
+        </div>
+        <MobileLikeButton
+          onClick={(e) => {
+            onClickLike();
+            e.preventDefault();
+          }}
+        >
+          <MobileLikeIcon src={isLikedImg} alt="좋아요" />
+          <MobileLikes>{likeCount}</MobileLikes>
+        </MobileLikeButton>
+      </Container>
     );
   else
     return (
