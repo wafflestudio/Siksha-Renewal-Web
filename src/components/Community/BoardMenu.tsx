@@ -39,7 +39,7 @@ const Menu = styled.div`
     left: 0;
     top: 0;
     width: auto;
-    padding-bottom: 19px;
+    padding: 18px 0 19px 0;
 
     &::after {
       content: ' ';
