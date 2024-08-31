@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import APIendpoint from "constants/constants";
 import { RawBoard, RawComment, RawPost } from "types";
 
@@ -89,8 +89,8 @@ export const getTrendingPosts = (
   accessToken?: string,
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
   const apiUrl = accessToken
-  ? `${APIendpoint()}/community/posts/popular/trending`
-  : `${APIendpoint()}/community/posts/popular/trending/web`;
+    ? `${APIendpoint()}/community/posts/popular/trending`
+    : `${APIendpoint()}/community/posts/popular/trending/web`;
 
   const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
@@ -221,7 +221,9 @@ export const setReportPost = (postID: number, reason: string, accessToken: strin
   return axios
     .post(apiUrl, data, config)
     .then(() => {})
-    .catch((e) => console.error(e));
+    .catch((e) => {
+      throw e;
+    });
 };
 
 export const getCommentList = (
@@ -260,18 +262,15 @@ export const setComment = (
   accessToken: string,
   // updateCallback: (raw: RawComment) => Promise<any>,
 ): Promise<AxiosResponse<any>> => {
-  return (
-    axios
-      .post(
-        `${APIendpoint()}/community/comments`,
-        { post_id: postID, content, anonymous: isAnonymous },
-        { headers: { "authorization-token": `Bearer ${accessToken}` } },
-      )
-      // .then((res: AxiosResponse<RawComment>) => updateCallback(res.data))
-      .catch((e) => {
-        throw new Error(e);
-      })
-  );
+  return axios
+    .post(
+      `${APIendpoint()}/community/comments`,
+      { post_id: postID, content, anonymous: isAnonymous },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+    )
+    .catch((e) => {
+      throw new Error(e);
+    });
 };
 
 export const deleteComment = (commentID: number, accessToken: string): Promise<void> => {
@@ -335,5 +334,7 @@ export const setReportComment = (commentID: number, reason: string, accessToken:
   return axios
     .post(apiUrl, data, config)
     .then(() => {})
-    .catch((e) => console.error(e));
+    .catch((e) => {
+      throw e;
+    });
 };
