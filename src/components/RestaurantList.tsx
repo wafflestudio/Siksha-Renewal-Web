@@ -29,7 +29,7 @@ export default function RestaurantList() {
   }, [data, favoriteRestaurants.length]);
 
   return (
-    <Container>
+    <Container show={data[meal].length >= 1}>
       <Restaurants>
         {favoriteFirstRestaurants &&
           favoriteFirstRestaurants.map((restaurant) => (
@@ -58,7 +58,8 @@ export default function RestaurantList() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ show: boolean }>`
+  display: ${(props) => (props.show === false ? "none" : "block")};
   width: 100%;
   max-height: 300px;
   background: white;
