@@ -187,76 +187,74 @@ export default function PostWriter() {
     fetchPreviousPost();
   }, []);
 
-  // hydration mismatch를 피하기 위해 authStatus state로 pre-rendering을 막습니다.
-  if (authStatus === "login")
-    return (
-      <>
-        <MobileSubHeader title="글쓰기" handleBack={router.back} />
-        <Layout>
-          <Container>
-            <DesktopHeader>글쓰기</DesktopHeader>
-            <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
-              {selectedBoardName}
-              <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
-            </BoardMenu>
-            <TitleInput
-              type="text"
-              placeholder="제목"
-              value={inputs.title}
-              onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-            />
-            <ContentInput
-              className="content-input"
-              placeholder="내용을 입력하세요."
-              value={inputs.content}
-              onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
-              onKeyDown={resize}
-              onKeyUp={resize}
-            />
-            <Footer>
-              <Options>
-                <Option
-                  className={inputs.options.anonymous ? "active" : ""}
-                  onClick={toggleAnonymous}
-                >
-                  <Icon
-                    src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
-                    style={{ width: "13px" }}
-                    alt={inputs.options.anonymous ? "익명" : "익명 아님"}
-                  />
-                  익명
-                </Option>
-              </Options>
-              <ImagePreview images={inputs.images} setInputs={setInputs} />
-            </Footer>
-            {!isMobile ? (
-              <ButtonContainer>
-                <Button className="cancel" onClick={router.back} isMobile>
-                  취소
-                </Button>
-                <Button
-                  className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                  onClick={handleSubmit}
-                  isMobile
-                >
-                  등록
-                </Button>
-              </ButtonContainer>
-            ) : (
-              <ButtonContainer>
-                <Button
-                  className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                  onClick={handleSubmit}
-                  isMobile
-                >
-                  올리기
-                </Button>
-              </ButtonContainer>
-            )}
-          </Container>
-        </Layout>
-      </>
-    );
+  return (
+    <>
+      <MobileSubHeader title="글쓰기" handleBack={router.back} />
+      <Layout>
+        <Container>
+          <DesktopHeader>글쓰기</DesktopHeader>
+          <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
+            {selectedBoardName}
+            <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
+          </BoardMenu>
+          <TitleInput
+            type="text"
+            placeholder="제목"
+            value={inputs.title}
+            onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
+          />
+          <ContentInput
+            className="content-input"
+            placeholder="내용을 입력하세요."
+            value={inputs.content}
+            onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+            onKeyDown={resize}
+            onKeyUp={resize}
+          />
+          <Footer>
+            <Options>
+              <Option
+                className={inputs.options.anonymous ? "active" : ""}
+                onClick={toggleAnonymous}
+              >
+                <Icon
+                  src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
+                  style={{ width: "13px" }}
+                  alt={inputs.options.anonymous ? "익명" : "익명 아님"}
+                />
+                익명
+              </Option>
+            </Options>
+            <ImagePreview images={inputs.images} setInputs={setInputs} />
+          </Footer>
+          {!isMobile ? (
+            <ButtonContainer>
+              <Button className="cancel" onClick={router.back} isMobile>
+                취소
+              </Button>
+              <Button
+                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+                onClick={handleSubmit}
+                isMobile
+              >
+                등록
+              </Button>
+            </ButtonContainer>
+          ) : (
+            <ButtonContainer>
+              <Button
+                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+                onClick={handleSubmit}
+                isMobile
+              >
+                올리기
+              </Button>
+            </ButtonContainer>
+          )}
+        </Container>
+      </Layout>
+    </>
+  );
 }
 
 const Container = styled.div`
