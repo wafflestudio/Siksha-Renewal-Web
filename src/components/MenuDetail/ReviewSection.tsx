@@ -113,6 +113,7 @@ const ReviewContainer = styled.section`
   padding-right: 50px;
   padding-top: 36px;
   @media (max-width: 768px) {
+    overflow-x:hidden;
     flex-grow: 1;
     width: auto;
     min-width: 0;
@@ -245,13 +246,15 @@ const DesktopReviewPostButton = styled.button`
 
 const MobileReviewListPage = styled.div`
   display: none;
-  position: absolute;
-  background-color: white;
-  min-height: calc(100vh - 60px);
-  padding: 24px 16px;
-  width: 100vw;
-  box-sizing: border-box;
+
   @media (max-width: 768px) {
-    display: inherit;
+    display: flex;
+    position: relative;
+    background-color: white;
+    min-height: calc(100vh - 60px);
+    padding: 24px 16px;
+    width: 100vw;
+    box-sizing: border-box;
+    
   }
 `;

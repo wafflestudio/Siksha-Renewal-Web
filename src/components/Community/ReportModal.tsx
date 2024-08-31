@@ -1,6 +1,8 @@
 import BackClickable from "components/general/BackClickable";
+import MobileSubHeader from "components/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import UseProfile from "hooks/UseProfile";
+import router from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 import { setReportComment, setReportPost } from "utils/api/community";
@@ -36,47 +38,54 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalPr
 
   return (
     <BackClickable onClickBackground={onClose}>
-      <MainContainer>
-        <Header>
-          <Title>신고하기</Title>
-          <CloseButton onClick={onClose}>
-            <Image src="/img/modal-close.svg" alt="닫기" />
-          </CloseButton>
-        </Header>
-        <WriterBox>
-          <WriterInfoContainer>
-            <ProfileImage src={profileImg} />
-            <Nickname>{!userInfo?.nickname ? `ID ${userInfo?.id}` : userInfo.nickname}</Nickname>
-          </WriterInfoContainer>
-        </WriterBox>
-        <InputContainer>
-          <InputBox
-            placeholder="어떤 이유로 신고하시나요?"
-            value={reason}
-            onChange={(e) => {
-              if (e.target.value.length <= 500) {
-                setReason(e.target.value);
-              }
-            }}
-          />
-          <WordCnt>{`${reason.length} / 500자`}</WordCnt>
-        </InputContainer>
-        <Footer>
-          <CancelButton onClick={onClose}>취소</CancelButton>
-          <ReportButton disabled={!isValid} onClick={report}>
-            신고
-          </ReportButton>
-        </Footer>
-      </MainContainer>
+      <>
+        <MobileSubHeader title="신고하기" handleBack={onClose} />
+        <MainContainer>
+          <Header>
+            <Title>신고하기</Title>
+            <CloseButton onClick={onClose}>
+              <Image src="/img/modal-close.svg" alt="닫기" />
+            </CloseButton>
+          </Header>
+          <MobileBox>
+            <Icon src="/img/comment.svg" alt="comment" />
+            <Description>어떤 이유로 신고하시나요?</Description>
+          </MobileBox>
+          <WriterBox>
+            <WriterInfoContainer>
+              <ProfileImage src={profileImg} />
+              <Nickname>{!userInfo?.nickname ? `ID ${userInfo?.id}` : userInfo.nickname}</Nickname>
+            </WriterInfoContainer>
+          </WriterBox>
+          <InputContainer>
+            <InputBox
+              placeholder="어떤 이유로 신고하시나요?"
+              value={reason}
+              onChange={(e) => {
+                if (e.target.value.length <= 500) {
+                  setReason(e.target.value);
+                }
+              }}
+            />
+            <WordCnt>{`${reason.length} / 500자`}</WordCnt>
+          </InputContainer>
+          <Footer>
+            <CancelButton onClick={onClose}>취소</CancelButton>
+            <ReportButton disabled={!isValid} onClick={report}>
+              신고
+            </ReportButton>
+          </Footer>
+        </MainContainer>
+      </>
     </BackClickable>
   );
 }
 
 const MainContainer = styled.div`
   position: fixed;
-  top: 40%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   width: 701px;
   height: 623.49px;
   box-sizing: border-box;
@@ -90,6 +99,12 @@ const MainContainer = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 `;
 const Header = styled.div`
@@ -100,6 +115,7 @@ const Header = styled.div`
   width: 658px;
 
   @media (max-width: 768px) {
+    display: none;
   }
 `;
 const Title = styled.h3`
@@ -109,9 +125,6 @@ const Title = styled.h3`
   letter-spacing: -0.3px;
   margin-top: 0;
   color: #ff9522;
-
-  @media (max-width: 768px) {
-  }
 `;
 const Image = styled.img``;
 const CloseButton = styled.button`
@@ -123,11 +136,34 @@ const CloseButton = styled.button`
   height: 30px;
 `;
 
+const MobileBox = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 104px;
+    margin-bottom: 35px;
+  }
+`;
+const Icon = styled.img`
+  width: 18px;
+  height: 18px;
+`;
+const Description = styled.p`
+  text-align: center;
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: 700;
+`;
+
 const WriterBox = styled.div`
   margin: 0 30px 0 30px;
   width: 658px;
 
   @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 const WriterInfoContainer = styled.div`
@@ -138,8 +174,7 @@ const ProfileImage = styled.img`
   width: 23px;
   height: 23px;
   @media (max-width: 768px) {
-    width: 16px;
-    height: 16px;
+    margin-left: 28px;
   }
 `;
 const Nickname = styled.div`
@@ -153,7 +188,15 @@ const Nickname = styled.div`
     line-height: 12.5px;
   }
 `;
-const InputContainer = styled.div``;
+const InputContainer = styled.div`
+  @media (max-width: 768px) {
+    width: calc(100% - 56px);
+    margin-left: 28px;
+    margin-right: 28px;
+    height: 280px;
+    margin-top: 13px;
+  }
+`;
 const InputBox = styled.textarea`
   resize: none;
   width: 658px;
@@ -176,6 +219,13 @@ const InputBox = styled.textarea`
   }
 
   @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+    height: 280px;
+
+    ::placeholder {
+      color: transparent;
+    }
   }
 `;
 const WordCnt = styled.div`
@@ -187,6 +237,14 @@ const WordCnt = styled.div`
   font-weight: 400;
   line-height: 12.48px;
   color: #707070;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 16px;
+    margin-right: 16px;
+    position: absolute;
+    right: 23px;
+  }
 `;
 const Footer = styled.div`
   display: flex;
@@ -196,6 +254,8 @@ const Footer = styled.div`
   width: 95%;
 
   @media (max-width: 768px) {
+    margin-top: auto;
+    padding: 0 16px;
   }
 `;
 const Button = styled.button`
@@ -207,15 +267,23 @@ const Button = styled.button`
   font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
-
-  @media (max-width: 768px) {
-  }
 `;
 const CancelButton = styled(Button)`
   color: #8e8e8e;
   background-color: #eee;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 const ReportButton = styled(Button)`
   color: ${(props) => (props.disabled ? "#8e8e8e" : "white")};
   background-color: ${(props) => (props.disabled ? "#eee" : "#ff9522")};
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 32px;
+    height: 56px;
+  }
 `;

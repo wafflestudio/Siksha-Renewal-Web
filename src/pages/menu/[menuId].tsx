@@ -68,28 +68,28 @@ export default function Menu() {
     const accessToken = await getAccessToken().catch((error) => "");
 
     getMenu(Number(menuId), accessToken)
-    .then((menuData) => {
-      setMenu(menuData);
-      setMobileSubHeaderTitle(menuData.name_kr);
-    })
-    .catch((e) => {
-      console.error(e);
-      router.push("/");
-    })
+      .then((menuData) => {
+        setMenu(menuData);
+        setMobileSubHeaderTitle(menuData.name_kr);
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push("/");
+      });
   };
 
   const fetchReviews = async () => {
     getReviews(Number(menuId))
-    .then((reviewsData) => {
-      setReviews({
-        result: reviewsData.result,
-        total_count: reviewsData.totalCount,
+      .then((reviewsData) => {
+        setReviews({
+          result: reviewsData.result,
+          total_count: reviewsData.totalCount,
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        router.push("/");
       });
-    })
-    .catch((e) => {
-      console.error(e);
-      router.push("/");
-    });
   };
 
   useEffect(() => {
@@ -162,8 +162,9 @@ export default function Menu() {
                 reviewsTotalCount={reviews.total_count}
                 images={images}
                 handleReviewPostButtonClick={handleReviewPostButtonClick}
+                isReviewListPageOpen={isReviewListPageOpen}
               />
-              <MobileHLine />
+              <MobileHLine $isReviewListPageOpen={isReviewListPageOpen} />
               {isReviewPostModalOpen ? (
                 <ReviewPostModal
                   isOpen={isReviewPostModalOpen}
@@ -197,6 +198,8 @@ const Background = styled.div`
   background-color: white;
   overflow: scroll;
   display: flex;
+  flex-direction: column;
+
   @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
@@ -219,7 +222,7 @@ const Info = styled.div`
   }
 `;
 
-const MobileHLine = styled.div`
+const MobileHLine = styled.div<{ $isReviewListPageOpen: boolean }>`
   display: none;
   background: #9191911a;
   padding: 5px 0;
@@ -227,4 +230,5 @@ const MobileHLine = styled.div`
   @media (max-width: 768px) {
     display: inherit;
   }
+  ${(props) => props.$isReviewListPageOpen && `display:none;`}
 `;
