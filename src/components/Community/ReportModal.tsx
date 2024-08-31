@@ -83,9 +83,9 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReporyModalPr
 
 const MainContainer = styled.div`
   position: fixed;
-  top: 40%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   width: 701px;
   height: 623.49px;
   box-sizing: border-box;
