@@ -273,7 +273,7 @@ const DesktopHeader = styled.div`
   text-align: center;
   padding-bottom: 16px;
   border-bottom: 1px solid #ff9522;
-  margin-bottom: 12px;
+  margin: 19px 0 12px 0;
 
   @media (max-width: 768px) {
     display: none;
@@ -292,7 +292,7 @@ const BoardMenu = styled.div`
   margin-bottom: 12px;
 
   @media (max-width: 768px) {
-    margin-bottom: 6px;
+    margin: 14.43px 0 6px 0;
     height: 35px;
   }
 `;
