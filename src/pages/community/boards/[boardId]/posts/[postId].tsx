@@ -158,10 +158,7 @@ export default function Post() {
     else if (post.available === true)
       return (
         <>
-          <MobileSubHeader
-            title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
-            handleBack={router.back}
-          />
+          <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
           <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
             <Container>
               <Header>
@@ -227,10 +224,7 @@ export default function Post() {
   } else {
     return (
       <>
-        <MobileSubHeader
-          title={Number(boardId) === 1 ? "학식게시판" : "외식게시판"}
-          handleBack={router.back}
-        />
+        <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
         <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
           <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
         </Board>

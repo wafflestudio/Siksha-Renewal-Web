@@ -28,7 +28,7 @@ export default function MobileSubHeader({
     });
   }, []);
 
-  const boardTitle = boards?.filter((board) => board.id === boardId)[0]?.name;
+  const boardTitle = boards?.filter((board) => board.id === selectedBoardId)[0]?.name;
 
   return (
     <MobileHeader>
