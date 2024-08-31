@@ -28,12 +28,12 @@ export default function MobileSubHeader({
     });
   }, []);
 
-  const realTitle = boards?.filter((board) => board.id === boardId)[0]?.name;
+  const boardTitle = boards?.filter((board) => board.id === boardId)[0]?.name;
 
   return (
     <MobileHeader>
       <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
-      <Title>{title || realTitle}</Title>
+      <Title>{title || boardTitle}</Title>
     </MobileHeader>
   );
 }

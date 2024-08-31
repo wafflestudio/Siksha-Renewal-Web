@@ -121,7 +121,6 @@ export default function Post() {
   }, [boardId, postId]);
 
   if (post) {
-    const isLikedImg = post.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
     const profileImg = post.profileUrl || "/img/default-profile.svg";
 
@@ -178,7 +177,7 @@ export default function Post() {
             </Content>
             <LikesAndComments>
               <Likes>
-                <Icon src={isLikedImg} alt="좋아요" />
+                <Icon src="/img/post-like.svg" alt="좋아요" />
                 {post.likeCount}
               </Likes>
               <Comments>
@@ -213,7 +212,6 @@ export default function Post() {
       <>
         <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
         <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={false}>
-
           <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
         </Board>
       </>
