@@ -1,6 +1,8 @@
 import UseProfile from "hooks/UseProfile";
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { Dispatch, RefObject, SetStateAction, useRef } from "react";
 import styled from "styled-components";
+import useModals from "hooks/UseModals";
+import ProfileImageEditModal from "./ProfileImageEditModal";
 
 interface ProfileEditProps {
   nickname: string;
@@ -8,13 +10,27 @@ interface ProfileEditProps {
   imageBlob: Blob | null;
   setImageBlob: (imageBlob: Blob | null) => void;
   imgRef: RefObject<HTMLInputElement>;
+  changeToDefaultImage: boolean;
+  setChangeToDefaultImage: (changeToDefaultImage: boolean) => void;
   isNicknameValid: boolean;
   setIsNicknameValid: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ProfileEdit(props: ProfileEditProps) {
-  const { nickname, setNickname, imageBlob, setImageBlob, imgRef, isNicknameValid } = props;
+  const {
+    nickname,
+    setNickname,
+    imageBlob,
+    setImageBlob,
+    imgRef,
+    changeToDefaultImage,
+    setChangeToDefaultImage,
+    isNicknameValid,
+  } = props;
   const { userInfo } = UseProfile();
+
+  const { openModal } = useModals();
+  const profileFrameRef = useRef<HTMLDivElement>(null);
 
   const onImageLoad = () => {
     const file = imgRef.current?.files?.[0];
@@ -29,24 +45,31 @@ export default function ProfileEdit(props: ProfileEditProps) {
     };
   };
 
+  const onProfileFrameClicked = () => {
+    openModal(ProfileImageEditModal, {
+      imgRef,
+      profileFrameRef,
+      setChangeToDefaultImage,
+      onClose: () => {},
+    });
+  };
+
   return (
     <Container>
-      <ProfileFrame
-        onClick={() => {
-          if (imgRef.current) imgRef.current.click();
-        }}
-      >
+      <ProfileFrame ref={profileFrameRef} onClick={onProfileFrameClicked} >
         <Profile
           src={
-            imageBlob
+            changeToDefaultImage
+              ? "/img/default-profile.svg"
+              : imageBlob
               ? URL.createObjectURL(imageBlob)
               : userInfo?.image ?? "/img/default-profile.svg"
           }
           alt="프로필 사진"
         />
-        <CameraFrame>
-          <Camera src="/img/account/photo_camera.svg" alt="사진 업로드" />
-        </CameraFrame>
+        <EditIconFrame>
+          <EditIcon src="/img/account/edit-profile.svg" alt="사진 업로드" />
+        </EditIconFrame>
         <input
           type="file"
           id="imageUpload"
@@ -109,7 +132,7 @@ const Profile = styled.img`
   object-fit: cover;
 `;
 
-const CameraFrame = styled.div`
+const EditIconFrame = styled.div`
   position: absolute;
   top: 2.8px;
   right: 3.57px;
@@ -127,7 +150,7 @@ const CameraFrame = styled.div`
   background: #ffffff;
 `;
 
-const Camera = styled.img`
+const EditIcon = styled.img`
   width: 22.5px;
   height: 18px;
   flex-shrink: 0;

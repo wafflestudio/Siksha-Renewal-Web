@@ -15,6 +15,7 @@ export default function SettingProfile() {
   const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [changeToDefaultImage, setChangeToDefaultImage] = useState(false);
   const imgRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -45,7 +46,7 @@ export default function SettingProfile() {
   const onUpdateProfile = async () => {
     if (nickname === null || !isNicknameValid || imgRef.current === null) return;
 
-    if (nickname === userInfo?.nickname && !imageBlob) {
+    if (nickname === userInfo?.nickname && !imageBlob && !changeToDefaultImage) {
       router.push(`/account`);
       return;
     }
@@ -53,8 +54,9 @@ export default function SettingProfile() {
     const formData = new FormData();
     if (nickname !== userInfo?.nickname) formData.append("nickname", nickname);
     if (imageBlob) formData.append("image", imageBlob);
+    formData.append("change_to_default_image", String(changeToDefaultImage));
 
-    const updateFunction = imageBlob ? updateProfileWithImage : updateProfile;
+    const updateFunction = (imageBlob || changeToDefaultImage) ? updateProfileWithImage : updateProfile;
     getAccessToken()
       .then((token) => {
         updateFunction(formData, token).then(({ nickname: newNickname, image: newImage }) => {
@@ -79,6 +81,8 @@ export default function SettingProfile() {
             imageBlob={imageBlob}
             setImageBlob={setImageBlob}
             imgRef={imgRef}
+            changeToDefaultImage={changeToDefaultImage}
+            setChangeToDefaultImage={setChangeToDefaultImage}
             isNicknameValid={isNicknameValid}
             setIsNicknameValid={setIsNicknameValid}
           />
