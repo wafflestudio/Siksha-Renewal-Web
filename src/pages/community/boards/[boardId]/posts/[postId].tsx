@@ -228,6 +228,7 @@ export default function Post() {
 
 const Container = styled.div`
   width: 100%;
+  padding-top: 18.83px;
   @media (max-width: 768px) {
     padding-top: 16px;
   }
