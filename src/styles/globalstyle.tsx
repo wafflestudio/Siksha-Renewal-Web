@@ -47,13 +47,12 @@ export const GlobalStyle = createGlobalStyle`
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
 
-    @media (max-width: 768px) {
-      min-width: 0;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      min-width: 1024px;
     }
 
-    @media (max-width: 1024px) {
-      overflow-x: scroll;
-      min-width: 1024px;
+    @media (max-width: 768px) {
+      min-width: none;
     }
   }
 
