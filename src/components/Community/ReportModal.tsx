@@ -143,8 +143,8 @@ const MobileBox = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 25%;
-    margin-bottom: 10%;
+    margin-top: 104px;
+    margin-bottom: 35px;
   }
 `;
 const Icon = styled.img`
@@ -194,7 +194,7 @@ const InputContainer = styled.div`
     margin-left: 28px;
     margin-right: 28px;
     height: 280px;
-    margin-top: 10px;
+    margin-top: 13px;
   }
 `;
 const InputBox = styled.textarea`
@@ -283,7 +283,7 @@ const ReportButton = styled(Button)`
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
-    margin-bottom: 15%;
+    margin-bottom: 32px;
     height: 56px;
   }
 `;
