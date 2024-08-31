@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BoardHeader } from "components/Community/BoardHeader";
 import { PostList } from "components/Community/PostList";

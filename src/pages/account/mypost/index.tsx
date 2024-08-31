@@ -6,7 +6,7 @@ import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
 import useAuth from "hooks/UseAuth";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/router";
 
 export default function MyPost() {

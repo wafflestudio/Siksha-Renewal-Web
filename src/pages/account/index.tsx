@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useStateContext } from "../../hooks/ContextProvider";
+import { useStateContext } from "../../context/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import UseProfile from "hooks/UseProfile";

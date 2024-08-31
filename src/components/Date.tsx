@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../context/ContextProvider";
 import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
 import useModals from "hooks/UseModals";
 import MobileCalendar from "./MobileCalendar";

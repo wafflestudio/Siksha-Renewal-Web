@@ -2,7 +2,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { EmblaOptionsType } from "embla-carousel";
 import Link from "next/link";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface MobileReviewImageSwiperProps {
   menuId: number;

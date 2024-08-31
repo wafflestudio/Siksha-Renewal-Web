@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useStateContext } from "../hooks/ContextProvider";
+import { useStateContext } from "context/ContextProvider";
 
 export default function MobileOperatingHour({ type }) {
   const state = useStateContext();

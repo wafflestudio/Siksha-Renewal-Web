@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { Post } from "components/Community/Post";
 import { Post as PostType } from "types";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
-import useAuth from "hooks/UseAuth";
 import { useState } from "react";
-import { useStateContext } from "hooks/ContextProvider";
 import { LoadingAnimation } from "styles/globalstyle";
 
 interface PropsPostList {

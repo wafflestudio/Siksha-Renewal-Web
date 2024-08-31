@@ -4,17 +4,15 @@ import { Board as BoardType, RawBoard } from "types";
 import { getBoardList } from "utils/api/community";
 import { boardParser } from "utils/DataUtil";
 
-// 추후 디렉토리 변경(/components/general) 필요해보입니다.
 export default function MobileSubHeader({
   title,
   selectedBoardId,
   handleBack,
 }: {
-    title?: string;
+  title?: string;
   selectedBoardId?: number;
   handleBack: () => void;
 }) {
-  const [boardId, setBoardId] = useState(1);
   const [boards, setBoards] = useState<BoardType[]>([]);
 
   useEffect(() => {

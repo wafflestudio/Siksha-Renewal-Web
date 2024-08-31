@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { formatPrice } from "../utils/FormatUtil";
 import { useEffect, useState } from "react";
-import { useStateContext } from "../hooks/ContextProvider";
 import { useRouter } from "next/router";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";

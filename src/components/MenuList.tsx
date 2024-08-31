@@ -1,6 +1,6 @@
 import MenuCard from "./MenuCard";
 import styled from "styled-components";
-import { useStateContext } from "../hooks/ContextProvider";
+import { useStateContext } from "../context/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
@@ -38,7 +38,6 @@ export default function MenuList() {
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}
-      {/* {!loading && <Download />} */}
     </Container>
   );
 }

@@ -17,7 +17,7 @@ import {
   setPostUnlike,
 } from "utils/api/community";
 import { ReportModal } from "components/Community/ReportModal";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";

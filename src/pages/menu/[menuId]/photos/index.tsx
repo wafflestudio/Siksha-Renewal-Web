@@ -1,6 +1,6 @@
 import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
 import ReviewItem from "components/MenuDetail/ReviewItem.";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
