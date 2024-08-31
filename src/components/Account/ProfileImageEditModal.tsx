@@ -3,12 +3,17 @@ import { Dispatch, RefObject, SetStateAction, useEffect, useState } from "react"
 import styled from "styled-components";
 import useModals from "hooks/UseModals";
 
+interface ModalPosition {
+  top: number;
+  left: number;
+};
+
 interface ProfieImageEditModalProps {
   imgRef: RefObject<HTMLInputElement>;
   profileFrameRef: RefObject<HTMLDivElement>;
   setChangeToDefaultImage: (changeToDefaultImage: boolean) => void;
   onClose: () => void;
-}
+};
 
 export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
   const {
@@ -19,10 +24,7 @@ export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
   } = props;
   const { closeModal } = useModals();
   
-  const [modalPosition, SetModalPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
+  const [modalPosition, SetModalPosition] = useState<ModalPosition | null>(null);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -49,13 +51,11 @@ export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
       <BackClickable onClickBackground={onClose}
       style={`
         background: transparent;
+        @media (max-width: 768px) {
+          background: rgba(0, 0, 0, 0.3);
+        }
       `}>
-        <Container
-          style={{
-            top: top,
-            left: left,
-          }}
-        >
+        <Container modalPosition={modalPosition}>
           <EditOption
             onClick={() => {
               if (imgRef.current) imgRef.current.click();
@@ -72,19 +72,32 @@ export default function ProfieImageEditModal(props: ProfieImageEditModalProps) {
           >
             기본 이미지 적용
           </EditOption>
+          <CancelWrapper onClick={onClose}>취소</CancelWrapper>
         </Container>
       </BackClickable>
     );
   }
 }
 
-const Container = styled.div`
+const Container = styled.div<{ modalPosition: ModalPosition}>`
   position: fixed;
+  top: ${(props) => `${props.modalPosition.top}px`};
+  left: ${(props) => `${props.modalPosition.left}px`};
   width: 135.375px;
   background-color: white;
   border-radius: 8px;
   padding: 8px 0;
-  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 7px 0px rgba(80, 20, 20, 0.1);
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    width: calc(100% - 60px);
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 26px;
+  }
 `;
 
 const EditOption = styled.button`
@@ -100,5 +113,27 @@ const EditOption = styled.button`
 
   &:hover {
     background-color: #f0f0f0;
+  }
+
+  @media (max-width: 768px) {
+    text-align: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #e3e3e3;
+    font-weight: 400;
+    font-size: 16px;
+  }
+`;
+
+const CancelWrapper = styled.div`
+  display: none;
+  text-align: center;
+  padding: 18px 0;
+  color: #ff9522;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: inherit;
   }
 `;
