@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import APIendpoint from "constants/constants";
 import { RawBoard, RawComment, RawPost } from "types";
 
