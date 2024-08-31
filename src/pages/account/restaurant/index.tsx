@@ -68,10 +68,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 36.92px;
+  width: 100%;
 
   @media (max-width: 768px) {
     margin-top: 0px;
-    height: 100%;
+    height: calc(100% - 60px);
   }
 `;
