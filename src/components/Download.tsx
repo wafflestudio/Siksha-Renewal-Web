@@ -5,19 +5,19 @@ const Download = () => {
   return (
     <Container>
       <Link href={"https://wafflestudio.com/"}>
-        <Waffle src={"/img/waffle.svg"} />
+        <Waffle src={"/img/waffle.svg"} alt="와플 스튜디오 이미지" />
       </Link>
       <DownloadLink>
         <Link href={"https://play.google.com/store/apps/details?id=com.wafflestudio.siksha2"}>
           <Flexbox>
-            <DownloadImg src={"/img/google-play.svg"} />
+            <DownloadImg src={"/img/google-play.svg"} alt="구글 플레이 스토어" />
             <StoreText>Google Play</StoreText>
           </Flexbox>
         </Link>
         <Divider />
         <Link href={"https://apps.apple.com/kr/app/id1032700617"}>
           <Flexbox>
-            <DownloadImg src={"/img/app-store.svg"} />
+            <DownloadImg src={"/img/app-store.svg"} alt="애플 앱스토어" />
             <StoreText>App Store</StoreText>
           </Flexbox>
         </Link>

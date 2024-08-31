@@ -18,18 +18,20 @@ export function Post({ post }: PropsPost) {
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
             <Likes>
-              <Icon src="/img/post-like.svg" />
+              <Icon src="/img/post-like.svg" alt="좋아요" />
               {likeCount}
             </Likes>
             <Comments>
-              <Icon src="/img/post-comment.svg" />
+              <Icon src="/img/post-comment.svg" alt="댓글" />
               {commentCount}
             </Comments>
           </LikesAndComments>
         </Info>
         <PhotoZone>
           {images
-            ? images.map((src, idx) => (idx < 1 ? <Photo key={src} src={src} /> : null))
+            ? images.map((src, idx) =>
+                idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
+              )
             : null}
         </PhotoZone>
       </Container>

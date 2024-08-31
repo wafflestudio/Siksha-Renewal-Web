@@ -60,7 +60,7 @@ export function BoardHeader() {
                     <Title>{trendingPost.title}</Title>
                     <ContentPreview>{trendingPost.content}</ContentPreview>
                     <Likes>
-                      <Icon src="/img/post-like.svg" />
+                      <Icon src="/img/post-like.svg" alt="좋아요" />
                       {trendingPost.likeCount}
                     </Likes>
                   </TrendingPost>
@@ -73,7 +73,11 @@ export function BoardHeader() {
         </PostSwiperViewport>
       </TrendingPostWrapper>
       <WriteButton>
-        <ButtonImg onClick={handleClickWriteButton} src={"/img/write-post-button.svg"} />
+        <ButtonImg
+          onClick={handleClickWriteButton}
+          src={"/img/write-post-button.svg"}
+          alt="글쓰기"
+        />
       </WriteButton>
     </Container>
   );

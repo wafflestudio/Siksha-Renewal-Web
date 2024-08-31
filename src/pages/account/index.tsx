@@ -32,11 +32,11 @@ export default function Account() {
             router.push("/account/profile");
           }}
         >
-          <Profile src={profileURL} />
+          <Profile src={profileURL} alt="프로필 이미지" />
           <ProfileText>
             {authStatus === "loading" ? "잠시만 기다려주세요..." : nickname}
           </ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -46,7 +46,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -56,7 +56,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -65,7 +65,7 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
@@ -73,13 +73,13 @@ export default function Account() {
           {isExceptEmpty ? (
             <CheckButton
               src="/img/account/hide-circle-active.svg"
-              alt="active"
+              alt="활성화"
               onClick={toggleIsExceptEmpty}
             />
           ) : (
             <CheckButton
               src="/img/account/hide-circle-inactive.svg"
-              alt="inactive"
+              alt="비활성화"
               onClick={toggleIsExceptEmpty}
             />
           )}
@@ -91,7 +91,7 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="right arrow" />
+          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup isLast={true}>

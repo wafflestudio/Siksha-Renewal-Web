@@ -152,7 +152,7 @@ export default function Post() {
           <Container>
             <Header>
               <WriterInfoContainer>
-                <ProfileImage src={profileImg} />
+                <ProfileImage src={profileImg} alt="프로필 이미지" />
                 <div>
                   <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
                   <PostDate>
@@ -170,6 +170,7 @@ export default function Post() {
               <MobileMoreActionsButton
                 src="/img/etc.svg"
                 onClick={() => onClickMoreActions(actions)}
+                alt="더보기"
               />
             </Header>
             <Content>
@@ -179,17 +180,17 @@ export default function Post() {
             </Content>
             <LikesAndComments>
               <Likes>
-                <Icon src="/img/post-like.svg" />
+                <Icon src="/img/post-like.svg" alt="좋아요" />
                 {post.likeCount}
               </Likes>
               <Comments>
-                <Icon src="/img/post-comment.svg" />
+                <Icon src="/img/post-comment.svg" alt="댓글" />
                 {post.commentCount}
               </Comments>
             </LikesAndComments>
             <Footer>
               <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
+                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
                 공감
               </LikeButton>
               <BackToBoardButton
@@ -197,7 +198,7 @@ export default function Post() {
                   router.push(`/community/boards/${boardId}`);
                 }}
               >
-                <FooterIcon src="/img/posts-orange.svg" />
+                <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
                 목록보기
               </BackToBoardButton>
             </Footer>

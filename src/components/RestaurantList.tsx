@@ -39,11 +39,16 @@ export default function RestaurantList() {
               </RestaurantName>
               <Dots>..............</Dots>
               {isFavorite(restaurant.id) ? (
-                <Star src="/img/star.svg" onClick={() => toggleFavorite(restaurant.id)} />
+                <Star
+                  src="/img/star.svg"
+                  onClick={() => toggleFavorite(restaurant.id)}
+                  alt="좋아요"
+                />
               ) : (
                 <Star
                   src="/img/star-empty-white.svg"
                   onClick={() => toggleFavorite(restaurant.id)}
+                  alt=""
                 />
               )}
             </Restaurant>

@@ -5,7 +5,7 @@ import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
 
-interface MobileCalendarProps { 
+interface MobileCalendarProps {
   onClose: () => void;
 }
 
@@ -50,12 +50,12 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} />}
+          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} alt="이전" />}
+          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} alt="다음" />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
-          locale={'ko'}
+          locale={"ko"}
         />
       </Container>
     </BackClickable>

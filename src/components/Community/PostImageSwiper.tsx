@@ -41,7 +41,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
         <SwiperContainer>
           {images.map((image) => (
             <PostImageContainer key={image}>
-              <PostImage src={image} />
+              <PostImage src={image} alt="게시글 이미지" />
             </PostImageContainer>
           ))}
         </SwiperContainer>

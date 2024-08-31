@@ -32,12 +32,12 @@ export default function DesktopCalendar() {
         defaultValue={today}
         showNeighboringMonth={false}
         navigationLabel={() => formatDate(date)}
-        prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} />}
-        nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} />}
+        prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} alt="지난달로 이동" />}
+        nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} alt="다음달로 이동" />}
         formatDay={(locale, date) => String(date.getDate())}
         formatShortWeekday={(locale, date) => formatWeekday(date)}
         tileClassName={({ date }) => (isToday(date) ? "today" : null)}
-        locale={'ko'}
+        locale={"ko"}
       />
     </Container>
   );

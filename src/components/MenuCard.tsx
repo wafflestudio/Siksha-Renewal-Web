@@ -17,9 +17,13 @@ export default function MenuCard({ data }) {
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="좋아요" />
             ) : (
-              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star
+                src="/img/star-empty-white.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt=""
+              />
             )}
           </HeaderContainer>
           <Location>
@@ -29,6 +33,7 @@ export default function MenuCard({ data }) {
                 setInfoData(data);
                 toggleShowInfo();
               }}
+              alt="위치 정보"
             />
             <LocationText>{data.addr?.slice(19)}</LocationText>
           </Location>
@@ -54,11 +59,16 @@ export default function MenuCard({ data }) {
                 setInfoData(data);
                 toggleShowInfo();
               }}
+              alt="정보"
             />
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="좋아요" />
             ) : (
-              <Star src="/img/star-empty-white.svg" onClick={() => toggleFavorite(data.id)} />
+              <Star
+                src="/img/star-empty-white.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt=""
+              />
             )}
           </HeaderContainer>
           <MenuInfoLabels>

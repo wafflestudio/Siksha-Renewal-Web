@@ -8,7 +8,7 @@ export function ReviewItem({ review }: { review: ReviewType }) {
     <ReviewItemContainer>
       <ReviewInfo>
         <ReviewerInfo>
-          <ReviwerProfile src={"/img/default-profile.svg"} />
+          <ReviwerProfile src={"/img/default-profile.svg"} alt="프로필 이미지" />
           <div>
             <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
             <Stars score={review.score || 0} />
@@ -20,7 +20,7 @@ export function ReviewItem({ review }: { review: ReviewType }) {
       {review.etc && (
         <ReviewImageList>
           {review.etc.images.map((image) => (
-            <ReviewImage key={image} src={image} />
+            <ReviewImage key={image} src={image} alt="리뷰 이미지" />
           ))}
         </ReviewImageList>
       )}

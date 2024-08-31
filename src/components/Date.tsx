@@ -13,11 +13,11 @@ export default function Date() {
   const { setDate } = useDispatchContext();
   const { openModal, closeModal } = useModals();
   const openedModals = useContext(ModalsStateContext);
-  const [ isCalOpened, setIsCalOpened ] = useState(false);
+  const [isCalOpened, setIsCalOpened] = useState(false);
 
   const onClickDate = () => {
     if (!isCalOpened) {
-      openModal(MobileCalendar, {onClose: () => {}});
+      openModal(MobileCalendar, { onClose: () => {} });
     } else {
       closeModal(MobileCalendar);
     }
@@ -34,6 +34,7 @@ export default function Date() {
         onClick={() => {
           !isCalOpened && setDate(getYesterday(date));
         }}
+        alt={isCalOpened ? "" : "전날로 이동"}
       />
       <FlexBox onClick={onClickDate}>
         <DateText>{formatDate(date)}</DateText>
@@ -43,6 +44,7 @@ export default function Date() {
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}
+        alt={isCalOpened ? "" : "다음날로 이동"}
       />
     </Container>
   );

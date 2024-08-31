@@ -4,11 +4,11 @@ export default function OperatingHour({ type, hour }: { type: string; hour: stri
   return (
     <Container>
       {type == "BR" ? (
-        <Breakfast src={"/img/breakfast.svg"} />
+        <Breakfast src={"/img/breakfast.svg"} alt="아침" />
       ) : type == "LU" ? (
-        <Lunch src={"/img/lunch.svg"} />
+        <Lunch src={"/img/lunch.svg"} alt="점심" />
       ) : (
-        <Dinner src={"/img/dinner.svg"} />
+        <Dinner src={"/img/dinner.svg"} alt="저녁" />
       )}
       <HourText type={type}>{hour}</HourText>
     </Container>

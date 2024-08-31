@@ -27,7 +27,7 @@ export default function ReviewDistribution({
           <DistributionBarWithText key={i}>
             <DistributionText key={i}>
               {i + 1}
-              <StarImg src={"/img/star-neutral-base.svg"} />
+              <StarImg src={"/img/star-neutral-base.svg"} alt="좋아요" />
             </DistributionText>
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>

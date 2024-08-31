@@ -19,7 +19,7 @@ export default function CalendarNavi() {
           setDate(yesterday);
         }}
       >
-        <ArrowLeft src={"/img/left-arrow-white.svg"} width={"10px"} />
+        <ArrowLeft src={"/img/left-arrow-white.svg"} width={"10px"} alt="왼쪽 화살표" />
         {formatDate(yesterday)}
       </DateNaviSub>
       <DateNaviTitle>{formatDate(date)}</DateNaviTitle>
@@ -29,7 +29,7 @@ export default function CalendarNavi() {
         }}
       >
         {formatDate(tomorrow)}
-        <ArrowRight src={"/img/right-arrow-white.svg"} width={"10px"} />
+        <ArrowRight src={"/img/right-arrow-white.svg"} width={"10px"} alt="오른쪽 화살표" />
       </DateNaviSub>
     </DateNavi>
   );
