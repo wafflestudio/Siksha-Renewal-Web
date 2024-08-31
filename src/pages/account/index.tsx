@@ -136,6 +136,7 @@ const ContentDiv = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Profile = styled.img`
