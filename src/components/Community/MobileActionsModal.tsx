@@ -20,9 +20,10 @@ export default function MobileActionsModal({
     <BackClickable onClickBackground={onClose}>
       <MainContainer>
         {actions.map(
-          (action) =>
+          (action, i) =>
             action.name !== "공감" && (
               <ActionWrapper
+                key={i}
                 onClick={() => {
                   action.handleClick();
                   onSubmit?.();

@@ -96,8 +96,8 @@ export default function Comment({ comment, update }: CommentProps) {
                 {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
               </MobileCommentDate>
               <DesktopCommentActions>
-                {actions.map((action) => (
-                  <DesktopActionButton onClick={action.handleClick}>
+                {actions.map((action, i) => (
+                  <DesktopActionButton key={i} onClick={action.handleClick}>
                     {action.name}
                   </DesktopActionButton>
                 ))}
