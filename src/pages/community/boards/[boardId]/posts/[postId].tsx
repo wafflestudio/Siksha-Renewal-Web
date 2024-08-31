@@ -22,6 +22,7 @@ import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import AlertModal from "components/general/AlertModal";
+import { LoadingAnimation } from "styles/globalstyle";
 
 export default function Post() {
   const router = useRouter();
@@ -228,7 +229,7 @@ export default function Post() {
           handleBack={router.back}
         />
         <Board selectedBoardId={Number(boardId) ?? 1}>
-          <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
+          <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
         </Board>
       </>
     );
@@ -241,6 +242,25 @@ const Container = styled.div`
     padding-top: 16px;
   }
 `;
+
+const ErrorContainer = styled.div`
+  ${LoadingAnimation}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    height: calc(100dvh - 60px);
+  }
+`;
+const EmptyText = styled.div``;
 
 const Header = styled.div`
   display: flex;
