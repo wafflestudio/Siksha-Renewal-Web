@@ -10,21 +10,40 @@ interface BoardMenuProps {
 
 export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
   return (
-    <Menu>
-      {boards.map((board, i) => (
-        <Link key={i} href={`/community/boards/${board.id}`}>
-          <MenuItem
-            className={boardId === board.id ? "selected" : ""}
-            onClick={() => setBoardId(board.id)}
-          >
-            {board.name}
-          </MenuItem>
-        </Link>
-      ))}
-    </Menu>
+    <MenuContainer>
+      <MenuInnerContainer>
+        <Menu>
+          {boards.map((board, i) => (
+            <Link key={i} href={`/community/boards/${board.id}`}>
+              <MenuItem
+                className={boardId === board.id ? "selected" : ""}
+                onClick={() => setBoardId(board.id)}
+              >
+                {board.name}
+              </MenuItem>
+            </Link>
+          ))}
+        </Menu>
+      </MenuInnerContainer>
+    </MenuContainer>
   );
 }
+const MenuContainer = styled.div`
+  @media (max-width: 768px) {
+    display:flex;
+    align-self: center;
+    width: calc(100% + 25px);
+    border-bottom: 1px solid #f0f0f0;
 
+    }
+  }
+`;
+const MenuInnerContainer = styled.div`
+  @media (max-width: 768px) {
+    padding: 0 12.5px 0 12.5px;
+    width: 350px;
+  }
+`;
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,7 +51,7 @@ const Menu = styled.div`
   left: -118px;
   top: 32px;
   width: 118px;
-  
+
   @media (max-width: 768px) {
     flex-direction: row;
     position: relative;
@@ -40,17 +59,9 @@ const Menu = styled.div`
     top: 0;
     width: auto;
     padding: 18px 0 19px 0;
-
-    &::after {
-      content: ' ';
-      position: absolute;
-      width: calc(100% + 25px);
-      height: 1px;
-      bottom: 0;
-      left: 50%;
-      background-color: #f0f0f0;
-      transform: translateX(-50%);
-    }
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 35.5px;
   }
 `;
 const MenuItem = styled.div`
