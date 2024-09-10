@@ -34,14 +34,13 @@ const MenuContainer = styled.div`
     align-self: center;
     width: calc(100% + 25px);
     border-bottom: 1px solid #f0f0f0;
-
-    }
   }
 `;
 const MenuInnerContainer = styled.div`
   @media (max-width: 768px) {
     padding: 0 12.5px 0 12.5px;
-    width: 350px;
+    width: 100%;
+    box-sizing: border-box;
   }
 `;
 const Menu = styled.div`
