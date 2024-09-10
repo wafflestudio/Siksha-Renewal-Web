@@ -16,8 +16,8 @@ export async function handler(event) {
   const redirectPathPattern = [
     "menu\\/\\d+",
     "menu\\/\\d+\\/photos",
-    "community\\/boards\\/[1-5]",
-    "community\\/boards\\/[1-5]\\/posts\\/\\d+",
+    "community\\/boards\\/\\d+",
+    "community\\/boards\\/\\d+\\/posts\\/\\d+",
   ].join("|");
   const redirectPath = new RegExp(`^\\/(${redirectPathPattern})\\/?$`, "g");
 
