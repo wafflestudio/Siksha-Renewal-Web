@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useDispatchContext, useStateContext } from "./ContextProvider";
+import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { useRouter } from "next/router";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";

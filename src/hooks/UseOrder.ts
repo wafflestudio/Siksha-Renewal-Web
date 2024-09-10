@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import useLocalStorage from "./UseLocalStorage";
 import { RestaurantPreview } from "types";
 

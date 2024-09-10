@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useStateContext } from "../../../hooks/ContextProvider";
+import { useStateContext } from "../../../context/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import useAuth from "hooks/UseAuth";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function Inquiry() {
   const router = useRouter();

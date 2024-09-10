@@ -6,7 +6,7 @@ import { updateProfile, updateProfileWithImage, validateNickname } from "utils/a
 import useAuth from "hooks/UseAuth";
 import ProfileEdit from "components/Account/ProfileEdit";
 import UseProfile from "hooks/UseProfile";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function SettingProfile() {
   const { userInfo, setProfile } = UseProfile();
@@ -56,7 +56,8 @@ export default function SettingProfile() {
     if (imageBlob) formData.append("image", imageBlob);
     formData.append("change_to_default_image", String(changeToDefaultImage));
 
-    const updateFunction = (imageBlob || changeToDefaultImage) ? updateProfileWithImage : updateProfile;
+    const updateFunction =
+      imageBlob || changeToDefaultImage ? updateProfileWithImage : updateProfile;
     getAccessToken()
       .then((token) => {
         updateFunction(formData, token).then(({ nickname: newNickname, image: newImage }) => {
@@ -169,7 +170,7 @@ const CancelButton = styled(Button)`
 const CompleteButton = styled(Button)<{ isValid: boolean }>`
   background-color: ${({ isValid }) => (isValid ? "#ff9522" : "#8e8e8e")};
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     width: 100%;
   }

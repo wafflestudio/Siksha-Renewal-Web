@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
 
 export default function Meal() {

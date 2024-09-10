@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
 import useAuth from "./UseAuth";
-import { RestaurantPreview } from "types";
 
 export default function useFavorite() {
   const { authStatus } = useAuth();

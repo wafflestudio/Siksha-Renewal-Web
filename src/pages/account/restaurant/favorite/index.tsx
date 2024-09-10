@@ -3,7 +3,7 @@ import RestaurantOrderEditor from "../../../../components/Account/RestaurantOrde
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth from "hooks/UseAuth";
-import MobileSubHeader from "components/MobileSubHeader";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/router";
 import { RestaurantPreview } from "types";
 import useFavorite from "hooks/UseFavorite";

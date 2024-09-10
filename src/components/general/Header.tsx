@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import NavigationBar from "./NavigationBar";
+import NavigationBar from "components/general/NavigationBar";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 
-// 추후 디렉토리 변경(/components/general) 필요해보입니다.
 export default function Header() {
   const router = useRouter();
 

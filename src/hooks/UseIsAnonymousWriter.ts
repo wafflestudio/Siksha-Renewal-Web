@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useLocalStorage from "./UseLocalStorage";
 
 export default function useIsAnonymousWriter() {

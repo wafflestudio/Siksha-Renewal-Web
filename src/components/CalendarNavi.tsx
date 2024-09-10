@@ -1,7 +1,5 @@
-//헤더와 영역이 겹치는 기존의 날짜 및 화살표 컴포넌트입니다. 현재 UI 상에서 사용되지 않는 컴포넌트이지만 남겨두도록 하겠습니다.
-
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../hooks/ContextProvider";
+import { useDispatchContext, useStateContext } from "../context/ContextProvider";
 import { formatDate } from "../utils/FormatUtil";
 
 export default function CalendarNavi() {
