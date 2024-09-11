@@ -29,7 +29,7 @@ export async function handler(event) {
   let s3Key = "";
 
   const menuMatch = uri.match(/^\/menu\/(\d+)(\/photos)?\/?$/);
-  const communityBoardsMatch = uri.match(/^\/community\/boards\/([12])(\/posts\/(\d+))?\/?$/);
+  const communityBoardsMatch = uri.match(/^\/community\/boards\/(\d+)(\/posts\/(\d+))?\/?$/);
 
   if (menuMatch) {
     const photosPart = menuMatch[2] ? "/photos" : "";
