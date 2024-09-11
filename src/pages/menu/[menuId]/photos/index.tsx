@@ -12,7 +12,7 @@ import { getReviews } from "utils/api/reviews";
 
 export default function PhotoReviews() {
   const router = useRouter();
-  const { id } = router.query;
+  const { menuId } = router.query;
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
     total_count: 0,
@@ -24,12 +24,12 @@ export default function PhotoReviews() {
   const { getAccessToken } = useAuth();
 
   useEffect(() => {
-    if (!id) {
+    if (!menuId) {
       return;
     }
 
     const fetchReview = () => {
-      getReviews(Number(id))
+      getReviews(Number(menuId))
         .then(({ totalCount, result }) => {
           const photoReviews = result.filter((review) => review.etc);
           setReviews({
@@ -44,15 +44,15 @@ export default function PhotoReviews() {
     };
 
     fetchReview();
-  }, [id]);
+  }, [menuId]);
 
   const handleReviewPostButtonClick = () => {
     getAccessToken()
-      .then(() => router.push(`/menu/${id}?writeReview=true`))
+      .then(() => router.push(`/menu/${menuId}?writeReview=true`))
       .catch(() => openLoginModal());
   };
 
-  const handleMobileSubHeaderBack = () => router.push(`/menu/${id}`);
+  const handleMobileSubHeaderBack = () => router.push(`/menu/${menuId}`);
 
   return (
     <>
