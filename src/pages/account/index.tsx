@@ -11,8 +11,6 @@ import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 export default function Account() {
   const router = useRouter();
 
-  const state = useStateContext();
-
   const { userInfo } = UseProfile();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
@@ -21,7 +19,7 @@ export default function Account() {
   useEffect(authGuard, [authStatus]);
 
   const profileURL = userInfo?.image ?? "/img/default-profile.svg";
-  const nickname = userInfo?.nickname ?? `ID ${userInfo?.id}`;
+  const nickname = userInfo?.nickname;
 
   return (
     <AccountLayout>
@@ -33,9 +31,7 @@ export default function Account() {
           }}
         >
           <Profile src={profileURL} alt="프로필 이미지" />
-          <ProfileText>
-            {authStatus === "loading" ? "잠시만 기다려주세요..." : nickname}
-          </ProfileText>
+          <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
           <ArrowButton src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
         </ContentDiv>
       </ListGroup>
