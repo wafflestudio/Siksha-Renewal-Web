@@ -4,6 +4,8 @@ import { useStateContext } from "../context/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
+import useFestival from "hooks/useFestival";
+import { RawMenu } from "types";
 
 export default function MenuList() {
   const state = useStateContext();
@@ -12,6 +14,7 @@ export default function MenuList() {
   const { favoriteRestaurants } = useFavorite();
 
   const [hasData, setHasData] = useState(false);
+  const { isFestival } = useFestival();
 
   useEffect(() => {
     if (!data[meal] || data[meal].length == 0) setHasData(false);
@@ -28,13 +31,15 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
-        data[meal].map((restaurant) => {
-          if (isFilterFavorite) {
-            return favoriteRestaurants.includes(restaurant.id) ? (
-              <MenuCard data={restaurant} key={restaurant.id + meal} />
-            ) : null;
-          } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
-        })
+        data[meal]
+          .filter((data: RawMenu) => isFestival || !data.name_kr.includes("축제"))
+          .map((restaurant) => {
+            if (isFilterFavorite) {
+              return favoriteRestaurants.includes(restaurant.id) ? (
+                <MenuCard data={restaurant} key={restaurant.id + meal} />
+              ) : null;
+            } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
+          })
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}

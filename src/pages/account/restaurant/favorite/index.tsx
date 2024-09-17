@@ -41,6 +41,9 @@ export default function FavoriteOrderSetting() {
           }
         });
 
+        // 3. 축제식당은 제외
+        newRestaurants = newRestaurants.filter(({ nameKr }) => !nameKr.includes("축제"));
+
         setNewOrderList([...newOrderList, ...newRestaurants]);
       })
       .catch((e) => {

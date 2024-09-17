@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
+import useFestival from "hooks/useFestival";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + restaurant);
@@ -20,6 +21,8 @@ export default function RestaurantList() {
 
   const [favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
 
+  const { isFestival } = useFestival();
+
   useEffect(() => {
     const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
     const nonFavorites = data[meal].filter((restaurant) => isFavorite(restaurant.id) === false);
@@ -32,27 +35,29 @@ export default function RestaurantList() {
     <Container show={data[meal].length >= 1}>
       <Restaurants>
         {favoriteFirstRestaurants &&
-          favoriteFirstRestaurants.map((restaurant) => (
-            <Restaurant key={restaurant.id}>
-              <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
-                {restaurant.name_kr}
-              </RestaurantName>
-              <Dots>..............</Dots>
-              {isFavorite(restaurant.id) ? (
-                <Star
-                  src="/img/star.svg"
-                  onClick={() => toggleFavorite(restaurant.id)}
-                  alt="좋아요"
-                />
-              ) : (
-                <Star
-                  src="/img/star-empty-white.svg"
-                  onClick={() => toggleFavorite(restaurant.id)}
-                  alt=""
-                />
-              )}
-            </Restaurant>
-          ))}
+          favoriteFirstRestaurants
+            .filter((restaurant) => isFestival || !restaurant.name_kr.includes("축제"))
+            .map((restaurant) => (
+              <Restaurant key={restaurant.id}>
+                <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
+                  {restaurant.name_kr}
+                </RestaurantName>
+                <Dots>..............</Dots>
+                {isFavorite(restaurant.id) ? (
+                  <Star
+                    src="/img/star.svg"
+                    onClick={() => toggleFavorite(restaurant.id)}
+                    alt="좋아요"
+                  />
+                ) : (
+                  <Star
+                    src="/img/star-empty-white.svg"
+                    onClick={() => toggleFavorite(restaurant.id)}
+                    alt=""
+                  />
+                )}
+              </Restaurant>
+            ))}
       </Restaurants>
     </Container>
   );

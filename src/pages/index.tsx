@@ -53,8 +53,13 @@ export default function Home() {
             const { BR, LU, DN } = result[0];
 
             const sortFunction = (a, b) => {
-              const aOrder = orderHash.get(a.id)?.order ?? Infinity;
-              const bOrder = orderHash.get(b.id)?.order ?? Infinity;
+              const aOrder = a.name_kr.includes("축제")
+                ? -Infinity
+                : orderHash.get(a.id)?.order ?? Infinity;
+              const bOrder = b.name_kr.includes("축제")
+                ? -Infinity
+                : orderHash.get(b.id)?.order ?? Infinity;
+              console.log(a, b, aOrder, bOrder);
               if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
               else return aOrder - bOrder;
             };
