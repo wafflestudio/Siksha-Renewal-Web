@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
 import Festival from "./Festival";
+import useFestival from "hooks/useFestival";
 
 export default function Meal() {
   const state = useStateContext();
   const { meal } = state;
+  const { isFestivalDate } = useFestival();
 
   const { setMeal } = useDispatchContext();
 
@@ -45,9 +47,11 @@ export default function Meal() {
           <MealText active={isDN}>저녁</MealText>
         </MealButton>
       </MealContainer>
-      <FestivalWrapper>
-        <Festival />
-      </FestivalWrapper>
+      {isFestivalDate && (
+        <FestivalWrapper>
+          <Festival />
+        </FestivalWrapper>
+      )}
     </Container>
   );
 }

@@ -13,6 +13,9 @@ import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
+import useFestival from "hooks/useFestival";
+import useModals from "hooks/UseModals";
+import FestivalModal from "components/Festival/FestivalModal";
 
 export default function Home() {
   const state = useStateContext();
@@ -59,7 +62,6 @@ export default function Home() {
               const bOrder = b.name_kr.includes("축제")
                 ? -Infinity
                 : orderHash.get(b.id)?.order ?? Infinity;
-              console.log(a, b, aOrder, bOrder);
               if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
               else return aOrder - bOrder;
             };
@@ -81,6 +83,20 @@ export default function Home() {
 
     fetchData();
   }, [date, authStatus, meal, isFilterFavorite]);
+
+  const { isFestivalDate, isPopup, disablePopup } = useFestival();
+  const { openModal, closeModal } = useModals();
+  const oncloseWithDisablePopup = () => {
+    closeModal(FestivalModal);
+    disablePopup();
+  };
+  const onclose = () => {
+    closeModal(FestivalModal);
+  };
+
+  useEffect(() => {
+    if (isFestivalDate && isPopup) openModal(FestivalModal, { onclose, oncloseWithDisablePopup });
+  }, [isFestivalDate, isPopup]);
 
   return (
     <>
