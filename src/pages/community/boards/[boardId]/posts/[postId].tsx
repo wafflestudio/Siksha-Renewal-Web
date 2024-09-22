@@ -238,6 +238,7 @@ const Container = styled.div`
   padding-top: 18.83px;
   @media (max-width: 768px) {
     padding-top: 16px;
+    padding-bottom: 54.21px; // CommentWriter 높이
   }
 `;
 
