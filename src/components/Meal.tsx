@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
+import Festival from "./Festival";
+import useFestival from "hooks/useFestival";
 
 export default function Meal() {
   const state = useStateContext();
   const { meal } = state;
+  const { isFestivalDate } = useFestival();
 
   const { setMeal } = useDispatchContext();
 
@@ -30,33 +33,68 @@ export default function Meal() {
 
   return (
     <Container>
-      <MealButton onClick={() => setMeal("BR")}>
-        <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} alt="아침" />
-        <MealText active={isBR}>아침</MealText>
-      </MealButton>
-      <MealButton onClick={() => setMeal("LU")}>
-        <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} alt="점심" />
-        <MealText active={isLU}>점심</MealText>
-      </MealButton>
-      <MealButton onClick={() => setMeal("DN")}>
-        <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} alt="저녁" />
-        <MealText active={isDN}>저녁</MealText>
-      </MealButton>
+      <MealContainer>
+        <MealButton onClick={() => setMeal("BR")}>
+          <Breakfast src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} alt="아침" />
+          <MealText active={isBR}>아침</MealText>
+        </MealButton>
+        <MealButton onClick={() => setMeal("LU")}>
+          <Lunch src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} alt="점심" />
+          <MealText active={isLU}>점심</MealText>
+        </MealButton>
+        <MealButton onClick={() => setMeal("DN")}>
+          <Dinner src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} alt="저녁" />
+          <MealText active={isDN}>저녁</MealText>
+        </MealButton>
+      </MealContainer>
+      {isFestivalDate && (
+        <FestivalWrapper>
+          <Festival />
+        </FestivalWrapper>
+      )}
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
+  position: relative;
   width: 100%;
-  justify-content: center;
-  align-items: flex-end;
+  height: 54px;
   padding-top: 12px;
   padding-bottom: 44px;
+  align-self: center;
 
   @media (max-width: 768px) {
+    height: 36px;
     padding-top: 11px;
     padding-bottom: 11px;
+  }
+`;
+
+const MealContainer = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
+const FestivalWrapper = styled.div`
+  position: absolute;
+  right: 34px;
+  width: 89.146px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    right: 17px;
+    width: 44.573px;
+    height: 36px;
   }
 `;
 
