@@ -22,9 +22,11 @@ export default function FestivalModal({
             onClick={isIgnore ? oncloseWithDisablePopup : onclose}
             alt="닫기"
           />
-          <Banner src="/img/festival/banner.png" alt="축제 배너" />
+          <a href="https://linktr.ee/snu_festival" target="_blank">
+            <Banner src="/img/festival/banner.png" alt="축제 배너" />
+          </a>
           <Option onClick={() => setIsIgnore(!isIgnore)}>
-            <Icon src={checkBoxImg} alt="익명 여부 선택" />
+            <Icon src={checkBoxImg} alt="오늘 하루 보지않기" />
             <span>오늘 하루 보지않기</span>
           </Option>
         </InfoBox>
