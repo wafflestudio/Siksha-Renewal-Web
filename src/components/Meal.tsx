@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
-import Festival from "./Festival";
+import Festival from "components/Festival/Festival";
 import useFestival from "hooks/useFestival";
 
 export default function Meal() {
