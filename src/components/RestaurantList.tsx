@@ -36,7 +36,11 @@ export default function RestaurantList() {
       <Restaurants>
         {favoriteFirstRestaurants &&
           favoriteFirstRestaurants
-            .filter((restaurant) => isFestival || !restaurant.name_kr.includes("축제"))
+            .filter((restaurant) =>
+              isFestival
+                ? restaurant.name_kr.includes("축제")
+                : !restaurant.name_kr.includes("축제"),
+            )
             .map((restaurant) => (
               <Restaurant key={restaurant.id}>
                 <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
