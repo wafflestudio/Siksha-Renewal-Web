@@ -40,10 +40,10 @@ export default function MobileActionsModal({
 
 const MainContainer = styled.div`
   position: fixed;
-  bottom: 40px;
+  top: 50%;
   left: 50%;
-  width: calc(100% - 60px);
-  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  transform: translateX(-50%) translateY(-50%);
   background: white;
   border-radius: 26px;
 `;
