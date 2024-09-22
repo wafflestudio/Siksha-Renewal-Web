@@ -62,6 +62,7 @@ const Container = styled.div`
   height: 54px;
   padding-top: 12px;
   padding-bottom: 44px;
+  align-self: center;
 
   @media (max-width: 768px) {
     height: 36px;
@@ -82,13 +83,17 @@ const MealContainer = styled.div`
 
 const FestivalWrapper = styled.div`
   position: absolute;
-  right: 0%;
+  right: 34px;
+  width: 89.146px;
   height: 54px;
+
   display: flex;
   align-items: center;
-  align-items: flex-end;
+  align-items: center;
 
   @media (max-width: 768px) {
+    right: 17px;
+    width: 44.573px;
     height: 36px;
   }
 `;

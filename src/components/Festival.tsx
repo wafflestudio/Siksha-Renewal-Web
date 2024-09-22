@@ -6,49 +6,59 @@ export default function Festival() {
 
   return (
     <Container>
-      <MealButton onClick={() => setIsFestival(!isFestival)}>
-        <Star src={isFestival ? "/img/star.svg" : "/img/star-empty.svg"} alt="저녁" />
-        <MealText active={isFestival}>축제메뉴 보기</MealText>
+      <MealButton onClick={() => setIsFestival(!isFestival)} active={isFestival}>
+        {isFestival ? (
+          <>
+            <Text active={isFestival}>축제</Text>
+            <Circle active={isFestival} />
+          </>
+        ) : (
+          <>
+            <Circle active={isFestival} />
+            <Text active={isFestival}>축제</Text>
+          </>
+        )}
       </MealButton>
     </Container>
   );
 }
 
 const Container = styled.div`
-  width: 110px;
+  width: 100%;
+  @media (max-width: 768px) {
+    transform: scale(0.5);
+  }
 `;
 
-const MealButton = styled.div`
+const MealButton = styled.div<{ active: boolean }>`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   cursor: pointer;
-  padding: 0 6%;
-
-  @media (max-width: 768px) {
-    padding: 0 13px 0 13px;
-  }
+  width: 89.146px;
+  height: 38.75px;
+  border-radius: 19.376px;
+  background: ${({ active }) => (active ? "#FF9522" : "#b7b7b7")};
 `;
 
-const Star = styled.img`
-  width: 20px;
-  height: 22.21px;
-  padding-bottom: 11.5px;
-
-  @media (max-width: 768px) {
-    width: 12px;
-    padding-bottom: 3px;
-  }
+const Circle = styled.div<{ active: boolean }>`
+  width: 34px;
+  height: 34px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  margin: ${({ active }) => (active ? "0 3.2px 0 6.46px" : "0 2.76px 0 0")};
 `;
 
-const MealText = styled.div`
-  font-size: 15px;
-  line-height: 17px;
+const Text = styled.div<{ active: boolean }>`
+  margin: ${({ active }) => (active ? "0 2.69px 0 6.5px" : "0 5.75px 0 0")};
+  width: 34px; /* doubled from 17px */
+  color: #fff;
+  text-align: center;
+  font-feature-settings: "liga" off, "clig" off;
+  font-family: NanumSquareOTF;
+  font-size: 18px; /* doubled from 9px */
+  font-style: normal;
   font-weight: 400;
-  color: ${(props: { active: boolean }) => (props.active ? "#FE8C59" : "#919191")};
-
-  @media (max-width: 768px) {
-    font-size: 10px;
-    line-height: 11px;
-  }
+  line-height: normal;
+  letter-spacing: -0.3px;
 `;
