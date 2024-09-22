@@ -116,7 +116,6 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
     @media (max-width: 768px) {
       width: 18px;
       padding-left: 5px;
-      letter-spacing: -0.3px;
     }
   }
 `;

@@ -105,7 +105,6 @@ const EditOption = styled.button`
   padding: 6px 14px;
   font-size: 14px;
   line-height: 23px;
-  letter-spacing: -0.3px;
   text-align: left;
   cursor: pointer;
 

@@ -77,7 +77,6 @@ const MenuItem = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.3px;
   text-overflow: ellipsis;
   cursor: pointer;
 

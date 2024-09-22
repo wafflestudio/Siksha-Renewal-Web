@@ -156,7 +156,6 @@ const Text = styled.span`
   font-size: 16px;
   font-weight: 400;
   color: black;
-  letter-spacing: -0.3px;
 
   @media (max-width: 768px) {
     font-size: 15px;

@@ -90,7 +90,6 @@ const RestaurantName = styled.div`
   flex-grow: 1;
   font-size: 16px;
   line-height: 18px;
-  letter-spacing: -0.3px;
   color: #727272;
   text-decoration: underline;
   text-underline-offset: 3px;
