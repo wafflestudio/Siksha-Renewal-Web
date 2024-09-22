@@ -32,7 +32,9 @@ export default function MenuList() {
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
         data[meal]
-          .filter((data: RawMenu) => isFestival || !data.name_kr.includes("축제"))
+          .filter((data: RawMenu) =>
+            isFestival ? data.name_kr.includes("축제") : !data.name_kr.includes("축제"),
+          )
           .map((restaurant) => {
             if (isFilterFavorite) {
               return favoriteRestaurants.includes(restaurant.id) ? (
