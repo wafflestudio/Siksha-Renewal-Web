@@ -25,40 +25,53 @@ export default function Festival() {
 
 const Container = styled.div`
   width: 100%;
-  @media (max-width: 768px) {
-    transform: scale(0.5);
-  }
 `;
 
 const MealButton = styled.div<{ active: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: ${({ active }) => (active ? "right" : "left")};
   cursor: pointer;
-  width: 89.146px;
-  height: 38.75px;
-  border-radius: 19.376px;
+  width: 80.206px;
+  height: 34.864px;
+  border-radius: 17.432px;
   background: ${({ active }) => (active ? "#FF9522" : "#b7b7b7")};
+
+  @media (max-width: 768px) {
+    width: 44.573px;
+    height: 19.375px;
+    border-radius: 9.688px;
+  }
 `;
 
 const Circle = styled.div<{ active: boolean }>`
-  width: 34px;
-  height: 34px;
+  width: 30.59px;
+  height: 30.59px;
   background-color: #ffffff;
+  filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
   border-radius: 50%;
-  margin: ${({ active }) => (active ? "0 3.2px 0 6.46px" : "0 2.76px 0 0")};
+  margin: ${({ active }) => (active ? "0 2.49px 0 0" : "0 0 0 2.88px")};
+
+  @media (max-width: 768px) {
+    width: 17px;
+    height: 17px;
+    margin: ${({ active }) => (active ? "0 1.38px 0 0" : "0 0 0 1.6px")};
+  }
 `;
 
 const Text = styled.div<{ active: boolean }>`
-  margin: ${({ active }) => (active ? "0 2.69px 0 6.5px" : "0 5.75px 0 0")};
-  width: 34px; /* doubled from 17px */
+  margin: ${({ active }) => (active ? "0 6.43px 0 0" : "0 0 0 5.81px")};
   color: #fff;
   text-align: center;
   font-feature-settings: "liga" off, "clig" off;
-  font-family: NanumSquareOTF;
-  font-size: 18px; /* doubled from 9px */
+  font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
   letter-spacing: -0.3px;
+
+  @media (max-width: 768px) {
+    font-size: 9px;
+    margin: ${({ active }) => (active ? "0 2.69px 0 0" : "0 0 0 3.23px")};
+  }
 `;
