@@ -35,7 +35,9 @@ const useFestival = (): FestivalContextProps => {
     if (currentYear !== 2024 || currentMonth !== 9) return false;
     if (currentDate > 26) return false;
 
-    if (!disablePopupTime) return true;
+    console.log('disablePopupTime: ', disablePopupTime);
+    if (disablePopupTime === null) return false;
+    else if (!disablePopupTime) return true;
     else return currentDate > Number(disablePopupTime);
   }, [disablePopupTime]);
 
