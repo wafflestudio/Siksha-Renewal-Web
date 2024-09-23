@@ -24,7 +24,7 @@ const useFestival = (): FestivalContextProps => {
 
   const { value: disablePopupTime, set: setDisablePopupTime } = useLocalStorage(
     "24festival_disablePopupTime",
-    null,
+    "loading",
   );
 
   const isPopup = useMemo(() => {
@@ -35,7 +35,8 @@ const useFestival = (): FestivalContextProps => {
     if (currentYear !== 2024 || currentMonth !== 9) return false;
     if (currentDate > 26) return false;
 
-    if (!disablePopupTime) return true;
+    if (disablePopupTime === "loading") return false;
+    else if (!disablePopupTime) return true;
     else return currentDate > Number(disablePopupTime);
   }, [disablePopupTime]);
 
