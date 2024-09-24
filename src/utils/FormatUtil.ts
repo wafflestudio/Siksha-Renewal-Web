@@ -56,3 +56,9 @@ export function getPrevMonth(date) {
 export function formatPrice(price) {
   return price.toString().slice(0, price.toString().length - 3) + "," + price.toString().slice(-3);
 }
+
+export function sanitizeForCssSelector(str) {
+  return str
+  .trim()
+  .replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9-_:.]/g, '_');
+}
