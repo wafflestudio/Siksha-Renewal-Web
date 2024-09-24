@@ -4,6 +4,7 @@ import Menu from "components/Menu";
 import { useDispatchContext } from "context/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
 import { LoadingAnimation } from "styles/globalstyle";
+import { sanitizeForCssSelector } from "utils/FormatUtil";
 
 export default function MenuCard({ data }) {
   const { setInfoData, toggleShowInfo } = useDispatchContext();
@@ -12,7 +13,7 @@ export default function MenuCard({ data }) {
 
   return (
     <>
-      <DesktopContainer className={"a" + data.code}>
+      <DesktopContainer className={"a" + sanitizeForCssSelector(data.code)}>
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
@@ -49,7 +50,7 @@ export default function MenuCard({ data }) {
           </Menus>
         </MenuInfo>
       </DesktopContainer>
-      <MobileContainer className={"a" + data.code}>
+      <MobileContainer className={"a" + sanitizeForCssSelector(data.code)}>
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
