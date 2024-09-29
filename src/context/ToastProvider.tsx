@@ -13,35 +13,37 @@ interface Toast {
 
 interface ToastDispatchContextProps {
   open: (toast: Toast) => void;
-  close: (content: string) => void;
+  close: () => void;
 }
 
 interface ToastProviderProps {
   children: ReactNode;
 }
 
-export const ModalDispatchContext = createContext<ToastDispatchContextProps>({
+export const ToastDispatchContext = createContext<ToastDispatchContextProps>({
   open: () => {},
   close: () => {},
 });
 
-export const ModalsStateContext = createContext<Toast[]>([]);
+export const ToastStateContext = createContext<Toast | null>(null);
 
-export const ModalsProvider = ({ children }: ToastProviderProps) => {
-  const [openedToast, setOpenedToast] = useState<Toast[]>([]);
+export const ToastProvider = ({ children }: ToastProviderProps) => {
+  const [openedToast, setOpenedToast] = useState<Toast | null>(null);
 
   const open = (newToast: Toast) => {
-    setOpenedToast(() => [...openedToast, newToast]);
+    console.log("newToast", newToast);
+    setOpenedToast(newToast);
   };
-  const close = (content: string) => {
-    setOpenedToast(() => openedToast.filter((toast) => toast.message !== content));
+
+  const close = () => {
+    setOpenedToast(null);
   };
 
   const dispatch = useMemo(() => ({ open, close }), []);
 
   return (
-    <ModalsStateContext.Provider value={openedToast}>
-      <ModalDispatchContext.Provider value={dispatch}>{children}</ModalDispatchContext.Provider>
-    </ModalsStateContext.Provider>
+    <ToastStateContext.Provider value={openedToast}>
+      <ToastDispatchContext.Provider value={dispatch}>{children}</ToastDispatchContext.Provider>
+    </ToastStateContext.Provider>
   );
 };

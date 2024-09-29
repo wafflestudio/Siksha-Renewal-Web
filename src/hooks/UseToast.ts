@@ -1,16 +1,22 @@
-import LoginModal from "components/Auth/LoginModal";
-import { ModalDispatchContext } from "context/ModalsProvider";
-import { ComponentType, useContext } from "react";
+import { ToastDispatchContext, ToastStateContext } from "context/ToastProvider";
+import { useContext } from "react";
 
 export default function useToast() {
-  const { open, close } = useContext(ModalDispatchContext);
+  const openedToast = useContext(ToastStateContext);
+  const { open, close } = useContext(ToastDispatchContext);
 
-  const openToast = (type: string, title: string, message: string) => {};
+  const openToast = (type: string, title: string, message: string) => {
+    console.log("openToast", type, title, message);
+    open({ type, title, message });
+  };
 
-  const closeToast = () => {};
+  const closeToast = () => {
+    close();
+  };
 
   return {
     openToast,
     closeToast,
+    openedToast,
   };
 }
