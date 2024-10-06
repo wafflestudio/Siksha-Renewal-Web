@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { useStateContext } from "context/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
+import { sanitizeCssSelector } from "utils/FormatUtil";
 
 function scrollRestaurant(restaurant) {
-  let element = document.querySelector(".a" + restaurant);
+  let element = document.querySelector(".a" + sanitizeCssSelector(restaurant));
   if (!element) {
     throw new Error("Cannot find element");
   }
