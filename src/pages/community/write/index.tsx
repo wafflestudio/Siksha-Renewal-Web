@@ -10,8 +10,8 @@ import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { ImagePreview } from "components/Community/write/ImagePreview";
-import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
+import { BoardSelectDropdown } from "components/Community/write/BoardSelectDropdown";
 
 export type inputs = {
   title: string;
@@ -55,16 +55,8 @@ export default function PostWriter() {
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  const onClickBoardSelectMenu = () => {
-    openModal(BoardSelectModal, {
-      boards: boards,
-      onClose: () => {},
-      onSubmit: (board) =>
-        setInputs((prev) => {
-          return { ...prev, boardId: board.id };
-        }),
-    });
-  };
+  // TODO: 드롭다운 메뉴 오픈하는 걸로 바꾸기
+  const onClickBoardSelectMenu = () => { };
 
   const toggleAnonymous = () => {
     setIsAnonymousWriter(!inputs.options.anonymous);
@@ -193,10 +185,10 @@ export default function PostWriter() {
       <Layout>
         <Container>
           <DesktopHeader>글쓰기</DesktopHeader>
-          <BoardMenu id="board-select-menu" onClick={onClickBoardSelectMenu}>
-            {selectedBoardName}
-            <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
-          </BoardMenu>
+          <BoardSelectDropdown
+            boards={boards}
+            onSelect={(boardId) => setInputs((prev) => { return { ...prev, boardId } })}
+          />
           <TitleInput
             type="text"
             placeholder="제목"
@@ -229,13 +221,12 @@ export default function PostWriter() {
           </Footer>
           {!isMobile ? (
             <ButtonContainer>
-              <Button className="cancel" onClick={router.back} isMobile>
+              <Button className="cancel" onClick={router.back}>
                 취소
               </Button>
               <Button
                 className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
                 onClick={handleSubmit}
-                isMobile
               >
                 등록
               </Button>
@@ -245,7 +236,6 @@ export default function PostWriter() {
               <Button
                 className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
                 onClick={handleSubmit}
-                isMobile
               >
                 올리기
               </Button>
@@ -262,9 +252,6 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
   flex: 1;
-
-  @media (max-width: 768px) {
-  }
 `;
 const DesktopHeader = styled.div`
   font-size: 20px;
@@ -393,7 +380,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Button = styled.button<{ isMobile: boolean }>`
+const Button = styled.button`
   width: 324px;
   height: 46px;
   font-size: 16px;
@@ -406,6 +393,7 @@ const Button = styled.button<{ isMobile: boolean }>`
 
   &.cancel {
     color: #8e8e8e;
+    background-color: #eeeeee;
   }
   &.submit {
     color: white;
@@ -416,6 +404,6 @@ const Button = styled.button<{ isMobile: boolean }>`
   }
 
   @media (max-width: 768px) {
-    width: 343px;
+    width: 100%;
   }
 `;
