@@ -42,13 +42,13 @@ export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownPro
   return (
       <Container ref={dropdownRef}>
         <BoardMenu onClick={toggleDropdown}>
-          {selectedBoardName}
+          <span>{selectedBoardName}</span>
           <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
         </BoardMenu>
         <BoardMenuList isOpen={isOpen}>
           {boards.map((board) => (
             <BoardMenuItem key={board.id} onClick={() => handleClickItem(board.id)} className={board.id === selectedBoardId ? "selected" : ""}>
-              {board.name}
+              <span>{board.name}</span>
             </BoardMenuItem>
           ))}
         </BoardMenuList>
@@ -61,10 +61,8 @@ const Container = styled.div`
 `;
 
 const BoardMenu = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
+  position: relative;
+  text-align: center;
   width: 100%;
   border: 1px solid #dfdfdf;
   border-radius: 8px;
@@ -79,8 +77,12 @@ const BoardMenu = styled.button`
 `;
 
 const Icon = styled.img`
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  margin-left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const BoardMenuList = styled.div<{ isOpen: boolean }>`
@@ -90,23 +92,40 @@ const BoardMenuList = styled.div<{ isOpen: boolean }>`
   width: 100%;
   border: 1px solid #dfdfdf;
   border-radius: 8px;
-  margin-top: -8px;
+  margin-top: -5px;
 `;
 
 const BoardMenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  text-align: center;
   width: 100%;
   height: 39px;
+  line-height: 39px;
   background: #ffffff;
   cursor: pointer;
 
   &.selected {
-    font-weight: #ff9522;
+    color: #ff9522;
+
+    ::after {
+      content: '';
+      position: absolute;
+      width: 13px;
+      height: 11px;
+      margin-left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: url('/img/check.svg') no-repeat;
+      background-size: contain;
+
+      @media (max-width: 768px){
+        width: 10px;
+        height: 8px;
+      }
+    }
   }
 
-  &:hover {
+  &:active {
     background: #f6f6f6;
   }
   &:not(:last-child) {
