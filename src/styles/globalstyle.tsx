@@ -39,6 +39,12 @@ export const GlobalStyle = createGlobalStyle`
 
     font-weight: 100;
   }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
   
   body {
     margin: 0;
@@ -46,7 +52,6 @@ export const GlobalStyle = createGlobalStyle`
     background: #F8F8F8;
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
-    letter-spacing: -0.3px;
 
     @media (min-width: 768px) and (max-width: 1024px) {
       min-width: 1024px;
@@ -72,6 +77,7 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 일부 안드로이드 브라우저를 위한 설정 */
     -webkit-focus-ring-color: transparent; /* 일부 최신 버전의 크롬을 위한 설정 */
+    letter-spacing: -0.3px;
   }
 
   /* constants */
