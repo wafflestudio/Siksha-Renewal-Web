@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
 import { useRouter } from "next/router";
+import Toast from "./Toast";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -63,6 +64,7 @@ export default function Layout({ children }: LayoutProps) {
         <Content>{children}</Content>
       </Container>
       <Modals />
+      <Toast />
     </>
   );
 }
