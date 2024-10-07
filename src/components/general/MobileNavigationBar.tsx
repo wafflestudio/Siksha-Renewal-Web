@@ -77,7 +77,9 @@ export default function MobileNavigationBar() {
 }
 
 const Container = styled.div`
+  position: fixed;
   display: flex;
+  bottom: 0;
   justify-content: space-evenly;
   padding: 11px 0 30px;
   box-sizing: border-box;
