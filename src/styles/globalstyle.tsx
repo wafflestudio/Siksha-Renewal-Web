@@ -69,8 +69,18 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: #000000;
   }
-  input, textarea, button {
-    font-family: "NanumSquare", "NIXGONFONTS V2.0";
+  input, button, select, option, textarea {
+    font-size: 100%;
+    font-family: inherit;
+  }
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
   }
 
   * {
