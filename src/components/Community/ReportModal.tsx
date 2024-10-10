@@ -1,9 +1,9 @@
 import AlertModal from "components/general/AlertModal";
 import BackClickable from "components/general/BackClickable";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useModals from "hooks/UseModals";
-import UseProfile from "hooks/UseProfile";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import { useState } from "react";
 import styled from "styled-components";
 import { setReportComment, setReportPost } from "utils/api/community";
@@ -17,8 +17,8 @@ interface ReportModalProps {
 
 export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalProps) {
   const [reason, setReason] = useState("");
-  const { userInfo } = UseProfile();
-  const { getAccessToken } = useAuth();
+  const { userInfo } = UseProfile_Legacy();
+  const { getAccessToken } = useAuth_Legacy();
   const { openModal } = useModals();
 
   const isValid = reason.length >= 1;

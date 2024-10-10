@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import RestaurantTime from "components/RestaurantTime";
-import Menu from "components/Menu";
+import RestaurantTime from "app/components/RestaurantTime";
+import Menu from "app/components/Menu";
 import { useDispatchContext } from "context/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
 import { LoadingAnimation } from "styles/globalstyle";

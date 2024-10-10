@@ -1,6 +1,6 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useModals from "hooks/UseModals";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
-  const { checkAccessToken, authStatus } = useAuth();
+  const { checkAccessToken, authStatus } = useAuth_Legacy();
   const { boardId } = router.query;
   const { openLoginModal } = useModals();
 

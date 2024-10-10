@@ -1,31 +1,30 @@
 "use client";
 
-import Header from "components/general/Header";
+import Header_Legacy from "components/general/Header_Legacy";
 import { useDispatchContext } from "context/ContextProvider";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useIsMobile from "hooks/UseIsMobile";
-import UseProfile from "hooks/UseProfile";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import Toast from "./Toast";
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: JSX.Element;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout_Legacy({ children }: LayoutProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const boardId = searchParams?.get("boardId");
+  const { boardId } = router.query;
 
   const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
-  const { getAccessToken, login } = useAuth();
+  const { getAccessToken, login } = useAuth_Legacy();
 
-  UseProfile();
+  UseProfile_Legacy();
 
   useEffect(() => {
     getAccessToken()
@@ -45,26 +44,25 @@ export default function Layout({ children }: LayoutProps) {
 
   // write page로 router.back하지 않도록
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      const as = event.state?.url || "";
+    router.beforePopState(({ as }) => {
       if (as.includes("/write")) {
         if (boardId) router.push(`/community/boards/${boardId}`);
         else router.push("/");
-        event.preventDefault();
+        return false;
       }
-    };
 
-    window.addEventListener("popstate", handlePopState);
+      return true;
+    });
 
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      router.beforePopState(() => true);
     };
   }, []);
 
   return (
     <>
       <Container id="root-layout">
-        <Header />
+        <Header_Legacy />
         <Content>{children}</Content>
       </Container>
       <Modals />

@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
 import { getMenu } from "utils/api/menus";
 import { getReviews } from "utils/api/reviews";
 import MenuSection from "components/MenuDetail/MenuSection";
 import ReviewSection from "components/MenuDetail/ReviewSection";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export interface MenuType {
   id: number;
@@ -62,7 +62,7 @@ export default function Menu() {
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
-  const { authStatus, getAccessToken } = useAuth();
+  const { authStatus, getAccessToken } = useAuth_Legacy();
 
   const fetchMenu = async () => {
     const accessToken = await getAccessToken().catch((error) => "");
@@ -187,7 +187,7 @@ export default function Menu() {
               )}
             </Info>
           </Background>
-          <MobileNavigationBar />
+          <MobileNavigationBar_Legacy />
         </>
       )}
     </>

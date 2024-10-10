@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../context/ContextProvider";
-import { formatDate } from "../utils/FormatUtil";
+import { useDispatchContext, useStateContext } from "../../context/ContextProvider";
+import { formatDate } from "../../utils/FormatUtil";
 
 export default function CalendarNavi() {
   const state = useStateContext();

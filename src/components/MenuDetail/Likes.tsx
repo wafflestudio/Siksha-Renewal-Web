@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -12,7 +12,7 @@ export default function Likes({ menu }) {
   const isLikedImg = isLiked ? "/img/heart-on.svg" : "/img/heart-off.svg";
 
   const state = useStateContext();
-  const { authStatus, getAccessToken } = useAuth();
+  const { authStatus, getAccessToken } = useAuth_Legacy();
 
   const { openLoginModal } = useModals();
 

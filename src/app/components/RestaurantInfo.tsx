@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../context/ContextProvider";
+import { useDispatchContext, useStateContext } from "../../context/ContextProvider";
 import { useEffect } from "react";
 import MobileOperatingHour from "./MobileOperatingHour";
-import BackClickable from "./general/BackClickable";
+import BackClickable from "../../components/general/BackClickable";
 
 export default function RestaurantInfo() {
   const state = useStateContext();

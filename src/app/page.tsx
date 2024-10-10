@@ -1,13 +1,15 @@
+"use client";
+
 import styled from "styled-components";
-import LeftSide from "components/LeftSide";
-import RightSide from "components/RightSide";
-import Date from "components/Date";
+import LeftSide from "app/components/LeftSide";
+import RightSide from "app/components/RightSide";
+import Date from "app/components/Date";
 import { useEffect } from "react";
 import { formatISODate } from "../utils/FormatUtil";
 import { useDispatchContext, useStateContext } from "../context/ContextProvider";
-import Meal from "components/Meal";
-import MenuList from "components/MenuList";
-import RestaurantInfo from "components/RestaurantInfo";
+import Meal from "app/components/Meal";
+import MenuList from "app/components/MenuList";
+import RestaurantInfo from "app/components/RestaurantInfo";
 import { getMenuList } from "utils/api/menus";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useAuth from "hooks/UseAuth";

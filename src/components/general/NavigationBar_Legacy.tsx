@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
-export default function NavigationBar() {
+export default function NavigationBar_Legacy() {
   const router = useRouter();
-  const addr = usePathname();
+  const addr = router.pathname;
 
-  const { authStatus } = useAuth();
+  const { authStatus } = useAuth_Legacy();
   const { openLoginModal } = useModals();
 
   const toggleAccount = () => {
@@ -20,16 +20,16 @@ export default function NavigationBar() {
     <NaviBar>
       <NavItem>
         <Link href="/" passHref>
-          <NavLink $cur={addr === `/` || (addr?.startsWith(`/menu`) ?? false)}>식단</NavLink>
+          <NavLink $cur={addr === `/` || addr.startsWith(`/menu`)}>식단</NavLink>
         </Link>
       </NavItem>
       <NavItem>
         <Link href="/community/boards/1" passHref>
-          <NavLink $cur={addr?.startsWith(`/community`) ?? false}>게시판</NavLink>
+          <NavLink $cur={addr.startsWith(`/community`)}>게시판</NavLink>
         </Link>
       </NavItem>
       <NavItem onClick={toggleAccount}>
-        <NavLink $cur={addr?.startsWith(`/account`) ?? false}>마이 페이지</NavLink>
+        <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
       </NavItem>
     </NaviBar>
   );

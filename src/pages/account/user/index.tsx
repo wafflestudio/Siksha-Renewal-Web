@@ -2,13 +2,13 @@ import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { deleteAccount } from "utils/api/auth";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();
-  const { authStatus, getAccessToken, authGuard, logout } = useAuth();
+  const { authStatus, getAccessToken, authGuard, logout } = useAuth_Legacy();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

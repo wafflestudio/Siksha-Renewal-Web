@@ -8,7 +8,7 @@ import { getBoardList, getPost, setPost, updatePost } from "utils/api/community"
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { ImagePreview } from "components/Community/write/ImagePreview";
 import { BoardSelectModal } from "components/Community/write/BoardSelectModal";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
@@ -46,7 +46,7 @@ export default function PostWriter() {
 
   const isMobile = useIsMobile();
 
-  const { authStatus, getAccessToken } = useAuth();
+  const { authStatus, getAccessToken } = useAuth_Legacy();
 
   const { openLoginModal, openModal } = useModals();
 

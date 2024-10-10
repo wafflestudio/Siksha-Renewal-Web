@@ -2,19 +2,19 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
 import { useStateContext } from "../../context/ContextProvider";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect } from "react";
-import UseProfile from "hooks/UseProfile";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Account() {
   const router = useRouter();
 
-  const { userInfo } = UseProfile();
+  const { userInfo } = UseProfile_Legacy();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
-  const { authStatus, authGuard } = useAuth();
+  const { authStatus, authGuard } = useAuth_Legacy();
 
   useEffect(authGuard, [authStatus]);
 
@@ -99,7 +99,7 @@ export default function Account() {
           <InquiryText>1:1 문의하기</InquiryText>
         </ContentDiv>
       </ListGroup>
-      <MobileNavigationBar />
+      <MobileNavigationBar_Legacy />
     </AccountLayout>
   );
 }

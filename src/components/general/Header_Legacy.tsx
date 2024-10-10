@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
-import NavigationBar from "components/general/NavigationBar";
+import { useRouter } from "next/router";
+import NavigationBar_Legacy from "components/general/NavigationBar_Legacy";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
-export default function Header() {
+export default function Header_Legacy() {
   const router = useRouter();
 
-  const { authStatus, logout } = useAuth();
+  const { authStatus } = useAuth_Legacy();
   const { openLoginModal } = useModals();
+  const { logout } = useAuth_Legacy();
 
   return (
     <Background>
@@ -21,7 +22,7 @@ export default function Header() {
           />
           <Title onClick={() => router.push("/")}>서울대학교 식단 알리미</Title>
         </CIContainer>
-        <NavigationBar />
+        <NavigationBar_Legacy />
         {authStatus === "login" ? (
           <LoginButton onClick={logout}>로그아웃</LoginButton>
         ) : (

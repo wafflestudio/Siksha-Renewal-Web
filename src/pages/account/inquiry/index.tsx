@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
 import { setInquiry } from "utils/api/voc";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function Inquiry() {
@@ -12,7 +12,7 @@ export default function Inquiry() {
   const state = useStateContext();
   const { userInfo } = state;
 
-  const { getAccessToken, authStatus, authGuard } = useAuth();
+  const { getAccessToken, authStatus, authGuard } = useAuth_Legacy();
 
   useEffect(authGuard, [authStatus]);
 

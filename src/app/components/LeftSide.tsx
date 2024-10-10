@@ -2,7 +2,7 @@ import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import Image from "next/image";
 import useModals from "hooks/UseModals";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import DesktopCalendar from "./DesktopCalendar";
 import useAuth from "hooks/UseAuth";
 

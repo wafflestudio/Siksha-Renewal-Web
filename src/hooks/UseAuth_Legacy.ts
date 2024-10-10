@@ -1,10 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { useDispatchContext, useStateContext } from "context/ContextProvider";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
 
-export default function useAuth() {
+/**
+ *
+ * @deprecated
+ */
+export default function useAuth_Legacy() {
   const { authStatus } = useStateContext();
   const { setAuthStatus } = useDispatchContext();
   const { openLoginModal } = useModals();
@@ -24,8 +28,7 @@ export default function useAuth() {
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
-      router.push(`/`);
-      openLoginModal();
+      router.push(`/`).then(() => openLoginModal());
     }
   }, [authStatus]);
 

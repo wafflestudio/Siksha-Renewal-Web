@@ -1,10 +1,12 @@
 import { Metadata } from "next";
 import { Viewport } from "next";
-import StyledComponentsRegistry from "./registry";
+import StyledComponentsRegistry from "./components/registry";
 import ContextProvider from "context/ContextProvider";
 import { ModalsProvider } from "context/ModalsProvider";
 import { ToastProvider } from "context/ToastProvider";
 import Script from "next/script";
+import { GlobalStyle } from "styles/globalstyle";
+import Layout from "components/general/Layout";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
@@ -36,10 +38,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
+        <GlobalStyle />
         <StyledComponentsRegistry>
           <ContextProvider>
             <ModalsProvider>
-              <ToastProvider>{children}</ToastProvider>
+              <ToastProvider>
+                <Layout>{children}</Layout>
+              </ToastProvider>
             </ModalsProvider>
           </ContextProvider>
         </StyledComponentsRegistry>

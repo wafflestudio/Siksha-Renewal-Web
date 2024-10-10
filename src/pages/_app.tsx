@@ -1,7 +1,7 @@
 import Head from "next/head";
 import "styles/calendar.css";
 import ContextProvider from "context/ContextProvider";
-import Layout from "components/general/Layout";
+import Layout_Legacy from "components/general/Layout_Legacy";
 import { GlobalStyle } from "styles/globalstyle";
 import { ModalsProvider } from "context/ModalsProvider";
 import { useEffect } from "react";
@@ -45,9 +45,9 @@ function MyApp({ Component, pageProps }) {
               />
               {/* eslint-disable-next-line @next/next/no-sync-scripts */}
             </Head>
-            <Layout>
+            <Layout_Legacy>
               <Component {...pageProps} />
-            </Layout>
+            </Layout_Legacy>
             <Script
               type="text/javascript"
               rel="dns-prefetch"

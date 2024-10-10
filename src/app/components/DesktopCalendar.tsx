@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { formatDate, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
+import "styles/calendar.css";
 
 export default function DesktopCalendar() {
   const state = useStateContext();
