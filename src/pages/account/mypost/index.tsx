@@ -66,7 +66,6 @@ const Header = styled.div`
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
-  letter-spacing: -0.3px;
 
   @media (max-width: 768px) {
     display: none;

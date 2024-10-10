@@ -89,6 +89,5 @@ const Container = styled.div`
 const Content = styled.div`
   @media (max-width: 768px) {
     flex: 1;
-    height: calc(100% - 143px);
   }
 `;

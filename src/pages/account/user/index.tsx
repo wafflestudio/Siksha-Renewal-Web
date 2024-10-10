@@ -45,7 +45,7 @@ export default function UserSetting() {
 
   return (
     <>
-      <MobileSubHeader title="계정 관리" handleBack={() => router.push("/account")} />
+      <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
       <AccountLayout>
         <MobileSpace />
         <Container>
@@ -112,6 +112,7 @@ const Text = styled.span`
 
   @media (max-width: 768px) {
     margin-left: 16px;
+    font-size: 15px;
   }
 `;
 

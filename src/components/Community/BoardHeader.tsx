@@ -194,7 +194,7 @@ const WriteButton = styled.button`
   @media (max-width: 768px) {
     position: fixed;
     bottom: 100px;
-    right: 29px;
+    right: 9px;
   }
 `;
 const ButtonImg = styled.img``;

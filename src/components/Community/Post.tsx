@@ -51,7 +51,7 @@ const Container = styled.div`
   cursor: pointer;
 
   @media (max-width: 768px) {
-    padding: 15px 12.5px 14px 12.5px;
+    padding: 15px 12.5px 14px 0;
   }
 
   &::after {
@@ -79,7 +79,7 @@ const Info = styled.div<{ isImages: boolean | null }>`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    gap: 12px;
+    gap: 9px;
     height: min-content;
 
     ${(props) =>
@@ -97,7 +97,8 @@ const Title = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 800;
   }
 `;
 const ContentPreview = styled.div`
@@ -111,6 +112,7 @@ const ContentPreview = styled.div`
 `;
 const LikesAndComments = styled.div`
   display: flex;
+  margin-top: 3px;
   gap: 12px;
   font-size: 12px;
   @media (max-width: 768px) {

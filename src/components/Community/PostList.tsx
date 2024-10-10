@@ -40,13 +40,13 @@ const EmptyText = styled.div`
   align-items: center;
   width: 100%;
   height: 160.84px;
-  text-align: center;
   font-size: 20px;
   font-weight: 400;
   line-height: 23px;
   color: #a6a6a6;
 
   @media (max-width: 768px) {
-    height: calc(100dvh - 60px);
+    height: calc(100% - 83px);
+    font-size: 15px;
   }
 `;

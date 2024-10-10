@@ -41,4 +41,3 @@ export default function Board({ selectedBoardId, showBoardMenu, children }: Boar
   );
 }
 
-const Container = styled.div``;

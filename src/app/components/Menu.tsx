@@ -109,7 +109,6 @@ const MenuName = styled.div`
   font-size: 16px;
   color: black;
   flex: 1;
-  letter-spacing: -0.3px;
   line-height: 23px;
   display: flex;
   align-items: center;

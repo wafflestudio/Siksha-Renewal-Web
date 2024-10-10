@@ -43,5 +43,3 @@ export default function Posts() {
       </Board>
     );
 }
-
-const Container = styled.div``;

@@ -238,6 +238,7 @@ const Container = styled.div`
   padding-top: 18.83px;
   @media (max-width: 768px) {
     padding-top: 16px;
+    padding-bottom: 54.21px; // CommentWriter 높이
   }
 `;
 
@@ -372,7 +373,7 @@ const LikesAndComments = styled.div`
   display: flex;
   gap: 12px;
   font-size: 12px;
-  margin-bottom: 23px;
+  margin-bottom: 14px;
 `;
 const Likes = styled.div`
   display: flex;

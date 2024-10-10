@@ -242,7 +242,6 @@ const ReviewTitleText = styled.span`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: -0.3px;
 `;
 
 const SelectStarText = styled.span`
@@ -309,7 +308,6 @@ const CommentTextArea = styled.textarea`
   font-size: 16px;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.3px;
   color: #333;
 `;
 
