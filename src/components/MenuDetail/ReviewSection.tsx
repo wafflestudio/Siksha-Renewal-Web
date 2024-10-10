@@ -5,6 +5,7 @@ import { ReviewListType } from "pages/menu/[menuId]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate } from "utils/FormatUtil";
+import Image from "next/image";
 
 export interface MenuType {
   id: number;
@@ -76,7 +77,7 @@ export default function ReviewSection({
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                  <img src="/img/right-arrow-darkgrey.svg" alt="사진 리뷰 모아보기" width="7.5" />
+                  <Image src="/img/right-arrow-darkgrey.svg" alt="사진 리뷰 모아보기" width="7.5" />
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>
