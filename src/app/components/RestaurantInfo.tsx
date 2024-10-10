@@ -11,20 +11,35 @@ export default function RestaurantInfo() {
   const { infoData } = state;
 
   useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new window.kakao.maps.LatLng(infoData.lat, infoData.lng),
+    const loadMap = () => {
+      const container = document.getElementById("map");
+      const options = {
+        center: new window.kakao.maps.LatLng(infoData.lat, infoData.lng),
+      };
+
+      const map = new window.kakao.maps.Map(container, options);
+
+      const markerPosition = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
+
+      const marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+      });
+
+      marker.setMap(map);
     };
 
-    const map = new window.kakao.maps.Map(container, options);
-
-    const markerPosition = new window.kakao.maps.LatLng(infoData.lat, infoData.lng);
-
-    const marker = new window.kakao.maps.Marker({
-      position: markerPosition,
-    });
-
-    marker.setMap(map);
+    // LatLng를 못불러오는 오류가 발생해서 동적으로 import
+    if (window.kakao && window.kakao.maps && window.kakao.maps.LatLng) loadMap();
+    else {
+      const apiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
+      const script = document.createElement("script");
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
+      script.async = true;
+      script.onload = () => {
+        window.kakao.maps.load(loadMap);
+      };
+      document.head.appendChild(script);
+    }
   }, [infoData]);
 
   return (

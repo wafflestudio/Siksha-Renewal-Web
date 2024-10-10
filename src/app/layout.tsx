@@ -51,11 +51,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script
           type="text/javascript"
           rel="dns-prefetch"
-          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
-        />
-        <Script
-          type="text/javascript"
-          rel="dns-prefetch"
           src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
         />
       </body>
