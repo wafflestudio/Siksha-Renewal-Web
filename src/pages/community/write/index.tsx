@@ -55,9 +55,6 @@ export default function PostWriter() {
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
   const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  // TODO: 드롭다운 메뉴 오픈하는 걸로 바꾸기
-  const onClickBoardSelectMenu = () => { };
-
   const toggleAnonymous = () => {
     setIsAnonymousWriter(!inputs.options.anonymous);
     setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
