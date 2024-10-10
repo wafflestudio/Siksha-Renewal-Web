@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
 import { ToastProvider } from "context/ToastProvider";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -47,12 +48,12 @@ function MyApp({ Component, pageProps }) {
             <Layout>
               <Component {...pageProps} />
             </Layout>
-            <script
+            <Script
               type="text/javascript"
               rel="dns-prefetch"
               src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
             />
-            <script
+            <Script
               type="text/javascript"
               rel="dns-prefetch"
               src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"

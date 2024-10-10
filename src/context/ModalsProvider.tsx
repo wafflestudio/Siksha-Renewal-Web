@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { ComponentType } from "react";
 
