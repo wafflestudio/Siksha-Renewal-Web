@@ -2,6 +2,10 @@ import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
 import useAuth_Legacy from "./UseAuth_Legacy";
 
+/**
+ *
+ * @deprecated
+ */
 export default function useFavorite_Legacy() {
   const { authStatus } = useAuth_Legacy();
 

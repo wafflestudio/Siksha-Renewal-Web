@@ -3,6 +3,10 @@ import useAuth_Legacy from "./UseAuth_Legacy";
 import { useDispatchContext, useStateContext } from "context/ContextProvider";
 import { getMyData } from "utils/api/auth";
 
+/**
+ *
+ * @deprecated
+ */
 export default function UseProfile_Legacy() {
   const { userInfo } = useStateContext();
   const { setUserInfo } = useDispatchContext();

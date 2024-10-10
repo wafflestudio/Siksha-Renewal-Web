@@ -4,6 +4,10 @@ import { useRouter } from "next/router";
 import useModals from "hooks/UseModals";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
+/**
+ *
+ * @deprecated
+ */
 export default function NavigationBar_Legacy() {
   const router = useRouter();
   const addr = router.pathname;

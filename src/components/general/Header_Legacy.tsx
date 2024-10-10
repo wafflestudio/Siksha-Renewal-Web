@@ -4,6 +4,10 @@ import NavigationBar_Legacy from "components/general/NavigationBar_Legacy";
 import useModals from "hooks/UseModals";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
+/**
+ *
+ * @deprecated
+ */
 export default function Header_Legacy() {
   const router = useRouter();
 

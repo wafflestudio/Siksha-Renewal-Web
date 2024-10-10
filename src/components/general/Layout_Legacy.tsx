@@ -16,6 +16,10 @@ interface LayoutProps {
   children: JSX.Element;
 }
 
+/**
+ *
+ * @deprecated
+ */
 export default function Layout_Legacy({ children }: LayoutProps) {
   const router = useRouter();
   const { boardId } = router.query;

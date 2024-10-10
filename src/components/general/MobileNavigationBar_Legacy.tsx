@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useModals from "hooks/UseModals";
 
+/**
+ *
+ * @deprecated
+ */
 export default function MobileNavigationBar_Legacy() {
   const router = useRouter();
   const addr = router.pathname;
