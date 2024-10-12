@@ -61,11 +61,11 @@ export default function Inquiry() {
           </UserBox>
           <InquireBox>
             <TextArea value={voc} onChange={handleTextAreaChange} />
-            <WordCnt>{`${voc.length} / 500자`}</WordCnt>
+            <WordCnt>{`${voc.length} 자 / 500 자`}</WordCnt>
           </InquireBox>
           <ButtonBox>
             <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
-            <ButtonConfirm onClick={handlePost}>등록</ButtonConfirm>
+            <ButtonConfirm onClick={handlePost}>전송하기</ButtonConfirm>
           </ButtonBox>
         </Container>
       </AccountLayout>
@@ -106,7 +106,7 @@ const MobileBox = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 44px;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -117,6 +117,7 @@ const Icon = styled.img`
 
 const Description = styled.p`
   text-align: center;
+  margin: 0;
   margin-left: 10px;
   font-size: 20px;
   font-weight: 700;
@@ -184,10 +185,9 @@ const WordCnt = styled.div`
   color: #707070;
 
   @media (max-width: 768px) {
-    margin-left: 16px;
-    margin-right: 16px;
     position: absolute;
-    right: 8px;
+    right: 0;
+    padding-right: 35px;
   }
 `;
 const ButtonBox = styled.div`

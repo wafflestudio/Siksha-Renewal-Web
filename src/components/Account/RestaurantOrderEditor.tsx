@@ -141,6 +141,10 @@ const Restaurant = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const DragButton = styled.div<{ dragging: boolean }>`

@@ -29,7 +29,7 @@ export default function NavigationBar() {
         </Link>
       </NavItem>
       <NavItem onClick={toggleAccount}>
-        <NavLink $cur={addr.startsWith(`/account`)}>마이 페이지</NavLink>
+        <NavLink $cur={addr.startsWith(`/account`)}>마이페이지</NavLink>
       </NavItem>
     </NaviBar>
   );

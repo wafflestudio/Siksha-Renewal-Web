@@ -47,9 +47,9 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: -118px;
+  left: -146px;
   top: 32px;
-  width: 118px;
+  width: 146px;
 
   @media (max-width: 768px) {
     flex-direction: row;
@@ -68,10 +68,16 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  width: 100%;
-  height: 42px;
-  box-sizing: border-box;
-  padding-left: 15px;
+  width: 94px;
+  padding: 12px 37px 12px 15px;
+  
+  color: #979797;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-overflow: ellipsis;
   cursor: pointer;
 
   &:hover {

@@ -177,7 +177,6 @@ const Input = styled.input`
   font-size: 16px;
   font-weight: 400;
   line-height: 23px;
-  letter-spacing: -0.3px;
   border: none;
   &:focus {
     outline: none;
@@ -207,5 +206,4 @@ const ResultText = styled.span<{ isDuplicate: boolean }>`
   font-size: 14px;
   font-weight: 400;
   line-height: 23px;
-  letter-spacing: -0.3px;
 `;

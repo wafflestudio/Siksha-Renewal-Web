@@ -153,7 +153,6 @@ const Title = styled.h3`
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
-  letter-spacing: -0.3px;
   margin-top: 0;
   color: #ff9522;
 `;

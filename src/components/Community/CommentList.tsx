@@ -22,9 +22,4 @@ export default function CommentList({ comments, fetch, update }: CommentsProps) 
   );
 }
 
-const Container = styled.div`
-  margin-bottom: 14px;
-  @media (max-width: 768px) {
-    margin-bottom: 10px;
-  }
-`;
+const Container = styled.div``;

@@ -72,4 +72,6 @@ export default function InfiniteScrollable({
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  height: 100%;
+`;
