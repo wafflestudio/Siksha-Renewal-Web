@@ -1,6 +1,6 @@
 import MenuCard from "./MenuCard";
 import styled from "styled-components";
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
@@ -54,6 +54,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height: 100px;
     flex-grow: 1;
+    padding-bottom: 83px; // mobile navigation bar height
   }
 
   ${LoadingAnimation}
