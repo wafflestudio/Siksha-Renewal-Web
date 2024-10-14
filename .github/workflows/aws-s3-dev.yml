@@ -22,6 +22,7 @@ jobs:
         run: |
           echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
           echo "NEXT_PUBLIC_KAKAO_REDIRECTURI=${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECTURI_DEV }}" >> .env
+          echo "NEXT_PUBLIC_KAKAOMAP_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAOMAP_RESTAPI }} >> .env
           echo "NEXT_PUBLIC_GOOGLE_CLIENTID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENTID }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_SECRET }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI_DEV }}" >> .env
