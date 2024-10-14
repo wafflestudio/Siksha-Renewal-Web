@@ -7,6 +7,7 @@ import { ToastProvider } from "providers/ToastProvider";
 import Script from "next/script";
 import { GlobalStyle } from "styles/globalstyle";
 import Layout from "components/general/Layout";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
@@ -43,7 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ContextProvider>
             <ModalsProvider>
               <ToastProvider>
-                <Layout>{children}</Layout>
+                <Suspense>
+                  <Layout>{children}</Layout>
+                </Suspense>
               </ToastProvider>
             </ModalsProvider>
           </ContextProvider>

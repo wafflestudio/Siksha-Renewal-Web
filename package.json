@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NEXT_PUBLIC_NODE_ENV=development next dev",
-    "build": "cross-env NEXT_PUBLIC_NODE_ENV=production next build && next export",
-    "devbuild": "cross-env NEXT_PUBLIC_NODE_ENV=development next build && next export",
+    "build": "cross-env NEXT_PUBLIC_NODE_ENV=production next build",
+    "devbuild": "cross-env NEXT_PUBLIC_NODE_ENV=development next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
