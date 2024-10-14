@@ -10,9 +10,14 @@ interface ReviewImageSwiperProps {
   images: string[];
   swiperImagesLimit: number;
   imageCount: number;
-};
+}
 
-export default function ReviewImageSwiper({ menuId, images, swiperImagesLimit, imageCount }: ReviewImageSwiperProps) {
+export default function ReviewImageSwiper({
+  menuId,
+  images,
+  swiperImagesLimit,
+  imageCount,
+}: ReviewImageSwiperProps) {
   const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
@@ -29,7 +34,7 @@ export default function ReviewImageSwiper({ menuId, images, swiperImagesLimit, i
         const viewportWidth = viewportElement.offsetWidth;
         const containerWidth = containerElement.scrollWidth;
         SetIsContainerSmaller(viewportWidth + 4 >= containerWidth);
-      }
+      };
 
       const resizeObserver = new ResizeObserver(updateWidthComparison);
       resizeObserver.observe(viewportElement);
@@ -56,22 +61,26 @@ export default function ReviewImageSwiper({ menuId, images, swiperImagesLimit, i
         <SwiperContainer>
           {images.map((image, index) => (
             <ReviewImageContainer key={image}>
-              {
-                imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
+              {imageCount > swiperImagesLimit && index === swiperImagesLimit - 1 && (
                 <Link href={`/menu/${menuId}/photos`}>
                   <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
                 </Link>
-              }
+              )}
               <ReviewImage src={image} />
             </ReviewImageContainer>
           ))}
         </SwiperContainer>
       </SwiperViewport>
       <PrevButton type="button" onClick={onPrevButtonClick}>
-        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
+        <Image src="/img/general/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
       </PrevButton>
       <NextButton type="button" onClick={onNextButtonClick}>
-        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
+        <Image
+          src="/img/general/right-arrow-white.svg"
+          alt="오른쪽 화살표"
+          width={14}
+          height={22}
+        />
       </NextButton>
     </Swiper>
   );
@@ -97,12 +106,11 @@ const SwiperViewport = styled.div<{ isContainerSmaller: boolean }>`
   height: 100%;
   overflow: hidden;
   ${(props) =>
-    props.isContainerSmaller
-    && `
+    props.isContainerSmaller &&
+    `
           display: flex;
           justify-content: center;
-        `
-  }
+        `}
 `;
 
 const SwiperContainer = styled.div`

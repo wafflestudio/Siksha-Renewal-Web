@@ -50,7 +50,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
         <>
           <PrevButton type="button" onClick={onPrevButtonClick} isHovered={isHovered}>
             <Image
-              src="/img/left-arrow-white.svg"
+              src="/img/general/left-arrow-white.svg"
               alt="왼쪽 화살표"
               width={14}
               height={22}
@@ -59,7 +59,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
           </PrevButton>
           <NextButton type="button" onClick={onNextButtonClick} isHovered={isHovered}>
             <Image
-              src="/img/right-arrow-white.svg"
+              src="/img/general/right-arrow-white.svg"
               alt="오른쪽 화살표"
               width={14}
               height={22}

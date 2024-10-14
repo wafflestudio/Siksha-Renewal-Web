@@ -1,4 +1,4 @@
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useCallback } from "react";
 import BackClickable from "../../components/general/BackClickable";
 import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";

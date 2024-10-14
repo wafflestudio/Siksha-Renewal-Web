@@ -84,7 +84,7 @@ export default function ReviewPostModal({
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
+            src={i <= inputs.score ? "/img/general/star.svg" : "/img/star-empty.svg"}
             onClick={() => setInputs({ ...inputs, score: i })}
             alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
           />

@@ -77,7 +77,12 @@ export default function ReviewSection({
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                  <Image src="/img/right-arrow-darkgrey.svg" alt="사진 리뷰 모아보기" width="7.5" />
+                  <Image
+                    src="/img/right-arrow-darkgrey.svg"
+                    alt="사진 리뷰 모아보기"
+                    width={7.5}
+                    height={12}
+                  />
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>

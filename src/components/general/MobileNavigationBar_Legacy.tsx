@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";

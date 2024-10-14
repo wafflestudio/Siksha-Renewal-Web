@@ -1,4 +1,4 @@
-import { ModalsStateContext } from "context/ModalsProvider";
+import { ModalsStateContext } from "providers/ModalsProvider";
 import useModals from "hooks/UseModals";
 import { useContext, useEffect } from "react";
 

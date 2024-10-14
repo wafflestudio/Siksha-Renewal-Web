@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import useModals from "hooks/UseModals";

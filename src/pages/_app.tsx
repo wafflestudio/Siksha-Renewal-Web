@@ -1,13 +1,13 @@
 import Head from "next/head";
 import "styles/calendar.css";
-import ContextProvider from "context/ContextProvider";
+import ContextProvider from "providers/ContextProvider";
 import Layout_Legacy from "components/general/Layout_Legacy";
 import { GlobalStyle } from "styles/globalstyle";
-import { ModalsProvider } from "context/ModalsProvider";
+import { ModalsProvider } from "providers/ModalsProvider";
 import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
-import { ToastProvider } from "context/ToastProvider";
+import { ToastProvider } from "providers/ToastProvider";
 import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {

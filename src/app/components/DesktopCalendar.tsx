@@ -1,4 +1,4 @@
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useCallback } from "react";
 import { formatDate, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";

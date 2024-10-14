@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useAuth from "./UseAuth";
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { getMyData } from "utils/api/auth";
 
 export default function UseProfile() {

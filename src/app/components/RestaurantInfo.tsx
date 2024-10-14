@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../../context/ContextProvider";
+import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
 import { useEffect } from "react";
 import MobileOperatingHour from "./MobileOperatingHour";
 import BackClickable from "../../components/general/BackClickable";
@@ -30,8 +30,16 @@ export default function RestaurantInfo() {
 
     // LatLng를 못불러오는 오류가 발생해서 동적으로 import
     if (window.kakao && window.kakao.maps && window.kakao.maps.LatLng) loadMap();
-    else {
-      const apiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
+    else if (document.head.querySelector("script[src*='dapi.kakao.com']")) {
+      const script: HTMLScriptElement | null = document.head.querySelector(
+        "script[src*='dapi.kakao.com']",
+      );
+      if (script)
+        script.onload = () => {
+          window.kakao.maps.load(loadMap);
+        };
+    } else {
+      const apiKey = process.env.NEXT_PUBLIC_KAKAOMAP_RESTAPI;
       const script = document.createElement("script");
       script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
       script.async = true;

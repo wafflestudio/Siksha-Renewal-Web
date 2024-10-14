@@ -1,6 +1,6 @@
 import MenuCard from "../app/components/MenuCard";
 import styled from "styled-components";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite_Legacy from "hooks/UseFavorite_Legacy";

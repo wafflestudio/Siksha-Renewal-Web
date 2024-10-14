@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useAuth_Legacy from "./UseAuth_Legacy";
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { getMyData } from "utils/api/auth";
 
 /**

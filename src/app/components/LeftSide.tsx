@@ -33,8 +33,8 @@ export default function LeftSide() {
           <Image
             src="/img/posts.svg"
             alt="글 목록 이미지"
-            width="16"
-            height="12"
+            width={16}
+            height={12}
             style={{ marginRight: "10px" }}
           />
           내가 쓴 글
@@ -43,8 +43,8 @@ export default function LeftSide() {
           <Image
             src="/img/posts-white.svg"
             alt="글 목록 이미지"
-            width="16"
-            height="12"
+            width={16}
+            height={12}
             style={{ marginRight: "10px" }}
           />
           게시판 글쓰기

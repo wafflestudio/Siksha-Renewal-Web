@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useStateContext } from "../../../context/ContextProvider";
+import { useStateContext } from "../../../providers/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";

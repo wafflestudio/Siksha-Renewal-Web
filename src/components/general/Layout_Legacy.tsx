@@ -1,7 +1,7 @@
 "use client";
 
 import Header_Legacy from "components/general/Header_Legacy";
-import { useDispatchContext } from "context/ContextProvider";
+import { useDispatchContext } from "providers/ContextProvider";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useIsMobile from "hooks/UseIsMobile";
 import UseProfile_Legacy from "hooks/UseProfile_Legacy";

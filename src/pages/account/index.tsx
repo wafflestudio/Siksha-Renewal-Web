@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../providers/ContextProvider";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect } from "react";
 import UseProfile_Legacy from "hooks/UseProfile_Legacy";
@@ -32,7 +32,7 @@ export default function Account() {
         >
           <Profile src={profileURL} alt="프로필 이미지" />
           <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="오른쪽 화살표" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -42,7 +42,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -52,7 +52,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -61,7 +61,7 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
@@ -87,7 +87,7 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup isLast={true}>

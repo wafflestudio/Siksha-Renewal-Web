@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { Viewport } from "next";
-import StyledComponentsRegistry from "./components/registry";
-import ContextProvider from "context/ContextProvider";
-import { ModalsProvider } from "context/ModalsProvider";
-import { ToastProvider } from "context/ToastProvider";
+import StyledComponentsRegistry from "providers/StyledComponentsRegistry";
+import ContextProvider from "providers/ContextProvider";
+import { ModalsProvider } from "providers/ModalsProvider";
+import { ToastProvider } from "providers/ToastProvider";
 import Script from "next/script";
 import { GlobalStyle } from "styles/globalstyle";
 import Layout from "components/general/Layout";
