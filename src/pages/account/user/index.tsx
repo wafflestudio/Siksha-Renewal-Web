@@ -2,13 +2,13 @@ import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { deleteAccount } from "utils/api/auth";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();
-  const { authStatus, getAccessToken, authGuard, logout } = useAuth();
+  const { authStatus, getAccessToken, authGuard, logout } = useAuth_Legacy();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -52,12 +52,12 @@ export default function UserSetting() {
           <Title>계정 관리</Title>
           <ContentDiv onClick={handleLogout}>
             <LogoutText>로그아웃</LogoutText>
-            <ArrowButton src="/img/right-arrow-grey.svg" alt="로그아웃" />
+            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
           </ContentDiv>
           <BreakLine />
           <ContentDiv onClick={handleExit}>
             <WithdrawalText>회원 탈퇴</WithdrawalText>
-            <ArrowButton src="/img/right-arrow-grey.svg" alt="로그인" />
+            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
           </ContentDiv>
         </Container>
       </AccountLayout>

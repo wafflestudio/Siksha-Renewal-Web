@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginApple } from "utils/api/auth";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export default function Auth() {
   const router = useRouter();
 
-  const { login } = useAuth();
+  const { login } = useAuth_Legacy();
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../context/ContextProvider";
-import { formatDate } from "../utils/FormatUtil";
+import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
+import { formatDate } from "../../utils/FormatUtil";
 
 export default function CalendarNavi() {
   const state = useStateContext();
@@ -17,7 +17,7 @@ export default function CalendarNavi() {
           setDate(yesterday);
         }}
       >
-        <ArrowLeft src={"/img/left-arrow-white.svg"} width={"10px"} alt="왼쪽 화살표" />
+        <ArrowLeft src={"/img/general/left-arrow-white.svg"} width={"10px"} alt="왼쪽 화살표" />
         {formatDate(yesterday)}
       </DateNaviSub>
       <DateNaviTitle>{formatDate(date)}</DateNaviTitle>
@@ -27,7 +27,7 @@ export default function CalendarNavi() {
         }}
       >
         {formatDate(tomorrow)}
-        <ArrowRight src={"/img/right-arrow-white.svg"} width={"10px"} alt="오른쪽 화살표" />
+        <ArrowRight src={"/img/general/right-arrow-white.svg"} width={"10px"} alt="오른쪽 화살표" />
       </DateNaviSub>
     </DateNavi>
   );

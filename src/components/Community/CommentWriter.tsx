@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { setComment } from "utils/api/community";
 import { RawComment } from "types";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 interface CommentWriterProps {
   postId: number;
@@ -11,7 +11,7 @@ interface CommentWriterProps {
 }
 
 export default function CommentWriter({ postId, update }: CommentWriterProps) {
-  const { authStatus, checkAccessToken } = useAuth();
+  const { authStatus, checkAccessToken } = useAuth_Legacy();
   const { openLoginModal } = useModals();
 
   const [commentInput, setCommentInput] = useState("");

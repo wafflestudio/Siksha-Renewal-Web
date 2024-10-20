@@ -1,4 +1,4 @@
-import { ToastDispatchContext, ToastStateContext } from "context/ToastProvider";
+import { ToastDispatchContext, ToastStateContext } from "providers/ToastProvider";
 import { useContext } from "react";
 
 export default function useToast() {

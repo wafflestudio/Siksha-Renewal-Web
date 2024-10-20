@@ -1,19 +1,24 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
 
-export default function MobileNavigationBar() {
-  const addr = usePathname();
+/**
+ *
+ * @deprecated
+ */
+export default function MobileNavigationBar_Legacy() {
+  const router = useRouter();
+  const addr = router.pathname;
 
   const state = useStateContext();
   const { isFilterFavorite } = state;
   const { setIsFilterFavorite } = useDispatchContext();
-  const { authStatus } = useAuth();
+  const { authStatus } = useAuth_Legacy();
   const { openLoginModal } = useModals();
 
   const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
@@ -25,11 +30,11 @@ export default function MobileNavigationBar() {
   const active =
     isFilterFavorite === true
       ? "favorite"
-      : addr === "/" || addr?.startsWith("/menu")
+      : addr === "/" || addr.startsWith("/menu")
       ? "menu"
-      : addr?.startsWith("/community")
+      : addr.startsWith("/community")
       ? "community"
-      : addr?.startsWith("/account")
+      : addr.startsWith("/account")
       ? "account"
       : null;
 
@@ -76,11 +81,9 @@ export default function MobileNavigationBar() {
 }
 
 const Container = styled.div`
-  position: fixed;
   display: flex;
-  bottom: 0;
   justify-content: space-evenly;
-  padding: 11px 0 30px;
+  padding: 14px 0 46px;
   box-sizing: border-box;
   width: 100%;
   height: 83px;
@@ -94,8 +97,8 @@ const Container = styled.div`
 `;
 
 const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background-image: ${({ isActive, srcActive, srcInactive }) =>
     `url(${isActive ? srcActive : srcInactive})`};
   background-size: contain;

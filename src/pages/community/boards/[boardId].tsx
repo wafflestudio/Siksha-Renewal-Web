@@ -8,15 +8,15 @@ import Board from ".";
 import { useRouter } from "next/router";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
-import useAuth from "hooks/UseAuth";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export default function Posts() {
   const router = useRouter();
   const { boardId } = router.query;
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const { checkAccessToken } = useAuth();
+  const { checkAccessToken } = useAuth_Legacy();
 
   const fetchPosts = (size: number, page: number) => {
     return checkAccessToken()
@@ -39,7 +39,7 @@ export default function Posts() {
       <Board selectedBoardId={Number(boardId)} showBoardMenu={true}>
         <BoardHeader />
         <PostList posts={posts} fetch={fetchPosts} />
-        <MobileNavigationBar />
+        <MobileNavigationBar_Legacy />
       </Board>
     );
 }

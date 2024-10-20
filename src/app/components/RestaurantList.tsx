@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useStateContext } from "context/ContextProvider";
+import { useStateContext } from "providers/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
 import { sanitizeCssSelector } from "utils/FormatUtil";
@@ -41,7 +41,7 @@ export default function RestaurantList() {
               <Dots>..............</Dots>
               {isFavorite(restaurant.id) ? (
                 <Star
-                  src="/img/star.svg"
+                  src="/img/general/star.svg"
                   onClick={() => toggleFavorite(restaurant.id)}
                   alt="좋아요"
                 />

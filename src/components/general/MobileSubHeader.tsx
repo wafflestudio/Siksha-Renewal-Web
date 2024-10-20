@@ -30,7 +30,7 @@ export default function MobileSubHeader({
 
   return (
     <MobileHeader>
-      <BackButton src="/img/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
+      <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
       <Title>{title || boardTitle}</Title>
     </MobileHeader>
   );

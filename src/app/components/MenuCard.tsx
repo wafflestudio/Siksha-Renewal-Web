@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import RestaurantTime from "components/RestaurantTime";
-import Menu from "components/Menu";
-import { useDispatchContext } from "context/ContextProvider";
+import RestaurantTime from "app/components/RestaurantTime";
+import Menu from "app/components/Menu";
+import { useDispatchContext } from "providers/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
 import { LoadingAnimation } from "styles/globalstyle";
 import { sanitizeCssSelector } from "utils/FormatUtil";
@@ -18,7 +18,11 @@ export default function MenuCard({ data }) {
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="좋아요" />
+              <Star
+                src="/img/general/star.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt="좋아요"
+              />
             ) : (
               <Star
                 src="/img/star-empty-white.svg"
@@ -63,7 +67,11 @@ export default function MenuCard({ data }) {
               alt="정보"
             />
             {isFavorite(data.id) ? (
-              <Star src="/img/star.svg" onClick={() => toggleFavorite(data.id)} alt="좋아요" />
+              <Star
+                src="/img/general/star.svg"
+                onClick={() => toggleFavorite(data.id)}
+                alt="좋아요"
+              />
             ) : (
               <Star
                 src="/img/star-empty-white.svg"

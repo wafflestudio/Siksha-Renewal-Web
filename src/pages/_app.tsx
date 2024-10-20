@@ -1,13 +1,14 @@
 import Head from "next/head";
 import "styles/calendar.css";
-import ContextProvider from "context/ContextProvider";
-import Layout from "components/general/Layout";
+import ContextProvider from "providers/ContextProvider";
+import Layout_Legacy from "components/general/Layout_Legacy";
 import { GlobalStyle } from "styles/globalstyle";
-import { ModalsProvider } from "context/ModalsProvider";
+import { ModalsProvider } from "providers/ModalsProvider";
 import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
-import { ToastProvider } from "context/ToastProvider";
+import { ToastProvider } from "providers/ToastProvider";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -44,15 +45,15 @@ function MyApp({ Component, pageProps }) {
               />
               {/* eslint-disable-next-line @next/next/no-sync-scripts */}
             </Head>
-            <Layout>
+            <Layout_Legacy>
               <Component {...pageProps} />
-            </Layout>
-            <script
+            </Layout_Legacy>
+            <Script
               type="text/javascript"
               rel="dns-prefetch"
               src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
             />
-            <script
+            <Script
               type="text/javascript"
               rel="dns-prefetch"
               src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"

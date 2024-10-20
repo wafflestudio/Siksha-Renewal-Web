@@ -20,7 +20,7 @@ import { ReportModal } from "components/Community/ReportModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import AlertModal from "components/general/AlertModal";
 import { LoadingAnimation } from "styles/globalstyle";
 import useIsMobile from "hooks/UseIsMobile";
@@ -28,7 +28,7 @@ import useIsMobile from "hooks/UseIsMobile";
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { authStatus, getAccessToken, checkAccessToken } = useAuth();
+  const { authStatus, getAccessToken, checkAccessToken } = useAuth_Legacy();
   const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);

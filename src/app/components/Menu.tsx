@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { formatPrice } from "../utils/FormatUtil";
+import { formatPrice } from "../../utils/FormatUtil";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
@@ -12,7 +12,7 @@ export default function Menu({ menu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
 
-  const isLikedImg = isLiked ? "/img/heart-on.svg" : "/img/heart-off.svg";
+  const isLikedImg = isLiked ? "/img//general/heart-on.svg" : "/img//general/heart-off.svg";
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();

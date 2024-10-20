@@ -1,6 +1,6 @@
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useCallback } from "react";
-import BackClickable from "./general/BackClickable";
+import BackClickable from "../../components/general/BackClickable";
 import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";

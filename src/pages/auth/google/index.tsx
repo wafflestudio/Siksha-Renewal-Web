@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginGoogle } from "utils/api/auth";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export default function Auth() {
-  const { login } = useAuth();
+  const { login } = useAuth_Legacy();
 
   const router = useRouter();
   useEffect(() => {

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useDispatchContext, useStateContext } from "../context/ContextProvider";
-import { formatDate, getTomorrow, getYesterday } from "../utils/FormatUtil";
+import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
+import { formatDate, getTomorrow, getYesterday } from "../../utils/FormatUtil";
 import useModals from "hooks/UseModals";
 import MobileCalendar from "./MobileCalendar";
 import { useContext, useEffect, useState } from "react";
-import { ModalsStateContext } from "context/ModalsProvider";
+import { ModalsStateContext } from "providers/ModalsProvider";
 
 export default function Date() {
   const state = useStateContext();
@@ -40,7 +40,7 @@ export default function Date() {
         <DateText>{formatDate(date)}</DateText>
       </FlexBox>
       <Arrow
-        src={isCalOpened ? "/img/right-arrow-grey.svg" : "/img/right-arrow.svg"}
+        src={isCalOpened ? "/img/general/right-arrow-grey.svg" : "/img/right-arrow.svg"}
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}

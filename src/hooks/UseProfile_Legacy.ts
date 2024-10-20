@@ -1,12 +1,16 @@
 import { useEffect } from "react";
-import useAuth from "./UseAuth";
+import useAuth_Legacy from "./UseAuth_Legacy";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { getMyData } from "utils/api/auth";
 
-export default function UseProfile() {
+/**
+ *
+ * @deprecated
+ */
+export default function UseProfile_Legacy() {
   const { userInfo } = useStateContext();
   const { setUserInfo } = useDispatchContext();
-  const { getAccessToken, authStatus } = useAuth();
+  const { getAccessToken, authStatus } = useAuth_Legacy();
 
   useEffect(() => {
     if (authStatus === "loading") return;

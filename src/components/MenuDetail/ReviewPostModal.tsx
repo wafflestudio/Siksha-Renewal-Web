@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { getReviews, setReview } from "utils/api/reviews";
-import useAuth from "hooks/UseAuth";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export type ReviewInputs = {
   score: number;
@@ -36,7 +36,7 @@ export default function ReviewPostModal({
 
   const MAX_COMMENT_LENGTH = 150;
 
-  const { getAccessToken } = useAuth();
+  const { getAccessToken } = useAuth_Legacy();
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {
@@ -84,7 +84,7 @@ export default function ReviewPostModal({
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
+            src={i <= inputs.score ? "/img/general/star.svg" : "/img/star-empty.svg"}
             onClick={() => setInputs({ ...inputs, score: i })}
             alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
           />
