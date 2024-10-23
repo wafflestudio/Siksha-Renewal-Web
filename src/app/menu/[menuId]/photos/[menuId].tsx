@@ -1,10 +1,12 @@
+'use client'
+
 import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
 import ReviewItem from "components/MenuDetail/ReviewItem.";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import { useRouter } from "next/router";
+import { useRouter, usePathname, useParams } from 'next/navigation';
 import { ReviewListType } from "pages/menu/[menuId]";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -12,7 +14,8 @@ import { getReviews } from "utils/api/reviews";
 
 export default function PhotoReviews() {
   const router = useRouter();
-  const { menuId } = router.query;
+  const params = useParams();
+  const menuId = params?.menuId;
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
     total_count: 0,

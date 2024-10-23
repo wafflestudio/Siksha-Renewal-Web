@@ -1,6 +1,8 @@
+'use client'
+
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, usePathname, useParams } from 'next/navigation';
 import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
@@ -47,7 +49,8 @@ export interface ReviewListType {
 
 export default function Menu() {
   const router = useRouter();
-  const { menuId } = router.query;
+  const params = useParams();
+  const menuId = params?.menuId;
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
