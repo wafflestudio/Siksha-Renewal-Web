@@ -12,7 +12,7 @@ export default function Menu({ menu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
 
-  const isLikedImg = isLiked ? "/img//general/heart-on.svg" : "/img//general/heart-off.svg";
+  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
