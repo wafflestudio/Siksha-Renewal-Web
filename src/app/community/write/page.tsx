@@ -1,17 +1,19 @@
+"use client";
+
 import styled from "styled-components";
 import Layout from "../layout";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Board } from "../../../types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
-import { ImagePreview } from "components/Community/write/ImagePreview";
+import useAuth from "hooks/UseAuth";
+import { ImagePreview } from "app/community/write/Components/ImagePreview";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
-import { BoardSelectDropdown } from "components/Community/write/BoardSelectDropdown";
+import { BoardSelectDropdown } from "app/community/write/Components/BoardSelectDropdown";
 
 export type inputs = {
   title: string;
@@ -37,7 +39,9 @@ const emptyInputs: inputs = {
 
 export default function PostWriter() {
   const router = useRouter();
-  const { boardId, postId } = router.query;
+  const searchParams = useSearchParams();
+  const boardId = searchParams?.get("boardId");
+  const postId = searchParams?.get("postId");
 
   const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
@@ -46,7 +50,7 @@ export default function PostWriter() {
 
   const isMobile = useIsMobile();
 
-  const { authStatus, getAccessToken } = useAuth_Legacy();
+  const { authStatus, getAccessToken } = useAuth();
 
   const { openLoginModal, openModal } = useModals();
 
@@ -184,7 +188,11 @@ export default function PostWriter() {
           <DesktopHeader>글쓰기</DesktopHeader>
           <BoardSelectDropdown
             boards={boards}
-            onSelect={(boardId) => setInputs((prev) => { return { ...prev, boardId } })}
+            onSelect={(boardId) =>
+              setInputs((prev) => {
+                return { ...prev, boardId };
+              })
+            }
           />
           <TitleInput
             type="text"

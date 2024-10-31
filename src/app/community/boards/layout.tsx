@@ -1,9 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { BoardMenu } from "components/Community/BoardMenu";
-
+import { BoardMenu } from "app/community/boards/components/BoardMenu";
 import Layout from "../layout";
-
 import { Board as BoardType, RawBoard } from "types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList } from "utils/api/community";
@@ -11,7 +10,7 @@ import { getBoardList } from "utils/api/community";
 interface BoardProps {
   selectedBoardId?: number;
   showBoardMenu: boolean;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
 }
 
 export default function Board({ selectedBoardId, showBoardMenu, children }: BoardProps) {
@@ -40,4 +39,3 @@ export default function Board({ selectedBoardId, showBoardMenu, children }: Boar
     </Layout>
   );
 }
-

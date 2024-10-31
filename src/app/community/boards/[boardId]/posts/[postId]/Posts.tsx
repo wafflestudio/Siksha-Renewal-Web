@@ -1,13 +1,17 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "types";
-import Board from "../../index";
-import CommentList from "components/Community/CommentList";
-import CommentWriter from "components/Community/CommentWriter";
+import { Post as PostType, Comment as CommentType, RawComment } from "types";
+import Board from "../../../layout";
+import CommentList from "app/community/boards/[boardId]/posts/[postId]/Components/CommentList";
+import CommentWriter from "app/community/boards/[boardId]/posts/[postId]/Components/CommentWriter";
 import { formatPostCommentDate } from "utils/FormatUtil";
-import PostImageSwiper from "components/Community/PostImageSwiper";
-import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
+import PostImageSwiper from "app/community/boards/[boardId]/posts/[postId]/Components/PostImageSwiper";
+import MobileActionsModal, {
+  ModalAction,
+} from "app/community/boards/[boardId]/posts/[postId]/Components/MobileActionsModal";
 import { commentParser, postParser } from "utils/DataUtil";
 import {
   deletePost,
@@ -16,19 +20,18 @@ import {
   setPostLike,
   setPostUnlike,
 } from "utils/api/community";
-import { ReportModal } from "components/Community/ReportModal";
+import { ReportModal } from "app/community/boards/[boardId]/posts/[postId]/Components/ReportModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import DeleteModal from "components/Community/DeleteModal";
+import DeleteModal from "app/community/boards/[boardId]/posts/[postId]/Components/DeleteModal";
 import useModals from "hooks/UseModals";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 import AlertModal from "components/general/AlertModal";
 import { LoadingAnimation } from "styles/globalstyle";
 import useIsMobile from "hooks/UseIsMobile";
 
-export default function Post() {
+export default function Posts({ boardId, postId }: { boardId: number; postId: number }) {
   const router = useRouter();
-  const { boardId, postId } = router.query;
-  const { authStatus, getAccessToken, checkAccessToken } = useAuth_Legacy();
+  const { authStatus, getAccessToken, checkAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);

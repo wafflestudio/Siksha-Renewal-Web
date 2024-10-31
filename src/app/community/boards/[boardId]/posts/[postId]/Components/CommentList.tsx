@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import Comment from "components/Community/Comment";
+import Comment from "app/community/boards/[boardId]/posts/[postId]/Components/Comment";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
-import { useState } from "react";
 
 interface CommentsProps {
   comments: CommentType[];

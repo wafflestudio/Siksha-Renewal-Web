@@ -1,9 +1,9 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Post } from "types";
@@ -12,8 +12,9 @@ import { postParser } from "utils/DataUtil";
 
 export function BoardHeader() {
   const router = useRouter();
-  const { checkAccessToken, authStatus } = useAuth_Legacy();
-  const { boardId } = router.query;
+  const { checkAccessToken, authStatus } = useAuth();
+  const searchParams = useSearchParams();
+  const boardId = searchParams?.get("boardId");
   const { openLoginModal } = useModals();
 
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
@@ -34,8 +35,7 @@ export function BoardHeader() {
   function handleClickWriteButton() {
     if (authStatus === "logout") openLoginModal();
     else {
-      if (boardId)
-        router.push({ pathname: "/community/write", query: { boardId } }, "/community/write");
+      if (boardId) router.push(`/community/write/${boardId}`);
       else router.push("/community/write");
     }
   }

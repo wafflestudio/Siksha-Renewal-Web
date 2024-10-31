@@ -7,7 +7,7 @@ import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/commu
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
 import DeleteModal from "./DeleteModal";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 
 interface CommentProps {
   comment: CommentType;
@@ -17,7 +17,7 @@ interface CommentProps {
 export default function Comment({ comment, update }: CommentProps) {
   const { nickname, content, createdAt, updatedAt, id, profileUrl, available } = comment;
 
-  const { authStatus, getAccessToken } = useAuth_Legacy();
+  const { authStatus, getAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
