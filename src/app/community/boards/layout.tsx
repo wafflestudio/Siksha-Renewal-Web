@@ -29,13 +29,11 @@ export default function Board({ selectedBoardId, showBoardMenu, children }: Boar
   }, []);
 
   return (
-    <Layout>
-      <>
-        {showBoardMenu && (
-          <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
-        )}
-        {children}
-      </>
-    </Layout>
+    <>
+      {showBoardMenu && (
+        <BoardMenu boardId={selectedBoardId ?? boardId} setBoardId={setBoardId} boards={boards} />
+      )}
+      {children}
+    </>
   );
 }

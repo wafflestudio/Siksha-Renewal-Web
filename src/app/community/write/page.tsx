@@ -183,71 +183,66 @@ export default function PostWriter() {
   return (
     <>
       <MobileSubHeader title="글쓰기" handleBack={router.back} />
-      <Layout>
-        <Container>
-          <DesktopHeader>글쓰기</DesktopHeader>
-          <BoardSelectDropdown
-            boards={boards}
-            onSelect={(boardId) =>
-              setInputs((prev) => {
-                return { ...prev, boardId };
-              })
-            }
-          />
-          <TitleInput
-            type="text"
-            placeholder="제목"
-            value={inputs.title}
-            onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-          />
-          <ContentInput
-            className="content-input"
-            placeholder="내용을 입력하세요."
-            value={inputs.content}
-            onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
-            onKeyDown={resize}
-            onKeyUp={resize}
-          />
-          <Footer>
-            <Options>
-              <Option
-                className={inputs.options.anonymous ? "active" : ""}
-                onClick={toggleAnonymous}
-              >
-                <Icon
-                  src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
-                  style={{ width: "13px" }}
-                  alt={inputs.options.anonymous ? "익명" : "익명 아님"}
-                />
-                익명
-              </Option>
-            </Options>
-            <ImagePreview images={inputs.images} setInputs={setInputs} />
-          </Footer>
-          {!isMobile ? (
-            <ButtonContainer>
-              <Button className="cancel" onClick={router.back}>
-                취소
-              </Button>
-              <Button
-                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                onClick={handleSubmit}
-              >
-                등록
-              </Button>
-            </ButtonContainer>
-          ) : (
-            <ButtonContainer>
-              <Button
-                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                onClick={handleSubmit}
-              >
-                올리기
-              </Button>
-            </ButtonContainer>
-          )}
-        </Container>
-      </Layout>
+      <Container>
+        <DesktopHeader>글쓰기</DesktopHeader>
+        <BoardSelectDropdown
+          boards={boards}
+          onSelect={(boardId) =>
+            setInputs((prev) => {
+              return { ...prev, boardId };
+            })
+          }
+        />
+        <TitleInput
+          type="text"
+          placeholder="제목"
+          value={inputs.title}
+          onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
+        />
+        <ContentInput
+          className="content-input"
+          placeholder="내용을 입력하세요."
+          value={inputs.content}
+          onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+          onKeyDown={resize}
+          onKeyUp={resize}
+        />
+        <Footer>
+          <Options>
+            <Option className={inputs.options.anonymous ? "active" : ""} onClick={toggleAnonymous}>
+              <Icon
+                src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
+                style={{ width: "13px" }}
+                alt={inputs.options.anonymous ? "익명" : "익명 아님"}
+              />
+              익명
+            </Option>
+          </Options>
+          <ImagePreview images={inputs.images} setInputs={setInputs} />
+        </Footer>
+        {!isMobile ? (
+          <ButtonContainer>
+            <Button className="cancel" onClick={router.back}>
+              취소
+            </Button>
+            <Button
+              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+              onClick={handleSubmit}
+            >
+              등록
+            </Button>
+          </ButtonContainer>
+        ) : (
+          <ButtonContainer>
+            <Button
+              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+              onClick={handleSubmit}
+            >
+              올리기
+            </Button>
+          </ButtonContainer>
+        )}
+      </Container>
     </>
   );
 }
