@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { BoardMenu } from "app/community/boards/components/BoardMenu";
-import Layout from "../layout";
 import { Board as BoardType, RawBoard } from "types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList } from "utils/api/community";

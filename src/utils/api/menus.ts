@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { RawMenuList, RawMenu } from "types";
@@ -13,8 +15,10 @@ export const getMenuList = (
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/menus/lo?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
     : `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-  const config = !!accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
-  
+  const config = !!accessToken
+    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
+    : {};
+
   return axios
     .get(apiUrl, config)
     .then((res) => {
@@ -32,8 +36,10 @@ export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMe
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/menus/${menuID}`
     : `${APIendpoint()}/menus/plain/${menuID}`;
-  const config = !!accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
-  
+  const config = !!accessToken
+    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
+    : {};
+
   return axios
     .get(apiUrl, config)
     .then((res) => {
