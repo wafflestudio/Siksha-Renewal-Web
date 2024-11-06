@@ -9,7 +9,7 @@ export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
 
-  const isLikedImg = isLiked ? "/img//general/heart-on.svg" : "/img//general/heart-off.svg";
+  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
 
   const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth_Legacy();

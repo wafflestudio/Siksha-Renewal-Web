@@ -12,7 +12,10 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
   description: "똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!",
-  icons: "/favicon.ico",
+  icons: [
+    { rel: "icon", url: "/manifest/icon-192x192.png", sizes: "maskable" },
+    { rel: "apple-touch-icon", url: "/manifest/apple-icon.png" },
+  ],
   openGraph: {
     url: "https://siksha.wafflestudio.com",
     type: "website",
