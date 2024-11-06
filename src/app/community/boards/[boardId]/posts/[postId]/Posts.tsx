@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Post as PostType, Comment as CommentType, RawComment } from "types";
-import Board from "../../../layout";
 import CommentList from "app/community/boards/[boardId]/posts/[postId]/Components/CommentList";
 import CommentWriter from "app/community/boards/[boardId]/posts/[postId]/Components/CommentWriter";
 import { formatPostCommentDate } from "utils/FormatUtil";
@@ -28,8 +27,9 @@ import useAuth from "hooks/UseAuth";
 import AlertModal from "components/general/AlertModal";
 import { LoadingAnimation } from "styles/globalstyle";
 import useIsMobile from "hooks/UseIsMobile";
+import { createPortal } from "react-dom";
 
-export default function Posts({ boardId, postId }: { boardId: number; postId: number }) {
+export default function Post({ boardId, postId }: { boardId: number; postId: number }) {
   const router = useRouter();
   const { authStatus, getAccessToken, checkAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
@@ -150,6 +150,7 @@ export default function Posts({ boardId, postId }: { boardId: number; postId: nu
             handleClick: () => reportPost(post.id),
           },
         ];
+
     // availiable 여부에 따라 게시물을 보여줄지 보여주지 않을지 결정합니다.
     if (post.available === false)
       openModal(AlertModal, {
@@ -162,75 +163,71 @@ export default function Posts({ boardId, postId }: { boardId: number; postId: nu
       return (
         <>
           <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
-          <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
-            <Container>
-              <Header>
-                <WriterInfoContainer>
-                  <ProfileImage src={profileImg} alt="프로필 이미지" />
-                  <div>
-                    <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
-                    <PostDate>
-                      {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
-                    </PostDate>
-                  </div>
-                </WriterInfoContainer>
-                <DesktopPostActions>
-                  {actions.map((action) => (
-                    <DesktopActionButton key={action.name} onClick={action.handleClick}>
-                      {action.name}
-                    </DesktopActionButton>
-                  ))}
-                </DesktopPostActions>
-                <MobileMoreActionsButton
-                  src="/img/etc.svg"
-                  onClick={() => onClickMoreActions(actions)}
-                  alt="더보기"
-                />
-              </Header>
-              <Content>
-                <Title>{post.title}</Title>
-                <Text>{post.content}</Text>
-                {post.images && <PostImageSwiper images={post.images} />}
-              </Content>
-              <LikesAndComments>
-                <Likes>
-                  <Icon src={isLikedImg} alt="좋아요" />
-                  {post.likeCount}
-                </Likes>
-                <Comments>
-                  <Icon src="/img/post-comment.svg" alt="댓글" />
-                  {post.commentCount}
-                </Comments>
-              </LikesAndComments>
-              <Footer>
-                <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-                  <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
-                  공감
-                </LikeButton>
-                <BackToBoardButton
-                  onClick={() => {
-                    router.push(`/community/boards/${boardId}`);
-                  }}
-                >
-                  <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
-                  목록보기
-                </BackToBoardButton>
-              </Footer>
-              <CommentContainer>
-                <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
-                <CommentWriter postId={post.id} update={addComment} />
-              </CommentContainer>
-            </Container>
-          </Board>
+          <Container>
+            <Header>
+              <WriterInfoContainer>
+                <ProfileImage src={profileImg} alt="프로필 이미지" />
+                <div>
+                  <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                  <PostDate>
+                    {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                  </PostDate>
+                </div>
+              </WriterInfoContainer>
+              <DesktopPostActions>
+                {actions.map((action) => (
+                  <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                    {action.name}
+                  </DesktopActionButton>
+                ))}
+              </DesktopPostActions>
+              <MobileMoreActionsButton
+                src="/img/etc.svg"
+                onClick={() => onClickMoreActions(actions)}
+                alt="더보기"
+              />
+            </Header>
+            <Content>
+              <Title>{post.title}</Title>
+              <Text>{post.content}</Text>
+              {post.images && <PostImageSwiper images={post.images} />}
+            </Content>
+            <LikesAndComments>
+              <Likes>
+                <Icon src={isLikedImg} alt="좋아요" />
+                {post.likeCount}
+              </Likes>
+              <Comments>
+                <Icon src="/img/post-comment.svg" alt="댓글" />
+                {post.commentCount}
+              </Comments>
+            </LikesAndComments>
+            <Footer>
+              <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+                <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
+                공감
+              </LikeButton>
+              <BackToBoardButton
+                onClick={() => {
+                  router.push(`/community/boards/${boardId}`);
+                }}
+              >
+                <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
+                목록보기
+              </BackToBoardButton>
+            </Footer>
+            <CommentContainer>
+              <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
+              <CommentWriter postId={post.id} update={addComment} />
+            </CommentContainer>
+          </Container>
         </>
       );
   } else {
     return (
       <>
         <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
-        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
-          <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
-        </Board>
+        <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
       </>
     );
   }

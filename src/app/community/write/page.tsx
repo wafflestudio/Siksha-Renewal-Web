@@ -266,23 +266,7 @@ const DesktopHeader = styled.div`
     display: none;
   }
 `;
-const BoardMenu = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-  border: 1px solid #dfdfdf;
-  border-radius: 8px;
-  cursor: pointer;
-  height: 39px;
-  margin-bottom: 12px;
 
-  @media (max-width: 768px) {
-    margin: 14.43px 0 6px 0;
-    height: 35px;
-  }
-`;
 const Icon = styled.img`
   width: 100%;
   height: 100%;

@@ -1,5 +1,3 @@
-"use server";
-
 import axios from "axios";
 import APIendpoint from "constants/constants";
 

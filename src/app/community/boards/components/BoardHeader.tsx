@@ -17,64 +17,54 @@ export function BoardHeader() {
   const boardId = searchParams?.get("boardId");
   const { openLoginModal } = useModals();
 
-  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
     Autoplay({ delay: 3000 }),
   ]);
 
-  async function fetchTrendingPosts() {
-    return checkAccessToken()
-      .then((accessToken) => getTrendingPosts(accessToken))
-      .then((res) => {
-        const { result } = res;
-        setTrendingPosts(result.map((rawPost) => postParser(rawPost)));
-      })
-      .catch((e) => console.error(e));
-  }
-
-  function handleClickWriteButton() {
-    if (authStatus === "logout") openLoginModal();
-    else {
-      if (boardId) router.push(`/community/write/${boardId}`);
-      else router.push("/community/write");
-    }
-  }
-
+  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   useEffect(() => {
-    fetchTrendingPosts();
+    checkAccessToken()
+      .then((accessToken) => getTrendingPosts(accessToken))
+      .then(({ result }) => setTrendingPosts(result.map((rawPost) => postParser(rawPost))))
+      .catch((e) => console.error(e));
   }, []);
+
+  const handleClickWriteButton = async () => {
+    if (authStatus === "logout") openLoginModal();
+    else router.push(boardId ? `/community/write/${boardId}` : "/community/write");
+  };
 
   return (
     <Container>
       <TrendingPostWrapper>
-        <PostSwiperViewport ref={emblaRef}>
-          <PostSwiperContainer>
+        <PostSwipeViewport ref={emblaRef}>
+          <PostSwipeContainer>
             {trendingPosts.length > 0 ? (
-              trendingPosts.map((trendingPost) => {
-                const isLikedImg = trendingPost.isLiked
-                  ? "/img/post-like-fill.svg"
-                  : "/img/post-like.svg";
-                return (
-                  <Link
-                    key={trendingPost.id}
-                    href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
-                  >
-                    <TrendingPost>
-                      <Title>{trendingPost.title}</Title>
-                      <ContentPreview>{trendingPost.content}</ContentPreview>
-                      <Likes>
-                        <Icon src={isLikedImg} alt="좋아요" />
-                        {trendingPost.likeCount}
-                      </Likes>
-                    </TrendingPost>
-                  </Link>
-                );
-              })
+              trendingPosts.map((trendingPost) => (
+                <Link
+                  key={trendingPost.id}
+                  href={`/community/boards/${trendingPost.boardId}/posts/${trendingPost.id}`}
+                >
+                  <TrendingPost>
+                    <Title>{trendingPost.title}</Title>
+                    <ContentPreview>{trendingPost.content}</ContentPreview>
+                    <Likes>
+                      <Icon
+                        src={
+                          trendingPost.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg"
+                        }
+                        alt="좋아요"
+                      />
+                      {trendingPost.likeCount}
+                    </Likes>
+                  </TrendingPost>
+                </Link>
+              ))
             ) : (
               <NoTrendingPostsMessage>아직 인기 게시글이 없습니다.</NoTrendingPostsMessage>
             )}
-          </PostSwiperContainer>
-        </PostSwiperViewport>
+          </PostSwipeContainer>
+        </PostSwipeViewport>
       </TrendingPostWrapper>
       <WriteButton>
         <ButtonImg
@@ -109,14 +99,14 @@ const TrendingPostWrapper = styled.div`
   }
 `;
 
-const PostSwiperViewport = styled.div`
+const PostSwipeViewport = styled.div`
   overflow: hidden;
   & > a {
     position: relative;
   }
 `;
 
-const PostSwiperContainer = styled.div`
+const PostSwipeContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 22px;
