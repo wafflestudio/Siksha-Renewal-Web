@@ -27,7 +27,6 @@ import useAuth from "hooks/UseAuth";
 import AlertModal from "components/general/AlertModal";
 import { LoadingAnimation } from "styles/globalstyle";
 import useIsMobile from "hooks/UseIsMobile";
-import { createPortal } from "react-dom";
 
 export default function Post({ boardId, postId }: { boardId: number; postId: number }) {
   const router = useRouter();
