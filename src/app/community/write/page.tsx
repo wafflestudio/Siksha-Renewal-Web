@@ -44,77 +44,24 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isMobile = useIsMobile();
-
   const { authStatus, getAccessToken } = useAuth();
-
   const { openLoginModal } = useModals();
-
   const { isAnonymousWriter, setIsAnonymousWriter } = useIsAnonymousWriter();
-
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
-  const toggleAnonymous = () => {
-    setIsAnonymousWriter(!inputs.options.anonymous);
-    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
-  };
+  useEffect(() => {
+    if (authStatus === "logout") router.push("/community/boards/1");
+    fetchBoards();
+    fetchPreviousPost();
+    // update inputs' isAnoymous state
+    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
+  }, []);
 
-  const handleSubmit = () => {
-    if (isSubmitting) {
-      return;
-    }
-
-    if (authStatus === "logout") openLoginModal();
-    else {
-      setIsSubmitting(true);
-      const body = new FormData();
-      body.append("board_id", String(inputs.boardId));
-      body.append("title", inputs.title);
-      body.append("content", inputs.content);
-      body.append("anonymous", String(inputs.options.anonymous));
-
-      return Promise.all(inputs.images.map(convertToBlob))
-        .then((blobs) => {
-          for (let i = 0; i < blobs.length; i++) {
-            body.append("images", blobs[i]);
-          }
-        })
-        .then(getAccessToken)
-        .then((accessToken) => {
-          const actionFunction = isUpdate
-            ? () => updatePost(Number(postId), body, accessToken)
-            : () => setPost(body, accessToken);
-
-          return actionFunction();
-        })
-        .then((data) => {
-          const { board_id, id } = data;
-          router.push(`/community/boards/${board_id}/posts/${id}`);
-        })
-        .catch((e) => {
-          console.error(e);
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
-
-    async function convertToBlob(image: string | File) {
-      if (typeof image === "string") {
-        const response = await fetch(image);
-        const blob = await response.blob();
-        return blob;
-      } else {
-        return image;
-      }
-    }
-  };
-
-  const fetchBoards = () => {
-    return getBoardList().then((data) => {
-      setBoards([]);
-      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
-    });
-  };
+  // 게시판 초기 선택
+  useEffect(() => {
+    if (boardId && typeof boardId === "string")
+      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
+  }, [boardId]);
 
   const fetchPreviousPost = () => {
     if (!postId) return;
@@ -136,6 +83,62 @@ export default function PostWriter() {
       });
   };
 
+  const toggleAnonymous = () => {
+    setIsAnonymousWriter(!inputs.options.anonymous);
+    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
+  };
+
+  const convertToBlob = async (image: string | File) => {
+    if (typeof image === "string") {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      return blob;
+    } else return image;
+  };
+
+  const handleSubmit = () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (authStatus === "logout") openLoginModal();
+    else {
+      setIsSubmitting(true);
+      const body = new FormData();
+      body.append("board_id", String(inputs.boardId));
+      body.append("title", inputs.title);
+      body.append("content", inputs.content);
+      body.append("anonymous", String(inputs.options.anonymous));
+
+      return Promise.all(inputs.images.map(convertToBlob))
+        .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
+        .then(getAccessToken)
+        .then((accessToken) => {
+          const actionFunction = isUpdate
+            ? () => updatePost(Number(postId), body, accessToken)
+            : () => setPost(body, accessToken);
+          return actionFunction();
+        })
+        .then((data) => {
+          const { board_id, id } = data;
+          router.push(`/community/boards/${board_id}/posts/${id}`);
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
+  };
+
+  const fetchBoards = () => {
+    return getBoardList().then((data) => {
+      setBoards([]);
+      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
+    });
+  };
+
   const resize = () => {
     let textarea = document.querySelector(".content-input") as HTMLTextAreaElement | null;
     const minHeight = isMobile ? 113 : 284;
@@ -144,35 +147,9 @@ export default function PostWriter() {
     if (textarea) {
       textarea.style.height = "auto";
       const height = textarea.scrollHeight;
-
-      if (height > minHeight && height < maxHeight) {
-        textarea.style.height = `${height}px`;
-      } else if (height >= maxHeight) {
-        textarea.style.height = `${maxHeight}px`;
-      } else {
-        textarea.style.height = `${minHeight}px`;
-      }
+      textarea.style.height = `${Math.max(minHeight, Math.min(height, maxHeight))}px`;
     }
   };
-
-  // update inputs' isAnoymous state
-  useEffect(() => {
-    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
-  }, []);
-
-  // 게시판 초기 선택
-  useEffect(() => {
-    if (boardId && typeof boardId === "string")
-      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
-  }, [boardId]);
-
-  useEffect(() => {
-    if (authStatus === "logout") {
-      router.push("/community/boards/1");
-    }
-    fetchBoards();
-    fetchPreviousPost();
-  }, []);
 
   return (
     <>
