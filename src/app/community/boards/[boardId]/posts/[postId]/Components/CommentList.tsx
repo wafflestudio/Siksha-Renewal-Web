@@ -1,20 +1,31 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import Comment from "app/community/boards/[boardId]/posts/[postId]/Components/Comment";
+import Comment from "app/community/boards/[boardId]/posts/[postId]/components/Comment";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
 
-interface CommentsProps {
+interface CommentListProps {
   comments: CommentType[];
-  fetch: (size: number, page: number) => Promise<boolean | void>;
-  update: (id: number) => void;
+  fetchComments: (size: number, page: number) => Promise<boolean | void>;
+  deleteComment: (id: number) => Promise<void>;
+  toggleLike: (id: number, isLiked: boolean) => Promise<void>;
 }
 
-export default function CommentList({ comments, fetch, update }: CommentsProps) {
+export default function CommentList({
+  comments,
+  fetchComments,
+  deleteComment,
+  toggleLike,
+}: CommentListProps) {
   return (
     <Container>
-      <InfiniteScrollable fetchMoreData={fetch}>
+      <InfiniteScrollable fetchMoreData={fetchComments}>
         {comments.map((comment, i) => (
-          <Comment key={i} comment={comment} update={update} />
+          <Comment
+            key={i}
+            comment={comment}
+            deleteComment={deleteComment}
+            toggleLike={toggleLike}
+          />
         ))}
       </InfiniteScrollable>
     </Container>

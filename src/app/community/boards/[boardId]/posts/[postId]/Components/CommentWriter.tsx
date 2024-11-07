@@ -1,40 +1,31 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { setComment } from "utils/api/community";
-import { RawComment } from "types";
 import useModals from "hooks/UseModals";
 import UseAuth from "hooks/UseAuth";
 
 interface CommentWriterProps {
+  addComment: (postId: number, commentInput: string, isAnonymous: boolean) => Promise<void>;
   postId: number;
-  update: (raw: RawComment) => void;
 }
 
-export default function CommentWriter({ postId, update }: CommentWriterProps) {
-  const { authStatus, checkAccessToken } = UseAuth();
+export default function CommentWriter({ addComment, postId }: CommentWriterProps) {
+  const { authStatus } = UseAuth();
   const { openLoginModal } = useModals();
 
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
 
-  const checkBoxImg = isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg";
   const isValid = commentInput.length >= 1;
-
-  function initialize() {
-    setCommentInput("");
-    setIsAnonymous(false);
-  }
 
   const submit = () => {
     if (authStatus === "logout") openLoginModal();
     else if (isValid)
-      checkAccessToken().then((res: string | null) => {
-        if (res !== null)
-          setComment(postId, commentInput, isAnonymous, res)
-            .then((res) => update(res.data))
-            .then(initialize)
-            .catch((e) => console.error(e));
-      });
+      addComment(postId, commentInput, isAnonymous)
+        .then(() => {
+          setCommentInput("");
+          setIsAnonymous(false);
+        })
+        .catch((e) => console.error(e));
   };
 
   return (
@@ -42,7 +33,10 @@ export default function CommentWriter({ postId, update }: CommentWriterProps) {
       <Container>
         <AnonymousButton isAnonymous={isAnonymous}>
           <Option onClick={() => setIsAnonymous(!isAnonymous)}>
-            <Icon src={checkBoxImg} alt="익명 여부 선택" />
+            <Icon
+              src={isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
+              alt="익명 여부 선택"
+            />
             <span>익명</span>
           </Option>
         </AnonymousButton>

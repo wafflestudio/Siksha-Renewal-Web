@@ -10,9 +10,9 @@ import MobileSubHeader from "components/general/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
-import { ImagePreview } from "app/community/write/Components/ImagePreview";
+import { ImagePreview } from "app/community/write/components/ImagePreview";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
-import { BoardSelectDropdown } from "app/community/write/Components/BoardSelectDropdown";
+import { BoardSelectDropdown } from "app/community/write/components/BoardSelectDropdown";
 
 export type inputs = {
   title: string;

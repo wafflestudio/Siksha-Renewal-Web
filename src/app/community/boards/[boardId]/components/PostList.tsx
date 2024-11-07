@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Post } from "app/community/boards/[boardId]/components/Post";
 import { Post as PostType } from "types";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 
 interface PropsPostList {
@@ -14,7 +14,13 @@ export function PostList({ posts, fetch }: PropsPostList) {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <InfiniteScrollable fetchMoreData={fetch} setIsLoading={setIsLoading}>
+    <InfiniteScrollable
+      fetchMoreData={(size: number, page: number) => {
+        if (isLoading) return Promise.resolve();
+        else return fetch(size, page);
+      }}
+      setIsLoading={setIsLoading}
+    >
       {posts.length >= 1 ? (
         // available(신고 많이 받으면 false)한 경우만 보여지게 합니다.
         posts
