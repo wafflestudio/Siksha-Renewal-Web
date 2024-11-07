@@ -1,6 +1,6 @@
 import { getBoardList } from "utils/api/community";
 import Posts from "./Boards";
-import { BoardMenu } from "../components/BoardMenu";
+import { BoardMenu } from "./components/BoardMenu";
 import { boardParser } from "utils/DataUtil";
 
 export async function generateStaticParams() {

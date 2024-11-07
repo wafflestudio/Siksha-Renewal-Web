@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { BoardHeader } from "app/community/boards/components/BoardHeader";
-import { PostList } from "app/community/boards/components/PostList";
+import { BoardHeader } from "app/community/boards/[boardId]/components/BoardHeader";
+import { PostList } from "app/community/boards/[boardId]/components/PostList";
 import { Post } from "types";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";

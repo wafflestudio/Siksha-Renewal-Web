@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Post } from "app/community/boards/components/Post";
+import { Post } from "app/community/boards/[boardId]/components/Post";
 import { Post as PostType } from "types";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
 import { useState } from "react";

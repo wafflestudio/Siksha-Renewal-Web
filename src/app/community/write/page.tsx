@@ -1,7 +1,6 @@
 "use client";
 
 import styled from "styled-components";
-import Layout from "../layout";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Board } from "../../../types";
@@ -23,10 +22,6 @@ export type inputs = {
   options: {
     anonymous: boolean;
   };
-};
-
-type option = {
-  anonymous: boolean;
 };
 
 const emptyInputs: inputs = {
