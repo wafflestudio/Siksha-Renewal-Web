@@ -47,12 +47,11 @@ export default function PostWriter() {
 
   const { authStatus, getAccessToken } = useAuth();
 
-  const { openLoginModal, openModal } = useModals();
+  const { openLoginModal } = useModals();
 
   const { isAnonymousWriter, setIsAnonymousWriter } = useIsAnonymousWriter();
 
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
-  const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
   const toggleAnonymous = () => {
     setIsAnonymousWriter(!inputs.options.anonymous);
