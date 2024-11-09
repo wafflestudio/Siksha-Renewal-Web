@@ -3,7 +3,7 @@
 import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
 import ReviewItem from "components/MenuDetail/ReviewItem.";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
 import { useRouter, useParams } from 'next/navigation';
@@ -24,7 +24,7 @@ export default function PhotoReviews() {
   const { openLoginModal } = useModals();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
-  const { getAccessToken } = useAuth_Legacy();
+  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     if (!menuId) {
