@@ -7,7 +7,7 @@ import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
 import { useRouter, useParams } from 'next/navigation';
-import { ReviewListType } from "pages/menu/[menuId]";
+import { ReviewListType } from "app/menu/[menuId]/page";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviews } from "utils/api/reviews";
