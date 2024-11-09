@@ -1,11 +1,12 @@
+"use client";
+
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import AccountLayout from "./layout";
-import { useStateContext } from "../../providers/ContextProvider";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import UseProfile_Legacy from "hooks/UseProfile_Legacy";
-import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Account() {
@@ -14,7 +15,7 @@ export default function Account() {
   const { userInfo } = UseProfile_Legacy();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
-  const { authStatus, authGuard } = useAuth_Legacy();
+  const { authStatus, authGuard } = useAuth();
 
   useEffect(authGuard, [authStatus]);
 
@@ -99,7 +100,7 @@ export default function Account() {
           <InquiryText>1:1 문의하기</InquiryText>
         </ContentDiv>
       </ListGroup>
-      <MobileNavigationBar_Legacy />
+      <MobileNavigationBar />
     </AccountLayout>
   );
 }
