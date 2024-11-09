@@ -1,12 +1,14 @@
+"use client";
+
 import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { loginApple } from "utils/api/auth";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 
 export default function Auth() {
   const router = useRouter();
 
-  const { login } = useAuth_Legacy();
+  const { login } = useAuth();
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
