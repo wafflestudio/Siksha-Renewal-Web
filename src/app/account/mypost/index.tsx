@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);

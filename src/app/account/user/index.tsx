@@ -1,6 +1,6 @@
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { deleteAccount } from "utils/api/auth";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect, useState } from "react";

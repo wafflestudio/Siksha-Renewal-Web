@@ -1,7 +1,7 @@
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { updateProfile, updateProfileWithImage, validateNickname } from "utils/api/auth";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import ProfileEdit from "components/Account/ProfileEdit";

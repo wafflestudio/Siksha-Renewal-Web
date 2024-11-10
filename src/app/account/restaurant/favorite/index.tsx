@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
 import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { RestaurantPreview } from "types";
 import useFavorite_Legacy from "hooks/UseFavorite_Legacy";
 import useOrder from "hooks/UseOrder";
-import AccountLayout from "pages/account/layout";
+import AccountLayout from "app/account/layout";
 
 export default function FavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth_Legacy();
