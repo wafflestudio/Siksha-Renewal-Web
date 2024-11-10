@@ -3,12 +3,12 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
+import ReviewPostModal from "app/menu/[menuId]/components/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { getMenu } from "utils/api/menus";
 import { getReviews } from "utils/api/reviews";
-import MenuSection from "components/MenuDetail/MenuSection";
-import ReviewSection from "components/MenuDetail/ReviewSection";
+import MenuSection from "./components/MenuSection";
+import ReviewSection from "./components/ReviewSection";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import MobileNavigationBar from "components/general/MobileNavigationBar";

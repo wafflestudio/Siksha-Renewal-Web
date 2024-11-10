@@ -1,4 +1,4 @@
-import { useStateContext } from "../../providers/ContextProvider";
+import { useStateContext } from "providers/ContextProvider";
 import { useState } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";

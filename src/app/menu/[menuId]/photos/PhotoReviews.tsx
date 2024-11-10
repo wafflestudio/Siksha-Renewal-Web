@@ -1,7 +1,7 @@
 'use client'
 
-import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
-import ReviewItem from "components/MenuDetail/ReviewItem.";
+import PhotoReviewItem from "./components/PhotoReviewItem";
+import ReviewItem from "app/menu/[menuId]/components/ReviewItem";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";

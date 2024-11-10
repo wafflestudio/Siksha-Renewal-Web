@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import MobileReviewImageSwiper from "./MobileReviewImageSwiper";
 import Link from "next/link";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
-import ReviewItem from "./ReviewItem.";
+import ReviewItem from "./ReviewItem";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate } from "utils/FormatUtil";
 import Image from "next/image";
