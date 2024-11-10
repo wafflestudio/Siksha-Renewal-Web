@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReviewImageSwiper from "./ReviewImageSwiper";
-import { MenuType } from "pages/menu/[menuId]";
+import { MenuType } from "app/menu/[menuId]/Menu";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate } from "utils/FormatUtil";
 
