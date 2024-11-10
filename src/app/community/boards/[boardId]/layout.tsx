@@ -8,7 +8,8 @@ export default async function CommunityLayout({ params, children }) {
 
   return (
     <>
-      <BoardMenu boardId={Number(boardId)} boards={boards} />;{children}
+      <BoardMenu boardId={Number(boardId)} boards={boards} />
+      {children}
     </>
   );
 }
