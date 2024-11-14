@@ -1,54 +1,31 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
-import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
 import DeleteModal from "./DeleteModal";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 
 interface CommentProps {
   comment: CommentType;
-  update: (id: number) => void;
+  deleteComment: (id: number) => Promise<void>;
+  toggleLike: (id: number, isLiked: boolean) => Promise<void>;
 }
 
-export default function Comment({ comment, update }: CommentProps) {
-  const { nickname, content, createdAt, updatedAt, id, profileUrl, available } = comment;
+export default function Comment({ comment, deleteComment, toggleLike }: CommentProps) {
+  const { nickname, content, createdAt, updatedAt, id, profileUrl, available, isLiked, likeCount } =
+    comment;
 
-  const { authStatus, getAccessToken } = useAuth_Legacy();
+  const { authStatus } = useAuth();
   const { openModal, openLoginModal } = useModals();
-
-  const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
-  const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
-
-  const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
-  const profileImg = profileUrl || "/img/default-profile.svg";
-
-  const onClickLike = () => {
-    if (authStatus === "logout") openLoginModal();
-    else {
-      const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
-
-      return getAccessToken()
-        .then((accessToken) => handleLikeAction(id, accessToken))
-        .then(({ isLiked, likeCount }) => {
-          setIsLiked(isLiked);
-          setLikeCount(likeCount);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  };
 
   const onClickReport = () => {
     if (authStatus === "logout") openLoginModal();
     else
       openModal(ReportModal, {
         type: "comment",
-        targetID: comment.id,
+        targetID: id,
         onClose: () => {},
         onSubmit: () => {},
       });
@@ -58,85 +35,84 @@ export default function Comment({ comment, update }: CommentProps) {
     openModal(MobileActionsModal, { actions: actions, onClose: () => {} });
   };
 
-  const removeComment = () => {
+  const onClickDelete = () => {
     if (authStatus === "logout") openLoginModal();
-    else {
+    else
       openModal(DeleteModal, {
         type: "comment",
         onClose: () => {},
-        onSubmit: () =>
-          getAccessToken()
-            .then((accessToken) => deleteComment(id, accessToken).then(() => update(id)))
-            .catch((e) => console.error(e)),
+        onSubmit: () => deleteComment(id),
       });
-    }
   };
 
+  if (!available)
+    return (
+      <NotAvailableContainer>
+        <NotAvailableMessage>신고가 누적되어 숨겨진 댓글입니다</NotAvailableMessage>
+      </NotAvailableContainer>
+    );
+
   const actions: ModalAction[] = [
-    { name: "공감", handleClick: onClickLike },
+    { name: "공감", handleClick: () => toggleLike(id, isLiked) },
     comment.isMine
-      ? { name: "삭제", handleClick: removeComment }
+      ? { name: "삭제", handleClick: onClickDelete }
       : {
           name: "신고",
           handleClick: onClickReport,
         },
   ];
 
-  if (available === true)
-    return (
-      <Container>
-        <div>
-          <Header>
-            <WriterInfoContainer>
-              <ProfileImage src={profileImg} alt="프로필 이미지" />
-              <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
-            </WriterInfoContainer>
-            <MobileCommentDate>
-              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
-            </MobileCommentDate>
-            <DesktopCommentActions>
-              {actions.map((action, i) => (
-                <DesktopActionButton key={i} onClick={action.handleClick}>
-                  {action.name}
-                </DesktopActionButton>
-              ))}
-            </DesktopCommentActions>
-          </Header>
-          <Content>{content}</Content>
-          <Footer>
-            <MobileMoreActionsButton
-              src="/img/etc.svg"
-              onClick={onClickMoreActions}
-              alt="기타 옵션"
-            />
-            <DesktopCommentDate>
-              {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
-            </DesktopCommentDate>
-            {likeCount > 0 && (
-              <DesktopLikeContainer>
-                <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
-                <DesktopLikes>{likeCount}</DesktopLikes>
-              </DesktopLikeContainer>
-            )}
-          </Footer>
-        </div>
-        <MobileLikeButton
-          onClick={(e) => {
-            onClickLike();
-            e.preventDefault();
-          }}
-        >
-          <MobileLikeIcon src={isLikedImg} alt="좋아요" />
-          <MobileLikes>{likeCount}</MobileLikes>
-        </MobileLikeButton>
-      </Container>
-    );
-  else
-    return (
-      <NotAvailableContainer>
-        <NotAvailiableMessage>신고가 누적되어 숨겨진 댓글입니다</NotAvailiableMessage>
-      </NotAvailableContainer>
-    );
+  return (
+    <Container>
+      <div>
+        <Header>
+          <WriterInfoContainer>
+            <ProfileImage src={profileUrl ?? "/img/default-profile.svg"} alt="프로필 이미지" />
+            <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
+          </WriterInfoContainer>
+          <MobileCommentDate>
+            {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+          </MobileCommentDate>
+          <DesktopCommentActions>
+            {actions.map((action, i) => (
+              <DesktopActionButton key={i} onClick={action.handleClick}>
+                {action.name}
+              </DesktopActionButton>
+            ))}
+          </DesktopCommentActions>
+        </Header>
+        <Content>{content}</Content>
+        <Footer>
+          <MobileMoreActionsButton
+            src="/img/etc.svg"
+            onClick={onClickMoreActions}
+            alt="기타 옵션"
+          />
+          <DesktopCommentDate>
+            {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
+          </DesktopCommentDate>
+          {likeCount > 0 && (
+            <DesktopLikeContainer>
+              <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
+              <DesktopLikes>{likeCount}</DesktopLikes>
+            </DesktopLikeContainer>
+          )}
+        </Footer>
+      </div>
+      <MobileLikeButton
+        onClick={(e) => {
+          toggleLike(id, isLiked);
+          e.preventDefault();
+        }}
+      >
+        <MobileLikeIcon
+          src={isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg"}
+          alt="좋아요"
+        />
+        <MobileLikes>{likeCount}</MobileLikes>
+      </MobileLikeButton>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -313,7 +289,7 @@ const NotAvailableContainer = styled.div`
   padding: 0 20px;
   border-bottom: 1px solid #eeeeee;
 `;
-const NotAvailiableMessage = styled.div`
+const NotAvailableMessage = styled.div`
   font-size: 12px;
   color: #b7b7b7;
 `;

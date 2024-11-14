@@ -1,26 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import styled from "styled-components";
 import { Board } from "types";
 
 interface BoardMenuProps {
   boardId: number;
-  setBoardId: (value: number) => void;
   boards: Board[];
 }
 
-export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
+export function BoardMenu({ boardId, boards }: BoardMenuProps) {
   return (
     <MenuContainer>
       <MenuInnerContainer>
         <Menu>
           {boards.map((board, i) => (
             <Link key={i} href={`/community/boards/${board.id}`}>
-              <MenuItem
-                className={boardId === board.id ? "selected" : ""}
-                onClick={() => setBoardId(board.id)}
-              >
-                {board.name}
-              </MenuItem>
+              <MenuItem className={boardId === board.id ? "selected" : ""}>{board.name}</MenuItem>
             </Link>
           ))}
         </Menu>
@@ -30,7 +26,7 @@ export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
 }
 const MenuContainer = styled.div`
   @media (max-width: 768px) {
-    display:flex;
+    display: flex;
     align-self: center;
     width: calc(100% + 25px);
     border-bottom: 1px solid #f0f0f0;
@@ -70,9 +66,9 @@ const MenuItem = styled.div`
   justify-content: start;
   width: 94px;
   padding: 12px 37px 12px 15px;
-  
+
   color: #979797;
-  font-feature-settings: 'liga' off, 'clig' off;
+  font-feature-settings: "liga" off, "clig" off;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
