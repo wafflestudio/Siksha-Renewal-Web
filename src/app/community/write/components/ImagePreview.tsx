@@ -1,7 +1,7 @@
 import useIsMobile from "hooks/UseIsMobile";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { inputs } from "../page";
+import { inputs } from "app/community/write/page";
 
 interface ImagePreviewProps {
   images: (string | File)[];

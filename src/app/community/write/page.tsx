@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Board } from "../../../types";
+import { Board } from "types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import MobileSubHeader from "components/general/MobileSubHeader";
