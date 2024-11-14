@@ -1,6 +1,5 @@
 "use client";
 
-import useIsMobile from "hooks/UseIsMobile";
 import Link from "next/link";
 import styled from "styled-components";
 import { Board } from "types";

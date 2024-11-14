@@ -25,45 +25,46 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalPr
 
   const reportFunction = type === "post" ? setReportPost : setReportComment;
 
-  function report() {
-    if (isValid) {
-      getAccessToken().then((accessToken) =>
-        reportFunction(targetID, reason, accessToken)
-          .then(() => {
-            setReason("");
-            onSubmit?.();
-            openModal(AlertModal, {
-              title: "신고 완료",
-              message: "신고가 접수되었습니다",
-              onClose: () => {},
-            });
-          })
-          .catch((err) => {
-            const { response } = err;
-            if (!response) console.log(err);
-            else {
-              const {
-                status,
-                data: { message },
-              } = err.response;
-              // 이전 신고한 이력이 있을 때
-              if (status === 409) {
-                onClose();
-                openModal(AlertModal, {
-                  title: "이미 신고한 글",
-                  message: message,
-                  onClose: () => {},
-                });
-              } else {
-                console.log(err);
-              }
-            }
-          }),
-      );
-    }
-  }
+  const handleReportSuccess = () => {
+    setReason("");
+    onSubmit?.();
+    openModal(AlertModal, {
+      title: "신고 완료",
+      message: "신고가 접수되었습니다",
+      onClose: () => {},
+    });
+  };
 
-  const profileImg = "/img/default-profile.svg";
+  const handleReportError = (err: any) => {
+    const { response } = err;
+    if (!response) return console.log(err);
+
+    const {
+      status,
+      data: { message },
+    } = response;
+
+    // 이미 신고한 글인 경우
+    if (status === 409) {
+      onClose();
+      openModal(AlertModal, {
+        title: "이미 신고한 글",
+        message: message,
+        onClose: () => {},
+      });
+    } else {
+      console.log(err);
+    }
+  };
+
+  const report = () => {
+    if (isValid) {
+      getAccessToken()
+        .then((accessToken) => reportFunction(targetID, reason, accessToken))
+        .then(handleReportSuccess)
+        .catch(handleReportError);
+    }
+  };
 
   return (
     <BackClickable onClickBackground={onClose}>
@@ -82,7 +83,7 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalPr
           </MobileBox>
           <WriterBox>
             <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
+              <ProfileImage src={userInfo?.image ?? "/img/default-profile.svg"} />
               <Nickname>{!userInfo?.nickname ? `ID ${userInfo?.id}` : userInfo.nickname}</Nickname>
             </WriterInfoContainer>
           </WriterBox>
@@ -201,8 +202,9 @@ const WriterInfoContainer = styled.div`
   align-items: center;
 `;
 const ProfileImage = styled.img`
-  width: 23px;
-  height: 23px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   @media (max-width: 768px) {
     margin-left: 28px;
   }
