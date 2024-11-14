@@ -1,15 +1,17 @@
+'use client'
+
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import ReviewPostModal from "components/MenuDetail/ReviewPostModal";
+import { useRouter } from 'next/navigation';
+import ReviewPostModal from "app/menu/[menuId]/components/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
 import { getMenu } from "utils/api/menus";
 import { getReviews } from "utils/api/reviews";
-import MenuSection from "components/MenuDetail/MenuSection";
-import ReviewSection from "components/MenuDetail/ReviewSection";
+import MenuSection from "./components/MenuSection";
+import ReviewSection from "./components/ReviewSection";
 import useModals from "hooks/UseModals";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
+import MobileNavigationBar from "components/general/MobileNavigationBar";
 
 export interface MenuType {
   id: number;
@@ -45,9 +47,8 @@ export interface ReviewListType {
   total_count: number;
 }
 
-export default function Menu() {
+export default function Menu({ menuId }: { menuId: number }) {
   const router = useRouter();
-  const { menuId } = router.query;
   const [isLoading, setLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
@@ -62,7 +63,7 @@ export default function Menu() {
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
-  const { authStatus, getAccessToken } = useAuth_Legacy();
+  const { authStatus, getAccessToken } = useAuth();
 
   const fetchMenu = async () => {
     const accessToken = await getAccessToken().catch((error) => "");
@@ -187,7 +188,7 @@ export default function Menu() {
               )}
             </Info>
           </Background>
-          <MobileNavigationBar_Legacy />
+          <MobileNavigationBar />
         </>
       )}
     </>

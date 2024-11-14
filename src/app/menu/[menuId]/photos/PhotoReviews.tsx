@@ -1,18 +1,19 @@
-import PhotoReviewItem from "components/MenuDetail/PhotoReviewItem";
-import ReviewItem from "components/MenuDetail/ReviewItem.";
+'use client'
+
+import PhotoReviewItem from "./components/PhotoReviewItem";
+import ReviewItem from "app/menu/[menuId]/components/ReviewItem";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import { useRouter } from "next/router";
-import { ReviewListType } from "pages/menu/[menuId]";
+import { useRouter } from 'next/navigation';
+import { ReviewListType } from "app/menu/[menuId]/Menu";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviews } from "utils/api/reviews";
 
-export default function PhotoReviews() {
+export default function PhotoReviews({ menuId }: { menuId: number }) {
   const router = useRouter();
-  const { menuId } = router.query;
   const [reviews, setReviews] = useState<ReviewListType>({
     result: [],
     total_count: 0,
@@ -21,14 +22,14 @@ export default function PhotoReviews() {
   const { openLoginModal } = useModals();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
-  const { getAccessToken } = useAuth_Legacy();
+  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     if (!menuId) {
       return;
     }
 
-    const fetchReview = () => {
+    const fetchPhotoReviews = () => {
       getReviews(Number(menuId))
         .then(({ totalCount, result }) => {
           const photoReviews = result.filter((review) => review.etc);
@@ -43,7 +44,7 @@ export default function PhotoReviews() {
         });
     };
 
-    fetchReview();
+    fetchPhotoReviews();
   }, [menuId]);
 
   const handleReviewPostButtonClick = () => {
