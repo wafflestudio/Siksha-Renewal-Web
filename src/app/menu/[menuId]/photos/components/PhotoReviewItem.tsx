@@ -1,6 +1,6 @@
 import styled, { ThemeProvider } from "styled-components";
-import Stars from "./Stars";
-import { ReviewType } from "pages/menu/[menuId]";
+import Stars from "app/menu/[menuId]/components/Stars";
+import { ReviewType } from "app/menu/[menuId]/Menu";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
   return (
