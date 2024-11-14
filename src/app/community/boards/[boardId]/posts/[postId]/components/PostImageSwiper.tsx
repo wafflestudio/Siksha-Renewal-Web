@@ -10,15 +10,11 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const onPrevButtonClick = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollPrev();
-    }
+    if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollNext();
-    }
+    if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
   const updateSnapDisplay = () => {

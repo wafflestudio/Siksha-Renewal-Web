@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
               <meta property="og:description" content="서울대학교 식단 알리미" />
               <meta
                 property="og:image"
-                content="https://siksha.wafflestudio.com/img/og-image.png"
+                content="https://siksha.wafflestudio.com/manifest/og-image.png"
               />
               {/* eslint-disable-next-line @next/next/no-sync-scripts */}
             </Head>

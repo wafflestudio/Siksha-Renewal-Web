@@ -1,10 +1,8 @@
+"use client";
+
 import styled from "styled-components";
 
-interface LayoutProps {
-  children: JSX.Element;
-}
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return <Content>{children}</Content>;
 }
 

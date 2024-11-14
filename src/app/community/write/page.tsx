@@ -1,17 +1,18 @@
+"use client";
+
 import styled from "styled-components";
-import Layout from "../layout";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Board } from "../../../types";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Board } from "types";
 import { boardParser } from "utils/DataUtil";
 import { getBoardList, getPost, setPost, updatePost } from "utils/api/community";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
-import { ImagePreview } from "components/Community/write/ImagePreview";
+import useAuth from "hooks/UseAuth";
+import { ImagePreview } from "app/community/write/components/ImagePreview";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
-import { BoardSelectDropdown } from "components/Community/write/BoardSelectDropdown";
+import { BoardSelectDropdown } from "app/community/write/components/BoardSelectDropdown";
 
 export type inputs = {
   title: string;
@@ -21,10 +22,6 @@ export type inputs = {
   options: {
     anonymous: boolean;
   };
-};
-
-type option = {
-  anonymous: boolean;
 };
 
 const emptyInputs: inputs = {
@@ -37,7 +34,9 @@ const emptyInputs: inputs = {
 
 export default function PostWriter() {
   const router = useRouter();
-  const { boardId, postId } = router.query;
+  const searchParams = useSearchParams();
+  const boardId = searchParams?.get("boardId");
+  const postId = searchParams?.get("postId");
 
   const [inputs, setInputs] = useState<inputs>(emptyInputs);
   const [boards, setBoards] = useState<Board[]>([]);
@@ -45,78 +44,24 @@ export default function PostWriter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isMobile = useIsMobile();
-
-  const { authStatus, getAccessToken } = useAuth_Legacy();
-
-  const { openLoginModal, openModal } = useModals();
-
+  const { authStatus, getAccessToken } = useAuth();
+  const { openLoginModal } = useModals();
   const { isAnonymousWriter, setIsAnonymousWriter } = useIsAnonymousWriter();
-
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
-  const selectedBoardName = boards?.filter((board) => board.id === inputs.boardId)[0]?.name;
 
-  const toggleAnonymous = () => {
-    setIsAnonymousWriter(!inputs.options.anonymous);
-    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
-  };
+  useEffect(() => {
+    if (authStatus === "logout") router.push("/community/boards/1");
+    fetchBoards();
+    fetchPreviousPost();
+    // update inputs' isAnoymous state
+    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
+  }, []);
 
-  const handleSubmit = () => {
-    if (isSubmitting) {
-      return;
-    }
-
-    if (authStatus === "logout") openLoginModal();
-    else {
-      setIsSubmitting(true);
-      const body = new FormData();
-      body.append("board_id", String(inputs.boardId));
-      body.append("title", inputs.title);
-      body.append("content", inputs.content);
-      body.append("anonymous", String(inputs.options.anonymous));
-
-      return Promise.all(inputs.images.map(convertToBlob))
-        .then((blobs) => {
-          for (let i = 0; i < blobs.length; i++) {
-            body.append("images", blobs[i]);
-          }
-        })
-        .then(getAccessToken)
-        .then((accessToken) => {
-          const actionFunction = isUpdate
-            ? () => updatePost(Number(postId), body, accessToken)
-            : () => setPost(body, accessToken);
-
-          return actionFunction();
-        })
-        .then((data) => {
-          const { board_id, id } = data;
-          router.push(`/community/boards/${board_id}/posts/${id}`);
-        })
-        .catch((e) => {
-          console.error(e);
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
-
-    async function convertToBlob(image: string | File) {
-      if (typeof image === "string") {
-        const response = await fetch(image);
-        const blob = await response.blob();
-        return blob;
-      } else {
-        return image;
-      }
-    }
-  };
-
-  const fetchBoards = () => {
-    return getBoardList().then((data) => {
-      setBoards([]);
-      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
-    });
-  };
+  // 게시판 초기 선택
+  useEffect(() => {
+    if (boardId && typeof boardId === "string")
+      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
+  }, [boardId]);
 
   const fetchPreviousPost = () => {
     if (!postId) return;
@@ -138,6 +83,62 @@ export default function PostWriter() {
       });
   };
 
+  const toggleAnonymous = () => {
+    setIsAnonymousWriter(!inputs.options.anonymous);
+    setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
+  };
+
+  const convertToBlob = async (image: string | File) => {
+    if (typeof image === "string") {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      return blob;
+    } else return image;
+  };
+
+  const handleSubmit = () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (authStatus === "logout") openLoginModal();
+    else {
+      setIsSubmitting(true);
+      const body = new FormData();
+      body.append("board_id", String(inputs.boardId));
+      body.append("title", inputs.title);
+      body.append("content", inputs.content);
+      body.append("anonymous", String(inputs.options.anonymous));
+
+      return Promise.all(inputs.images.map(convertToBlob))
+        .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
+        .then(getAccessToken)
+        .then((accessToken) => {
+          const actionFunction = isUpdate
+            ? () => updatePost(Number(postId), body, accessToken)
+            : () => setPost(body, accessToken);
+          return actionFunction();
+        })
+        .then((data) => {
+          const { board_id, id } = data;
+          router.push(`/community/boards/${board_id}/posts/${id}`);
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
+  };
+
+  const fetchBoards = () => {
+    return getBoardList().then((data) => {
+      setBoards([]);
+      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
+    });
+  };
+
   const resize = () => {
     let textarea = document.querySelector(".content-input") as HTMLTextAreaElement | null;
     const minHeight = isMobile ? 113 : 284;
@@ -146,100 +147,73 @@ export default function PostWriter() {
     if (textarea) {
       textarea.style.height = "auto";
       const height = textarea.scrollHeight;
-
-      if (height > minHeight && height < maxHeight) {
-        textarea.style.height = `${height}px`;
-      } else if (height >= maxHeight) {
-        textarea.style.height = `${maxHeight}px`;
-      } else {
-        textarea.style.height = `${minHeight}px`;
-      }
+      textarea.style.height = `${Math.max(minHeight, Math.min(height, maxHeight))}px`;
     }
   };
-
-  // update inputs' isAnoymous state
-  useEffect(() => {
-    setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
-  }, []);
-
-  // 게시판 초기 선택
-  useEffect(() => {
-    if (boardId && typeof boardId === "string")
-      setInputs((prev) => ({ ...prev, boardId: Number(boardId) }));
-  }, [boardId]);
-
-  useEffect(() => {
-    if (authStatus === "logout") {
-      router.push("/community/boards/1");
-    }
-    fetchBoards();
-    fetchPreviousPost();
-  }, []);
 
   return (
     <>
       <MobileSubHeader title="글쓰기" handleBack={router.back} />
-      <Layout>
-        <Container>
-          <DesktopHeader>글쓰기</DesktopHeader>
-          <BoardSelectDropdown
-            boards={boards}
-            onSelect={(boardId) => setInputs((prev) => { return { ...prev, boardId } })}
-          />
-          <TitleInput
-            type="text"
-            placeholder="제목"
-            value={inputs.title}
-            onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-          />
-          <ContentInput
-            className="content-input"
-            placeholder="내용을 입력하세요."
-            value={inputs.content}
-            onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
-            onKeyDown={resize}
-            onKeyUp={resize}
-          />
-          <Footer>
-            <Options>
-              <Option
-                className={inputs.options.anonymous ? "active" : ""}
-                onClick={toggleAnonymous}
-              >
-                <Icon
-                  src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
-                  style={{ width: "13px" }}
-                  alt={inputs.options.anonymous ? "익명" : "익명 아님"}
-                />
-                익명
-              </Option>
-            </Options>
-            <ImagePreview images={inputs.images} setInputs={setInputs} />
-          </Footer>
-          {!isMobile ? (
-            <ButtonContainer>
-              <Button className="cancel" onClick={router.back}>
-                취소
-              </Button>
-              <Button
-                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                onClick={handleSubmit}
-              >
-                등록
-              </Button>
-            </ButtonContainer>
-          ) : (
-            <ButtonContainer>
-              <Button
-                className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
-                onClick={handleSubmit}
-              >
-                올리기
-              </Button>
-            </ButtonContainer>
-          )}
-        </Container>
-      </Layout>
+      <Container>
+        <DesktopHeader>글쓰기</DesktopHeader>
+        <BoardSelectDropdown
+          boards={boards}
+          onSelect={(boardId) =>
+            setInputs((prev) => {
+              return { ...prev, boardId };
+            })
+          }
+        />
+        <TitleInput
+          type="text"
+          placeholder="제목"
+          value={inputs.title}
+          onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
+        />
+        <ContentInput
+          className="content-input"
+          placeholder="내용을 입력하세요."
+          value={inputs.content}
+          onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+          onKeyDown={resize}
+          onKeyUp={resize}
+        />
+        <Footer>
+          <Options>
+            <Option className={inputs.options.anonymous ? "active" : ""} onClick={toggleAnonymous}>
+              <Icon
+                src={inputs.options.anonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
+                style={{ width: "13px" }}
+                alt={inputs.options.anonymous ? "익명" : "익명 아님"}
+              />
+              익명
+            </Option>
+          </Options>
+          <ImagePreview images={inputs.images} setInputs={setInputs} />
+        </Footer>
+        {!isMobile ? (
+          <ButtonContainer>
+            <Button className="cancel" onClick={router.back}>
+              취소
+            </Button>
+            <Button
+              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+              onClick={handleSubmit}
+            >
+              등록
+            </Button>
+          </ButtonContainer>
+        ) : (
+          <ButtonContainer>
+            <Button
+              className={`submit ${isValid && isSubmitting === false ? "active" : ""}`}
+              onClick={handleSubmit}
+            >
+              올리기
+            </Button>
+          </ButtonContainer>
+        )}
+      </Container>
     </>
   );
 }
@@ -263,23 +237,7 @@ const DesktopHeader = styled.div`
     display: none;
   }
 `;
-const BoardMenu = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-  border: 1px solid #dfdfdf;
-  border-radius: 8px;
-  cursor: pointer;
-  height: 39px;
-  margin-bottom: 12px;
 
-  @media (max-width: 768px) {
-    margin: 14.43px 0 6px 0;
-    height: 35px;
-  }
-`;
 const Icon = styled.img`
   width: 100%;
   height: 100%;

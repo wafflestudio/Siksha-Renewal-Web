@@ -34,6 +34,7 @@ export default function MobileNavigationBar() {
       : null;
 
   if (!rootElement) return null;
+
   return createPortal(
     <Container>
       <Link
