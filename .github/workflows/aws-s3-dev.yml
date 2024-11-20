@@ -16,7 +16,7 @@ jobs:
       - name: Setup node version
         uses: actions/setup-node@v3
         with:
-          node-version: 18.20.4
+          node-version: 22.11.0
 
       - name: .env setting
         run: |
@@ -34,6 +34,8 @@ jobs:
         run: yarn install
         
       - name: Build
+        env:
+          NEXT_OUTPUT_MODE: export
         run: yarn devbuild
 
       - name: S3 Deploy

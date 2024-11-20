@@ -11,74 +11,71 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup node version
         uses: actions/setup-node@v3
         with:
-          node-version: 18.20.4
+          node-version: 22.11.0
 
-      - name: Compress Lambda Function
-        run: zip -j serverless.zip ./serverless/dynamicRoute-prod/index.mjs # 모듈 설치시 "./serverless/node_modules" 추가
-  
-      - name: Deploy Lambda function
+      - name: .env setting
         run: |
-          aws lambda update-function-code --function-name $LAMBDA_NAME_ROUTE --zip-file fileb://serverless.zip
-
-          # 함수 업데이트 대기 및 재시도
-          MAX_RETRIES=3  # 최대 재시도 횟수
-          SLEEP_TIME=5  # 재시도 간격 (초)
-          for ((i=0; i<$MAX_RETRIES; i++)); do
-            STATUS=$(aws lambda get-function --function-name $LAMBDA_NAME_ROUTE --query 'Configuration.LastUpdateStatus' --output text)
-            if [ "$STATUS" == "Successful" ]; then
-              echo "Lambda function is ready for update."
-              break
-            fi
-            if [ "$i" -eq "$(($MAX_RETRIES - 1))" ]; then
-              echo "Reached max retries, exiting."
-              exit 1
-            fi
-            echo "Lambda function update in progress, waiting for $SLEEP_TIME seconds..."
-            sleep $SLEEP_TIME
-          done
-
-          aws lambda publish-version --function-name $LAMBDA_NAME_ROUTE
-        env: 
-          LAMBDA_NAME_ROUTE: ${{ secrets.AWS_LAMBDA_NAME_ROUTE }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"  # Lambda@Edge는 us-east-1 리전에서만 사용가능.
-      
-      - name: Update Cloudfront Distribution
-        run: |
-          LAMBDA_ARN=$(aws lambda get-function --function-name $LAMBDA_NAME_ROUTE --query 'Configuration.FunctionArn' --output text)
-          VERSION=$(aws lambda publish-version --function-name $LAMBDA_NAME_ROUTE --query 'Version' --output text)
-
-          # CloudFront 배포 구성 가져오기
-          CONFIG=$(aws cloudfront get-distribution-config --id $DISTRIBUTION)
-          ETAG=$(echo "$CONFIG" | jq -r '.ETag')
-          DISTRIBUTION_CONFIG=$(echo "$CONFIG" | jq '.DistributionConfig')
-
-          # Lambda@Edge 트리거 설정
-          NEW_CONFIG=$(echo "$DISTRIBUTION_CONFIG" | jq --arg LAMBDA_ARN "${LAMBDA_ARN}:${VERSION}" '
-            .DefaultCacheBehavior.LambdaFunctionAssociations.Items |= map(
-              if .EventType == "origin-request" then
-                {"EventType": "origin-request", "LambdaFunctionARN": $LAMBDA_ARN}
-              else
-                .
-              end
-            )
-          ')
-          NEW_CONFIG=$(echo "$NEW_CONFIG" | jq '.DefaultCacheBehavior.LambdaFunctionAssociations.Quantity = (.DefaultCacheBehavior.LambdaFunctionAssociations.Items | length)')
-
-          # CloudFront 배포 업데이트
-          aws cloudfront update-distribution --id $DISTRIBUTION --distribution-config "$NEW_CONFIG" --if-match $ETAG
-
+          echo "NEXT_PUBLIC_KAKAO_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_REDIRECTURI=${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECTURI }}" >> .env
+          echo "NEXT_PUBLIC_KAKAOMAP_RESTAPI=${{ secrets.NEXT_PUBLIC_KAKAOMAP_RESTAPI }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_CLIENTID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENTID }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECTURI }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI }}" >> .env
+    
+      - name: Log in to Amazon ECR
         env:
-          LAMBDA_NAME_ROUTE: ${{ secrets.AWS_LAMBDA_NAME_ROUTE }}
-          DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION }}
-          PATHS: "/*"
-          AWS_REGION: "us-east-1" # Lambda@Edge는 us-east-1 리전에서만 사용가능.
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+          # AWS_ACCOUNT_ID -> 12자리 숫자 
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PASSWORD=$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }})
+          docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com" <<< "$PASSWORD"
+      - name: Build Docker image
+
+      # ECR_REPOSITORY -> 리포지토리 이름(ex: siksha/distribtion) 
+        run: |
+          docker build \
+            --build-arg ENV_MODE=production \
+            -f .dockerfile \
+            -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:latest .
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:latest
+      - name: Update Lambda Function
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ secrets.AWS_LAMBDA_FUNCTION_NAME }} \
+            --image-uri ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:latest
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_LAMBDA_FUNCTION_NAME: ${{ secrets.AWS_LAMBDA_FUNCTION_NAME }}
+
+      - name: Clean Up Old ECR Images
+        run: |
+          aws ecr list-images \
+            --repository-name ${{ secrets.AWS_ECR_REPOSITORY }} \
+            --region ${{ secrets.AWS_REGION }} \
+            --query 'imageIds[?imageTag!=`latest`]' \
+            --output json | jq -c '.[]' | while read image; do
+              aws ecr batch-delete-image \
+                --repository-name ${{ secrets.AWS_ECR_REPOSITORY }} \
+                --region ${{ secrets.AWS_REGION }} \
+                --image-ids "$image"
+            done
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
