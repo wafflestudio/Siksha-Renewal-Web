@@ -6,7 +6,7 @@ module.exports = {
   images: {
     unoptimized: true,
   },
-  trailingSlash: true,
+  trailingSlash: false,
   compiler: {
     styledComponents: true,   
   }
