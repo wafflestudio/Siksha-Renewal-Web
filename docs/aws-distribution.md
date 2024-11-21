@@ -1,5 +1,3 @@
-# AWS Distribution
-
 ## 개요
 
 AWS배포방식에 대해 정리한 문서입니다.
@@ -7,6 +5,7 @@ AWS배포방식에 대해 정리한 문서입니다.
 ### 기본 구조
 
 - 현재 배포의 기본 구조는 아래 그림과 같습니다.
+![배포 설명 이미지](https://github.com/user-attachments/assets/8aaab752-c1da-45bb-9a77-9b4df6f51aff)
 - 현재 웹버전 이용자수가 많지 않아 캐싱에 제약이 있고, cold start문제가 있더라도 docker 배포 환경으로 비용이 거의 들지 않는 람다를 선택했지만, 추후 이용자수가 많아지면 lambda 대신 다른 방법을 사용하는 것도 좋을거 같습니다.
 
 ### Github Actions
