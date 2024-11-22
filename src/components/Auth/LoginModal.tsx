@@ -51,9 +51,9 @@ export default function LoginModal({ onClose }: LoginModalProps) {
       <MainContainer>
         <TopContainer>
           <LoginTitle>로그인</LoginTitle>
-          <CloseButton src={"/img/close-auth.svg"} onClick={onClose} />
+          <CloseButton src={"/img/modal/login/close-auth.svg"} alt="닫기" onClick={onClose} />
         </TopContainer>
-        <SikshaLogo src={"/img/siksha-typo.svg"} />
+        <SikshaLogo src={"/img/modal/login/siksha-typo.svg"} alt="식샤 로고" />
         <SocialContainer>
           <SocialButton provider="kakao" onClick={handleKakaoLogin}>
             <SocialUnion
@@ -61,8 +61,9 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={17}
               left={14}
               right={74}
-              src={"/img/kakaoUnion.svg"}
-            ></SocialUnion>
+              src={"/img/modal/login/kakao-union.svg"}
+              alt="카카오 로그인"
+            />
             Login with Kakao
           </SocialButton>
           <SocialButton provider="google" onClick={handleGoogleLogin}>
@@ -71,8 +72,9 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={41}
               left={10.5}
               right={74}
-              src={"/img/googleUnion.svg"}
-            ></SocialUnion>
+              src={"/img/modal/login/google-union.svg"}
+              alt="구글 로그인"
+            />
             Login with Google
           </SocialButton>
           <SocialButton provider="apple" onClick={handleAppleLogin}>
@@ -81,12 +83,13 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={18}
               left={16.5}
               right={77}
-              src={"/img/appleUnion.svg"}
-            ></SocialUnion>
+              src={"/img/modal/login/apple-union.svg"}
+              alt="애플 로그인"
+            />
             Login with Apple
           </SocialButton>
         </SocialContainer>
-        <WaffleLogo src={"/img/waffle-typo.svg"} />
+        <WaffleLogo src={"/img/modal/login/waffle-typo.svg"} alt="와플스튜디오 로고" />
       </MainContainer>
     </BackClickable>
   );

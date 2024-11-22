@@ -1,5 +1,5 @@
 .react-calendar {
-  padding: 31px 48px;
+  padding: 32px 48px 31px 48px;
 }
 @media (max-width: 768px) {
   .react-calendar {
@@ -28,6 +28,11 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+@media (max-width: 768px) {
+  .react-calendar button {
+    height: 31px;
+  }
+}
 .react-calendar button:hover {
   cursor: pointer;
 }
@@ -37,7 +42,7 @@
 }
 @media (max-width: 768px) {
   .react-calendar__navigation {
-    display: none;
+    justify-content: space-evenly;
   }
 }
 .react-calendar__navigation__label {

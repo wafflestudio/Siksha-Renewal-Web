@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import { Comment as CommentType } from "types";
-import { useStateContext } from "hooks/ContextProvider";
 import { useState } from "react";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 import { deleteComment, setCommentLike, setCommentUnlike } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
 import DeleteModal from "./DeleteModal";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 interface CommentProps {
   comment: CommentType;
@@ -16,20 +15,19 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, update }: CommentProps) {
-  const { nickname, content, createdAt, updatedAt, id } = comment;
+  const { nickname, content, createdAt, updatedAt, id, profileUrl, available } = comment;
 
-  const { loginStatus } = useStateContext();
-  const { getAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken } = useAuth_Legacy();
   const { openModal, openLoginModal } = useModals();
 
   const [isLiked, setIsLiked] = useState<boolean>(comment.isLiked);
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
 
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
-  const profileImg = "/img/default-profile.svg";
+  const profileImg = profileUrl || "/img/default-profile.svg";
 
   const onClickLike = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setCommentUnlike : setCommentLike;
 
@@ -46,7 +44,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const onClickReport = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else
       openModal(ReportModal, {
         type: "comment",
@@ -61,7 +59,7 @@ export default function Comment({ comment, update }: CommentProps) {
   };
 
   const removeComment = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
       openModal(DeleteModal, {
         type: "comment",
@@ -84,21 +82,21 @@ export default function Comment({ comment, update }: CommentProps) {
         },
   ];
 
-  return (
-    <>
+  if (available === true)
+    return (
       <Container>
         <div>
           <Header>
             <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
+              <ProfileImage src={profileImg} alt="프로필 이미지" />
               <Nickname>{comment.anonymous ? "익명" : nickname}</Nickname>
             </WriterInfoContainer>
             <MobileCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </MobileCommentDate>
             <DesktopCommentActions>
-              {actions.map((action) => (
-                <DesktopActionButton onClick={action.handleClick}>
+              {actions.map((action, i) => (
+                <DesktopActionButton key={i} onClick={action.handleClick}>
                   {action.name}
                 </DesktopActionButton>
               ))}
@@ -106,13 +104,17 @@ export default function Comment({ comment, update }: CommentProps) {
           </Header>
           <Content>{content}</Content>
           <Footer>
-            <MobileMoreActionsButton src="/img/etc.svg" onClick={onClickMoreActions} />
+            <MobileMoreActionsButton
+              src="/img/etc.svg"
+              onClick={onClickMoreActions}
+              alt="기타 옵션"
+            />
             <DesktopCommentDate>
               {formatPostCommentDate(updatedAt ? updatedAt : createdAt)}
             </DesktopCommentDate>
             {likeCount > 0 && (
               <DesktopLikeContainer>
-                <DesktopLikeIcon src="/img/post-like.svg" />
+                <DesktopLikeIcon src="/img/post-like.svg" alt="좋아요" />
                 <DesktopLikes>{likeCount}</DesktopLikes>
               </DesktopLikeContainer>
             )}
@@ -124,12 +126,17 @@ export default function Comment({ comment, update }: CommentProps) {
             e.preventDefault();
           }}
         >
-          <MobileLikeIcon src={isLikedImg} />
+          <MobileLikeIcon src={isLikedImg} alt="좋아요" />
           <MobileLikes>{likeCount}</MobileLikes>
         </MobileLikeButton>
       </Container>
-    </>
-  );
+    );
+  else
+    return (
+      <NotAvailableContainer>
+        <NotAvailiableMessage>신고가 누적되어 숨겨진 댓글입니다</NotAvailiableMessage>
+      </NotAvailableContainer>
+    );
 }
 
 const Container = styled.div`
@@ -170,6 +177,8 @@ const WriterInfoContainer = styled.div`
 const ProfileImage = styled.img`
   width: 23px;
   height: 23px;
+  border-radius: 50%;
+  object-fit: cover;
   @media (max-width: 768px) {
     width: 16px;
     height: 16px;
@@ -250,7 +259,6 @@ const MobileLikes = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  margin-top: 14.73px;
 `;
 const MobileMoreActionsButton = styled.img`
   display: none;
@@ -295,4 +303,17 @@ const DesktopLikes = styled.div`
   font-weight: 400;
   font-size: 12px;
   margin-left: 4px;
+`;
+
+const NotAvailableContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  border-bottom: 1px solid #eeeeee;
+`;
+const NotAvailiableMessage = styled.div`
+  font-size: 12px;
+  color: #b7b7b7;
 `;

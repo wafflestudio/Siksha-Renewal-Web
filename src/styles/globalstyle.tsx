@@ -1,4 +1,6 @@
-import { createGlobalStyle } from "styled-components";
+"use client";
+
+import { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -39,6 +41,12 @@ export const GlobalStyle = createGlobalStyle`
 
     font-weight: 100;
   }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
   
   body {
     margin: 0;
@@ -46,10 +54,13 @@ export const GlobalStyle = createGlobalStyle`
     background: #F8F8F8;
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
-    min-width: 1221px;
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      min-width: 1024px;
+    }
 
     @media (max-width: 768px) {
-      min-width: 0;
+      min-width: none;
     }
   }
 
@@ -60,10 +71,78 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: #000000;
   }
-  input, textarea, button {
-    font-family: "NanumSquare", "NIXGONFONTS V2.0";
+  input, button, select, option, textarea {
+    font-size: 100%;
+    font-family: inherit;
+  }
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 일부 안드로이드 브라우저를 위한 설정 */
+    -webkit-focus-ring-color: transparent; /* 일부 최신 버전의 크롬을 위한 설정 */
+    letter-spacing: -0.3px;
   }
 
   /* constants */
   /* --main-orange-color: #FF9522 */
+`;
+
+export const LoadingAnimation = css`
+  animation: menuSlide 0.75s;
+  -moz-animation: menuSlide 0.75s;
+  -webkit-animation: menuSlide 0.75s;
+  -o-animation: menuSlide 0.75s;
+
+  @keyframes menuSlide {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-moz-keyframes menuSlide {
+    /* Firefox */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-webkit-keyframes menuSlide {
+    /* Safari and Chrome */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @-o-keyframes menuSlide {
+    /* Opera */
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;

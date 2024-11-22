@@ -10,47 +10,57 @@ interface BoardMenuProps {
 
 export function BoardMenu({ boardId, setBoardId, boards }: BoardMenuProps) {
   return (
-    <Menu>
-      {boards.map((board, i) => (
-        <Link key={i} href={`/community/boards/${board.id}`}>
-          <MenuItem
-            className={boardId === board.id ? "selected" : ""}
-            onClick={() => setBoardId(board.id)}
-          >
-            {board.name}
-          </MenuItem>
-        </Link>
-      ))}
-    </Menu>
+    <MenuContainer>
+      <MenuInnerContainer>
+        <Menu>
+          {boards.map((board, i) => (
+            <Link key={i} href={`/community/boards/${board.id}`}>
+              <MenuItem
+                className={boardId === board.id ? "selected" : ""}
+                onClick={() => setBoardId(board.id)}
+              >
+                {board.name}
+              </MenuItem>
+            </Link>
+          ))}
+        </Menu>
+      </MenuInnerContainer>
+    </MenuContainer>
   );
 }
-
+const MenuContainer = styled.div`
+  @media (max-width: 768px) {
+    display:flex;
+    align-self: center;
+    width: calc(100% + 25px);
+    border-bottom: 1px solid #f0f0f0;
+  }
+`;
+const MenuInnerContainer = styled.div`
+  @media (max-width: 768px) {
+    padding: 0 12.5px 0 12.5px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+`;
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: -118px;
+  left: -146px;
   top: 32px;
-  width: 118px;
-  
+  width: 146px;
+
   @media (max-width: 768px) {
     flex-direction: row;
     position: relative;
     left: 0;
     top: 0;
     width: auto;
-    padding-bottom: 19px;
-
-    &::after {
-      content: ' ';
-      position: absolute;
-      width: calc(100% + 25px);
-      height: 1px;
-      bottom: 0;
-      left: 50%;
-      background-color: #f0f0f0;
-      transform: translateX(-50%);
-    }
+    padding: 18px 0 19px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 35.5px;
   }
 `;
 const MenuItem = styled.div`
@@ -58,10 +68,16 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  width: 100%;
-  height: 42px;
-  box-sizing: border-box;
-  padding-left: 15px;
+  width: 94px;
+  padding: 12px 37px 12px 15px;
+  
+  color: #979797;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-overflow: ellipsis;
   cursor: pointer;
 
   &:hover {

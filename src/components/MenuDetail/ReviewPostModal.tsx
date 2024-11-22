@@ -1,27 +1,26 @@
 import React, { useId, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { v4 as uuidv4 } from 'uuid';
-import { setReview } from "utils/api/reviews";
+import { v4 as uuidv4 } from "uuid";
+import { getReviews, setReview } from "utils/api/reviews";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export type ReviewInputs = {
   score: number;
   comment: string;
-  photos: {
-    id: number,
-    photo: string | File
-  }[];
+  images: File[];
 };
 
 const emptyReviewInputs: ReviewInputs = {
   score: 3,
   comment: "",
-  photos: []
+  images: [],
 };
 
 export default function ReviewPostModal({
   isOpen,
   menu,
+  onSubmit,
   onClose,
 }: {
   isOpen: boolean;
@@ -29,6 +28,7 @@ export default function ReviewPostModal({
     menuId: number;
     menuName: string;
   };
+  onSubmit: () => void;
   onClose: () => void;
 }) {
   const id = useId();
@@ -36,29 +36,36 @@ export default function ReviewPostModal({
 
   const MAX_COMMENT_LENGTH = 150;
 
-  const accessToken = localStorage.getItem("access_token");
+  const { getAccessToken } = useAuth_Legacy();
 
-  const handlePhotoAttach = (photo: File | undefined) => {
-    if (photo) {
-      const newPhoto = {
-        id: uuidv4(),
-        photo: photo
-      }
-      setInputs({ ...inputs, photos: [...inputs.photos, newPhoto] });
+  const handlePhotoAttach = (newPhoto: File | undefined) => {
+    if (newPhoto) {
+      setInputs({ ...inputs, images: [...inputs.images, newPhoto] });
     }
   };
-  const handlePhotoDelete = (id: number) => {
-    setInputs({ ...inputs, photos: inputs.photos.filter((photoObj) => photoObj.id !== id) });
+  const handlePhotoDelete = (index: number) => {
+    setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
   const handleSubmit = async () => {
-    return setReview(menu.menuId, inputs, accessToken!)
-      .then((res) => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-        window.alert(`리뷰 등록에 실패했습니다.`);
-      });
+    const body = new FormData();
+    body.append("menu_id", String(menu.menuId));
+    body.append("score", String(inputs.score));
+    body.append("comment", inputs.comment);
+    inputs.images.forEach((image) => {
+      body.append("images", image);
+    });
+
+    return getAccessToken().then((accessToken) => {
+      setReview(body, accessToken!)
+        .then((res) => {
+          onSubmit();
+          onClose();
+        })
+        .catch((err) => {
+          console.error(err);
+          window.alert(`리뷰 등록에 실패했습니다.`);
+        });
+    });
   };
 
   if (!isOpen) return null;
@@ -77,8 +84,9 @@ export default function ReviewPostModal({
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            src={i <= inputs.score ? "/img/star.svg" : "/img/star-empty.svg"}
+            src={i <= inputs.score ? "/img/general/star.svg" : "/img/star-empty.svg"}
             onClick={() => setInputs({ ...inputs, score: i })}
+            alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
           />
         ))}
       </StarsContainer>
@@ -92,7 +100,9 @@ export default function ReviewPostModal({
           <CommentTextArea
             value={inputs.comment}
             placeholder={"맛은 어땠나요?"}
-            onChange={(e) => setInputs({ ...inputs, comment: e.target.value.slice(0, MAX_COMMENT_LENGTH) })}
+            onChange={(e) =>
+              setInputs({ ...inputs, comment: e.target.value.slice(0, MAX_COMMENT_LENGTH) })
+            }
           />
           <CommentLength>
             {inputs.comment.length} 자 / {MAX_COMMENT_LENGTH} 자
@@ -101,16 +111,15 @@ export default function ReviewPostModal({
       </CommentContainer>
       <PhotoSection>
         <PhotoViewer>
-          {inputs.photos.map((photoObj, i) => (
-            <PhotoContainer key={photoObj.id}>
-              <Photo src={typeof photoObj.photo === "string" ? photoObj.photo : URL.createObjectURL(photoObj.photo)} />
-              <DeleteButton onClick={() => handlePhotoDelete(photoObj.id)}>
-              </DeleteButton>
+          {inputs.images.map((photoObj, i) => (
+            <PhotoContainer key={i}>
+              <Photo src={URL.createObjectURL(photoObj)} alt="리뷰 이미지" />
+              <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
             </PhotoContainer>
           ))}
-          {inputs.photos.length < 5 && (
-            <PhotoAttacher photosLength={inputs.photos.length}>
-              {inputs.photos.length === 0 && <AddImageText> 사진 추가 + </AddImageText>}
+          {inputs.images.length < 5 && (
+            <PhotoAttacher photosLength={inputs.images.length}>
+              {inputs.images.length === 0 && <AddImageText> 사진 추가 + </AddImageText>}
               <FileInput
                 type="file"
                 accept="image/*"
@@ -119,7 +128,7 @@ export default function ReviewPostModal({
             </PhotoAttacher>
           )}
         </PhotoViewer>
-        {inputs.photos.length < 5 && (
+        {inputs.images.length < 5 && (
           <MobilePhotoAttacher>
             <AddImageText> 사진 추가 </AddImageText>
             <FileInput
@@ -130,6 +139,7 @@ export default function ReviewPostModal({
           </MobilePhotoAttacher>
         )}
       </PhotoSection>
+      `
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {
@@ -158,7 +168,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 735px;
+  width: 735px;
   border-left: 1px solid #eeeeee;
   padding-left: 37px;
   padding-right: 36px;
@@ -232,7 +242,6 @@ const ReviewTitleText = styled.span`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: -0.3px;
 `;
 
 const SelectStarText = styled.span`
@@ -299,7 +308,6 @@ const CommentTextArea = styled.textarea`
   font-size: 16px;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.3px;
   color: #333;
 `;
 
@@ -353,8 +361,8 @@ const PhotoAttacher = styled.label<{ photosLength: number }>`
   width: 120px;
   height: 120px;
   flex: 0 0 auto;
-  background-color: ${(props) => props.photosLength > 0 ? "#dfdfdf" : "#ff9522"};
-  background-image: ${(props) => props.photosLength > 0 ? "url('/img/plus-angled.svg')" : ""};
+  background-color: ${(props) => (props.photosLength > 0 ? "#dfdfdf" : "#ff9522")};
+  background-image: ${(props) => (props.photosLength > 0 ? "url('/img/plus-angled.svg')" : "")};
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 8px;
@@ -384,7 +392,7 @@ const AddImageText = styled.div`
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
-    background-image: url('/img/photo.svg');
+    background-image: url("/img/photo.svg");
     margin: 0 0 6px 0;
   }
 
@@ -411,7 +419,7 @@ const MobilePhotoAttacher = styled.label`
   padding: 8px 25px;
   text-align: center;
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     display: flex;
   }
@@ -483,7 +491,7 @@ const ReviewPostButton = styled.button`
   cursor: pointer;
 
   &:before {
-    content: '평가';
+    content: "평가";
     display: none;
     padding-right: 5px;
   }

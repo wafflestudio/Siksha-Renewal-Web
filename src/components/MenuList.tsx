@@ -1,12 +1,15 @@
-import MenuCard from "./MenuCard";
-import styled, { css } from "styled-components";
-import { useStateContext } from "../hooks/ContextProvider";
+import MenuCard from "../app/components/MenuCard";
+import styled from "styled-components";
+import { useStateContext } from "../providers/ContextProvider";
 import { useEffect, useState } from "react";
+import { LoadingAnimation } from "styles/globalstyle";
+import useFavorite_Legacy from "hooks/UseFavorite_Legacy";
 
 export default function MenuList() {
   const state = useStateContext();
 
-  const { meal, data, showCal, date, loading, favoriteRestaurant, isFilterFavorite } = state;
+  const { meal, data, date, loading, isFilterFavorite } = state;
+  const { favoriteRestaurants } = useFavorite_Legacy();
 
   const [hasData, setHasData] = useState(false);
 
@@ -14,20 +17,20 @@ export default function MenuList() {
     if (!data[meal] || data[meal].length == 0) setHasData(false);
     else if (
       isFilterFavorite &&
-      data[meal].filter((res) => favoriteRestaurant.includes(res.id)).length === 0
+      data[meal].filter((res) => favoriteRestaurants.includes(res.id)).length === 0
     )
       setHasData(false);
     else setHasData(true);
   }, [data, meal, isFilterFavorite]);
 
   return (
-    <Container showCal={showCal} key={date + meal}>
+    <Container key={date + meal}>
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
         data[meal].map((restaurant) => {
           if (isFilterFavorite) {
-            return favoriteRestaurant.includes(restaurant.id) ? (
+            return favoriteRestaurants.includes(restaurant.id) ? (
               <MenuCard data={restaurant} key={restaurant.id + meal} />
             ) : null;
           } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
@@ -35,7 +38,6 @@ export default function MenuList() {
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}
-      {/* {!loading && <Download />} */}
     </Container>
   );
 }
@@ -54,58 +56,7 @@ const Container = styled.div`
     flex-grow: 1;
   }
 
-  ${(props: { showCal: boolean }) =>
-    !props.showCal &&
-    css`
-      animation: menuSlide 0.75s;
-      -moz-animation: menuSlide 0.75s;
-      -webkit-animation: menuSlide 0.75s;
-      -o-animation: menuSlide 0.75s;
-
-      @keyframes menuSlide {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-moz-keyframes menuSlide {
-        /* Firefox */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-webkit-keyframes menuSlide {
-        /* Safari and Chrome */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @-o-keyframes menuSlide {
-        /* Opera */
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    `}
+  ${LoadingAnimation}
 `;
 
 const EmptyText = styled.div`

@@ -4,18 +4,13 @@ export interface State {
   meal: string;
   data: RawMenuList;
   today: Date;
-  showCal: boolean;
   showInfo: boolean;
   loading: boolean;
   infoData: any;
-  loginStatus: boolean;
-  userInfo: {
-    id: number | null;
-    nickname: string | null;
-  };
+  authStatus: "loading" | "login" | "logout";
+  isLoginModal: boolean;
+  userInfo: User | null;
   isFilterFavorite: boolean;
-  favoriteRestaurant: number[];
-  isExceptEmptyRestaurant: boolean;
 }
 
 export type Action =
@@ -26,52 +21,12 @@ export type Action =
   | { type: "SET_INFODATA"; infoData: any }
   | { type: "TOGGLE_SHOWCAL" }
   | { type: "TOGGLE_SHOWINFO" }
-  | { type: "SET_LOGINSTATUS"; loginStatus: boolean }
-  | { type: "SET_USERINFO"; userInfo: { id: number | null; nickname: string | null } }
+  | { type: "SET_LOGINMODAL"; isLoginModal: boolean }
+  | {
+      type: "SET_USERINFO";
+      userInfo: User;
+    }
   | { type: "SET_FAVORITERESTAURANT"; favoriteRestaurant: number[] };
-
-// Extend the Window interface for global scope (if needed)
-declare global {
-  interface Window {
-    kakao: any;
-    AppleID: {
-      auth: {
-        init: (config: ClientConfig) => void;
-        signIn: (config?: ClientConfig) => Promise<SigninResponse>;
-      };
-    };
-  }
-
-  // apple sign in types
-  interface ClientConfig {
-    clientId: string;
-    redirectURI: string;
-    scope?: string;
-    state?: string;
-    nonce?: string;
-    usePopup?: boolean;
-  }
-
-  interface Authorization {
-    code: string;
-    id_token: string;
-    state?: string;
-  }
-
-  interface User {
-    email: string;
-    name: string;
-  }
-
-  interface SigninResponse {
-    authorization: Authorization;
-    user?: User;
-  }
-
-  interface SigninError {
-    error: string;
-  }
-}
 
 export interface Board {
   createdAt: string;
@@ -99,6 +54,7 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   nickname: string | null;
+  profileUrl: string | null;
   anonymous: boolean;
   available: boolean;
   isMine: boolean;
@@ -116,6 +72,7 @@ export interface RawPost {
   created_at: string;
   updated_at: string;
   nickname: string | null;
+  profile_url: string | null;
   anonymous: boolean;
   available: boolean;
   is_mine: boolean;
@@ -132,7 +89,8 @@ export interface Comment {
   updatedAt: string;
   id: number;
   nickname: string;
-  avaliable: boolean;
+  profileUrl: string | null;
+  available: boolean;
   anonymous: boolean;
   isMine: boolean;
   likeCount: number;
@@ -146,7 +104,8 @@ export interface RawComment {
   updated_at: string;
   id: number;
   nickname: string;
-  avaliable: boolean;
+  profile_url: string | null;
+  available: boolean;
   anonymous: boolean;
   is_mine: boolean;
   like_cnt: number;
@@ -165,6 +124,20 @@ export interface RawRestaurant {
   lng: number;
   etc: Record<string, any>;
 }
+
+export interface Restaurant {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  code: string;
+  nameKr: string;
+  nameEn: string;
+  addr: string;
+  lat: number;
+  lng: number;
+  etc: Record<string, any>;
+}
+
 export interface RawMenuList {
   BR: Array<
     RawRestaurant & {
@@ -211,4 +184,26 @@ export interface RawReview {
   score: number;
   comment: string;
   etc: Record<string, any>;
+}
+
+export interface RawUser {
+  id: number;
+  type: string;
+  identity: string;
+  nickname: string;
+  profile_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface User {
+  id: number;
+  nickname: string;
+  image: string | null;
+}
+
+export interface RestaurantPreview {
+  id: number;
+  nameKr: string;
+  nameEn: string;
 }

@@ -2,28 +2,51 @@ import styled from "styled-components";
 import { Post } from "components/Community/Post";
 import { Post as PostType } from "types";
 import InfiniteScrollable from "components/general/InfiniteScrollable";
+import { useState } from "react";
+import { LoadingAnimation } from "styles/globalstyle";
 
 interface PropsPostList {
   posts: PostType[];
-  fetch: (size: number, page: number) => Promise<void>;
-  hasNext: boolean;
+  fetch: (size: number, page: number) => Promise<boolean | void>;
 }
 
-export function PostList({ posts, fetch, hasNext }: PropsPostList) {
+export function PostList({ posts, fetch }: PropsPostList) {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <InfiniteScrollable fetchMoreData={fetch} hasNext={hasNext}>
-      {posts ? (
-        posts.map((post, i) => <Post key={i} post={post} />)
+    <InfiniteScrollable fetchMoreData={fetch} setIsLoading={setIsLoading}>
+      {posts.length >= 1 ? (
+        // available(신고 많이 받으면 false)한 경우만 보여지게 합니다.
+        posts
+          .filter((post) => post.available === true)
+          .map((post, i) => <Post key={i} post={post} />)
       ) : (
-        <EmptyText> 게시물이 없습니다 </EmptyText>
+        <>
+          {isLoading ? (
+            <EmptyText> 불러오는 중입니다 </EmptyText>
+          ) : (
+            <EmptyText> 게시물이 없습니다 </EmptyText>
+          )}
+        </>
       )}
     </InfiniteScrollable>
   );
 }
 
-const Container = styled.div`
+const EmptyText = styled.div`
+  ${LoadingAnimation}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+
   @media (max-width: 768px) {
-    overflow: scroll;
+    height: calc(100% - 83px);
+    font-size: 15px;
   }
 `;
-const EmptyText = styled.div``;

@@ -2,25 +2,37 @@ import useEmblaCarousel from "embla-carousel-react";
 import { EmblaOptionsType } from "embla-carousel";
 import Link from "next/link";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function MobileReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
-	const OPTIONS: EmblaOptionsType = { loop: false, watchDrag: false };
-	const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+interface MobileReviewImageSwiperProps {
+  menuId: number;
+  images: string[];
+  swiperImagesLimit: number;
+  imageCount: number;
+}
 
-  if(images.length > swiperImagesLimit) {
+export default function MobileReviewImageSwiper({
+  menuId,
+  images,
+  swiperImagesLimit,
+  imageCount,
+}: MobileReviewImageSwiperProps) {
+  const OPTIONS: EmblaOptionsType = { loop: false, watchDrag: false };
+  const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+
+  if (images.length > swiperImagesLimit) {
     images = images.slice(0, swiperImagesLimit);
   }
-  
-	useEffect(() => {
+
+  useEffect(() => {
     if (emblaApi) {
       const viewportElement = emblaApi.rootNode();
       const containerElement = emblaApi.containerNode();
       const updateWidthComparison = () => {
         const viewportWidth = viewportElement.offsetWidth;
         const containerWidth = containerElement.scrollWidth;
-				emblaApi.reInit({ watchDrag: viewportWidth + 8 < containerWidth})
-      }
+        emblaApi.reInit({ watchDrag: viewportWidth + 8 < containerWidth });
+      };
 
       const resizeObserver = new ResizeObserver(updateWidthComparison);
       resizeObserver.observe(viewportElement);
@@ -30,30 +42,29 @@ export default function MobileReviewImageSwiper({ images, swiperImagesLimit, ima
       };
     }
   }, [emblaApi]);
-	
-	return (
-		<Swiper>
-			<SwiperViewport ref={emblaRef}>
-				<SwiperContainer>
-					{
-						images.length > 0
-							? (images.map((image, index) => (
-								<ReviewImageContainer key={image}>
-									{
-										imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
-										<Link href="#">
-											<MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
-										</Link>
-									}
-									<ReviewImage src={image} />
-								</ReviewImageContainer>
-							)))
-							: <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-					}
-				</SwiperContainer>
-			</SwiperViewport>
-		</Swiper>
-	)
+
+  return (
+    <Swiper>
+      <SwiperViewport ref={emblaRef}>
+        <SwiperContainer>
+          {images.length > 0 ? (
+            images.map((image, index) => (
+              <ReviewImageContainer key={image}>
+                {imageCount > swiperImagesLimit && index === swiperImagesLimit - 1 && (
+                  <Link href={`/menu/${menuId}/photos`}>
+                    <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
+                  </Link>
+                )}
+                <ReviewImage src={image} alt="리뷰 이미지" />
+              </ReviewImageContainer>
+            ))
+          ) : (
+            <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+          )}
+        </SwiperContainer>
+      </SwiperViewport>
+    </Swiper>
+  );
 }
 
 const Swiper = styled.div`
@@ -82,7 +93,7 @@ const SwiperViewport = styled.div`
 `;
 
 const SwiperContainer = styled.div`
-	height: 100%;
+  height: 100%;
   backface-visibility: hidden;
   display: flex;
   touch-action: pan-y;
@@ -111,9 +122,9 @@ const MoreImages = styled.button`
   cursor: pointer;
 
   &:before {
-    content: '';
+    content: "";
     display: block;
-    background-image: url('/img/plus.svg');
+    background-image: url("/img/plus.svg");
     width: 10px;
     height: 10px;
     margin: 0 auto 7px auto;

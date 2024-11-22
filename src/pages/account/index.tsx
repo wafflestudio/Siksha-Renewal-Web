@@ -1,38 +1,25 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useEffect, useState } from "react";
-import { useStateContext, useDispatchContext } from "../../hooks/ContextProvider";
-import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import { useStateContext } from "../../providers/ContextProvider";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import { useEffect } from "react";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
+import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Account() {
   const router = useRouter();
 
-  const state = useStateContext();
-  const { setIsExceptEmptyRestaurant } = useDispatchContext();
-  const { loginStatus, userInfo, isExceptEmptyRestaurant } = state;
-  const { openLoginModal } = useModals();
+  const { userInfo } = UseProfile_Legacy();
+  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
-  const [isLoading, setLoading] = useState(false);
+  const { authStatus, authGuard } = useAuth_Legacy();
 
-  // 프로필 이미지 기능 구현 대비
-  const profileURL = "/img/default-profile.svg";
+  useEffect(authGuard, [authStatus]);
 
-  useEffect(() => {
-    if (!loginStatus) {
-      router.push(`/`);
-      openLoginModal();
-      return;
-    }
-  }, []);
-
-  const nickname = !userInfo.nickname ? `ID ${userInfo.id}` : userInfo.nickname;
-
-  function toggle() {
-    localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(!isExceptEmptyRestaurant));
-    setIsExceptEmptyRestaurant(!isExceptEmptyRestaurant);
-  }
+  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
+  const nickname = userInfo?.nickname;
 
   return (
     <AccountLayout>
@@ -40,12 +27,12 @@ export default function Account() {
       <ListGroup>
         <ContentDiv
           onClick={() => {
-            router.push("/account/nickname");
+            router.push("/account/profile");
           }}
         >
-          <Profile src={profileURL} />
-          <ProfileText>{isLoading ? "잠시만 기다려주세요..." : nickname}</ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <Profile src={profileURL} alt="프로필 이미지" />
+          <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="오른쪽 화살표" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -55,7 +42,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -65,7 +52,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -74,15 +61,23 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
-          {isExceptEmptyRestaurant ? (
-            <CheckButton src="/img/hide-circle-active.svg" onClick={toggle} />
+          {isExceptEmpty ? (
+            <CheckButton
+              src="/img/account/hide-circle-active.svg"
+              alt="활성화"
+              onClick={toggleIsExceptEmpty}
+            />
           ) : (
-            <CheckButton src="/img/hide-circle-inactive.svg" onClick={toggle} />
+            <CheckButton
+              src="/img/account/hide-circle-inactive.svg"
+              alt="비활성화"
+              onClick={toggleIsExceptEmpty}
+            />
           )}
         </ContentDiv>
         <BreakLine />
@@ -92,17 +87,19 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
-
-      <ListGroup
-        onClick={() => {
-          router.push("/account/inquiry");
-        }}
-      >
-        <InquiryText>1:1 문의하기</InquiryText>
+      <ListGroup isLast={true}>
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/inquiry");
+          }}
+        >
+          <InquiryText>1:1 문의하기</InquiryText>
+        </ContentDiv>
       </ListGroup>
+      <MobileNavigationBar_Legacy />
     </AccountLayout>
   );
 }
@@ -115,11 +112,11 @@ const MobileSpace = styled.div`
   }
 `;
 
-const ListGroup = styled.div`
+const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
   background-color: #ffffff;
   width: 544px;
-  margin-bottom: 19px;
+  margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -128,24 +125,41 @@ const ListGroup = styled.div`
   }
 `;
 
-const ContentDiv = styled.div`
+const ContentDiv = styled.button`
+  width: 100%;
+  border: none;
+  background-color: transparent;
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 0;
+  padding-left: 16px;
+  cursor: pointer;
 `;
 
 const Profile = styled.img`
   width: 48.17px;
   height: 48.17px;
-  margin: 11px 0 11px 16px;
+  margin: 11px 0 11px 0.58px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  @media (max-width: 768px) {
+    margin-left: -5px;
+  }
 `;
 
 const Text = styled.span`
   display: inline-block;
-  margin: 11.5px 0 11.5px 16px;
+  margin: 11.5px 0;
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
+  color: black;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const ProfileText = styled(Text)`
@@ -159,7 +173,6 @@ const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
 `;
 
 const InquiryText = styled(Text)`
-  margin-left: 13px;
   font-size: 16px;
   font-weight: 700;
   color: #ff9522;
@@ -180,10 +193,17 @@ const ArrowButton = styled(Button)`
   width: 6.25px;
   height: 10px;
   margin-right: 15.47px;
+
+  @media (max-width: 768px) {
+    margin-right: 13.75px;
+  }
 `;
 
 const CheckButton = styled(Button)`
   width: 19px;
   height: 19px;
   margin-right: 12.22px;
+  @media (max-width: 768px) {
+    margin-right: 15.5px;
+  }
 `;

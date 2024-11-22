@@ -5,7 +5,6 @@ import { Post as PostType, Comment as CommentType, RawComment, RawPost } from "t
 import Board from "../../index";
 import CommentList from "components/Community/CommentList";
 import CommentWriter from "components/Community/CommentWriter";
-import { useStateContext } from "hooks/ContextProvider";
 import { formatPostCommentDate } from "utils/FormatUtil";
 import PostImageSwiper from "components/Community/PostImageSwiper";
 import MobileActionsModal, { ModalAction } from "components/Community/MobileActionsModal";
@@ -17,24 +16,27 @@ import {
   setPostLike,
   setPostUnlike,
 } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
 import { ReportModal } from "components/Community/ReportModal";
+import MobileSubHeader from "components/general/MobileSubHeader";
 import DeleteModal from "components/Community/DeleteModal";
 import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import AlertModal from "components/general/AlertModal";
+import { LoadingAnimation } from "styles/globalstyle";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Post() {
   const router = useRouter();
   const { boardId, postId } = router.query;
-  const { loginStatus } = useStateContext();
-  const { getAccessToken, checkAccessToken } = UseAccessToken();
+  const { authStatus, getAccessToken, checkAccessToken } = useAuth_Legacy();
   const { openModal, openLoginModal } = useModals();
 
   const [post, setPost] = useState<PostType | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [hasNextComments, setHasNextComments] = useState(false);
 
   const [isError, setIsError] = useState<boolean>(false);
+
+  const isMobile = useIsMobile();
 
   const fetchPost = () => {
     return checkAccessToken()
@@ -51,17 +53,17 @@ export default function Post() {
       .then((result: string | null) =>
         getCommentList(Number(postId), result ?? undefined, size, page),
       )
-      .then((data) => {
-        const { result, hasNext } = data;
-        setHasNextComments(hasNext);
+      .then(({ result, hasNext }) => {
         const newComments = result.map(commentParser);
         setComments((prev) => [...prev, ...newComments]);
+        return hasNext;
       })
       .catch((e) => {
         console.error(e);
         setIsError(true);
       });
   };
+
   const addComment = (rawComment: RawComment) => {
     setComments((prev) => [...prev, commentParser(rawComment)]);
   };
@@ -70,7 +72,7 @@ export default function Post() {
   };
 
   const fetchLike = () => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else if (post) {
       const handleLikeAction = post.isLiked ? setPostUnlike : setPostLike;
       getAccessToken()
@@ -90,7 +92,7 @@ export default function Post() {
   };
 
   const removePost = (postId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else
       openModal(DeleteModal, {
         type: "post",
@@ -98,13 +100,13 @@ export default function Post() {
         onSubmit: () =>
           getAccessToken()
             .then((accessToken) => deletePost(postId, accessToken))
-            .then(() => router.push(`/community/boards/${boardId}`))
+            .then(() => router.back())
             .catch((e) => console.error(e)),
       });
   };
 
   const reportPost = (postId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else openModal(ReportModal, { type: "post", targetID: postId, onClose: () => {} });
   };
 
@@ -120,13 +122,13 @@ export default function Post() {
     if (boardId && postId) {
       setComments((prev) => []);
       fetchPost();
-      fetchComments(10, 1);
     }
   }, [boardId, postId]);
 
   if (post) {
+    const isLikedImg = post.isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
     const likeButtonIcon = post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg";
-    const profileImg = "/img/default-profile.svg";
+    const profileImg = post.profileUrl || "/img/default-profile.svg";
 
     const actions: ModalAction[] = post.isMine
       ? [
@@ -145,88 +147,119 @@ export default function Post() {
             handleClick: () => reportPost(post.id),
           },
         ];
-
-    return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>
-          <Header>
-            <WriterInfoContainer>
-              <ProfileImage src={profileImg} />
-              <div>
-                <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
-                <PostDate>
-                  {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
-                </PostDate>
-              </div>
-            </WriterInfoContainer>
-            <DesktopPostActions>
-              {actions.map((action) => (
-                <DesktopActionButton key={action.name} onClick={action.handleClick}>
-                  {action.name}
-                </DesktopActionButton>
-              ))}
-            </DesktopPostActions>
-            <MobileMoreActionsButton
-              src="/img/etc.svg"
-              onClick={() => onClickMoreActions(actions)}
-            />
-          </Header>
-          <Content>
-            <Title>{post.title}</Title>
-            <Text>{post.content}</Text>
-            {post.images && <PostImageSwiper images={post.images} />}
-          </Content>
-          <LikesAndComments>
-            <Likes>
-              <Icon src="/img/post-like.svg" />
-              {post.likeCount}
-            </Likes>
-            <Comments>
-              <Icon src="/img/post-comment.svg" />
-              {post.commentCount}
-            </Comments>
-          </LikesAndComments>
-          <Footer>
-            <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
-              <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} />
-              공감
-            </LikeButton>
-            <BackToBoardButton
-              onClick={() => {
-                router.push(`/community/boards/${boardId}`);
-              }}
-            >
-              <FooterIcon src="/img/posts-orange.svg" />
-              목록보기
-            </BackToBoardButton>
-          </Footer>
-          <CommentContainer>
-            <CommentList
-              comments={comments}
-              update={deleteComment}
-              fetch={fetchComments}
-              hasNext={hasNextComments}
-            />
-            <CommentWriter postId={post.id} update={addComment} />
-          </CommentContainer>
-        </Container>
-      </Board>
-    );
+    // availiable 여부에 따라 게시물을 보여줄지 보여주지 않을지 결정합니다.
+    if (post.available === false)
+      openModal(AlertModal, {
+        title: "신고 누적 게시글",
+        message: "신고가 누적되어 숨겨진 게시글입니다.",
+        onClose: () => router.push(`/community/boards/${boardId}/`),
+      });
+    // available한 경우만 게시물을 보여줍니다.
+    else if (post.available === true)
+      return (
+        <>
+          <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
+          <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
+            <Container>
+              <Header>
+                <WriterInfoContainer>
+                  <ProfileImage src={profileImg} alt="프로필 이미지" />
+                  <div>
+                    <Nickname>{post.anonymous ? "익명" : post.nickname}</Nickname>
+                    <PostDate>
+                      {formatPostCommentDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+                    </PostDate>
+                  </div>
+                </WriterInfoContainer>
+                <DesktopPostActions>
+                  {actions.map((action) => (
+                    <DesktopActionButton key={action.name} onClick={action.handleClick}>
+                      {action.name}
+                    </DesktopActionButton>
+                  ))}
+                </DesktopPostActions>
+                <MobileMoreActionsButton
+                  src="/img/etc.svg"
+                  onClick={() => onClickMoreActions(actions)}
+                  alt="더보기"
+                />
+              </Header>
+              <Content>
+                <Title>{post.title}</Title>
+                <Text>{post.content}</Text>
+                {post.images && <PostImageSwiper images={post.images} />}
+              </Content>
+              <LikesAndComments>
+                <Likes>
+                  <Icon src={isLikedImg} alt="좋아요" />
+                  {post.likeCount}
+                </Likes>
+                <Comments>
+                  <Icon src="/img/post-comment.svg" alt="댓글" />
+                  {post.commentCount}
+                </Comments>
+              </LikesAndComments>
+              <Footer>
+                <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+                  <LikeButtonIcon src={likeButtonIcon} isLiked={post.isLiked} alt="공감" />
+                  공감
+                </LikeButton>
+                <BackToBoardButton
+                  onClick={() => {
+                    router.push(`/community/boards/${boardId}`);
+                  }}
+                >
+                  <FooterIcon src="/img/posts-orange.svg" alt="목록보기" />
+                  목록보기
+                </BackToBoardButton>
+              </Footer>
+              <CommentContainer>
+                <CommentList comments={comments} update={deleteComment} fetch={fetchComments} />
+                <CommentWriter postId={post.id} update={addComment} />
+              </CommentContainer>
+            </Container>
+          </Board>
+        </>
+      );
   } else {
     return (
-      <Board selectedBoardId={Number(boardId) ?? 1}>
-        <Container>{isError ? "포스트를 찾을 수 없어요" : ""}</Container>
-      </Board>
+      <>
+        <MobileSubHeader selectedBoardId={Number(boardId) ?? 1} handleBack={router.back} />
+        <Board selectedBoardId={Number(boardId) ?? 1} showBoardMenu={!isMobile}>
+          <ErrorContainer>{isError ? "포스트를 찾을 수 없어요" : ""}</ErrorContainer>
+        </Board>
+      </>
     );
   }
 }
 
 const Container = styled.div`
   width: 100%;
+  padding-top: 18.83px;
   @media (max-width: 768px) {
     padding-top: 16px;
+    padding-bottom: 54.21px; // CommentWriter 높이
   }
 `;
+
+const ErrorContainer = styled.div`
+  ${LoadingAnimation}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160.84px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: #a6a6a6;
+
+  @media (max-width: 768px) {
+    height: calc(100dvh - 60px);
+  }
+`;
+const EmptyText = styled.div``;
 
 const Header = styled.div`
   display: flex;
@@ -242,6 +275,8 @@ const WriterInfoContainer = styled.div`
 const ProfileImage = styled.img`
   width: 43px;
   height: 43px;
+  border-radius: 50%;
+  object-fit: cover;
   @media (max-width: 768px) {
     width: 30px;
     height: 30px;
@@ -306,11 +341,16 @@ const MobileMoreActionsButton = styled.img`
 
 const Content = styled.div`
   margin-bottom: 15.5px;
+  word-wrap: break-word;
 `;
 const Title = styled.div`
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 30px;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+
   @media (max-width: 768px) {
     font-weight: 800;
     font-size: 16px;
@@ -321,20 +361,19 @@ const Text = styled.div`
   font-weight: 400;
   font-size: 16px;
   margin-bottom: 20px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+
   @media (max-width: 768px) {
     font-size: 12px;
   }
-`;
-const Photos = styled.div``;
-const Photo = styled.img`
-  width: 100%;
 `;
 
 const LikesAndComments = styled.div`
   display: flex;
   gap: 12px;
   font-size: 12px;
-  margin-bottom: 23px;
+  margin-bottom: 14px;
 `;
 const Likes = styled.div`
   display: flex;

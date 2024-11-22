@@ -5,12 +5,24 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCount }: { images: string[], swiperImagesLimit: number, imageCount: number }) {
+interface ReviewImageSwiperProps {
+  menuId: number;
+  images: string[];
+  swiperImagesLimit: number;
+  imageCount: number;
+}
+
+export default function ReviewImageSwiper({
+  menuId,
+  images,
+  swiperImagesLimit,
+  imageCount,
+}: ReviewImageSwiperProps) {
   const OPTIONS: EmblaOptionsType = { loop: false };
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [isContainerSmaller, SetIsContainerSmaller] = useState<boolean>(false);
 
-  if(images.length > swiperImagesLimit) {
+  if (images.length > swiperImagesLimit) {
     images = images.slice(0, swiperImagesLimit);
   }
 
@@ -22,7 +34,7 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
         const viewportWidth = viewportElement.offsetWidth;
         const containerWidth = containerElement.scrollWidth;
         SetIsContainerSmaller(viewportWidth + 4 >= containerWidth);
-      }
+      };
 
       const resizeObserver = new ResizeObserver(updateWidthComparison);
       resizeObserver.observe(viewportElement);
@@ -49,22 +61,26 @@ export default function ReviewImageSwiper({ images, swiperImagesLimit, imageCoun
         <SwiperContainer>
           {images.map((image, index) => (
             <ReviewImageContainer key={image}>
-              {
-                imageCount > swiperImagesLimit && index === (swiperImagesLimit - 1) &&
-                <Link href="#">
+              {imageCount > swiperImagesLimit && index === swiperImagesLimit - 1 && (
+                <Link href={`/menu/${menuId}/photos`}>
                   <MoreImages>{imageCount - swiperImagesLimit}건 더보기</MoreImages>
                 </Link>
-              }
+              )}
               <ReviewImage src={image} />
             </ReviewImageContainer>
           ))}
         </SwiperContainer>
       </SwiperViewport>
       <PrevButton type="button" onClick={onPrevButtonClick}>
-        <Image src="/img/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
+        <Image src="/img/general/left-arrow-white.svg" alt="왼쪽 화살표" width={14} height={22} />
       </PrevButton>
       <NextButton type="button" onClick={onNextButtonClick}>
-        <Image src="/img/right-arrow-white.svg" alt="오른쪽 화살표" width={14} height={22} />
+        <Image
+          src="/img/general/right-arrow-white.svg"
+          alt="오른쪽 화살표"
+          width={14}
+          height={22}
+        />
       </NextButton>
     </Swiper>
   );
@@ -90,12 +106,11 @@ const SwiperViewport = styled.div<{ isContainerSmaller: boolean }>`
   height: 100%;
   overflow: hidden;
   ${(props) =>
-    props.isContainerSmaller
-    && `
+    props.isContainerSmaller &&
+    `
           display: flex;
           justify-content: center;
-        `
-  }
+        `}
 `;
 
 const SwiperContainer = styled.div`

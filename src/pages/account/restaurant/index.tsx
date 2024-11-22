@@ -1,67 +1,66 @@
-import { useEffect, useState } from "react";
-import RestaurantOrderEdit from "../../../components/Account/RestaurantOrderEdit";
-import Header from "../../../components/Header";
+import { useEffect } from "react";
+import RestaurantOrderEditor from "../../../components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import MobileSubHeader from "components/general/MobileSubHeader";
+import { useRouter } from "next/router";
+import { RestaurantPreview } from "types";
+import useOrder from "hooks/UseOrder";
+import AccountLayout from "../layout";
 
-interface FavoriteRestaurant {
-  id: number;
-  name_kr: string;
-  name_en: string;
-}
+export default function NonFavoriteOrderSetting() {
+  const { authStatus, authGuard } = useAuth_Legacy();
+  const router = useRouter();
+  const { orderList, setNewOrderList } = useOrder("nonFavorite");
 
-export default function Setting_NonFavorite() {
-  const [orderData, setOrderData] = useState<FavoriteRestaurant[]>([]);
+  useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    const orderList: FavoriteRestaurant[] = JSON.parse(
-      localStorage.getItem("orderList_nonFavorite") ?? "[]",
-    );
-
     getRestaurantList()
-      .then(({ result }) => {
-        const favoriteList = JSON.parse(localStorage.getItem("orderList_nonFavorite") ?? "[]");
-        console.log(favoriteList);
-        for (let i = 0; i < orderList.length; i++) {
-          if (
-            !result.find(({ id }) => id === orderList[i].id) &&
-            favoriteList.includes(orderList[i].id)
-          ) {
-            orderList.splice(i, 1);
-            i--;
+      .then((result) => {
+        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
+        let ghostRestaurantIds: number[] = [];
+        orderList.forEach((res) => {
+          if (!result.find(({ id }) => id === res.id)) {
+            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
           }
-        }
-        console.log(orderList);
-
-        result.forEach(({ id, name_kr, name_en }) => {
-          if (!orderList.some((menu) => Number(menu.id) === id))
-            orderList.push({ id, name_kr, name_en });
         });
-        console.log(orderList);
-        setOrderData(orderList);
+
+        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+
+        // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
+        let newRestaurants: RestaurantPreview[] = [];
+        result.forEach(({ id, nameKr, nameEn }) => {
+          if (!newOrderList.find((res) => res.id === id)) {
+            newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
+          }
+        });
+
+        setNewOrderList([...newOrderList, ...newRestaurants]);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
 
-  useEffect(() => {
-    if (!!orderData.length)
-      localStorage.setItem("orderList_nonFavorite", JSON.stringify(orderData));
-  }, [orderData]);
-
-  const setNewOrderData = (source: number, destination: number) => {
-    const copyData = [...orderData];
+  const reorder = (source: number, destination: number) => {
+    const copyData = [...orderList];
     const sourceData = copyData[source];
     copyData.splice(source, 1);
     copyData.splice(destination, 0, sourceData);
-    setOrderData(copyData);
+    setNewOrderList(copyData);
   };
 
   return (
-    <Container>
-      <RestaurantOrderEdit orderData={orderData} setNewOrderData={setNewOrderData} />
-    </Container>
+    <>
+      <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
+      <AccountLayout>
+        <Container>
+          <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 
@@ -69,10 +68,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 36.92px;
+  width: 100%;
 
   @media (max-width: 768px) {
     margin-top: 0px;
-    height: 100%;
+    height: calc(100% - 60px);
   }
 `;

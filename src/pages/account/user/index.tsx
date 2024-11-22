@@ -1,24 +1,25 @@
-import { useStateContext, useDispatchContext } from "../../../hooks/ContextProvider";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import UseAccessToken from "hooks/UseAccessToken";
 import { deleteAccount } from "utils/api/auth";
-import useModals from "hooks/UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import { useEffect, useState } from "react";
+import MobileSubHeader from "components/general/MobileSubHeader";
 
 export default function UserSetting() {
   const router = useRouter();
-  const state = useStateContext();
+  const { authStatus, getAccessToken, authGuard, logout } = useAuth_Legacy();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { setLoginStatus } = useDispatchContext();
-  const { loginStatus } = state;
-  const { getAccessToken } = UseAccessToken();
-  const { openLoginModal } = useModals();
+  useEffect(() => {
+    if (authStatus === "login") {
+      setIsLoading(false);
+    }
+    if (isLoading) authGuard();
+  }, [authStatus]);
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    setLoginStatus(!!localStorage.getItem("access_token"));
+    logout();
     router.push(`/`);
   };
 
@@ -28,18 +29,12 @@ export default function UserSetting() {
     );
     if (!confirmExit) return;
 
-    if (!loginStatus) {
-      router.push(`/`);
-      openLoginModal();
-    }
-
     return getAccessToken()
       .then((accessToken) => {
         deleteAccount(accessToken);
       })
       .then(() => {
-        localStorage.removeItem("access_token");
-        setLoginStatus(!!localStorage.getItem("access_token"));
+        logout();
         router.push(`/`);
       })
       .catch((e) => {
@@ -49,21 +44,24 @@ export default function UserSetting() {
   };
 
   return (
-    <AccountLayout>
-      <MobileSpace />
-      <Container>
-        <Title>계정 관리</Title>
-        <ContentDiv onClick={handleLogout}>
-          <LogoutText>로그아웃</LogoutText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-        <BreakLine />
-        <ContentDiv onClick={handleExit}>
-          <WithdrawalText>회원 탈퇴</WithdrawalText>
-          <ArrowButton src="/img/right-arrow-grey.svg" />
-        </ContentDiv>
-      </Container>
-    </AccountLayout>
+    <>
+      <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
+      <AccountLayout>
+        <MobileSpace />
+        <Container>
+          <Title>계정 관리</Title>
+          <ContentDiv onClick={handleLogout}>
+            <LogoutText>로그아웃</LogoutText>
+            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
+          </ContentDiv>
+          <BreakLine />
+          <ContentDiv onClick={handleExit}>
+            <WithdrawalText>회원 탈퇴</WithdrawalText>
+            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
+          </ContentDiv>
+        </Container>
+      </AccountLayout>
+    </>
   );
 }
 
@@ -114,6 +112,7 @@ const Text = styled.span`
 
   @media (max-width: 768px) {
     margin-left: 16px;
+    font-size: 15px;
   }
 `;
 

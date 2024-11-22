@@ -27,7 +27,7 @@ export default function ReviewDistribution({
           <DistributionBarWithText key={i}>
             <DistributionText key={i}>
               {i + 1}
-              <StarImg src={"/img/star-neutral-base.svg"} />
+              <StarImg src={"/img/star-neutral-base.svg"} alt="좋아요" />
             </DistributionText>
             <DistributionBar percentage={(count / totalReviewCount) * 100} />
           </DistributionBarWithText>
@@ -104,7 +104,7 @@ const DistributionBar = styled.div<{ percentage: number }>`
   border-radius: 0 5px 5px 0;
   margin-left: 9px;
   @media (max-width: 768px) {
-    width: ${(props) => props.percentage * 2.3 + 4}px;
+    width: ${(props) => props.percentage * 2 + 4}px;
     height: 8px;
     border-radius: 0 5px 5px 0;
   }

@@ -1,24 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BoardHeader } from "components/Community/BoardHeader";
 import { PostList } from "components/Community/PostList";
 
-import { Post, RawPost } from "types";
+import { Post } from "types";
 import Board from ".";
 import { useRouter } from "next/router";
-import { useStateContext } from "hooks/ContextProvider";
-import MobileNavigationBar from "components/MobileNavigationBar";
 import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 
 export default function Posts() {
   const router = useRouter();
   const { boardId } = router.query;
   const [posts, setPosts] = useState<Post[]>([]);
-  const [hasNextPosts, setHasNextPosts] = useState(true);
 
-  const { checkAccessToken } = UseAccessToken();
+  const { checkAccessToken } = useAuth_Legacy();
 
   const fetchPosts = (size: number, page: number) => {
     return checkAccessToken()
@@ -26,32 +24,22 @@ export default function Posts() {
         getPostList(Number(boardId), result ?? undefined, size, page),
       )
       .then(({ result, hasNext }) => {
-        setHasNextPosts(hasNext);
-        result.forEach((post) => {
-          setPosts((prev) => [...prev, postParser(post)]);
-        });
+        result.forEach((post) => setPosts((prev) => [...prev, postParser(post)]));
+        return hasNext;
       })
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch((e) => console.error(e));
   };
 
   useEffect(() => {
-    if (boardId) {
-      setPosts((prev) => []);
-      fetchPosts(10, 1);
-    }
+    if (boardId) setPosts((_) => []);
   }, [boardId]);
 
-  return (
-    <Board selectedBoardId={Number(boardId) ?? 1}>
-      <>
+  if (boardId)
+    return (
+      <Board selectedBoardId={Number(boardId)} showBoardMenu={true}>
         <BoardHeader />
-        <PostList posts={posts} fetch={fetchPosts} hasNext={hasNextPosts} />
-        <MobileNavigationBar />
-      </>
-    </Board>
-  );
+        <PostList posts={posts} fetch={fetchPosts} />
+        <MobileNavigationBar_Legacy />
+      </Board>
+    );
 }
-
-const Container = styled.div``;

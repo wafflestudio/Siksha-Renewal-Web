@@ -1,5 +1,4 @@
 import BackClickable from "components/general/BackClickable";
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 export interface ModalAction {
@@ -20,9 +19,10 @@ export default function MobileActionsModal({
     <BackClickable onClickBackground={onClose}>
       <MainContainer>
         {actions.map(
-          (action) =>
+          (action, i) =>
             action.name !== "공감" && (
               <ActionWrapper
+                key={i}
                 onClick={() => {
                   action.handleClick();
                   onSubmit?.();
@@ -40,10 +40,10 @@ export default function MobileActionsModal({
 
 const MainContainer = styled.div`
   position: fixed;
-  bottom: 40px;
+  top: 50%;
   left: 50%;
-  width: calc(100% - 60px);
-  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  transform: translateX(-50%) translateY(-50%);
   background: white;
   border-radius: 26px;
 `;

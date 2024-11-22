@@ -1,60 +1,104 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import MobileReviewImageSwiper from "./MobileReviewImageSwiper";
 import Link from "next/link";
-import { ReviewListType } from "pages/menu/[id]";
+import { ReviewListType } from "pages/menu/[menuId]";
 import ReviewItem from "./ReviewItem.";
 import useIsMobile from "hooks/UseIsMobile";
+import { formatDate } from "utils/FormatUtil";
+import Image from "next/image";
+
+export interface MenuType {
+  id: number;
+  restaurant_id: number;
+  code: string;
+  date: string;
+  type: string;
+  name_kr: string;
+  name_en: string;
+  price: number;
+  etc: {};
+  created_at: string;
+  updated_at: string;
+  score: number | null;
+  review_cnt: number;
+  is_liked: boolean;
+  like_cnt: number;
+}
 
 interface ReviewSectionProps {
-  reviews: ReviewListType,
-  images: string[],
-  isReviewListPageOpen: boolean,
-  handleReviewPostButtonClick: () => void,
-  handleReviewListPage: (isOpen: boolean) => void,
+  menu: MenuType;
+  reviews: ReviewListType;
+  images: string[];
+  isReviewListPageOpen: boolean;
+  handleReviewPostButtonClick: () => void;
+  handleReviewListPage: (isOpen: boolean) => void;
 }
-export default function ReviewSection({ reviews, images, isReviewListPageOpen, handleReviewPostButtonClick, handleReviewListPage }: ReviewSectionProps) {
+export default function ReviewSection({
+  menu,
+  reviews,
+  images,
+  isReviewListPageOpen,
+  handleReviewPostButtonClick,
+  handleReviewListPage,
+}: ReviewSectionProps) {
+  const { id: menuId, date: menuDate } = menu;
   const isMobile = useIsMobile();
 
-  const MOBILE_IMAGE_LIST_LIMIT = 5;
-  
+  const MOBILE_IMAGE_LIST_LIMIT = 3;
+
   return (
     <>
-      {(isMobile && isReviewListPageOpen) ? (
+      {isMobile && isReviewListPageOpen ? (
         <MobileReviewListPage>
           <ReviewList>
-            {reviews.result.length > 0
-              ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-            }
+            {reviews.result.length > 0 ? (
+              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+            ) : (
+              <NoReviewMessage $isReviewListPageOpen={isReviewListPageOpen}>
+                아직 등록된 리뷰가 없어요.
+              </NoReviewMessage>
+            )}
           </ReviewList>
         </MobileReviewListPage>
       ) : (
         <ReviewContainer>
           <ReviewHeader>
             <MobilePhotoReviewHeader>
-              <Link href="#" style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                textDecoration: "none",
-                cursor: "pointer"
-              }}>
+              <Link
+                href={`/menu/${menuId}/photos`}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+              >
                 <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
                 <PhotoReviewButton>
                   <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                  <img
+                  <Image
                     src="/img/right-arrow-darkgrey.svg"
                     alt="사진 리뷰 모아보기"
-                    width="7.5"
+                    width={7.5}
+                    height={12}
                   />
                 </PhotoReviewButton>
               </Link>
             </MobilePhotoReviewHeader>
-            <MobileReviewImageSwiper images={images} swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT} imageCount={images.length} />
-            <div style={{
-              width: "100%",
-              display: "flex"
-            }} onClick={() => handleReviewListPage(true)}>
+            <MobileReviewImageSwiper
+              menuId={menuId}
+              images={images}
+              swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT}
+              imageCount={images.length}
+            />
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+              }}
+              onClick={() => handleReviewListPage(true)}
+            >
               <MobileReviewHeader>
                 <div style={{ display: "flex" }}>
                   <ReviewTitle>리뷰</ReviewTitle>
@@ -69,14 +113,21 @@ export default function ReviewSection({ reviews, images, isReviewListPageOpen, h
             </div>
           </ReviewHeader>
           <ReviewList>
-            {reviews.result.length > 0
-              ? reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-              : <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
-            }
+            {reviews.result.length > 0 ? (
+              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+            ) : (
+              <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+            )}
           </ReviewList>
-          <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
-            나의 평가 남기기
-          </DesktopReviewPostButton>
+          {
+            // formateDate -> "2021-08-01 (수)" 식으로 나옴
+            // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
+            formatDate(new Date()).split(" ")[0] === menuDate && (
+              <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
+                나의 평가 남기기
+              </DesktopReviewPostButton>
+            )
+          }
         </ReviewContainer>
       )}
     </>
@@ -96,6 +147,7 @@ const ReviewContainer = styled.section`
   padding-right: 50px;
   padding-top: 36px;
   @media (max-width: 768px) {
+    overflow-x: hidden;
     flex-grow: 1;
     width: auto;
     min-width: 0;
@@ -196,7 +248,7 @@ const ReviewList = styled.div`
   overflow-x: auto;
 `;
 
-const NoReviewMessage = styled.div`
+const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   text-align: center;
   font-size: 20px;
   font-weight: 400;
@@ -204,6 +256,17 @@ const NoReviewMessage = styled.div`
   margin: 300px 0;
   @media (max-width: 768px) {
     font-size: 18px;
+
+    ${(props) =>
+      !props.$isReviewListPageOpen &&
+      css`
+        margin-top: 17px;
+        margin-bottom: 0;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `}
   }
 `;
 
@@ -222,19 +285,20 @@ const DesktopReviewPostButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   @media (max-width: 768px) {
-  display: none;
+    display: none;
   }
 `;
 
 const MobileReviewListPage = styled.div`
   display: none;
-  position: absolute;
-  background-color: white;
-  min-height: calc(100vh - 60px);
-  padding: 24px 16px;
-  width: 100vw;
-  box-sizing: border-box;
+
   @media (max-width: 768px) {
-    display: inherit;
+    display: flex;
+    position: relative;
+    background-color: white;
+    min-height: calc(100vh - 60px);
+    padding: 24px 16px;
+    width: 100vw;
+    box-sizing: border-box;
   }
 `;

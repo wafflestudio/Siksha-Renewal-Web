@@ -1,5 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
+import { User, RawUser } from "types";
 
 export const loginKakao = async (code: string): Promise<string> => {
   const grantType = "authorization_code";
@@ -113,28 +114,65 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     });
 };
 
-export const getMyData = async (accessToken: string): Promise<{ id: number; nickname: string }> => {
+export const getMyData = async (accessToken: string): Promise<User> => {
   return axios
-    .get(`${APIendpoint()}/auth/me`, {
+    .get(`${APIendpoint()}/auth/me/image`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
-    .then((res) => {
+    .then((res: { data: RawUser }) => {
       const {
-        data: { id, nickname },
+        data: { id, nickname, profile_url },
       } = res;
-      return { id, nickname };
+      return { id, nickname, image: profile_url };
     })
     .catch((e) => {
       throw new Error(e);
     });
 };
 
-export const updateMyData = async (formData: FormData, accessToken: string): Promise<void> => {
+export const updateProfile = async (formData: FormData, accessToken: string): Promise<User> => {
+  if (!formData.get("nickname")) {
+    throw new Error("nickname is required");
+  }
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: {
+        "authorization-token": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
     })
-    .then(() => {})
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, profile_url },
+      } = res;
+      return { id, nickname, image: profile_url };
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
+};
+
+export const updateProfileWithImage = async (
+  formData: FormData,
+  accessToken: string,
+): Promise<User> => {
+  if (!formData.get("change_to_default_image") && !formData.get("image")) {
+    throw new Error("image is required");
+  }
+
+  return axios
+    .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
+      headers: {
+        "authorization-token": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, profile_url },
+      } = res;
+      return { id, nickname, image: profile_url };
+    })
     .catch((e) => {
       throw new Error(e);
     });
@@ -142,11 +180,23 @@ export const updateMyData = async (formData: FormData, accessToken: string): Pro
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
-    .delete(`${APIendpoint()}/auth/me`, {
+    .delete(`${APIendpoint()}/auth/`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
       throw new Error(e);
+    });
+};
+
+export const validateNickname = async (nickname: string): Promise<boolean> => {
+  return axios
+    .get(`${APIendpoint()}/auth/nicknames/validate`, {
+      params: { nickname },
+    })
+    .then(({ status }) => (status === 200 ? true : false))
+    .catch((e) => {
+      console.error(e);
+      return false;
     });
 };

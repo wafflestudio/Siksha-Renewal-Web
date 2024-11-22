@@ -1,5 +1,5 @@
 import LoginModal from "components/Auth/LoginModal";
-import { ModalDispatchContext } from "context/ModalsProvider";
+import { ModalDispatchContext } from "providers/ModalsProvider";
 import { ComponentType, useContext } from "react";
 
 export default function useModals() {

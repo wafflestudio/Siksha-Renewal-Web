@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReviewImageSwiper from "./ReviewImageSwiper";
-import { MenuType, ReviewListType } from "pages/menu/[id]";
+import { MenuType } from "pages/menu/[menuId]";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
-import { useDispatchContext } from "hooks/ContextProvider";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/router";
+import useIsMobile from "hooks/UseIsMobile";
+import { formatDate } from "utils/FormatUtil";
 
 interface MenuSectionProps {
   menu: MenuType;
   reviewsTotalCount: number;
   images: string[];
   handleReviewPostButtonClick: () => void;
+  isReviewListPageOpen: boolean;
 }
 
 export default function MenuSection({
@@ -21,6 +23,7 @@ export default function MenuSection({
   reviewsTotalCount,
   images,
   handleReviewPostButtonClick,
+  isReviewListPageOpen,
 }: MenuSectionProps) {
   const router = useRouter();
 
@@ -34,13 +37,15 @@ export default function MenuSection({
 
   const SWIPER_IMAGES_LIMIT = 5;
 
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     Promise.all([getRestaurantList(), getReviewScore(menu.id)])
       .then(([restaurantListData, reviewScoreData]) => {
-        const restaurantName = restaurantListData.result.find(
+        const restaurantName = restaurantListData.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
-        if (restaurantName) setRestaurantName(restaurantName.name_kr);
+        if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
       })
       .catch((e) => {
@@ -58,9 +63,10 @@ export default function MenuSection({
   }, [menuTitleDivRef.current]);
 
   return (
-    <MenuContainer>
+    <MenuContainer $isNotShow={isReviewListPageOpen && isMobile}>
       {images.length > 0 && (
         <ReviewImageSwiper
+          menuId={menu.id}
           images={images}
           swiperImagesLimit={SWIPER_IMAGES_LIMIT}
           imageCount={images.length}
@@ -90,30 +96,37 @@ export default function MenuSection({
           distribution={reviewDistribution}
         />
       </MenuInfoContainer>
-      <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
-        나의 평가 남기기
-      </MobileReviewPostButton>
+      {
+        // formateDate -> "2021-08-01 (수)" 식으로 나옴
+        // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
+        formatDate(new Date()).split(" ")[0] === menu.date && (
+          <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
+            나의 평가 남기기
+          </MobileReviewPostButton>
+        )
+      }
     </MenuContainer>
   );
 }
 
-const MenuContainer = styled.section`
+const MenuContainer = styled.section<{ $isNotShow: boolean }>`
   position: relative;
   background-color: white;
-  width: 1185px;
+  width: 897px;
   height: 100%;
   @media (max-width: 768px) {
     flex-grow: 0;
     width: auto;
+    height: auto;
     min-width: 0;
     margin-left: 0;
   }
+  display: ${(props) => props.$isNotShow && `none`};
 `;
 
 const MenuInfoContainer = styled.div`
-  padding: 41px 30px 26px 258px;
-  width: 897px;
-  margin-left: auto;
+  padding: 41px 30px 26px 0px;
+
   @media (max-width: 768px) {
     padding: 18px 15px 16px 17px;
     width: auto;

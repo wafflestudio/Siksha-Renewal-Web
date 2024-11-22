@@ -1,86 +1,85 @@
-import Header from "components/Header";
-import MobileNavigationBar from "components/MobileNavigationBar";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
-import UseAccessToken from "hooks/UseAccessToken";
+"use client";
+
+import Header from "components/general/Header";
+import { useDispatchContext } from "providers/ContextProvider";
+import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
+import UseProfile from "hooks/UseProfile";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { getMyData, loginRefresh } from "utils/api/auth";
+import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
+import { useRouter, useSearchParams } from "next/navigation";
+import Toast from "./Toast";
 
 interface LayoutProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const state = useStateContext();
-  const { setLoginStatus, setUserInfo, setIsFilterFavorite, setIsExceptEmptyRestaurant } =
-    useDispatchContext();
-  const isMobile = useIsMobile();
-  const { getAccessToken } = UseAccessToken();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const boardId = searchParams?.get("boardId");
 
-  const { loginStatus, isExceptEmptyRestaurant } = state;
+  const { setIsFilterFavorite } = useDispatchContext();
+  const isMobile = useIsMobile();
+  const { getAccessToken, login } = useAuth();
+
+  UseProfile();
 
   useEffect(() => {
     getAccessToken()
       .then((accessToken) => loginRefresh(accessToken))
       .then((newAccessToken) => {
-        localStorage.setItem("access_token", newAccessToken);
+        login(newAccessToken);
       })
-      .catch((res) => {
-        console.error(res);
+      .catch((error) => {
+        const { message } = error;
+        if (message !== "Login required") console.error(error);
       });
   }, []);
-
-  useEffect(() => {
-    setLoginStatus(!!localStorage.getItem("access_token"));
-
-    getAccessToken()
-      .then((accessToken) => getMyData(accessToken))
-      .then(({ id, nickname }) => {
-        setUserInfo({ id, nickname });
-      })
-      .catch((e) => {
-        console.error(e);
-        setUserInfo({ id: null, nickname: null });
-      });
-  }, [loginStatus]);
 
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
 
+  // write page로 router.back하지 않도록
   useEffect(() => {
-    if (loginStatus) {
-      const value = localStorage.getItem("isExceptEmptyRestaurant");
-
-      if (value !== null) {
-        setIsExceptEmptyRestaurant(JSON.parse(value));
-      } else {
-        localStorage.setItem("isExceptEmptyRestaurant", JSON.stringify(isExceptEmptyRestaurant));
+    const handlePopState = (event: PopStateEvent) => {
+      const as = event.state?.url || "";
+      if (as.includes("/write")) {
+        if (boardId) router.push(`/community/boards/${boardId}`);
+        else router.push("/");
+        event.preventDefault();
       }
-    }
-  }, [loginStatus]);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <>
-      <Container>
+      <Container id="root-layout">
         <Header />
         <Content>{children}</Content>
-        <MobileNavigationBar />
       </Container>
       <Modals />
+      <Toast />
     </>
   );
 }
 
 const Container = styled.div`
   width: 100%;
-  min-width: 1920px;
   height: 100dvh;
   @media (max-width: 768px) {
     min-width: 0;
     width: 100vw;
+    min-width: 260px;
     height: 100dvh;
     display: flex;
     flex-direction: column;
@@ -90,6 +89,5 @@ const Container = styled.div`
 const Content = styled.div`
   @media (max-width: 768px) {
     flex: 1;
-    height: calc(100% - 143px);
   }
 `;

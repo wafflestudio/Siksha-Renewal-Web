@@ -1,47 +1,48 @@
 import { PostList } from "components/Community/PostList";
 import AccountLayout from "../layout";
 import { useEffect, useState } from "react";
-import { Post, RawPost } from "types";
+import { Post } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
-import UseAccessToken from "hooks/UseAccessToken";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
+import MobileSubHeader from "components/general/MobileSubHeader";
+import { useRouter } from "next/router";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [hasNextPosts, setHasNextPosts] = useState(false);
-  const { getAccessToken } = UseAccessToken();
 
-  function fetchMyPosts(size: number, page: number) {
-    return getAccessToken()
+  const { authStatus, getAccessToken, authGuard } = useAuth_Legacy();
+  const router = useRouter();
+
+  useEffect(authGuard, [authStatus]);
+
+  const fetchMyPosts = (size: number, page: number) =>
+    getAccessToken()
       .then((accessToken) => getMyPostList(accessToken, size, page))
-      .then((res) => {
-        setHasNextPosts(res.hasNext);
-        res.result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+      .then(({ result, hasNext }) => {
+        result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
+        return hasNext;
       })
       .catch((e) => console.error(e));
-  }
 
   useEffect(() => {
-    // 새로고침 시, loginStatus가 false이므로, 글이 불러와지지 않는 이슈가 있음
-    fetchMyPosts(10, 1);
+    setPosts([]);
   }, []);
 
-  return (
-    <AccountLayout>
-      <Container>
-        {posts.length ? (
-          <>
+  if (authStatus === "login")
+    return (
+      <>
+        <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
+        <AccountLayout>
+          <Container>
             <Header>내가 쓴 글</Header>
-            <PostList posts={posts} fetch={fetchMyPosts} hasNext={hasNextPosts} />
-            <BreakLine />
-          </>
-        ) : (
-          <NoPost>내가 쓴 글이 없어요.</NoPost>
-        )}
-      </Container>
-    </AccountLayout>
-  );
+            <PostList posts={posts} fetch={fetchMyPosts} />
+            {posts.length >= 1 ? <BreakLine /> : null}
+          </Container>
+        </AccountLayout>
+      </>
+    );
 }
 
 const Container = styled.div`
@@ -54,7 +55,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 100%;
+    padding-top: 24px;
     border: 0;
   }
 `;
@@ -65,7 +66,6 @@ const Header = styled.div`
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
-  letter-spacing: -0.3px;
 
   @media (max-width: 768px) {
     display: none;

@@ -1,38 +1,29 @@
-import { useEffect } from "react";
-import { useDispatchContext, useStateContext } from "hooks/ContextProvider";
 import useModals from "./UseModals";
-import LoginModal from "components/Auth/LoginModal";
+import useLocalStorage from "./UseLocalStorage";
+import useAuth from "./UseAuth";
 
 export default function useFavorite() {
-  const state = useStateContext();
-  const dispatch = useDispatchContext();
+  const { authStatus } = useAuth();
 
-  const { favoriteRestaurant, loginStatus } = state;
-  const { setFavoriteRestaurant } = dispatch;
-  const { openModal, openLoginModal } = useModals();
+  const { openLoginModal } = useModals();
 
-  useEffect(() => {
-    if (loginStatus === false) {
-      setFavoriteRestaurant([]);
-      return;
-    }
-
-    const favoriteList = JSON.parse(localStorage.getItem("favorite_restaurant") ?? "[]");
-    setFavoriteRestaurant(favoriteList);
-  }, [loginStatus]);
+  const { value, set: setStorage } = useLocalStorage("favorite_restaurant", "[]");
+  // localStorage가 구독되어 변화를 감지하므로, 따로 state를 만들어주기 보다는 JSON parse 결과를 바로 이용해야 합니다.
+  const favoriteRestaurants: number[] = JSON.parse(value || "[]");
 
   const toggleFavorite = (restaurantId: number) => {
-    if (!loginStatus) openLoginModal();
+    if (authStatus === "logout") openLoginModal();
     else {
-      const newFavoriteList = favoriteRestaurant.includes(restaurantId)
-        ? favoriteRestaurant.filter((id) => id !== restaurantId)
-        : [...favoriteRestaurant, restaurantId];
-      setFavoriteRestaurant(newFavoriteList);
-      localStorage.setItem("favorite_restaurant", JSON.stringify(newFavoriteList));
+      const newFavoriteList = favoriteRestaurants.includes(restaurantId)
+        ? favoriteRestaurants.filter((id) => id !== restaurantId)
+        : [...favoriteRestaurants, restaurantId];
+
+      // 변경값 반영
+      setStorage(JSON.stringify(newFavoriteList));
     }
   };
 
-  const isFavorite = (restaurantId: number) => favoriteRestaurant.includes(restaurantId);
+  const isFavorite = (restaurantId: number) => favoriteRestaurants.includes(restaurantId);
 
-  return { favoriteRestaurant, toggleFavorite, isFavorite };
+  return { favoriteRestaurants, toggleFavorite, isFavorite };
 }
