@@ -1,15 +1,14 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useDispatchContext, useStateContext } from "context/ContextProvider";
+import { usePathname } from "next/navigation";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
-import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
+import useAuth from "hooks/UseAuth";
 
 export default function MobileNavigationBar() {
-  const router = useRouter();
-  const addr = router.pathname;
+  const addr = usePathname();
 
   const state = useStateContext();
   const { isFilterFavorite } = state;
@@ -26,15 +25,16 @@ export default function MobileNavigationBar() {
   const active =
     isFilterFavorite === true
       ? "favorite"
-      : addr === "/" || addr.startsWith("/menu")
+      : addr === "/" || addr?.startsWith("/menu")
       ? "menu"
-      : addr.startsWith("/community")
+      : addr?.startsWith("/community")
       ? "community"
-      : addr.startsWith("/account")
+      : addr?.startsWith("/account")
       ? "account"
       : null;
 
   if (!rootElement) return null;
+
   return createPortal(
     <Container>
       <Link
@@ -77,9 +77,11 @@ export default function MobileNavigationBar() {
 }
 
 const Container = styled.div`
+  position: fixed;
   display: flex;
+  bottom: 0;
   justify-content: space-evenly;
-  padding: 14px 0 46px;
+  padding: 11px 0 30px;
   box-sizing: border-box;
   width: 100%;
   height: 83px;
@@ -93,8 +95,8 @@ const Container = styled.div`
 `;
 
 const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   background-image: ${({ isActive, srcActive, srcInactive }) =>
     `url(${isActive ? srcActive : srcInactive})`};
   background-size: contain;

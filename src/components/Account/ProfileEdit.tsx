@@ -1,4 +1,4 @@
-import UseProfile from "hooks/UseProfile";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import { Dispatch, RefObject, SetStateAction, useRef } from "react";
 import styled from "styled-components";
 import useModals from "hooks/UseModals";
@@ -27,7 +27,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
     setChangeToDefaultImage,
     isNicknameValid,
   } = props;
-  const { userInfo } = UseProfile();
+  const { userInfo } = UseProfile_Legacy();
 
   const { openModal } = useModals();
   const profileFrameRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
 
   return (
     <Container>
-      <ProfileFrame ref={profileFrameRef} onClick={onProfileFrameClicked} >
+      <ProfileFrame ref={profileFrameRef} onClick={onProfileFrameClicked}>
         <Profile
           src={
             changeToDefaultImage
@@ -177,7 +177,6 @@ const Input = styled.input`
   font-size: 16px;
   font-weight: 400;
   line-height: 23px;
-  letter-spacing: -0.3px;
   border: none;
   &:focus {
     outline: none;
@@ -207,5 +206,4 @@ const ResultText = styled.span<{ isDuplicate: boolean }>`
   font-size: 14px;
   font-weight: 400;
   line-height: 23px;
-  letter-spacing: -0.3px;
 `;

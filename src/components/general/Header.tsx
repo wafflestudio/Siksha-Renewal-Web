@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import NavigationBar from "components/general/NavigationBar";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
@@ -7,9 +7,8 @@ import useAuth from "hooks/UseAuth";
 export default function Header() {
   const router = useRouter();
 
-  const { authStatus } = useAuth();
+  const { authStatus, logout } = useAuth();
   const { openLoginModal } = useModals();
-  const { logout } = useAuth();
 
   return (
     <Background>

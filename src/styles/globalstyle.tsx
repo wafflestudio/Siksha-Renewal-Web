@@ -1,3 +1,5 @@
+"use client";
+
 import { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
@@ -39,6 +41,12 @@ export const GlobalStyle = createGlobalStyle`
 
     font-weight: 100;
   }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
   
   body {
     margin: 0;
@@ -63,14 +71,25 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: #000000;
   }
-  input, textarea, button {
-    font-family: "NanumSquare", "NIXGONFONTS V2.0";
+  input, button, select, option, textarea {
+    font-size: 100%;
+    font-family: inherit;
+  }
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
   }
 
   * {
     -webkit-tap-highlight-color: transparent;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 일부 안드로이드 브라우저를 위한 설정 */
     -webkit-focus-ring-color: transparent; /* 일부 최신 버전의 크롬을 위한 설정 */
+    letter-spacing: -0.3px;
   }
 
   /* constants */

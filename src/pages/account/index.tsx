@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import AccountLayout from "./layout";
-import { useStateContext } from "../../context/ContextProvider";
-import useAuth from "hooks/UseAuth";
+import { useStateContext } from "../../providers/ContextProvider";
+import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect } from "react";
-import UseProfile from "hooks/UseProfile";
-import MobileNavigationBar from "components/general/MobileNavigationBar";
+import UseProfile_Legacy from "hooks/UseProfile_Legacy";
+import MobileNavigationBar_Legacy from "components/general/MobileNavigationBar_Legacy";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 
 export default function Account() {
   const router = useRouter();
 
-  const { userInfo } = UseProfile();
+  const { userInfo } = UseProfile_Legacy();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
-  const { authStatus, authGuard } = useAuth();
+  const { authStatus, authGuard } = useAuth_Legacy();
 
   useEffect(authGuard, [authStatus]);
 
@@ -32,7 +32,7 @@ export default function Account() {
         >
           <Profile src={profileURL} alt="프로필 이미지" />
           <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="오른쪽 화살표" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="오른쪽 화살표" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -42,7 +42,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -52,7 +52,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -61,7 +61,7 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
@@ -87,7 +87,7 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup isLast={true}>
@@ -99,7 +99,7 @@ export default function Account() {
           <InquiryText>1:1 문의하기</InquiryText>
         </ContentDiv>
       </ListGroup>
-      <MobileNavigationBar />
+      <MobileNavigationBar_Legacy />
     </AccountLayout>
   );
 }
@@ -132,27 +132,33 @@ const ContentDiv = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 0;
+  padding-left: 16px;
   cursor: pointer;
 `;
 
 const Profile = styled.img`
   width: 48.17px;
   height: 48.17px;
-  margin: 11px 0 11px 16px;
+  margin: 11px 0 11px 0.58px;
   border-radius: 50%;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    margin-left: -5px;
+  }
 `;
 
 const Text = styled.span`
   display: inline-block;
-  margin: 11.5px 0 11.5px 13px;
+  margin: 11.5px 0;
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
   color: black;
 
   @media (max-width: 768px) {
-    margin-left: 16px;
+    font-size: 15px;
   }
 `;
 
@@ -167,14 +173,9 @@ const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
 `;
 
 const InquiryText = styled(Text)`
-  margin-left: 13px;
   font-size: 16px;
   font-weight: 700;
   color: #ff9522;
-
-  @media (max-width: 768px) {
-    margin-left: 16px;
-  }
 `;
 
 const BreakLine = styled.hr`
@@ -192,10 +193,17 @@ const ArrowButton = styled(Button)`
   width: 6.25px;
   height: 10px;
   margin-right: 15.47px;
+
+  @media (max-width: 768px) {
+    margin-right: 13.75px;
+  }
 `;
 
 const CheckButton = styled(Button)`
   width: 19px;
   height: 19px;
   margin-right: 12.22px;
+  @media (max-width: 768px) {
+    margin-right: 15.5px;
+  }
 `;

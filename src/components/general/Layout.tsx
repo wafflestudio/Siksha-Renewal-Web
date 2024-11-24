@@ -1,5 +1,7 @@
+"use client";
+
 import Header from "components/general/Header";
-import { useDispatchContext } from "context/ContextProvider";
+import { useDispatchContext } from "providers/ContextProvider";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import UseProfile from "hooks/UseProfile";
@@ -7,15 +9,17 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
+import Toast from "./Toast";
 
 interface LayoutProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
-  const { boardId } = router.query;
+  const searchParams = useSearchParams();
+  const boardId = searchParams?.get("boardId");
 
   const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
@@ -41,18 +45,19 @@ export default function Layout({ children }: LayoutProps) {
 
   // write page로 router.back하지 않도록
   useEffect(() => {
-    router.beforePopState(({ as }) => {
+    const handlePopState = (event: PopStateEvent) => {
+      const as = event.state?.url || "";
       if (as.includes("/write")) {
         if (boardId) router.push(`/community/boards/${boardId}`);
         else router.push("/");
-        return false;
+        event.preventDefault();
       }
+    };
 
-      return true;
-    });
+    window.addEventListener("popstate", handlePopState);
 
     return () => {
-      router.beforePopState(() => true);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
@@ -63,6 +68,7 @@ export default function Layout({ children }: LayoutProps) {
         <Content>{children}</Content>
       </Container>
       <Modals />
+      <Toast />
     </>
   );
 }
@@ -83,6 +89,5 @@ const Container = styled.div`
 const Content = styled.div`
   @media (max-width: 768px) {
     flex: 1;
-    height: calc(100% - 143px);
   }
 `;

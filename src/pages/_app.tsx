@@ -1,12 +1,14 @@
 import Head from "next/head";
 import "styles/calendar.css";
-import ContextProvider from "context/ContextProvider";
-import Layout from "components/general/Layout";
+import ContextProvider from "providers/ContextProvider";
+import Layout_Legacy from "components/general/Layout_Legacy";
 import { GlobalStyle } from "styles/globalstyle";
-import { ModalsProvider } from "context/ModalsProvider";
+import { ModalsProvider } from "providers/ModalsProvider";
 import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
+import { ToastProvider } from "providers/ToastProvider";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -33,14 +35,26 @@ function MyApp({ Component, pageProps }) {
               content="initial-scale=1.0, width=device-width viewport-fit=cover"
             />
             <meta name="description" content="똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!" />
-            <meta name="keywords" content="서울대 식단,서울대 식당,서울대 학식,서울대 급식,서울대 메뉴,식샤,서울대,SNU,Seoul National University,Seoul University,Cafeteria,Menu,Restaurant" />
+            <meta
+              name="keywords"
+              content="서울대 식단,서울대 식당,서울대 학식,서울대 급식,서울대 메뉴,식샤,서울대,SNU,Seoul National University,Seoul University,Cafeteria,Menu,Restaurant"
+            />
             <meta property="og:url" content="https://siksha.wafflestudio.com" />
             <meta property="og:type" content="website" />
             <meta property="og:title" content="식샤" />
-            <meta property="og:description" content="똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!" />
+            <meta
+              property="og:description"
+              content="똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!"
+            />
             <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
-            <meta name="google-site-verification" content="AnMTnRMI0ZtNg3N2Dn8HwdcWIgoeJ0dKUDcdkmJHksc" />
-            <meta name="naver-site-verification" content="db18bbda827fc3568ba263ad091c58099938f65c" /> 
+            <meta
+              name="google-site-verification"
+              content="AnMTnRMI0ZtNg3N2Dn8HwdcWIgoeJ0dKUDcdkmJHksc"
+            />
+            <meta
+              name="naver-site-verification"
+              content="db18bbda827fc3568ba263ad091c58099938f65c"
+            />
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           </Head>
           <Layout>

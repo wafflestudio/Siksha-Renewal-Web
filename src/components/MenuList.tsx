@@ -1,15 +1,15 @@
-import MenuCard from "./MenuCard";
+import MenuCard from "../app/components/MenuCard";
 import styled from "styled-components";
-import { useStateContext } from "../context/ContextProvider";
+import { useStateContext } from "../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
-import useFavorite from "hooks/UseFavorite";
+import useFavorite_Legacy from "hooks/UseFavorite_Legacy";
 
 export default function MenuList() {
   const state = useStateContext();
 
   const { meal, data, date, loading, isFilterFavorite } = state;
-  const { favoriteRestaurants } = useFavorite();
+  const { favoriteRestaurants } = useFavorite_Legacy();
 
   const [hasData, setHasData] = useState(false);
 
