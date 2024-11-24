@@ -9,7 +9,7 @@ export async function generateStaticParams() {
 
   await Promise.all(
     boards.map(async ({ id: boardId }) => {
-      const { result: posts } = await getPostList(boardId, undefined, 10000);
+      const { result: posts } = await getPostList(boardId);
       posts.forEach(({ id: postId }) => {
         staticParams.push({ boardId: boardId.toString(), postId: postId.toString() });
       });

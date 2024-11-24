@@ -81,5 +81,6 @@ yarn start
 ### References
 [Apple login 설정시 주의점](/docs/apple-login.md)
 
+[AWS 배포에 관한 설명](/docs/aws-distribution.md)
 
 [프로젝트 컨벤션](/docs/convention.md)
