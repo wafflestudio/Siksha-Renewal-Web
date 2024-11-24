@@ -7,8 +7,6 @@ import { ModalsProvider } from "providers/ModalsProvider";
 import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
-import { ToastProvider } from "providers/ToastProvider";
-import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -57,9 +55,9 @@ function MyApp({ Component, pageProps }) {
             />
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           </Head>
-          <Layout>
+          <Layout_Legacy>
             <Component {...pageProps} />
-          </Layout>
+          </Layout_Legacy>
           <script
             type="text/javascript"
             rel="dns-prefetch"
