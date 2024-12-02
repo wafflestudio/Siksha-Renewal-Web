@@ -33,7 +33,7 @@ export const loginKakao = async (code: string): Promise<string> => {
       return accessToken;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -72,7 +72,7 @@ export const loginGoogle = async (code: string): Promise<string> => {
       return accessToken;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -92,7 +92,7 @@ export const loginApple = async (id_token: string): Promise<string> => {
       return accessToken;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -110,7 +110,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
       return newAccessToken;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -126,7 +126,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -148,7 +148,7 @@ export const updateProfile = async (formData: FormData, accessToken: string): Pr
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -174,7 +174,7 @@ export const updateProfileWithImage = async (
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -185,7 +185,7 @@ export const deleteAccount = async (accessToken: string): Promise<void> => {
     })
     .then(() => {})
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 

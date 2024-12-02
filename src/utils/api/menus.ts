@@ -26,7 +26,7 @@ export const getMenuList = (
       return { count, result };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -45,7 +45,7 @@ export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMe
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -66,7 +66,7 @@ export const setMenuLike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -87,6 +87,6 @@ export const setMenuUnlike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };

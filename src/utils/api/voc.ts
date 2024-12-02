@@ -15,6 +15,6 @@ export const setInquiry = (voc: string, accessToken: string): Promise<void> => {
     )
     .then(() => {})
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
