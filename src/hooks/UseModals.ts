@@ -22,22 +22,37 @@ export default function useModals() {
     openModal(LoginModal, props);
   };
 
-  const openErrorModal = (error: Error | AxiosError) => {
+  const openErrorModal = (
+    error: Error | AxiosError,
+    options: {
+      message?: string;
+      isUserFail?: boolean;
+      onClose?: () => void;
+      onRetry?: () => void;
+    } = {},
+  ) => {
     const defaultMessage = "알 수 없는 오류가 발생했습니다.";
 
     const isAxiosError = error instanceof AxiosError;
 
-    const message = isAxiosError ? error.response?.data.message ?? defaultMessage : defaultMessage;
-    const status = isAxiosError ? error.response?.status ?? 500 : 500;
+    const message = options.message
+      ? options.message
+      : isAxiosError
+      ? error.response?.data.message ?? defaultMessage
+      : defaultMessage;
+    const status = options.isUserFail ? 400 : isAxiosError ? error.response?.status ?? 500 : 500;
 
     openModal(ErrorModal, {
       code: status,
       message: message,
       onClose: () => {
-        router.back();
+        options.onClose ? options.onClose() : router.back();
         closeModal(ErrorModal);
       },
-      onRetry: () => window.location.reload(),
+      onRetry: () => {
+        options.onRetry ? options.onRetry() : router.refresh();
+        closeModal(ErrorModal);
+      },
     });
   };
 

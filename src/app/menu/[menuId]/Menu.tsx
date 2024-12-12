@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import ReviewPostModal from "app/menu/[menuId]/components/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { getMenu } from "utils/api/menus";
@@ -58,7 +58,7 @@ export default function Menu({ menuId }: { menuId: number }) {
   const [images, setImages] = useState<string[]>([]);
   const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
-  const { openLoginModal } = useModals();
+  const { openLoginModal, openErrorModal } = useModals();
 
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
@@ -74,8 +74,7 @@ export default function Menu({ menuId }: { menuId: number }) {
         setMobileSubHeaderTitle(menuData.name_kr);
       })
       .catch((e) => {
-        console.error(e);
-        router.push("/");
+        openErrorModal(e);
       });
   };
 
@@ -88,8 +87,7 @@ export default function Menu({ menuId }: { menuId: number }) {
         });
       })
       .catch((e) => {
-        console.error(e);
-        router.push("/");
+        openErrorModal(e);
       });
   };
 

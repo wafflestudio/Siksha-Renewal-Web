@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import BackClickable from "./BackClickable";
 import useIsMobile from "hooks/UseIsMobile";
+import { useRouter } from "next/navigation";
 
 interface ErrorModalProps {
   code: number;
@@ -9,8 +10,9 @@ interface ErrorModalProps {
   onRetry?: () => void;
 }
 
-export default function ErrorModal({ code, message, onClose }: ErrorModalProps) {
+export default function ErrorModal({ code, message, onClose, onRetry }: ErrorModalProps) {
   const isMobile = useIsMobile();
+  const router = useRouter();
 
   if (!isMobile)
     return (
@@ -25,7 +27,9 @@ export default function ErrorModal({ code, message, onClose }: ErrorModalProps) 
           <Message>{message}</Message>
           <Footer>
             <CancelButton onClick={onClose}>이전으로</CancelButton>
-            {code >= 500 && <RetryButton onClick={onClose}>다시시도</RetryButton>}
+            <RetryButton onClick={code >= 500 ? onRetry : () => router.push("/")}>
+              {code >= 500 ? "다시시도" : "처음으로"}
+            </RetryButton>
           </Footer>
         </DesktopContainer>
       </BackClickable>
@@ -42,7 +46,9 @@ export default function ErrorModal({ code, message, onClose }: ErrorModalProps) 
             <MobileCancelButton onClick={onClose} isServerError={code >= 500}>
               이전으로
             </MobileCancelButton>
-            {code >= 500 && <MobileRetryButton onClick={onClose}>다시시도</MobileRetryButton>}
+            <MobileRetryButton onClick={code >= 500 ? () => onRetry : () => router.push("/")}>
+              {code >= 500 ? "다시시도" : "처음으로"}
+            </MobileRetryButton>
           </MobileFooter>
         </MobileContainer>
       </BackClickable>
