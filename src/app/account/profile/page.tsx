@@ -1,15 +1,16 @@
+"use client";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfile, updateProfileWithImage, validateNickname } from "utils/api/auth";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import ProfileEdit from "components/Account/ProfileEdit";
-import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
+import UseProfile from "hooks/UseProfile";
+import useAuth from "hooks/UseAuth";
 
 export default function SettingProfile() {
-  const { userInfo, setProfile } = UseProfile_Legacy();
+  const { userInfo, setProfile } = UseProfile();
 
   const [nickname, setNickname] = useState(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   const [isNicknameValid, setIsNicknameValid] = useState(true);
@@ -19,7 +20,7 @@ export default function SettingProfile() {
   const imgRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const { getAccessToken, authStatus, authGuard } = useAuth_Legacy();
+  const { getAccessToken, authStatus, authGuard } = useAuth();
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {

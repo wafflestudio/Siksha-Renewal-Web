@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import AccountLayout from "./layout";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
-import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
+import UseProfile from "hooks/UseProfile";
 
 export default function Account() {
   const router = useRouter();
 
-  const { userInfo } = UseProfile_Legacy();
+  const { userInfo } = UseProfile();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
 
   const { authStatus, authGuard } = useAuth();

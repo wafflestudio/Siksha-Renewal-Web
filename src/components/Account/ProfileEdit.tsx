@@ -1,8 +1,8 @@
-import UseProfile_Legacy from "hooks/UseProfile_Legacy";
 import { Dispatch, RefObject, SetStateAction, useRef } from "react";
 import styled from "styled-components";
 import useModals from "hooks/UseModals";
 import ProfileImageEditModal from "./ProfileImageEditModal";
+import UseProfile from "hooks/UseProfile";
 
 interface ProfileEditProps {
   nickname: string;
@@ -27,7 +27,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
     setChangeToDefaultImage,
     isNicknameValid,
   } = props;
-  const { userInfo } = UseProfile_Legacy();
+  const { userInfo } = UseProfile();
 
   const { openModal } = useModals();
   const profileFrameRef = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
         <DuplicateCheck>
           <ResultImage
             isDuplicate={isNicknameValid}
-            src={isNicknameValid ? "/img/account/check-ok.svg" : "/img/account/check-fail.svg"}
+            src={isNicknameValid ? "/img/check.svg" : "/img/account/check-fail.svg"}
             alt={isNicknameValid ? "사용가능" : "사용불가능"}
           />
           <ResultText isDuplicate={isNicknameValid}>
