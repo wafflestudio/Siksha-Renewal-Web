@@ -1,5 +1,4 @@
-"use client";
-import { PostList } from "components/Community/PostList";
+import { PostList } from "app/community/boards/[boardId]/components/PostList";
 import AccountLayout from "../layout";
 import { useEffect, useState } from "react";
 import { Post } from "types";

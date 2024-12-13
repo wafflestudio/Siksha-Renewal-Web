@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { Board as BoardType, RawBoard } from "types";
 import { getBoardList } from "utils/api/community";
@@ -28,12 +29,20 @@ export default function MobileSubHeader({
 
   const boardTitle = boards?.filter((board) => board.id === selectedBoardId)[0]?.name;
 
-  return (
-    <MobileHeader>
-      <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
-      <Title>{title || boardTitle}</Title>
-    </MobileHeader>
-  );
+  const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setRootElement(document.getElementById("root-layout"));
+  }, []);
+
+  if (rootElement)
+    return createPortal(
+      <MobileHeader>
+        <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
+        <Title>{title || boardTitle}</Title>
+      </MobileHeader>,
+      rootElement,
+    );
 }
 
 const MobileHeader = styled.div`
