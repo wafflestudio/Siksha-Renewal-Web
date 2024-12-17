@@ -7,14 +7,16 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NIXGONFONTS V2.0';
     src: url('/font/NIXGONFONTS L 2.0.ttf') format('truetype'),
     url('/font/NIXGONFONTS L 2.0.otf') format('opentype');
-    
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
     font-weight: 400;
   }
   @font-face {
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareExtraBold.ttf') format('truetype'),
     url('/font/NanumSquareOTFExtraBold.otf') format('opentype');
-
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+    
     font-weight: 1000;
   }
 
@@ -22,6 +24,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareBold.ttf') format('truetype'),
     url('/font/NanumSquareOTFBold.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 700;
   }
@@ -30,6 +33,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareRegular.ttf') format('truetype'),
     url('/font/NanumSquareOTFRegular.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
   }
@@ -38,6 +42,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareLight.ttf') format('truetype'),
     url('/font/NanumSquareOTFLight.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 100;
   }

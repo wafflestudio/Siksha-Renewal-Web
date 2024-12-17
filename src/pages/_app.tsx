@@ -7,8 +7,6 @@ import { ModalsProvider } from "providers/ModalsProvider";
 import { useEffect } from "react";
 import { analytics } from "utils/api/firebase";
 import { logEvent } from "firebase/analytics";
-import { ToastProvider } from "providers/ToastProvider";
-import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -25,40 +23,51 @@ function MyApp({ Component, pageProps }) {
       <GlobalStyle />
       <ContextProvider>
         <ModalsProvider>
-          <ToastProvider>
-            <Head>
-              <title>서울대학교 식단 알리미 : 식샤</title>
-              <meta charSet="utf-8" />
-              <link rel="icon" href="/favicon.ico" />
-              <link rel="manifest" href="/manifest/manifest.json" />
-              <meta
-                name="viewport"
-                content="initial-scale=1.0, width=device-width viewport-fit=cover"
-              />
-              <meta property="og:url" content="https://siksha.wafflestudio.com" />
-              <meta property="og:type" content="website" />
-              <meta property="og:title" content="식샤" />
-              <meta property="og:description" content="서울대학교 식단 알리미" />
-              <meta
-                property="og:image"
-                content="https://siksha.wafflestudio.com/manifest/og-image.png"
-              />
-              {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-            </Head>
-            <Layout_Legacy>
-              <Component {...pageProps} />
-            </Layout_Legacy>
-            <Script
-              type="text/javascript"
-              rel="dns-prefetch"
-              src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
+          <Head>
+            <title>서울대학교 식단 알리미 : 식샤</title>
+            <meta charSet="utf-8" />
+            <link rel="icon" href="/favicon.ico" />
+            <link rel="manifest" href="/manifest/manifest.json" />
+            <meta
+              name="viewport"
+              content="initial-scale=1.0, width=device-width viewport-fit=cover"
             />
-            <Script
-              type="text/javascript"
-              rel="dns-prefetch"
-              src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+            <meta name="description" content="똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!" />
+            <meta
+              name="keywords"
+              content="서울대 식단,서울대 식당,서울대 학식,서울대 급식,서울대 메뉴,식샤,서울대,SNU,Seoul National University,Seoul University,Cafeteria,Menu,Restaurant"
             />
-          </ToastProvider>
+            <meta property="og:url" content="https://siksha.wafflestudio.com" />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="식샤" />
+            <meta
+              property="og:description"
+              content="똑똑한 서울대학교 식단 앱, 식샤를 만나보세요!"
+            />
+            <meta property="og:image" content="https://siksha.wafflestudio.com/img/og-image.png" />
+            <meta
+              name="google-site-verification"
+              content="AnMTnRMI0ZtNg3N2Dn8HwdcWIgoeJ0dKUDcdkmJHksc"
+            />
+            <meta
+              name="naver-site-verification"
+              content="db18bbda827fc3568ba263ad091c58099938f65c"
+            />
+            {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+          </Head>
+          <Layout_Legacy>
+            <Component {...pageProps} />
+          </Layout_Legacy>
+          <script
+            type="text/javascript"
+            rel="dns-prefetch"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=721ee09bf246fd72ae86ca9f760a0233"
+          />
+          <script
+            type="text/javascript"
+            rel="dns-prefetch"
+            src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+          />
         </ModalsProvider>
       </ContextProvider>
     </>
