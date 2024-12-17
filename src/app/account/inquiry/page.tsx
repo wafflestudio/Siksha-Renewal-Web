@@ -1,18 +1,19 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter } from "next/navigation";
 import AccountLayout from "../layout";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useStateContext } from "../../../providers/ContextProvider";
+import { useStateContext } from "providers/ContextProvider";
 import { setInquiry } from "utils/api/voc";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
+import useAuth from "hooks/UseAuth";
 
 export default function Inquiry() {
   const router = useRouter();
   const state = useStateContext();
   const { userInfo } = state;
 
-  const { getAccessToken, authStatus, authGuard } = useAuth_Legacy();
+  const { getAccessToken, authStatus, authGuard } = useAuth();
 
   useEffect(authGuard, [authStatus]);
 

@@ -1,14 +1,15 @@
+"use client";
 import AccountLayout from "../layout";
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { deleteAccount } from "utils/api/auth";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/general/MobileSubHeader";
+import useAuth from "hooks/UseAuth";
 
 export default function UserSetting() {
   const router = useRouter();
-  const { authStatus, getAccessToken, authGuard, logout } = useAuth_Legacy();
+  const { authStatus, getAccessToken, authGuard, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
