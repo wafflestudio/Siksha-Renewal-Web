@@ -29,6 +29,12 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest/manifest.json",
+  verification: {
+    google: "AnMTnRMI0ZtNg3N2Dn8HwdcWIgoeJ0dKUDcdkmJHksc",
+  },
+  other: {
+    "naver-site-verification": "db18bbda827fc3568ba263ad091c58099938f65c",
+  },
 };
 
 export const viewport: Viewport = {
