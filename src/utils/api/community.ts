@@ -10,7 +10,7 @@ export const getBoardList = (): Promise<RawBoard[]> => {
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -39,7 +39,7 @@ export const getPostList = (
       return { result, totalCount, hasNext };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -63,7 +63,7 @@ export const getMyPostList = (
       return { result, totalCount, hasNext };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -81,7 +81,7 @@ export const getPost = (postID: number, accessToken?: string): Promise<RawPost> 
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -105,7 +105,7 @@ export const getTrendingPosts = (
       };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 export const getBestPosts = (
@@ -124,7 +124,7 @@ export const getBestPosts = (
       };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -138,7 +138,7 @@ export const setPost = (body: FormData, accessToken: string): Promise<RawPost> =
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -156,7 +156,7 @@ export const updatePost = (
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -167,7 +167,7 @@ export const deletePost = (postID: number, accessToken: string): Promise<void> =
     })
     .then(() => {})
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -188,7 +188,7 @@ export const setPostLike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -209,7 +209,7 @@ export const setPostUnlike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -251,7 +251,7 @@ export const getCommentList = (
       return { result, totalCount, hasNext };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -269,7 +269,7 @@ export const setComment = (
       { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -280,7 +280,7 @@ export const deleteComment = (commentID: number, accessToken: string): Promise<v
     })
     .then(() => {})
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -301,7 +301,7 @@ export const setCommentLike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 
@@ -322,7 +322,7 @@ export const setCommentUnlike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
 

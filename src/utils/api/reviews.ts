@@ -42,6 +42,6 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
       return dist;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };

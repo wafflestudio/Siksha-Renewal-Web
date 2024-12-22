@@ -24,6 +24,6 @@ export const getRestaurantList = (): Promise<Restaurant[]> => {
       return data;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
