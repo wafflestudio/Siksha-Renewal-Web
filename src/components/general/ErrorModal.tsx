@@ -39,7 +39,7 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
       <BackClickable onClickBackground={onClose}>
         <MobileContainer>
           <MobileHeader>
-            <MobileTitle>System Meassage</MobileTitle>
+            <MobileTitle>System Message</MobileTitle>
           </MobileHeader>
           <MobileMessage>{message}</MobileMessage>
           <MobileFooter>
