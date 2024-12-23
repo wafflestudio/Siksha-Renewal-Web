@@ -19,7 +19,7 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
       <BackClickable onClickBackground={onClose}>
         <DesktopContainer>
           <Header>
-            <Title>System Massage</Title>
+            <Title>System Message</Title>
             <CloseButton onClick={onClose}>
               <Icon src="/img/modal-close.svg" alt="닫기" />
             </CloseButton>
