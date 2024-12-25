@@ -19,7 +19,7 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
       <BackClickable onClickBackground={onClose}>
         <DesktopContainer>
           <Header>
-            <Title>System Meassage</Title>
+            <Title>System Message</Title>
             <CloseButton onClick={onClose}>
               <Icon src="/img/modal-close.svg" alt="닫기" />
             </CloseButton>
@@ -27,7 +27,10 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
           <Message>{message}</Message>
           <Footer>
             <CancelButton onClick={onClose}>이전으로</CancelButton>
-            <RetryButton onClick={code >= 500 ? onRetry : () => router.push("/")}>
+            <RetryButton
+              hidden={code < 500}
+              onClick={code >= 500 ? onRetry : () => router.push("/")}
+            >
               {code >= 500 ? "다시시도" : "처음으로"}
             </RetryButton>
           </Footer>

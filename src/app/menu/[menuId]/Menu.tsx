@@ -12,6 +12,7 @@ import ReviewSection from "./components/ReviewSection";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
+import useError from "hooks/useError";
 
 export interface MenuType {
   id: number;
@@ -58,7 +59,8 @@ export default function Menu({ menuId }: { menuId: number }) {
   const [images, setImages] = useState<string[]>([]);
   const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
 
-  const { openLoginModal, openErrorModal } = useModals();
+  const { openLoginModal } = useModals();
+  const { onHttpError } = useError();
 
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
@@ -74,7 +76,7 @@ export default function Menu({ menuId }: { menuId: number }) {
         setMobileSubHeaderTitle(menuData.name_kr);
       })
       .catch((e) => {
-        openErrorModal(e);
+        onHttpError(e);
       });
   };
 
@@ -87,7 +89,7 @@ export default function Menu({ menuId }: { menuId: number }) {
         });
       })
       .catch((e) => {
-        openErrorModal(e);
+        onHttpError(e);
       });
   };
 

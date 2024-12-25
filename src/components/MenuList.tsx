@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { useStateContext } from "../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
-import useFavorite_Legacy from "hooks/UseFavorite_Legacy";
+import useFavorite from "hooks/UseFavorite";
 
 export default function MenuList() {
   const state = useStateContext();
 
   const { meal, data, date, loading, isFilterFavorite } = state;
-  const { favoriteRestaurants } = useFavorite_Legacy();
+  const { favoriteRestaurants } = useFavorite();
 
   const [hasData, setHasData] = useState(false);
 
