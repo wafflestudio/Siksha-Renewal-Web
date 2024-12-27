@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import useModals from "hooks/UseModals";
 import UseAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 interface CommentWriterProps {
   addComment: (postId: number, commentInput: string, isAnonymous: boolean) => Promise<void>;
@@ -14,6 +15,7 @@ export default function CommentWriter({ addComment, postId }: CommentWriterProps
 
   const [commentInput, setCommentInput] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const { onHttpError } = useError();
 
   const isValid = commentInput.length >= 1;
 
@@ -25,7 +27,7 @@ export default function CommentWriter({ addComment, postId }: CommentWriterProps
           setCommentInput("");
           setIsAnonymous(false);
         })
-        .catch((e) => console.error(e));
+        .catch(onHttpError);
   };
 
   return (

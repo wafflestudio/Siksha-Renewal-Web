@@ -236,7 +236,7 @@ const MobileLikes = styled.div`
 const Footer = styled.div`
   display: flex;
   margin-top: 14.73px;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     margin-top: 0;
   }
 `;

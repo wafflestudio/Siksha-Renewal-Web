@@ -13,6 +13,7 @@ import useAuth from "hooks/UseAuth";
 import { ImagePreview } from "app/community/write/components/ImagePreview";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
 import { BoardSelectDropdown } from "app/community/write/components/BoardSelectDropdown";
+import useError from "hooks/useError";
 
 export type inputs = {
   title: string;
@@ -46,6 +47,7 @@ export default function PostWriter() {
   const isMobile = useIsMobile();
   const { authStatus, getAccessToken } = useAuth();
   const { openLoginModal } = useModals();
+  const { onHttpError } = useError();
   const { isAnonymousWriter, setIsAnonymousWriter } = useIsAnonymousWriter();
   const isValid = inputs.title.length > 0 && inputs.content.length > 0;
 
@@ -80,7 +82,8 @@ export default function PostWriter() {
           });
           setIsUpdate(true);
         }
-      });
+      })
+      .catch(onHttpError);
   };
 
   const toggleAnonymous = () => {
@@ -123,9 +126,7 @@ export default function PostWriter() {
           const { board_id, id } = data;
           router.push(`/community/boards/${board_id}/posts/${id}`);
         })
-        .catch((e) => {
-          console.error(e);
-        })
+        .catch(onHttpError)
         .finally(() => {
           setIsSubmitting(false);
         });
@@ -133,10 +134,12 @@ export default function PostWriter() {
   };
 
   const fetchBoards = () => {
-    return getBoardList().then((data) => {
-      setBoards([]);
-      data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
-    });
+    return getBoardList()
+      .then((data) => {
+        setBoards([]);
+        data.map((board) => setBoards((prev) => [...prev, boardParser(board)]));
+      })
+      .catch(onHttpError);
   };
 
   const resize = () => {

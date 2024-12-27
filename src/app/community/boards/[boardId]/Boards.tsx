@@ -8,10 +8,12 @@ import { postParser } from "utils/DataUtil";
 import { getPostList } from "utils/api/community";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function Boards({ boardId }: { boardId: number }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const { checkAccessToken } = useAuth();
+  const { onHttpError } = useError();
 
   const fetchPosts = useCallback(
     (size: number, page: number) => {
@@ -21,7 +23,7 @@ export default function Boards({ boardId }: { boardId: number }) {
           result.forEach((post) => setPosts((prev) => [...prev, postParser(post)]));
           return hasNext;
         })
-        .catch((e) => console.error(e));
+        .catch(onHttpError);
     },
     [boardId, checkAccessToken],
   );
