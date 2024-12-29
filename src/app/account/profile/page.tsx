@@ -74,31 +74,29 @@ export default function SettingProfile() {
   return (
     <>
       <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <Container>
-          <Title>닉네임 설정</Title>
-          <ProfileEdit
-            nickname={nickname}
-            setNickname={setNickname}
-            imageBlob={imageBlob}
-            setImageBlob={setImageBlob}
-            imgRef={imgRef}
-            changeToDefaultImage={changeToDefaultImage}
-            setChangeToDefaultImage={setChangeToDefaultImage}
-            isNicknameValid={isNicknameValid}
-            setIsNicknameValid={setIsNicknameValid}
-          />
-          <ButtonGroup>
-            <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
-            <CompleteButton
-              isValid={!isLoading && isNicknameValid}
-              onClick={!isLoading && isNicknameValid ? onUpdateProfile : undefined}
-            >
-              완료
-            </CompleteButton>
-          </ButtonGroup>
-        </Container>
-      </AccountLayout>
+      <Container>
+        <Title>닉네임 설정</Title>
+        <ProfileEdit
+          nickname={nickname}
+          setNickname={setNickname}
+          imageBlob={imageBlob}
+          setImageBlob={setImageBlob}
+          imgRef={imgRef}
+          changeToDefaultImage={changeToDefaultImage}
+          setChangeToDefaultImage={setChangeToDefaultImage}
+          isNicknameValid={isNicknameValid}
+          setIsNicknameValid={setIsNicknameValid}
+        />
+        <ButtonGroup>
+          <CancelButton onClick={() => router.push("/account")}>취소</CancelButton>
+          <CompleteButton
+            isValid={!isLoading && isNicknameValid}
+            onClick={!isLoading && isNicknameValid ? onUpdateProfile : undefined}
+          >
+            완료
+          </CompleteButton>
+        </ButtonGroup>
+      </Container>
     </>
   );
 }

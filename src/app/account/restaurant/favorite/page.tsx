@@ -60,11 +60,9 @@ export default function FavoriteOrderSetting() {
   return (
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <Container>
-          <RestaurantOrderEditor order={orderList} reorder={reorder} />
-        </Container>
-      </AccountLayout>
+      <Container>
+        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+      </Container>
     </>
   );
 }
