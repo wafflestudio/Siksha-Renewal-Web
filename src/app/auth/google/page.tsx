@@ -3,8 +3,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loginGoogle } from "utils/api/auth";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function Auth() {
+  const { onHttpError } = useError();
   const { login } = useAuth();
 
   const router = useRouter();
@@ -22,9 +24,7 @@ export default function Auth() {
         login(accessToken);
         router.push("/");
       })
-      .catch((res: any) => {
-        console.error(res);
-      });
+      .catch(onHttpError);
   }, []);
 
   return <></>;
