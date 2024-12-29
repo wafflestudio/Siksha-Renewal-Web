@@ -23,7 +23,7 @@ export default function Account() {
   const nickname = userInfo?.nickname;
 
   return (
-    <AccountLayout>
+    <>
       <MobileSpace />
       <ListGroup>
         <ContentDiv
@@ -100,8 +100,7 @@ export default function Account() {
           <InquiryText>1:1 문의하기</InquiryText>
         </ContentDiv>
       </ListGroup>
-      <MobileNavigationBar />
-    </AccountLayout>
+    </>
   );
 }
 
