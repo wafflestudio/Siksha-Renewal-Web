@@ -4,6 +4,7 @@ import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { getReviews, setReview } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export type ReviewInputs = {
   score: number;
@@ -37,6 +38,7 @@ export default function ReviewPostModal({
   const MAX_COMMENT_LENGTH = 150;
 
   const { getAccessToken } = useAuth();
+  const { onHttpError } = useError();
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {
@@ -62,8 +64,11 @@ export default function ReviewPostModal({
           onClose();
         })
         .catch((err) => {
-          console.error(err);
-          window.alert(`리뷰 등록에 실패했습니다.`);
+          const errorCode = err.response?.status ?? null;
+          if(errorCode == 500){
+            window.alert(err.message);
+          }
+          onHttpError(err);
         });
     });
   };

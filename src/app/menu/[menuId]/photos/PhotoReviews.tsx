@@ -11,6 +11,7 @@ import { ReviewListType } from "app/menu/[menuId]/Menu";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviews } from "utils/api/reviews";
+import useError from "hooks/useError";
 
 export default function PhotoReviews({ menuId }: { menuId: number }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
   });
 
   const { openLoginModal, openErrorModal } = useModals();
+  const { onHttpError } = useError();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
   const { getAccessToken } = useAuth();
@@ -38,9 +40,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
             total_count: photoReviews.length,
           });
         })
-        .catch((e) => {
-          openErrorModal(e);
-        });
+        .catch(onHttpError);
     };
 
     fetchPhotoReviews();

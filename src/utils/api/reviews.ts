@@ -28,6 +28,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
     })
     .then(() => {})
     .catch((err) => {
+      err.message = "리뷰 등록에 실패했습니다.";
       throw new Error(err);
     });
 };
