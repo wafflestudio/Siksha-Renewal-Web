@@ -63,9 +63,7 @@ export default function ReviewPostModal({
           onSubmit();
           onClose();
         })
-        .catch((e) => {
-          onHttpError(e);
-        });
+        .catch(onHttpError);
     });
   };
 

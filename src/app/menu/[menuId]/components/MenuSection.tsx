@@ -50,9 +50,7 @@ export default function MenuSection({
         if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
       })
-      .catch((e) => {
-        onHttpError(e);
-      });
+      .catch(onHttpError);
   }, [menu]);
 
   useEffect(() => {

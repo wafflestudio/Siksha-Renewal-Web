@@ -40,9 +40,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
             total_count: photoReviews.length,
           });
         })
-        .catch((e) => {
-          onHttpError(e);
-        });
+        .catch(onHttpError);
     };
 
     fetchPhotoReviews();
