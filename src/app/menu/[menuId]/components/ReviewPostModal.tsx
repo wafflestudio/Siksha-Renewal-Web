@@ -139,7 +139,6 @@ export default function ReviewPostModal({
           </MobilePhotoAttacher>
         )}
       </PhotoSection>
-      `
       <ModalFooter>
         <ReviewCancelButton
           onClick={() => {
