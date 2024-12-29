@@ -1,4 +1,3 @@
-import { getMenuList } from "utils/api/menus";
 import PhotoReviews from "./PhotoReviews";
 
 export default async function Page({ params }) {

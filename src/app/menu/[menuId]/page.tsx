@@ -1,4 +1,3 @@
-import { getMenuList } from "utils/api/menus";
 import Menu from "./Menu";
 
 export default async function Page({ params }) {
