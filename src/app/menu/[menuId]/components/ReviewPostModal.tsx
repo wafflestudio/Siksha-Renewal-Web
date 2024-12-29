@@ -63,7 +63,13 @@ export default function ReviewPostModal({
           onSubmit();
           onClose();
         })
-        .catch(onHttpError);
+        .catch((err) => {
+          const errorCode = err.response?.status ?? null;
+          if(errorCode == 500){
+            window.alert(err.message);
+          }
+          onHttpError(err);
+        });
     });
   };
 
