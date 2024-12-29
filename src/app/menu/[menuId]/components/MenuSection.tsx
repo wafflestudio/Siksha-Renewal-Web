@@ -9,6 +9,7 @@ import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate } from "utils/FormatUtil";
+import useError from "hooks/useError";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -26,6 +27,7 @@ export default function MenuSection({
   isReviewListPageOpen,
 }: MenuSectionProps) {
   const router = useRouter();
+  const { onHttpError } = useError();
 
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
@@ -49,8 +51,7 @@ export default function MenuSection({
         setReviewDistribution(reviewScoreData);
       })
       .catch((e) => {
-        console.error(e);
-        router.push("/");
+        onHttpError(e);
       });
   }, [menu]);
 
