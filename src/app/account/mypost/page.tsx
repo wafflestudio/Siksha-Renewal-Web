@@ -1,3 +1,5 @@
+"use client";
+
 import { PostList } from "app/community/boards/[boardId]/components/PostList";
 import AccountLayout from "../layout";
 import { useEffect, useState } from "react";
@@ -5,14 +7,14 @@ import { Post } from "types";
 import { postParser } from "utils/DataUtil";
 import styled from "styled-components";
 import { getMyPostList } from "utils/api/community";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import useAuth from "hooks/UseAuth";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const { authStatus, getAccessToken, authGuard } = useAuth_Legacy();
+  const { authStatus, getAccessToken, authGuard } = useAuth();
   const router = useRouter();
 
   useEffect(authGuard, [authStatus]);

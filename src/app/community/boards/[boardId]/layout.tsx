@@ -4,7 +4,12 @@ import { boardParser } from "utils/DataUtil";
 
 export default async function CommunityLayout({ params, children }) {
   const { boardId } = (await params) ?? "";
-  const boards = await getBoardList().then((rawBoardList) => rawBoardList.map(boardParser));
+  const boards = await getBoardList()
+    .then((rawBoardList) => rawBoardList.map(boardParser))
+    .catch((e) => {
+      console.error(e);
+      return [];
+    });
 
   return (
     <>

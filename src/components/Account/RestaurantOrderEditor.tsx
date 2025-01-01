@@ -1,5 +1,5 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { RestaurantPreview } from "types";
 
@@ -9,8 +9,8 @@ interface RestaurantOrderEditorProps {
 }
 
 export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
-  const router = useRouter();
-  const isFavorite = router.pathname.includes("favorite");
+  const pathname = usePathname();
+  const isFavorite = pathname?.includes("favorite");
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;

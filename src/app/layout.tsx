@@ -3,7 +3,6 @@ import { Viewport } from "next";
 import StyledComponentsRegistry from "providers/StyledComponentsRegistry";
 import ContextProvider from "providers/ContextProvider";
 import { ModalsProvider } from "providers/ModalsProvider";
-import { ToastProvider } from "providers/ToastProvider";
 import Script from "next/script";
 import { GlobalStyle } from "styles/globalstyle";
 import Layout from "components/general/Layout";
@@ -29,6 +28,12 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest/manifest.json",
+  verification: {
+    google: "AnMTnRMI0ZtNg3N2Dn8HwdcWIgoeJ0dKUDcdkmJHksc",
+  },
+  other: {
+    "naver-site-verification": "db18bbda827fc3568ba263ad091c58099938f65c",
+  },
 };
 
 export const viewport: Viewport = {
@@ -46,11 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StyledComponentsRegistry>
           <ContextProvider>
             <ModalsProvider>
-              <ToastProvider>
-                <Suspense>
-                  <Layout>{children}</Layout>
-                </Suspense>
-              </ToastProvider>
+              <Suspense>
+                <Layout>{children}</Layout>
+              </Suspense>
             </ModalsProvider>
           </ContextProvider>
         </StyledComponentsRegistry>

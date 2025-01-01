@@ -10,7 +10,6 @@ import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
 import { useRouter, useSearchParams } from "next/navigation";
-import Toast from "./Toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -68,7 +67,6 @@ export default function Layout({ children }: LayoutProps) {
         <Content>{children}</Content>
       </Container>
       <Modals />
-      <Toast />
     </>
   );
 }

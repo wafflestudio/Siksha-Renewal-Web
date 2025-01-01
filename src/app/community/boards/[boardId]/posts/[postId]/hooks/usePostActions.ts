@@ -7,11 +7,13 @@ import useModals from "hooks/UseModals";
 import DeleteModal from "../components/DeleteModal";
 import { useRouter } from "next/navigation";
 import { ReportModal } from "../components/ReportModal";
+import useError from "hooks/useError";
 
 export default function usePostActions(boardId: number, postId: number) {
   const router = useRouter();
   const { authStatus, getAccessToken, checkAccessToken } = useAuth();
   const { openModal, openLoginModal } = useModals();
+  const { onHttpError } = useError();
 
   const [post, setPost] = useState<PostType | null>(null);
 
@@ -66,7 +68,7 @@ export default function usePostActions(boardId: number, postId: number) {
           getAccessToken()
             .then((accessToken) => deletePost(postId, accessToken))
             .then(() => router.back())
-            .catch((e) => console.error(e)),
+            .catch(onHttpError),
       });
   };
 

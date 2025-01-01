@@ -22,7 +22,7 @@ export default function Likes({ menu }) {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
 
       return getAccessToken()
-        .then((accessToekn) => handleLikeAction(menu.id, accessToekn))
+        .then((accessToken) => handleLikeAction(menu.id, accessToken))
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);

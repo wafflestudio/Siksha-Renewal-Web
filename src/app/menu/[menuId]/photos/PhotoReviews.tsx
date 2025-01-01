@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import PhotoReviewItem from "./components/PhotoReviewItem";
 import ReviewItem from "app/menu/[menuId]/components/ReviewItem";
@@ -6,11 +6,12 @@ import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import useIsMobile from "hooks/UseIsMobile";
 import useModals from "hooks/UseModals";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviews } from "utils/api/reviews";
+import useError from "hooks/useError";
 
 export default function PhotoReviews({ menuId }: { menuId: number }) {
   const router = useRouter();
@@ -19,7 +20,8 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
     total_count: 0,
   });
 
-  const { openLoginModal } = useModals();
+  const { openLoginModal, openErrorModal } = useModals();
+  const { onHttpError } = useError();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰 모아보기";
   const { getAccessToken } = useAuth();
@@ -38,10 +40,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
             total_count: photoReviews.length,
           });
         })
-        .catch((e) => {
-          console.error(e);
-          router.push("/");
-        });
+        .catch(onHttpError);
     };
 
     fetchPhotoReviews();

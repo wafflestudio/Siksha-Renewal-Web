@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
-import RestaurantOrderEditor from "../../../../components/Account/RestaurantOrderEditor";
+"use client";
+import { useEffect } from "react";
+import RestaurantOrderEditor from "components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
-import useAuth_Legacy from "hooks/UseAuth_Legacy";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { RestaurantPreview } from "types";
-import useFavorite_Legacy from "hooks/UseFavorite_Legacy";
 import useOrder from "hooks/UseOrder";
-import AccountLayout from "pages/account/layout";
+import AccountLayout from "app/account/layout";
+import useAuth from "hooks/UseAuth";
+import useFavorite from "hooks/UseFavorite";
 
 export default function FavoriteOrderSetting() {
-  const { authStatus, authGuard } = useAuth_Legacy();
+  const { authStatus, authGuard } = useAuth();
   const router = useRouter();
   const { orderList, setNewOrderList } = useOrder("favorite");
 
-  const { favoriteRestaurants } = useFavorite_Legacy();
+  const { favoriteRestaurants } = useFavorite();
 
   useEffect(authGuard, [authStatus]);
 

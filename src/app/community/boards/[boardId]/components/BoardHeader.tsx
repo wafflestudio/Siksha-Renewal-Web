@@ -1,6 +1,7 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 import useModals from "hooks/UseModals";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,6 +17,7 @@ export function BoardHeader() {
   const searchParams = useSearchParams();
   const boardId = searchParams?.get("boardId");
   const { openLoginModal } = useModals();
+  const { onHttpError } = useError();
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ axis: "y", loop: true }, [
     Autoplay({ delay: 3000 }),
@@ -26,7 +28,7 @@ export function BoardHeader() {
     checkAccessToken()
       .then((accessToken) => getTrendingPosts(accessToken))
       .then(({ result }) => setTrendingPosts(result.map((rawPost) => postParser(rawPost))))
-      .catch((e) => console.error(e));
+      .catch(onHttpError);
   }, []);
 
   const handleClickWriteButton = async () => {

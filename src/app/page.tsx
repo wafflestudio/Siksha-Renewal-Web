@@ -15,6 +15,7 @@ import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
+import useError from "hooks/useError";
 
 export default function Home() {
   const state = useStateContext();
@@ -23,6 +24,7 @@ export default function Home() {
   const { date, showInfo, meal, isFilterFavorite } = state;
 
   const { authStatus, getAccessToken } = useAuth();
+  const { onHttpError } = useError();
   const { orderList } = useOrder(isFilterFavorite ? "favorite" : "nonFavorite");
   const { isExceptEmpty } = useIsExceptEmpty();
 
@@ -43,9 +45,7 @@ export default function Home() {
           .then(({ result }) => {
             setData(result[0]);
           })
-          .catch((e) => {
-            console.error(e);
-          })
+          .catch(onHttpError)
           .finally(() => {
             setLoading(false);
           });
@@ -67,9 +67,7 @@ export default function Home() {
 
             setData(result[0]);
           })
-          .catch((e) => {
-            console.error(e);
-          })
+          .catch(onHttpError)
           .finally(() => {
             setLoading(false);
           });

@@ -2,6 +2,7 @@ import AlertModal from "components/general/AlertModal";
 import BackClickable from "components/general/BackClickable";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import UseAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 import useModals from "hooks/UseModals";
 import UseProfile from "hooks/UseProfile";
 import { useState } from "react";
@@ -20,6 +21,7 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalPr
   const { userInfo } = UseProfile();
   const { getAccessToken } = UseAuth();
   const { openModal } = useModals();
+  const { onHttpError } = useError();
 
   const isValid = reason.length >= 1;
 
@@ -35,9 +37,12 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalPr
     });
   };
 
-  const handleReportError = (err: any) => {
-    const { response } = err;
-    if (!response) return console.log(err);
+  const handleReportError = (error: any) => {
+    const { response } = error;
+    if (!response) {
+      console.error(error);
+      return;
+    }
 
     const {
       status,
@@ -53,7 +58,7 @@ export function ReportModal({ type, targetID, onClose, onSubmit }: ReportModalPr
         onClose: () => {},
       });
     } else {
-      console.log(err);
+      onHttpError(error);
     }
   };
 

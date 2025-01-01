@@ -28,6 +28,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
     })
     .then(() => {})
     .catch((err) => {
+      err.message = "리뷰 등록에 실패했습니다.";
       throw new Error(err);
     });
 };
@@ -42,6 +43,6 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
       return dist;
     })
     .catch((e) => {
-      throw new Error(e);
+      throw e;
     });
 };
