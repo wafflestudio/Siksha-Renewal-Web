@@ -74,6 +74,11 @@ export default function useFilter() {
     setStorage(defaultFiltersJson);
   };
 
+  /**
+   * 메뉴 리스트를 필터링합니다.
+   * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
+   * @returns {RawMenuList} 필터링된 메뉴 데이터
+   */
   const filterMenuList = (menuList: RawMenuList): RawMenuList => {
     const filteredList = {};
     let currentPosition: { lat: number; lng: number } | null = null;
