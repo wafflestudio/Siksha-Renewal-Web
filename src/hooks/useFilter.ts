@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useLocalStorage from "./UseLocalStorage";
-import { RestaurantPreview } from "types";
+import { RawMenuList } from "types";
 
 type FilterList = {
   length: number;
@@ -74,7 +74,56 @@ export default function useFilter() {
     setStorage(defaultFiltersJson);
   };
 
+  const filterMenuList = (menuList: RawMenuList): RawMenuList => {
+    const filteredList = {};
+    let currentPosition: { lat: number; lng: number } | null = null;
+    const { geolocation } = navigator;
+    if (geolocation) {
+      geolocation.getCurrentPosition((position) => {
+        currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
+      });
+    }
+
+    const getDistance = (lat1, lon1, lat2, lon2) => {
+      const deg2rad = (deg) => deg * (Math.PI / 180);
+
+      const R = 6371; // 지구 반지름 (단위: km)
+      const dLat = deg2rad(lat2 - lat1);
+      const dLon = deg2rad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // 두 지점 간의 거리 (단위: km)
+      return distance;
+    };
+
+    Object.keys(menuList).forEach((key) => {
+      if (key === "date") filteredList[key] = menuList[key];
+      else
+        filteredList[key] = menuList[key].filter((menu) => {
+          if (menu.price < filterList.priceMin || menu.price > filterList.priceMax) return false;
+          if (menu.rating < filterList.ratingMin) return false;
+          if (filterList.favorite && !menu.favorite) return false;
+          if (currentPosition && menu.etc.lat && menu.etc.lng) {
+            const { lat: currentLat, lng: currentLng } = currentPosition;
+            const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
+            const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
+            if (distance > filterList.length) return false;
+          }
+          // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
+          return true;
+        });
+    });
+
+    return filteredList as RawMenuList;
+  };
+
   return {
+    /**
+     * 필터 리스트입니다.
+     * @type {FilterList}
+     */
     filterList,
     /**
      * 필터 옵션 일부를 변경하는 함수입니다.
@@ -90,5 +139,10 @@ export default function useFilter() {
      * 필터 리스트를 초기화하는 함수입니다..
      */
     resetFilterList,
+    /**
+     * 메뉴 리스트를 필터링하는 함수입니다.
+     * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
+     */
+    filterMenuList,
   };
 }
