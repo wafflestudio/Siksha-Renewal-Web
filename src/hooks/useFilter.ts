@@ -7,6 +7,7 @@ type FilterList = {
   priceMin: number;
   priceMax: number;
   ratingMin: number;
+  isReview: boolean;
   category: string[];
   favorite: boolean;
 };
@@ -39,6 +40,7 @@ export default function useFilter() {
     priceMin: 0,
     priceMax: Infinity,
     ratingMin: 0,
+    isReview: false,
     category: [],
     favorite: false,
   };
@@ -109,6 +111,7 @@ export default function useFilter() {
         filteredList[key] = menuList[key].filter((menu) => {
           if (menu.price < filterList.priceMin || menu.price > filterList.priceMax) return false;
           if (menu.rating < filterList.ratingMin) return false;
+          if (filterList.isReview && menu.review_cnt === 0) return false;
           if (filterList.favorite && !menu.favorite) return false;
           if (currentPosition && menu.etc.lat && menu.etc.lng) {
             const { lat: currentLat, lng: currentLng } = currentPosition;
