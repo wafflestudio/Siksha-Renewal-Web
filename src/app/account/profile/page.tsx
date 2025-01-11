@@ -8,6 +8,7 @@ import ProfileEdit from "components/Account/ProfileEdit";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import UseProfile from "hooks/UseProfile";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function SettingProfile() {
   const { userInfo, setProfile } = UseProfile();
