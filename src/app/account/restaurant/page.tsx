@@ -9,11 +9,14 @@ import { RestaurantPreview } from "types";
 import useOrder from "hooks/UseOrder";
 import AccountLayout from "../layout";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
   const { orderList, setNewOrderList } = useOrder("nonFavorite");
+
+  const { onHttpError } = useError();
 
   useEffect(authGuard, [authStatus]);
 
@@ -40,9 +43,7 @@ export default function NonFavoriteOrderSetting() {
 
         setNewOrderList([...newOrderList, ...newRestaurants]);
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(onHttpError);
   }, []);
 
   const reorder = (source: number, destination: number) => {

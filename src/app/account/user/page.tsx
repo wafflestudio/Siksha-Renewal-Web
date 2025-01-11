@@ -6,11 +6,14 @@ import { deleteAccount } from "utils/api/auth";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function UserSetting() {
   const router = useRouter();
   const { authStatus, getAccessToken, authGuard, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+
+  const { onHttpError } = useError();
 
   useEffect(() => {
     if (authStatus === "login") {
@@ -34,12 +37,9 @@ export default function UserSetting() {
       .then((accessToken) => {
         deleteAccount(accessToken);
       })
-      .then(() => {
-        logout();
-        router.push(`/`);
-      })
+      .then(handleLogout)
       .catch((e) => {
-        console.error(e);
+        onHttpError(e);
         router.push(`/account/user`);
       });
   };

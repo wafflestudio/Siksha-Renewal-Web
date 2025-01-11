@@ -23,6 +23,8 @@ export default function SettingProfile() {
   const { getAccessToken, authStatus, authGuard } = useAuth();
   useEffect(authGuard, [authStatus]);
 
+  const { onHttpError } = useError();
+
   useEffect(() => {
     setNickname(userInfo?.nickname ?? `ID ${userInfo?.id}`);
   }, [imgRef, userInfo]);
@@ -66,9 +68,7 @@ export default function SettingProfile() {
           router.push(`/account`);
         });
       })
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch(onHttpError);
   };
 
   return (
