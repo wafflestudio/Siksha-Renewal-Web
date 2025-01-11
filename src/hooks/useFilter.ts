@@ -1,4 +1,4 @@
-import { useState } from "react";
+import getDistance from "utils/getDistance";
 import useLocalStorage from "./UseLocalStorage";
 import { RawMenuList } from "types";
 
@@ -25,6 +25,16 @@ function reviver(key: string, value: any) {
   else return value;
 }
 
+const defaultFilters: FilterList = {
+  length: Infinity,
+  priceMin: 0,
+  priceMax: Infinity,
+  ratingMin: 0,
+  isReview: false,
+  category: [],
+  favorite: false,
+};
+
 /**
  * 필터 옵션을 관리하는 커스텀 훅입니다.
  * @returns {{
@@ -35,15 +45,6 @@ function reviver(key: string, value: any) {
  * }} 필터 리스트와 필터 옵션을 변경하는 함수들을 반환합니다.
  */
 export default function useFilter() {
-  const defaultFilters: FilterList = {
-    length: Infinity,
-    priceMin: 0,
-    priceMax: Infinity,
-    ratingMin: 0,
-    isReview: false,
-    category: [],
-    favorite: false,
-  };
   const defaultFiltersJson = JSON.stringify(defaultFilters, replacer);
 
   // localStorage가 구독되어 변화를 감지하므로, 따로 state를 만들어주기 보다는 JSON parse 결과를 바로 이용해야 합니다.
@@ -91,37 +92,36 @@ export default function useFilter() {
       });
     }
 
-    const getDistance = (lat1, lon1, lat2, lon2) => {
-      const deg2rad = (deg) => deg * (Math.PI / 180);
-
-      const R = 6371; // 지구 반지름 (단위: km)
-      const dLat = deg2rad(lat2 - lat1);
-      const dLon = deg2rad(lon2 - lon1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c; // 두 지점 간의 거리 (단위: km)
-      return distance;
-    };
-
     Object.keys(menuList).forEach((key) => {
-      if (key === "date") filteredList[key] = menuList[key];
-      else
-        filteredList[key] = menuList[key].filter((menu) => {
-          if (menu.price < filterList.priceMin || menu.price > filterList.priceMax) return false;
-          if (menu.rating < filterList.ratingMin) return false;
-          if (filterList.isReview && menu.review_cnt === 0) return false;
-          if (filterList.favorite && !menu.favorite) return false;
-          if (currentPosition && menu.etc.lat && menu.etc.lng) {
-            const { lat: currentLat, lng: currentLng } = currentPosition;
-            const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
-            const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
-            if (distance > filterList.length) return false;
-          }
-          // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
-          return true;
-        });
+      Object.keys(menuList).forEach((key) => {
+        filteredList[key] = menuList[key];
+        if (key !== "date") {
+          // 위치 기반 식당 필터링
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            if (currentPosition && restaurant.lat && restaurant.lng) {
+              const { lat: currentLat, lng: currentLng } = currentPosition;
+              const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
+              const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
+              if (distance > filterList.length) return false;
+            }
+            return true;
+          });
+          // 가격, 평점 등으로 메뉴 필터링
+          filteredList[key].forEach((restaurant) => {
+            if (restaurant.menus) {
+              restaurant.menus = restaurant.menus.filter((menu) => {
+                if (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
+                  return false;
+                if (menu.rating < filterList.ratingMin) return false;
+                if (filterList.isReview && menu.review_cnt === 0) return false;
+                if (filterList.favorite && !menu.favorite) return false;
+                // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
+                return true;
+              });
+            }
+          });
+        }
+      });
     });
 
     return filteredList as RawMenuList;
