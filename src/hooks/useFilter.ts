@@ -93,35 +93,33 @@ export default function useFilter() {
     }
 
     Object.keys(menuList).forEach((key) => {
-      Object.keys(menuList).forEach((key) => {
-        filteredList[key] = menuList[key];
-        if (key !== "date") {
-          // 위치 기반 식당 필터링
-          filteredList[key] = filteredList[key].filter((restaurant) => {
-            if (currentPosition && restaurant.lat && restaurant.lng) {
-              const { lat: currentLat, lng: currentLng } = currentPosition;
-              const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
-              const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
-              if (distance > filterList.length) return false;
-            }
-            return true;
-          });
-          // 가격, 평점 등으로 메뉴 필터링
-          filteredList[key].forEach((restaurant) => {
-            if (restaurant.menus) {
-              restaurant.menus = restaurant.menus.filter((menu) => {
-                if (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
-                  return false;
-                if (menu.rating < filterList.ratingMin) return false;
-                if (filterList.isReview && menu.review_cnt === 0) return false;
-                if (filterList.favorite && !menu.favorite) return false;
-                // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
-                return true;
-              });
-            }
-          });
-        }
-      });
+      filteredList[key] = structuredClone(menuList[key]);
+      if (key !== "date") {
+        // 위치 기반 식당 필터링
+        filteredList[key] = filteredList[key].filter((restaurant) => {
+          if (currentPosition && restaurant.lat && restaurant.lng) {
+            const { lat: currentLat, lng: currentLng } = currentPosition;
+            const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
+            const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
+            if (distance > filterList.length) return false;
+          }
+          return true;
+        });
+        // 가격, 평점 등으로 메뉴 필터링
+        filteredList[key].forEach((restaurant) => {
+          if (restaurant.menus) {
+            restaurant.menus = restaurant.menus.filter((menu) => {
+              if (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
+                return false;
+              if (menu.rating < filterList.ratingMin) return false;
+              if (filterList.isReview && menu.review_cnt === 0) return false;
+              if (filterList.favorite && !menu.favorite) return false;
+              // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
+              return true;
+            });
+          }
+        });
+      }
     });
 
     return filteredList as RawMenuList;
