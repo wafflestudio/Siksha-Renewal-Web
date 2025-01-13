@@ -10,11 +10,14 @@ import { getMyPostList } from "utils/api/community";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/navigation";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const { authStatus, getAccessToken, authGuard } = useAuth();
+  const { onHttpError } = useError();
+
   const router = useRouter();
 
   useEffect(authGuard, [authStatus]);
@@ -26,7 +29,7 @@ export default function MyPost() {
         result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
         return hasNext;
       })
-      .catch((e) => console.error(e));
+      .catch(onHttpError);
 
   useEffect(() => {
     setPosts([]);
