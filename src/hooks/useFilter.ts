@@ -85,8 +85,8 @@ export default function useFilter() {
   const filterMenuList = (menuList: RawMenuList): RawMenuList => {
     const filteredList = {};
     let currentPosition: { lat: number; lng: number } | null = null;
-    const { geolocation } = navigator;
-    if (geolocation) {
+    if (navigator?.geolocation) {
+      const { geolocation } = navigator;
       geolocation.getCurrentPosition((position) => {
         currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
       });
