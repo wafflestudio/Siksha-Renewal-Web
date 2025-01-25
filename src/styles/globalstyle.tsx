@@ -98,6 +98,33 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* constants */
+  :root {
+    --background-main: #F8F8F8;
+    --foundation-gray-50: #F8F8F8;
+    --foundation-gray-100: #F2F3F4;
+    --foundation-gray-200: #E5E6E9;
+    --foundation-gray-300: #D8DADE;
+    --foundation-gray-400: #CBCDD3;
+    --foundation-gray-500: #BEC1C8;
+    --foundation-gray-600: #989AA0;
+    --foundation-gray-700: #727478;
+    --foundation-gray-800: #4C4D50;
+    --foundation-gray-900: #262728;
+    --foundation-orange-100: #FFEAD3;
+    --foundation-orange-200: #FFD5A7;
+    --foundation-orange-300: #FFBF7A;
+    --foundation-orange-400: #FFAA4E;
+    --foundation-orange-500: #FF9522;
+    --foundation-orange-600: #D27000;
+    --foundation-orange-700: #A54C00;
+    --foundation-orange-800: #7C2900;
+    --foundation-orange-900: #570000;
+    --foundation-base: #FFFFFF;
+
+  }
+
+
+
   /* --main-orange-color: #FF9522 */
 `;
 
