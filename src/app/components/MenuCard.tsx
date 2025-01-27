@@ -1,13 +1,21 @@
 import styled from "styled-components";
-import RestaurantTime from "app/components/RestaurantTime";
 import Menu from "app/components/Menu";
-import { useDispatchContext } from "providers/ContextProvider";
+import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import useFavorite from "hooks/UseFavorite";
 import { LoadingAnimation } from "styles/globalstyle";
 import { sanitizeCssSelector } from "utils/FormatUtil";
+import OperatingHour from "./OperatingHour";
+import { RawMenu, RawRestaurant } from "types";
+import getCurrentOperatingHours from "utils/getCurrentOperatingHours";
 
-export default function MenuCard({ data }) {
+type Data = RawRestaurant & {
+  menus: RawMenu[];
+};
+
+export default function MenuCard({ data }: { data: Data }) {
   const { setInfoData, toggleShowInfo } = useDispatchContext();
+  const state = useStateContext();
+  const { meal } = state;
 
   const { toggleFavorite, isFavorite } = useFavorite();
 
@@ -16,37 +24,51 @@ export default function MenuCard({ data }) {
       <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
         <RestInfo>
           <HeaderContainer>
-            <Name>{data.name_kr}</Name>
-            {isFavorite(data.id) ? (
-              <Star
-                src="/img/general/star.svg"
-                onClick={() => toggleFavorite(data.id)}
-                alt="좋아요"
+            <TitleContainer>
+              <TitleList>
+                <Name>{data.name_kr}</Name>
+                <ButtonIcon
+                  src={"/img/info.svg"}
+                  onClick={() => {
+                    setInfoData(data);
+                    toggleShowInfo();
+                  }}
+                  alt="위치 정보"
+                />
+                <ButtonIcon
+                  src={
+                    isFavorite(data.id)
+                      ? "/img/general/star-on-orange.svg"
+                      : "/img/general/star-empty-orange.svg"
+                  }
+                  onClick={() => toggleFavorite(data.id)}
+                  alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
+                />
+              </TitleList>
+            </TitleContainer>
+            <InfoContainer>
+              <OperatingHour
+                type={meal}
+                hour={getCurrentOperatingHours(
+                  meal,
+                  data.etc?.operating_hours ?? {
+                    weekdays: [],
+                    saturday: [],
+                    holiday: [],
+                  },
+                )} //data.etc가 null인 case가 있음
               />
-            ) : (
-              <Star
-                src="/img/star-empty-white.svg"
-                onClick={() => toggleFavorite(data.id)}
-                alt=""
-              />
-            )}
+              <HeaderDataList>
+                <HeaderDataText>Price</HeaderDataText>
+                <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
+                <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
+                <HeaderDataText disableWidth={1000}>Review</HeaderDataText>
+              </HeaderDataList>
+            </InfoContainer>
           </HeaderContainer>
-          <Location>
-            <LocationIcon
-              src={"/img/location.svg"}
-              onClick={() => {
-                setInfoData(data);
-                toggleShowInfo();
-              }}
-              alt="위치 정보"
-            />
-            <LocationText>{data.addr?.slice(19)}</LocationText>
-          </Location>
         </RestInfo>
         <HLine />
         <MenuInfo>
-          <RestaurantTime hours={data.etc ? data.etc.operating_hours : null} />
-          <VLine />
           <Menus>
             {data.menus.map((menu) => (
               <Menu menu={menu} key={menu.id} />
@@ -58,7 +80,7 @@ export default function MenuCard({ data }) {
         <RestInfo>
           <HeaderContainer>
             <Name>{data.name_kr}</Name>
-            <InfoIcon
+            <ButtonIcon
               src={"/img/info.svg"}
               onClick={() => {
                 setInfoData(data);
@@ -67,14 +89,14 @@ export default function MenuCard({ data }) {
               alt="정보"
             />
             {isFavorite(data.id) ? (
-              <Star
-                src="/img/general/star.svg"
+              <ButtonIcon
+                src="/img/general/star-on-orange.svg"
                 onClick={() => toggleFavorite(data.id)}
                 alt="좋아요"
               />
             ) : (
-              <Star
-                src="/img/star-empty-white.svg"
+              <ButtonIcon
+                src="/img/general/star-empty-orange.svg"
                 onClick={() => toggleFavorite(data.id)}
                 alt=""
               />
@@ -98,13 +120,14 @@ export default function MenuCard({ data }) {
 }
 
 const RestInfo = styled.div`
-  position: relative;
   display: flex;
-  justify-content: space-between;
-  padding-top: 23px;
-  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
 
   @media (max-width: 768px) {
+    position: relative;
     padding-top: 17px;
   }
 `;
@@ -112,14 +135,13 @@ const RestInfo = styled.div`
 const DesktopContainer = styled.div`
   ${LoadingAnimation}
   display: flex;
+  padding: 24px 28px;
+  margin: 0 24px 28px 0;
   flex-direction: column;
-  background: white;
-  border: solid 1px #e8e8e8;
-  box-sizing: border-box;
-  border-radius: 8px;
-  width: 100%;
-  margin-bottom: 30px;
-  padding: 0 54px 0 50px;
+  align-items: flex-start;
+  align-self: stretch;
+  background: var(--foundation-base-white);
+  border-radius: 10px;
 
   @media (max-width: 768px) {
     display: none;
@@ -145,36 +167,74 @@ const MobileContainer = styled.div`
 
 const HeaderContainer = styled.div`
   display: flex;
-  align-items: center;
-`;
 
-const InfoIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  padding-left: 6px;
-  padding-bottom: 0.3px;
-  cursor: pointer;
-`;
+  @media (min-width: 1001px) {
+    gap: 8px;
+    align-items: end;
+    justify-content: space-between;
+  }
 
-const Name = styled.div`
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 27px;
-  color: #242424;
-  white-space: nowrap;
+  @media (min-width: 769px) and (max-width: 1000px) {
+    flex-direction: column;
+  }
 
-  @media (max-width: 768px) {
-    font-size: 15px;
-    line-height: 17px;
-    color: #ff9522;
-    white-space: normal;
+  @media (min-width: 769px) {
+    width: 100%;
   }
 `;
 
-const Star = styled.img`
-  width: 23px;
-  height: 22px;
-  margin: 0 0 2.5px 11px;
+const TitleContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-grow: 0;
+  align-self: center;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    align-self: start;
+  }
+`;
+
+const InfoContainer = styled.div`
+  @media (min-width: 1001px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  @media (min-width: 769px) and (max-width: 1000px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+const HeaderDataList = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
+  width: 58px;
+  color: var(--Color-Foundation-orange-500);
+  text-align: center;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 19.5px */
+
+  @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
+    width: 24px;
+  }
+
+  @media ${(props) => `(max-width: ${props.disableWidth ?? 0}px)`} {
+    display: none;
+  }
+`;
+
+const ButtonIcon = styled.img`
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 
   /* App버전을 참고한 디자인 */
@@ -185,36 +245,33 @@ const Star = styled.img`
   }
 `;
 
-const Location = styled.div`
-  display: flex;
-  padding-top: 3px;
+const Name = styled.div`
+  @media (min-width: 769px) {
+    color: var(--Color-Foundation-gray-900);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 140%; /* 28px */
+  }
 
   @media (max-width: 768px) {
-    padding-right: 16px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 17px;
+    color: var(--Color-Foundation-orange-500);
+    white-space: normal;
   }
 `;
 
-const LocationIcon = styled.img`
-  width: 14.4px;
-  height: 20.21px;
-  cursor: "pointer";
-`;
-
-const LocationText = styled.div`
-  font-family: NanumSquare;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 17px;
-  padding-top: 1px;
-  padding-left: 10px;
-  color: #575757;
+const TitleList = styled.div`
+  display: flex;
+  gap: 4px;
 `;
 
 const MenuInfoLabels = styled.div`
   position: absolute;
   right: -2px;
   display: flex;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-size: 12px;
   font-weight: 400;
   justify-content: space-between;
@@ -222,10 +279,11 @@ const MenuInfoLabels = styled.div`
 
 const HLine = styled.div`
   height: 2px;
-  background: #ff9522;
-  margin: 10px 0;
+  align-self: stretch;
+  background: var(--Color-Foundation-orange-500);
 
   @media (max-width: 768px) {
+    margin: 10px 0;
     width: calc(95vw - 32px);
     height: 1px;
     margin: 8.5px 0;
@@ -235,13 +293,9 @@ const HLine = styled.div`
 const MenuInfo = styled.div`
   display: flex;
   padding-bottom: 12px;
-`;
-
-const VLine = styled.div`
-  width: 1px;
-  background: #dcdcdc;
-  margin-left: 17px;
-  margin-right: 26px;
+  @media (min-width: 769px) {
+    width: 100%;
+  }
 `;
 
 const Menus = styled.div`
@@ -249,6 +303,11 @@ const Menus = styled.div`
   flex: 1;
   flex-direction: column;
   padding: 3px 0 4px 0;
+
+  @media (min-width: 769px) {
+    gap: 13px;
+    width: 100%;
+  }
 
   @media (max-width: 768px) {
     padding: 6px 0 3px 0;
