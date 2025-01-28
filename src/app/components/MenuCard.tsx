@@ -121,7 +121,6 @@ export default function MenuCard({ data }: { data: Data }) {
 
 const RestInfo = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   align-self: stretch;

@@ -125,6 +125,7 @@ const Container = styled.div`
 `;
 
 const MenuName = styled.div`
+  display: flex;
   color: var(--Color-Foundation-gray-900);
   font-size: 14px;
   font-style: normal;
@@ -159,11 +160,13 @@ const Dots = styled.img`
 `;
 
 const Price = styled.div`
+  display: flex;
+  justify-content: center;
+  align-self: center;
   font-size: 16px;
   line-height: 18px;
   font-weight: 400;
   width: 58px;
-  text-align: center;
 
   @media (min-width: 769px) {
     color: var(--Color-Foundation-gray-900);
@@ -189,8 +192,9 @@ const Price = styled.div`
 const Rate = styled.div`
   display: flex;
   justify-content: center;
+  align-self: center;
   width: 58px;
-  height: 20px;
+  height: 21px;
   font-weight: 400;
   font-size: 14px;
 
@@ -244,6 +248,7 @@ const ReviewBox = styled(CountBox)`
 `;
 
 const HeartIcon = styled.img`
+  align-self: center;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -261,7 +266,7 @@ const CountText = styled.div<{ disableWith: number }>`
   line-height: 17px;
   font-weight: 400;
   color: #b7b7b7;
-  text-align: center;
+  align-self: center;
 
   color: var(--Color-Foundation-gray-700, #727478);
   font-size: 14px;
