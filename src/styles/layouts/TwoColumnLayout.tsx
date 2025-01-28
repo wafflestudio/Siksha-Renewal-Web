@@ -7,10 +7,11 @@ type LayoutProps = { children: ReactNode } & layoutStyle;
 const TwoColumnLayout = styled.div<LayoutProps>`
   box-sizing: border-box;
   display: flex;
-  margin: 0 auto;
-  padding: 0 24px;
+  margin: ${(props) => props.margin || "0 auto"};
+  padding: ${(props) => props.padding || "0 24px"};
   max-width: 1242px;
   gap: 30px;
+  width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
 
   @media (max-width: 900px) {
