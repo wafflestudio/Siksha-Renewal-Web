@@ -70,7 +70,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
           <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
         )}
       </MenuName>
-      <Dots>.........</Dots>
+      <Dots src={"/img/dots.svg"} />
       <MenuInfo>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
@@ -104,7 +104,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
 const Container = styled.div`
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -120,6 +120,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
+    align-items: flex-start;
   }
 `;
 
@@ -129,11 +130,7 @@ const MenuName = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 21px */
-  align-self: center;
-
-  @media (min-width: 769px) {
-    align-self: center;
-  }
+  flex-grow: 1;
 
   @media (max-width: 768px) {
     color: black;
@@ -141,38 +138,24 @@ const MenuName = styled.div`
     line-height: 21px;
     padding-right: 7px;
     padding-top: 2px;
-    align-items: flex-start;
     font-weight: 400;
   }
 `;
 
 const MenuInfo = styled.div`
   display: flex;
-  align-items: center;
 
   @media (min-width: 769px) {
     gap: 6px;
   }
 `;
 
-const Dots = styled.div`
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.3);
-  letter-spacing: 2px;
+const Dots = styled.img`
   width: 40px;
-  margin-right: 10px;
 
   @media (max-width: 1200px) {
     display: none;
   }
-
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 `;
 
 const Price = styled.div`
@@ -189,7 +172,6 @@ const Price = styled.div`
     font-weight: 400;
     line-height: 150%; /* 21px */
     letter-spacing: -0.3px;
-    align-self: center;
   }
 
   @media (max-width: 768px) {
@@ -207,7 +189,6 @@ const Price = styled.div`
 const Rate = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 58px;
   height: 20px;
   font-weight: 400;
@@ -220,7 +201,6 @@ const Rate = styled.div`
     font-weight: 400;
     line-height: 150%; /* 21px */
     letter-spacing: -0.3px;
-    align-self: center;
   }
 
   @media (min-width: 769px) and (max-width: 901px) {

@@ -265,6 +265,10 @@ const Name = styled.div`
 const TitleList = styled.div`
   display: flex;
   gap: 4px;
+
+  @media (min-width: 769px) {
+    align-items: center;
+  }
 `;
 
 const MenuInfoLabels = styled.div`
@@ -302,7 +306,7 @@ const Menus = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 3px 0 4px 0;
+  padding-top: 14px;
 
   @media (min-width: 769px) {
     gap: 13px;
