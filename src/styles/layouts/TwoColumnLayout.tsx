@@ -34,7 +34,7 @@ const Left = styled.div`
 const Right = styled.div`
   flex: 1;
   max-width: 786px;
-  min-width: 0;
+  min-width: 0; // flex: 1에 의한 min-width: auto 설정 제거
 
   @media(max-width: 900px) {
     max-width: 445px;
