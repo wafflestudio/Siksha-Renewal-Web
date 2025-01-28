@@ -22,51 +22,49 @@ export default function MenuCard({ data }: { data: Data }) {
   return (
     <>
       <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <RestInfo>
-          <HeaderContainer>
-            <TitleContainer>
-              <TitleList>
-                <Name>{data.name_kr}</Name>
-                <ButtonIcon
-                  src={"/img/info.svg"}
-                  onClick={() => {
-                    setInfoData(data);
-                    toggleShowInfo();
-                  }}
-                  alt="위치 정보"
-                />
-                <ButtonIcon
-                  src={
-                    isFavorite(data.id)
-                      ? "/img/general/star-on-orange.svg"
-                      : "/img/general/star-empty-orange.svg"
-                  }
-                  onClick={() => toggleFavorite(data.id)}
-                  alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
-                />
-              </TitleList>
-            </TitleContainer>
-            <InfoContainer>
-              <OperatingHour
-                type={meal}
-                hour={getCurrentOperatingHours(
-                  meal,
-                  data.etc?.operating_hours ?? {
-                    weekdays: [],
-                    saturday: [],
-                    holiday: [],
-                  },
-                )} //data.etc가 null인 case가 있음
+        <HeaderContainer>
+          <TitleContainer>
+            <Name>{data.name_kr}</Name>
+            <TitleIconList>
+              <ButtonIcon
+                src={"/img/info.svg"}
+                onClick={() => {
+                  setInfoData(data);
+                  toggleShowInfo();
+                }}
+                alt="위치 정보"
               />
-              <HeaderDataList>
-                <HeaderDataText>Price</HeaderDataText>
-                <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
-                <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
-                <HeaderDataText disableWidth={1000}>Review</HeaderDataText>
-              </HeaderDataList>
-            </InfoContainer>
-          </HeaderContainer>
-        </RestInfo>
+              <ButtonIcon
+                src={
+                  isFavorite(data.id)
+                    ? "/img/general/star-on-orange.svg"
+                    : "/img/general/star-empty-orange.svg"
+                }
+                onClick={() => toggleFavorite(data.id)}
+                alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
+              />
+            </TitleIconList>
+          </TitleContainer>
+          <InfoContainer>
+            <OperatingHour
+              type={meal}
+              hour={getCurrentOperatingHours(
+                meal,
+                data.etc?.operating_hours ?? {
+                  weekdays: [],
+                  saturday: [],
+                  holiday: [],
+                },
+              )} //data.etc가 null인 case가 있음
+            />
+            <HeaderDataList>
+              <HeaderDataText>Price</HeaderDataText>
+              <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
+              <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
+              <HeaderDataText disableWidth={1000}>Review</HeaderDataText>
+            </HeaderDataList>
+          </InfoContainer>
+        </HeaderContainer>
         <HLine />
         <MenuInfo>
           <Menus>
@@ -120,12 +118,12 @@ export default function MenuCard({ data }: { data: Data }) {
 }
 
 const RestInfo = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
-
   @media (max-width: 768px) {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+
     position: relative;
     padding-top: 17px;
   }
@@ -135,7 +133,7 @@ const DesktopContainer = styled.div`
   ${LoadingAnimation}
   display: flex;
   padding: 24px 28px;
-  margin: 0 24px 28px 0;
+  margin-right: 24px; // 디자인 체크를 위한 임시 마진값으로 RightSide에 넣으면 삭제할것
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
@@ -143,6 +141,7 @@ const DesktopContainer = styled.div`
   border-radius: 10px;
 
   @media (max-width: 768px) {
+    margin: 0 24px 28px 0;
     display: none;
   }
 `;
@@ -195,19 +194,15 @@ const TitleContainer = styled.div`
 `;
 
 const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
   @media (min-width: 1001px) {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     flex-grow: 1;
   }
-
-  @media (min-width: 769px) and (max-width: 1000px) {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
 `;
+
 const HeaderDataList = styled.div`
   display: flex;
   gap: 6px;
@@ -261,7 +256,7 @@ const Name = styled.div`
   }
 `;
 
-const TitleList = styled.div`
+const TitleIconList = styled.div`
   display: flex;
   gap: 4px;
 
@@ -308,7 +303,7 @@ const Menus = styled.div`
   padding-top: 14px;
 
   @media (min-width: 769px) {
-    gap: 13px;
+    gap: 10px;
     width: 100%;
   }
 

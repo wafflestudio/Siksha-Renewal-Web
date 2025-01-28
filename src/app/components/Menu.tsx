@@ -75,7 +75,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
-          <HeartIcon
+          <CountIcon
             src={isLikedImg}
             onClick={(e) => {
               isLikedToggle();
@@ -86,13 +86,13 @@ export default function Menu({ menu }: { menu: RawMenu }) {
           <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
-          <HeartIcon
+          <CountIcon
             src={isReviewedImg}
             onClick={(e) => {
               isLikedToggle();
               e.stopPropagation();
             }}
-            alt="좋아요"
+            alt="댓글"
           />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
@@ -104,7 +104,6 @@ export default function Menu({ menu }: { menu: RawMenu }) {
 const Container = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -145,6 +144,7 @@ const MenuName = styled.div`
 
 const MenuInfo = styled.div`
   display: flex;
+  align-items: center;
 
   @media (min-width: 769px) {
     gap: 6px;
@@ -162,7 +162,6 @@ const Dots = styled.img`
 const Price = styled.div`
   display: flex;
   justify-content: center;
-  align-self: center;
   font-size: 16px;
   line-height: 18px;
   font-weight: 400;
@@ -192,7 +191,6 @@ const Price = styled.div`
 const Rate = styled.div`
   display: flex;
   justify-content: center;
-  align-self: center;
   width: 58px;
   height: 21px;
   font-weight: 400;
@@ -200,7 +198,6 @@ const Rate = styled.div`
 
   @media (min-width: 769px) {
     color: var(--Color-Foundation-gray-900, #262728);
-    text-align: center;
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 21px */
@@ -233,6 +230,7 @@ const CountBox = styled.div`
     width: 24px;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 4px;
   }
 
@@ -247,8 +245,7 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const HeartIcon = styled.img`
-  align-self: center;
+const CountIcon = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -266,7 +263,6 @@ const CountText = styled.div<{ disableWith: number }>`
   line-height: 17px;
   font-weight: 400;
   color: #b7b7b7;
-  align-self: center;
 
   color: var(--Color-Foundation-gray-700, #727478);
   font-size: 14px;
