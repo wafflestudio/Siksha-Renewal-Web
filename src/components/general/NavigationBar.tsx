@@ -36,13 +36,12 @@ export default function NavigationBar() {
 }
 
 const NaviBar = styled.nav`
-  margin-top: auto;
-  width: 394px;
-  white-space: nowrap;
-  cursor: pointer;
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  width: 293px;
+  padding-top: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     display: none;
@@ -50,26 +49,29 @@ const NaviBar = styled.nav`
 `;
 
 const NavItem = styled.div`
-  margin: 0 25px 0 25px;
+  white-space: nowrap;
   a {
     text-decoration: none;
   }
-  padding: 0;
 `;
 
 const NavLink = styled.div<{ $cur: boolean }>`
-  font-size: 20px;
-  padding: 20px 10px;
-  color: #ffffff80;
+  color: var(--Color-Foundation-orange-200, #FFD5A7);
+  padding: 0px 20px 12px 20px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 700;
+
   ${($props) =>
     $props.$cur &&
     css`
-      border-bottom: 5px solid white;
-      color: white;
-      padding-bottom: 15px;
+      color: var(--Color-Foundation-base-white, #FFF);
+      font-weight: 800;
+      box-shadow: inset 0 -4px 0 var(--Color-Foundation-base-white, #FFF); /* 요소의 안쪽에 그려지도록 box-shadow 사용 */
     `};
 
   &:hover {
-    color: white;
+    color: var(--Color-Foundation-base-white, #FFF);
   }
 `;
