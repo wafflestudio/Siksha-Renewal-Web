@@ -1,18 +1,13 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { layoutStyle } from "./layout.types";
 
-type LayoutProps = { children: ReactNode } & layoutStyle;
-
-const TwoColumnLayout = styled.div<LayoutProps>`
+const Container = styled.div<{ children: ReactNode }>`
   box-sizing: border-box;
   display: flex;
-  margin: ${(props) => props.margin || "0 auto"};
-  padding: ${(props) => props.padding || "0 24px"};
+  margin: 0 auto;
+  padding: 0 24px;
   max-width: 1242px;
   gap: 30px;
-  width: ${(props) => props.width || "auto"};
-  height: ${(props) => props.height || "auto"};
 
   @media (max-width: 900px) {
     padding: 0 16px;
@@ -41,4 +36,6 @@ const Right = styled.div`
   }
 `;
 
-export { TwoColumnLayout, Left, Right };
+const TwoColumnLayout = { Container, Left, Right };
+
+export default TwoColumnLayout;
