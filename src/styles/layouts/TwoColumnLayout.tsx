@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
 import styled from "styled-components";
 
-const Container = styled.div<{ children: ReactNode }>`
+const Container = styled.div`
   box-sizing: border-box;
   display: flex;
   margin: 0 auto;
