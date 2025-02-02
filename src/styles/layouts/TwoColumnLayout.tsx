@@ -8,10 +8,6 @@ const Container = styled.div`
   max-width: 1242px;
   gap: 30px;
 
-  @media (max-width: 900px) {
-    padding: 0 16px;
-  }
-
   @media (max-width: 768px) {
     display: none; /* 데스크톱 전용 layout */
   }
@@ -19,20 +15,12 @@ const Container = styled.div`
 
 const Left = styled.div`
   flex: 0 0 378px;
-
-  @media (max-width: 900px) {
-    flex: 0 0 360px;
-  }
 `;
 
 const Right = styled.div`
   flex: 1;
   max-width: 786px;
   min-width: 0; // flex: 1에 의한 min-width: auto 설정 제거
-
-  @media(max-width: 900px) {
-    max-width: 445px;
-  }
 `;
 
 const TwoColumnLayout = { Container, Left, Right };
