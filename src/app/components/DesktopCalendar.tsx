@@ -1,6 +1,6 @@
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useCallback } from "react";
-import { formatDate, formatWeekday } from "utils/FormatUtil";
+import { formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
 import "styles/calendar.css";
@@ -17,9 +17,31 @@ export default function DesktopCalendar() {
     [today],
   );
 
+  const movePrevMonth = () => {
+    setDate(new Date(date.getFullYear(), date.getMonth() - 1));
+  };
+
+  const moveNextMonth = () => {
+    setDate(new Date(date.getFullYear(), date.getMonth() + 1));
+  };
+
   return (
     <Container>
-      <DateText>{formatDate(date)}</DateText>
+      <Header>
+        <DateText>{formatMonth(date)}</DateText>
+        <Arrow
+          onClick={movePrevMonth}
+          src={"/img/left-arrow.svg"}
+          height={"21px"}
+          alt="지난달로 이동"
+        />
+        <Arrow
+          onClick={moveNextMonth}
+          src={"/img/right-arrow.svg"}
+          height={"21px"}
+          alt="다음달로 이동"
+        />
+      </Header>
       <ReactCalendar
         onChange={(day: Date) => {
           setDate(day);
@@ -32,9 +54,10 @@ export default function DesktopCalendar() {
         value={date}
         defaultValue={today}
         showNeighboringMonth={false}
-        navigationLabel={() => formatDate(date)}
-        prevLabel={<Arrow src={"/img/left-arrow.svg"} height={"21px"} alt="지난달로 이동" />}
-        nextLabel={<Arrow src={"/img/right-arrow.svg"} height={"21px"} alt="다음달로 이동" />}
+        navigationLabel={() => formatMonth(date)}
+        prevLabel={<></>}
+        showNavigation={false}
+        nextLabel={<></>}
         formatDay={(locale, date) => String(date.getDate())}
         formatShortWeekday={(locale, date) => formatWeekday(date)}
         tileClassName={({ date }) => (isToday(date) ? "today" : null)}
@@ -45,27 +68,33 @@ export default function DesktopCalendar() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  background: white;
-  display: flex;
+  display: inline-flex;
+  padding: 20px 0px 26px 0px;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  border-radius: 8px;
+  gap: 34px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+  max-width: 378px;
 
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
+const Header = styled.div`
+  display: flex;
+  padding: 0px 24px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+`;
+
 const DateText = styled.div`
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 22.7px;
-  color: #ff9522;
-  position: absolute;
-  top: 40px;
-  white-space: nowrap;
+  color: var(--Color-Foundation-orange-500, #ff9522);
+  font-size: var(--Font-size-16, 16px);
+  font-weight: var(--Font-weight-extrabold, 800);
 `;
 
 const Arrow = styled.img`
