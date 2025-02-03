@@ -86,14 +86,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
           <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
-          <CountIcon
-            src={isReviewedImg}
-            onClick={(e) => {
-              isLikedToggle();
-              e.stopPropagation();
-            }}
-            alt="댓글"
-          />
+          <CountIcon src={isReviewedImg} alt="댓글" />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>

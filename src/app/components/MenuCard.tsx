@@ -240,15 +240,15 @@ const ButtonIcon = styled.img`
 `;
 
 const Name = styled.div`
+  font-weight: 700;
+
   @media (min-width: 769px) {
     color: var(--Color-Foundation-gray-900);
     font-size: 20px;
-    font-weight: 800;
     line-height: 140%; /* 28px */
   }
 
   @media (max-width: 768px) {
-    font-weight: 700;
     font-size: 15px;
     line-height: 17px;
     color: var(--Color-Foundation-orange-500);
@@ -291,8 +291,10 @@ const HLine = styled.div`
 const MenuInfo = styled.div`
   display: flex;
   padding-bottom: 12px;
+
   @media (min-width: 769px) {
     width: 100%;
+    padding-bottom: 0;
   }
 `;
 

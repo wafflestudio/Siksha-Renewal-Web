@@ -25,13 +25,13 @@ const Container = styled.div`
 const HourText = styled.div`
   font-size: 13px;
   font-weight: 700;
-  line-height: 150%; /* 19.5px */
   color: var(--Color-Foundation-gray-600);
 `;
 
 const Breakfast = styled.img`
   width: 20px;
   height: 20px;
+
   @media (max-width: 768px) {
     width: 14.1px;
   }
