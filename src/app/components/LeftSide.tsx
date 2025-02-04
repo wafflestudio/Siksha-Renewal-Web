@@ -5,6 +5,7 @@ import useModals from "hooks/UseModals";
 import { useRouter } from "next/navigation";
 import DesktopCalendar from "./DesktopCalendar";
 import useAuth from "hooks/UseAuth";
+import RestaurantFilter from "./ResturauntFilter";
 
 export default function LeftSide() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function LeftSide() {
   return (
     <Container>
       <DesktopCalendar />
+      <RestaurantFilter />
       <div style={{ marginTop: "35px" }}>
         <RestaurantList />
       </div>
