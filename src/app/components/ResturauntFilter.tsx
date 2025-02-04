@@ -1,4 +1,6 @@
 import useFilter from "hooks/useFilter";
+import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface SliderProps {
@@ -26,17 +28,53 @@ const SliderBar = styled.input`
 `;
 
 export default function RestaurantFilter() {
-  const { filterList, changeFilterOption } = useFilter();
+  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
 
-  const setRatingMin = (rating: number) => changeFilterOption({ ratingMin: rating });
-  const setIsReview = (review: boolean) => changeFilterOption({ isReview: review });
+  const [selectedLength, setSelectedLength] = useState(length);
+  const [selectedPriceMin, setSelectedPriceMin] = useState(priceMin);
+  const [selectedPriceMax, setSelectedPriceMax] = useState(priceMax);
+  const [selectedRatingMin, setSelectedRatingMin] = useState(ratingMin);
+  const [selectedIsReview, setSelectedIsReview] = useState(isReview);
+  const [selectedIsExceptEmpty, setSelectedIsExceptEmpty] = useState(isExceptEmpty);
+
+  useEffect(() => {
+    setSelectedLength(length);
+    setSelectedPriceMin(priceMin);
+    setSelectedPriceMax(priceMax);
+    setSelectedRatingMin(ratingMin);
+    setSelectedIsReview(isReview);
+    setSelectedIsExceptEmpty(isExceptEmpty);
+  }, [length, priceMin, priceMax, ratingMin, isReview, isExceptEmpty]);
+
+  const resetFilter = () => {
+    resetFilterList();
+    setSelectedLength(Infinity);
+    setSelectedPriceMin(0);
+    setSelectedPriceMax(Infinity);
+    setSelectedRatingMin(0);
+    setSelectedIsReview(false);
+    setSelectedIsExceptEmpty(false);
+    if (!isExceptEmpty) toggleIsExceptEmpty();
+  };
+
+  const applyFilter = () => {
+    setFilterList({
+      length: selectedLength,
+      priceMin: selectedPriceMin,
+      priceMax: selectedPriceMax,
+      ratingMin: selectedRatingMin,
+      isReview: selectedIsReview,
+    });
+    if (isExceptEmpty !== selectedIsExceptEmpty) toggleIsExceptEmpty();
+  };
 
   return (
     <Container>
       <Header>
         <Title>메뉴 필터</Title>
-        <RefreshBox>
+        <RefreshBox onClick={resetFilter}>
           <RefreshIcon src={"img/refresh.svg"} />
           <RefreshText>초기화</RefreshText>
         </RefreshBox>
@@ -45,7 +83,9 @@ export default function RestaurantFilter() {
         <SliderBox>
           <SliderContent>
             <PicketBox>
-              <PicketText>1000m이내</PicketText>
+              <PicketText>
+                {selectedLength === Infinity ? "제한 없음" : `${selectedLength}이내`}
+              </PicketText>
               <PicketBottom src={"img/picket-bottom.svg"} />
             </PicketBox>
             <ContentBar>
@@ -55,7 +95,14 @@ export default function RestaurantFilter() {
           </SliderContent>
           <SliderContent>
             <PicketBox>
-              <PicketText>1000원~10000원</PicketText>
+              <PicketText>
+                {`${selectedPriceMin}원 ~ ${
+                  selectedPriceMax === Infinity
+                    ? "제한 없음"
+                    : `${selectedPriceMax}원
+                `
+                }`}
+              </PicketText>
               <PicketBottom src={"img/picket-bottom.svg"} />
             </PicketBox>
             <ContentBar>
@@ -67,17 +114,27 @@ export default function RestaurantFilter() {
         <ContentBar>
           <FilterText>영업시간</FilterText>
           <ButtonGroup>
-            <FilterButton>전체</FilterButton>
-            <FilterButton>영업 중</FilterButton>
+            <FilterButton
+              active={!selectedIsExceptEmpty}
+              onClick={() => setSelectedIsExceptEmpty(false)}
+            >
+              전체
+            </FilterButton>
+            <FilterButton
+              active={selectedIsExceptEmpty}
+              onClick={() => setSelectedIsExceptEmpty(true)}
+            >
+              영업 중
+            </FilterButton>
           </ButtonGroup>
         </ContentBar>
         <ContentBar>
           <FilterText>리뷰 유무</FilterText>
           <ButtonGroup>
-            <FilterButton active={!isReview} onClick={() => setIsReview(false)}>
+            <FilterButton active={!selectedIsReview} onClick={() => setSelectedIsReview(false)}>
               전체
             </FilterButton>
-            <FilterButton active={isReview} onClick={() => setIsReview(true)}>
+            <FilterButton active={selectedIsReview} onClick={() => setSelectedIsReview(true)}>
               리뷰 있음
             </FilterButton>
           </ButtonGroup>
@@ -86,24 +143,30 @@ export default function RestaurantFilter() {
           <FilterText>최소 평점</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={![3.5, 4, 4.5].includes(ratingMin)}
-              onClick={() => setRatingMin(0)}
+              active={![3.5, 4, 4.5].includes(selectedRatingMin)}
+              onClick={() => setSelectedRatingMin(0)}
             >
               전체
             </FilterButton>
-            <FilterButton active={ratingMin === 3.5} onClick={() => setRatingMin(3.5)}>
+            <FilterButton
+              active={selectedRatingMin === 3.5}
+              onClick={() => setSelectedRatingMin(3.5)}
+            >
               3.5
             </FilterButton>
-            <FilterButton active={ratingMin === 4} onClick={() => setRatingMin(4)}>
+            <FilterButton active={selectedRatingMin === 4} onClick={() => setSelectedRatingMin(4)}>
               4.0
             </FilterButton>
-            <FilterButton active={ratingMin === 4.5} onClick={() => setRatingMin(4.5)}>
+            <FilterButton
+              active={selectedRatingMin === 4.5}
+              onClick={() => setSelectedRatingMin(4.5)}
+            >
               4.5
             </FilterButton>
           </ButtonGroup>
         </ContentBar>
       </Filter>
-      <DecideButton>필터 적용하기</DecideButton>
+      <DecideButton onClick={applyFilter}>필터 적용하기</DecideButton>
     </Container>
   );
 }
@@ -135,6 +198,7 @@ const RefreshBox = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
 `;
 
 const RefreshIcon = styled.img`
