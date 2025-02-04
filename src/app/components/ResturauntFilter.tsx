@@ -1,3 +1,4 @@
+import useFilter from "hooks/useFilter";
 import styled from "styled-components";
 
 interface SliderProps {
@@ -25,6 +26,12 @@ const SliderBar = styled.input`
 `;
 
 export default function RestaurantFilter() {
+  const { filterList, changeFilterOption } = useFilter();
+  const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
+
+  const setRatingMin = (rating: number) => changeFilterOption({ ratingMin: rating });
+  const setIsReview = (review: boolean) => changeFilterOption({ isReview: review });
+
   return (
     <Container>
       <Header>
@@ -67,17 +74,32 @@ export default function RestaurantFilter() {
         <ContentBar>
           <FilterText>리뷰 유무</FilterText>
           <ButtonGroup>
-            <FilterButton>전체</FilterButton>
-            <FilterButton>리뷰 있음</FilterButton>
+            <FilterButton active={!isReview} onClick={() => setIsReview(false)}>
+              전체
+            </FilterButton>
+            <FilterButton active={isReview} onClick={() => setIsReview(true)}>
+              리뷰 있음
+            </FilterButton>
           </ButtonGroup>
         </ContentBar>
         <ContentBar>
           <FilterText>최소 평점</FilterText>
           <ButtonGroup>
-            <FilterButton>전체</FilterButton>
-            <FilterButton>3.5</FilterButton>
-            <FilterButton>4.0</FilterButton>
-            <FilterButton>4.5</FilterButton>
+            <FilterButton
+              active={![3.5, 4, 4.5].includes(ratingMin)}
+              onClick={() => setRatingMin(0)}
+            >
+              전체
+            </FilterButton>
+            <FilterButton active={ratingMin === 3.5} onClick={() => setRatingMin(3.5)}>
+              3.5
+            </FilterButton>
+            <FilterButton active={ratingMin === 4} onClick={() => setRatingMin(4)}>
+              4.0
+            </FilterButton>
+            <FilterButton active={ratingMin === 4.5} onClick={() => setRatingMin(4.5)}>
+              4.5
+            </FilterButton>
           </ButtonGroup>
         </ContentBar>
       </Filter>
