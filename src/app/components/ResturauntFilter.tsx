@@ -1,74 +1,83 @@
 import useFilter from "hooks/useFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
-import { useEffect, useState } from "react";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import "styles/slider.css";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-
-interface SliderProps {
-  min: number;
-  max: number;
-  step: number;
-}
-
-const Slider = ({ min, max, step }: SliderProps) => {
-  return <SliderBar type="range" min={min} max={max} color="gray" step={step} />;
-};
-
-const SliderBar = styled.input`
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
-
-  width: 256px;
-  height: 4px;
-
-  border-radius: 4px;
-  background: var(--Color-Foundation-gray-200, #e5e6e9);
-  accent-color: var(--Color-Foundation-orange-500, #ff9522);
-`;
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
 
-  const [selectedLength, setSelectedLength] = useState(length);
-  const [selectedPriceMin, setSelectedPriceMin] = useState(priceMin);
-  const [selectedPriceMax, setSelectedPriceMax] = useState(priceMax);
-  const [selectedRatingMin, setSelectedRatingMin] = useState(ratingMin);
-  const [selectedIsReview, setSelectedIsReview] = useState(isReview);
-  const [selectedIsExceptEmpty, setSelectedIsExceptEmpty] = useState(isExceptEmpty);
+  const [selectedFilters, setSelectedFilters] = useState({
+    length,
+    priceMin,
+    priceMax,
+    ratingMin,
+    isReview,
+    isExceptEmpty,
+  });
 
   useEffect(() => {
-    setSelectedLength(length);
-    setSelectedPriceMin(priceMin);
-    setSelectedPriceMax(priceMax);
-    setSelectedRatingMin(ratingMin);
-    setSelectedIsReview(isReview);
-    setSelectedIsExceptEmpty(isExceptEmpty);
+    setSelectedFilters({
+      length,
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isExceptEmpty,
+    });
   }, [length, priceMin, priceMax, ratingMin, isReview, isExceptEmpty]);
 
-  const resetFilter = () => {
+  const resetFilter = useCallback(() => {
     resetFilterList();
-    setSelectedLength(Infinity);
-    setSelectedPriceMin(0);
-    setSelectedPriceMax(Infinity);
-    setSelectedRatingMin(0);
-    setSelectedIsReview(false);
-    setSelectedIsExceptEmpty(false);
-    if (!isExceptEmpty) toggleIsExceptEmpty();
-  };
-
-  const applyFilter = () => {
-    setFilterList({
-      length: selectedLength,
-      priceMin: selectedPriceMin,
-      priceMax: selectedPriceMax,
-      ratingMin: selectedRatingMin,
-      isReview: selectedIsReview,
+    setSelectedFilters({
+      length: Infinity,
+      priceMin: 0,
+      priceMax: Infinity,
+      ratingMin: 0,
+      isReview: false,
+      isExceptEmpty: false,
     });
-    if (isExceptEmpty !== selectedIsExceptEmpty) toggleIsExceptEmpty();
-  };
+    if (!isExceptEmpty) toggleIsExceptEmpty();
+  }, [resetFilterList, isExceptEmpty, toggleIsExceptEmpty]);
+
+  const applyFilter = useCallback(() => {
+    setFilterList({
+      length: selectedFilters.length > 1000 ? Infinity : selectedFilters.length,
+      priceMin: selectedFilters.priceMin,
+      priceMax: selectedFilters.priceMax > 15000 ? Infinity : selectedFilters.priceMax,
+      ratingMin: selectedFilters.ratingMin,
+      isReview: selectedFilters.isReview,
+    });
+    if (isExceptEmpty !== selectedFilters.isExceptEmpty) toggleIsExceptEmpty();
+  }, [setFilterList, selectedFilters, isExceptEmpty, toggleIsExceptEmpty]);
+
+  const handleSliderChange = useCallback((value: number | [number, number]) => {
+    setSelectedFilters((prev) => {
+      if (Array.isArray(value)) {
+        return { ...prev, priceMin: value[0], priceMax: value[1] };
+      }
+      return { ...prev, length: value };
+    });
+  }, []);
+
+  const handleButtonClick = useCallback((key: string, value: boolean | number) => {
+    setSelectedFilters((prev) => ({ ...prev, [key]: value }));
+  }, []);
+
+  const distanceText = useMemo(() => {
+    if (selectedFilters.length > 1000) return "제한 없음";
+    return selectedFilters.length === 1000 ? "1km" : `${selectedFilters.length}m이내`;
+  }, [selectedFilters.length]);
+
+  const priceText = useMemo(() => {
+    const minTxt = `${selectedFilters.priceMin}원`;
+    const maxTxt = selectedFilters.priceMax > 15000 ? "제한 없음" : `${selectedFilters.priceMax}원`;
+    return `${minTxt} ~ ${maxTxt}`;
+  }, [selectedFilters.priceMin, selectedFilters.priceMax]);
 
   return (
     <Container>
@@ -83,83 +92,100 @@ export default function RestaurantFilter() {
         <SliderBox>
           <SliderContent>
             <PicketBox>
-              <PicketText>
-                {selectedLength === Infinity ? "제한 없음" : `${selectedLength}이내`}
-              </PicketText>
+              <PicketText>{distanceText}</PicketText>
               <PicketBottom src={"img/picket-bottom.svg"} />
             </PicketBox>
-            <ContentBar>
+            <ContentBar gap={16}>
               <FilterText>거리</FilterText>
-              <Slider min={200} max={1050} step={50} />
+              <Slider
+                min={200}
+                max={1050}
+                step={50}
+                value={selectedFilters.length}
+                defaultValue={1050}
+                onChange={(value: number) => handleSliderChange(value)}
+              />
             </ContentBar>
           </SliderContent>
           <SliderContent>
             <PicketBox>
-              <PicketText>
-                {`${selectedPriceMin}원 ~ ${
-                  selectedPriceMax === Infinity
-                    ? "제한 없음"
-                    : `${selectedPriceMax}원
-                `
-                }`}
-              </PicketText>
+              <PicketText>{priceText}</PicketText>
               <PicketBottom src={"img/picket-bottom.svg"} />
             </PicketBox>
-            <ContentBar>
+            <ContentBar gap={16}>
               <FilterText>가격</FilterText>
-              <Slider min={0} max={15500} step={50} />
+              <Slider
+                range
+                min={0}
+                max={16000}
+                step={1000}
+                value={[selectedFilters.priceMin, selectedFilters.priceMax]}
+                defaultValue={[2000, 8000]}
+                onChange={([valueMin, valueMax]: [number, number]) =>
+                  handleSliderChange([valueMin, valueMax])
+                }
+              />
             </ContentBar>
           </SliderContent>
         </SliderBox>
-        <ContentBar>
+        <ContentBar gap={12}>
           <FilterText>영업시간</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={!selectedIsExceptEmpty}
-              onClick={() => setSelectedIsExceptEmpty(false)}
+              active={!selectedFilters.isExceptEmpty}
+              onClick={() => handleButtonClick("isExceptEmpty", false)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedIsExceptEmpty}
-              onClick={() => setSelectedIsExceptEmpty(true)}
+              active={selectedFilters.isExceptEmpty}
+              onClick={() => handleButtonClick("isExceptEmpty", true)}
             >
               영업 중
             </FilterButton>
           </ButtonGroup>
         </ContentBar>
-        <ContentBar>
+        <ContentBar gap={12}>
           <FilterText>리뷰 유무</FilterText>
           <ButtonGroup>
-            <FilterButton active={!selectedIsReview} onClick={() => setSelectedIsReview(false)}>
+            <FilterButton
+              active={!selectedFilters.isReview}
+              onClick={() => handleButtonClick("isReview", false)}
+            >
               전체
             </FilterButton>
-            <FilterButton active={selectedIsReview} onClick={() => setSelectedIsReview(true)}>
+            <FilterButton
+              active={selectedFilters.isReview}
+              onClick={() => handleButtonClick("isReview", true)}
+            >
               리뷰 있음
             </FilterButton>
           </ButtonGroup>
         </ContentBar>
-        <ContentBar>
+        <ContentBar gap={12}>
           <FilterText>최소 평점</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={![3.5, 4, 4.5].includes(selectedRatingMin)}
-              onClick={() => setSelectedRatingMin(0)}
+              active={![3.5, 4, 4.5].includes(selectedFilters.ratingMin)}
+              onClick={() => handleButtonClick("ratingMin", 0)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedRatingMin === 3.5}
-              onClick={() => setSelectedRatingMin(3.5)}
+              active={selectedFilters.ratingMin === 3.5}
+              onClick={() => handleButtonClick("ratingMin", 3.5)}
             >
               3.5
             </FilterButton>
-            <FilterButton active={selectedRatingMin === 4} onClick={() => setSelectedRatingMin(4)}>
+            <FilterButton
+              active={selectedFilters.ratingMin === 4}
+              onClick={() => handleButtonClick("ratingMin", 4)}
+            >
               4.0
             </FilterButton>
             <FilterButton
-              active={selectedRatingMin === 4.5}
-              onClick={() => setSelectedRatingMin(4.5)}
+              active={selectedFilters.ratingMin === 4.5}
+              onClick={() => handleButtonClick("ratingMin", 4.5)}
             >
               4.5
             </FilterButton>
@@ -262,15 +288,17 @@ const PicketBottom = styled.img`
   fill: var(--Color-Foundation-gray-100, #f2f3f4);
 `;
 
-const ContentBar = styled.div`
+const ContentBar = styled.div<{ gap: number }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: ${(props) => props.gap}px;
 `;
 
 const FilterText = styled.span`
   width: 54px;
+  flex-shrink: 0;
   color: var(--Color-Foundation-gray-900, #262728);
   font-size: var(--Font-size-14, 14px);
   font-weight: var(--Font-weight-bold, 700);
