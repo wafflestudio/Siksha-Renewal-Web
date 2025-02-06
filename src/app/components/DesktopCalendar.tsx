@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
-import BackClickable from "components/general/BackClickable";
 import "styles/calendar.css";
 
 export default function DesktopCalendar() {
@@ -33,7 +32,7 @@ export default function DesktopCalendar() {
       <Navigation>
         <Arrow
           onClick={movePrevMonth}
-          src={"/img/left-arrow.svg"}
+          src={"/img/left-arrow-calendar-nav.svg"}
           height={"21px"}
           alt="지난달로 이동"
         />
@@ -45,7 +44,7 @@ export default function DesktopCalendar() {
         </DateBox>
         <Arrow
           onClick={moveNextMonth}
-          src={"/img/right-arrow.svg"}
+          src={"/img/right-arrow-calendar-nav.svg"}
           height={"21px"}
           alt="다음달로 이동"
         />
@@ -56,18 +55,20 @@ export default function DesktopCalendar() {
             <DateText color={"var(--Color-Foundation-orange-500, #ff9522)"} lineHeight={"140%"}>
               {formatMonth(date)}
             </DateText>
-            <Arrow
-              onClick={movePrevMonth}
-              src={"/img/left-arrow.svg"}
-              height={"21px"}
-              alt="지난달로 이동"
-            />
-            <Arrow
-              onClick={moveNextMonth}
-              src={"/img/right-arrow.svg"}
-              height={"21px"}
-              alt="다음달로 이동"
-            />
+            <ArrowBox>
+              <Arrow
+                onClick={movePrevMonth}
+                src={"/img/left-arrow.svg"}
+                height={"21px"}
+                alt="지난달로 이동"
+              />
+              <Arrow
+                onClick={moveNextMonth}
+                src={"/img/right-arrow.svg"}
+                height={"21px"}
+                alt="다음달로 이동"
+              />
+            </ArrowBox>
           </Header>
           <ReactCalendar
             onChange={(day: Date) => {
@@ -89,13 +90,6 @@ export default function DesktopCalendar() {
             formatShortWeekday={(locale, date) => formatWeekday(date)}
             tileClassName={({ date }) => (isToday(date) ? "today" : null)}
             locale={"ko"}
-          />
-          <BackClickable
-            onClickBackground={toggleCal}
-            style={`
-              z-index: -1;
-              background: transparent;
-            `}
           />
         </Calendar>
       )}
@@ -124,11 +118,11 @@ const Navigation = styled.div`
 
 const Calendar = styled.div`
   position: absolute;
+  z-index: 1;
   top: 60px;
   max-width: 378px;
-  height: 321px;
   display: inline-flex;
-  padding: 20px 0px 26px 0px;
+  padding: 20px 0px 28px 0px;
   flex-direction: column;
   align-items: center;
   gap: 34px;
@@ -163,6 +157,11 @@ const DateText = styled.div<{ color: string; lineHeight: string }>`
   font-size: var(--Font-size-16, 16px);
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: ${(props) => props.lineHeight};
+`;
+
+const ArrowBox = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const Arrow = styled.img`

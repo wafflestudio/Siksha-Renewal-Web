@@ -69,13 +69,14 @@ export default function RestaurantFilter() {
   }, []);
 
   const distanceText = useMemo(() => {
-    if (selectedFilters.length > 1000) return "제한 없음";
+    if (selectedFilters.length > 1000) return "1km 이상";
     return selectedFilters.length === 1000 ? "1km" : `${selectedFilters.length}m이내`;
   }, [selectedFilters.length]);
 
   const priceText = useMemo(() => {
     const minTxt = `${selectedFilters.priceMin}원`;
-    const maxTxt = selectedFilters.priceMax > 15000 ? "제한 없음" : `${selectedFilters.priceMax}원`;
+    const maxTxt =
+      selectedFilters.priceMax > 15000 ? "15000원 이상" : `${selectedFilters.priceMax}원`;
     return `${minTxt} ~ ${maxTxt}`;
   }, [selectedFilters.priceMin, selectedFilters.priceMax]);
 
@@ -276,7 +277,6 @@ const PicketText = styled.div`
   color: var(--Color-Foundation-gray-800, #4c4d50);
 
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquareOTF);
   font-size: var(--Font-size-11, 11px);
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 15.4px */

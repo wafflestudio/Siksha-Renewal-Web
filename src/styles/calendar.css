@@ -13,8 +13,11 @@
   }
 }
 .react-calendar .today {
-  font-weight: 400;
-  background-image: url("/img/circle.svg");
+  color: var(--Color-Foundation-gray-700, #727478);
+  font-size: var(--Font-size-14, 14px);
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 150%; /* 21px */
+  background-image: url("/img/circle-calendar.svg");
 }
 @media (max-width: 768px) {
   .react-calendar .today {
@@ -25,7 +28,8 @@
   margin: 0;
   padding: 0;
   border: 0;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   width: 32px;
   outline: none;
   background-size: contain;
@@ -34,6 +38,7 @@
 }
 @media (max-width: 768px) {
   .react-calendar button {
+    width: 32px;
     height: 31px;
   }
 }
@@ -125,19 +130,25 @@
   font-size: 14px;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 150%; /* 21px */
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .react-calendar__month-view__days__day {
     font-size: 14px;
     line-height: 16px;
     font-weight: 400;
     color: #666666;
   }
 }
+
 .react-calendar__tile {
   text-align: center;
   background: none;
 }
 .react-calendar__tile--active {
-  color: white !important;
-  background-image: url("/img/circle-active.svg") !important;
+  color: var(--Color-Foundation-base-white, #fff) !important;
+  font-size: var(--Font-size-14, 14px);
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 150%; /* 21px */
+  background-image: url("/img/circle-calendar-active.svg") !important;
 }

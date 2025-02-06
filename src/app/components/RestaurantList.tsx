@@ -100,6 +100,7 @@ const Restaurant = styled.div`
   box-sizing: border-box;
   border-radius: 6px;
   border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  padding: 0 14.5px;
 
   &:hover {
     cursor: pointer;
@@ -107,6 +108,7 @@ const Restaurant = styled.div`
 `;
 
 const RestaurantName = styled.div`
+  white-space: nowrap;
   overflow: hidden;
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;

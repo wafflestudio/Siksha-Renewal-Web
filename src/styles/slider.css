@@ -1,6 +1,7 @@
 .rc-slider-handle {
   width: 16px;
   height: 16px;
+  z-index: 0;
   flex-shrink: 0;
   border: 0;
   border-radius: 16px;
