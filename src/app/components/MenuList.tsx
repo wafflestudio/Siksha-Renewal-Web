@@ -13,6 +13,15 @@ export default function MenuList() {
   const { meal, data, date, loading, isFilterFavorite } = state;
   const { favoriteRestaurants } = useFavorite();
   const { filterList, filterMenuList } = useFilter();
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    });
+  }, [navigator.geolocation]);
 
   const [hasData, setHasData] = useState(false);
 
@@ -20,7 +29,8 @@ export default function MenuList() {
     if (!data[meal] || data[meal].length == 0) setHasData(false);
     else if (
       isFilterFavorite &&
-      filterMenuList(data)[meal].filter((res) => favoriteRestaurants.includes(res.id)).length === 0
+      filterMenuList(data, location)[meal].filter((res) => favoriteRestaurants.includes(res.id))
+        .length === 0
     )
       setHasData(false);
     else setHasData(true);
@@ -31,7 +41,7 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
-        filterMenuList(data)[meal].map(
+        filterMenuList(data, location)[meal].map(
           (
             restaurant: RawRestaurant & {
               menus: RawMenu[];

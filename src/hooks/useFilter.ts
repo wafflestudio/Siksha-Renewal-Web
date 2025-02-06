@@ -84,19 +84,18 @@ export default function useFilter() {
    * @returns {RawMenuList} 필터링된 메뉴 데이터
    */
   const filterMenuList = useCallback(
-    (menuList: RawMenuList): RawMenuList => {
+    (
+      menuList: RawMenuList,
+      currentPosition: {
+        lat: number;
+        lng: number;
+      } | null = null,
+    ): RawMenuList => {
       const needDistanceFilter = Number.isFinite(filterList.length) && filterList.length > 0;
       const needPriceFilter = filterList.priceMin > 0 || filterList.priceMax < Infinity;
       const needRatingFilter = filterList.ratingMin > 0;
       const needReviewFilter = filterList.isReview;
       const needFavoriteFilter = filterList.favorite;
-
-      let currentPosition: { lat: number; lng: number } | null = null;
-      if (navigator?.geolocation && needDistanceFilter) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        });
-      }
 
       const filteredList: Record<string, any> = {};
 
@@ -117,7 +116,8 @@ export default function useFilter() {
                 restaurant.lat,
                 restaurant.lng,
               );
-              if (distance > filterList.length) return false;
+              console.log(distance);
+              if (distance * 1000 > filterList.length) return false;
             }
             return true;
           });
