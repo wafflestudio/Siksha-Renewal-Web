@@ -1,34 +1,41 @@
+import useFilter from "hooks/useFilter";
 import Image from "next/image";
 import styled from "styled-components";
 
 export default function MobileFilterBar() {
+  const { isChanged } = useFilter();
+  
   return (
     <>
       <Container>
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
-        <Button>
+        <Button isActive={isChanged.length}>
           <ButtonText>거리</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button>
+        <Button isActive={isChanged.priceMin || isChanged.priceMax}>
           <ButtonText>가격</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button>
-          {/* TODO: 해당 option의 값 세팅 여부로 체크 표시 여부 결정*/}
-          <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+        <Button isActive={isChanged.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
+          {
+            isChanged.favorite && 
+            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+          }
           <ButtonText>영업 중</ButtonText>
         </Button>
-        <Button>
-          {/* TODO: 해당 option의 값 세팅 여부로 체크 표시 여부 결정*/}
-          <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+        <Button isActive={isChanged.isReview}>
+          {
+            isChanged.isReview &&
+            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+          }
           <ButtonText>리뷰</ButtonText>
         </Button>
-        <Button>
+        <Button isActive={isChanged.ratingMin}>
           <ButtonText>최소 평점</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button>
+        <Button isActive={isChanged.category}>
           <ButtonText>카테고리</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
