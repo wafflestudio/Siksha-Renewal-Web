@@ -3,40 +3,40 @@ import Image from "next/image";
 import styled from "styled-components";
 
 export default function MobileFilterBar() {
-  const { filterList, isChanged } = useFilter();
+  const { filterList, isSet } = useFilter();
   
   return (
     <>
       <Container>
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
-        <Button isActive={isChanged.length}>
-          <ButtonText>{isChanged.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
+        <Button isActive={isSet.length}>
+          <ButtonText>{isSet.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button isActive={isChanged.priceMin || isChanged.priceMax}>
-          <ButtonText>{(isChanged.priceMin || isChanged.priceMax) ? `${filterList.priceMin}원 ~ ${filterList.priceMax}원` : "가격"}</ButtonText>
+        <Button isActive={isSet.priceMin || isSet.priceMax}>
+          <ButtonText>{(isSet.priceMin || isSet.priceMax) ? `${filterList.priceMin}원 ~ ${filterList.priceMax}원` : "가격"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button isActive={isChanged.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
+        <Button isActive={isSet.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
           {
-            isChanged.favorite && 
+            isSet.favorite && 
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           }
           <ButtonText>영업 중</ButtonText>
         </Button>
-        <Button isActive={isChanged.isReview}>
+        <Button isActive={isSet.isReview}>
           {
-            isChanged.isReview &&
+            isSet.isReview &&
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           }
           <ButtonText>리뷰</ButtonText>
         </Button>
-        <Button isActive={isChanged.ratingMin}>
-          <ButtonText>{isChanged.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
+        <Button isActive={isSet.ratingMin}>
+          <ButtonText>{isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
-        <Button isActive={isChanged.category}>
-          <ButtonText>{isChanged.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
+        <Button isActive={isSet.category}>
+          <ButtonText>{isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
       </Container>

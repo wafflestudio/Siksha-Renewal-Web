@@ -57,7 +57,7 @@ export default function useFilter() {
    * 필터의 각 옵션의 변경 여부를 반환합니다.
    * @returns {Record<keyof FilterList, boolean>} 각 옵션의 변경 여부
    */
-  const isChanged = useMemo(() => {
+  const isSet = useMemo(() => {
     const changes = {} as Record<keyof FilterList, boolean>;
     (Object.keys(defaultFilters) as (keyof FilterList)[]).forEach((key) => {
       if (Array.isArray(filterList[key])) {
@@ -154,7 +154,7 @@ export default function useFilter() {
      * 필터의 각 옵션의 변경 여부입니다.
      * @type {Record<keyof FilterList, boolean>}
      */
-    isChanged,
+    isSet,
     /**
      * 필터 옵션 일부를 변경하는 함수입니다.
      * @param {Partial<FilterList>} filterOption - 변경할 필터 옵션
