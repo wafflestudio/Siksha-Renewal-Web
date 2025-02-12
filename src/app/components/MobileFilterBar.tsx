@@ -3,18 +3,18 @@ import Image from "next/image";
 import styled from "styled-components";
 
 export default function MobileFilterBar() {
-  const { isChanged } = useFilter();
+  const { filterList, isChanged } = useFilter();
   
   return (
     <>
       <Container>
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
         <Button isActive={isChanged.length}>
-          <ButtonText>거리</ButtonText>
+          <ButtonText>{isChanged.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isChanged.priceMin || isChanged.priceMax}>
-          <ButtonText>가격</ButtonText>
+          <ButtonText>{(isChanged.priceMin || isChanged.priceMax) ? `${filterList.priceMin}원 ~ ${filterList.priceMax}원` : "가격"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isChanged.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
@@ -32,11 +32,11 @@ export default function MobileFilterBar() {
           <ButtonText>리뷰</ButtonText>
         </Button>
         <Button isActive={isChanged.ratingMin}>
-          <ButtonText>최소 평점</ButtonText>
+          <ButtonText>{isChanged.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isChanged.category}>
-          <ButtonText>카테고리</ButtonText>
+          <ButtonText>{isChanged.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
       </Container>
