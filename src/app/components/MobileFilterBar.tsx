@@ -78,3 +78,16 @@ const ButtonText = styled.span`
   font-weight: 400;
   line-height: 20px;
 `;
+
+const DownArrow = styled.image`
+  content: url("img/down-arrow-darkblue.svg");
+  width: 9.33px;
+  height: 4px;
+  padding: 0 3.33px;
+`;
+
+const Check = styled.image`
+  content: url("img/check-gray.svg");
+  width: 16px;
+  height: 16px;
+`;
