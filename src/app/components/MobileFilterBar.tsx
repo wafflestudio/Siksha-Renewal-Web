@@ -10,11 +10,11 @@ export default function MobileFilterBar() {
       <Container>
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
         <Button isActive={isSet.length}>
-          <ButtonText>{isSet.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
+          <ButtonText isActive={isSet.length}>{isSet.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isSet.priceMin || isSet.priceMax}>
-          <ButtonText>{(isSet.priceMin || isSet.priceMax) ? `${filterList.priceMin}원 ~ ${filterList.priceMax}원` : "가격"}</ButtonText>
+          <ButtonText isActive={isSet.priceMin || isSet.priceMax}>{(isSet.priceMin || isSet.priceMax) ? `${filterList.priceMin}원 ~ ${isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""}` : "가격"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isSet.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
@@ -22,21 +22,21 @@ export default function MobileFilterBar() {
             isSet.favorite && 
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           }
-          <ButtonText>영업 중</ButtonText>
+          <ButtonText isActive={isSet.favorite}>영업 중</ButtonText>
         </Button>
         <Button isActive={isSet.isReview}>
           {
             isSet.isReview &&
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           }
-          <ButtonText>리뷰</ButtonText>
+          <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
         <Button isActive={isSet.ratingMin}>
-          <ButtonText>{isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
+          <ButtonText isActive={isSet.ratingMin}>{isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
         <Button isActive={isSet.category}>
-          <ButtonText>{isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
+          <ButtonText isActive={isSet.category}>{isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
           <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
         </Button>
       </Container>
@@ -67,15 +67,17 @@ const Button = styled.button<{ isActive? : boolean }>`
   border-radius: 30px;
   border: 1px solid ${(props) => (props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)")};
   background: ${(props) => (props.isActive ? "var(--Main-Active, #FFE8CE)" : "#FFF")};
+
+  font-family: NanumSquareOTF_ac;
 `;
 
-const ButtonText = styled.span`
+const ButtonText = styled.span<{ isActive? : boolean }>`
   color: var(--Main-Balck, #000);
   leading-trim: both;
   text-edge: cap;
   font-size: 13px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => (props.isActive ? 700 : 400)};
   line-height: 20px;
 `;
 
