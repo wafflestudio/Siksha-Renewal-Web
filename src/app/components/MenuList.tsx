@@ -1,3 +1,5 @@
+"use client";
+
 import MenuCard from "./MenuCard";
 import styled from "styled-components";
 import { useStateContext } from "../../providers/ContextProvider";
@@ -21,7 +23,7 @@ export default function MenuList() {
         lng: position.coords.longitude,
       });
     });
-  }, [navigator.geolocation]);
+  }, []);
 
   const [hasData, setHasData] = useState(false);
 

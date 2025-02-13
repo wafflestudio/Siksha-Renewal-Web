@@ -70,7 +70,7 @@ export default function RestaurantFilter() {
 
   const distanceText = useMemo(() => {
     if (selectedFilters.length > 1000) return "1km 이상";
-    return selectedFilters.length === 1000 ? "1km" : `${selectedFilters.length}m이내`;
+    return selectedFilters.length === 1000 ? "1km 이내" : `${selectedFilters.length}m 이내`;
   }, [selectedFilters.length]);
 
   const priceText = useMemo(() => {
@@ -85,7 +85,7 @@ export default function RestaurantFilter() {
       <Header>
         <Title>메뉴 필터</Title>
         <RefreshBox onClick={resetFilter}>
-          <RefreshIcon src={"img/refresh.svg"} />
+          <RefreshIcon src={"/img/refresh.svg"} />
           <RefreshText>초기화</RefreshText>
         </RefreshBox>
       </Header>
@@ -94,7 +94,7 @@ export default function RestaurantFilter() {
           <SliderContent>
             <PicketBox>
               <PicketText>{distanceText}</PicketText>
-              <PicketBottom src={"img/picket-bottom.svg"} />
+              <PicketBottom src={"/img/picket-bottom.svg"} />
             </PicketBox>
             <ContentBar gap={16}>
               <FilterText>거리</FilterText>
@@ -111,7 +111,7 @@ export default function RestaurantFilter() {
           <SliderContent>
             <PicketBox>
               <PicketText>{priceText}</PicketText>
-              <PicketBottom src={"img/picket-bottom.svg"} />
+              <PicketBottom src={"/img/picket-bottom.svg"} />
             </PicketBox>
             <ContentBar gap={16}>
               <FilterText>가격</FilterText>
@@ -326,13 +326,15 @@ const FilterButton = styled.button<{ active?: boolean }>`
   background: ${(props) =>
     props.active ? "var(--Color-Foundation-base-white, #FFF)" : "transparent"};
 
-  color: var(--Color-Foundation-gray-900, #262728);
-  text-align: center;
-  /* text-12/ExtraBold */
+  color: ${(props) =>
+    props.active
+      ? "var(--Color-Foundation-gray-900, #262728)"
+      : "var(--Color-Foundation-gray-600, #989AA0)"};
   font-size: var(--Font-size-12, 12px);
-  font-weight: var(--Font-weight-extrabold, 800);
-  line-height: 140%; /* 16.8px */
-  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  font-weight: ${(props) =>
+    props.active ? "var(--Font-weight-extrabold, 800)" : "var(--Font-weight-bold, 700)"};
+  line-height: 140%;
+  text-align: center;
 `;
 
 const DecideButton = styled.button`
