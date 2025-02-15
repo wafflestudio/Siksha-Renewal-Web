@@ -39,7 +39,7 @@ export default function RestaurantFilter() {
       priceMax: Infinity,
       ratingMin: 0,
       isReview: false,
-      isExceptEmpty: false,
+      isExceptEmpty: true,
     });
     if (!isExceptEmpty) toggleIsExceptEmpty();
   }, [resetFilterList, isExceptEmpty, toggleIsExceptEmpty]);
