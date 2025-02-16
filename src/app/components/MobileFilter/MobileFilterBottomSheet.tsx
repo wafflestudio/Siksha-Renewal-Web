@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import MobileBottomSheet from "./MobileBottomSheet";
+import Button from "components/general/Button";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -7,6 +8,10 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
+  const onApplyFilter = () => {
+    onClose();
+  };
+
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose}>
       <MobileFilterHeader>필터 </MobileFilterHeader>
@@ -36,13 +41,42 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           <SkeletonForTest />
         </FilterContent>
       </FilterContentWrapper>
+      <FilterActionSection>
+        <Button
+          variant="neutral"
+          onClick={() => {}}
+          style={{
+            width: "168px",
+          }}
+        >
+          초기화
+        </Button>
+        <Button
+          variant="primary"
+          onClick={onApplyFilter}
+          style={{
+            width: "168px",
+          }}
+        >
+          적용
+        </Button>
+      </FilterActionSection>
     </MobileBottomSheet>
   );
 }
 
+const FilterActionSection = styled.div`
+  display: flex;
+  height: 111px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const FilterContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  height: calc(100% - 111px);
   gap: 40px;
 `;
 

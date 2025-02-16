@@ -49,8 +49,7 @@ const BottomSheetWrapper = styled.div`
   left: 0;
   right: 0;
   background-color: white;
-  max-height: 80vh;
-  overflow-y: auto;
+  max-height: 85vh;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
