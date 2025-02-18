@@ -10,7 +10,7 @@ export default function OperatingHour({ type, hour }: { type: string; hour: stri
       ) : (
         <Dinner src={"/img/dinner.svg"} alt="저녁" />
       )}
-      <HourText type={type}>{hour}</HourText>
+      <HourText>{hour}</HourText>
     </Container>
   );
 }
@@ -19,25 +19,36 @@ const Container = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 7px;
+  gap: 4px;
 `;
 
-const HourText = styled.div<{ type: string }>`
-  font-size: 15px;
-  font-weight: 400;
-  font-family: NanumSquare, sans-serif;
-  color: #575757;
-  padding-left: ${(props) => (props.type == "BR" ? "8px" : props.type == "LU" ? "7px" : "8px")};
+const HourText = styled.div`
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--Color-Foundation-gray-600);
 `;
 
 const Breakfast = styled.img`
-  width: 14.1px;
+  width: 20px;
+  height: 20px;
+
+  @media (max-width: 768px) {
+    width: 14.1px;
+  }
 `;
 
 const Lunch = styled.img`
-  width: 16px;
+  width: 20px;
+  height: 20px;
+  @media (max-width: 768px) {
+    width: 16px;
+  }
 `;
 
 const Dinner = styled.img`
-  width: 12px;
+  width: 20px;
+  height: 20px;
+  @media (max-width: 768px) {
+    width: 12px;
+  }
 `;
