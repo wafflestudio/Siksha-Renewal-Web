@@ -187,10 +187,6 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
             }}
           />
         </FilterContent>
-        <FilterContent>
-          <MobileFilterText>카테고리</MobileFilterText>
-          <SkeletonForTest />
-        </FilterContent>
       </FilterContentWrapper>
       <FilterActionSection>
         <Button
@@ -238,12 +234,6 @@ const FilterContentWrapper = styled.div`
 `;
 
 const FilterContent = styled.div``;
-
-const SkeletonForTest = styled.div`
-  width: 100%;
-  height: 34px;
-  background-color: #f0f0f0;
-`;
 
 const MobileFilterHeader = styled.div`
   display: flex;
