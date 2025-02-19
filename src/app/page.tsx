@@ -16,6 +16,7 @@ import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import useError from "hooks/useError";
+import MobileFilterChipArray from "./components/MobileFilter/MobileFilterChipArray";
 
 export default function Home() {
   const state = useStateContext();
@@ -86,6 +87,7 @@ export default function Home() {
       <MobileContainer>
         <Date />
         <Meal />
+        <MobileFilterChipArray />
         <MenuList />
       </MobileContainer>
       {showInfo && (
