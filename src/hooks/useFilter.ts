@@ -116,10 +116,9 @@ export default function useFilter() {
                 restaurant.lat,
                 restaurant.lng,
               );
-              console.log(distance);
-              if (distance * 1000 > filterList.length) return false;
+              if (distance * 1000 <= filterList.length) return true;
             }
-            return true;
+            return false;
           });
         }
         // 가격, 평점, 리뷰, 즐겨찾기 등 필터링
