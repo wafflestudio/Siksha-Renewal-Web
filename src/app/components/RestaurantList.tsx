@@ -31,6 +31,7 @@ export default function RestaurantList() {
 
   return (
     <Container show={data[meal].length >= 1}>
+      <Header>식당 찾기</Header>
       <Restaurants>
         {favoriteFirstRestaurants &&
           favoriteFirstRestaurants.map((restaurant) => (
@@ -38,16 +39,15 @@ export default function RestaurantList() {
               <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
                 {restaurant.name_kr}
               </RestaurantName>
-              <Dots>..............</Dots>
               {isFavorite(restaurant.id) ? (
                 <Star
-                  src="/img/general/star.svg"
+                  src="/img/general/star-on-orange.svg"
                   onClick={() => toggleFavorite(restaurant.id)}
                   alt="좋아요"
                 />
               ) : (
                 <Star
-                  src="/img/star-empty-white.svg"
+                  src="/img/general/star-empty-orange.svg"
                   onClick={() => toggleFavorite(restaurant.id)}
                   alt=""
                 />
@@ -60,27 +60,47 @@ export default function RestaurantList() {
 }
 
 const Container = styled.div<{ show: boolean }>`
-  display: ${(props) => (props.show === false ? "none" : "block")};
-  width: 100%;
-  max-height: 300px;
+  display: ${(props) => (props.show === false ? "none" : "flex")};
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+
+  max-height: 266px;
   background: white;
   overflow-y: scroll;
   box-sizing: border-box;
-  border-radius: 8px;
-  padding: 5.7% 11.4%;
+  gap: 22px;
 `;
 
-const Restaurants = styled.div``;
+const Header = styled.h3`
+  margin: 0;
+  color: var(--Color-Foundation-gray-900, #262728);
+  /* text-16/ExtraBold */
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 22.4px */
+`;
+
+const Restaurants = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 8px;
+  grid-column-gap: 8px;
+`;
 
 const Restaurant = styled.div`
-  padding-bottom: 17px;
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-
-  &:last-child {
-    padding-bottom: 0;
-  }
+  width: 161px;
+  height: 38px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex: 1 0 0;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  padding: 0 14.5px;
 
   &:hover {
     cursor: pointer;
@@ -88,26 +108,21 @@ const Restaurant = styled.div`
 `;
 
 const RestaurantName = styled.div`
-  flex-grow: 1;
-  font-size: 16px;
-  line-height: 18px;
-  color: #727272;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  font-weight: 400;
-`;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--Color-Foundation-gray-700, #727478);
+  text-align: center;
+  text-overflow: ellipsis;
 
-const Dots = styled.div`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 13.62px;
-  letter-spacing: 2px;
-  color: #0000004d;
+  /* text-13/Bold */
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 18.2px */
 `;
 
 const Star = styled.img`
-  width: 15px;
-  height: 14px;
-  margin-left: 20px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 `;

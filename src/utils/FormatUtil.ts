@@ -9,7 +9,7 @@ export function formatWeekday(date) {
 }
 
 export function formatMonth(date) {
-  return `${date.getFullYear()}.${("0" + (date.getMonth() + 1)).slice(-2)}`;
+  return `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
 }
 
 export function formatISODate(date: Date) {
@@ -54,13 +54,10 @@ export function getPrevMonth(date) {
 }
 
 export function formatPrice(price) {
-  if(price.toString().length <= 3)
-    return price;
+  if (price.toString().length <= 3) return price;
   return price.toString().slice(0, price.toString().length - 3) + "," + price.toString().slice(-3);
 }
 
 export function sanitizeCssSelector(str) {
-  return str
-  .trim()
-  .replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9-_:.]/g, '_');
+  return str.trim().replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9-_:.]/g, "_");
 }

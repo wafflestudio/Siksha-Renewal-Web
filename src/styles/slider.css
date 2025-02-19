@@ -1,0 +1,24 @@
+.rc-slider-handle {
+  width: 16px;
+  height: 16px;
+  z-index: 0;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--Color-Foundation-base-white, #fff);
+  opacity: 1;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15) !important;
+}
+
+.rc-slider-track,
+.rc-slider-tracks {
+  width: 84px;
+  height: 4px;
+  background: var(--Color-Foundation-orange-500, #ff9522);
+}
+
+.rc-slider-rail {
+  stroke: var(--Color-Foundation-gray-200, #e5e6e9);
+  height: 4px;
+  border-radius: 2px;
+}
