@@ -3,7 +3,7 @@ import useLocalStorage from "./UseLocalStorage";
 import { RawMenuList } from "types";
 import { useCallback } from "react";
 
-type FilterList = {
+export type FilterList = {
   length: number;
   priceMin: number;
   priceMax: number;
