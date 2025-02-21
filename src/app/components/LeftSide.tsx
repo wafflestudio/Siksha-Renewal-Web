@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
 import DesktopCalendar from "./DesktopCalendar";
 import RestaurantFilter from "./RestaurantFilter";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 
 export default function LeftSide() {
   return (
@@ -16,7 +17,7 @@ export default function LeftSide() {
   );
 }
 
-const Container = styled.div`
+const Container = styled(TwoColumnLayout.Left)`
   display: flex;
   flex-direction: column;
   gap: 14px;

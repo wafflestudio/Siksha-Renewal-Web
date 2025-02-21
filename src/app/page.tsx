@@ -16,6 +16,7 @@ import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import useError from "hooks/useError";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 
 export default function Home() {
   const state = useStateContext();
@@ -98,7 +99,7 @@ export default function Home() {
   );
 }
 
-const DesktopContainer = styled.div`
+const DesktopContainer = styled(TwoColumnLayout.Container)`
   display: flex;
   justify-content: center;
   height: max(780px, 100vh - min(25vh, 271px));
