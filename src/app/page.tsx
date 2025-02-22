@@ -88,7 +88,7 @@ export default function Home() {
       <MobileContainer>
         <Date />
         <Meal />
-        {/* <MobileFilterBar /> */}
+        <MobileFilterBar />
         <MobileFilterChipArray />
         <MenuList />
       </MobileContainer>

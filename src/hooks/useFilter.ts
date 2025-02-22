@@ -192,5 +192,6 @@ export default function useFilter() {
      * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
      */
     filterMenuList,
+    defaultFilters,
   };
 }

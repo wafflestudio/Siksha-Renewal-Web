@@ -218,7 +218,7 @@ const StarIcon = styled.img`
   margin-left: 4px;
 `;
 
-const FilterActionSection = styled.div`
+export const FilterActionSection = styled.div`
   display: flex;
   height: 111px;
   justify-content: space-between;
@@ -244,7 +244,7 @@ const MobileFilterHeader = styled.div`
   align-items: center;
 `;
 
-const MobileFilterText = styled.div`
+export const MobileFilterText = styled.div`
   font-size: 16px;
   font-weight: 800;
   margin-bottom: 14px;

@@ -1,43 +1,95 @@
 import useFilter from "hooks/useFilter";
 import Image from "next/image";
 import styled from "styled-components";
+import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
+import { useState } from "react";
+import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 
 export default function MobileFilterBar() {
   const { filterList, isSet } = useFilter();
-  
+  const [distanceFilterIsOpen, setDistanceFilterIsOpen] = useState(false);
+  const [priceFilterIsOpen, setPriceFilterIsOpen] = useState(false);
+
   return (
     <>
       <Container>
+        <MobileFilterDistanceBottomSheet
+          isOpen={distanceFilterIsOpen}
+          onClose={() => setDistanceFilterIsOpen(false)}
+        />
+        <MobileFilterPriceBottomSheet
+          isOpen={priceFilterIsOpen}
+          onClose={() => setPriceFilterIsOpen(false)}
+        />
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
-        <Button isActive={isSet.length}>
-          <ButtonText isActive={isSet.length}>{isSet.length ? `${filterList.length}m 이내` : "거리"}</ButtonText>
-          <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
+        <Button isActive={isSet.length} onClick={() => setDistanceFilterIsOpen(true)}>
+          <ButtonText isActive={isSet.length}>
+            {isSet.length ? `${filterList.length}m 이내` : "거리"}
+          </ButtonText>
+          <Image
+            src="img/down-arrow-darkblue.svg"
+            alt="아래 화살표"
+            width={9.33}
+            height={4}
+            style={{ padding: "0 3.33px" }}
+          />
         </Button>
-        <Button isActive={isSet.priceMin || isSet.priceMax}>
-          <ButtonText isActive={isSet.priceMin || isSet.priceMax}>{(isSet.priceMin || isSet.priceMax) ? `${filterList.priceMin}원 ~ ${isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""}` : "가격"}</ButtonText>
-          <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
+        <Button
+          isActive={isSet.priceMin || isSet.priceMax}
+          onClick={() => setPriceFilterIsOpen(true)}
+        >
+          <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
+            {isSet.priceMin || isSet.priceMax
+              ? `${filterList.priceMin}원 ~ ${
+                  isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
+                }`
+              : "가격"}
+          </ButtonText>
+          <Image
+            src="img/down-arrow-darkblue.svg"
+            alt="아래 화살표"
+            width={9.33}
+            height={4}
+            style={{ padding: "0 3.33px" }}
+          />
         </Button>
-        <Button isActive={isSet.favorite}> {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
-          {
-            isSet.favorite && 
+        <Button isActive={isSet.favorite}>
+          {" "}
+          {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
+          {isSet.favorite && (
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          }
+          )}
           <ButtonText isActive={isSet.favorite}>영업 중</ButtonText>
         </Button>
         <Button isActive={isSet.isReview}>
-          {
-            isSet.isReview &&
+          {isSet.isReview && (
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          }
+          )}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
         <Button isActive={isSet.ratingMin}>
-          <ButtonText isActive={isSet.ratingMin}>{isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}</ButtonText>
-          <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
+          <ButtonText isActive={isSet.ratingMin}>
+            {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
+          </ButtonText>
+          <Image
+            src="img/down-arrow-darkblue.svg"
+            alt="아래 화살표"
+            width={9.33}
+            height={4}
+            style={{ padding: "0 3.33px" }}
+          />
         </Button>
         <Button isActive={isSet.category}>
-          <ButtonText isActive={isSet.category}>{isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}</ButtonText>
-          <Image src="img/down-arrow-darkblue.svg" alt="아래 화살표" width={9.33} height={4} style={{"padding": "0 3.33px"}}/>
+          <ButtonText isActive={isSet.category}>
+            {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
+          </ButtonText>
+          <Image
+            src="img/down-arrow-darkblue.svg"
+            alt="아래 화살표"
+            width={9.33}
+            height={4}
+            style={{ padding: "0 3.33px" }}
+          />
         </Button>
       </Container>
     </>
@@ -55,7 +107,7 @@ const Container = styled.div`
   gap: 5px;
 `;
 
-const Button = styled.button<{ isActive? : boolean }>`
+const Button = styled.button<{ isActive?: boolean }>`
   display: flex;
   flex: 0 0 auto;
   height: 34px;
@@ -65,13 +117,15 @@ const Button = styled.button<{ isActive? : boolean }>`
   gap: 2px;
 
   border-radius: 30px;
-  border: 1px solid ${(props) => (props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)")};
+  border: 1px solid
+    ${(props) =>
+      props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)"};
   background: ${(props) => (props.isActive ? "var(--Main-Active, #FFE8CE)" : "#FFF")};
 
   font-family: NanumSquareOTF_ac;
 `;
 
-const ButtonText = styled.span<{ isActive? : boolean }>`
+const ButtonText = styled.span<{ isActive?: boolean }>`
   color: var(--Main-Balck, #000);
   leading-trim: both;
   text-edge: cap;
