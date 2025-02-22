@@ -1,9 +1,10 @@
 import getDistance from "utils/getDistance";
 import useLocalStorage from "./UseLocalStorage";
 import { RawMenuList } from "types";
+import { useCallback } from "react";
 import { useMemo } from "react";
 
-type FilterList = {
+export type FilterList = {
   length: number;
   priceMin: number;
   priceMax: number;
@@ -61,10 +62,8 @@ export default function useFilter() {
     const changes = {} as Record<keyof FilterList, boolean>;
     (Object.keys(defaultFilters) as (keyof FilterList)[]).forEach((key) => {
       if (Array.isArray(filterList[key])) {
-        changes[key] = 
-          JSON.stringify(filterList[key]) !== JSON.stringify(defaultFilters[key]);
-      } 
-      else {
+        changes[key] = JSON.stringify(filterList[key]) !== JSON.stringify(defaultFilters[key]);
+      } else {
         changes[key] = filterList[key] !== defaultFilters[key];
       }
     });
@@ -101,48 +100,67 @@ export default function useFilter() {
    * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
    * @returns {RawMenuList} 필터링된 메뉴 데이터
    */
-  const filterMenuList = (menuList: RawMenuList): RawMenuList => {
-    const filteredList = {};
-    let currentPosition: { lat: number; lng: number } | null = null;
-    if (navigator?.geolocation) {
-      const { geolocation } = navigator;
-      geolocation.getCurrentPosition((position) => {
-        currentPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
-      });
-    }
+  const filterMenuList = useCallback(
+    (
+      menuList: RawMenuList,
+      currentPosition: {
+        lat: number;
+        lng: number;
+      } | null = null,
+    ): RawMenuList => {
+      const needDistanceFilter = Number.isFinite(filterList.length) && filterList.length > 0;
+      const needPriceFilter = filterList.priceMin > 0 || filterList.priceMax < Infinity;
+      const needRatingFilter = filterList.ratingMin > 0;
+      const needReviewFilter = filterList.isReview;
+      const needFavoriteFilter = filterList.favorite;
 
-    Object.keys(menuList).forEach((key) => {
-      filteredList[key] = structuredClone(menuList[key]);
-      if (key !== "date") {
+      const filteredList: Record<string, any> = {};
+
+      Object.keys(menuList).forEach((key) => {
+        // menuList[key]를 복사
+        filteredList[key] = structuredClone(menuList[key]);
+
+        // 날짜만 들어있는 key는 필터링 패스
+        if (key === "date") return;
+
         // 위치 기반 식당 필터링
-        filteredList[key] = filteredList[key].filter((restaurant) => {
-          if (currentPosition && restaurant.lat && restaurant.lng) {
-            const { lat: currentLat, lng: currentLng } = currentPosition;
-            const { lat: RestaurantLat, lng: RestaurantLng } = menuList[key];
-            const distance = getDistance(currentLat, currentLng, RestaurantLat, RestaurantLng);
-            if (distance > filterList.length) return false;
-          }
-          return true;
-        });
-        // 가격, 평점 등으로 메뉴 필터링
+        if (needDistanceFilter && currentPosition) {
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            if (restaurant.lat && restaurant.lng) {
+              const distance = getDistance(
+                currentPosition!.lat,
+                currentPosition!.lng,
+                restaurant.lat,
+                restaurant.lng,
+              );
+              console.log(distance);
+              if (distance * 1000 > filterList.length) return false;
+            }
+            return true;
+          });
+        }
+        // 가격, 평점, 리뷰, 즐겨찾기 등 필터링
         filteredList[key].forEach((restaurant) => {
-          if (restaurant.menus) {
-            restaurant.menus = restaurant.menus.filter((menu) => {
-              if (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
-                return false;
-              if (menu.rating < filterList.ratingMin) return false;
-              if (filterList.isReview && menu.review_cnt === 0) return false;
-              if (filterList.favorite && !menu.favorite) return false;
-              // if (filterList.category.length > 0 && !filterList.category.includes(menu.category)) return false;
-              return true;
-            });
-          }
-        });
-      }
-    });
+          if (!restaurant.menus) return;
+          restaurant.menus = restaurant.menus.filter((menu) => {
+            if (
+              needPriceFilter &&
+              (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
+            )
+              return false;
+            if (needRatingFilter && (menu.rating ?? 0) < filterList.ratingMin) return false;
+            if (needReviewFilter && menu.review_cnt === 0) return false;
+            if (needFavoriteFilter && !menu.favorite) return false;
 
-    return filteredList as RawMenuList;
-  };
+            return true;
+          });
+        });
+      });
+
+      return filteredList as RawMenuList;
+    },
+    [filterList],
+  );
 
   return {
     /**

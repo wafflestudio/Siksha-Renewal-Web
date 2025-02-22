@@ -100,6 +100,8 @@ const Container = styled.div`
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  align-items: flex-start;
+
   @media (pointer: fine) {
     &:hover {
       background: #f5f5f5;
@@ -112,7 +114,6 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
-    align-items: flex-start;
   }
 `;
 
@@ -146,6 +147,7 @@ const MenuInfo = styled.div`
 
 const Dots = styled.img`
   width: 40px;
+  height: 22px;
 
   @media (max-width: 1200px) {
     display: none;

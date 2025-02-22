@@ -3,14 +3,18 @@ import styled from "styled-components";
 export default function OperatingHour({ type, hour }: { type: string; hour: string }) {
   return (
     <Container>
-      {type == "BR" ? (
-        <Breakfast src={"/img/breakfast.svg"} alt="아침" />
-      ) : type == "LU" ? (
-        <Lunch src={"/img/lunch.svg"} alt="점심" />
-      ) : (
-        <Dinner src={"/img/dinner.svg"} alt="저녁" />
+      {hour && (
+        <>
+          {type == "BR" ? (
+            <Breakfast src={"/img/breakfast.svg"} alt="아침" />
+          ) : type == "LU" ? (
+            <Lunch src={"/img/lunch.svg"} alt="점심" />
+          ) : (
+            <Dinner src={"/img/dinner.svg"} alt="저녁" />
+          )}
+          <HourText>{hour}</HourText>
+        </>
       )}
-      <HourText>{hour}</HourText>
     </Container>
   );
 }
