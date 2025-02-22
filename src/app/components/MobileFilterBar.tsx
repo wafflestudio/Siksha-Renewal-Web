@@ -4,25 +4,44 @@ import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
 import { useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
+import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 
 export default function MobileFilterBar() {
   const { filterList, isSet } = useFilter();
-  const [distanceFilterIsOpen, setDistanceFilterIsOpen] = useState(false);
-  const [priceFilterIsOpen, setPriceFilterIsOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    distance: false,
+    price: false,
+    rating: false,
+    category: false,
+  });
+  const setFilterState = (filterName: keyof typeof filters, isOpen: boolean) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterName]: isOpen,
+    }));
+  };
 
   return (
     <>
       <Container>
         <MobileFilterDistanceBottomSheet
-          isOpen={distanceFilterIsOpen}
-          onClose={() => setDistanceFilterIsOpen(false)}
+          isOpen={filters.distance}
+          onClose={() => setFilterState("distance", false)}
         />
         <MobileFilterPriceBottomSheet
-          isOpen={priceFilterIsOpen}
-          onClose={() => setPriceFilterIsOpen(false)}
+          isOpen={filters.price}
+          onClose={() => setFilterState("price", false)}
         />
+        <MobileFilterRatingBottomSheet
+          isOpen={filters.rating}
+          onClose={() => setFilterState("rating", false)}
+        />
+        {/* <MobileFilterCategoryBottomSheet
+          isOpen={filters.category}
+          onClose={() => setFilterState("category", false)}
+        /> */}
         <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
-        <Button isActive={isSet.length} onClick={() => setDistanceFilterIsOpen(true)}>
+        <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
@@ -36,7 +55,7 @@ export default function MobileFilterBar() {
         </Button>
         <Button
           isActive={isSet.priceMin || isSet.priceMax}
-          onClick={() => setPriceFilterIsOpen(true)}
+          onClick={() => setFilterState("price", true)}
         >
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
@@ -67,7 +86,7 @@ export default function MobileFilterBar() {
           )}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
-        <Button isActive={isSet.ratingMin}>
+        <Button isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
           <ButtonText isActive={isSet.ratingMin}>
             {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
