@@ -35,36 +35,21 @@ export default function MobileFilterRatingBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>최소 평점</MobileFilterText>
       <ButtonGroup
         items={[
-          { label: "전체", id: "ALL" },
+          { label: "모두", id: "ALL" },
           {
-            label: (
-              <div>
-                3.5
-                <StarIcon src="/img/general/star-on-orange.svg" />
-              </div>
-            ),
+            label: <RatingContent value="3.5" />,
             id: "3.5",
           },
           {
-            label: (
-              <div>
-                4.0
-                <StarIcon src="/img/general/star-on-orange.svg" />
-              </div>
-            ),
+            label: <RatingContent value="4.0" />,
             id: "4",
           },
           {
-            label: (
-              <div>
-                4.5
-                <StarIcon src="/img/general/star-on-orange.svg" />
-              </div>
-            ),
+            label: <RatingContent value="4.5" />,
             id: "4.5",
           },
         ]}
@@ -101,8 +86,23 @@ export default function MobileFilterRatingBottomSheet({
   );
 }
 
+const RatingContent = ({ value }: { value: string }) => {
+  return (
+    <RatingContentWrapper>
+      {value}
+      <StarIcon src="/img/general/star-on-orange.svg" />
+    </RatingContentWrapper>
+  );
+};
+
+const RatingContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
 const StarIcon = styled.img`
   width: 12px;
   height: 12px;
-  margin-left: 4px;
+  margin-bottom: 2px;
 `;

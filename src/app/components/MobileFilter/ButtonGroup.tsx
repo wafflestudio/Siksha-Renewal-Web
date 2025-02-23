@@ -33,7 +33,7 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.count}, 1fr);
   gap: 10px;
-  height: 40px;
+  height: 34px;
   border-radius: 30px;
   border: 1px solid hsla(0, 0%, 88%, 1);
 `;
@@ -41,12 +41,14 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
 const ButtonItem = styled.button`
   padding: 10px 20px;
   border-radius: 20px;
-  height: 100%;
+  height: 34px;
   color: black;
   width: 100%;
   background-color: transparent;
   border: none;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`

@@ -5,14 +5,20 @@ interface MobileBottomSheetProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  slideBar?: boolean;
 }
 
-export default function MobileBottomSheet({ children, isOpen, onClose }: MobileBottomSheetProps) {
+export default function MobileBottomSheet({
+  children,
+  isOpen,
+  onClose,
+  slideBar = true,
+}: MobileBottomSheetProps) {
   return (
     <>
       <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
       <BottomSheetWrapper isVisible={isOpen}>
-        <BottomSheetSlideBar />
+        {slideBar && <BottomSheetSlideBar />}
         <BottomSheetContent>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
@@ -43,7 +49,8 @@ const BottomSheetSlideBar = styled.div`
 `;
 
 const BottomSheetContent = styled.div`
-  padding: 20px;
+  padding: 16px;
+  padding-top: 0px;
   max-height: 75vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -63,7 +70,7 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   border-top-right-radius: 20px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  padding-top: 17px;
+  padding-top: 16px;
   transition: transform 0.3s ease-in-out;
   transform: ${({ isVisible }) => (isVisible ? "translateY(0)" : "translateY(100%)")};
 `;

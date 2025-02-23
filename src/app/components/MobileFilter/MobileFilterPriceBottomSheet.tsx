@@ -44,24 +44,26 @@ export default function MobileFilterPriceBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose}>
-      <PicketBox>
-        <PicketText>{priceText}</PicketText>
-        <PicketBottom src={"/img/picket-bottom.svg"} />
-      </PicketBox>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>가격</MobileFilterText>
-      <Slider
-        range
-        min={0}
-        max={16000}
-        step={1000}
-        value={[priceMin, priceMax]}
-        defaultValue={[2000, 8000]}
-        onChange={([valueMin, valueMax]: [number, number]) => {
-          setPriceMin(valueMin);
-          setPriceMax(valueMax);
-        }}
-      />
+      <SliderWrapper>
+        <PicketBox>
+          <PicketText>{priceText}</PicketText>
+          <PicketBottom src={"/img/picket-bottom.svg"} />
+        </PicketBox>
+        <StyledSlider
+          range
+          min={0}
+          max={16000}
+          step={1000}
+          value={[priceMin, priceMax]}
+          defaultValue={[2000, 8000]}
+          onChange={([valueMin, valueMax]: [number, number]) => {
+            setPriceMin(valueMin);
+            setPriceMax(valueMax);
+          }}
+        />
+      </SliderWrapper>
       <FilterActionSection>
         <Button
           variant="neutral"
@@ -86,18 +88,45 @@ export default function MobileFilterPriceBottomSheet({
   );
 }
 
+const SliderWrapper = styled.div`
+  position: relative;
+  height: 77.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+`;
+
+const StyledSlider = styled(Slider)`
+  .rc-slider-track {
+    background-color: var(--Main-Orange, #ff9522);
+  }
+
+  .rc-slider-rail {
+    background-color: #dbdbdb;
+  }
+
+  .rc-slider-handle {
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    background-color: var(--Main-Orange, #ff9522);
+    border: none;
+    box-shadow: none;
+  }
+`;
+
 const PicketText = styled.div`
   display: flex;
-  padding: 2px 4px;
+  padding: 6px;
   justify-content: center;
   align-items: center;
   gap: 10px;
   border-radius: 4px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
-  color: var(--Color-Foundation-gray-800, #4c4d50);
+  background: var(--Color-Foundation-gray-100, #f0f0f0);
+  color: var(--Color-Foundation-gray-800, #707070);
 
   text-align: center;
-  font-size: var(--Font-size-11, 11px);
+  font-size: var(--Font-size-12, 12px);
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 15.4px */
 `;
@@ -105,7 +134,7 @@ const PicketText = styled.div`
 const PicketBottom = styled.img`
   width: 6px;
   height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f2f3f4);
+  fill: var(--Color-Foundation-gray-100, #f0f0f0);
 `;
 
 const PicketBox = styled.div`
