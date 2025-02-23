@@ -4,6 +4,7 @@ import { useStateContext } from "../../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
+import { RawMenu, RawRestaurant } from "types";
 
 export default function MenuList() {
   const state = useStateContext();
@@ -28,13 +29,19 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : hasData ? (
-        data[meal].map((restaurant) => {
-          if (isFilterFavorite) {
-            return favoriteRestaurants.includes(restaurant.id) ? (
-              <MenuCard data={restaurant} key={restaurant.id + meal} />
-            ) : null;
-          } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
-        })
+        data[meal].map(
+          (
+            restaurant: RawRestaurant & {
+              menus: RawMenu[];
+            },
+          ) => {
+            if (isFilterFavorite) {
+              return favoriteRestaurants.includes(restaurant.id) ? (
+                <MenuCard data={restaurant} key={restaurant.id + meal} />
+              ) : null;
+            } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
+          },
+        )
       ) : (
         <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}
@@ -50,6 +57,7 @@ const Container = styled.div`
 
   align-items: center;
   width: 100%;
+  gap: 16px;
 
   @media (max-width: 768px) {
     height: 100px;
