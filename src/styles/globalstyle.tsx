@@ -47,6 +47,42 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 100;
   }
 
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acEB.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acEB.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+    
+    font-weight: 1000;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acB.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acB.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acR.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acR.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acL.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acL.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 100;
+  }
+
   html {
     -moz-text-size-adjust: none;
     -webkit-text-size-adjust: none;
