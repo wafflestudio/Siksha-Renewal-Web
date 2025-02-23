@@ -3,7 +3,7 @@ import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
 import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 interface MobileFilterPriceBottomSheetProps {
@@ -33,6 +33,14 @@ export default function MobileFilterPriceBottomSheet({
     });
     onClose();
   };
+
+  useEffect(() => {
+    setPriceMax(filterList.priceMax);
+  }, [filterList.priceMax]);
+
+  useEffect(() => {
+    setPriceMin(filterList.priceMin);
+  }, [filterList.priceMin]);
 
   const handleOnReset = () => {
     setFilterList({

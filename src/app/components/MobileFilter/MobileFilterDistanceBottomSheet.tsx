@@ -3,7 +3,7 @@ import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
 import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 interface MobileFilterDistanceBottomSheetProps {
@@ -18,6 +18,10 @@ export default function MobileFilterDistanceBottomSheet({
   const { filterList, setFilterList, defaultFilters } = useFilter();
   const [length, setLength] = useState(200);
   const [handleLeft, setHandleLeft] = useState(0);
+
+  useEffect(() => {
+    setLength(filterList.length);
+  }, [filterList.length]);
 
   const distanceText = useMemo(() => {
     if (length > 1000) return "1km 이상";
