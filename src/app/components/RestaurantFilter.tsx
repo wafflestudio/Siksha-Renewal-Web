@@ -99,6 +99,7 @@ export default function RestaurantFilter() {
             <ContentBar gap={16}>
               <FilterText>거리</FilterText>
               <Slider
+                style={{ margin: "auto 10px auto auto" }}
                 min={200}
                 max={1050}
                 step={50}
@@ -116,6 +117,7 @@ export default function RestaurantFilter() {
             <ContentBar gap={16}>
               <FilterText>가격</FilterText>
               <Slider
+                style={{ margin: "auto 10px auto auto" }}
                 range
                 min={0}
                 max={16000}
@@ -204,6 +206,7 @@ const Container = styled.div`
   align-items: stretch;
   gap: 16px;
   background-color: white;
+  width: 100%;
 `;
 
 const Header = styled.div`
