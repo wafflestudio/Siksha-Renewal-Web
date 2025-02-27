@@ -1,6 +1,7 @@
 import getDistance from "utils/getDistance";
 import useLocalStorage from "./UseLocalStorage";
 import { RawMenuList } from "types";
+import { useMemo } from "react";
 
 type FilterList = {
   length: number;
@@ -51,6 +52,24 @@ export default function useFilter() {
   const { value, set: setStorage } = useLocalStorage("filterList", defaultFiltersJson);
 
   const filterList: FilterList = JSON.parse(value || defaultFiltersJson, reviver);
+
+  /**
+   * 필터의 각 옵션의 변경 여부를 반환합니다.
+   * @returns {Record<keyof FilterList, boolean>} 각 옵션의 변경 여부
+   */
+  const isSet = useMemo(() => {
+    const changes = {} as Record<keyof FilterList, boolean>;
+    (Object.keys(defaultFilters) as (keyof FilterList)[]).forEach((key) => {
+      if (Array.isArray(filterList[key])) {
+        changes[key] = 
+          JSON.stringify(filterList[key]) !== JSON.stringify(defaultFilters[key]);
+      } 
+      else {
+        changes[key] = filterList[key] !== defaultFilters[key];
+      }
+    });
+    return changes;
+  }, [filterList]);
 
   /**
    * 필터 옵션 일부를 변경합니다.
@@ -131,6 +150,11 @@ export default function useFilter() {
      * @type {FilterList}
      */
     filterList,
+    /**
+     * 필터의 각 옵션의 변경 여부입니다.
+     * @type {Record<keyof FilterList, boolean>}
+     */
+    isSet,
     /**
      * 필터 옵션 일부를 변경하는 함수입니다.
      * @param {Partial<FilterList>} filterOption - 변경할 필터 옵션
