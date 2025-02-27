@@ -61,6 +61,8 @@ const Container = styled.div`
   }
 
   @media (max-width: 768px) {
+    justify-content: center;
+    align-items: flex-end;
     padding-top: 15.28px;
     padding-bottom: 17px;
   }
