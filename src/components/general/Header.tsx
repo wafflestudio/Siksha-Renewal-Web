@@ -21,7 +21,7 @@ export default function Header() {
             height={50}
             width={50}
             onClick={() => router.push("/")}
-            alt="식샤 로고 이미지"
+            alt="식샤 아이콘"
           />
           <TitleContainer>
             <Image
