@@ -115,6 +115,7 @@ export const GlobalStyle = createGlobalStyle`
   button {
     background: inherit;
     border: none;
+    outline: none;
     box-shadow: none;
     border-radius: 0;
     padding: 0;
