@@ -114,6 +114,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 0 0 10px 0;
+    align-items: flex-start;
   }
 `;
 
