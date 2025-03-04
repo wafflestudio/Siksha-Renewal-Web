@@ -22,4 +22,8 @@ const Container = styled(TwoColumnLayout.Right)`
   max-width: 818px;
   height: 100%;
   flex-grow: 1;
+
+  @media (max-width: 900px) {
+    max-width: 445px;
+  }
 `;

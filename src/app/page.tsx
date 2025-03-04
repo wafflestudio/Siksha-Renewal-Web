@@ -107,6 +107,10 @@ const DesktopContainer = styled(TwoColumnLayout.Container)`
   height: max(780px, 100vh - min(25vh, 271px));
   margin: 39px auto 0 auto;
 
+  @media (max-width: 900px) {
+    padding: 0 16px;
+  }
+
   @media (max-width: 768px) {
     display: none;
   }
