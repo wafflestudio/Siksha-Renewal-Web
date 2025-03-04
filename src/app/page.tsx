@@ -16,6 +16,7 @@ import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import useError from "hooks/useError";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 
 export default function Home() {
@@ -100,11 +101,15 @@ export default function Home() {
   );
 }
 
-const DesktopContainer = styled.div`
+const DesktopContainer = styled(TwoColumnLayout.Container)`
   display: flex;
   justify-content: center;
   height: max(780px, 100vh - min(25vh, 271px));
   margin: 39px auto 0 auto;
+
+  @media (max-width: 900px) {
+    padding: 0 16px;
+  }
 
   @media (max-width: 768px) {
     display: none;

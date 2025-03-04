@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Meal from "./Meal";
 import MenuList from "app/components/MenuList";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 
 export default function RightSide() {
   return (
@@ -11,7 +12,7 @@ export default function RightSide() {
   );
 }
 
-const Container = styled.div`
+const Container = styled(TwoColumnLayout.Right)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,4 +22,8 @@ const Container = styled.div`
   max-width: 818px;
   height: 100%;
   flex-grow: 1;
+
+  @media (max-width: 900px) {
+    max-width: 445px;
+  }
 `;
