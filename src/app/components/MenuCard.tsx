@@ -240,7 +240,7 @@ const ButtonIcon = styled.img`
 `;
 
 const Name = styled.div`
-  font-weight: 700;
+  font-weight: 800;
 
   @media (min-width: 769px) {
     color: var(--Color-Foundation-gray-900);
