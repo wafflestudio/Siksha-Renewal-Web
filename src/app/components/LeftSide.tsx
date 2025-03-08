@@ -21,8 +21,6 @@ const Container = styled(TwoColumnLayout.Left)`
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-left: 50px;
-  margin-right: 18px;
   height: fit-content;
   box-sizing: border-box;
   width: 378px;
