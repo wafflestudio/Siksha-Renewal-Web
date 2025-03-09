@@ -5,6 +5,7 @@ import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import MobilePicket from "./MobilePicket";
 
 interface MobileFilterPriceBottomSheetProps {
   isOpen: boolean;
@@ -55,10 +56,7 @@ export default function MobileFilterPriceBottomSheet({
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>가격</MobileFilterText>
       <SliderWrapper>
-        <PicketBox>
-          <PicketText>{priceText}</PicketText>
-          <PicketBottom src={"/img/picket-bottom.svg"} />
-        </PicketBox>
+        <MobilePicket text={priceText} />
         <StyledSlider
           range
           min={0}
@@ -121,32 +119,4 @@ const StyledSlider = styled(Slider)`
     border: none;
     box-shadow: none;
   }
-`;
-
-const PicketText = styled.div`
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  background: var(--Color-Foundation-gray-100, #f0f0f0);
-  color: var(--Color-Foundation-gray-800, #707070);
-
-  text-align: center;
-  font-size: var(--Font-size-12, 12px);
-  font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 15.4px */
-`;
-
-const PicketBottom = styled.img`
-  width: 6px;
-  height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f0f0f0);
-`;
-
-const PicketBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;

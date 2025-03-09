@@ -5,6 +5,7 @@ import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import MobilePicket from "./MobilePicket";
 
 interface MobileFilterDistanceBottomSheetProps {
   isOpen: boolean;
@@ -64,11 +65,7 @@ export default function MobileFilterDistanceBottomSheet({
       <MobileFilterText>거리</MobileFilterText>
       <SliderWrapper>
         {/* 움직이는 Picket */}
-        <PicketBox left={handleLeft}>
-          <PicketText>{distanceText}</PicketText>
-          <PicketBottom src={"/img/picket-bottom.svg"} />
-        </PicketBox>
-
+        <MobilePicket text={distanceText} />
         <StyledSlider
           min={200}
           max={1050}
@@ -127,35 +124,4 @@ const StyledSlider = styled(Slider)`
     border: none;
     box-shadow: none;
   }
-`;
-
-export const PicketText = styled.div`
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  background: var(--Color-Foundation-gray-100, #f0f0f0);
-  color: var(--Color-Foundation-gray-800, #707070);
-
-  text-align: center;
-  font-size: var(--Font-size-12, 12px);
-  font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 15.4px */
-`;
-
-export const PicketBottom = styled.img`
-  width: 6px;
-  height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f0f0f0);
-`;
-
-export const PicketBox = styled.div<{ left: number }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* left: ${({ left }) => `${left}px`};
-  top: -10px;
-  position: absolute; */
 `;
