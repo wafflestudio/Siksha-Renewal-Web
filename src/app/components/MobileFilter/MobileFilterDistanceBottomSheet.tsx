@@ -129,7 +129,7 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-const PicketText = styled.div`
+export const PicketText = styled.div`
   display: flex;
   padding: 6px;
   justify-content: center;
@@ -145,13 +145,13 @@ const PicketText = styled.div`
   line-height: 140%; /* 15.4px */
 `;
 
-const PicketBottom = styled.img`
+export const PicketBottom = styled.img`
   width: 6px;
   height: 5px;
   fill: var(--Color-Foundation-gray-100, #f0f0f0);
 `;
 
-const PicketBox = styled.div<{ left: number }>`
+export const PicketBox = styled.div<{ left: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;

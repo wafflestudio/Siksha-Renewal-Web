@@ -6,6 +6,7 @@ import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Slider from "rc-slider";
 import ButtonGroup from "./ButtonGroup";
+import { PicketBottom, PicketBox, PicketText } from "./MobileFilterDistanceBottomSheet";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
   const { filterList, setFilterList, resetFilterList } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
+  const [handleLeft, setHandleLeft] = useState(0);
 
   const [selectedFilters, setSelectedFilters] = useState({
     length,
@@ -95,6 +97,10 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       <FilterContentWrapper>
         <FilterContent>
           <MobileFilterText>거리</MobileFilterText>
+          <PicketBox left={handleLeft}>
+            <PicketText>{distanceText}</PicketText>
+            <PicketBottom src={"/img/picket-bottom.svg"} />
+          </PicketBox>
           <Slider
             min={200}
             max={1050}
@@ -106,6 +112,10 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
         </FilterContent>
         <FilterContent>
           <MobileFilterText>가격</MobileFilterText>
+          <PicketBox left={handleLeft}>
+            <PicketText>{priceText}</PicketText>
+            <PicketBottom src={"/img/picket-bottom.svg"} />
+          </PicketBox>
           <Slider
             range
             min={0}
