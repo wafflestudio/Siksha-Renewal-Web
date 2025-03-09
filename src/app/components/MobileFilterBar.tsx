@@ -5,10 +5,12 @@ import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistance
 import { useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
+import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 
 export default function MobileFilterBar() {
   const { filterList, isSet } = useFilter();
   const [filters, setFilters] = useState({
+    all: false,
     distance: false,
     price: false,
     rating: false,
@@ -24,6 +26,10 @@ export default function MobileFilterBar() {
   return (
     <>
       <Container>
+        <MobileFilterBottomSheet
+          isOpen={filters.all}
+          onClose={() => setFilterState("all", false)}
+        />
         <MobileFilterDistanceBottomSheet
           isOpen={filters.distance}
           onClose={() => setFilterState("distance", false)}
@@ -40,7 +46,13 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <Image src="img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
+        <Image
+          src="img/filter-icon.svg"
+          alt="필터 아이콘"
+          width={33.586}
+          height={34}
+          onClick={() => setFilterState("all", true)}
+        />
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
