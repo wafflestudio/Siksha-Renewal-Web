@@ -49,10 +49,11 @@ export default function MobileFilterPriceBottomSheet({
       <MobileFilterText>가격</MobileFilterText>
       <div style={{ height: 65.5 }} />
       <MobilePriceSlider
-        priceMin={priceMin}
-        priceMax={priceMax}
-        onPriceMaxChange={(value) => setPriceMax(value)}
-        onPriceMinChange={(value) => setPriceMin(value)}
+        priceRange={[priceMin, priceMax]}
+        onPriceRangeChange={([valueMin, valueMax]) => {
+          setPriceMin(valueMin);
+          setPriceMax(valueMax);
+        }}
       />
 
       <div style={{ height: 67 }} />

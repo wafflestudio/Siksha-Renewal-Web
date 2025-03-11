@@ -7,6 +7,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import Slider from "rc-slider";
 import ButtonGroup from "./ButtonGroup";
 import MobilePicket from "./MobilePicket";
+import MobileDistanceSlider from "./MobileDistanceSlider";
+import MobilePriceSlider from "./MobilePriceSlider";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -17,7 +19,6 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
   const { filterList, setFilterList, resetFilterList } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
-  const [handleLeft, setHandleLeft] = useState(0);
 
   const [selectedFilters, setSelectedFilters] = useState({
     length,
@@ -79,11 +80,6 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
     console.log(selectedFilters);
   }, []);
 
-  const distanceText = useMemo(() => {
-    if (selectedFilters.length > 1000) return "1km 이상";
-    return selectedFilters.length === 1000 ? "1km 이내" : `${selectedFilters.length}m 이내`;
-  }, [selectedFilters.length]);
-
   const priceText = useMemo(() => {
     const minTxt = `${selectedFilters.priceMin}원`;
     const maxTxt =
@@ -97,38 +93,23 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       <FilterContentWrapper>
         <FilterContent>
           <MobileFilterText>거리</MobileFilterText>
-          <Slider
-            min={200}
-            max={1050}
-            step={50}
-            value={selectedFilters.length}
-            defaultValue={1050}
-            onChange={(value: number) => handleSliderChange(value)}
+          <div style={{ height: 46.5 }} />
+          <MobileDistanceSlider
+            length={selectedFilters.length}
+            onLengthChange={(value: number) => handleSliderChange(value)}
           />
         </FilterContent>
         <FilterContent>
           <MobileFilterText>가격</MobileFilterText>
-          <MobilePicket text={priceText} />
-          <Slider
-            range
-            min={0}
-            max={16000}
-            step={1000}
-            value={[selectedFilters.priceMin, selectedFilters.priceMax]}
-            defaultValue={[2000, 8000]}
-            onChange={([valueMin, valueMax]: [number, number]) =>
-              handleSliderChange([valueMin, valueMax])
-            }
-            // handleRender={(node, props) => (
-            //   <div>
-            //     <MobilePicket text={priceText} />
-            //     {node}
-            //   </div>
-            // )}
-          />{" "}
+          <div style={{ height: 46.5 }} />
+          <MobilePriceSlider
+            priceRange={[selectedFilters.priceMin, selectedFilters.priceMax]}
+            onPriceRangeChange={(value: [number, number]) => handleSliderChange(value)}
+          />
         </FilterContent>
         <FilterContent>
           <MobileFilterText>영업시간</MobileFilterText>
+          <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
               { label: "전체", id: "ALL" },
@@ -142,6 +123,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
         </FilterContent>
         <FilterContent>
           <MobileFilterText>리뷰</MobileFilterText>
+          <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
               { label: "전체", id: "ALL" },
@@ -155,6 +137,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
         </FilterContent>
         <FilterContent>
           <MobileFilterText>최소 평점</MobileFilterText>
+          <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
               { label: "전체", id: "ALL" },
@@ -197,6 +180,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
+      <div style={{ height: 88 }} />
       <FilterActionSection marginBottom="54">
         <Button variant="neutral" onClick={resetFilter}>
           초기화

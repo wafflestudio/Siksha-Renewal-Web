@@ -82,9 +82,9 @@ const StyledSlider = styled(Slider)`
   }
 
   .rc-slider-handle {
-    width: 24px;
-    height: 24px;
-    margin-top: -10px;
+    width: 18px;
+    height: 18px;
+    margin-top: -7px;
     background-color: var(--Main-Orange, #ff9522);
     border: none;
     box-shadow: none;

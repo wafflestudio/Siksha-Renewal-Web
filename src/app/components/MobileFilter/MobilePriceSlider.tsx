@@ -4,22 +4,18 @@ import MobilePicket from "./MobilePicket";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 interface MobilePriceSliderProps {
-  priceMin: number;
-  priceMax: number;
-  onPriceMaxChange?: (priceMax: number) => void;
-  onPriceMinChange?: (priceMin: number) => void;
+  priceRange: [number, number];
+  onPriceRangeChange?: ([priceMin, priceMax]: [number, number]) => void;
 }
 
 export default function MobilePriceSlider({
-  priceMin: initialPriceMin,
-  priceMax: initialPriceMax,
-  onPriceMinChange,
-  onPriceMaxChange,
+  priceRange: initialPriceRange = [0, 0],
+  onPriceRangeChange,
 }: MobilePriceSliderProps) {
-  const [priceMin, setPriceMin] = useState(initialPriceMin);
-  const [priceMax, setPriceMax] = useState(initialPriceMax);
+  const [priceRange, setPriceRange] = useState<[number, number]>(initialPriceRange);
   const min = 0;
   const max = 16000;
+  const [priceMin, priceMax] = priceRange;
 
   const picketRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -34,11 +30,8 @@ export default function MobilePriceSlider({
   }, []);
 
   useEffect(() => {
-    setPriceMax(initialPriceMax);
-  }, [initialPriceMax]);
-  useEffect(() => {
-    setPriceMin(initialPriceMin);
-  }, [initialPriceMin]);
+    setPriceRange(initialPriceRange);
+  }, [initialPriceRange]);
 
   const priceText = useMemo(() => {
     const minTxt = `${priceMin}원`;
@@ -58,10 +51,8 @@ export default function MobilePriceSlider({
   center = Math.max(minLeft, Math.min(center, maxLeft));
 
   const handleSliderChange = ([valueMin, valueMax]: [number, number]) => {
-    setPriceMin(valueMin);
-    setPriceMax(valueMax);
-    onPriceMinChange?.(valueMin);
-    onPriceMaxChange?.(valueMax);
+    setPriceRange([valueMin, valueMax]);
+    onPriceRangeChange?.([valueMin, valueMax]);
   };
 
   return (
@@ -97,9 +88,9 @@ const StyledSlider = styled(Slider)`
   }
 
   .rc-slider-handle {
-    width: 24px;
-    height: 24px;
-    margin-top: -10px;
+    width: 18px;
+    height: 18px;
+    margin-top: -7px;
     background-color: var(--Main-Orange, #ff9522);
     border: none;
     box-shadow: none;

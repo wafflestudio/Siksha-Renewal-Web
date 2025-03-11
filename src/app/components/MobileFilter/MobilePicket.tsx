@@ -22,16 +22,16 @@ const PicketBox = styled.div<{ left: number }>`
   position: absolute;
   left: ${(props) => `${props.left}%`};
   transform: translateX(-50%);
-  top: -50px;
+  top: -40px;
 `;
 
 const PicketText = styled.div`
   display: flex;
-  padding: 6px;
   justify-content: center;
+  padding: 0 6px;
   align-items: center;
   gap: 10px;
-  border-radius: 4px;
+  border-radius: 2px;
   background: var(--Color-Foundation-gray-100, #f0f0f0);
   color: var(--Color-Foundation-gray-800, #707070);
 
@@ -41,6 +41,7 @@ const PicketText = styled.div`
   line-height: 140%; /* 15.4px */
 
   white-space: nowrap;
+  height: 25px;
 `;
 
 const PicketBottom = styled.img`
