@@ -3,11 +3,12 @@ import styled from "styled-components";
 interface PicketProps {
   left?: number;
   text: string;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
-export default function MobilePicket({ left, text }: PicketProps) {
+export default function MobilePicket({ left, text, ref }: PicketProps) {
   return (
-    <PicketBox left={left ?? 0}>
+    <PicketBox left={left ?? 0} ref={ref}>
       <PicketText>{text}</PicketText>
       <PicketBottom src={"/img/picket-bottom.svg"} />
     </PicketBox>
@@ -20,6 +21,7 @@ const PicketBox = styled.div<{ left: number }>`
   align-items: center;
   position: absolute;
   left: ${(props) => `${props.left}%`};
+  transform: translateX(-50%);
   top: -50px;
 `;
 
@@ -37,6 +39,8 @@ const PicketText = styled.div`
   font-size: var(--Font-size-12, 12px);
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 15.4px */
+
+  white-space: nowrap;
 `;
 
 const PicketBottom = styled.img`
