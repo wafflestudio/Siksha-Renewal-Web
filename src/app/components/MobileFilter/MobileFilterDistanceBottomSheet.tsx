@@ -51,12 +51,14 @@ export default function MobileFilterDistanceBottomSheet({
   const min = 200;
   const max = 1050;
 
+  const left = ((length - min) / (max - min)) * 100;
+
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>거리</MobileFilterText>
       <div style={{ height: 65.5 }} />
       <SliderWrapper>
-        {/* 움직이는 Picket */}
+        <MobilePicket left={left} text={distanceText} />
         <StyledSlider
           min={min}
           max={max}
@@ -64,34 +66,14 @@ export default function MobileFilterDistanceBottomSheet({
           value={length}
           defaultValue={max}
           onChange={handleSliderChange}
-          handleRender={(node, props) => {
-            const left = ((props.value - min) / (max - min)) * 100;
-            return (
-              <div style={{ position: "relative" }}>
-                <MobilePicket left={left} text={distanceText} />
-                {node}
-              </div>
-            );
-          }}
         />
       </SliderWrapper>
+      <div style={{ height: 67 }} />
       <FilterActionSection marginBottom="45">
-        <Button
-          variant="neutral"
-          onClick={handleOnReset}
-          style={{
-            width: "168px",
-          }}
-        >
+        <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleOnComplete}
-          style={{
-            width: "168px",
-          }}
-        >
+        <Button variant="primary" onClick={handleOnComplete}>
           완료
         </Button>
       </FilterActionSection>
@@ -101,7 +83,6 @@ export default function MobileFilterDistanceBottomSheet({
 
 const SliderWrapper = styled.div`
   position: relative;
-  height: 67px;
   display: flex;
   flex-direction: column;
   gap: 9px;

@@ -52,15 +52,23 @@ export default function MobileFilterPriceBottomSheet({
     onClose();
   };
 
+  const min = 0;
+  const max = 16000;
+
+  const leftMin = ((priceMin - min) / (max - min)) * 100;
+  const leftMax = ((priceMax - min) / (max - min)) * 100;
+  const center = (leftMin + leftMax) / 2;
+
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>가격</MobileFilterText>
+      <div style={{ height: 65.5 }} />
       <SliderWrapper>
-        <MobilePicket text={priceText} />
+        <MobilePicket left={center} text={priceText} />
         <StyledSlider
           range
-          min={0}
-          max={16000}
+          min={min}
+          max={max}
           step={1000}
           value={[priceMin, priceMax]}
           defaultValue={[2000, 8000]}
@@ -70,23 +78,12 @@ export default function MobileFilterPriceBottomSheet({
           }}
         />
       </SliderWrapper>
+      <div style={{ height: 67 }} />
       <FilterActionSection marginBottom="45">
-        <Button
-          variant="neutral"
-          onClick={handleOnReset}
-          style={{
-            width: "168px",
-          }}
-        >
+        <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleOnComplete}
-          style={{
-            width: "168px",
-          }}
-        >
+        <Button variant="primary" onClick={handleOnComplete}>
           완료
         </Button>
       </FilterActionSection>
@@ -96,7 +93,6 @@ export default function MobileFilterPriceBottomSheet({
 
 const SliderWrapper = styled.div`
   position: relative;
-  height: 77.5px;
   display: flex;
   flex-direction: column;
   gap: 9px;
