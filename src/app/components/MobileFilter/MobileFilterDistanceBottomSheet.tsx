@@ -15,7 +15,7 @@ export default function MobileFilterDistanceBottomSheet({
   onClose,
 }: MobileFilterDistanceBottomSheetProps) {
   const { filterList, setFilterList, defaultFilters } = useFilter();
-  const [length, setLength] = useState(200);
+  const [length, setLength] = useState(defaultFilters.length);
 
   useEffect(() => {
     setLength(filterList.length);

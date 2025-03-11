@@ -1,11 +1,9 @@
-import Slider from "rc-slider";
 import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
 import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
-import { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import MobilePicket from "./MobilePicket";
+import { useEffect, useState } from "react";
+import MobilePriceSlider from "./MobilePriceSlider";
 
 interface MobileFilterPriceBottomSheetProps {
   isOpen: boolean;
@@ -17,14 +15,8 @@ export default function MobileFilterPriceBottomSheet({
   onClose,
 }: MobileFilterPriceBottomSheetProps) {
   const { filterList, setFilterList, defaultFilters } = useFilter();
-  const [priceMin, setPriceMin] = useState(2000);
-  const [priceMax, setPriceMax] = useState(8000);
-
-  const priceText = useMemo(() => {
-    const minTxt = `${priceMin}원`;
-    const maxTxt = priceMax > 15000 ? "15000원 이상" : `${priceMax}원`;
-    return `${minTxt} ~ ${maxTxt}`;
-  }, [priceMin, priceMax]);
+  const [priceMin, setPriceMin] = useState(defaultFilters.priceMin);
+  const [priceMax, setPriceMax] = useState(defaultFilters.priceMax);
 
   const handleOnComplete = () => {
     setFilterList({
@@ -52,32 +44,17 @@ export default function MobileFilterPriceBottomSheet({
     onClose();
   };
 
-  const min = 0;
-  const max = 16000;
-
-  const leftMin = ((priceMin - min) / (max - min)) * 100;
-  const leftMax = ((priceMax - min) / (max - min)) * 100;
-  const center = (leftMin + leftMax) / 2;
-
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>가격</MobileFilterText>
       <div style={{ height: 65.5 }} />
-      <SliderWrapper>
-        <MobilePicket left={center} text={priceText} />
-        <StyledSlider
-          range
-          min={min}
-          max={max}
-          step={1000}
-          value={[priceMin, priceMax]}
-          defaultValue={[2000, 8000]}
-          onChange={([valueMin, valueMax]: [number, number]) => {
-            setPriceMin(valueMin);
-            setPriceMax(valueMax);
-          }}
-        />
-      </SliderWrapper>
+      <MobilePriceSlider
+        priceMin={priceMin}
+        priceMax={priceMax}
+        onPriceMaxChange={(value) => setPriceMax(value)}
+        onPriceMinChange={(value) => setPriceMin(value)}
+      />
+
       <div style={{ height: 67 }} />
       <FilterActionSection marginBottom="45">
         <Button variant="neutral" onClick={handleOnReset}>
@@ -90,29 +67,3 @@ export default function MobileFilterPriceBottomSheet({
     </MobileBottomSheet>
   );
 }
-
-const SliderWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-`;
-
-const StyledSlider = styled(Slider)`
-  .rc-slider-track {
-    background-color: var(--Main-Orange, #ff9522);
-  }
-
-  .rc-slider-rail {
-    background-color: #dbdbdb;
-  }
-
-  .rc-slider-handle {
-    width: 24px;
-    height: 24px;
-    margin-top: -10px;
-    background-color: var(--Main-Orange, #ff9522);
-    border: none;
-    box-shadow: none;
-  }
-`;
