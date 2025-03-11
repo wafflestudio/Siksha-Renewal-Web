@@ -26,6 +26,8 @@ const NeutralButton = styled.button`
   background-color: #b7b7b7;
   color: white;
   padding: 10px 20px;
+  height: 38px;
+  width: 168px;
   border-radius: 20px;
 `;
 
@@ -33,5 +35,7 @@ const PrimaryButton = styled.button`
   background-color: #ff9522;
   color: white;
   padding: 10px 20px;
+  height: 38px;
+  width: 168px;
   border-radius: 20px;
 `;

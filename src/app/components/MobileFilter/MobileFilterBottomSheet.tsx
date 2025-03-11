@@ -97,7 +97,6 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       <FilterContentWrapper>
         <FilterContent>
           <MobileFilterText>거리</MobileFilterText>
-          <MobilePicket text={distanceText} />
           <Slider
             min={200}
             max={1050}
@@ -120,6 +119,12 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
             onChange={([valueMin, valueMax]: [number, number]) =>
               handleSliderChange([valueMin, valueMax])
             }
+            // handleRender={(node, props) => (
+            //   <div>
+            //     <MobilePicket text={priceText} />
+            //     {node}
+            //   </div>
+            // )}
           />{" "}
         </FilterContent>
         <FilterContent>
@@ -192,23 +197,11 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <FilterActionSection>
-        <Button
-          variant="neutral"
-          onClick={resetFilter}
-          style={{
-            width: "168px",
-          }}
-        >
+      <FilterActionSection marginBottom="54">
+        <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
-        <Button
-          variant="primary"
-          onClick={onApplyFilter}
-          style={{
-            width: "168px",
-          }}
-        >
+        <Button variant="primary" onClick={onApplyFilter}>
           적용
         </Button>
       </FilterActionSection>
@@ -222,11 +215,10 @@ const StarIcon = styled.img`
   margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div`
+export const FilterActionSection = styled.div<{ marginBottom: string }>`
   display: flex;
-  height: 111px;
+  margin-bottom: ${(props) => `${props.marginBottom}px`};
   justify-content: space-between;
-  align-items: center;
 `;
 
 const FilterContentWrapper = styled.div`
@@ -251,5 +243,4 @@ const MobileFilterHeader = styled.div`
 export const MobileFilterText = styled.div`
   font-size: 16px;
   font-weight: 800;
-  margin-bottom: 14px;
 `;

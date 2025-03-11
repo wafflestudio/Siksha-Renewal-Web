@@ -18,9 +18,9 @@ const PicketBox = styled.div<{ left: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* position: absolute;
-  left: ${({ left }) => `${left}px`};
-  top: -10px; */
+  position: absolute;
+  left: ${(props) => `${props.left}%`};
+  top: -50px;
 `;
 
 const PicketText = styled.div`

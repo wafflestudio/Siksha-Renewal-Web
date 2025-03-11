@@ -18,7 +18,6 @@ export default function MobileFilterDistanceBottomSheet({
 }: MobileFilterDistanceBottomSheetProps) {
   const { filterList, setFilterList, defaultFilters } = useFilter();
   const [length, setLength] = useState(200);
-  const [handleLeft, setHandleLeft] = useState(0);
 
   useEffect(() => {
     setLength(filterList.length);
@@ -47,35 +46,36 @@ export default function MobileFilterDistanceBottomSheet({
 
   const handleSliderChange = (value: number) => {
     setLength(value);
-    requestAnimationFrame(() => {
-      const slider = document.querySelector(".rc-slider") as HTMLElement;
-      const handle = document.querySelector(".rc-slider-handle") as HTMLElement;
-      if (slider && handle) {
-        const sliderRect = slider.getBoundingClientRect();
-        const handleRect = handle.getBoundingClientRect();
-        const left = handleRect.left - sliderRect.left;
-        console.debug(left);
-        setHandleLeft(left);
-      }
-    });
   };
+
+  const min = 200;
+  const max = 1050;
 
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
       <MobileFilterText>거리</MobileFilterText>
+      <div style={{ height: 65.5 }} />
       <SliderWrapper>
         {/* 움직이는 Picket */}
-        <MobilePicket text={distanceText} />
         <StyledSlider
-          min={200}
-          max={1050}
+          min={min}
+          max={max}
           step={50}
           value={length}
-          defaultValue={1050}
+          defaultValue={max}
           onChange={handleSliderChange}
+          handleRender={(node, props) => {
+            const left = ((props.value - min) / (max - min)) * 100;
+            return (
+              <div style={{ position: "relative" }}>
+                <MobilePicket left={left} text={distanceText} />
+                {node}
+              </div>
+            );
+          }}
         />
       </SliderWrapper>
-      <FilterActionSection>
+      <FilterActionSection marginBottom="45">
         <Button
           variant="neutral"
           onClick={handleOnReset}
@@ -101,7 +101,7 @@ export default function MobileFilterDistanceBottomSheet({
 
 const SliderWrapper = styled.div`
   position: relative;
-  height: 77.5px;
+  height: 67px;
   display: flex;
   flex-direction: column;
   gap: 9px;

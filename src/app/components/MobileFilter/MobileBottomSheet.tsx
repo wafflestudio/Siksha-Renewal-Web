@@ -48,8 +48,7 @@ const BottomSheetSlideBar = styled.div`
 `;
 
 const BottomSheetContent = styled.div`
-  padding: 16px;
-  padding-top: 0px;
+  padding: 0px 16px;
   max-height: 75vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

@@ -70,7 +70,7 @@ export default function MobileFilterPriceBottomSheet({
           }}
         />
       </SliderWrapper>
-      <FilterActionSection>
+      <FilterActionSection marginBottom="45">
         <Button
           variant="neutral"
           onClick={handleOnReset}
