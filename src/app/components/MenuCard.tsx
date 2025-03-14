@@ -37,8 +37,8 @@ export default function MenuCard({ data }: { data: Data }) {
               <ButtonIcon
                 src={
                   isFavorite(data.id)
-                    ? "/img/general/star-on-orange.svg"
-                    : "/img/general/star-empty-orange.svg"
+                    ? "/img/general/star-on.svg"
+                    : "/img/general/star-off-24.svg"
                 }
                 onClick={() => toggleFavorite(data.id)}
                 alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
@@ -88,13 +88,13 @@ export default function MenuCard({ data }: { data: Data }) {
             />
             {isFavorite(data.id) ? (
               <ButtonIcon
-                src="/img/general/star-on-orange.svg"
+                src="/img/general/star-on.svg"
                 onClick={() => toggleFavorite(data.id)}
                 alt="좋아요"
               />
             ) : (
               <ButtonIcon
-                src="/img/general/star-empty-orange.svg"
+                src="/img/general/star-off-24.svg"
                 onClick={() => toggleFavorite(data.id)}
                 alt=""
               />
