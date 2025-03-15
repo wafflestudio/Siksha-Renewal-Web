@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ReviewImageSwiper from "./ReviewImageSwiper";
 import { MenuType } from "app/menu/[menuId]/Menu";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
@@ -8,8 +7,10 @@ import { getRestaurantList } from "utils/api/restaurants";
 import { getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
-import { formatDate } from "utils/FormatUtil";
+import { formatDate, formatPrice } from "utils/FormatUtil";
 import useError from "hooks/useError";
+import Image from "next/image";
+import PhotoReviewsSection from "./PhotoReviewsSection";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -26,18 +27,10 @@ export default function MenuSection({
   handleReviewPostButtonClick,
   isReviewListPageOpen,
 }: MenuSectionProps) {
-  const router = useRouter();
   const { onHttpError } = useError();
 
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
-
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const toggleAccordion = () => setIsAccordionOpen(!isAccordionOpen);
-  const [isOverflow, setIsOverflow] = useState(false);
-  const menuTitleDivRef = useRef<HTMLDivElement>(null);
-
-  const SWIPER_IMAGES_LIMIT = 5;
 
   const isMobile = useIsMobile();
 
@@ -53,189 +46,215 @@ export default function MenuSection({
       .catch(onHttpError);
   }, [menu]);
 
-  useEffect(() => {
-    if (menuTitleDivRef.current) {
-      const { current } = menuTitleDivRef;
-      const { offsetWidth, scrollWidth } = current;
-      setIsOverflow(offsetWidth < scrollWidth);
-    }
-  }, [menuTitleDivRef.current]);
-
   return (
-    <MenuContainer $isNotShow={isReviewListPageOpen && isMobile}>
-      {images.length > 0 && (
-        <ReviewImageSwiper
-          menuId={menu.id}
-          images={images}
-          swiperImagesLimit={SWIPER_IMAGES_LIMIT}
-          imageCount={images.length}
-        />
-      )}
-      <MenuInfoContainer>
+    <Container $isNotShow={isReviewListPageOpen && isMobile}>
+      <MenuOverview>
         <MenuHeader>
-          <MenuTitleContainer>
-            <MenuTitleWrapper>
-              <MenuTitle isOpen={isAccordionOpen} ref={menuTitleDivRef}>
-                {menu.name_kr}
-              </MenuTitle>
-              <MenuTitleAccordionButton
-                isOpen={isAccordionOpen}
-                isTitleLong={isOverflow}
-                onClick={toggleAccordion}
-              />
-            </MenuTitleWrapper>
-            <MenuSubTitle>{restaurantName}</MenuSubTitle>
-          </MenuTitleContainer>
-          <Likes menu={menu} />
+          <RestaurantWrapper>
+            <Image
+              src={"/img/distance.svg"}
+              alt="식당"
+              width={20}
+              height={20}
+            />
+            <Restaurant>{restaurantName}</Restaurant>
+          </RestaurantWrapper>
+          <MenuInfoContainer>
+            <MenuInfo>
+              <MenuTitle>{menu.name_kr}</MenuTitle>
+              <Price>{(menu.price ? formatPrice(menu.price) : "-") + "원"}</Price>
+            </MenuInfo>
+            <Likes menu={menu} />
+          </MenuInfoContainer>
         </MenuHeader>
-        <HLine />
-        <ReviewDistribution
-          totalReviewCount={reviewsTotalCount}
-          score={menu.score || 0}
-          distribution={reviewDistribution}
-        />
-      </MenuInfoContainer>
-      {
-        // formateDate -> "2021-08-01 (수)" 식으로 나옴
-        // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-        formatDate(new Date()).split(" ")[0] === menu.date && (
-          <MobileReviewPostButton onClick={handleReviewPostButtonClick}>
-            나의 평가 남기기
-          </MobileReviewPostButton>
-        )
-      }
-    </MenuContainer>
+
+        <MobileDivider />
+        
+        <MenuEvaluation>
+          <ReviewDistribution
+            reviewsTotalCount={reviewsTotalCount}
+            score={menu.score || 0}
+            distribution={reviewDistribution}
+          />
+          {
+            // formateDate -> "2021-08-01 (수)" 식으로 나옴
+            // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
+            formatDate(new Date()).split(" ")[0] === menu.date && (
+              <ReviewPostButton onClick={handleReviewPostButtonClick}>
+                나의 평가 남기기
+              </ReviewPostButton>
+            )
+          }
+        </MenuEvaluation>
+      </MenuOverview>
+      <MobileDivider />
+      <PhotoReviewsSection menuId={menu.id} images={images}/>
+    </Container>
   );
 }
 
-const MenuContainer = styled.section<{ $isNotShow: boolean }>`
-  position: relative;
-  background-color: white;
-  width: 897px;
-  height: 100%;
+const Container = styled.section<{ $isNotShow: boolean }>`
+  border-radius: 10px;
+  background-color: var(--Color-Foundation-base-white, #FFF);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+  flex: 1 0 0;
+
+  padding: 24px;
+  align-self: stretch;
+
   @media (max-width: 768px) {
     flex-grow: 0;
     width: auto;
     height: auto;
     min-width: 0;
     margin-left: 0;
+    padding: 0;
+    gap: 0;
   }
   display: ${(props) => props.$isNotShow && `none`};
 `;
 
-const MenuInfoContainer = styled.div`
-  padding: 41px 30px 26px 0px;
-
+const MenuOverview = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
   @media (max-width: 768px) {
-    padding: 18px 15px 16px 17px;
-    width: auto;
-    margin-left: 0;
+    gap: 0;
   }
 `;
 
 const MenuHeader = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: last baseline;
-  padding-bottom: 13px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 18px;
+    padding: 0 16px;
+    height: 86px;
   }
 `;
 
-const MenuTitleContainer = styled.div`
+const RestaurantWrapper = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  gap: 4px;
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
-const MenuTitleWrapper = styled.div`
+const Restaurant = styled.div`
+  color: var(--Color-Foundation-orange-500, #FF9522);
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+`;
+
+const MenuInfoContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-right: 9.2px;
+  gap: 24px;
+  align-self: stretch;
+
   @media (max-width: 768px) {
-    margin: 0;
+    height: 100%;
+    align-items: center;
+    justify-content: space-around;
   }
 `;
 
-const MenuTitle = styled.div<{ isOpen: boolean }>`
-  font-size: 40px;
-  font-weight: 700;
-  color: #ff9522;
-  line-height: 45.4px;
-  margin-right: 3px;
-  margin-left: 7px;
-  width: ${(props) => (props.isOpen ? "492px" : "auto")};
-  max-width: 492px;
-  text-overflow: ellipsis;
-  white-space: ${(props) => (props.isOpen ? "normal" : "nowrap")};
-  word-break: break-word;
-  overflow: hidden;
-  @media (max-width: 768px) {
-    font-size: 20px;
-    margin: 0;
-  }
-`;
-
-const MenuTitleAccordionButton = styled.button<{ isOpen: boolean; isTitleLong: boolean }>`
-  display: ${(props) => (props.isTitleLong ? "inherit" : "none")};
-  height: 45.4px;
-  width: 21.75px;
-  border: none;
-  background-color: transparent;
-  background-image: url(${({ isOpen }) => `img/${isOpen ? "up" : "down"}-arrow.orange.svg`});
-  background-repeat: no-repeat;
-  background-position-y: center;
-  cursor: pointer;
-
+const MenuInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1 0 0;
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
-const MenuSubTitle = styled.div`
-  font-size: 16px;
-  font-weight: 400;
-  color: #ff9522;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+const MenuTitle = styled.div`
+  align-self: stretch;
+  color: var(--Color-Foundation-gray-900, #262728);
+
+  /* text-20/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-20, 20px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 28px */
   @media (max-width: 768px) {
-    display: none;
+
   }
 `;
 
-const HLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background: #fe8c59;
-  margin: auto;
+const Price = styled.div`
+  color: var(--Color-Foundation-gray-600, #989AA0);
+
+  /* text-15/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-15, 15px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 22.5px */
 `;
 
-const MobileReviewPostButton = styled.button`
+const MobileDivider = styled.div`
   display: none;
-  position: inherit;
-  background: #ff9522;
-  width: 200px;
-  height: 32px;
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 16px;
-  text-align: center;
-  margin: auto;
-  margin-bottom: 16px;
-  border: none;
-  border-radius: 50px;
-  padding: 8px 25px;
+  background: var(--Color-Foundation-gray-100, #F2F3F4);
+  width: 100%;
+  height: 10px;
+  @media (max-width: 768px) {
+    display: inherit;
+  }
+`;
+
+const MenuEvaluation = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  align-self: stretch;
+  @media (max-width: 768px) {
+    padding: 32px 16px;
+  }
+`;
+
+const ReviewPostButton = styled.button`
+  display: flex;
+  height: 42px;
+  padding: 14px 65px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  background: var(--Color-Foundation-orange-500, #FF9522);
   cursor: pointer;
 
+  color: var(--Color-Foundation-base-white, #FFF);
+
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   @media (max-width: 768px) {
-    display: block;
+    width: 140px;
+    padding: 10px 20px;
+    align-self: center;
+    border-radius: 50px;
   }
 `;
