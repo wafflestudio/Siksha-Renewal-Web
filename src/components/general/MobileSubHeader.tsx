@@ -53,7 +53,7 @@ const MobileHeader = styled.div`
   background: #ff9522;
   position: absolute;
   width: 100%;
-  height: 60px;
+  height: 44px;
   z-index: 1;
   @media (max-width: 768px) {
     display: flex;
