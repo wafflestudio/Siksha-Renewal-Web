@@ -5,7 +5,7 @@ export function formatDate(date) {
 
 export function formatReviewDate(dateString) {
   // format from "2021-08-01" to "2021년 08월 01일"
-  const { year, month, day } = dateString.split('-');
+  const [ year, month, day ] = dateString.split("-");
   return `${year}년 ${month}월 ${day}일`;
 }
 
