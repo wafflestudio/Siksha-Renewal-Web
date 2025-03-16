@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.div`
+  /* 데스크톱 모바일 겸용 layout */
   box-sizing: border-box;
   display: flex;
   margin: 22px auto 0 auto;
@@ -8,7 +9,9 @@ const Container = styled.div`
   max-width: 582px;
 
   @media (max-width: 768px) {
-    display: none; /* 데스크톱 전용 layout */
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
   }
 `;
 
