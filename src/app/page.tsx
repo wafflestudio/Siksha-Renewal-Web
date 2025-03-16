@@ -104,8 +104,7 @@ export default function Home() {
 const DesktopContainer = styled(TwoColumnLayout.Container)`
   display: flex;
   justify-content: center;
-  height: max(780px, 100vh - min(25vh, 271px));
-  margin: 39px auto 0 auto;
+  height: calc(100vh - 92px);
 
   @media (max-width: 900px) {
     padding: 0 16px;
@@ -124,17 +123,6 @@ const MobileContainer = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100%;
-  }
-`;
-
-const MobileCalendarWrapper = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    position: absolute;
-    top: 113px;
-    z-index: 100;
   }
 `;
 

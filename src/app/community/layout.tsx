@@ -1,12 +1,13 @@
 "use client";
 
 import styled from "styled-components";
+import OneColumnLayout from "styles/layouts/OneColumnLayout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return <Content>{children}</Content>;
 }
 
-const Content = styled.div`
+const Content = styled(OneColumnLayout.Container)`
   position: relative;
   display: flex;
   flex-direction: column;
