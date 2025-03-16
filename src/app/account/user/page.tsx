@@ -47,32 +47,21 @@ export default function UserSetting() {
   return (
     <>
       <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <MobileSpace />
-        <Container>
-          <Title>계정 관리</Title>
-          <ContentDiv onClick={handleLogout}>
-            <LogoutText>로그아웃</LogoutText>
-            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
-          </ContentDiv>
-          <BreakLine />
-          <ContentDiv onClick={handleExit}>
-            <WithdrawalText>회원 탈퇴</WithdrawalText>
-            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
-          </ContentDiv>
-        </Container>
-      </AccountLayout>
+      <Container>
+        <Title>계정 관리</Title>
+        <ContentDiv onClick={handleLogout}>
+          <LogoutText>로그아웃</LogoutText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv onClick={handleExit}>
+          <WithdrawalText>회원 탈퇴</WithdrawalText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
+        </ContentDiv>
+      </Container>
     </>
   );
 }
-
-const MobileSpace = styled.div`
-  height: 24px;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
 
 const Container = styled.div`
   width: 544px;
