@@ -5,13 +5,14 @@ const Container = styled.div`
   box-sizing: border-box;
   display: flex;
   margin: 22px auto 0 auto;
-  padding: 0 24px;
+  padding: 24px;
   max-width: 582px;
 
   @media (max-width: 768px) {
     width: 100%;
     max-width: 100%;
-    padding: 0;
+    margin-top: 0;
+    padding-top: 44px;
   }
 `;
 
