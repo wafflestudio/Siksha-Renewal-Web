@@ -50,10 +50,6 @@ export default function MobileDistanceSlider({
   const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
   left = Math.max(minLeft, Math.min(left, maxLeft));
 
-  console.debug("left:", left);
-  console.debug("maxLeft:", maxLeft);
-  console.debug("minLeft:", minLeft);
-
   const handleSliderChange = (value: number) => {
     onLengthChange?.(value);
     setLength(value);

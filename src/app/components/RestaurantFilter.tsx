@@ -5,9 +5,10 @@ import "rc-slider/assets/index.css";
 import "styles/slider.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { DISTANCE_FILTER_OPTIONS, PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 
 export default function RestaurantFilter() {
-  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
 
@@ -46,9 +47,18 @@ export default function RestaurantFilter() {
 
   const applyFilter = useCallback(() => {
     setFilterList({
-      length: selectedFilters.length > 1000 ? Infinity : selectedFilters.length,
-      priceMin: selectedFilters.priceMin,
-      priceMax: selectedFilters.priceMax > 15000 ? Infinity : selectedFilters.priceMax,
+      length:
+        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+          ? defaultFilters.length
+          : selectedFilters.length,
+      priceMin:
+        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.val_zero
+          ? defaultFilters.priceMin
+          : selectedFilters.priceMin,
+      priceMax:
+        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.val_infinity
+          ? defaultFilters.priceMax
+          : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
     });
@@ -74,9 +84,22 @@ export default function RestaurantFilter() {
   }, [selectedFilters.length]);
 
   const priceText = useMemo(() => {
+    const { val_zero, val_infinity } = PRICE_FILTER_OPTIONS;
+
     const minTxt = `${selectedFilters.priceMin}원`;
-    const maxTxt =
-      selectedFilters.priceMax > 15000 ? "15000원 이상" : `${selectedFilters.priceMax}원`;
+    const maxTxt = `${selectedFilters.priceMax}원`;
+    if (selectedFilters.priceMin <= val_zero && val_infinity <= selectedFilters.priceMax) {
+      return "가격 범위 없음";
+    }
+
+    if (selectedFilters.priceMin <= val_zero) {
+      return `${maxTxt} 이하`;
+    }
+
+    if (val_infinity <= selectedFilters.priceMax) {
+      return `${minTxt} 이상`;
+    }
+
     return `${minTxt} ~ ${maxTxt}`;
   }, [selectedFilters.priceMin, selectedFilters.priceMax]);
 
@@ -100,9 +123,9 @@ export default function RestaurantFilter() {
               <FilterText>거리</FilterText>
               <Slider
                 style={{ margin: "auto 10px auto auto" }}
-                min={200}
-                max={1050}
-                step={50}
+                min={DISTANCE_FILTER_OPTIONS.min}
+                max={DISTANCE_FILTER_OPTIONS.val_infinity}
+                step={DISTANCE_FILTER_OPTIONS.step}
                 value={selectedFilters.length}
                 defaultValue={1050}
                 onChange={(value: number) => handleSliderChange(value)}
@@ -119,9 +142,9 @@ export default function RestaurantFilter() {
               <Slider
                 style={{ margin: "auto 10px auto auto" }}
                 range
-                min={0}
-                max={16000}
-                step={1000}
+                min={PRICE_FILTER_OPTIONS.val_zero}
+                max={PRICE_FILTER_OPTIONS.val_infinity}
+                step={PRICE_FILTER_OPTIONS.step}
                 value={[selectedFilters.priceMin, selectedFilters.priceMax]}
                 defaultValue={[2000, 8000]}
                 onChange={([valueMin, valueMax]: [number, number]) =>
