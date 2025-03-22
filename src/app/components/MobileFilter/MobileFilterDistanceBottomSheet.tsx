@@ -15,7 +15,7 @@ export default function MobileFilterDistanceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterDistanceBottomSheetProps) {
-  const { filterList, setFilterList, defaultFilters } = useFilter();
+  const { filterList, changeFilterOption, defaultFilters } = useFilter();
   const [length, setLength] = useState(defaultFilters.length);
 
   useEffect(() => {
@@ -25,8 +25,7 @@ export default function MobileFilterDistanceBottomSheet({
   const handleOnComplete = () => {
     const valLength =
       length === DISTANCE_FILTER_OPTIONS.val_infinity ? defaultFilters.length : length;
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       length: valLength,
     });
     onClose();
@@ -35,8 +34,7 @@ export default function MobileFilterDistanceBottomSheet({
   const handleOnReset = () => {
     const defaultLength = defaultFilters.length;
     setLength(defaultLength);
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       length: defaultLength,
     });
   };

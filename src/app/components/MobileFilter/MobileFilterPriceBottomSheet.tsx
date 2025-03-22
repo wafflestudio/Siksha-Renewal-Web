@@ -15,7 +15,7 @@ export default function MobileFilterPriceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterPriceBottomSheetProps) {
-  const { filterList, setFilterList, defaultFilters } = useFilter();
+  const { filterList, changeFilterOption, defaultFilters } = useFilter();
   const [priceMin, setPriceMin] = useState(defaultFilters.priceMin);
   const [priceMax, setPriceMax] = useState(defaultFilters.priceMax);
 
@@ -25,8 +25,7 @@ export default function MobileFilterPriceBottomSheet({
     const valPriceMax =
       priceMax === PRICE_FILTER_OPTIONS.val_infinity ? defaultFilters.priceMax : priceMax;
 
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       priceMax: valPriceMax,
       priceMin: valPriceMin,
     });
@@ -48,8 +47,7 @@ export default function MobileFilterPriceBottomSheet({
     setPriceMax(defaultPriceMax);
     setPriceMin(defaultPriceMin);
 
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       priceMax: defaultPriceMax,
       priceMin: defaultPriceMin,
     });

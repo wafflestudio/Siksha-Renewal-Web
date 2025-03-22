@@ -15,7 +15,7 @@ export default function MobileFilterRatingBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterRatingBottomSheetProps) {
-  const { filterList, setFilterList, defaultFilters } = useFilter();
+  const { filterList, changeFilterOption, defaultFilters } = useFilter();
   const [ratingMin, setRatingMin] = useState(0);
 
   useEffect(() => {
@@ -23,8 +23,7 @@ export default function MobileFilterRatingBottomSheet({
   }, [filterList.ratingMin]);
 
   const handleOnComplete = () => {
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       ratingMin,
     });
     onClose();
@@ -33,8 +32,7 @@ export default function MobileFilterRatingBottomSheet({
   const handleOnReset = () => {
     const defaultRatingMin = defaultFilters.ratingMin;
     setRatingMin(defaultRatingMin);
-    setFilterList({
-      ...filterList,
+    changeFilterOption({
       ratingMin: defaultRatingMin,
     });
   };
