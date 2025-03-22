@@ -3,10 +3,11 @@ import MobileBottomSheet from "./MobileBottomSheet";
 import Button from "components/general/Button";
 import useFilter from "hooks/useFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ButtonGroup from "./ButtonGroup";
 import MobileDistanceSlider from "./MobileDistanceSlider";
 import MobilePriceSlider from "./MobilePriceSlider";
+import { DISTANCE_FILTER_OPTIONS, PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -14,7 +15,7 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
-  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
 
@@ -53,9 +54,18 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
 
   const onApplyFilter = useCallback(() => {
     setFilterList({
-      length: selectedFilters.length > 1000 ? Infinity : selectedFilters.length,
-      priceMin: selectedFilters.priceMin,
-      priceMax: selectedFilters.priceMax > 15000 ? Infinity : selectedFilters.priceMax,
+      length:
+        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+          ? defaultFilters.length
+          : selectedFilters.length,
+      priceMin:
+        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.val_zero
+          ? defaultFilters.priceMin
+          : selectedFilters.priceMin,
+      priceMax:
+        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.val_infinity
+          ? defaultFilters.priceMax
+          : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
     });
@@ -77,13 +87,6 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
     console.log(key, value);
     console.log(selectedFilters);
   }, []);
-
-  const priceText = useMemo(() => {
-    const minTxt = `${selectedFilters.priceMin}원`;
-    const maxTxt =
-      selectedFilters.priceMax > 15000 ? "15000원 이상" : `${selectedFilters.priceMax}원`;
-    return `${minTxt} ~ ${maxTxt}`;
-  }, [selectedFilters.priceMin, selectedFilters.priceMax]);
 
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose}>
@@ -178,8 +181,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <div style={{ height: 88 }} />
-      <FilterActionSection marginBottom="54">
+      <FilterActionSection marginBottom="54" marginTop="19">
         <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
@@ -197,17 +199,19 @@ const StarIcon = styled.img`
   margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div<{ marginBottom: string }>`
+export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
   display: flex;
-  margin-bottom: ${(props) => `${props.marginBottom}px`};
+  padding-bottom: ${(props) => `${props.marginBottom}px`};
+  padding-top: ${(props) => `${props.marginTop ?? 0}px`};
   justify-content: space-between;
+  /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
 `;
 
 const FilterContentWrapper = styled.div`
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   overflow-y: auto;
-  height: calc(100% - 111px);
   gap: 40px;
 `;
 

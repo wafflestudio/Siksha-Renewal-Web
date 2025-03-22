@@ -40,13 +40,19 @@ export default function MobileDistanceSlider({
     return length === 1000 ? "1km 이내" : `${length}m 이내`;
   }, [length]);
 
-  let left = ((length - min) / (val_infinity - min)) * 100;
+  const lengthForLeft = length === Infinity ? val_infinity : length;
+
+  let left = ((lengthForLeft - min) / (val_infinity - min)) * 100;
   const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
 
   // 피켓이 슬라이더를 벗어나지 않도록 제한
   const maxLeft = 100 - halfPicketPercent; // 슬라이더 오른쪽 끝 제한
   const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
   left = Math.max(minLeft, Math.min(left, maxLeft));
+
+  console.debug("left:", left);
+  console.debug("maxLeft:", maxLeft);
+  console.debug("minLeft:", minLeft);
 
   const handleSliderChange = (value: number) => {
     onLengthChange?.(value);

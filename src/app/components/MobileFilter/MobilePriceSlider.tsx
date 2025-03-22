@@ -52,8 +52,11 @@ export default function MobilePriceSlider({
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
 
-  const leftMin = ((priceMin - val_zero) / (val_infinity - val_zero)) * 100;
-  const leftMax = ((priceMax - val_zero) / (val_infinity - val_zero)) * 100;
+  const priceMinForLeft = priceMin === 0 ? val_zero : priceMin;
+  const priceMaxForLeft = priceMax === Infinity ? val_infinity : priceMax;
+
+  const leftMin = ((priceMinForLeft - val_zero) / (val_infinity - val_zero)) * 100;
+  const leftMax = ((priceMaxForLeft - val_zero) / (val_infinity - val_zero)) * 100;
   let center = (leftMin + leftMax) / 2;
 
   const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
