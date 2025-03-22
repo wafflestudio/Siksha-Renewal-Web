@@ -4,9 +4,7 @@ import Button from "components/general/Button";
 import useFilter from "hooks/useFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import Slider from "rc-slider";
 import ButtonGroup from "./ButtonGroup";
-import MobilePicket from "./MobilePicket";
 import MobileDistanceSlider from "./MobileDistanceSlider";
 import MobilePriceSlider from "./MobilePriceSlider";
 

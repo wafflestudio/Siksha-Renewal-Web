@@ -4,6 +4,7 @@ import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobileDistanceSlider from "./MobileDistanceSlider";
+import { DISTANCE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobileFilterDistanceBottomSheetProps {
   isOpen: boolean;
@@ -22,19 +23,22 @@ export default function MobileFilterDistanceBottomSheet({
   }, [filterList.length]);
 
   const handleOnComplete = () => {
+    const valLength =
+      length === DISTANCE_FILTER_OPTIONS.val_infinity ? defaultFilters.length : length;
     setFilterList({
       ...filterList,
-      length: length,
+      length: valLength,
     });
     onClose();
   };
 
   const handleOnReset = () => {
+    const defaultLength = defaultFilters.length;
+    setLength(defaultLength);
     setFilterList({
       ...filterList,
-      length: defaultFilters.length,
+      length: defaultLength,
     });
-    onClose();
   };
 
   return (

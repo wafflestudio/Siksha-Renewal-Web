@@ -2,19 +2,20 @@ import Slider from "rc-slider";
 import styled from "styled-components";
 import MobilePicket from "./MobilePicket";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { DISTANCE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobileDistanceSliderProps {
   length: number;
   onLengthChange?: (length: number) => void;
 }
 
+const { min, max, val_infinity, step } = DISTANCE_FILTER_OPTIONS;
+
 export default function MobileDistanceSlider({
   length: initialLength,
   onLengthChange,
 }: MobileDistanceSliderProps) {
   const [length, setLength] = useState(initialLength);
-  const min = 200;
-  const max = 1050;
 
   const picketRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -33,11 +34,13 @@ export default function MobileDistanceSlider({
   }, [initialLength]);
 
   const distanceText = useMemo(() => {
-    if (length > 1000) return "1km 이상";
+    if (val_infinity <= length) {
+      return `1km 이상`;
+    }
     return length === 1000 ? "1km 이내" : `${length}m 이내`;
   }, [length]);
 
-  let left = ((length - min) / (max - min)) * 100;
+  let left = ((length - min) / (val_infinity - min)) * 100;
   const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
 
   // 피켓이 슬라이더를 벗어나지 않도록 제한
@@ -55,8 +58,8 @@ export default function MobileDistanceSlider({
       <MobilePicket left={left} text={distanceText} ref={picketRef} />
       <StyledSlider
         min={min}
-        max={max}
-        step={50}
+        max={val_infinity}
+        step={step}
         value={length}
         defaultValue={max}
         onChange={handleSliderChange}

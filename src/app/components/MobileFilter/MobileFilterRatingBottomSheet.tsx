@@ -31,11 +31,12 @@ export default function MobileFilterRatingBottomSheet({
   };
 
   const handleOnReset = () => {
+    const defaultRatingMin = defaultFilters.ratingMin;
+    setRatingMin(defaultRatingMin);
     setFilterList({
       ...filterList,
-      ratingMin: defaultFilters.ratingMin,
+      ratingMin: defaultRatingMin,
     });
-    onClose();
   };
 
   return (

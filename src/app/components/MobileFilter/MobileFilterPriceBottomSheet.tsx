@@ -4,6 +4,7 @@ import useFilter from "hooks/useFilter";
 import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobilePriceSlider from "./MobilePriceSlider";
+import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobileFilterPriceBottomSheetProps {
   isOpen: boolean;
@@ -19,10 +20,15 @@ export default function MobileFilterPriceBottomSheet({
   const [priceMax, setPriceMax] = useState(defaultFilters.priceMax);
 
   const handleOnComplete = () => {
+    const valPriceMin =
+      priceMin === PRICE_FILTER_OPTIONS.val_zero ? defaultFilters.priceMin : priceMin;
+    const valPriceMax =
+      priceMax === PRICE_FILTER_OPTIONS.val_infinity ? defaultFilters.priceMax : priceMax;
+
     setFilterList({
       ...filterList,
-      priceMax,
-      priceMin,
+      priceMax: valPriceMax,
+      priceMin: valPriceMin,
     });
     onClose();
   };
@@ -36,12 +42,17 @@ export default function MobileFilterPriceBottomSheet({
   }, [filterList.priceMin]);
 
   const handleOnReset = () => {
+    const defaultPriceMax = defaultFilters.priceMax;
+    const defaultPriceMin = defaultFilters.priceMin;
+
+    setPriceMax(defaultPriceMax);
+    setPriceMin(defaultPriceMin);
+
     setFilterList({
       ...filterList,
-      priceMax: defaultFilters.priceMax,
-      priceMin: defaultFilters.priceMin,
+      priceMax: defaultPriceMax,
+      priceMin: defaultPriceMin,
     });
-    onClose();
   };
 
   return (

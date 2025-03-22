@@ -2,19 +2,20 @@ import Slider from "rc-slider";
 import styled from "styled-components";
 import MobilePicket from "./MobilePicket";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobilePriceSliderProps {
-  priceRange: [number, number];
+  priceRange?: [number, number];
   onPriceRangeChange?: ([priceMin, priceMax]: [number, number]) => void;
 }
 
+const { val_zero, min, max, val_infinity, step } = PRICE_FILTER_OPTIONS;
+
 export default function MobilePriceSlider({
-  priceRange: initialPriceRange = [0, 0],
+  priceRange: initialPriceRange = [min, max],
   onPriceRangeChange,
 }: MobilePriceSliderProps) {
-  const [priceRange, setPriceRange] = useState<[number, number]>(initialPriceRange);
-  const min = 0;
-  const max = 16000;
+  const [priceRange, setPriceRange] = useState<[number, number]>([min, max]);
   const [priceMin, priceMax] = priceRange;
 
   const picketRef = useRef<HTMLDivElement>(null);
@@ -35,12 +36,24 @@ export default function MobilePriceSlider({
 
   const priceText = useMemo(() => {
     const minTxt = `${priceMin}원`;
-    const maxTxt = priceMax > 15000 ? "15000원 이상" : `${priceMax}원`;
+    const maxTxt = `${priceMax}원`;
+    if (priceMin <= val_zero && val_infinity <= priceMax) {
+      return "가격 범위 없음";
+    }
+
+    if (priceMin <= val_zero) {
+      return `${maxTxt} 이하`;
+    }
+
+    if (val_infinity <= priceMax) {
+      return `${minTxt} 이상`;
+    }
+
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
 
-  const leftMin = ((priceMin - min) / (max - min)) * 100;
-  const leftMax = ((priceMax - min) / (max - min)) * 100;
+  const leftMin = ((priceMin - val_zero) / (val_infinity - val_zero)) * 100;
+  const leftMax = ((priceMax - val_zero) / (val_infinity - val_zero)) * 100;
   let center = (leftMin + leftMax) / 2;
 
   const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
@@ -60,11 +73,11 @@ export default function MobilePriceSlider({
       <MobilePicket left={center} text={priceText} ref={picketRef} />
       <StyledSlider
         range
-        min={min}
-        max={max}
-        step={1000}
+        min={val_zero}
+        max={val_infinity}
+        step={step}
         value={[priceMin, priceMax]}
-        defaultValue={[2000, 8000]}
+        defaultValue={[min, max]}
         onChange={handleSliderChange}
       />
     </SliderWrapper>
