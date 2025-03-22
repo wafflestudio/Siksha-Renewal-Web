@@ -8,7 +8,7 @@ import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBott
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 
 export default function MobileFilterBar() {
-  const { filterList, isSet } = useFilter();
+  const { filterList, isSet, changeFilterOption } = useFilter();
   const [filters, setFilters] = useState({
     all: false,
     distance: false,
@@ -21,6 +21,18 @@ export default function MobileFilterBar() {
       ...prev,
       [filterName]: isOpen,
     }));
+  };
+
+  const handleOnClickFavorite = () => {
+    changeFilterOption({
+      favorite: !filterList.favorite,
+    });
+  };
+
+  const handleOnClickIsReview = () => {
+    changeFilterOption({
+      isReview: !filterList.isReview,
+    });
   };
 
   return (
@@ -84,7 +96,7 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.favorite}>
+        <Button isActive={isSet.favorite} onClick={handleOnClickFavorite}>
           {" "}
           {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
           {isSet.favorite && (
@@ -92,7 +104,7 @@ export default function MobileFilterBar() {
           )}
           <ButtonText isActive={isSet.favorite}>영업 중</ButtonText>
         </Button>
-        <Button isActive={isSet.isReview}>
+        <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
           {isSet.isReview && (
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           )}
@@ -110,7 +122,7 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.category}>
+        {/* <Button isActive={isSet.category}>
           <ButtonText isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
@@ -121,7 +133,7 @@ export default function MobileFilterBar() {
             height={4}
             style={{ padding: "0 3.33px" }}
           />
-        </Button>
+        </Button> */}
       </Container>
     </>
   );
