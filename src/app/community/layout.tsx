@@ -22,9 +22,14 @@ const Content = styled(OneColumnLayout.Container)`
   padding: 0 20px;
   box-sizing: border-box;
 
+  @media (max-width: 1000px) {
+    margin-left: 150px;
+    margin-right: 150px;
+  }
+
   @media (max-width: 768px) {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0;
+    padding-top: 0;
     padding-bottom: 0;
     max-width: inherit;
     min-height: auto;

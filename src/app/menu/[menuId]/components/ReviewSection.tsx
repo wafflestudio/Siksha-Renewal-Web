@@ -166,8 +166,6 @@ const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   line-height: 150%; /* 21px */
   
   @media (max-width: 768px) {
-    font-size: 18px;
-
     ${(props) =>
     !props.$isReviewListPageOpen &&
     css`
