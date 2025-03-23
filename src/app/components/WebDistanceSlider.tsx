@@ -22,12 +22,18 @@ export default function WebDistanceSlider({
   const [picketWidth, setPicketWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     if (picketRef.current && sliderRef.current) {
       setPicketWidth(picketRef.current.offsetWidth);
       setSliderWidth(sliderRef.current.offsetWidth);
     }
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     setLength(initialLength);

@@ -23,12 +23,18 @@ export default function MobilePriceSlider({
   const [picketWidth, setPicketWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     if (picketRef.current && sliderRef.current) {
       setPicketWidth(picketRef.current.offsetWidth);
       setSliderWidth(sliderRef.current.offsetWidth);
     }
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     setPriceRange(initialPriceRange);
@@ -85,7 +91,7 @@ const SliderWrapper = styled.div`
 
 const StyledSlider = styled(Slider)`
   .rc-slider-track {
-    background-color: var(--Main-Orange, #ff9522);
+    background-color: var(--Color-Foundation-orange-500, #ff9522);
   }
 
   .rc-slider-rail {
@@ -96,7 +102,7 @@ const StyledSlider = styled(Slider)`
     width: 18px;
     height: 18px;
     margin-top: -7px;
-    background-color: var(--Main-Orange, #ff9522);
+    background-color: var(--Color-Foundation-orange-500, #ff9522);
     border: none;
     box-shadow: none;
   }
