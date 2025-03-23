@@ -164,7 +164,7 @@ const Button = styled.button<{ isActive?: boolean }>`
       props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)"};
   background: ${(props) => (props.isActive ? "var(--Main-Active, #FFE8CE)" : "#FFF")};
 
-  font-family: NanumSquareOTF_ac;
+  font-family: NanumSquare_ac;
 `;
 
 const ButtonText = styled.span<{ isActive?: boolean }>`

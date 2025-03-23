@@ -19,6 +19,13 @@ export default function DesktopCalendar() {
     [today],
   );
 
+  const movePrevDay = () => {
+    setDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1));
+  };
+
+  const moveNextDay = () => {
+    setDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1));
+  };
   const movePrevMonth = () => {
     setDate(new Date(date.getFullYear(), date.getMonth() - 1));
   };
@@ -31,10 +38,10 @@ export default function DesktopCalendar() {
     <Container>
       <Navigation isCalOpened={isCalOpened}>
         <Arrow
-          onClick={movePrevMonth}
+          onClick={movePrevDay}
           src={"/img/left-arrow-calendar-nav.svg"}
           height={"21px"}
-          alt="지난달로 이동"
+          alt="지난날로 이동"
         />
         <DateBox onClick={toggleCal}>
           <Icon src={"/img/calendar.svg"} />
@@ -43,10 +50,10 @@ export default function DesktopCalendar() {
           </DateText>
         </DateBox>
         <Arrow
-          onClick={moveNextMonth}
+          onClick={moveNextDay}
           src={"/img/right-arrow-calendar-nav.svg"}
           height={"21px"}
-          alt="다음달로 이동"
+          alt="다음날로 이동"
         />
       </Navigation>
       {isCalOpened && (

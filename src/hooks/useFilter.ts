@@ -130,10 +130,9 @@ export default function useFilter() {
                 restaurant.lat,
                 restaurant.lng,
               );
-              console.log(distance);
-              if (distance * 1000 > filterList.length) return false;
+              if (distance * 1000 <= filterList.length) return true;
             }
-            return true;
+            return false;
           });
         }
         // 영업 시간 기반 식당 필터링 (정보 없을 시 영업 X로 간주)
