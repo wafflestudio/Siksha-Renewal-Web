@@ -1,16 +1,20 @@
 import useFilter from "hooks/useFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "styles/slider.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { DISTANCE_FILTER_OPTIONS, PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import {
+  DISTANCE_FILTER_OPTIONS,
+  PRICE_FILTER_OPTIONS,
+  defaultFilters,
+} from "constants/filterOptions";
 import WebDistanceSlider from "./WebDistanceSlider";
-import WebPriceSlider from "./WebPriceFilter";
+import WebPriceSlider from "./WebPriceSlider";
 
 export default function RestaurantFilter() {
-  const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
+  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -52,11 +56,11 @@ export default function RestaurantFilter() {
           ? defaultFilters.length
           : selectedFilters.length,
       priceMin:
-        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.val_zero
+        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
           ? defaultFilters.priceMin
           : selectedFilters.priceMin,
       priceMax:
-        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.val_infinity
+        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
           ? defaultFilters.priceMax
           : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
@@ -77,31 +81,6 @@ export default function RestaurantFilter() {
   const handleButtonClick = useCallback((key: string, value: boolean | number) => {
     setSelectedFilters((prev) => ({ ...prev, [key]: value }));
   }, []);
-
-  const distanceText = useMemo(() => {
-    if (selectedFilters.length > 1000) return "1km 이상";
-    return selectedFilters.length === 1000 ? "1km 이내" : `${selectedFilters.length}m 이내`;
-  }, [selectedFilters.length]);
-
-  const priceText = useMemo(() => {
-    const { val_zero, val_infinity } = PRICE_FILTER_OPTIONS;
-
-    const minTxt = `${selectedFilters.priceMin}원`;
-    const maxTxt = `${selectedFilters.priceMax}원`;
-    if (selectedFilters.priceMin <= val_zero && val_infinity <= selectedFilters.priceMax) {
-      return "가격 범위 없음";
-    }
-
-    if (selectedFilters.priceMin <= val_zero) {
-      return `${maxTxt} 이하`;
-    }
-
-    if (val_infinity <= selectedFilters.priceMax) {
-      return `${minTxt} 이상`;
-    }
-
-    return `${minTxt} ~ ${maxTxt}`;
-  }, [selectedFilters.priceMin, selectedFilters.priceMax]);
 
   return (
     <Container>

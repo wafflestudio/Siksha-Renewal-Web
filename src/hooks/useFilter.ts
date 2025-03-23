@@ -4,6 +4,7 @@ import { RawMenuList } from "types";
 import { useCallback } from "react";
 import { useMemo } from "react";
 import { useStateContext } from "providers/ContextProvider";
+import { defaultFilters } from "constants/filterOptions";
 
 export type FilterList = {
   length: number;
@@ -28,17 +29,6 @@ function reviver(key: string, value: any) {
   else if (value === "-Infinity") return -Infinity;
   else return value;
 }
-
-const defaultFilters: FilterList = {
-  length: Infinity,
-  priceMin: 0,
-  priceMax: Infinity,
-  ratingMin: 0,
-  isAvailableOnly: false,
-  isReview: false,
-  category: [],
-  favorite: false,
-};
 
 /**
  * 필터 옵션을 관리하는 커스텀 훅입니다.
@@ -223,6 +213,5 @@ export default function useFilter() {
      * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
      */
     filterMenuList,
-    defaultFilters,
   };
 }

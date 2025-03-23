@@ -2,14 +2,14 @@ import Slider from "rc-slider";
 import styled from "styled-components";
 import MobilePicket from "./MobilePicket";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import { PRICE_FILTER_OPTIONS, defaultFilters } from "constants/filterOptions";
 
 interface MobilePriceSliderProps {
   priceRange?: [number, number];
   onPriceRangeChange?: ([priceMin, priceMax]: [number, number]) => void;
 }
 
-const { val_zero, min, max, val_infinity, step } = PRICE_FILTER_OPTIONS;
+const { min, max, step } = PRICE_FILTER_OPTIONS;
 
 export default function MobilePriceSlider({
   priceRange: initialPriceRange = [min, max],
@@ -35,28 +35,17 @@ export default function MobilePriceSlider({
   }, [initialPriceRange]);
 
   const priceText = useMemo(() => {
-    const minTxt = `${priceMin}원`;
-    const maxTxt = `${priceMax}원`;
-    if (priceMin <= val_zero && val_infinity <= priceMax) {
-      return "가격 범위 없음";
-    }
-
-    if (priceMin <= val_zero) {
-      return `${maxTxt} 이하`;
-    }
-
-    if (val_infinity <= priceMax) {
-      return `${minTxt} 이상`;
-    }
+    const minTxt = priceMin <= min ? `0원` : `${priceMin}원`;
+    const maxTxt = max <= priceMax ? `${PRICE_FILTER_OPTIONS.max}원 이상` : `${priceMax}원`;
 
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
 
-  const priceMinForLeft = priceMin === 0 ? val_zero : priceMin;
-  const priceMaxForLeft = priceMax === Infinity ? val_infinity : priceMax;
+  const priceMinForLeft = priceMin === 0 ? min : priceMin;
+  const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
 
-  const leftMin = ((priceMinForLeft - val_zero) / (val_infinity - val_zero)) * 100;
-  const leftMax = ((priceMaxForLeft - val_zero) / (val_infinity - val_zero)) * 100;
+  const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
+  const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
   let center = (leftMin + leftMax) / 2;
 
   const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
@@ -76,8 +65,8 @@ export default function MobilePriceSlider({
       <MobilePicket left={center} text={priceText} ref={picketRef} />
       <StyledSlider
         range
-        min={val_zero}
-        max={val_infinity}
+        min={min}
+        max={max}
         step={step}
         value={[priceMin, priceMax]}
         defaultValue={[min, max]}

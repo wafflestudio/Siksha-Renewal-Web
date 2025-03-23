@@ -6,7 +6,11 @@ import { useState, useEffect, useCallback } from "react";
 import ButtonGroup from "./ButtonGroup";
 import MobileDistanceSlider from "./MobileDistanceSlider";
 import MobilePriceSlider from "./MobilePriceSlider";
-import { DISTANCE_FILTER_OPTIONS, PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import {
+  defaultFilters,
+  DISTANCE_FILTER_OPTIONS,
+  PRICE_FILTER_OPTIONS,
+} from "constants/filterOptions";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -14,7 +18,7 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
-  const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
+  const { filterList, setFilterList, resetFilterList } = useFilter();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -56,11 +60,11 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           ? defaultFilters.length
           : selectedFilters.length,
       priceMin:
-        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.val_zero
+        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
           ? defaultFilters.priceMin
           : selectedFilters.priceMin,
       priceMax:
-        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.val_infinity
+        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
           ? defaultFilters.priceMax
           : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
@@ -108,7 +112,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
         <FilterContent>
           <MobileFilterText>영업시간</MobileFilterText>
           <div style={{ height: 14.5 }} />
-          <ButtonGroup
+          {/* <ButtonGroup
             items={[
               { label: "전체", id: "ALL" },
               { label: "영업 중", id: "AVAILABLE" },
@@ -117,7 +121,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
             onSelect={(id) => {
               handleButtonClick("isAvailableOnly", id === "AVAILABLE");
             }}
-          />
+          /> */}
         </FilterContent>
         <FilterContent>
           <MobileFilterText>리뷰</MobileFilterText>
