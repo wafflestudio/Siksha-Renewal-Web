@@ -5,6 +5,7 @@ import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ButtonGroup from "./ButtonGroup";
+import { defaultFilters } from "constants/filterOptions";
 
 interface MobileFilterRatingBottomSheetProps {
   isOpen: boolean;
@@ -15,7 +16,7 @@ export default function MobileFilterRatingBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterRatingBottomSheetProps) {
-  const { filterList, changeFilterOption, defaultFilters } = useFilter();
+  const { filterList, changeFilterOption } = useFilter();
   const [ratingMin, setRatingMin] = useState(0);
 
   useEffect(() => {
