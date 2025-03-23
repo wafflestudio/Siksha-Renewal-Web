@@ -23,9 +23,9 @@ export default function MobileFilterBar() {
     }));
   };
 
-  const handleOnClickFavorite = () => {
+  const handleOnClickIsAvailableOnly = () => {
     changeFilterOption({
-      favorite: !filterList.favorite,
+      isAvailableOnly: !filterList.isAvailableOnly,
     });
   };
 
@@ -96,13 +96,12 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.favorite} onClick={handleOnClickFavorite}>
+        <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
-          {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
-          {isSet.favorite && (
+          {isSet.isAvailableOnly && (
             <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           )}
-          <ButtonText isActive={isSet.favorite}>영업 중</ButtonText>
+          <ButtonText isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
         </Button>
         <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
           {isSet.isReview && (

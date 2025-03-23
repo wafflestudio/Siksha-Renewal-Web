@@ -2,7 +2,6 @@ import styled from "styled-components";
 import MobileBottomSheet from "./MobileBottomSheet";
 import Button from "components/general/Button";
 import useFilter from "hooks/useFilter";
-import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import { useState, useEffect, useCallback } from "react";
 import ButtonGroup from "./ButtonGroup";
 import MobileDistanceSlider from "./MobileDistanceSlider";
@@ -16,8 +15,7 @@ interface MobileFilterBottomSheetProps {
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
   const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
-  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
-  const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
+  const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
     length,
@@ -25,7 +23,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
     priceMax,
     ratingMin,
     isReview,
-    isExceptEmpty,
+    isAvailableOnly,
   });
 
   useEffect(() => {
@@ -35,9 +33,9 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       priceMax,
       ratingMin,
       isReview,
-      isExceptEmpty,
+      isAvailableOnly,
     });
-  }, [length, priceMin, priceMax, ratingMin, isReview, isExceptEmpty]);
+  }, [length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly]);
 
   const resetFilter = useCallback(() => {
     resetFilterList();
@@ -47,10 +45,9 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       priceMax: Infinity,
       ratingMin: 0,
       isReview: false,
-      isExceptEmpty: true,
+      isAvailableOnly: false,
     });
-    if (!isExceptEmpty) toggleIsExceptEmpty();
-  }, [resetFilterList, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [resetFilterList]);
 
   const onApplyFilter = useCallback(() => {
     setFilterList({
@@ -68,10 +65,10 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
+      isAvailableOnly: selectedFilters.isAvailableOnly,
     });
-    if (isExceptEmpty !== selectedFilters.isExceptEmpty) toggleIsExceptEmpty();
     onClose();
-  }, [setFilterList, selectedFilters, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [setFilterList, selectedFilters]);
 
   const handleSliderChange = useCallback((value: number | [number, number]) => {
     setSelectedFilters((prev) => {
@@ -116,9 +113,9 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
               { label: "전체", id: "ALL" },
               { label: "영업 중", id: "AVAILABLE" },
             ]}
-            selectedId={selectedFilters.isExceptEmpty ? "ALL" : "AVAILABLE"}
+            selectedId={selectedFilters.isAvailableOnly ? "AVAILABLE" : "ALL"}
             onSelect={(id) => {
-              handleButtonClick("isExceptEmpty", id === "ALL");
+              handleButtonClick("isAvailableOnly", id === "AVAILABLE");
             }}
           />
         </FilterContent>

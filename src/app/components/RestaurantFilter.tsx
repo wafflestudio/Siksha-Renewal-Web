@@ -11,8 +11,7 @@ import WebPriceSlider from "./WebPriceFilter";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
-  const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
-  const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
+  const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
     length,
@@ -20,7 +19,7 @@ export default function RestaurantFilter() {
     priceMax,
     ratingMin,
     isReview,
-    isExceptEmpty,
+    isAvailableOnly,
   });
 
   useEffect(() => {
@@ -30,9 +29,9 @@ export default function RestaurantFilter() {
       priceMax,
       ratingMin,
       isReview,
-      isExceptEmpty,
+      isAvailableOnly,
     });
-  }, [length, priceMin, priceMax, ratingMin, isReview, isExceptEmpty]);
+  }, [length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly]);
 
   const resetFilter = useCallback(() => {
     resetFilterList();
@@ -42,10 +41,9 @@ export default function RestaurantFilter() {
       priceMax: Infinity,
       ratingMin: 0,
       isReview: false,
-      isExceptEmpty: true,
+      isAvailableOnly: false,
     });
-    if (!isExceptEmpty) toggleIsExceptEmpty();
-  }, [resetFilterList, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [resetFilterList]);
 
   const applyFilter = useCallback(() => {
     setFilterList({
@@ -63,9 +61,9 @@ export default function RestaurantFilter() {
           : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
+      isAvailableOnly: selectedFilters.isAvailableOnly,
     });
-    if (isExceptEmpty !== selectedFilters.isExceptEmpty) toggleIsExceptEmpty();
-  }, [setFilterList, selectedFilters, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [setFilterList, selectedFilters]);
 
   const handleSliderChange = useCallback((value: number | [number, number]) => {
     setSelectedFilters((prev) => {
@@ -139,14 +137,14 @@ export default function RestaurantFilter() {
           <FilterText>영업시간</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={!selectedFilters.isExceptEmpty}
-              onClick={() => handleButtonClick("isExceptEmpty", false)}
+              active={!selectedFilters.isAvailableOnly}
+              onClick={() => handleButtonClick("isAvailableOnly", false)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedFilters.isExceptEmpty}
-              onClick={() => handleButtonClick("isExceptEmpty", true)}
+              active={selectedFilters.isAvailableOnly}
+              onClick={() => handleButtonClick("isAvailableOnly", true)}
             >
               영업 중
             </FilterButton>

@@ -3,12 +3,14 @@ import useLocalStorage from "./UseLocalStorage";
 import { RawMenuList } from "types";
 import { useCallback } from "react";
 import { useMemo } from "react";
+import { useStateContext } from "providers/ContextProvider";
 
 export type FilterList = {
   length: number;
   priceMin: number;
   priceMax: number;
   ratingMin: number;
+  isAvailableOnly: boolean;
   isReview: boolean;
   category: string[];
   favorite: boolean;
@@ -32,6 +34,7 @@ const defaultFilters: FilterList = {
   priceMin: 0,
   priceMax: Infinity,
   ratingMin: 0,
+  isAvailableOnly: false,
   isReview: false,
   category: [],
   favorite: false,
@@ -47,6 +50,9 @@ const defaultFilters: FilterList = {
  * }} 필터 리스트와 필터 옵션을 변경하는 함수들을 반환합니다.
  */
 export default function useFilter() {
+  // 영업 중 여부 확인을 위해 date를 불러옵니다.
+  const { date } = useStateContext();
+
   const defaultFiltersJson = JSON.stringify(defaultFilters, replacer);
 
   // localStorage가 구독되어 변화를 감지하므로, 따로 state를 만들어주기 보다는 JSON parse 결과를 바로 이용해야 합니다.
@@ -112,7 +118,8 @@ export default function useFilter() {
       const needPriceFilter = filterList.priceMin > 0 || filterList.priceMax < Infinity;
       const needRatingFilter = filterList.ratingMin > 0;
       const needReviewFilter = filterList.isReview;
-      const needFavoriteFilter = filterList.favorite;
+      const needIsAvailableOnlyFilter = filterList.isAvailableOnly;
+      // const needFavoriteFilter = filterList.favorite;
 
       const filteredList: Record<string, any> = {};
 
@@ -139,6 +146,30 @@ export default function useFilter() {
             return true;
           });
         }
+        // 영업 시간 기반 식당 필터링 (정보 없을 시 영업 X로 간주)
+        if (needIsAvailableOnlyFilter) {
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            const operatingHours = restaurant.etc?.operating_hours;
+            if (!operatingHours) return false; // 영업 시간 정보 없음 -> 영업 중
+
+            const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+            let dayKey = "weekdays"; // 기본: Weekdays (Mon-Fri)
+            if (dayOfWeek === 0) dayKey = "holiday"; // Sunday → Holiday
+            if (dayOfWeek === 6) dayKey = "saturday"; // Saturday → Saturday
+
+            const timeRanges: string[] = operatingHours[dayKey] || [];
+            if (!timeRanges.length) return false; // 금일 영업 시간 정보 없음 → 영업 중
+
+            const currentTime = date.toTimeString().slice(0, 5); // "HH:mm"
+
+            // 주어진 영업 시간대 중 하나라도 현재 시간 포함 시 true
+            return timeRanges.some((range) => {
+              const [openTime, closeTime] = range.split("-");
+              return currentTime >= openTime && currentTime <= closeTime;
+            });
+          });
+        }
         // 가격, 평점, 리뷰, 즐겨찾기 등 필터링
         filteredList[key].forEach((restaurant) => {
           if (!restaurant.menus) return;
@@ -150,7 +181,7 @@ export default function useFilter() {
               return false;
             if (needRatingFilter && (menu.rating ?? 0) < filterList.ratingMin) return false;
             if (needReviewFilter && menu.review_cnt === 0) return false;
-            if (needFavoriteFilter && !menu.favorite) return false;
+            // if (needFavoriteFilter && !menu.favorite) return false;
 
             return true;
           });
