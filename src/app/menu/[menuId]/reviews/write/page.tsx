@@ -192,7 +192,7 @@ const Container = styled(OneColumnLayout.Container)`
     width: 100vw;
     min-width: 0;
     box-sizing: border-box;
-    padding-top: 0;
+    padding-top: 44px;
     flex: 1;
   }
 `;
