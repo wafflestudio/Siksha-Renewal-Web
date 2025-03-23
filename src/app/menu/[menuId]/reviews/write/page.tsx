@@ -182,7 +182,7 @@ const Container = styled(OneColumnLayout.Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px;
+  padding: 24px; 
 
   border-radius: 10px;
   background: var(--Color-Foundation-base-white, #FFF);
