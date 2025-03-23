@@ -1,0 +1,83 @@
+import Slider from "rc-slider";
+import styled from "styled-components";
+import WebPicket from "./WebPicket";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { DISTANCE_FILTER_OPTIONS } from "constants/filterOptions";
+
+interface WebDistanceSliderProps {
+  length: number;
+  onLengthChange?: (length: number) => void;
+}
+
+const { min, max, val_infinity, step } = DISTANCE_FILTER_OPTIONS;
+
+export default function WebDistanceSlider({
+  length: initialLength,
+  onLengthChange,
+}: WebDistanceSliderProps) {
+  const [length, setLength] = useState(initialLength);
+
+  const picketRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [picketWidth, setPicketWidth] = useState(0);
+  const [sliderWidth, setSliderWidth] = useState(0);
+
+  useEffect(() => {
+    if (picketRef.current && sliderRef.current) {
+      setPicketWidth(picketRef.current.offsetWidth);
+      setSliderWidth(sliderRef.current.offsetWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    setLength(initialLength);
+  }, [initialLength]);
+
+  const distanceText = useMemo(() => {
+    if (val_infinity <= length) {
+      return `1km 이상`;
+    }
+    return length === 1000 ? "1km 이내" : `${length}m 이내`;
+  }, [length]);
+
+  const lengthForLeft = length === Infinity ? val_infinity : length;
+
+  let left = ((lengthForLeft - min) / (val_infinity - min)) * 100;
+  const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
+
+  // 피켓이 슬라이더를 벗어나지 않도록 제한
+  const maxLeft = 100 - halfPicketPercent; // 슬라이더 오른쪽 끝 제한
+  const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
+  left = Math.max(minLeft, Math.min(left, maxLeft));
+
+  const handleSliderChange = (value: number) => {
+    onLengthChange?.(value);
+    setLength(value);
+  };
+
+  return (
+    <SliderWrapper ref={sliderRef}>
+      <WebPicket left={left} text={distanceText} ref={picketRef} />
+      <StyledSlider
+        min={min}
+        max={val_infinity}
+        step={step}
+        value={length}
+        defaultValue={max}
+        onChange={handleSliderChange}
+      />
+    </SliderWrapper>
+  );
+}
+
+const SliderWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  margin-top: 28px;
+  gap: 6.5px;
+`;
+
+const StyledSlider = styled(Slider)`
+  margin: auto 10px auto auto;
+`;

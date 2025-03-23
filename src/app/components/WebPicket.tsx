@@ -40,8 +40,7 @@ const PicketText = styled.div`
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 15.4px */
 
-  /* white-space: nowrap;
-  height: 25px; */
+  white-space: nowrap;
 `;
 
 const PicketBottom = styled.img`
