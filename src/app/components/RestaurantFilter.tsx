@@ -6,6 +6,7 @@ import "styles/slider.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { DISTANCE_FILTER_OPTIONS, PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import WebPicket from "./WebPicket";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList, defaultFilters } = useFilter();
@@ -115,42 +116,40 @@ export default function RestaurantFilter() {
       <Filter>
         <SliderBox>
           <SliderContent>
-            <PicketBox>
-              <PicketText>{distanceText}</PicketText>
-              <PicketBottom src={"/img/picket-bottom.svg"} />
-            </PicketBox>
-            <ContentBar gap={16}>
+            <ContentBar gap={16} alignItems="end">
               <FilterText>거리</FilterText>
-              <Slider
-                style={{ margin: "auto 10px auto auto" }}
-                min={DISTANCE_FILTER_OPTIONS.min}
-                max={DISTANCE_FILTER_OPTIONS.val_infinity}
-                step={DISTANCE_FILTER_OPTIONS.step}
-                value={selectedFilters.length}
-                defaultValue={1050}
-                onChange={(value: number) => handleSliderChange(value)}
-              />
+              <SliderWrapper>
+                <WebPicket text={distanceText} />
+                <StyledSlider
+                  style={{ margin: "auto 10px auto auto" }}
+                  min={DISTANCE_FILTER_OPTIONS.min}
+                  max={DISTANCE_FILTER_OPTIONS.val_infinity}
+                  step={DISTANCE_FILTER_OPTIONS.step}
+                  value={selectedFilters.length}
+                  defaultValue={1050}
+                  onChange={(value: number) => handleSliderChange(value)}
+                />
+              </SliderWrapper>
             </ContentBar>
           </SliderContent>
           <SliderContent>
-            <PicketBox>
-              <PicketText>{priceText}</PicketText>
-              <PicketBottom src={"/img/picket-bottom.svg"} />
-            </PicketBox>
-            <ContentBar gap={16}>
+            <ContentBar gap={16} alignItems="end">
               <FilterText>가격</FilterText>
-              <Slider
-                style={{ margin: "auto 10px auto auto" }}
-                range
-                min={PRICE_FILTER_OPTIONS.val_zero}
-                max={PRICE_FILTER_OPTIONS.val_infinity}
-                step={PRICE_FILTER_OPTIONS.step}
-                value={[selectedFilters.priceMin, selectedFilters.priceMax]}
-                defaultValue={[2000, 8000]}
-                onChange={([valueMin, valueMax]: [number, number]) =>
-                  handleSliderChange([valueMin, valueMax])
-                }
-              />
+              <SliderWrapper>
+                <WebPicket text={priceText} />
+                <StyledSlider
+                  style={{ margin: "auto 10px auto auto" }}
+                  range
+                  min={PRICE_FILTER_OPTIONS.val_zero}
+                  max={PRICE_FILTER_OPTIONS.val_infinity}
+                  step={PRICE_FILTER_OPTIONS.step}
+                  value={[selectedFilters.priceMin, selectedFilters.priceMax]}
+                  defaultValue={[2000, 8000]}
+                  onChange={([valueMin, valueMax]: [number, number]) =>
+                    handleSliderChange([valueMin, valueMax])
+                  }
+                />
+              </SliderWrapper>
             </ContentBar>
           </SliderContent>
         </SliderBox>
@@ -278,12 +277,6 @@ const SliderBox = styled.div`
   gap: 12px;
 `;
 
-const PicketBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const SliderContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -292,32 +285,20 @@ const SliderContent = styled.div`
   gap: 4px;
 `;
 
-const PicketText = styled.div`
+const StyledSlider = styled(Slider)``;
+
+const SliderWrapper = styled.div`
+  position: relative;
+  width: 100%;
   display: flex;
-  padding: 2px 4px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
-  color: var(--Color-Foundation-gray-800, #4c4d50);
-
-  text-align: center;
-  font-size: var(--Font-size-11, 11px);
-  font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 15.4px */
+  margin-top: 28px;
+  gap: 6.5px;
 `;
 
-const PicketBottom = styled.img`
-  width: 6px;
-  height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f2f3f4);
-`;
-
-const ContentBar = styled.div<{ gap: number }>`
+const ContentBar = styled.div<{ gap: number; alignItems?: string }>`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: ${(props) => props.alignItems ?? "center"};
   justify-content: space-between;
   gap: ${(props) => props.gap}px;
 `;
