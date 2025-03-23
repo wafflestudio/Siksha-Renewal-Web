@@ -1,9 +1,9 @@
 // src/constants/priceFilterOptions.ts
 export const PRICE_FILTER_OPTIONS = {
-  val_zero: 2500,
+  val_zero: 3000,
   min: 3000,
   max: 10000,
-  val_infinity: 10500,
+  val_infinity: 10000,
   step: 500,
 };
 
