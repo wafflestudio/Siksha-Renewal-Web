@@ -67,7 +67,6 @@ const Container = styled.div<{ show: boolean }>`
 
   max-height: 266px;
   background: white;
-  overflow-y: scroll;
   box-sizing: border-box;
   gap: 22px;
 `;
