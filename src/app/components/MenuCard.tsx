@@ -188,7 +188,6 @@ const TitleContainer = styled.div`
   align-self: center;
 
   @media (max-width: 1000px) {
-    flex-direction: column;
     align-self: start;
   }
 `;
@@ -240,18 +239,16 @@ const ButtonIcon = styled.img`
 `;
 
 const Name = styled.div`
-  font-weight: 800;
+  color: var(--Color-Foundation-gray-900, #262728);
 
-  @media (min-width: 769px) {
-    color: var(--Color-Foundation-gray-900);
-    font-size: 20px;
-    line-height: 140%; /* 28px */
-  }
+  /* text-18/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-18, 18px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 25.2px */
 
   @media (max-width: 768px) {
-    font-size: 15px;
-    line-height: 17px;
-    color: var(--Color-Foundation-orange-500);
     white-space: normal;
   }
 `;
