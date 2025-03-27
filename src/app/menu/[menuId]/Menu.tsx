@@ -79,8 +79,11 @@ export default function Menu({ menuId }: { menuId: number }) {
   }, [reviews]);
 
   const handleReviewPostButtonClick = () => {
-    if (authStatus !== "login")
+    if (authStatus !== "login") {
       openLoginModal();
+    } else {
+      router.push(`/menu/${menuId}/reviews/write`);
+    }
   };
 
   const handleReviewListPage = (isOpen: boolean) => {
