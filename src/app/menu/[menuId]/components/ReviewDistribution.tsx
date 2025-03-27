@@ -162,6 +162,7 @@ const DistributionChart = styled.div`
 
 const Label = styled.label`
   width: 36px;
+  text-align: center;
 
   color: var(--Color-Foundation-gray-700, #727478);
   
