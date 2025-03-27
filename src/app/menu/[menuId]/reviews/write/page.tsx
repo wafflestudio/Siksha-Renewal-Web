@@ -9,6 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
+import { getParticle } from "utils/FormatUtil";
 
 export type ReviewInputs = {
   score: number;
@@ -95,7 +96,7 @@ export default function ReviewPost() {
         <Header>
           <ReviewTitle>
             &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
-            <ReviewTitleText>는 어땠나요?</ReviewTitleText>
+            <ReviewTitleText>{getParticle(menu?.name_kr ?? "")} 어땠나요?</ReviewTitleText>
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
