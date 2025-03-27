@@ -200,7 +200,7 @@ const MoreImages = styled.button`
 `;
 
 const NoReviewMessage = styled.div`
-  height: var(--image-height);
+  height: 160px;
   width: 100%;
 
   color: var(--Color-Foundation-gray-700, #727478);

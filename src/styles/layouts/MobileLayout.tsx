@@ -4,6 +4,7 @@ const Container = styled.div`
   box-sizing: border-box;
   display: none; /* 모바일 전용 layout */
   height: 100%;
+  width: 100%;
   flex-direction: column;
 
   @media (max-width: 768px) {

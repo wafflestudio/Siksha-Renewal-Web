@@ -86,6 +86,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   @media (max-width: 768px) {
+    display: flex;
     flex: 1;
   }
 `;

@@ -57,11 +57,9 @@ export default function NonFavoriteOrderSetting() {
   return (
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <Container>
-          <RestaurantOrderEditor order={orderList} reorder={reorder} />
-        </Container>
-      </AccountLayout>
+      <Container>
+        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+      </Container>
     </>
   );
 }

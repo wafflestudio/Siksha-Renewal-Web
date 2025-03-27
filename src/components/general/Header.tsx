@@ -71,6 +71,7 @@ const DesktopContainer = styled(TwoColumnLayout.Container)`
   align-items: center;
   flex-shrink: 0;
   align-self: stretch;
+  margin-top: 0;
 `;
 
 const MobileContainer = styled.div`

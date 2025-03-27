@@ -39,13 +39,11 @@ export default function MyPost() {
     return (
       <>
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
-        <AccountLayout>
-          <Container>
-            <Header>내가 쓴 글</Header>
-            <PostList posts={posts} fetch={fetchMyPosts} />
-            {posts.length >= 1 ? <BreakLine /> : null}
-          </Container>
-        </AccountLayout>
+        <Container>
+          <Header>내가 쓴 글</Header>
+          <PostList posts={posts} fetch={fetchMyPosts} />
+          {posts.length >= 1 ? <BreakLine /> : null}
+        </Container>
       </>
     );
 }
@@ -60,7 +58,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding-top: 24px;
+    margin-top: -4px;
     border: 0;
   }
 `;
