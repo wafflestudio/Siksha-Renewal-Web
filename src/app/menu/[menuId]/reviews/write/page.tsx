@@ -163,12 +163,10 @@ export default function ReviewPost() {
         
         <Footer>
           <ReviewCancelButton
-            onClick={() => { }}
+            onClick={() => {router.back()}}
           />
           <ReviewPostButton
-            onClick={() => {
-              handleSubmit();
-            }}
+            onClick={() => {handleSubmit()}}
             disabled={inputs.comment.length === 0}
           />
         </Footer>
