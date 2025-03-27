@@ -13,6 +13,8 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useError from "hooks/useError";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
+import MobileLayout from "styles/layouts/MobileLayout";
 
 export interface MenuType {
   id: number;
@@ -101,8 +103,8 @@ export default function Menu({ menuId }: { menuId: number }) {
 
     async function fetchData() {
       Promise.all([fetchMenu(), fetchReviews()])
-        .then(() => {})
-        .catch((e) => {})
+        .then(() => { })
+        .catch((e) => { })
         .finally(() => setLoading(false));
     }
     fetchData();
@@ -155,81 +157,80 @@ export default function Menu({ menuId }: { menuId: number }) {
     <>
       {!isLoading && !!menu && (
         <>
-          <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
-          <Background>
-            <Info>
-              <MenuSection
-                menu={menu}
-                reviewsTotalCount={reviews.total_count}
-                images={images}
-                handleReviewPostButtonClick={handleReviewPostButtonClick}
-                isReviewListPageOpen={isReviewListPageOpen}
+          <DesktopContainer>
+            {isReviewPostModalOpen ? (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id
+                }}
+                onSubmit={fetchReviews}
+                onClose={() => handleReviewPostModal(false)}
               />
-              <MobileHLine $isReviewListPageOpen={isReviewListPageOpen} />
-              {isReviewPostModalOpen ? (
-                <ReviewPostModal
-                  isOpen={isReviewPostModalOpen}
-                  menu={{
-                    menuName: menu.name_kr,
-                    menuId: menu.id,
-                  }}
-                  onSubmit={fetchReviews}
-                  onClose={() => handleReviewPostModal(false)}
-                />
-              ) : (
-                <ReviewSection
+            ) : (
+              <>
+                <LeftSide>
+                  <MenuSection
+                    menu={menu}
+                    reviewsTotalCount={reviews.total_count}
+                    images={images}
+                    handleReviewPostButtonClick={handleReviewPostButtonClick}
+                    isReviewListPageOpen={isReviewListPageOpen}
+                  />
+                </LeftSide>
+                <RightSide>
+                  <ReviewSection
+                    reviews={reviews}
+                    isReviewListPageOpen={isReviewListPageOpen}
+                    handleReviewListPage={handleReviewListPage}
+                  />
+                </RightSide>
+              </>
+            )}
+          </DesktopContainer>
+          <MobileContainer>
+            <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
+            {isReviewPostModalOpen ? (
+              <ReviewPostModal
+                isOpen={isReviewPostModalOpen}
+                menu={{
+                  menuName: menu.name_kr,
+                  menuId: menu.id
+                }}
+                onSubmit={fetchReviews}
+                onClose={() => handleReviewPostModal(false)}
+              />
+            ) : (
+              <>
+                <MenuSection
                   menu={menu}
-                  reviews={reviews}
+                  reviewsTotalCount={reviews.total_count}
                   images={images}
-                  isReviewListPageOpen={isReviewListPageOpen}
                   handleReviewPostButtonClick={handleReviewPostButtonClick}
+                  isReviewListPageOpen={isReviewListPageOpen}
+                />
+                <ReviewSection
+                  reviews={reviews}
+                  isReviewListPageOpen={isReviewListPageOpen}
                   handleReviewListPage={handleReviewListPage}
                 />
-              )}
-            </Info>
-          </Background>
-          <MobileNavigationBar />
+              </>
+            )}
+            <MobileNavigationBar />
+          </MobileContainer>
         </>
       )}
     </>
   );
 }
 
-const Background = styled.div`
-  background-color: white;
-  overflow: scroll;
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    height: 100%;
-    flex-direction: column;
-  }
+const DesktopContainer = styled(TwoColumnLayout.Container)`
+  margin-top: 22px;
 `;
 
-const Info = styled.div`
-  position: relative;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  height: max(809px, calc(100vh - 271px));
-  width: 100%;
-  margin: 0 auto;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    height: max(724px, calc(100vh - 60px));
-    width: 100%;
-    margin: 0;
-  }
-`;
+const LeftSide = styled(TwoColumnLayout.Left)``;
 
-const MobileHLine = styled.div<{ $isReviewListPageOpen: boolean }>`
-  display: none;
-  background: #9191911a;
-  padding: 5px 0;
-  margin-bottom: 16px;
-  @media (max-width: 768px) {
-    display: inherit;
-  }
-  ${(props) => props.$isReviewListPageOpen && `display:none;`}
-`;
+const RightSide = styled(TwoColumnLayout.Right)``;
+
+const MobileContainer = styled(MobileLayout.Container)``;

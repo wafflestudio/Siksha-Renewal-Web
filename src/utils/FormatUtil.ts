@@ -3,6 +3,13 @@ export function formatDate(date) {
   return `${formatISODate(date)} (${week[date.getDay()]})`;
 }
 
+export function formatReviewDate(dateString) {
+  // format from "2021-08-01" to "2021년 08월 01일"
+  const [ year, month, day ] = dateString.split("-");
+  return `${year}년 ${month}월 ${day}일`;
+}
+
+
 export function formatWeekday(date) {
   const week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   return week[date.getDay()];
