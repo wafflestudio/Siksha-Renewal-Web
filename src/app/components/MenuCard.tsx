@@ -194,6 +194,7 @@ const TitleContainer = styled.div`
 
 const InfoContainer = styled.div`
   display: flex;
+  min-width: 372px;
   flex-direction: row;
   justify-content: space-between;
 
