@@ -103,8 +103,8 @@ export default function Home() {
 
 const DesktopContainer = styled(TwoColumnLayout.Container)`
   display: flex;
+  height: 948px;
   justify-content: center;
-  height: calc(100vh - 92px);
 
   @media (max-width: 900px) {
     padding: 0 16px;
