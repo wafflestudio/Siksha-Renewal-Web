@@ -113,8 +113,8 @@ const Container = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 0 0 10px 0;
-    align-items: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
   }
 `;
 
@@ -131,8 +131,6 @@ const MenuName = styled.div`
     color: black;
     font-size: 14px;
     line-height: 21px;
-    padding-right: 7px;
-    padding-top: 2px;
     font-weight: 400;
   }
 `;
@@ -140,9 +138,11 @@ const MenuName = styled.div`
 const MenuInfo = styled.div`
   display: flex;
   align-items: center;
+  gap: 6px;
 
-  @media (min-width: 769px) {
-    gap: 6px;
+  @media (max-width: 768px) {
+    height: 24px;
+    gap: 16px;
   }
 `;
 
@@ -175,12 +175,16 @@ const Price = styled.div`
   @media (max-width: 768px) {
     display: flex;
     justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
-    font-size: 14px;
-    line-height: 16px;
-    width: 45px;
-    padding-right: 12px;
-    padding-top: 1px;
-    font-weight: 400;
+    
+    color: var(--Color-Foundation-base-black, #000);
+    text-align: center;
+
+    /* text-14/Regular */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-14, 14px);
+    font-style: normal;
+    font-weight: var(--Font-weight-regular, 400);
+    line-height: 150%; /* 21px */
   }
 `;
 
@@ -205,9 +209,17 @@ const Rate = styled.div`
   }
 
   @media (max-width: 768px) {
-    line-height: 16px;
-    width: 42px;
-    height: 17.5px;
+    width: 23px;
+
+    color: var(--Color-Foundation-base-black, #000);
+    text-align: center;
+
+    /* text-14/Regular */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-14, 14px);
+    font-style: normal;
+    font-weight: var(--Font-weight-regular, 400);
+    line-height: 150%; /* 21px */
   }
 `;
 
@@ -246,12 +258,6 @@ const CountIcon = styled.img`
   height: 24px;
   cursor: pointer;
   z-index: 0;
-
-  @media (max-width: 768px) {
-    padding-left: 12px;
-    width: 18px;
-    height: 18px;
-  }
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

@@ -1,3 +1,6 @@
+`use client`;
+import { useRef, useState } from "react";
+
 import styled from "styled-components";
 import Menu from "app/components/Menu";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
@@ -7,6 +10,7 @@ import { sanitizeCssSelector } from "utils/FormatUtil";
 import OperatingHour from "./OperatingHour";
 import { RawMenu, RawRestaurant } from "types";
 import getCurrentOperatingHours from "utils/getCurrentOperatingHours";
+import { useEffect } from "react";
 
 type Data = RawRestaurant & {
   menus: RawMenu[];
@@ -22,7 +26,7 @@ export default function MenuCard({ data }: { data: Data }) {
   return (
     <>
       <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <HeaderContainer>
+        <HeaderContainer isColumn={true}>
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
@@ -75,37 +79,41 @@ export default function MenuCard({ data }: { data: Data }) {
         </MenuInfo>
       </DesktopContainer>
       <MobileContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <RestInfo>
-          <HeaderContainer>
+        <HeaderContainer isColumn={false}>
+          <TitleContainer>
             <Name>{data.name_kr}</Name>
-            <ButtonIcon
-              src={"/img/info.svg"}
-              onClick={() => {
-                setInfoData(data);
-                toggleShowInfo();
-              }}
-              alt="정보"
-            />
-            {isFavorite(data.id) ? (
+            <TitleIconList>
               <ButtonIcon
-                src="/img/general/star-on.svg"
-                onClick={() => toggleFavorite(data.id)}
-                alt="좋아요"
+                src={"/img/info.svg"}
+                onClick={() => {
+                  setInfoData(data);
+                  toggleShowInfo();
+                }}
+                alt="정보"
               />
-            ) : (
-              <ButtonIcon
-                src="/img/general/star-off-24.svg"
-                onClick={() => toggleFavorite(data.id)}
-                alt=""
-              />
-            )}
-          </HeaderContainer>
-          <MenuInfoLabels>
-            <div style={{ width: "45px", textAlign: "center", paddingRight: "12px" }}>Price</div>
-            <div style={{ width: "42px", textAlign: "center", paddingRight: "9px" }}>Rate</div>
-            <div>Like</div>
-          </MenuInfoLabels>
-        </RestInfo>
+              {isFavorite(data.id) ? (
+                <ButtonIcon
+                  src="/img/general/star-on.svg"
+                  onClick={() => toggleFavorite(data.id)}
+                  alt="좋아요"
+                />
+              ) : (
+                <ButtonIcon
+                  src="/img/general/star-off-24.svg"
+                  onClick={() => toggleFavorite(data.id)}
+                  alt=""
+                />
+              )}
+            </TitleIconList>
+          </TitleContainer>
+          <InfoContainer>
+            <HeaderDataList>
+              <HeaderDataText>Price</HeaderDataText>
+              <HeaderDataText>Rate</HeaderDataText>
+              <HeaderDataText>Like</HeaderDataText>
+            </HeaderDataList>
+          </InfoContainer>
+        </HeaderContainer>
         <HLine />
         <Menus>
           {data.menus.map((menu) => (
@@ -158,26 +166,21 @@ const MobileContainer = styled.div`
     box-sizing: border-box;
     border-radius: 8px;
     width: 95vw;
-    margin-bottom: 16px;
-    padding: 0 16px;
+    padding: 18px 14px 0;
   }
 `;
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ isColumn: boolean }>`
   display: flex;
+  flex-direction: ${(props) => (props.isColumn ? "column" : "row")};
+  align-items: ${(props) => (props.isColumn ? "start" : "center")};
+  align-self: stretch;
+  gap: 8px;
+  flex-wrap: wrap;
 
-  @media (min-width: 1001px) {
-    gap: 8px;
-    align-items: end;
+  @media (max-width: 768px) {
+    gap: 11px;
     justify-content: space-between;
-  }
-
-  @media (min-width: 769px) and (max-width: 1000px) {
-    flex-direction: column;
-  }
-
-  @media (min-width: 769px) {
-    width: 100%;
   }
 `;
 
@@ -185,37 +188,52 @@ const TitleContainer = styled.div`
   display: flex;
   gap: 8px;
   flex-grow: 0;
-  align-self: center;
 
   @media (max-width: 1000px) {
-    align-self: start;
+    gap: 6px;
   }
 `;
 
 const InfoContainer = styled.div`
   display: flex;
-  min-width: 372px;
   flex-direction: row;
+  align-self: stretch;
   justify-content: space-between;
 
   @media (min-width: 1001px) {
     flex-grow: 1;
   }
+
+  @media (max-width: 768px) {
+    min-width: 0;
+    align-items: flex-start;
+  }
 `;
 
 const HeaderDataList = styled.div`
   display: flex;
+  align-items: center;
+  align-self: stretch;
   gap: 6px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
 `;
 
 const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
   width: 58px;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-orange-500, #FF9522);
   text-align: center;
-  font-size: 13px;
+
+  /* text-13/Regular */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-13, 13px);
   font-style: normal;
-  font-weight: 400;
-  line-height: 150%; /* 19.5px */
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 140%; /* 18.2px */
+
+  margin: 0;
 
   @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
     width: 24px;
@@ -223,6 +241,10 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
 
   @media ${(props) => `(max-width: ${props.disableWidth ?? 0}px)`} {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: fit-content;
   }
 `;
 
@@ -233,9 +255,8 @@ const ButtonIcon = styled.img`
 
   /* App버전을 참고한 디자인 */
   @media (max-width: 768px) {
-    width: 17px;
-    height: 16px;
-    margin: 0 0 2.5px 8px;
+    width: 20px;
+    height: 20px;
   }
 `;
 
@@ -257,10 +278,7 @@ const Name = styled.div`
 const TitleIconList = styled.div`
   display: flex;
   gap: 4px;
-
-  @media (min-width: 769px) {
-    align-items: center;
-  }
+  align-items: center;
 `;
 
 const MenuInfoLabels = styled.div`
@@ -277,12 +295,11 @@ const HLine = styled.div`
   height: 2px;
   align-self: stretch;
   background: var(--Color-Foundation-orange-500);
+  margin: 8px 0 14px;
 
   @media (max-width: 768px) {
-    margin: 10px 0;
     width: calc(95vw - 32px);
     height: 1px;
-    margin: 8.5px 0;
   }
 `;
 
@@ -300,14 +317,9 @@ const Menus = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-top: 14px;
 
   @media (min-width: 769px) {
     gap: 10px;
     width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    padding: 6px 0 3px 0;
   }
 `;
