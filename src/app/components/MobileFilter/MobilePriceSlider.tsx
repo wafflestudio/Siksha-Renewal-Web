@@ -25,16 +25,32 @@ export default function MobilePriceSlider({
 
   const [isMounted, setIsMounted] = useState(false);
 
+  // Calculate dimensions after mount and window resize
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (picketRef.current && sliderRef.current) {
-      setPicketWidth(picketRef.current.offsetWidth);
-      setSliderWidth(sliderRef.current.offsetWidth);
+    function updateDimensions() {
+      if (sliderRef.current) {
+        setSliderWidth(sliderRef.current.clientWidth);
+      }
+      if (picketRef.current) {
+        setPicketWidth(picketRef.current.offsetWidth);
+      }
+      setIsMounted(true);
     }
-  }, [isMounted]);
+    
+    // Call once after initial render
+    updateDimensions();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+    
+    // Use a timeout to ensure DOM has fully rendered
+    const timeoutId = setTimeout(updateDimensions, 0);
+    
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     setPriceRange(initialPriceRange);
