@@ -26,7 +26,7 @@ export default function MenuCard({ data }: { data: Data }) {
   return (
     <>
       <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <HeaderContainer isColumn={true}>
+        <HeaderContainer>
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
@@ -79,7 +79,7 @@ export default function MenuCard({ data }: { data: Data }) {
         </MenuInfo>
       </DesktopContainer>
       <MobileContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <HeaderContainer isColumn={false}>
+        <HeaderContainer>
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
@@ -170,13 +170,11 @@ const MobileContainer = styled.div`
   }
 `;
 
-const HeaderContainer = styled.div<{ isColumn: boolean }>`
+const HeaderContainer = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.isColumn ? "column" : "row")};
-  align-items: ${(props) => (props.isColumn ? "start" : "center")};
-  align-self: stretch;
-  gap: 8px;
   flex-wrap: wrap;
+  width: 100%;
+  gap: 8px;
 
   @media (max-width: 768px) {
     gap: 11px;
@@ -187,7 +185,6 @@ const HeaderContainer = styled.div<{ isColumn: boolean }>`
 const TitleContainer = styled.div`
   display: flex;
   gap: 8px;
-  flex-grow: 0;
 
   @media (max-width: 1000px) {
     gap: 6px;
@@ -196,6 +193,8 @@ const TitleContainer = styled.div`
 
 const InfoContainer = styled.div`
   display: flex;
+  flex: 1 1 auto;
+  min-width: 372px;
   flex-direction: row;
   align-self: stretch;
   justify-content: space-between;
@@ -204,8 +203,11 @@ const InfoContainer = styled.div`
     flex-grow: 1;
   }
 
+  @media (max-width: 900px) {
+    min-width: 100%;
+  }
+
   @media (max-width: 768px) {
-    min-width: 0;
     align-items: flex-start;
   }
 `;
@@ -262,6 +264,9 @@ const ButtonIcon = styled.img`
 
 const Name = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 
   /* text-18/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquareOTF);
