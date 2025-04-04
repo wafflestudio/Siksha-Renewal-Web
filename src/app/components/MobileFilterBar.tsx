@@ -59,7 +59,7 @@ export default function MobileFilterBar() {
           onClose={() => setFilterState("category", false)}
         /> */}
         <Image
-          src="img/filter-icon.svg"
+          src="/img/filter-icon.svg"
           alt="필터 아이콘"
           width={33.586}
           height={34}
