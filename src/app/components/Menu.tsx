@@ -163,16 +163,20 @@ const Price = styled.div`
   font-weight: 400;
   width: 58px;
 
-  @media (min-width: 769px) {
-    color: var(--Color-Foundation-gray-900);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.3px;
-  }
+  color: var(--Color-Foundation-gray-900, #262728);
+  text-align: center;
+
+  /* text-14/Regular */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 150%; /* 21px */
 
   @media (max-width: 768px) {
+    width: fit-content;
+    min-width: 28px;
+
     display: flex;
     justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
     

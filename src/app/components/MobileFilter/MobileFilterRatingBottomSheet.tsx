@@ -84,7 +84,7 @@ const RatingContent = ({ value }: { value: string }) => {
   return (
     <RatingContentWrapper>
       {value}
-      <StarIcon src="/img/general/star-on-orange.svg" />
+      <StarIcon src="/img/general/star-on.svg" />
     </RatingContentWrapper>
   );
 };

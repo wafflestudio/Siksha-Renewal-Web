@@ -45,19 +45,21 @@ export default function RestaurantList() {
         <Title>식당 찾기</Title>
         <Pagination>
           <Image
-            src={"/img/left-arrow-grey.svg"}
+            src={ (page === 1) ? "/img/left-arrow-darkgrey-inactive.svg" : "/img/left-arrow-darkgrey.svg"}
             width={20}
             height={20}
             alt={"이전 식당 페이지"}
             onClick={prevPage}
+            style={{ cursor: page === 1 ? "default" : "pointer" }}
           />
           <Page>{`${page}/${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
           <Image
-            src={"/img/right-arrow-darkgrey.svg"}
+            src={(page === Math.ceil(favoriteFirstRestaurants.length / 10)) ? "/img/right-arrow-darkgrey-inactive.svg" : "/img/right-arrow-darkgrey.svg"}
             width={20}
             height={20}
             alt={"다음 식당 페이지"}
             onClick={nextPage}
+            style={{ cursor: page === Math.ceil(favoriteFirstRestaurants.length / 10) ? "default" : "pointer" }}
           />
         </Pagination>
       </Header>
@@ -72,13 +74,13 @@ export default function RestaurantList() {
                 </RestaurantName>
                 {isFavorite(restaurant.id) ? (
                   <Star
-                    src="/img/general/star-on-orange.svg"
+                    src="/img/general/star-on.svg"
                     onClick={() => toggleFavorite(restaurant.id)}
                     alt="좋아요"
                   />
                 ) : (
                   <Star
-                    src="/img/general/star-empty-orange.svg"
+                    src="/img/general/star-off-20.svg"
                     onClick={() => toggleFavorite(restaurant.id)}
                     alt=""
                   />

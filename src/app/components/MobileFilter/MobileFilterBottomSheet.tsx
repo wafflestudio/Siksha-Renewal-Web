@@ -147,7 +147,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
                 label: (
                   <div>
                     3.5
-                    <StarIcon src="/img/general/star-on-orange.svg" />
+                    <StarIcon src="/img/general/star-on.svg" />
                   </div>
                 ),
                 id: "3.5",
@@ -156,7 +156,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
                 label: (
                   <div>
                     4.0
-                    <StarIcon src="/img/general/star-on-orange.svg" />
+                    <StarIcon src="/img/general/star-on.svg" />
                   </div>
                 ),
                 id: "4",
@@ -165,7 +165,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
                 label: (
                   <div>
                     4.5
-                    <StarIcon src="/img/general/star-on-orange.svg" />
+                    <StarIcon src="/img/general/star-on.svg" />
                   </div>
                 ),
                 id: "4.5",
