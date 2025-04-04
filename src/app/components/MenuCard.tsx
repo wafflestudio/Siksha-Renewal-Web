@@ -1,3 +1,5 @@
+'use client'
+
 import styled from "styled-components";
 import Menu from "app/components/Menu";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
