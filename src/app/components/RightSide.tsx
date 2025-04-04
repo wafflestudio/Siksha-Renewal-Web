@@ -16,7 +16,6 @@ const Container = styled(TwoColumnLayout.Right)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   box-sizing: border-box;
   max-width: 818px;
   flex-grow: 1;

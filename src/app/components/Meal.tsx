@@ -48,21 +48,18 @@ export default function Meal() {
 
 const Container = styled.div`
   display: flex;
-  align-self: center;
+  width: 100%;
+  max-width: 400px;
   padding: 0px 50px;
   justify-content: space-between;
   align-items: center;
-
-  @media (min-width: 769px) {
-    max-width: 400px;
-    align-self: center;
-    margin-bottom: 14px;
-  }
+  margin-bottom: 14px;
 
   @media (max-width: 768px) {
     justify-content: center;
     align-items: flex-end;
     padding: 15.28px 0 17px;
+    margin-bottom: 0;
   }
 `;
 
