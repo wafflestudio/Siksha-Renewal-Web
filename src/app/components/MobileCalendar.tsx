@@ -27,9 +27,9 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
       style={`
         display: none;
         width: 100vw;
-        height: calc(100vh - 113px);
+        height: calc(100vh - 97px);
         position: absolute;
-        top: 113px;
+        top: 97px;
 
         @media (max-width: 768px) {
           display: initial;
