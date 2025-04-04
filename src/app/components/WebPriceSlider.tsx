@@ -25,16 +25,32 @@ export default function WebPriceSlider({
 
   const [isMounted, setIsMounted] = useState(false);
 
+  // Calculate dimensions after mount and window resize
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (picketRef.current && sliderRef.current) {
-      setPicketWidth(picketRef.current.offsetWidth);
-      setSliderWidth(sliderRef.current.offsetWidth);
+    function updateDimensions() {
+      if (sliderRef.current) {
+        setSliderWidth(sliderRef.current.clientWidth);
+      }
+      if (picketRef.current) {
+        setPicketWidth(picketRef.current.offsetWidth);
+      }
+      setIsMounted(true);
     }
-  }, [isMounted]);
+    
+    // Call once after initial render
+    updateDimensions();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+    
+    // Use a timeout to ensure DOM has fully rendered
+    const timeoutId = setTimeout(updateDimensions, 0);
+    
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     setPriceRange(initialPriceRange);
@@ -62,6 +78,15 @@ export default function WebPriceSlider({
   center = Math.max(minLeft, Math.min(center, maxLeft));
 
   const handleSliderChange = ([valueMin, valueMax]: [number, number]) => {
+    // 최소 간격 유지
+    if (valueMax - valueMin < step) {
+      if (valueMin === priceRange[0]) {
+        valueMax = valueMin + step;
+      } else {
+        valueMin = valueMax - step;
+      }
+    }
+
     setPriceRange([valueMin, valueMax]);
     onPriceRangeChange?.([valueMin, valueMax]);
   };
@@ -77,6 +102,7 @@ export default function WebPriceSlider({
         value={[priceMin, priceMax]}
         defaultValue={[min, max]}
         onChange={handleSliderChange}
+        allowCross={false}
       />
     </SliderWrapper>
   );
@@ -91,5 +117,6 @@ const SliderWrapper = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
-  margin: auto 10px auto auto;
+  width: 248px;
+  margin-left: 4px;
 `;
