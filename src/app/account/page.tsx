@@ -23,8 +23,7 @@ export default function Account() {
   const nickname = userInfo?.nickname;
 
   return (
-    <AccountLayout>
-      <MobileSpace />
+    <>
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -101,17 +100,9 @@ export default function Account() {
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
-    </AccountLayout>
+    </>
   );
 }
-
-const MobileSpace = styled.div`
-  height: 24px;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
 
 const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;

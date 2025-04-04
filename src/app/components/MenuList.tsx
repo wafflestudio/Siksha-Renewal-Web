@@ -67,7 +67,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   align-items: center;
   width: 100%;
@@ -77,6 +77,7 @@ const Container = styled.div`
     height: 100px;
     flex-grow: 1;
     padding-bottom: 83px; // mobile navigation bar height
+    gap: 18px;
   }
 
   ${LoadingAnimation}

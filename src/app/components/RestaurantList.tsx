@@ -98,7 +98,6 @@ const Container = styled.div<{ show: boolean }>`
 
   max-height: 266px;
   background: white;
-  overflow-y: scroll;
   box-sizing: border-box;
   gap: 22px;
 `;
@@ -142,6 +141,7 @@ const Restaurants = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: 8px;
   grid-column-gap: 8px;
+  overflow-y: auto;
 `;
 
 const Restaurant = styled.div`

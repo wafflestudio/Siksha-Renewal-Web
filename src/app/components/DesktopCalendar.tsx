@@ -84,6 +84,7 @@ export default function DesktopCalendar() {
             onActiveStartDateChange={({ activeStartDate }) => {
               setDate(activeStartDate as Date);
             }}
+            calendarType={"gregory"}
             activeStartDate={date}
             defaultActiveStartDate={today}
             value={date}

@@ -70,7 +70,7 @@ export default function MobileFilterBar() {
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
           <Image
-            src="img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-darkblue.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -89,7 +89,7 @@ export default function MobileFilterBar() {
               : "가격"}
           </ButtonText>
           <Image
-            src="img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-darkblue.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -105,7 +105,7 @@ export default function MobileFilterBar() {
         </Button>
         <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
           {isSet.isReview && (
-            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+            <Image src="/img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           )}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
@@ -114,7 +114,7 @@ export default function MobileFilterBar() {
             {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
           <Image
-            src="img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-darkblue.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -126,7 +126,7 @@ export default function MobileFilterBar() {
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
           <Image
-            src="img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-darkblue.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -175,17 +175,4 @@ const ButtonText = styled.span<{ isActive?: boolean }>`
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   line-height: 20px;
-`;
-
-const DownArrow = styled.image`
-  content: url("img/down-arrow-darkblue.svg");
-  width: 9.33px;
-  height: 4px;
-  padding: 0 3.33px;
-`;
-
-const Check = styled.image`
-  content: url("img/check-gray.svg");
-  width: 16px;
-  height: 16px;
 `;

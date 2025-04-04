@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import Image from "next/image";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -43,44 +44,54 @@ export default function Likes({ menu }) {
         }}
         alt="좋아요"
       />
-      <LikesText>좋아요 {likeCount}개</LikesText>
+      <LikesText>{likeCount}</LikesText>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-right: 20px;
   @media (max-width: 768px) {
-    flex-direction: column;
-    margin-right: 0;
   }
 `;
 
 const HeartIcon = styled.img`
-  width: 21px;
-  height: 21px;
-  padding-left: 12px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
-  z-index: 0;
   @media (max-width: 768px) {
-    padding-left: 0;
-    padding-bottom: 9px;
   }
 `;
 
 const LikesText = styled.div`
-  width: max-content;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 400;
-  display: flex;
-  padding-left: 12px;
-  color: #797979;
+  color: var(--Color-Foundation-gray-600, #989AA0);
+  text-align: center;
+
+  /* text-13/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 18.2px */
 
   @media (max-width: 768px) {
-    padding-left: 0;
-    color: #000000;
+    color: var(--Color-Foundation-base-black, #000);
+    text-align: center;
+
+    /* text-13/Bold */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-13, 13px);
+    font-style: normal;
+    font-weight: var(--Font-weight-bold, 700);
+    line-height: 140%; /* 18.2px */
+    ::before {
+      content: "찜 ";
+    }
+
+    ::after {
+      content: "개"
+    }
   }
 `;

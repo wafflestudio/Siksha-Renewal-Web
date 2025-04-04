@@ -1,6 +1,7 @@
 "use client"
 
 import styled from "styled-components";
+import OneColumnLayout from "styles/layouts/OneColumnLayout";
 
 export default function AccountLayout({ children }) {
   return (
@@ -9,7 +10,7 @@ export default function AccountLayout({ children }) {
     </Container>
   );
 }
-const Container = styled.div`
+const Container = styled(OneColumnLayout.Container)`
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -21,7 +22,6 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding: 37px 0 31.4px 0;
   height: 100%;
 
   @media (max-width: 768px) {

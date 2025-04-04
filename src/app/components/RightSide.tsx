@@ -19,7 +19,6 @@ const Container = styled(TwoColumnLayout.Right)`
   justify-content: flex-start;
   box-sizing: border-box;
   max-width: 818px;
-  height: 100%;
   flex-grow: 1;
 
   @media (max-width: 900px) {

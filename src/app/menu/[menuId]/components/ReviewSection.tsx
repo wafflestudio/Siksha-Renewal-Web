@@ -1,11 +1,10 @@
 import styled, { css } from "styled-components";
-import MobileReviewImageSwiper from "./MobileReviewImageSwiper";
-import Link from "next/link";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
 import ReviewItem from "./ReviewItem";
 import useIsMobile from "hooks/UseIsMobile";
-import { formatDate } from "utils/FormatUtil";
 import Image from "next/image";
+import MobileLayout from "styles/layouts/MobileLayout";
+import MobileReviewListPage from "./MobileReviewListPage";
 
 export interface MenuType {
   id: number;
@@ -26,217 +25,113 @@ export interface MenuType {
 }
 
 interface ReviewSectionProps {
-  menu: MenuType;
   reviews: ReviewListType;
-  images: string[];
   isReviewListPageOpen: boolean;
-  handleReviewPostButtonClick: () => void;
   handleReviewListPage: (isOpen: boolean) => void;
 }
 export default function ReviewSection({
-  menu,
   reviews,
-  images,
   isReviewListPageOpen,
-  handleReviewPostButtonClick,
   handleReviewListPage,
 }: ReviewSectionProps) {
-  const { id: menuId, date: menuDate } = menu;
   const isMobile = useIsMobile();
-
-  const MOBILE_IMAGE_LIST_LIMIT = 3;
+  const PREVIEW_REVIEWS_COUNT = 5;
+  let previewReviews = reviews.result;
+  if (reviews.result.length > PREVIEW_REVIEWS_COUNT) {
+    previewReviews = reviews.result.slice(0, PREVIEW_REVIEWS_COUNT);
+  }
 
   return (
     <>
       {isMobile && isReviewListPageOpen ? (
-        <MobileReviewListPage>
-          <ReviewList>
-            {reviews.result.length > 0 ? (
-              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
-            ) : (
-              <NoReviewMessage $isReviewListPageOpen={isReviewListPageOpen}>
-                아직 등록된 리뷰가 없어요.
-              </NoReviewMessage>
-            )}
-          </ReviewList>
-        </MobileReviewListPage>
+        // TODO: MobileReviewListPage component를 별도의 page로 만들어 routing하기
+        <MobileReviewListPage reviews={reviews}/>
       ) : (
-        <ReviewContainer>
+        <Container>
           <ReviewHeader>
-            <MobilePhotoReviewHeader>
-              <Link
-                href={`/menu/${menuId}/photos`}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-              >
-                <MobilePhotoReviewTitle>사진 리뷰 모아보기</MobilePhotoReviewTitle>
-                <PhotoReviewButton>
-                  <PhotoReviewButtonText>사진 리뷰 모아보기</PhotoReviewButtonText>
-                  <Image
-                    src="/img/right-arrow-darkgrey.svg"
-                    alt="사진 리뷰 모아보기"
-                    width={7.5}
-                    height={12}
-                  />
-                </PhotoReviewButton>
-              </Link>
-            </MobilePhotoReviewHeader>
-            <MobileReviewImageSwiper
-              menuId={menuId}
-              images={images}
-              swiperImagesLimit={MOBILE_IMAGE_LIST_LIMIT}
-              imageCount={images.length}
-            />
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-              }}
-              onClick={() => handleReviewListPage(true)}
-            >
-              <MobileReviewHeader>
-                <div style={{ display: "flex" }}>
-                  <ReviewTitle>리뷰</ReviewTitle>
-                  <ReviewTotalCount>{reviews.total_count}</ReviewTotalCount>
-                </div>
-                <MoreReviewsButtonImage
-                  src="/img/right-arrow-darkgrey.svg"
-                  alt="리뷰 더보기"
-                  width="7.5"
-                />
-              </MobileReviewHeader>
-            </div>
+            <HeaderText>{!isMobile && "전체"} 리뷰</HeaderText>
+            <HeaderText>{!isMobile && reviews.total_count}</HeaderText>
           </ReviewHeader>
           <ReviewList>
             {reviews.result.length > 0 ? (
-              reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
+              isMobile ? (
+                previewReviews.map((review, index) => (
+                  <ReviewItem key={review.id} review={review} />
+                ))
+              ) : (
+                reviews.result.map((review, index) => (
+                  <div key={review.id}>
+                    <ReviewItem review={review} />
+                    {index < reviews.result.length - 1 && <HLine />}
+                  </div>
+                ))
+              )
             ) : (
-              <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
+              <NoReviewMessage>아직 등록된 리뷰가 없어요.<br />첫번째 리뷰의 주인공이 되어보세요!</NoReviewMessage>
             )}
           </ReviewList>
-          {
-            // formateDate -> "2021-08-01 (수)" 식으로 나옴
-            // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-            formatDate(new Date()).split(" ")[0] === menuDate && (
-              <DesktopReviewPostButton onClick={handleReviewPostButtonClick}>
-                나의 평가 남기기
-              </DesktopReviewPostButton>
-            )
-          }
-        </ReviewContainer>
+          <MoreReviews onClick={() => handleReviewListPage(true)}>
+            <Label>리뷰 더보기</Label>
+            <Image
+              src="/img/right-arrow-darkgrey.svg"
+              alt="리뷰 더보기"
+              width={12}
+              height={17}
+            />
+          </MoreReviews>
+        </Container>
       )}
     </>
   );
 }
 
-const ReviewContainer = styled.section`
-  position: relative;
-  box-sizing: border-box;
-  background-color: white;
+const Container = styled.div`
+  border-radius: 10px;
+  background-color: var(--Color-Foundation-base-white, #FFF);
+
   display: flex;
+  padding: 24px 28px 36px 24px;
   flex-direction: column;
-  align-items: center;
-  width: 735px;
-  border-left: 1px solid #eeeeee;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 36px;
-  @media (max-width: 768px) {
-    overflow-x: hidden;
-    flex-grow: 1;
-    width: auto;
-    min-width: 0;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 0;
-    margin-right: 0;
-  }
-`;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1 0 0;
 
-const MobilePhotoReviewHeader = styled.div`
-  display: flex;
-  width: fit-content;
-  justify-content: space-between;
   @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const MobilePhotoReviewTitle = styled.div`
-  display: none;
-  color: black;
-  font-size: 14px;
-  font-weight: 400;
-  @media (max-width: 768px) {
-    display: inherit;
-  }
-`;
-
-const PhotoReviewButton = styled.div`
-  width: max-content;
-  display: flex;
-`;
-
-const PhotoReviewButtonText = styled.div`
-  color: #919191;
-  margin-right: 12px;
-  font-size: 14px;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const MobileReviewHeader = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    cursor: pointer;
-  }
-`;
-
-const ReviewTitle = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  @media (max-width: 768px) {
-    font-size: 14px;
-    font-weight: 400;
-  }
-`;
-
-const ReviewTotalCount = styled.div`
-  margin-left: 7px;
-  padding-top: 2px;
-  font-weight: 800;
-  color: #ff9522;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const MoreReviewsButtonImage = styled.img`
-  display: none;
-  @media (max-width: 768px) {
-    display: inherit;
+    padding: 33px 16px 65px 16px;
+    margin-bottom: 83px;
+    gap: 20px;
   }
 `;
 
 const ReviewHeader = styled.div`
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 24px;
-  align-items: center;
-  margin-bottom: 40px;
+  align-items: flex-start;
+  gap: 6px;
   @media (max-width: 768px) {
-    flex-direction: column;
-    margin-bottom: 16px;
+    
+  }
+`;
+
+const HeaderText = styled.div`
+  color: var(--Color-Foundation-gray-900, #262728);
+
+  /* text-16/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 22.4px */
+  
+  @media (max-width: 768px) {
+    color: var(--Color-Foundation-base-black, #000);
+
+    /* text-18/Bold */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-18, 18px);
+    font-style: normal;
+    font-weight: var(--Font-weight-bold, 700);
+    line-height: 140%; /* 25.2px */
+    letter-spacing: var(--Font-letter-spacing-0, -0.3px);
   }
 `;
 
@@ -246,20 +141,34 @@ const ReviewList = styled.div`
   width: 100%;
   overflow-y: scroll;
   overflow-x: auto;
+  @media (max-width: 768px) {
+    gap: 32px;
+  }
+`;
+
+const HLine = styled.div`
+  margin: 14px 0;
+  height: 1px;
+  background: var(--Color-Foundation-gray-200, #E5E6E9);
 `;
 
 const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
-  text-align: center;
-  font-size: 20px;
-  font-weight: 400;
-  color: #797979;
-  margin: 300px 0;
-  @media (max-width: 768px) {
-    font-size: 18px;
+  padding: 134px 0px 160px 0px;
 
+  color: var(--Color-Foundation-gray-700, #727478);
+  text-align: center;
+
+  /* text-14/Regular */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 150%; /* 21px */
+  
+  @media (max-width: 768px) {
     ${(props) =>
-      !props.$isReviewListPageOpen &&
-      css`
+    !props.$isReviewListPageOpen &&
+    css`
         margin-top: 17px;
         margin-bottom: 0;
         height: 120px;
@@ -270,35 +179,32 @@ const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   }
 `;
 
-const DesktopReviewPostButton = styled.button`
-  position: absolute;
-  bottom: 17px;
-  background: #ff9522;
-  width: 200px;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 18px;
-  text-align: center;
-  padding: 14px 25px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+const MoreReviews = styled.div` 
+  align-self: stretch;
+  display: none;
   @media (max-width: 768px) {
-    display: none;
+    display: inline-flex;
+    justify-content: right;
+    align-items: center;
+    gap: 11px;
+    cursor: pointer;
   }
 `;
 
-const MobileReviewListPage = styled.div`
+const Label = styled.div`
   display: none;
+  color: var(--Color-Foundation-gray-600, #989AA0);
+  text-align: right;
+
+  /* text-12/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-12, 12px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 16.8px */
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
   @media (max-width: 768px) {
-    display: flex;
-    position: relative;
-    background-color: white;
-    min-height: calc(100vh - 60px);
-    padding: 24px 16px;
-    width: 100vw;
-    box-sizing: border-box;
+    display: inherit;
   }
 `;
