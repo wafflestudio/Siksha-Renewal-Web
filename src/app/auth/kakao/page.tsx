@@ -22,7 +22,7 @@ export default function Auth() {
     loginKakao(code)
       .then((accessToken) => {
         login(accessToken);
-        router.back();
+        router.push("/");
       })
       .catch(onHttpError);
   }, []);
