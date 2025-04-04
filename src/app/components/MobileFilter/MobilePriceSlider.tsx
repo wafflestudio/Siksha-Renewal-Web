@@ -114,6 +114,7 @@ const SliderWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 9px;
+  margin: 0 10px;
 `;
 
 const StyledSlider = styled(Slider)`
