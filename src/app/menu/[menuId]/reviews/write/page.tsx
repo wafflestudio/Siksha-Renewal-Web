@@ -85,7 +85,7 @@ export default function ReviewPost() {
       <Container>
         <TitleWrapper onClick={() => router.back()}>
           <Image
-            src={"/img/left-arrow.svg"}
+            src={"/img/left-arrow-mobile.svg"}
             alt="뒤로 가기"
             width={20}
             height={20}

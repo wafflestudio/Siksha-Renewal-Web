@@ -177,6 +177,7 @@ const HeaderContainer = styled.div`
   gap: 8px;
 
   @media (max-width: 768px) {
+    flex-wrap: inherit;
     gap: 11px;
     justify-content: space-between;
   }
@@ -208,6 +209,8 @@ const InfoContainer = styled.div`
   }
 
   @media (max-width: 768px) {
+    min-width: 0;
+    flex: 0 0 auto;
     align-items: flex-start;
   }
 `;
@@ -274,10 +277,6 @@ const Name = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 25.2px */
-
-  @media (max-width: 768px) {
-    white-space: normal;
-  }
 `;
 
 const TitleIconList = styled.div`

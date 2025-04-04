@@ -30,7 +30,7 @@ export default function Date() {
   return (
     <Container>
       <Arrow
-        src={isCalOpened ? "/img/left-arrow-grey.svg" : "/img/left-arrow.svg"}
+        src={isCalOpened ? "/img/general/left-arrow-grey.svg" : "/img/left-arrow-mobile.svg"}
         onClick={() => {
           !isCalOpened && setDate(getYesterday(date));
         }}
@@ -40,7 +40,7 @@ export default function Date() {
         <DateText>{formatDate(date)}</DateText>
       </FlexBox>
       <Arrow
-        src={isCalOpened ? "/img/general/right-arrow-grey.svg" : "/img/right-arrow.svg"}
+        src={isCalOpened ? "/img/general/right-arrow-grey.svg" : "/img/right-arrow-mobile.svg"}
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}
