@@ -1,15 +1,71 @@
 import useFilter from "hooks/useFilter";
 import Image from "next/image";
 import styled from "styled-components";
+import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
+import { useState } from "react";
+import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
+import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
+import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 
 export default function MobileFilterBar() {
-  const { filterList, isSet } = useFilter();
+  const { filterList, isSet, changeFilterOption } = useFilter();
+  const [filters, setFilters] = useState({
+    all: false,
+    distance: false,
+    price: false,
+    rating: false,
+    category: false,
+  });
+  const setFilterState = (filterName: keyof typeof filters, isOpen: boolean) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterName]: isOpen,
+    }));
+  };
+
+  const handleOnClickIsAvailableOnly = () => {
+    changeFilterOption({
+      isAvailableOnly: !filterList.isAvailableOnly,
+    });
+  };
+
+  const handleOnClickIsReview = () => {
+    changeFilterOption({
+      isReview: !filterList.isReview,
+    });
+  };
 
   return (
     <>
       <Container>
-        <Image src="/img/filter-icon.svg" alt="필터 아이콘" width={33.586} height={34} />
-        <Button isActive={isSet.length}>
+        <MobileFilterBottomSheet
+          isOpen={filters.all}
+          onClose={() => setFilterState("all", false)}
+        />
+        <MobileFilterDistanceBottomSheet
+          isOpen={filters.distance}
+          onClose={() => setFilterState("distance", false)}
+        />
+        <MobileFilterPriceBottomSheet
+          isOpen={filters.price}
+          onClose={() => setFilterState("price", false)}
+        />
+        <MobileFilterRatingBottomSheet
+          isOpen={filters.rating}
+          onClose={() => setFilterState("rating", false)}
+        />
+        {/* <MobileFilterCategoryBottomSheet
+          isOpen={filters.category}
+          onClose={() => setFilterState("category", false)}
+        /> */}
+        <Image
+          src="img/filter-icon.svg"
+          alt="필터 아이콘"
+          width={33.586}
+          height={34}
+          onClick={() => setFilterState("all", true)}
+        />
+        <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
@@ -21,7 +77,10 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.priceMin || isSet.priceMax}>
+        <Button
+          isActive={isSet.priceMin || isSet.priceMax}
+          onClick={() => setFilterState("price", true)}
+        >
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
               ? `${filterList.priceMin}원 ~ ${
@@ -37,21 +96,20 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.favorite}>
+        <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
-          {/* 영업 중 여부에 대한 attr가 없으므로, 일단 favorite 사용 */}
-          {isSet.favorite && (
-            <Image src="/img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
+          {isSet.isAvailableOnly && (
+            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           )}
-          <ButtonText isActive={isSet.favorite}>영업 중</ButtonText>
+          <ButtonText isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
         </Button>
-        <Button isActive={isSet.isReview}>
+        <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
           {isSet.isReview && (
             <Image src="/img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
           )}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
-        <Button isActive={isSet.ratingMin}>
+        <Button isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
           <ButtonText isActive={isSet.ratingMin}>
             {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
@@ -63,7 +121,7 @@ export default function MobileFilterBar() {
             style={{ padding: "0 3.33px" }}
           />
         </Button>
-        <Button isActive={isSet.category}>
+        {/* <Button isActive={isSet.category}>
           <ButtonText isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
@@ -74,7 +132,7 @@ export default function MobileFilterBar() {
             height={4}
             style={{ padding: "0 3.33px" }}
           />
-        </Button>
+        </Button> */}
       </Container>
     </>
   );

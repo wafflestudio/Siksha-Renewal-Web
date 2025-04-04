@@ -1,15 +1,21 @@
 import useFilter from "hooks/useFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "styles/slider.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import {
+  DISTANCE_FILTER_OPTIONS,
+  PRICE_FILTER_OPTIONS,
+  defaultFilters,
+} from "constants/filterOptions";
+import WebDistanceSlider from "./WebDistanceSlider";
+import WebPriceSlider from "./WebPriceSlider";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList } = useFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
-  const { length, priceMin, priceMax, ratingMin, isReview } = filterList;
+  const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
     length,
@@ -17,7 +23,7 @@ export default function RestaurantFilter() {
     priceMax,
     ratingMin,
     isReview,
-    isExceptEmpty,
+    isAvailableOnly,
   });
 
   useEffect(() => {
@@ -27,9 +33,9 @@ export default function RestaurantFilter() {
       priceMax,
       ratingMin,
       isReview,
-      isExceptEmpty,
+      isAvailableOnly,
     });
-  }, [length, priceMin, priceMax, ratingMin, isReview, isExceptEmpty]);
+  }, [length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly]);
 
   const resetFilter = useCallback(() => {
     resetFilterList();
@@ -39,21 +45,29 @@ export default function RestaurantFilter() {
       priceMax: Infinity,
       ratingMin: 0,
       isReview: false,
-      isExceptEmpty: true,
+      isAvailableOnly: false,
     });
-    if (!isExceptEmpty) toggleIsExceptEmpty();
-  }, [resetFilterList, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [resetFilterList]);
 
   const applyFilter = useCallback(() => {
     setFilterList({
-      length: selectedFilters.length > 1000 ? Infinity : selectedFilters.length,
-      priceMin: selectedFilters.priceMin,
-      priceMax: selectedFilters.priceMax > 15000 ? Infinity : selectedFilters.priceMax,
+      length:
+        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+          ? defaultFilters.length
+          : selectedFilters.length,
+      priceMin:
+        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
+          ? defaultFilters.priceMin
+          : selectedFilters.priceMin,
+      priceMax:
+        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
+          ? defaultFilters.priceMax
+          : selectedFilters.priceMax,
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
+      isAvailableOnly: selectedFilters.isAvailableOnly,
     });
-    if (isExceptEmpty !== selectedFilters.isExceptEmpty) toggleIsExceptEmpty();
-  }, [setFilterList, selectedFilters, isExceptEmpty, toggleIsExceptEmpty]);
+  }, [setFilterList, selectedFilters]);
 
   const handleSliderChange = useCallback((value: number | [number, number]) => {
     setSelectedFilters((prev) => {
@@ -68,18 +82,6 @@ export default function RestaurantFilter() {
     setSelectedFilters((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  const distanceText = useMemo(() => {
-    if (selectedFilters.length > 1000) return "1km 이상";
-    return selectedFilters.length === 1000 ? "1km 이내" : `${selectedFilters.length}m 이내`;
-  }, [selectedFilters.length]);
-
-  const priceText = useMemo(() => {
-    const minTxt = `${selectedFilters.priceMin}원`;
-    const maxTxt =
-      selectedFilters.priceMax > 15000 ? "15000원 이상" : `${selectedFilters.priceMax}원`;
-    return `${minTxt} ~ ${maxTxt}`;
-  }, [selectedFilters.priceMin, selectedFilters.priceMax]);
-
   return (
     <Container>
       <Header>
@@ -92,39 +94,20 @@ export default function RestaurantFilter() {
       <Filter>
         <SliderBox>
           <SliderContent>
-            <PicketBox>
-              <PicketText>{distanceText}</PicketText>
-              <PicketBottom src={"/img/picket-bottom.svg"} />
-            </PicketBox>
-            <ContentBar gap={16}>
+            <ContentBar gap={16} alignItems="end">
               <FilterText>거리</FilterText>
-              <Slider
-                min={200}
-                max={1050}
-                step={50}
-                value={selectedFilters.length}
-                defaultValue={1050}
-                onChange={(value: number) => handleSliderChange(value)}
+              <WebDistanceSlider
+                length={selectedFilters.length}
+                onLengthChange={handleSliderChange}
               />
             </ContentBar>
           </SliderContent>
           <SliderContent>
-            <PicketBox>
-              <PicketText>{priceText}</PicketText>
-              <PicketBottom src={"/img/picket-bottom.svg"} />
-            </PicketBox>
-            <ContentBar gap={16}>
+            <ContentBar gap={16} alignItems="end">
               <FilterText>가격</FilterText>
-              <Slider
-                range
-                min={0}
-                max={16000}
-                step={1000}
-                value={[selectedFilters.priceMin, selectedFilters.priceMax]}
-                defaultValue={[2000, 8000]}
-                onChange={([valueMin, valueMax]: [number, number]) =>
-                  handleSliderChange([valueMin, valueMax])
-                }
+              <WebPriceSlider
+                priceRange={[selectedFilters.priceMin, selectedFilters.priceMax]}
+                onPriceRangeChange={handleSliderChange}
               />
             </ContentBar>
           </SliderContent>
@@ -133,14 +116,14 @@ export default function RestaurantFilter() {
           <FilterText>영업시간</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={!selectedFilters.isExceptEmpty}
-              onClick={() => handleButtonClick("isExceptEmpty", false)}
+              active={!selectedFilters.isAvailableOnly}
+              onClick={() => handleButtonClick("isAvailableOnly", false)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedFilters.isExceptEmpty}
-              onClick={() => handleButtonClick("isExceptEmpty", true)}
+              active={selectedFilters.isAvailableOnly}
+              onClick={() => handleButtonClick("isAvailableOnly", true)}
             >
               영업 중
             </FilterButton>
@@ -204,6 +187,7 @@ const Container = styled.div`
   align-items: stretch;
   gap: 16px;
   background-color: white;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -252,12 +236,6 @@ const SliderBox = styled.div`
   gap: 12px;
 `;
 
-const PicketBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const SliderContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -266,32 +244,10 @@ const SliderContent = styled.div`
   gap: 4px;
 `;
 
-const PicketText = styled.div`
-  display: flex;
-  padding: 2px 4px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
-  color: var(--Color-Foundation-gray-800, #4c4d50);
-
-  text-align: center;
-  font-size: var(--Font-size-11, 11px);
-  font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 15.4px */
-`;
-
-const PicketBottom = styled.img`
-  width: 6px;
-  height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f2f3f4);
-`;
-
-const ContentBar = styled.div<{ gap: number }>`
+const ContentBar = styled.div<{ gap: number; alignItems?: string }>`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: ${(props) => props.alignItems ?? "center"};
   justify-content: space-between;
   gap: ${(props) => props.gap}px;
 `;

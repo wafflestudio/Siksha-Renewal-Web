@@ -3,6 +3,7 @@ import { useStateContext } from "providers/ContextProvider";
 import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
 import { sanitizeCssSelector } from "utils/FormatUtil";
+import Image from "next/image";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + sanitizeCssSelector(restaurant));
@@ -20,6 +21,15 @@ export default function RestaurantList() {
   const { favoriteRestaurants, toggleFavorite, isFavorite } = useFavorite();
 
   const [favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
+  const [page, setPage] = useState(1);
+
+  const nextPage = () => {
+    if (page < Math.ceil(favoriteFirstRestaurants.length / 10)) setPage(page + 1);
+  };
+
+  const prevPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   useEffect(() => {
     const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
@@ -31,29 +41,50 @@ export default function RestaurantList() {
 
   return (
     <Container show={data[meal].length >= 1}>
-      <Header>식당 찾기</Header>
+      <Header>
+        <Title>식당 찾기</Title>
+        <Pagination>
+          <Image
+            src={"/img/left-arrow-grey.svg"}
+            width={20}
+            height={20}
+            alt={"이전 식당 페이지"}
+            onClick={prevPage}
+          />
+          <Page>{`${page}/${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
+          <Image
+            src={"/img/right-arrow-darkgrey.svg"}
+            width={20}
+            height={20}
+            alt={"다음 식당 페이지"}
+            onClick={nextPage}
+          />
+        </Pagination>
+      </Header>
       <Restaurants>
         {favoriteFirstRestaurants &&
-          favoriteFirstRestaurants.map((restaurant) => (
-            <Restaurant key={restaurant.id}>
-              <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
-                {restaurant.name_kr}
-              </RestaurantName>
-              {isFavorite(restaurant.id) ? (
-                <Star
-                  src="/img/general/star-on.svg"
-                  onClick={() => toggleFavorite(restaurant.id)}
-                  alt="좋아요"
-                />
-              ) : (
-                <Star
-                  src="/img/general/star-off-20.svg"
-                  onClick={() => toggleFavorite(restaurant.id)}
-                  alt=""
-                />
-              )}
-            </Restaurant>
-          ))}
+          favoriteFirstRestaurants
+            .slice((page - 1) * 10, (page - 1) * 10 + 10)
+            .map((restaurant) => (
+              <Restaurant key={restaurant.id}>
+                <RestaurantName onClick={() => scrollRestaurant(restaurant.code)}>
+                  {restaurant.name_kr}
+                </RestaurantName>
+                {isFavorite(restaurant.id) ? (
+                  <Star
+                    src="/img/general/star-on-orange.svg"
+                    onClick={() => toggleFavorite(restaurant.id)}
+                    alt="좋아요"
+                  />
+                ) : (
+                  <Star
+                    src="/img/general/star-empty-orange.svg"
+                    onClick={() => toggleFavorite(restaurant.id)}
+                    alt=""
+                  />
+                )}
+              </Restaurant>
+            ))}
       </Restaurants>
     </Container>
   );
@@ -71,14 +102,38 @@ const Container = styled.div<{ show: boolean }>`
   gap: 22px;
 `;
 
-const Header = styled.h3`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   margin: 0;
+`;
+
+const Title = styled.h3`
   color: var(--Color-Foundation-gray-900, #262728);
   /* text-16/ExtraBold */
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 22.4px */
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+`;
+
+const Page = styled.span`
+  color: var(--Color-Foundation-gray-800, #4c4d50);
+
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 18.2px */
+  vertical-align: middle;
 `;
 
 const Restaurants = styled.div`

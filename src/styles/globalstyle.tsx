@@ -122,6 +122,14 @@ export const GlobalStyle = createGlobalStyle`
     overflow: visible;
     cursor: pointer;
   }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-size: 100%;
+    line-height: 1.2;
+  }
+
 
   * {
     -webkit-tap-highlight-color: transparent;
@@ -155,10 +163,6 @@ export const GlobalStyle = createGlobalStyle`
     --foundation-base-white: #FFFFFF;
 
   }
-
-
-
-  /* --main-orange-color: #FF9522 */
 `;
 
 export const LoadingAnimation = css`

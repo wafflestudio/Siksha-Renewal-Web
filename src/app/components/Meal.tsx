@@ -49,7 +49,6 @@ export default function Meal() {
 const Container = styled.div`
   display: flex;
   align-self: center;
-  width: 100%;
   padding: 0px 50px;
   justify-content: space-between;
   align-items: center;
