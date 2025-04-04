@@ -68,3 +68,23 @@ export function formatPrice(price) {
 export function sanitizeCssSelector(str) {
   return str.trim().replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9-_:.]/g, "_");
 }
+
+/**
+ * 주어진 문자열에 받침이 있는지 확인하는 함수
+ * @param str 받침을 확인할 문자열
+ * @param particles 받침이 있을 때, 붙일 조사 (기본값: 은/는)
+ * @returns 받침이 있으면 particles[0], 없으면 particles[1]
+ */
+export function getParticle(str, particles: [string, string] = ["은", "는"]) {
+  if (!str) return particles[1]; // 빈 문자열 처리 (기본값: 받침 없음)
+  
+  const lastChar = str.charAt(str.length - 1);
+  const code = lastChar.charCodeAt(0);
+
+  // 한글 여부 판별 (가~힣)
+  if (code >= 0xac00 && code <= 0xd7a3) {
+    return (code - 0xac00) % 28 === 0 ? particles[1] : particles[0];
+  }
+
+  return particles[1];
+};

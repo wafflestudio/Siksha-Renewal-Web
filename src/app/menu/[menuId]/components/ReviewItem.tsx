@@ -93,7 +93,6 @@ const Content = styled.div`
 const Comment = styled.div`
   display: flex;
   padding: 4px 24px 4px 0px;
-  margin-bottom: 6px;
   align-items: flex-start;
   align-self: stretch;
 
@@ -139,6 +138,7 @@ const Images = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   gap: 8px;
+  margin-top: 6px;
   align-self: stretch;
   flex-wrap: wrap;
 `;

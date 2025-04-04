@@ -81,16 +81,9 @@ export default function MenuSection({
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
             formatDate(new Date()).split(" ")[0] === menu.date && (
-              <Link href={`/menu/${menu.id}/reviews/write`}
-              style={{
-                "display": "flex",
-                "justifyContent": "center",
-                "alignSelf": "stretch",
-              }}>
-                <ReviewPostButton>
-                  나의 평가 남기기
-                </ReviewPostButton>
-              </Link>
+              <ReviewPostButton onClick={handleReviewPostButtonClick}>
+                나의 평가 남기기
+              </ReviewPostButton>
             )
           }
         </MenuEvaluation>
