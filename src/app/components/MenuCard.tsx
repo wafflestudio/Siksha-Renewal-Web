@@ -1,5 +1,4 @@
-`use client`;
-import { useRef, useState } from "react";
+'use client'
 
 import styled from "styled-components";
 import Menu from "app/components/Menu";
@@ -10,7 +9,6 @@ import { sanitizeCssSelector } from "utils/FormatUtil";
 import OperatingHour from "./OperatingHour";
 import { RawMenu, RawRestaurant } from "types";
 import getCurrentOperatingHours from "utils/getCurrentOperatingHours";
-import { useEffect } from "react";
 
 type Data = RawRestaurant & {
   menus: RawMenu[];
@@ -107,6 +105,17 @@ export default function MenuCard({ data }: { data: Data }) {
             </TitleIconList>
           </TitleContainer>
           <InfoContainer>
+            <OperatingHour
+              type={meal}
+              hour={getCurrentOperatingHours(
+                meal,
+                data.etc?.operating_hours ?? {
+                  weekdays: [],
+                  saturday: [],
+                  holiday: [],
+                },
+              )} //data.etc가 null인 case가 있음
+            />
             <HeaderDataList>
               <HeaderDataText>Price</HeaderDataText>
               <HeaderDataText>Rate</HeaderDataText>
@@ -177,9 +186,7 @@ const HeaderContainer = styled.div`
   gap: 8px;
 
   @media (max-width: 768px) {
-    flex-wrap: inherit;
     gap: 11px;
-    justify-content: space-between;
   }
 `;
 
@@ -209,9 +216,7 @@ const InfoContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    min-width: 0;
-    flex: 0 0 auto;
-    align-items: flex-start;
+    justify-content: space-between;
   }
 `;
 
@@ -250,6 +255,13 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
 
   @media (max-width: 768px) {
     width: fit-content;
+
+    /* text-12/Regular */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-12, 12px);
+    font-style: normal;
+    font-weight: var(--Font-weight-regular, 400);
+    line-height: 140%; /* 16.8px */
   }
 `;
 
@@ -277,6 +289,18 @@ const Name = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 25.2px */
+
+  @media (max-width: 768px) {
+    color: var(--Color-Foundation-base-black, #000);
+
+    /* text-16/ExtraBold */
+    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-size: var(--Font-size-16, 16px);
+    font-style: normal;
+    font-weight: var(--Font-weight-extrabold, 800);
+    line-height: 140%; /* 22.4px */
+    letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  }
 `;
 
 const TitleIconList = styled.div`
