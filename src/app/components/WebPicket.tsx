@@ -1,17 +1,20 @@
 import styled from "styled-components";
 
 interface PicketProps {
-  left?: number;
+  bodyPos?: number;
+  tailPos?: number;
   text: string;
   ref?: React.RefObject<HTMLDivElement>;
 }
 
-export default function WebPicket({ left, text, ref }: PicketProps) {
+export default function WebPicket({ bodyPos, tailPos, text, ref }: PicketProps) {
   return (
-    <PicketBox left={left ?? 0} ref={ref}>
-      <PicketText>{text}</PicketText>
-      <PicketBottom src={"/img/picket-bottom.svg"} />
-    </PicketBox>
+    <>
+      <PicketBox left={bodyPos ?? 0} ref={ref}>
+        <PicketText>{text}</PicketText>
+      </PicketBox>
+      <PicketBottom left={tailPos ?? 0} src={"/img/picket-bottom.svg"} />
+    </>
   );
 }
 
@@ -43,7 +46,11 @@ const PicketText = styled.div`
   white-space: nowrap;
 `;
 
-const PicketBottom = styled.img`
+const PicketBottom = styled.img<{ left: number }>`
+  position: absolute;
+  left: ${(props) => `${props.left}%`}; // hardcoded 3px to center the image
+  transform: translateX(-50%);
+  top: -11.5px;
   width: 6px;
   height: 5px;
   fill: var(--Color-Foundation-gray-100, #f0f0f0);

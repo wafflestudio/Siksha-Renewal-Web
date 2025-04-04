@@ -23,27 +23,19 @@ export default function WebPriceSlider({
   const [picketWidth, setPicketWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
 
-  const [isMounted, setIsMounted] = useState(false);
+  function updateDimensions() {
+    if (sliderRef.current) {
+      setSliderWidth(sliderRef.current.clientWidth);
+    }
+    if (picketRef.current) {
+      setPicketWidth(picketRef.current.clientWidth);
+    }
+  }
 
   // Calculate dimensions after mount and window resize
-  useEffect(() => {
-    function updateDimensions() {
-      if (sliderRef.current) {
-        setSliderWidth(sliderRef.current.clientWidth);
-      }
-      if (picketRef.current) {
-        setPicketWidth(picketRef.current.offsetWidth);
-      }
-      setIsMounted(true);
-    }
-    
-    // Call once after initial render
+  useEffect(() => {    
     updateDimensions();
-    
-    // Add resize listener
     window.addEventListener('resize', updateDimensions);
-    
-    // Use a timeout to ensure DOM has fully rendered
     const timeoutId = setTimeout(updateDimensions, 0);
     
     return () => {
@@ -51,6 +43,10 @@ export default function WebPriceSlider({
       clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    updateDimensions();
+  }, [priceRange]);
 
   useEffect(() => {
     setPriceRange(initialPriceRange);
@@ -63,19 +59,25 @@ export default function WebPriceSlider({
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
 
-  const priceMinForLeft = priceMin === 0 ? min : priceMin;
-  const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
+  const pickettailPos = useMemo(() => {
+    const priceMinForLeft = priceMin === 0 ? min : priceMin;
+    const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
 
-  const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
-  const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
-  let center = (leftMin + leftMax) / 2;
+    const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
+    const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
 
-  const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
+    return (leftMin + leftMax) / 2;
+  }, [priceMin, priceMax]);
 
-  // 피켓이 슬라이더를 벗어나지 않도록 제한
-  const maxLeft = 100 - halfPicketPercent; // 슬라이더 오른쪽 끝 제한
-  const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
-  center = Math.max(minLeft, Math.min(center, maxLeft));
+  const picketbodyPos = useMemo(() => {
+    const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
+    const halfHandlePercent = (16 / sliderWidth) * 50; // 슬라이더 핸들 절반 크기 비율
+  
+    // 피켓이 슬라이더를 벗어나지 않도록 제한
+    const maxLeft = 100 - halfPicketPercent + halfHandlePercent; // 슬라이더 오른쪽 끝 제한
+    const minLeft = halfPicketPercent - halfHandlePercent; // 슬라이더 왼쪽 끝 제한
+    return Math.max(minLeft, Math.min(pickettailPos, maxLeft));
+  }, [picketWidth, sliderWidth, pickettailPos]);
 
   const handleSliderChange = ([valueMin, valueMax]: [number, number]) => {
     // 최소 간격 유지
@@ -93,7 +95,7 @@ export default function WebPriceSlider({
 
   return (
     <SliderWrapper ref={sliderRef}>
-      <WebPicket left={center} text={priceText} ref={picketRef} />
+      <WebPicket bodyPos={picketbodyPos} tailPos={pickettailPos} text={priceText} ref={picketRef} />
       <StyledSlider
         range
         min={min}
@@ -110,13 +112,13 @@ export default function WebPriceSlider({
 
 const SliderWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 248px;
   display: flex;
   margin-top: 28px;
+  margin-left: 4px;
+  margin-right: 8px;
   gap: 6.5px;
 `;
 
 const StyledSlider = styled(Slider)`
-  width: 248px;
-  margin-left: 4px;
 `;

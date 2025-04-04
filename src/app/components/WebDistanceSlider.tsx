@@ -22,27 +22,19 @@ export default function WebDistanceSlider({
   const [picketWidth, setPicketWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
 
-  const [isMounted, setIsMounted] = useState(false);
+  function updateDimensions() {
+    if (sliderRef.current) {
+      setSliderWidth(sliderRef.current.clientWidth);
+    }
+    if (picketRef.current) {
+      setPicketWidth(picketRef.current.clientWidth);
+    }
+  }
 
   // Calculate dimensions after mount and window resize
-  useEffect(() => {
-    function updateDimensions() {
-      if (sliderRef.current) {
-        setSliderWidth(sliderRef.current.clientWidth);
-      }
-      if (picketRef.current) {
-        setPicketWidth(picketRef.current.offsetWidth);
-      }
-      setIsMounted(true);
-    }
-    
-    // Call once after initial render
+  useEffect(() => {    
     updateDimensions();
-    
-    // Add resize listener
     window.addEventListener('resize', updateDimensions);
-    
-    // Use a timeout to ensure DOM has fully rendered
     const timeoutId = setTimeout(updateDimensions, 0);
     
     return () => {
@@ -50,6 +42,10 @@ export default function WebDistanceSlider({
       clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    updateDimensions();
+  }, [length]);
 
   useEffect(() => {
     setLength(initialLength);
@@ -62,15 +58,20 @@ export default function WebDistanceSlider({
     return length === 1000 ? "1km 이내" : `${length}m 이내`;
   }, [length]);
 
-  const lengthForLeft = length === Infinity ? val_infinity : length;
+  const pickettailPos = useMemo(() => {
+    const lengthForLeft = length === Infinity ? val_infinity : length;
+    return ((lengthForLeft - min) / (val_infinity - min)) * 100;
+  }, [length]);
 
-  let left = ((lengthForLeft - min) / (val_infinity - min)) * 100;
-  const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
-
-  // 피켓이 슬라이더를 벗어나지 않도록 제한
-  const maxLeft = 100 - halfPicketPercent; // 슬라이더 오른쪽 끝 제한
-  const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
-  left = Math.max(minLeft, Math.min(left, maxLeft));
+  const picketbodyPos = useMemo(() => {
+    const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
+    const halfHandlePercent = (16 / sliderWidth) * 50; // 슬라이더 핸들 절반 크기 비율
+  
+    // 피켓이 슬라이더를 벗어나지 않도록 제한
+    const maxLeft = 100 - halfPicketPercent + halfHandlePercent; // 슬라이더 오른쪽 끝 제한
+    const minLeft = halfPicketPercent - halfHandlePercent; // 슬라이더 왼쪽 끝 제한
+    return Math.max(minLeft, Math.min(pickettailPos, maxLeft));
+  }, [picketWidth, sliderWidth, pickettailPos]);
 
   const handleSliderChange = (value: number) => {
     onLengthChange?.(value);
@@ -79,7 +80,7 @@ export default function WebDistanceSlider({
 
   return (
     <SliderWrapper ref={sliderRef}>
-      <WebPicket left={left} text={distanceText} ref={picketRef} />
+      <WebPicket bodyPos={picketbodyPos} tailPos={pickettailPos} text={distanceText} ref={picketRef} />
       <StyledSlider
         min={min}
         max={val_infinity}
@@ -94,13 +95,13 @@ export default function WebDistanceSlider({
 
 const SliderWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 248px;
   display: flex;
   margin-top: 28px;
+  margin-left: 4px;
+  margin-right: 8px;
   gap: 6.5px;
 `;
 
 const StyledSlider = styled(Slider)`
-  width: 248px;
-  margin-left: 4px;
 `;

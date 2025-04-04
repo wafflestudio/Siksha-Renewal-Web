@@ -2,7 +2,7 @@ import Slider from "rc-slider";
 import styled from "styled-components";
 import MobilePicket from "./MobilePicket";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PRICE_FILTER_OPTIONS, defaultFilters } from "constants/filterOptions";
+import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 
 interface MobilePriceSliderProps {
   priceRange?: [number, number];
@@ -23,27 +23,19 @@ export default function MobilePriceSlider({
   const [picketWidth, setPicketWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
 
-  const [isMounted, setIsMounted] = useState(false);
+  function updateDimensions() {
+    if (sliderRef.current) {
+      setSliderWidth(sliderRef.current.clientWidth);
+    }
+    if (picketRef.current) {
+      setPicketWidth(picketRef.current.clientWidth);
+    }
+  }
 
   // Calculate dimensions after mount and window resize
-  useEffect(() => {
-    function updateDimensions() {
-      if (sliderRef.current) {
-        setSliderWidth(sliderRef.current.clientWidth);
-      }
-      if (picketRef.current) {
-        setPicketWidth(picketRef.current.offsetWidth);
-      }
-      setIsMounted(true);
-    }
-    
-    // Call once after initial render
+  useEffect(() => {    
     updateDimensions();
-    
-    // Add resize listener
     window.addEventListener('resize', updateDimensions);
-    
-    // Use a timeout to ensure DOM has fully rendered
     const timeoutId = setTimeout(updateDimensions, 0);
     
     return () => {
@@ -51,6 +43,10 @@ export default function MobilePriceSlider({
       clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    updateDimensions();
+  }, [priceRange]);
 
   useEffect(() => {
     setPriceRange(initialPriceRange);
@@ -63,28 +59,42 @@ export default function MobilePriceSlider({
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
 
-  const priceMinForLeft = priceMin === 0 ? min : priceMin;
-  const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
+  const pickettailPos = useMemo(() => {
+    const priceMinForLeft = priceMin === 0 ? min : priceMin;
+    const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
+  
+    const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
+    const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
+    return (leftMin + leftMax) / 2;
+  }, [priceMin, priceMax]);
 
-  const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
-  const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
-  let center = (leftMin + leftMax) / 2;
-
-  const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
-
-  // 피켓이 슬라이더를 벗어나지 않도록 제한
-  const maxLeft = 100 - halfPicketPercent; // 슬라이더 오른쪽 끝 제한
-  const minLeft = halfPicketPercent; // 슬라이더 왼쪽 끝 제한
-  center = Math.max(minLeft, Math.min(center, maxLeft));
+  const picketbodyPos = useMemo(() => {
+    const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
+    const halfHandlePercent = (16 / sliderWidth) * 50; // 슬라이더 핸들 절반 크기 비율
+  
+    // 피켓이 슬라이더를 벗어나지 않도록 제한
+    const maxLeft = 100 - halfPicketPercent + halfHandlePercent; // 슬라이더 오른쪽 끝 제한
+    const minLeft = halfPicketPercent - halfHandlePercent; // 슬라이더 왼쪽 끝 제한
+    return Math.max(minLeft, Math.min(pickettailPos, maxLeft));
+  }, [picketWidth, sliderWidth, pickettailPos]);
 
   const handleSliderChange = ([valueMin, valueMax]: [number, number]) => {
+    // 최소 간격 유지
+    if (valueMax - valueMin < step) {
+      if (valueMin === priceRange[0]) {
+        valueMax = valueMin + step;
+      } else {
+        valueMin = valueMax - step;
+      }
+    }
+    
     setPriceRange([valueMin, valueMax]);
     onPriceRangeChange?.([valueMin, valueMax]);
   };
 
   return (
     <SliderWrapper ref={sliderRef}>
-      <MobilePicket left={center} text={priceText} ref={picketRef} />
+      <MobilePicket bodyPos={picketbodyPos} tailPos={pickettailPos} text={priceText} ref={picketRef} />
       <StyledSlider
         range
         min={min}
@@ -93,6 +103,7 @@ export default function MobilePriceSlider({
         value={[priceMin, priceMax]}
         defaultValue={[min, max]}
         onChange={handleSliderChange}
+        allowCross={false}
       />
     </SliderWrapper>
   );
