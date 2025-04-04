@@ -50,8 +50,8 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow.svg"} width={"10px"} alt="이전" />}
-          nextLabel={<Arrow src={"/img/right-arrow.svg"} width={"10px"} alt="다음" />}
+          prevLabel={<Arrow src={"/img/left-arrow-mobile.svg"} width={"10px"} alt="이전" />}
+          nextLabel={<Arrow src={"/img/right-arrow-mobile.svg"} width={"10px"} alt="다음" />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
