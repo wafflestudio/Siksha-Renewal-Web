@@ -33,6 +33,7 @@ src
 ```
 ---
 ### Top-level Directory
+
 `docs`
 - 프로젝트의 문서화 파일을 포함합니다. 컨벤션, 가이드라인, 참조 자료 등이 포함됩니다.
 
@@ -86,52 +87,55 @@ src
 ### 파일 유형 및 규칙
 
 **파일 유형**
-1. **Component**: DOM 요소(div, p, img, head, meta 등)를 렌더링하는 `.tsx` 파일.
-1. **Provider**: `CreateContext`를 통해 Global State를 관리하거나 라이브러리를 가져오는 `.tsx` 파일.
-2. **Hook**: `use` 접두사를 가지며, 재사용 가능한 로직을 관리하는 `.ts` 파일.
-3. **StyleSheet**: styled-components를 사용해 스타일링만 담당하는 `.tsx` 파일.
-4. **Api**: REST API 통신을 위한 함수들을 포함하는 `.tsx` 파일.
-5. **Type**: TypeScript 타입 정의만을 수행하는 `.ts` 파일.
-6. **Util**: 기타 유틸리티 함수들을 포함하는 `.ts` 파일.
+|유형|설명|
+|---|---|
+|**Component**|DOM 요소(div, p, img, head, meta 등)를 렌더링하는 `.tsx` 파일|
+|**Provider**|`CreateContext`를 통해 Global State를 관리하거나 라이브러리를 가져오는 `.tsx` 파일|
+|**Hook**|`use` 접두사를 가지며, 재사용 가능한 로직을 관리하는 `.ts` 파일|
+|**StyleSheet**|styled-components를 사용해 스타일링만 담당하는 `.tsx` 파일|
+|**Api**|REST API 통신을 위한 함수들을 포함하는 `.tsx` 파일|
+|**Type**|TypeScript 타입 정의만을 수행하는 `.ts` 파일|
+|**Util**|기타 유틸리티 함수들을 포함하는 `.ts` 파일|
 
 **배치 규칙**
-- **Component**: `/app` 아래의 `component` 폴더들에 배치.
+- **Component**: `/app` 아래의 `component` 폴더들에 배치
   > Component의 배치 규칙에 등장하는 모든 파일 경로들은 앞에 `/app` 이 생략되었습니다.
-  1. 특정 page나 component에서만 사용되는 경우
-    - 해당 page가 속한 폴더 내, 혹은 해당 component가 속한 `components` 폴더에 배치합니다.
-    - 예: `/community/write/page.tsx` 에서만 사용하는 `BoardSelectDropdown.tsx` 는 `/community/write/components/BoardSelectDropdown.tsx`로 배치합니다.
 
-  2. 두 곳 이상의 page/component에서 재사용되는 경우
+  **1. 특정 page나 component에서만 사용되는 경우**
+    - 해당 page가 속한 폴더 내, 혹은 해당 component가 속한 `components` 폴더에 배치합니다.
+      - 예: `/community/write/page.tsx` 에서만 사용하는 `BoardSelectDropdown.tsx` 는 `/community/write/components/BoardSelectDropdown.tsx`로 배치합니다.
+
+  **2. 두 곳 이상의 page/component에서 재사용되는 경우**
     - 사용되는 page/component들의 최소 공통 조상이 되는 폴더 내 `components` 폴더에 배치합니다. 단, 최소 공통 조상이 `/`인 경우 `/components/general`에 배치합니다.
       - 예1: `Profile.tsx`가 `/community/[boardId]`와 `/community/[boardId]/posts/[postId]`에서 사용된다면, 최소 공통 조상이 **`/community/[boardId]`**이므로 `/community/[boardId]/components/Profile.tsx`로 배치합니다.
       - 예2: `Header.tsx`가 `/page.tsx`와 `/account/page.tsx`에서 사용된다면, 최소 공통 조상이 **`/`**이므로 `/components/general/Header.tsx`에 배치합니다.
       - 예3: `Navigation.tsx`가 `/menu/[menuId]/page.tsx`와 `/account/page.tsx`에서 사용된다면, 최소 공통 조상이 **`/`**이므로 `/components/general/Navigation.tsx`에 배치합니다.
   
-- **Provider**: `/providers`에 배치.
+- **Provider**: `/providers`에 배치
 
-- **Hook**: `/hooks`에 배치.
+- **Hook**: `/hooks`에 배치
 
-- **StyleSheet**: 스타일링이 필요한 파일과 동일한 경로에 배치.
+- **StyleSheet**: 스타일링이 필요한 파일과 동일한 경로에 배치
   - 불가피한 경우가 아니라면 `/styles`에 배치하지 않습니다.
 
-- **Api**: `/utils/api`에 배치.
+- **Api**: `/utils/api`에 배치
   - `/api`에 배치하지 않는 것은 next.js api route와의 충돌 방지를 위함입니다.
 
-- **Type**: `/types`에 배치.
+- **Type**: `/types`에 배치
   - 단, 특정 파일에서만 사용되는 경우 해당 파일과 동일한 경로에 배치 가능.
 
-- **Util**: `/utils`에 배치.
+- **Util**: `/utils`에 배치
   - 단, 특정 파일에서만 사용되는 경우 해당 파일과 동일한 경로에 배치 가능.
   
 \+ `Public` 폴더의 **img** 파일 배치 규칙
 
 1. 모든 페이지에서 사용되는 경우:
-- `general` 폴더에 배치합니다.
-- 예: `close.svg`가 모든 페이지에서 사용된다면 `/public/img/general/close.svg`에 배치
+   - `general` 폴더에 배치합니다.
+      - 예: `close.svg`가 모든 페이지에서 사용된다면 `/public/img/general/close.svg`에 배치
 
 2. 특정 라우트에서만 사용되는 경우:
-- 해당 라우트 이름의 폴더를 생성하여 배치합니다.
-- 예: `account-default.svg`가 `/account`에서만 사용된다면 `/public/img/account/account-default.svg`에 배치
+   - 해당 라우트 이름의 폴더를 생성하여 배치합니다.
+      - 예: `account-default.svg`가 `/account`에서만 사용된다면 `/public/img/account/account-default.svg`에 배치
 
 ---
 ### Top-level files
@@ -150,21 +154,24 @@ README.md
 tsconfig.json
 yarn.lock
 ```
-- `.dockerfile`: Docker 컨테이너 설정 파일
-- `.env`: 환경 변수 파일
-- `.eslintrc`: ESLint 설정 파일
-- `.gitignore`: Git에서 무시할 파일 및 폴더 목록 
-- `.prettierignore`: Prettier에서 무시할 파일 및 폴더 목록
-- `.prettierrc`: Prettire 설정 파일
-- `next-env.d.ts`: Next.js의 Typescript 정의 파일
-- `next.config.js`: Next.js 설정 파일
-- `package-lock.json`: (npm) 의존성 버전 기록 파일
-- `package.json`: 프로젝트 의존성과 스크립트
-- `README.md`: 이 파일
-- `tsconfig.json`: Typescript 설정 파일
-- `yarn.lock`: (yarn) 의존성 버전 기록 파일
 
-> 원칙상 npm과 yarn 중 하나의 패키지 매니저만을 사용해야 하므로, `package-lock.json`과 `yarn.lock` 중 하나의 파일만 존재해야 합니다. 따라서 두 파일이 공존하는 현재의 상태는 적절치 않고, 언젠가 하나로 통일해야 합니다.
+| 파일명 | 설명 |
+| ---    | --- |
+| `.dockerfile` | Docker 컨테이너 설정 파일 |
+| `.env` | 환경 변수 파일 |
+| `.eslintrc` | ESLint 설정 파일 |
+| `.gitignore` | Git에서 무시할 파일 및 폴더 목록|
+| `.prettierignore` | Prettier에서 무시할 파일 및 폴더 목록 |
+| `.prettierrc` | Prettire 설정 파일 |
+| `next-env.d.ts` | Next.js의 Typescript 정의 파일 |
+| `next.config.js` | Next.js 설정 파일 |
+| `package-lock.json` | (npm) 의존성 버전 기록 파일 |
+| `package.json` | 프로젝트 의존성과 스크립트 |
+| `README.md` | 이 파일 |
+| `tsconfig.json` | Typescript 설정 파일 |
+| `yarn.lock` | (yarn) 의존성 버전 기록 파일 |
+
+> *원칙상 npm과 yarn 중 하나의 패키지 매니저만을 사용해야 하므로, `package-lock.json`과 `yarn.lock` 중 하나의 파일만 존재해야 합니다. 따라서 두 파일이 공존하는 현재의 상태는 적절치 않고, 언젠가 하나로 통일해야 합니다.*
 ---
 ## Code Convention
 
