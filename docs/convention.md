@@ -52,6 +52,8 @@ src
 - 프로젝트의 주요 소스 코드가 포함된 폴더입니다. 애플리케이션 로직, 컴포넌트, 스타일, 유틸리티 등이 포함됩니다.
 ---
 ### `src` Directory Structure
+> 💡 파일 유형별 역할과 상세 배치 규칙은 바로 아래인 "파일 유형 및 규칙" 섹션에서 설명합니다.
+
 `app`
 - **페이지**, **레이아웃**, 특정 라우트와 관련된 **컴포넌트**를 포함합니다.
 - `app` 폴더의 디렉토리 구조는 애플리케이션의 라우팅을 결정합니다. 자세한 내용은 [Next.js 문서](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts)를 참고하세요.
@@ -87,6 +89,7 @@ src
 ### 파일 유형 및 규칙
 
 **파일 유형**
+
 |유형|설명|
 |---|---|
 |**Component**|DOM 요소(div, p, img, head, meta 등)를 렌더링하는 `.tsx` 파일|
@@ -96,6 +99,24 @@ src
 |**Api**|REST API 통신을 위한 함수들을 포함하는 `.tsx` 파일|
 |**Type**|TypeScript 타입 정의만을 수행하는 `.ts` 파일|
 |**Util**|기타 유틸리티 함수들을 포함하는 `.ts` 파일|
+
+> 💡 식샤 웹에서는 third-party 상태 관리 라이브러리를 사용하지 않고, **react의 Context API**를 이용하여 global state를 관리합니다.
+
+> 💡 식샤 웹은 아래 구조도와 같은 디자인 패턴을 따르고 있습니다. 대략적인 동작 순서는 아래와 같습니다.
+> 1. 사용자의 Action이 **Component**를 통해 들어옴
+> 2. **Component**는 hook의 method를 통해 Action 처리에 필요한 data를 요청
+> 3. **hook**은 *필요한 경우* **api**의 method를 통해 필요한 data를 요청
+> 4. **api**는 요청받은 data를 백엔드 서버로부터 가져와 응답
+> 5. **hook**은 응답받은 data를 필요한 경우 가공하여, **provider**를 통해 Global Context에 저장
+> 6. **Component**는 Global Context를 활용하여 Action을 처리
+> 
+> (Action은 페이지 접속, 새로고침, DOM 요소와의 상호작용 등 사용자의 모든 행위를 통틀어 표현한 것입니다.)
+> 
+>
+> 모든 component, hook, api, provider가 이러한 패턴을 엄격히 따르진 않습니다. 예를 들자면 hook이 필요없는 component도 있고, api 요청을 하지 않는 hook도 있으며, 다른 hook을 거쳐 Global Context를 가져오는 hook도 있습니다.
+> 
+> 그렇지만, 지금까지 식샤 웹이 이러한 패턴을 염두에 두고 개발되었음을 고려한다면 앞으로의 유지보수 및 기능 개발에 도움이 되리라 생각합니다.
+![img](./img/hierarchy.jpg)
 
 **배치 규칙**
 - **Component**: `/app` 아래의 `component` 폴더들에 배치
@@ -167,7 +188,7 @@ yarn.lock
 | `next.config.js` | Next.js 설정 파일 |
 | `package-lock.json` | (npm) 의존성 버전 기록 파일 |
 | `package.json` | 프로젝트 의존성과 스크립트 |
-| `README.md` | 이 파일 |
+| `README.md` | README 파일 |
 | `tsconfig.json` | Typescript 설정 파일 |
 | `yarn.lock` | (yarn) 의존성 버전 기록 파일 |
 
