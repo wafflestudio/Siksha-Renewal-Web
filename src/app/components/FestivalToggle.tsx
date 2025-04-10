@@ -30,6 +30,10 @@ const ToggleWrapper = styled.div`
   position: absolute;
   height: fit-content;
   right: 24px;
+
+  @media (max-width: 768px) {
+    right: 17px;
+  }
 `;
 
 const ToggleContainer = styled.div<{ active: boolean }>`
@@ -43,6 +47,13 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   justify-content: ${({ active }) => (active ? 'flex-end' : 'flex-start')};
   padding: 2.14px 2.49px 2.14px 2.88px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 44.573px;
+    height: 19.375px;
+    border-radius: 9.688px;
+    padding: 1.19px 1.38px 1.19px 1.6px;
+  }
 `;
 
 const ToggleText = styled.span<{ active: boolean }>`
@@ -61,6 +72,12 @@ const ToggleText = styled.span<{ active: boolean }>`
   line-height: normal;
   letter-spacing: -0.54px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 9px;
+    letter-spacing: -0.3px;
+    margin-left: ${({ active }) => (active ? '6.5px' : '21.83px')};
+  }
 `;
 
 const ToggleCircle = styled.div`
@@ -72,4 +89,10 @@ const ToggleCircle = styled.div`
 
   fill: var(--Main-White, #FFF);
   filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
+
+  @media (max-width: 768px) {
+    width: 17px;
+    height: 17px;
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15));
+  }
 `;
