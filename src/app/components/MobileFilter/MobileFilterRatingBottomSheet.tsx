@@ -1,6 +1,6 @@
 import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ export default function MobileFilterRatingBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterRatingBottomSheetProps) {
-  const { filterList, changeFilterOption } = useFilter();
+  const { filterList, changeFilterOption } = UseFilter();
   const [ratingMin, setRatingMin] = useState(0);
 
   useEffect(() => {

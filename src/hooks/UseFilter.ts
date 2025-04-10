@@ -39,7 +39,7 @@ function reviver(key: string, value: any) {
  *   setNewOrderList: (newOrderList: RestaurantPreview[]) => void
  * }} 필터 리스트와 필터 옵션을 변경하는 함수들을 반환합니다.
  */
-export default function useFilter() {
+export default function UseFilter() {
   // 영업 중 여부 확인을 위해 date를 불러옵니다.
   const { date } = useStateContext();
 

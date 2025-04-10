@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import MobileBottomSheet from "./MobileBottomSheet";
 import Button from "components/general/Button";
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import { useState, useEffect, useCallback } from "react";
 import ButtonGroup from "./ButtonGroup";
 import MobileDistanceSlider from "./MobileDistanceSlider";
@@ -18,7 +18,7 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
-  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { filterList, setFilterList, resetFilterList } = UseFilter();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
