@@ -14,7 +14,7 @@ export type FilterList = {
   isAvailableOnly: boolean;
   isReview: boolean;
   category: string[];
-  favorite: boolean;
+  isFestival: boolean;
 };
 
 // JSON.stringify 시 Infinity 값을 문자열로 변환
@@ -109,7 +109,6 @@ export default function useFilter() {
       const needRatingFilter = filterList.ratingMin > 0;
       const needReviewFilter = filterList.isReview;
       const needIsAvailableOnlyFilter = filterList.isAvailableOnly;
-      // const needFavoriteFilter = filterList.favorite;
 
       const filteredList: Record<string, any> = {};
 
@@ -119,6 +118,14 @@ export default function useFilter() {
 
         // 날짜만 들어있는 key는 필터링 패스
         if (key === "date") return;
+        
+        // 축제 기간 필터링
+        filteredList[key] = filteredList[key].filter((restaurant) => {
+          const isFestivalRestaurant = restaurant.name_kr.startsWith("[축제]");
+          if (filterList.isFestival && isFestivalRestaurant) return true;
+          if (!filterList.isFestival && !isFestivalRestaurant) return true;
+          return false;
+        });
 
         // 위치 기반 식당 필터링
         if (needDistanceFilter && currentPosition) {
@@ -170,7 +177,6 @@ export default function useFilter() {
               return false;
             if (needRatingFilter && (menu.rating ?? 0) < filterList.ratingMin) return false;
             if (needReviewFilter && menu.review_cnt === 0) return false;
-            // if (needFavoriteFilter && !menu.favorite) return false;
 
             return true;
           });

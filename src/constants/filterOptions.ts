@@ -21,6 +21,6 @@ export const defaultFilters: FilterList = {
   ratingMin: 0,
   isReview: false,
   category: [],
-  favorite: false,
   isAvailableOnly: false,
+  isFestival: false,
 };
