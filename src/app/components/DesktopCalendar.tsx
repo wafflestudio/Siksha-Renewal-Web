@@ -89,7 +89,7 @@ export default function DesktopCalendar() {
             defaultActiveStartDate={today}
             value={date}
             defaultValue={today}
-            showNeighboringMonth={false}
+            showNeighboringMonth={true}
             navigationLabel={() => formatMonth(date)}
             prevLabel={<></>}
             showNavigation={false}
