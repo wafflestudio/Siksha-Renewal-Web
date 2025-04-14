@@ -175,7 +175,7 @@ export default function UseFilter() {
               (menu.price < filterList.priceMin || menu.price > filterList.priceMax)
             )
               return false;
-            if (needRatingFilter && (menu.rating ?? 0) < filterList.ratingMin) return false;
+            if (needRatingFilter && (menu.score ?? 0) < filterList.ratingMin) return false;
             if (needReviewFilter && menu.review_cnt === 0) return false;
 
             return true;
