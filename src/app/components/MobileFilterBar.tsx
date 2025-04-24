@@ -1,4 +1,4 @@
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import Image from "next/image";
 import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
@@ -8,7 +8,7 @@ import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBott
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 
 export default function MobileFilterBar() {
-  const { filterList, isSet, changeFilterOption } = useFilter();
+  const { filterList, isSet, changeFilterOption } = UseFilter();
   const [filters, setFilters] = useState({
     all: false,
     distance: false,

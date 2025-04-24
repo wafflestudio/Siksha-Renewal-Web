@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
 import { RawMenu, RawRestaurant } from "types";
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 
 export default function MenuList() {
   const state = useStateContext();
 
   const { meal, data, date, loading, isFilterFavorite } = state;
   const { favoriteRestaurants } = useFavorite();
-  const { filterList, filterMenuList } = useFilter();
+  const { filterList, filterMenuList } = UseFilter();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {

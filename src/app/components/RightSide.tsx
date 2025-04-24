@@ -2,11 +2,21 @@ import styled from "styled-components";
 import Meal from "./Meal";
 import MenuList from "app/components/MenuList";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
+import FestivalToggle from "./FestivalToggle";
 
 export default function RightSide() {
   return (
     <Container>
-      <Meal />
+      <div style={{
+        display: "flex",
+        position: "relative",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
+        <Meal />
+        <FestivalToggle />
+      </div>
       <MenuList />
     </Container>
   );

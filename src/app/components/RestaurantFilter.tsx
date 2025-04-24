@@ -1,4 +1,4 @@
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import "rc-slider/assets/index.css";
 import "styles/slider.css";
@@ -13,7 +13,7 @@ import WebDistanceSlider from "./WebDistanceSlider";
 import WebPriceSlider from "./WebPriceSlider";
 
 export default function RestaurantFilter() {
-  const { filterList, setFilterList, resetFilterList } = useFilter();
+  const { filterList, setFilterList, resetFilterList } = UseFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 

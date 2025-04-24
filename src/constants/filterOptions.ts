@@ -1,4 +1,4 @@
-import { FilterList } from "hooks/useFilter";
+import { FilterList } from "hooks/UseFilter";
 
 // src/constants/priceFilterOptions.ts
 export const PRICE_FILTER_OPTIONS = {
@@ -21,6 +21,6 @@ export const defaultFilters: FilterList = {
   ratingMin: 0,
   isReview: false,
   category: [],
-  favorite: false,
   isAvailableOnly: false,
+  isFestival: false,
 };

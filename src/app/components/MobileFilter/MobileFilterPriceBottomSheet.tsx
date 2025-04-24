@@ -1,6 +1,6 @@
 import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobilePriceSlider from "./MobilePriceSlider";
@@ -15,7 +15,7 @@ export default function MobileFilterPriceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterPriceBottomSheetProps) {
-  const { filterList, changeFilterOption } = useFilter();
+  const { filterList, changeFilterOption } = UseFilter();
   const [priceMin, setPriceMin] = useState(defaultFilters.priceMin);
   const [priceMax, setPriceMax] = useState(defaultFilters.priceMax);
 

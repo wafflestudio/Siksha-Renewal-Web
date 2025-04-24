@@ -1,6 +1,6 @@
 import MobileBottomSheet from "./MobileBottomSheet";
 import { FilterActionSection, MobileFilterText } from "./MobileFilterBottomSheet";
-import useFilter from "hooks/useFilter";
+import UseFilter from "hooks/UseFilter";
 import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobileDistanceSlider from "./MobileDistanceSlider";
@@ -15,7 +15,7 @@ export default function MobileFilterDistanceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterDistanceBottomSheetProps) {
-  const { filterList, changeFilterOption } = useFilter();
+  const { filterList, changeFilterOption } = UseFilter();
   const [length, setLength] = useState(defaultFilters.length);
 
   useEffect(() => {
