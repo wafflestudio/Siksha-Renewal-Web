@@ -1,8 +1,10 @@
+"use client";
+
 import UseFilter from "hooks/UseFilter";
 import Image from "next/image";
 import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
@@ -10,6 +12,23 @@ import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 import { formatPrice } from "utils/FormatUtil";
 
 export default function MobileFilterBar() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollRef.current) return;
+      setIsScrolled(scrollRef.current.scrollLeft > 0);
+    };
+
+    const scrollEl = scrollRef.current;
+    scrollEl?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      scrollEl?.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
   const { filterList, isSet, changeFilterOption } = UseFilter();
   const [filters, setFilters] = useState({
     all: false,
@@ -39,7 +58,7 @@ export default function MobileFilterBar() {
 
   return (
     <>
-      <Container>
+      <Container ref={scrollRef}>
         <MobileFilterBottomSheet
           isOpen={filters.all}
           onClose={() => setFilterState("all", false)}
@@ -70,12 +89,12 @@ export default function MobileFilterBar() {
             style={{
               background: "var(--Color-Background-main, #F8F8F8)",
               paddingLeft: "8px",
-              paddingRight: "4.41px",
+              paddingRight: isScrolled ? "4.41px" : "0",
             }}
           />
-          <FilterIconGradient />
+          <FilterIconGradient visible={isScrolled}/>
         </FilterIconWrapper>
-        <div style={{ width: "54px", flexShrink: "0", }}/>
+        <div style={{ width: "36px", flexShrink: "0", }}/>
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
@@ -165,10 +184,11 @@ const FilterIconWrapper = styled.div`
   display: flex;
 `;
 
-const FilterIconGradient = styled.div`
+const FilterIconGradient = styled.div<{ visible: boolean }>`
   width: 16px;
   height: 36px;
   background: linear-gradient(90deg, #F8F8F8 0%, rgba(248, 248, 248, 0.00) 100%);
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
 `;
 
 const Button = styled.button<{ isActive?: boolean }>`
@@ -183,8 +203,8 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)"};
-  background: ${(props) => (props.isActive ? "var(--Main-Active, #FFE8CE)" : "#FFF")};
+      props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Color-Foundation-gray-200, #E5E6E9)"};
+  background: ${(props) => (props.isActive ? "var(--Color-Foundation-orange-100, #FFEAD3)" : " var(--Color-Foundation-base-white, #FFF)")};
 
   font-family: NanumSquare_ac;
 `;
