@@ -52,7 +52,7 @@ export default function MobileFilterPriceBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>가격</MobileFilterText>
       <div style={{ height: 65.5 }} />
       <MobilePriceSlider

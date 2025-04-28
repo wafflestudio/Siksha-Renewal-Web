@@ -4,20 +4,21 @@ interface MobileBottomSheetProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  slideBar?: boolean;
+  showHandle?: boolean;
 }
 
 export default function MobileBottomSheet({
   children,
   isOpen,
   onClose,
-  slideBar = true,
+  showHandle = true,
 }: MobileBottomSheetProps) {
   return (
     <>
       <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
       <BottomSheetWrapper isVisible={isOpen}>
-        {slideBar && <BottomSheetSlideBar />}
+        {showHandle ? <BottomSheetHandle /> : <div style={{ marginBottom: 16 }} />}
+        <CloseButton onClick={onClose} />
         <BottomSheetContent>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
@@ -39,12 +40,24 @@ const BottomSheetBackdrop = styled.div`
   display: ${({ isVisible }: BottomSheetBackdropProps) => (isVisible ? "block" : "none")};
 `;
 
-const BottomSheetSlideBar = styled.div`
-  width: 42px;
+const BottomSheetHandle = styled.div`
+  width: 46px;
   height: 4px;
-  background-color: #dfdfdf;
+  background-color: var(--Color-Foundation-gray-200, #E5E6E9);
   border-radius: 2px;
-  margin: 10px auto;
+  margin: 15px auto;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 13px;
+  top: 14px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background-color: transparent;
+  background-image: url("/img/close-filter.svg");
+  background-repeat: no-repeat;
 `;
 
 const BottomSheetContent = styled.div`
@@ -69,7 +82,6 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   border-top-right-radius: 20px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  padding-top: 16px;
   transition: transform 0.3s ease-in-out;
   transform: ${({ isVisible }) => (isVisible ? "translateY(0)" : "translateY(100%)")};
 `;

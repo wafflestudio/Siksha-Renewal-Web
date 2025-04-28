@@ -228,6 +228,14 @@ const MobileFilterHeader = styled.div`
 `;
 
 export const MobileFilterText = styled.div`
-  font-size: 16px;
-  font-weight: 800;
+  height: 27.497px;
+
+  color: var(--Color-Foundation-base-black, #000);
+
+  /* text-16/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 22.4px */
 `;

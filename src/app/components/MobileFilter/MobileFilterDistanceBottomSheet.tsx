@@ -40,7 +40,7 @@ export default function MobileFilterDistanceBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>거리</MobileFilterText>
       <div style={{ height: 65.5 }} />
       <MobileDistanceSlider length={length} onLengthChange={(value) => setLength(value)} />

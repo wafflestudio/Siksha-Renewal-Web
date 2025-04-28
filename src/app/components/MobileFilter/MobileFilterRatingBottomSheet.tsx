@@ -39,7 +39,7 @@ export default function MobileFilterRatingBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>최소 평점</MobileFilterText>
       <div style={{ height: 14.5 }} />
       <ButtonGroup
