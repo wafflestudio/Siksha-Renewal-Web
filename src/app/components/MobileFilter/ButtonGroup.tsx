@@ -41,7 +41,7 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
 const ButtonItem = styled.button`
   display: flex;
   justify-content: center;
-  padding: 10px 20px;
+  align-items: center;
   border-radius: 20px;
   height: 34px;
   color: black;

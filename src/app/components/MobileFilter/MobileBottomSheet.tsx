@@ -13,13 +13,14 @@ export default function MobileBottomSheet({
   onClose,
   showHandle = true,
 }: MobileBottomSheetProps) {
+  const headerHeight = showHandle ? 34 : 16;
   return (
     <>
       <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
       <BottomSheetWrapper isVisible={isOpen}>
         {showHandle ? <BottomSheetHandle /> : <div style={{ marginBottom: 16 }} />}
         <CloseButton onClick={onClose} />
-        <BottomSheetContent>{children}</BottomSheetContent>
+        <BottomSheetContent headerHeight={headerHeight}>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
   );
@@ -60,9 +61,9 @@ const CloseButton = styled.button`
   background-repeat: no-repeat;
 `;
 
-const BottomSheetContent = styled.div`
+const BottomSheetContent = styled.div<{ headerHeight: number }>`
   padding: 0px 16px;
-  max-height: 80vh;
+  max-height: ${({headerHeight}) => `calc(100vh - 41px - ${headerHeight}px)`}; /* overlap header by 3px */
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
@@ -78,8 +79,8 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   left: 0;
   right: 0;
   background-color: white;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   transition: transform 0.3s ease-in-out;

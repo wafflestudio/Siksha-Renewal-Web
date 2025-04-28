@@ -41,7 +41,7 @@ export default function MobileFilterRatingBottomSheet({
   return (
     <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>최소 평점</MobileFilterText>
-      <div style={{ height: 14.5 }} />
+      <div style={{ height: 20.5 }} />
       <ButtonGroup
         items={[
           { label: "모두", id: "ALL" },
@@ -67,8 +67,8 @@ export default function MobileFilterRatingBottomSheet({
           setRatingMin(Number(id));
         }}
       />
-      <div style={{ height: 36 }} />
-      <FilterActionSection marginBottom="45">
+      <div style={{ height: 35.7 }} />
+      <FilterActionSection marginBottom="19">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

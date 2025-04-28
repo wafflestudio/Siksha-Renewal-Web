@@ -133,6 +133,6 @@ const StyledSlider = styled(Slider)`
     margin-top: -7px;
     background-color: var(--Color-Foundation-orange-500, #ff9522);
     border: none;
-    box-shadow: none;
+    box-shadow: none !important;
   }
 `;

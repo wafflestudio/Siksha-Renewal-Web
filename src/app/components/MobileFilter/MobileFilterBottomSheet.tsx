@@ -137,12 +137,12 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
             }}
           />
         </FilterContent>
-        <FilterContent>
+        <FilterContent style={{ marginBottom: 40 }}>
           <MobileFilterText>최소 평점</MobileFilterText>
           <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
-              { label: "전체", id: "ALL" },
+              { label: "모두", id: "ALL" },
               {
                 label: (
                   <div>
@@ -182,7 +182,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <FilterActionSection marginBottom="54" marginTop="19">
+      <FilterActionSection marginBottom="19" marginTop="19">
         <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
@@ -217,7 +217,8 @@ const FilterContentWrapper = styled.div`
   gap: 40px;
 `;
 
-const FilterContent = styled.div``;
+const FilterContent = styled.div`
+`;
 
 const MobileFilterHeader = styled.div`
   display: flex;
