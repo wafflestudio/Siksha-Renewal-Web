@@ -23,19 +23,37 @@ export default function Button({ children, onClick, variant = "primary", ...prop
 }
 
 const NeutralButton = styled.button`
-  background-color: #b7b7b7;
-  color: white;
-  padding: 10px 20px;
+  background-color: var(--Color-Foundation-gray-500, #BEC1C8);
+  color: var(--SementicColor-Text-Button, #FFF);
+  text-align: center;
+
+  /* text-16/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 22.4px */
+
+  padding: 8px 16px;
   height: 38px;
-  width: 168px;
+  flex-shrink: 0;
   border-radius: 20px;
 `;
 
 const PrimaryButton = styled.button`
-  background-color: #ff9522;
-  color: white;
-  padding: 10px 20px;
+  background-color: var(--Color-Foundation-orange-500, #ff9522);
+  color: var(--SementicColor-Text-Button, #FFF);
+  text-align: center;
+
+  /* text-16/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 22.4px */
+  
+  padding: 8px 16px;
   height: 38px;
-  width: 168px;
+  flex-shrink: 0;
   border-radius: 20px;
 `;

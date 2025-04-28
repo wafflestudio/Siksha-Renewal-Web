@@ -201,10 +201,11 @@ const StarIcon = styled.img`
 `;
 
 export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
-  display: flex;
+  display: grid;
   padding-bottom: ${(props) => `${props.marginBottom}px`};
   padding-top: ${(props) => `${props.marginTop ?? 0}px`};
-  justify-content: space-between;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
   /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
 `;
 
