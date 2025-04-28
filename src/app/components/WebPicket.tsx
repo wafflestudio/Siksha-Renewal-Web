@@ -53,5 +53,5 @@ const PicketBottom = styled.img<{ left: number }>`
   top: -11.5px;
   width: 6px;
   height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f0f0f0);
+  fill: var(--Color-Foundation-gray-100, #F2F3F4);
 `;
