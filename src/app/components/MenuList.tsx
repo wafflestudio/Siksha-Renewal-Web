@@ -6,7 +6,7 @@ import { useStateContext } from "../../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
-import { RawMenu, RawRestaurant } from "types";
+import { RawMenu, RawMenuList, RawRestaurant } from "types";
 import UseFilter from "hooks/UseFilter";
 
 export default function MenuList() {
@@ -38,11 +38,16 @@ export default function MenuList() {
     else setHasData(true);
   }, [data, meal, isFilterFavorite, filterList]);
 
+  // Calculate the filtered list directly
+  const filteredList = hasData ? filterMenuList(data, location)[meal] : [];
+
   return (
     <Container key={date + meal}>
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
-      ) : hasData ? (
+      ) : filteredList.length === 0 ? (
+        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
+      ) : (
         filterMenuList(data, location)[meal].map(
           (
             restaurant: RawRestaurant & {
@@ -56,8 +61,6 @@ export default function MenuList() {
             } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
           },
         )
-      ) : (
-        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
       )}
     </Container>
   );
