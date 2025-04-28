@@ -6,6 +6,8 @@ import { useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
+import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import { formatPrice } from "utils/FormatUtil";
 
 export default function MobileFilterBar() {
   const { filterList, isSet, changeFilterOption } = UseFilter();
@@ -58,19 +60,28 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <Image
-          src="/img/filter-icon.svg"
-          alt="필터 아이콘"
-          width={33.586}
-          height={34}
-          onClick={() => setFilterState("all", true)}
-        />
+        <FilterIconWrapper>
+          <Image
+            src="/img/filter-icon.svg"
+            alt="필터 아이콘"
+            width={33.586}
+            height={34}
+            onClick={() => setFilterState("all", true)}
+            style={{
+              background: "var(--Color-Background-main, #F8F8F8)",
+              paddingLeft: "8px",
+              paddingRight: "4.41px",
+            }}
+          />
+          <FilterIconGradient />
+        </FilterIconWrapper>
+        <div style={{ width: "54px", flexShrink: "0", }}/>
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
           <Image
-            src="/img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -83,13 +94,13 @@ export default function MobileFilterBar() {
         >
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
-              ? `${filterList.priceMin}원 ~ ${
-                  isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
+              ? `${formatPrice(filterList.priceMin)}원 ~ ${
+                  isFinite(filterList.priceMax) ? `${formatPrice(filterList.priceMax)}원` : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
                 }`
               : "가격"}
           </ButtonText>
           <Image
-            src="/img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -114,7 +125,7 @@ export default function MobileFilterBar() {
             {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
           <Image
-            src="/img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -126,7 +137,7 @@ export default function MobileFilterBar() {
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
           <Image
-            src="/img/down-arrow-darkblue.svg"
+            src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
             width={9.33}
             height={4}
@@ -144,9 +155,20 @@ const Container = styled.div`
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 0 9px 17px 9px;
+  padding: 0 46px 17px 0;
   box-sizing: border-box;
   gap: 5px;
+`;
+
+const FilterIconWrapper = styled.div`
+  position: absolute;
+  display: flex;
+`;
+
+const FilterIconGradient = styled.div`
+  width: 16px;
+  height: 36px;
+  background: linear-gradient(90deg, #F8F8F8 0%, rgba(248, 248, 248, 0.00) 100%);
 `;
 
 const Button = styled.button<{ isActive?: boolean }>`
