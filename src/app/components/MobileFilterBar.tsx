@@ -174,9 +174,15 @@ const Container = styled.div`
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 0 46px 17px 0;
+  padding: 0 8px 17px 0;
   box-sizing: border-box;
   gap: 5px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const FilterIconWrapper = styled.div`
