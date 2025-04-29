@@ -142,7 +142,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
-              { label: "모두", id: "ALL" },
+              { label: "전체", id: "ALL" },
               {
                 label: (
                   <div>
