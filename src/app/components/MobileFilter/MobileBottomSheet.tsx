@@ -79,7 +79,14 @@ export default function MobileBottomSheet({
       <BottomSheetWrapper isVisible={isOpen} translateY={translateY} isAnimating={isAnimating}>
         {
           showHandle ?
-          <BottomSheetHandle onMouseDown={handleDragStart} onTouchStart={handleDragStart}/> :
+          <BottomSheetHandle onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
+            <div style={{
+              width: "46px",
+              height: "4px",
+              backgroundColor: "var(--Color-Foundation-gray-200, #E5E6E9)",
+              borderRadius: "2px",
+            }}/>
+          </BottomSheetHandle> :
           <div style={{ marginBottom: 16 }} />
         }
         <CloseButton onClick={onClose} />
@@ -106,11 +113,11 @@ const BottomSheetBackdrop = styled.div`
 `;
 
 const BottomSheetHandle = styled.div`
-  width: 46px;
-  height: 4px;
-  background-color: var(--Color-Foundation-gray-200, #E5E6E9);
-  border-radius: 2px;
-  margin: 15px auto;
+  display: flex;
+  width: 100%;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
   cursor: grab;
 `;
 
