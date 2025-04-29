@@ -202,11 +202,14 @@ const StarIcon = styled.img`
 
 export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
   display: grid;
+  padding: 0 16px;
   padding-bottom: ${(props) => `${props.marginBottom}px`};
   padding-top: ${(props) => `${props.marginTop ?? 0}px`};
+  margin-left: -16px;
+  width: 100%;
   grid-template-columns: 1fr 1fr;
   gap: 7px;
-  /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
+  box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05);
 `;
 
 const FilterContentWrapper = styled.div`
@@ -215,6 +218,12 @@ const FilterContentWrapper = styled.div`
   flex-direction: column;
   overflow-y: auto;
   gap: 40px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const FilterContent = styled.div`
