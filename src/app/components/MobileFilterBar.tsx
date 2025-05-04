@@ -79,13 +79,12 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <FilterIconWrapper>
+        <FilterIconWrapper onClick={() => setFilterState("all", true)}>
           <Image
             src="/img/filter-icon.svg"
             alt="필터 아이콘"
             width={33.586}
             height={34}
-            onClick={() => setFilterState("all", true)}
             style={{
               background: "var(--Color-Background-main, #F8F8F8)",
               paddingLeft: "8px",
