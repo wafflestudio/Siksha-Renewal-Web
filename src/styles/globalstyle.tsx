@@ -161,6 +161,34 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-orange-800: #7C2900;
     --foundation-orange-900: #570000;
     --foundation-base-white: #FFFFFF;
+    
+    /* Font Sizes */
+    --Font-size-11: 11px;
+    --Font-size-12: 12px;
+    --Font-size-13: 13px;
+    --Font-size-14: 14px;
+    --Font-size-15: 15px;
+    --Font-size-16: 16px;
+    --Font-size-18: 18px;
+    --Font-size-20: 20px;
+    --Font-size-24: 24px;
+    --Font-size-28: 28px;
+    --Font-size-32: 32px;
+
+    /* Font Weights */
+    --Font-weight-regular: 400;
+    --Font-weight-bold: 700;
+    --Font-weight-extrabold: 800;
+
+    /* Font Family */
+    --Font-family-sans: 'NanumSquare', sans-serif;
+    
+    /* Line Heights */
+    --Line-height-140: 140%;
+    --Line-height-150: 150%;
+    
+    /* Letter Spacing */
+    --Font-letter-spacing-0: -0.3px;
 
   }
 `;
