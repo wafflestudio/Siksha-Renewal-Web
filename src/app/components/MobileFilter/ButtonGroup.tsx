@@ -32,7 +32,6 @@ export default function ButtonGroup({ items, onSelect, selectedId }: ButtonGroup
 const ButtonGroupWrapper = styled.div<{ count: number }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.count}, 1fr);
-  gap: 10px;
   height: 34px;
   border-radius: 30px;
   box-shadow: inset 0 0 0 1px var(--Color-Foundation-gray-200, #E5E6E9);
