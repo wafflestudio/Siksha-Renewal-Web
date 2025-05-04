@@ -3,6 +3,7 @@ import { formatPrice } from "../../utils/FormatUtil";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
+import Text from "../../components/general/Text";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { RawMenu } from "types";
@@ -155,40 +156,22 @@ const Dots = styled.img`
   }
 `;
 
-const Price = styled.div`
+const Price = styled(Text).attrs(props => ({
+  as: 'div',
+  variant: 'text-14-regular',
+  color: 'var(--Color-Foundation-gray-900, #262728)',
+  textAlign: 'center',
+}))`
   display: flex;
   justify-content: center;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 400;
   width: 58px;
-
-  color: var(--Color-Foundation-gray-900, #262728);
-  text-align: center;
-
-  /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
-
+  
   @media (max-width: 768px) {
     width: fit-content;
     min-width: 28px;
-
     display: flex;
     justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
-    
     color: var(--Color-Foundation-base-black, #000);
-    text-align: center;
-
-    /* text-14/Regular */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
-    font-size: var(--Font-size-14, 14px);
-    font-style: normal;
-    font-weight: var(--Font-weight-regular, 400);
-    line-height: 150%; /* 21px */
   }
 `;
 
