@@ -46,21 +46,24 @@ export default function MenuList() {
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
       ) : filteredList.length === 0 ? (
-        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
+        <EmptyText>식단 정보가 없습니다.</EmptyText>
       ) : (
-        filterMenuList(data, location)[meal].map(
-          (
-            restaurant: RawRestaurant & {
-              menus: RawMenu[];
+        <>
+          {filterMenuList(data, location)[meal].map(
+            (
+              restaurant: RawRestaurant & {
+                menus: RawMenu[];
+              },
+            ) => {
+              if (isFilterFavorite) {
+                return favoriteRestaurants.includes(restaurant.id) ? (
+                  <MenuCard data={restaurant} key={restaurant.id + meal} />
+                ) : null;
+              } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
             },
-          ) => {
-            if (isFilterFavorite) {
-              return favoriteRestaurants.includes(restaurant.id) ? (
-                <MenuCard data={restaurant} key={restaurant.id + meal} />
-              ) : null;
-            } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
-          },
-        )
+          )}
+          <div style={{ height: "26px" }} />
+        </>
       )}
     </Container>
   );
@@ -79,7 +82,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height: 100px;
     flex-grow: 1;
-    padding-bottom: 83px; // mobile navigation bar height
+    padding-bottom: 83px; // mobile navigation bar height + 40px padding
     gap: 18px;
   }
 
@@ -87,11 +90,11 @@ const Container = styled.div`
 `;
 
 const EmptyText = styled.div`
+  width: 100%;
   color: #919191;
   font-weight: 400;
-  padding-top: 25px;
-  padding-bottom: 30px;
   font-size: 16px;
+  margin: auto;
 
   @media (max-width: 768px) {
     font-size: 13px;

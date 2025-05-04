@@ -94,7 +94,7 @@ export default function MobileFilterBar() {
           />
           <FilterIconGradient visible={isScrolled}/>
         </FilterIconWrapper>
-        <div style={{ width: "36px", flexShrink: "0", }}/>
+        <div style={{ width: "37px", flexShrink: "0", }}/>
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
@@ -102,9 +102,9 @@ export default function MobileFilterBar() {
           <Image
             src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
-            width={9.33}
-            height={4}
-            style={{ padding: "0 3.33px" }}
+            width={11}
+            height={6}
+            style={{ padding: "0 2.5px" }}
           />
         </Button>
         <Button
@@ -121,9 +121,9 @@ export default function MobileFilterBar() {
           <Image
             src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
-            width={9.33}
-            height={4}
-            style={{ padding: "0 3.33px" }}
+            width={11}
+            height={6}
+            style={{ padding: "0 2.5px" }}
           />
         </Button>
         <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
@@ -146,9 +146,9 @@ export default function MobileFilterBar() {
           <Image
             src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
-            width={9.33}
-            height={4}
-            style={{ padding: "0 3.33px" }}
+            width={11}
+            height={6}
+            style={{ padding: "0 2.5px" }}
           />
         </Button>
         {/* <Button isActive={isSet.category}>
@@ -158,9 +158,9 @@ export default function MobileFilterBar() {
           <Image
             src="/img/down-arrow-filter.svg"
             alt="아래 화살표"
-            width={9.33}
-            height={4}
-            style={{ padding: "0 3.33px" }}
+            width={11}
+            height={6}
+            style={{ padding: "0 2.5px" }}
           />
         </Button> */}
       </Container>

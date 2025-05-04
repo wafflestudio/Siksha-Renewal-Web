@@ -145,27 +145,27 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
               { label: "전체", id: "ALL" },
               {
                 label: (
-                  <div>
+                  <div style={{ alignItems: "center", display: "flex" }}>
                     3.5
-                    <StarIcon src="/img/general/star-on.svg" />
+                    <StarIcon src="/img/general/star-on-14.svg" />
                   </div>
                 ),
                 id: "3.5",
               },
               {
                 label: (
-                  <div>
+                  <div style={{ alignItems: "center", display: "flex" }}>
                     4.0
-                    <StarIcon src="/img/general/star-on.svg" />
+                    <StarIcon src="/img/general/star-on-14.svg" />
                   </div>
                 ),
                 id: "4",
               },
               {
                 label: (
-                  <div>
+                  <div style={{ alignItems: "center", display: "flex" }}>
                     4.5
-                    <StarIcon src="/img/general/star-on.svg" />
+                    <StarIcon src="/img/general/star-on-14.svg" />
                   </div>
                 ),
                 id: "4.5",
@@ -182,7 +182,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <FilterActionSection marginBottom="19" marginTop="19">
+      <FilterActionSection marginBottom="19" marginTop="19" addShadow>
         <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
@@ -195,12 +195,13 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
 }
 
 const StarIcon = styled.img`
-  width: 12px;
+  width: 12.706px;
   height: 12px;
+  flex-shrink: 0;
   margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
+export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string; addShadow?: boolean }>`
   display: grid;
   padding: 0 16px;
   padding-bottom: ${(props) => `${props.marginBottom}px`};
@@ -209,7 +210,7 @@ export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?
   width: 100%;
   grid-template-columns: 1fr 1fr;
   gap: 7px;
-  box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};;
 `;
 
 const FilterContentWrapper = styled.div`
