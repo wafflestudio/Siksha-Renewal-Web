@@ -21,6 +21,7 @@
     "embla-carousel-autoplay": "^8.1.7",
     "embla-carousel-react": "^8.1.7",
     "firebase": "^10.14.1",
+    "mixpanel-browser": "^2.64.0",
     "next": "^15.0.2",
     "rc-slider": "^11.1.8",
     "react": "^18.3.1",
