@@ -183,10 +183,13 @@ export default function UseFilter() {
         });
 
         // 필터링 후 메뉴가 없는 식당은 삭제
-        filteredList[key] = filteredList[key].filter((restaurant) => {
-          if (!restaurant.menus) return false;
-          return restaurant.menus.length > 0;
-        });
+        // 기본 필터와 다를 경우에만 필터링
+        if (defaultFiltersJson !== JSON.stringify(filterList, replacer)) {
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            if (!restaurant.menus) return false;
+            return restaurant.menus.length > 0;
+          });
+        }
       });
 
       return filteredList as RawMenuList;
