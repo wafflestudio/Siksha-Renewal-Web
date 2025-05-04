@@ -17,7 +17,7 @@ export default function MobileBottomSheet({
   showHandle = true,
 }: MobileBottomSheetProps) {
   const headerHeight = showHandle ? 34 : 16;
-  const sheetHeight = 2000; // 대충 넉넉하게 설정
+  const sheetHeight = 1000;// 대충 넉넉하게 설정
   const [translateY, setTranslateY] = useState(sheetHeight);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
