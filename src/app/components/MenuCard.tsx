@@ -150,7 +150,7 @@ const DesktopContainer = styled.div`
   ${LoadingAnimation}
   display: flex;
   padding: 24px 28px;
-  margin-right: 24px; // 디자인 체크를 위한 임시 마진값으로 RightSide에 넣으면 삭제할것
+  margin-right: 16px;
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
