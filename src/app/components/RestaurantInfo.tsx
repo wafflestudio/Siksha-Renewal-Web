@@ -1,6 +1,8 @@
+'use client';
+
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MobileOperatingHour from "./MobileOperatingHour";
 import BackClickable from "../../components/general/BackClickable";
 
@@ -9,6 +11,8 @@ export default function RestaurantInfo() {
   const { toggleShowInfo } = useDispatchContext();
 
   const { infoData } = state;
+
+  const [ etc, setEtc ] = useState({ isFestival: false, isFoodTruck: false });
 
   useEffect(() => {
     const loadMap = () => {
@@ -48,6 +52,11 @@ export default function RestaurantInfo() {
       };
       document.head.appendChild(script);
     }
+
+    setEtc({
+      isFestival: infoData.name_kr.startsWith("[축제]"),
+      isFoodTruck: infoData.name_kr.endsWith("(푸드트럭)")
+    });
   }, [infoData]);
 
   return (
@@ -76,14 +85,14 @@ export default function RestaurantInfo() {
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
-                  <MobileOperatingHour type={"weekdays"} />
+                  <MobileOperatingHour type={"weekdays"} etc={etc} />
                 )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
                   <>
                     <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"saturday"} />
+                    <MobileOperatingHour type={"saturday"} etc={etc} />
                   </>
                 )}
               {infoData.etc &&
@@ -91,7 +100,7 @@ export default function RestaurantInfo() {
                 infoData.etc.operating_hours.holiday.length != 0 && (
                   <>
                     <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"holiday"} />
+                    <MobileOperatingHour type={"holiday"} etc={etc} />
                   </>
                 )}
               {(!infoData.etc || !infoData.etc.operating_hours) && (
