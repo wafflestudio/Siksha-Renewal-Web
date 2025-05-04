@@ -237,12 +237,11 @@ const MobileFilterHeader = styled.div`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 150%; /* 21px */
-  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
   display: flex;
   justify-content: center;
