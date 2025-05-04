@@ -123,7 +123,7 @@ const BottomSheetHandle = styled.div`
 
 const CloseButton = styled.button`
   position: absolute;
-  right: 13px;
+  right: 16px;
   top: 14px;
   width: 32px;
   height: 32px;

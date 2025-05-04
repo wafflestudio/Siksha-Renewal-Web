@@ -240,7 +240,9 @@ const MobileFilterHeader = styled.div`
 `;
 
 export const MobileFilterText = styled.div`
+  display: flex;
   height: 27.497px;
+  align-items: center;
 
   color: var(--Color-Foundation-base-black, #000);
 
