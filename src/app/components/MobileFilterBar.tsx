@@ -141,7 +141,7 @@ export default function MobileFilterBar() {
         </Button>
         <Button isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
           <ButtonText isActive={isSet.ratingMin}>
-            {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
+            {isSet.ratingMin ? `평점 ${filterList.ratingMin.toFixed(1)} 이상` : "최소 평점"}
           </ButtonText>
           <Image
             src="/img/down-arrow-filter.svg"
