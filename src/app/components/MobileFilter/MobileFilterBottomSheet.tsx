@@ -70,6 +70,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
       isAvailableOnly: selectedFilters.isAvailableOnly,
+      isFestival: filterList.isFestival,
     });
     onClose();
   }, [setFilterList, selectedFilters]);

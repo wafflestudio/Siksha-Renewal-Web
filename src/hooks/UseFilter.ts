@@ -85,10 +85,12 @@ export default function UseFilter() {
   };
 
   /**
-   * 필터 리스트를 초기화합니다.
+   * 필터 리스트를 초기화합니다. (축제 토글 제외)
    */
   const resetFilterList = () => {
+    const oldIsFestival = filterList.isFestival;
     setStorage(defaultFiltersJson);
+    changeFilterOption({ isFestival: oldIsFestival });
   };
 
   /**
@@ -183,8 +185,7 @@ export default function UseFilter() {
         });
 
         // 필터링 후 메뉴가 없는 식당은 삭제
-        // 기본 필터와 다를 경우에만 필터링
-        if (defaultFiltersJson !== JSON.stringify(filterList, replacer)) {
+        if (needDistanceFilter || needPriceFilter || needRatingFilter || needReviewFilter || needIsAvailableOnlyFilter) {
           filteredList[key] = filteredList[key].filter((restaurant) => {
             if (!restaurant.menus) return false;
             return restaurant.menus.length > 0;
