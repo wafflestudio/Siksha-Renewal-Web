@@ -94,6 +94,7 @@ const EmptyText = styled.div`
   color: #919191;
   font-weight: 400;
   font-size: 16px;
+  text-align: center;
   margin: auto;
 
   @media (max-width: 768px) {
