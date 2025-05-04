@@ -11,6 +11,9 @@ export default function useFestival() {
     const startDate = new Date(START_DATE);
     const endDate = new Date(END_DATE);
 
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+
     return date >= startDate && date <= endDate;
   }, [date]);
 
