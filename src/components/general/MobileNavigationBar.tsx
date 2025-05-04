@@ -157,7 +157,7 @@ const IconLabel = styled.div<{ isActive: boolean }>`
   color: ${({ isActive }) => isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Color-Foundation-gray-500, #BEC1C8)"};
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: NanumSquareOTF;
+  font-family: NanumSquare;
   font-size: 9px;
   font-style: normal;
   font-weight: 800;

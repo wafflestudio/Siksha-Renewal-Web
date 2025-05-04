@@ -28,7 +28,7 @@ const NeutralButton = styled.button`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -46,7 +46,7 @@ const PrimaryButton = styled.button`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);

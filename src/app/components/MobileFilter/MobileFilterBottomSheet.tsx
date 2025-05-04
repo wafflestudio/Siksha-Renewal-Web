@@ -245,7 +245,7 @@ export const MobileFilterText = styled.div`
   color: var(--Color-Foundation-base-black, #000);
 
   /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
