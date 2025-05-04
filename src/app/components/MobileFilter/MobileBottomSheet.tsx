@@ -89,26 +89,22 @@ export default function MobileBottomSheet({
           </BottomSheetHandle> :
           <div style={{ marginBottom: 16 }} />
         }
-        <CloseButton onClick={onClose} />
+        <CloseButton onClick={onClose} showHandle={showHandle}/>
         <BottomSheetContent headerHeight={headerHeight}>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
   );
 }
 
-interface BottomSheetBackdropProps {
-  isVisible: boolean;
-}
-
-const BottomSheetBackdrop = styled.div`
+const BottomSheetBackdrop = styled.div<{isVisible: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: ${({ isVisible }: BottomSheetBackdropProps) => (isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
+  background-color: ${({ isVisible }) => (isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
   z-index: 99;
-  display: ${({ isVisible }: BottomSheetBackdropProps) => (isVisible ? "block" : "none")};
+  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
   transition: background-color 0.3s ease-in-out;
 `;
 
@@ -121,10 +117,10 @@ const BottomSheetHandle = styled.div`
   cursor: grab;
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled.button<{showHandle: boolean}>`
   position: absolute;
   right: 16px;
-  top: 14px;
+  top: ${({ showHandle }) => showHandle ? "28px" : "14px"};
   width: 32px;
   height: 32px;
   flex-shrink: 0;

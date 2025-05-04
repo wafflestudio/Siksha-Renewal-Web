@@ -232,11 +232,20 @@ const FilterContent = styled.div`
 `;
 
 const MobileFilterHeader = styled.div`
+  color: var(--Color-Foundation-base-black, #000);
+  text-align: center;
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+
   display: flex;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 10.68px;
   align-items: center;
 `;
 
