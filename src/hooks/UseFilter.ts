@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useMemo } from "react";
 import { useStateContext } from "providers/ContextProvider";
 import { defaultFilters } from "constants/filterOptions";
+import useFestival from "./UseFestival";
 
 export type FilterList = {
   length: number;
@@ -49,6 +50,9 @@ export default function UseFilter() {
   const { value, set: setStorage } = useLocalStorage("filterList", defaultFiltersJson);
 
   const filterList: FilterList = JSON.parse(value || defaultFiltersJson, reviver);
+
+  // 축제 기간에만 isFestival을 사용하기 위해 useFestival 훅을 사용합니다.
+  const { isFestivalDate } = useFestival();
 
   /**
    * 필터의 각 옵션의 변경 여부를 반환합니다.
@@ -124,8 +128,8 @@ export default function UseFilter() {
         // 축제 기간 필터링
         filteredList[key] = filteredList[key].filter((restaurant) => {
           const isFestivalRestaurant = restaurant.name_kr.startsWith("[축제]");
-          if (filterList.isFestival && isFestivalRestaurant) return true;
-          if (!filterList.isFestival && !isFestivalRestaurant) return true;
+          if (filterList.isFestival && isFestivalDate && isFestivalRestaurant) return true;
+          if ((!filterList.isFestival || !isFestivalDate) && !isFestivalRestaurant) return true;
           return false;
         });
 
