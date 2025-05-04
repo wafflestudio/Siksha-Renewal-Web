@@ -196,8 +196,9 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
 }
 
 const StarIcon = styled.img`
-  width: 12.706px;
+  width: 12px;
   height: 12px;
+  margin-bottom: 2px;
   flex-shrink: 0;
   margin-left: 4px;
 `;

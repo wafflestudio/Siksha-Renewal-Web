@@ -56,7 +56,7 @@ const ButtonItem = styled.button`
   align-items: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
