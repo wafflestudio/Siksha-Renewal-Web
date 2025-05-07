@@ -70,6 +70,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
       isAvailableOnly: selectedFilters.isAvailableOnly,
+      isFestival: filterList.isFestival,
     });
     onClose();
   }, [setFilterList, selectedFilters]);
@@ -195,8 +196,9 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
 }
 
 const StarIcon = styled.img`
-  width: 12.706px;
+  width: 12px;
   height: 12px;
+  margin-bottom: 2px;
   flex-shrink: 0;
   margin-left: 4px;
 `;
@@ -231,11 +233,19 @@ const FilterContent = styled.div`
 `;
 
 const MobileFilterHeader = styled.div`
+  color: var(--Color-Foundation-base-black, #000);
+  text-align: center;
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   display: flex;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 10.68px;
   align-items: center;
 `;
 

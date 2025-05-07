@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useMemo } from "react";
 import { useStateContext } from "providers/ContextProvider";
 import { defaultFilters } from "constants/filterOptions";
+import useFestival from "./UseFestival";
 
 export type FilterList = {
   length: number;
@@ -50,6 +51,9 @@ export default function UseFilter() {
 
   const filterList: FilterList = JSON.parse(value || defaultFiltersJson, reviver);
 
+  // 축제 기간에만 isFestival을 사용하기 위해 useFestival 훅을 사용합니다.
+  const { isFestivalDate } = useFestival();
+
   /**
    * 필터의 각 옵션의 변경 여부를 반환합니다.
    * @returns {Record<keyof FilterList, boolean>} 각 옵션의 변경 여부
@@ -85,10 +89,12 @@ export default function UseFilter() {
   };
 
   /**
-   * 필터 리스트를 초기화합니다.
+   * 필터 리스트를 초기화합니다. (축제 토글 제외)
    */
   const resetFilterList = () => {
+    const oldIsFestival = filterList.isFestival;
     setStorage(defaultFiltersJson);
+    changeFilterOption({ isFestival: oldIsFestival });
   };
 
   /**
@@ -122,8 +128,8 @@ export default function UseFilter() {
         // 축제 기간 필터링
         filteredList[key] = filteredList[key].filter((restaurant) => {
           const isFestivalRestaurant = restaurant.name_kr.startsWith("[축제]");
-          if (filterList.isFestival && isFestivalRestaurant) return true;
-          if (!filterList.isFestival && !isFestivalRestaurant) return true;
+          if (filterList.isFestival && isFestivalDate && isFestivalRestaurant) return true;
+          if ((!filterList.isFestival || !isFestivalDate) && !isFestivalRestaurant) return true;
           return false;
         });
 
@@ -183,10 +189,12 @@ export default function UseFilter() {
         });
 
         // 필터링 후 메뉴가 없는 식당은 삭제
-        filteredList[key] = filteredList[key].filter((restaurant) => {
-          if (!restaurant.menus) return false;
-          return restaurant.menus.length > 0;
-        });
+        if (needDistanceFilter || needPriceFilter || needRatingFilter || needReviewFilter || needIsAvailableOnlyFilter) {
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            if (!restaurant.menus) return false;
+            return restaurant.menus.length > 0;
+          });
+        }
       });
 
       return filteredList as RawMenuList;

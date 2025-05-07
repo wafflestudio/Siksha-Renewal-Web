@@ -6,19 +6,25 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export default function FestivalToggle() {
-  const [active, setActive] = useState(false);
   const { isFestivalDate } = useFestival();
-  const { changeFilterOption } = UseFilter();
+  const { changeFilterOption, filterList } = UseFilter();
+
+  const [active, setActive] = useState(filterList.isFestival);
 
   useEffect(() => {
-    changeFilterOption({ isFestival: active });
-  }, [active]);
+    setActive(filterList.isFestival);
+  }, [filterList.isFestival]);
+
+  const handleClick = () => {
+    setActive(!filterList.isFestival);
+    changeFilterOption({ isFestival: !filterList.isFestival });
+  };
 
   return (
     isFestivalDate && 
-    <ToggleWrapper onClick={() => setActive(!active)}>
+    <ToggleWrapper onClick={handleClick}>
       <ToggleContainer active={active}>
-        <ToggleCircle />
+        <ToggleCircle active={active} />
       </ToggleContainer>
       <ToggleText active={active}>축제</ToggleText>
     </ToggleWrapper>
@@ -28,31 +34,50 @@ export default function FestivalToggle() {
 const ToggleWrapper = styled.div`
   display: flex;
   position: absolute;
-  height: fit-content;
-  right: 24px;
+  width: 63px;
+  height: 28px;
+  justify-content: center;
+  align-items: center;
+  right: 16px;
+  top: 11px;
 
   @media (max-width: 768px) {
-    right: 17px;
+    width: 50px;
+    height: 24px;
+    right: 14px;
+    top: 20px;
   }
 `;
 
 const ToggleContainer = styled.div<{ active: boolean }>`
-  width: 80.206px;
-  height: 34.864px;
-  box-sizing: border-box;
-  border-radius: 17.432px;
-  background-color: ${({ active }) => (active ? `var(--Color-Foundation-orange-500, #FF9522)` : `var(--Grey-3, #B7B7B7)`)}; // 주황색 / 회색
+  width: 100%;
+  height: 100%;
+  padding: 2.1px;
+  gap: 6.1px;
+  border-radius: 90.323px;
+
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: ${({ active }) => (active ? 'flex-end' : 'flex-start')};
-  padding: 2.14px 2.49px 2.14px 2.88px;
+  box-sizing: border-box;
+  background: var(--Grey-3, #B7B7B7); 
   cursor: pointer;
 
+  &::before {
+    content: "";
+    border-radius: 90.323px;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(270deg, #FF9DA4 40%, #FF9522 100%);
+    opacity: ${({ active }) => (active ? 1 : 0)};
+    transition: opacity 300ms ease-out;
+    z-index: 1;
+  }
+
   @media (max-width: 768px) {
-    width: 44.573px;
-    height: 19.375px;
-    border-radius: 9.688px;
-    padding: 1.19px 1.38px 1.19px 1.6px;
+    padding: 2px;
+    gap: 2px;
+    border-radius: 64.526px;
   }
 `;
 
@@ -60,39 +85,51 @@ const ToggleText = styled.span<{ active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: ${({ active }) => (active ? '11.7px' : '39.28px')};
+  left: ${({ active }) => (active ? '8px' : 'calc(100% - 31px)')};
+  z-index: 1;
+
+  width: 23px;
 
   color: #FFF;
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: NanumSquareOTF;
-  font-size: 16px;
+  font-family: NanumSquare;
+  font-size: 12.6px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: -0.54px;
   cursor: pointer;
+  
+  transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    font-size: 9px;
-    letter-spacing: -0.3px;
-    margin-left: ${({ active }) => (active ? '6.5px' : '21.83px')};
+    left: ${({ active }) => (active ? '6px' : 'calc(100% - 24px)')};
+    width: 18px;
+    font-size: 10px;
   }
 `;
 
-const ToggleCircle = styled.div`
-  width: 30.59px;
-  height: 30.59px;
-  border-radius: 50%;
+const ToggleCircle = styled.div<{ active: boolean }>`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: ${({ active }) => (active ? "calc(100% - 25.9px)" : '2.1px')};
+
+  width: 23.8px;
+  height: 23.8px;
   background-color: white;
   z-index: 1;
 
-  fill: var(--Main-White, #FFF);
-  filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
+  border-radius: 100%;
+  background: #FFF;
+  box-shadow: 0px 0px 0px 0.881px rgba(0, 0, 0, 0.04), 0px 2.644px 7.052px 0px rgba(0, 0, 0, 0.15), 0px 2.644px 0.881px 0px rgba(0, 0, 0, 0.06);
+
+  transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    width: 17px;
-    height: 17px;
-    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15));
+    left: ${({ active }) => (active ? "calc(100% - 22px)" : '2px')};
+    width: 20px;
+    height: 20px;
+    box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15), 0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
   }
 `;

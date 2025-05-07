@@ -1,17 +1,30 @@
 import { useStateContext } from "providers/ContextProvider";
-import { useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getIsFestival } from "utils/api/festival";
+import useError from "./useError";
+import { formatISODate } from "utils/FormatUtil";
 
 export default function useFestival() {
   const { date } = useStateContext();
+  const { onHttpError } = useError();
+  const [ isFestivalDate, setIsFestivalDate ] = useState(false);
 
-  const START_DATE = "2025-05-13";
-  const END_DATE = "2025-05-15";
+  const fetchIsFestivalDate = async () => {
+    const dateString = formatISODate(date);
+    getIsFestival(dateString)
+      .then((response) => {
+        console.log("isFestivalDate", response);
+        setIsFestivalDate(response.is_festival);
+      })
+      .catch((e) => {
+        onHttpError(e);
+      });
+    };
 
-  const isFestivalDate = useMemo(() => {
-    const startDate = new Date(START_DATE);
-    const endDate = new Date(END_DATE);
-
-    return date >= startDate && date <= endDate;
+  useEffect(() => {
+    if (date) {
+      fetchIsFestivalDate()
+    }
   }, [date]);
 
   return { isFestivalDate };

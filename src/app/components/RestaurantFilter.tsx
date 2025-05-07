@@ -66,6 +66,7 @@ export default function RestaurantFilter() {
       ratingMin: selectedFilters.ratingMin,
       isReview: selectedFilters.isReview,
       isAvailableOnly: selectedFilters.isAvailableOnly,
+      isFestival: filterList.isFestival,
     });
   }, [setFilterList, selectedFilters]);
 
