@@ -6,7 +6,7 @@ import { useStateContext } from "../../providers/ContextProvider";
 import { useEffect, useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
-import { RawMenu, RawRestaurant } from "types";
+import { RawMenu, RawMenuList, RawRestaurant } from "types";
 import UseFilter from "hooks/UseFilter";
 
 export default function MenuList() {
@@ -38,26 +38,32 @@ export default function MenuList() {
     else setHasData(true);
   }, [data, meal, isFilterFavorite, filterList]);
 
+  // Calculate the filtered list directly
+  const filteredList = hasData ? filterMenuList(data, location)[meal] : [];
+
   return (
     <Container key={date + meal}>
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
-      ) : hasData ? (
-        filterMenuList(data, location)[meal].map(
-          (
-            restaurant: RawRestaurant & {
-              menus: RawMenu[];
-            },
-          ) => {
-            if (isFilterFavorite) {
-              return favoriteRestaurants.includes(restaurant.id) ? (
-                <MenuCard data={restaurant} key={restaurant.id + meal} />
-              ) : null;
-            } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
-          },
-        )
+      ) : filteredList.length === 0 ? (
+        <EmptyText>식단 정보가 없습니다.</EmptyText>
       ) : (
-        <EmptyText>업로드 된 식단이 없습니다.</EmptyText>
+        <>
+          {filterMenuList(data, location)[meal].map(
+            (
+              restaurant: RawRestaurant & {
+                menus: RawMenu[];
+              },
+            ) => {
+              if (isFilterFavorite) {
+                return favoriteRestaurants.includes(restaurant.id) ? (
+                  <MenuCard data={restaurant} key={restaurant.id + meal} />
+                ) : null;
+              } else return <MenuCard data={restaurant} key={restaurant.id + meal} />;
+            },
+          )}
+          <div style={{ height: "26px" }} />
+        </>
       )}
     </Container>
   );
@@ -76,7 +82,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height: 100px;
     flex-grow: 1;
-    padding-bottom: 83px; // mobile navigation bar height
+    padding-bottom: 83px; // mobile navigation bar height + 40px padding
     gap: 18px;
   }
 
@@ -84,11 +90,12 @@ const Container = styled.div`
 `;
 
 const EmptyText = styled.div`
+  width: 100%;
   color: #919191;
   font-weight: 400;
-  padding-top: 25px;
-  padding-bottom: 30px;
   font-size: 16px;
+  text-align: center;
+  margin: auto;
 
   @media (max-width: 768px) {
     font-size: 13px;

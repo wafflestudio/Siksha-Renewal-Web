@@ -52,9 +52,9 @@ export default function MobileFilterPriceBottomSheet({
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>가격</MobileFilterText>
-      <div style={{ height: 65.5 }} />
+      <div style={{ height: 56.5 }} />
       <MobilePriceSlider
         priceRange={[priceMin, priceMax]}
         onPriceRangeChange={([valueMin, valueMax]) => {
@@ -63,8 +63,8 @@ export default function MobileFilterPriceBottomSheet({
         }}
       />
 
-      <div style={{ height: 67 }} />
-      <FilterActionSection marginBottom="45">
+      <div style={{ height: 58 }} />
+      <FilterActionSection marginBottom="19">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

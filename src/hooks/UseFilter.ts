@@ -181,6 +181,12 @@ export default function UseFilter() {
             return true;
           });
         });
+
+        // 필터링 후 메뉴가 없는 식당은 삭제
+        filteredList[key] = filteredList[key].filter((restaurant) => {
+          if (!restaurant.menus) return false;
+          return restaurant.menus.length > 0;
+        });
       });
 
       return filteredList as RawMenuList;

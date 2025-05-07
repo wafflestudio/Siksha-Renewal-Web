@@ -3,6 +3,7 @@ import styled from "styled-components";
 import WebPicket from "./WebPicket";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import { formatPrice } from "utils/FormatUtil";
 
 interface WebPriceSliderProps {
   priceRange?: [number, number];
@@ -53,8 +54,8 @@ export default function WebPriceSlider({
   }, [initialPriceRange]);
 
   const priceText = useMemo(() => {
-    const minTxt = priceMin <= min ? `0원` : `${priceMin}원`;
-    const maxTxt = max <= priceMax ? `${PRICE_FILTER_OPTIONS.max}원 이상` : `${priceMax}원`;
+    const minTxt = priceMin <= min ? `0원` : `${formatPrice(priceMin)}원`;
+    const maxTxt = max <= priceMax ? `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상` : `${formatPrice(priceMax)}원`;
 
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);

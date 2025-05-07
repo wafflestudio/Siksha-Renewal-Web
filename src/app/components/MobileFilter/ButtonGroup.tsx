@@ -35,18 +35,21 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
   gap: 10px;
   height: 34px;
   border-radius: 30px;
-  border: 1px solid hsla(0, 0%, 88%, 1);
+  box-shadow: inset 0 0 0 1px var(--Color-Foundation-gray-200, #E5E6E9);
+  box-sizing: content-box;
+  align-content: center;
 `;
 
 const ButtonItem = styled.button`
   display: flex;
   justify-content: center;
-  padding: 10px 20px;
-  border-radius: 20px;
+  align-items: center;
+  border-radius: 30px;
   height: 34px;
   color: black;
   width: 100%;
   background-color: transparent;
+  box-sizing: border-box;
   border: none;
   cursor: pointer;
   font-size: 14px;
@@ -54,6 +57,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background-color: #ffe8ce;
-  border: 1px solid #ff9522;
+  background: var(--Color-Foundation-orange-100, #FFEAD3);
+  box-shadow: inset 0 0 0 1px var(--Color-Foundation-orange-500, #ff9522);
 `;
