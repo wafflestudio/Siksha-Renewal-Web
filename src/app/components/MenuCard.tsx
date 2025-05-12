@@ -237,7 +237,7 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
   text-align: center;
 
   /* text-13/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -257,7 +257,7 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
     width: fit-content;
 
     /* text-12/Regular */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-12, 12px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);
@@ -284,7 +284,7 @@ const Name = styled.div`
   word-break: break-word;
 
   /* text-18/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-18, 18px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -294,7 +294,7 @@ const Name = styled.div`
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-16/ExtraBold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-16, 16px);
     font-style: normal;
     font-weight: var(--Font-weight-extrabold, 800);

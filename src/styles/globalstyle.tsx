@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareExtraBold.ttf') format('truetype'),
-    url('/font/NanumSquareOTFExtraBold.otf') format('opentype');
+    url('/font/NanumSquareExtraBold.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
     
     font-weight: 1000;
@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareBold.ttf') format('truetype'),
-    url('/font/NanumSquareOTFBold.otf') format('opentype');
+    url('/font/NanumSquareBold.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 700;
@@ -32,7 +32,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareRegular.ttf') format('truetype'),
-    url('/font/NanumSquareOTFRegular.otf') format('opentype');
+    url('/font/NanumSquareRegular.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareLight.ttf') format('truetype'),
-    url('/font/NanumSquareOTFLight.otf') format('opentype');
+    url('/font/NanumSquareLight.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 100;
@@ -50,7 +50,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acEB.ttf') format('truetype'),
-    url('/font/NanumSquareOTF_acEB.otf') format('opentype');
+    url('/font/NanumSquare_acEB.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
     
     font-weight: 1000;
@@ -59,7 +59,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acB.ttf') format('truetype'),
-    url('/font/NanumSquareOTF_acB.otf') format('opentype');
+    url('/font/NanumSquare_acB.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 700;
@@ -68,7 +68,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acR.ttf') format('truetype'),
-    url('/font/NanumSquareOTF_acR.otf') format('opentype');
+    url('/font/NanumSquare_acR.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
@@ -77,7 +77,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acL.ttf') format('truetype'),
-    url('/font/NanumSquareOTF_acL.otf') format('opentype');
+    url('/font/NanumSquare_acL.otf') format('opentype');
     unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 100;
