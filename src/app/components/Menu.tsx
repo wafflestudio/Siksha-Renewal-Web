@@ -167,7 +167,7 @@ const Price = styled.div`
   text-align: center;
 
   /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -184,7 +184,7 @@ const Price = styled.div`
     text-align: center;
 
     /* text-14/Regular */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);
@@ -219,7 +219,7 @@ const Rate = styled.div`
     text-align: center;
 
     /* text-14/Regular */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);

@@ -130,7 +130,7 @@ const Pagination = styled.div`
 const Page = styled.span`
   color: var(--Color-Foundation-gray-800, #4c4d50);
 
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
