@@ -47,6 +47,42 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 100;
   }
 
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acEB.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acEB.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+    
+    font-weight: 1000;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acB.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acB.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acR.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acR.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'NanumSquare_ac';
+    src: url('/font/NanumSquare_acL.ttf') format('truetype'),
+    url('/font/NanumSquareOTF_acL.otf') format('opentype');
+    unicode-range: U+0020-007E, U+AC00-D7A3;
+
+    font-weight: 100;
+  }
+
   html {
     -moz-text-size-adjust: none;
     -webkit-text-size-adjust: none;
@@ -59,10 +95,6 @@ export const GlobalStyle = createGlobalStyle`
     background: #F8F8F8;
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
-
-    @media (min-width: 768px) and (max-width: 1024px) {
-      min-width: 1024px;
-    }
 
     @media (max-width: 768px) {
       min-width: none;
@@ -83,12 +115,21 @@ export const GlobalStyle = createGlobalStyle`
   button {
     background: inherit;
     border: none;
+    outline: none;
     box-shadow: none;
     border-radius: 0;
     padding: 0;
     overflow: visible;
     cursor: pointer;
   }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-size: 100%;
+    line-height: 1.2;
+  }
+
 
   * {
     -webkit-tap-highlight-color: transparent;
@@ -98,7 +139,30 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* constants */
-  /* --main-orange-color: #FF9522 */
+  :root {
+    --Color-Background-main: #F8F8F8;
+    --Color-Foundation-gray-50: #F8F8F8;
+    --Color-Foundation-gray-100: #F2F3F4;
+    --Color-Foundation-gray-200: #E5E6E9;
+    --Color-Foundation-gray-300: #D8DADE;
+    --Color-Foundation-gray-400: #CBCDD3;
+    --Color-Foundation-gray-500: #BEC1C8;
+    --Color-Foundation-gray-600: #989AA0;
+    --Color-Foundation-gray-700: #727478;
+    --Color-Foundation-gray-800: #4C4D50;
+    --Color-Foundation-gray-900: #262728;
+    --Color-Foundation-orange-100: #FFEAD3;
+    --Color-Foundation-orange-200: #FFD5A7;
+    --Color-Foundation-orange-300: #FFBF7A;
+    --Color-Foundation-orange-400: #FFAA4E;
+    --Color-Foundation-orange-500: #FF9522;
+    --Color-Foundation-orange-600: #D27000;
+    --Color-Foundation-orange-700: #A54C00;
+    --Color-Foundation-orange-800: #7C2900;
+    --foundation-orange-900: #570000;
+    --foundation-base-white: #FFFFFF;
+
+  }
 `;
 
 export const LoadingAnimation = css`

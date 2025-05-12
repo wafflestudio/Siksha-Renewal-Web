@@ -3,16 +3,15 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ReviewPostModal from "app/menu/[menuId]/components/ReviewPostModal";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { getMenu } from "utils/api/menus";
-import { getReviews } from "utils/api/reviews";
 import MenuSection from "./components/MenuSection";
 import ReviewSection from "./components/ReviewSection";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
-import useError from "hooks/useError";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
+import MobileLayout from "styles/layouts/MobileLayout";
+import useMenu from "hooks/UseMenu";
 
 export interface MenuType {
   id: number;
@@ -50,63 +49,24 @@ export interface ReviewListType {
 
 export default function Menu({ menuId }: { menuId: number }) {
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
-  const [reviews, setReviews] = useState<ReviewListType>({
-    result: [],
-    total_count: 0,
-  });
-  const [menu, setMenu] = useState<MenuType>();
-  const [images, setImages] = useState<string[]>([]);
-  const [isReviewPostModalOpen, setIsReviewPostModalOpen] = useState(false);
-
+  const { menu, reviews, fetchReviews, fetchData } = useMenu();
   const { openLoginModal } = useModals();
-  const { onHttpError } = useError();
+  const { authStatus } = useAuth();
 
+  const [images, setImages] = useState<string[]>([]);
   const [mobileSubHeaderTitle, setMobileSubHeaderTitle] = useState<string>("");
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
-  const { authStatus, getAccessToken } = useAuth();
-
-  const fetchMenu = async () => {
-    const accessToken = await getAccessToken().catch((error) => "");
-
-    getMenu(Number(menuId), accessToken)
-      .then((menuData) => {
-        setMenu(menuData);
-        setMobileSubHeaderTitle(menuData.name_kr);
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
-  };
-
-  const fetchReviews = async () => {
-    getReviews(Number(menuId))
-      .then((reviewsData) => {
-        setReviews({
-          result: reviewsData.result,
-          total_count: reviewsData.totalCount,
-        });
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
-  };
+  useEffect(() => {
+    fetchData(menuId);
+  }
+    , [menuId]);
 
   useEffect(() => {
-    if (!menuId) {
-      return;
+    if (menu) {
+      setMobileSubHeaderTitle(menu.name_kr);
     }
-    setLoading(true);
-
-    async function fetchData() {
-      Promise.all([fetchMenu(), fetchReviews()])
-        .then(() => {})
-        .catch((e) => {})
-        .finally(() => setLoading(false));
-    }
-    fetchData();
-  }, [menuId, setLoading]);
+  }, [menu]);
 
   useEffect(() => {
     var updatedImages: string[] = [];
@@ -119,17 +79,11 @@ export default function Menu({ menuId }: { menuId: number }) {
   }, [reviews]);
 
   const handleReviewPostButtonClick = () => {
-    if (authStatus === "login") handleReviewPostModal(true);
-    else openLoginModal();
-  };
-
-  const handleReviewPostModal = (isOpen: boolean) => {
-    if (!menu) {
-      console.error("menu is not loaded");
-      return;
+    if (authStatus !== "login") {
+      openLoginModal();
+    } else {
+      router.push(`/menu/${menuId}/reviews/write`);
     }
-    setMobileSubHeaderTitle(isOpen ? "나의 평가 남기기" : menu.name_kr);
-    setIsReviewPostModalOpen(isOpen);
   };
 
   const handleReviewListPage = (isOpen: boolean) => {
@@ -142,9 +96,7 @@ export default function Menu({ menuId }: { menuId: number }) {
   };
 
   const handleMobileSubHeaderBack = () => {
-    if (isReviewPostModalOpen) {
-      handleReviewPostModal(false);
-    } else if (isReviewListPageOpen) {
+    if (isReviewListPageOpen) {
       handleReviewListPage(false);
     } else {
       router.push("/");
@@ -153,11 +105,10 @@ export default function Menu({ menuId }: { menuId: number }) {
 
   return (
     <>
-      {!isLoading && !!menu && (
+      {!!menu && (
         <>
-          <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
-          <Background>
-            <Info>
+          <DesktopContainer>
+            <LeftSide>
               <MenuSection
                 menu={menu}
                 reviewsTotalCount={reviews.total_count}
@@ -165,71 +116,43 @@ export default function Menu({ menuId }: { menuId: number }) {
                 handleReviewPostButtonClick={handleReviewPostButtonClick}
                 isReviewListPageOpen={isReviewListPageOpen}
               />
-              <MobileHLine $isReviewListPageOpen={isReviewListPageOpen} />
-              {isReviewPostModalOpen ? (
-                <ReviewPostModal
-                  isOpen={isReviewPostModalOpen}
-                  menu={{
-                    menuName: menu.name_kr,
-                    menuId: menu.id,
-                  }}
-                  onSubmit={fetchReviews}
-                  onClose={() => handleReviewPostModal(false)}
-                />
-              ) : (
-                <ReviewSection
-                  menu={menu}
-                  reviews={reviews}
-                  images={images}
-                  isReviewListPageOpen={isReviewListPageOpen}
-                  handleReviewPostButtonClick={handleReviewPostButtonClick}
-                  handleReviewListPage={handleReviewListPage}
-                />
-              )}
-            </Info>
-          </Background>
-          <MobileNavigationBar />
+            </LeftSide>
+            <RightSide>
+              <ReviewSection
+                reviews={reviews}
+                isReviewListPageOpen={isReviewListPageOpen}
+                handleReviewListPage={handleReviewListPage}
+              />
+            </RightSide>
+          </DesktopContainer>
+          <MobileContainer>
+            <MobileSubHeader title={mobileSubHeaderTitle} handleBack={handleMobileSubHeaderBack} />
+            <MenuSection
+              menu={menu}
+              reviewsTotalCount={reviews.total_count}
+              images={images}
+              handleReviewPostButtonClick={handleReviewPostButtonClick}
+              isReviewListPageOpen={isReviewListPageOpen}
+            />
+            <ReviewSection
+              reviews={reviews}
+              isReviewListPageOpen={isReviewListPageOpen}
+              handleReviewListPage={handleReviewListPage}
+            />
+            <MobileNavigationBar />
+          </MobileContainer>
         </>
       )}
     </>
   );
 }
 
-const Background = styled.div`
-  background-color: white;
-  overflow: scroll;
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    height: 100%;
-    flex-direction: column;
-  }
+const DesktopContainer = styled(TwoColumnLayout.Container)`
+  margin-top: 22px;
 `;
 
-const Info = styled.div`
-  position: relative;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  height: max(809px, calc(100vh - 271px));
-  width: 100%;
-  margin: 0 auto;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    height: max(724px, calc(100vh - 60px));
-    width: 100%;
-    margin: 0;
-  }
-`;
+const LeftSide = styled(TwoColumnLayout.Left)``;
 
-const MobileHLine = styled.div<{ $isReviewListPageOpen: boolean }>`
-  display: none;
-  background: #9191911a;
-  padding: 5px 0;
-  margin-bottom: 16px;
-  @media (max-width: 768px) {
-    display: inherit;
-  }
-  ${(props) => props.$isReviewListPageOpen && `display:none;`}
-`;
+const RightSide = styled(TwoColumnLayout.Right)``;
+
+const MobileContainer = styled(MobileLayout.Container)``;

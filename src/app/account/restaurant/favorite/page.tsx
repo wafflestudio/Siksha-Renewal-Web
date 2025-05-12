@@ -10,6 +10,7 @@ import useOrder from "hooks/UseOrder";
 import AccountLayout from "app/account/layout";
 import useAuth from "hooks/UseAuth";
 import useFavorite from "hooks/UseFavorite";
+import useError from "hooks/useError";
 
 export default function FavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
@@ -17,6 +18,8 @@ export default function FavoriteOrderSetting() {
   const { orderList, setNewOrderList } = useOrder("favorite");
 
   const { favoriteRestaurants } = useFavorite();
+
+  const { onHttpError } = useError();
 
   useEffect(authGuard, [authStatus]);
 
@@ -44,9 +47,7 @@ export default function FavoriteOrderSetting() {
 
         setNewOrderList([...newOrderList, ...newRestaurants]);
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(onHttpError);
   }, []);
 
   const reorder = (source: number, destination: number) => {
@@ -60,11 +61,9 @@ export default function FavoriteOrderSetting() {
   return (
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <Container>
-          <RestaurantOrderEditor order={orderList} reorder={reorder} />
-        </Container>
-      </AccountLayout>
+      <Container>
+        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+      </Container>
     </>
   );
 }

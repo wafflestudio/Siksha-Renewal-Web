@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 interface BackClickableProps {
-  children: JSX.Element;
+  children?: JSX.Element;
   onClickBackground: () => void;
   style?: string;
 }

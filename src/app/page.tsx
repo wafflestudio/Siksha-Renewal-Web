@@ -16,6 +16,9 @@ import useAuth from "hooks/UseAuth";
 import useOrder from "hooks/UseOrder";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import useError from "hooks/useError";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
+import MobileFilterBar from "./components/MobileFilterBar";
+import FestivalToggle from "./components/FestivalToggle";
 
 export default function Home() {
   const state = useStateContext();
@@ -85,7 +88,17 @@ export default function Home() {
       </DesktopContainer>
       <MobileContainer>
         <Date />
-        <Meal />
+        <div style={{
+          display: "flex",
+          position: "relative",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <Meal />
+          <FestivalToggle />
+        </div>
+        <MobileFilterBar />
         <MenuList />
       </MobileContainer>
       {showInfo && (
@@ -98,11 +111,15 @@ export default function Home() {
   );
 }
 
-const DesktopContainer = styled.div`
+const DesktopContainer = styled(TwoColumnLayout.Container)`
   display: flex;
+  height: 903px; // leftSide + 100px
+  padding-bottom: 100px;
   justify-content: center;
-  height: max(780px, 100vh - min(25vh, 271px));
-  margin: 39px auto 0 auto;
+
+  @media (max-width: 900px) {
+    padding: 0 16px;
+  }
 
   @media (max-width: 768px) {
     display: none;
@@ -117,17 +134,7 @@ const MobileContainer = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100%;
-  }
-`;
-
-const MobileCalendarWrapper = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    position: absolute;
-    top: 113px;
-    z-index: 100;
+    width: 100%;
   }
 `;
 

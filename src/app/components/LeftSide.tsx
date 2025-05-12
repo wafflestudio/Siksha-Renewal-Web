@@ -1,92 +1,48 @@
 import styled from "styled-components";
 import RestaurantList from "./RestaurantList";
-import Image from "next/image";
-import useModals from "hooks/UseModals";
-import { useRouter } from "next/navigation";
 import DesktopCalendar from "./DesktopCalendar";
-import useAuth from "hooks/UseAuth";
+import RestaurantFilter from "./RestaurantFilter";
+import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 
 export default function LeftSide() {
-  const router = useRouter();
-
-  const { authStatus } = useAuth();
-  const { openLoginModal } = useModals();
-
-  function onClickMyPostsButton() {
-    if (authStatus === "logout") openLoginModal();
-    else router.push(`/account/mypost`);
-  }
-
-  function onClickWriteButton() {
-    if (authStatus === "logout") openLoginModal();
-    else router.push(`/community/write`);
-  }
-
   return (
     <Container>
       <DesktopCalendar />
-      <div style={{ marginTop: "35px" }}>
+      <Content>
+        <RestaurantFilter />
+        <HLine></HLine>
         <RestaurantList />
-      </div>
-      <div style={{ marginTop: "32px", marginBottom: "69px" }}>
-        <MyPostsButton onClick={onClickMyPostsButton}>
-          <Image
-            src="/img/posts.svg"
-            alt="글 목록 이미지"
-            width={16}
-            height={12}
-            style={{ marginRight: "10px" }}
-          />
-          내가 쓴 글
-        </MyPostsButton>
-        <WritePostButton onClick={onClickWriteButton}>
-          <Image
-            src="/img/posts-white.svg"
-            alt="글 목록 이미지"
-            width={16}
-            height={12}
-            style={{ marginRight: "10px" }}
-          />
-          게시판 글쓰기
-        </WritePostButton>
-      </div>
+      </Content>
     </Container>
   );
 }
 
-const Container = styled.div`
-  margin-right: 18px;
+const Container = styled(TwoColumnLayout.Left)`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   height: fit-content;
   box-sizing: border-box;
-  min-width: 315px;
-  max-width: 563px;
-  flex-grow: 1;
+  width: 378px;
+
+  @media (max-width: 900px) {
+    flex: 0 0 360px;
+  }
 `;
 
-const Line = styled.div`
+const Content = styled.div`
+  display: flex;
+  padding: 22px 24px 40px 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+  border-radius: 10px;
+  background: var(--Color-Foundation-base-white, #fff);
+`;
+
+const HLine = styled.div`
   width: 100%;
-  height: 30px;
-  background: #f8f8f8;
-`;
-
-const Button = styled.button`
-  border: none;
-  border-radius: 8px;
-  padding: 14px 0;
-  font-family: NanumSquare;
-  font-weight: 700;
-  font-size: 18px;
-  width: calc((100% - 35px) / 2);
-  cursor: pointer;
-`;
-
-const MyPostsButton = styled(Button)`
-  background-color: white;
-  color: #575757;
-  margin-right: 35px;
-`;
-
-const WritePostButton = styled(Button)`
-  background-color: #ff9522;
-  color: white;
+  height: 1px;
+  background: var(--Color-Foundation-gray-200, #e5e6e9);
 `;

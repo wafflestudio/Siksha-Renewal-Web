@@ -6,11 +6,14 @@ import { deleteAccount } from "utils/api/auth";
 import { useEffect, useState } from "react";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function UserSetting() {
   const router = useRouter();
   const { authStatus, getAccessToken, authGuard, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+
+  const { onHttpError } = useError();
 
   useEffect(() => {
     if (authStatus === "login") {
@@ -34,12 +37,9 @@ export default function UserSetting() {
       .then((accessToken) => {
         deleteAccount(accessToken);
       })
-      .then(() => {
-        logout();
-        router.push(`/`);
-      })
+      .then(handleLogout)
       .catch((e) => {
-        console.error(e);
+        onHttpError(e);
         router.push(`/account/user`);
       });
   };
@@ -47,32 +47,21 @@ export default function UserSetting() {
   return (
     <>
       <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
-      <AccountLayout>
-        <MobileSpace />
-        <Container>
-          <Title>계정 관리</Title>
-          <ContentDiv onClick={handleLogout}>
-            <LogoutText>로그아웃</LogoutText>
-            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
-          </ContentDiv>
-          <BreakLine />
-          <ContentDiv onClick={handleExit}>
-            <WithdrawalText>회원 탈퇴</WithdrawalText>
-            <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
-          </ContentDiv>
-        </Container>
-      </AccountLayout>
+      <Container>
+        <Title>계정 관리</Title>
+        <ContentDiv onClick={handleLogout}>
+          <LogoutText>로그아웃</LogoutText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그아웃" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv onClick={handleExit}>
+          <WithdrawalText>회원 탈퇴</WithdrawalText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="로그인" />
+        </ContentDiv>
+      </Container>
     </>
   );
 }
-
-const MobileSpace = styled.div`
-  height: 24px;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
 
 const Container = styled.div`
   width: 544px;

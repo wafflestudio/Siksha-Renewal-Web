@@ -43,33 +43,78 @@ export default function MobileNavigationBar() {
           if (authStatus === "login") setIsFilterFavorite(true);
           else openLoginModal();
         }}
+        style={{
+          width: "36px",
+          height: "46px",
+        }}
       >
         <Icon
           isActive={active === "favorite"}
           srcActive="/img/mobile-nav-star-active.svg"
           srcInactive="/img/mobile-nav-star-inactive.svg"
         />
+        <IconLabel
+          isActive={active === "favorite"}
+        >
+          즐겨찾기
+        </IconLabel>
       </Link>
-      <Link href="/" onClick={() => setIsFilterFavorite(false)}>
+      <Link
+        href="/"
+        onClick={() => setIsFilterFavorite(false)}
+        style={{
+          width: "36px",
+          height: "46px",
+        }}
+      >
         <Icon
           isActive={active === "menu"}
           srcActive="/img/mobile-nav-menu-active.svg"
           srcInactive="/img/mobile-nav-menu-inactive.svg"
         />
+        <IconLabel
+          isActive={active === "menu"}
+        >
+          식단
+        </IconLabel>
       </Link>
-      <Link href="/community/boards/1" onClick={() => setIsFilterFavorite(false)}>
+      <Link
+        href="/community/boards/1"
+        onClick={() => setIsFilterFavorite(false)}
+        style={{
+          width: "36px",
+          height: "46px",
+        }}
+      >
         <Icon
           isActive={active === "community"}
           srcActive="/img/mobile-nav-community-active.svg"
           srcInactive="/img/mobile-nav-community-inactive.svg"
         />
+        <IconLabel
+          isActive={active === "community"}
+        >
+          게시판
+        </IconLabel>
       </Link>
-      <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
+      <Link
+        href="/account"
+        onClick={() => setIsFilterFavorite(false)}
+        style={{
+          width: "36px",
+          height: "46px",
+        }}
+      >
         <Icon
           isActive={active === "account"}
           srcActive="/img/mobile-nav-account-active.svg"
           srcInactive="/img/mobile-nav-account-inactive.svg"
         />
+        <IconLabel
+          isActive={active === "account"}
+        >
+          설정
+        </IconLabel>
       </Link>
     </Container>,
     rootElement,
@@ -78,30 +123,43 @@ export default function MobileNavigationBar() {
 
 const Container = styled.div`
   position: fixed;
-  display: flex;
+  display: none;
   bottom: 0;
   justify-content: space-evenly;
   padding: 11px 0 30px;
   box-sizing: border-box;
   width: 100%;
   height: 83px;
-  background-color: white;
-  border-top: 0.5px solid #b7b7b7;
+  background: var(--Color-Foundation-base-white, #FFF);
+  box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
   z-index: 1;
 
-  @media (min-width: 768px) {
-    display: none;
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;
 
 const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
-  width: 32px;
-  height: 32px;
+  display: flex;
+  height: 36px;
+  width: 36px;
   background-image: ${({ isActive, srcActive, srcInactive }) =>
     `url(${isActive ? srcActive : srcInactive})`};
-  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   transform: translateZ(0);
   opacity: 0.99;
+`;
+
+const IconLabel = styled.div<{ isActive: boolean }>`
+  width: 36px;
+
+  color: ${({ isActive }) => isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Color-Foundation-gray-500, #BEC1C8)"};
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: NanumSquare;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
 `;

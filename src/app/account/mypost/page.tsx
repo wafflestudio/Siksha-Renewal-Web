@@ -10,11 +10,14 @@ import { getMyPostList } from "utils/api/community";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/navigation";
 import useAuth from "hooks/UseAuth";
+import useError from "hooks/useError";
 
 export default function MyPost() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const { authStatus, getAccessToken, authGuard } = useAuth();
+  const { onHttpError } = useError();
+
   const router = useRouter();
 
   useEffect(authGuard, [authStatus]);
@@ -26,7 +29,7 @@ export default function MyPost() {
         result.map((rawPost) => setPosts((prev) => [...prev, postParser(rawPost)]));
         return hasNext;
       })
-      .catch((e) => console.error(e));
+      .catch(onHttpError);
 
   useEffect(() => {
     setPosts([]);
@@ -36,13 +39,11 @@ export default function MyPost() {
     return (
       <>
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
-        <AccountLayout>
-          <Container>
-            <Header>내가 쓴 글</Header>
-            <PostList posts={posts} fetch={fetchMyPosts} />
-            {posts.length >= 1 ? <BreakLine /> : null}
-          </Container>
-        </AccountLayout>
+        <Container>
+          <Header>내가 쓴 글</Header>
+          <PostList posts={posts} fetch={fetchMyPosts} />
+          {posts.length >= 1 ? <BreakLine /> : null}
+        </Container>
       </>
     );
 }
@@ -57,7 +58,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding-top: 24px;
+    margin-top: -4px;
     border: 0;
   }
 `;
