@@ -213,7 +213,7 @@ const Title = styled.div`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -238,7 +238,7 @@ const ReviewTitle = styled.div`
   text-align: center;
 
   /* text-20/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -267,7 +267,7 @@ const SelectStarText = styled.span`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -307,7 +307,7 @@ const Score = styled.div`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -321,7 +321,7 @@ const Score = styled.div`
     text-align: center;
 
     /* text-20/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-20, 20px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -348,7 +348,7 @@ const CommentTextArea = styled.textarea`
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -367,7 +367,7 @@ const CommentTitle = styled.div`
   color: var(--Color-Foundation-gray-800, #4C4D50);
 
   /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -450,7 +450,7 @@ const AddImage = styled.div`
 
   color: var(--Color-Foundation-gray-600, #989AA0);
   text-align: center;
-  font-family: NanumSquareOTF;
+  font-family: NanumSquare;
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
@@ -473,7 +473,7 @@ const AddImage = styled.div`
     color: var(--Color-Foundation-base-white, #FFF);
     text-align: center;
     font-feature-settings: 'liga' off, 'clig' off;
-    font-family: NanumSquareOTF;
+    font-family: NanumSquare;
     font-size: 14px;
     font-style: normal;
     font-weight: 800;

@@ -155,7 +155,7 @@ const Restaurant = styled.div`
   color: var(--Color-Foundation-orange-500, #FF9522);
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -191,7 +191,7 @@ const MenuTitle = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-20/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -205,7 +205,7 @@ const Price = styled.div`
   color: var(--Color-Foundation-gray-600, #989AA0);
 
   /* text-15/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -247,7 +247,7 @@ const ReviewPostButton = styled.button`
 
   color: var(--Color-Foundation-base-white, #FFF);
 
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
