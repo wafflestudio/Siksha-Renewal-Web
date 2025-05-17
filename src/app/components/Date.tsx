@@ -91,9 +91,3 @@ const DateText = styled.div`
     white-space: nowrap;
   }
 `;
-
-const FlexBox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
