@@ -6,6 +6,7 @@ import { useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
+import FilterIcon from "assets/icons/filter.svg";
 
 export default function MobileFilterBar() {
   const { filterList, isSet, changeFilterOption } = UseFilter();
@@ -58,13 +59,16 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <Image
+        <IconWrapper>
+          <StyledFilterIcon aria-label="필터 아이콘" />
+        </IconWrapper>
+        {/* <Image
           src="/img/filter-icon.svg"
           alt="필터 아이콘"
           width={33.586}
           height={34}
           onClick={() => setFilterState("all", true)}
-        />
+        /> */}
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
@@ -176,4 +180,18 @@ const ButtonText = styled.span<{ isActive?: boolean }>`
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   line-height: 20px;
+`;
+
+const StyledFilterIcon = styled(FilterIcon)`
+  color: var(--Color-Foundation-gray-500);
+  width: 20;
+  height: 20;
+`;
+
+const IconWrapper = styled.div`
+  width: 33.59px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
