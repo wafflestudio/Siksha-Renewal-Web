@@ -1,5 +1,6 @@
 .react-calendar {
   padding: 0 24px;
+  background-color: var(--Color-Foundation-base-white-5);
 
   @media (max-width: 768px) {
     padding: 32px 48px 31px 48px;
@@ -9,15 +10,15 @@
   .react-calendar {
     padding: 4px 25px 15px 25px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: white;
   }
 }
 .react-calendar .today {
-  color: var(--Color-Foundation-gray-700, #727478);
+  color: var(--Color-Foundation-gray-700);
   font-size: var(--Font-size-14, 14px);
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 150%; /* 21px */
-  background-image: url("/img/circle-calendar.svg");
+  border-radius: 50%;
+  background-color: var(--Color-Foundation-gray-500);
 }
 @media (max-width: 768px) {
   .react-calendar .today {
@@ -110,16 +111,16 @@
   margin-bottom: 14px;
 }
 .react-calendar__month-view__weekdays__weekday {
-  color: var(--Color-Foundation-gray-600, #989aa0);
+  color: var(--Color-Foundation-base-black);
   font-size: 13px;
   font-weight: 700;
   line-height: 140%; /* 18.2px */
 }
 @media (max-width: 768px) {
   .react-calendar__month-view__weekdays__weekday {
+    color: var(--Color-Foundation-base-black);
     font-size: 13px;
     line-height: 15px;
-    color: #333333;
   }
 }
 .react-calendar__month-view__weekdays__weekday abbr {
@@ -133,7 +134,7 @@
 }
 
 .react-calendar__month-view__days__day {
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--Color-Foundation-gray-700);
   text-align: center;
   font-size: 14px;
   font-weight: var(--Font-weight-bold, 700);
@@ -145,12 +146,11 @@
     font-size: 14px;
     line-height: 16px;
     font-weight: 400;
-    color: #666666;
   }
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: var(--Color-Foundation-gray-400, #CBCDD3) !important;
+  color: var(--Color-Foundation-gray-400, #cbcdd3) !important;
 }
 
 .react-calendar__tile {
@@ -162,5 +162,10 @@
   font-size: var(--Font-size-14, 14px);
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 150%; /* 21px */
-  background-image: url("/img/circle-calendar-active.svg") !important;
+  border-radius: 50%;
+  background-color: var(--Color-Foundation-orange-500);
+
+  &.today {
+    background-color: var(--Color-Foundation-orange-500);
+  }
 }

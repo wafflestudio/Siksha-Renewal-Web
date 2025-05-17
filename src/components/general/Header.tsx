@@ -81,7 +81,7 @@ const MobileContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background: var(--Color-Foundation-orange-500);
+    background: var(--Color-Foundation-orange-500-2);
     height: 44px;
     width: auto;
     z-index: 1;

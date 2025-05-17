@@ -51,7 +51,7 @@ export default function Date() {
 }
 
 const Container = styled.div`
-  background: var(--Color-Foundation-base-white);
+  background: var(--Color-Foundation-base-white-5);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -87,7 +87,7 @@ const DateText = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 17px;
-    color: var(--Color-Foundation-orange-500, #ff9522);
+    color: var(--Color-Foundation-orange-500-3, #ff9522);
     white-space: nowrap;
   }
 `;
