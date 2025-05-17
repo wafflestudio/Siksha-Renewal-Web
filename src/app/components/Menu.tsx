@@ -137,7 +137,7 @@ const MenuName = styled.div`
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
     font-size: 14px;
-    line-height: 21px;
+    line-height: 140%;
     font-weight: 400;
   }
 `;
