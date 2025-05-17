@@ -5,14 +5,17 @@ export function formatDate(date) {
 
 export function formatReviewDate(dateString) {
   // format from "2021-08-01" to "2021년 08월 01일"
-  const [ year, month, day ] = dateString.split("-");
+  const [year, month, day] = dateString.split("-");
   return `${year}년 ${month}월 ${day}일`;
 }
-
 
 export function formatWeekday(date) {
   const week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   return week[date.getDay()];
+}
+
+export function formatMonthForMobile(date) {
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
 
 export function formatMonth(date) {
@@ -77,7 +80,7 @@ export function sanitizeCssSelector(str) {
  */
 export function getParticle(str, particles: [string, string] = ["은", "는"]) {
   if (!str) return particles[1]; // 빈 문자열 처리 (기본값: 받침 없음)
-  
+
   const lastChar = str.charAt(str.length - 1);
   const code = lastChar.charCodeAt(0);
 
@@ -87,4 +90,4 @@ export function getParticle(str, particles: [string, string] = ["은", "는"]) {
   }
 
   return particles[1];
-};
+}

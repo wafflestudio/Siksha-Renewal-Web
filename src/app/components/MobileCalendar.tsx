@@ -1,9 +1,11 @@
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
-import { useCallback } from "react";
+import { ReactNode, useCallback } from "react";
 import BackClickable from "../../components/general/BackClickable";
-import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
+import { formatDate, formatMonthForMobile, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
+import LeftArrowMobileIcon from "assets/icons/left-arrow-mobile.svg";
+import RightArrowMobileIcon from "assets/icons/right-arrow-mobile.svg";
 
 interface MobileCalendarProps {
   onClose: () => void;
@@ -37,7 +39,7 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
       `}
     >
       <Container>
-        <DateText>{formatMonth(date)}</DateText>
+        <DateText>{formatMonthForMobile(date)}</DateText>
         <ReactCalendar
           onChange={(day: Date) => {
             setDate(day);
@@ -50,8 +52,8 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
           defaultValue={today}
           showNeighboringMonth={false}
           navigationLabel={() => formatDate(date)}
-          prevLabel={<Arrow src={"/img/left-arrow-mobile.svg"} width={"10px"} alt="이전" />}
-          nextLabel={<Arrow src={"/img/right-arrow-mobile.svg"} width={"10px"} alt="다음" />}
+          prevLabel={<ArrowLabel icon={<LeftArrowMobileIcon />} ariaLabel="이전" />}
+          nextLabel={<ArrowLabel icon={<RightArrowMobileIcon />} ariaLabel="다음" />}
           formatDay={(locale, date) => String(date.getDate())}
           formatShortWeekday={(locale, date) => formatWeekday(date)}
           tileClassName={({ date }) => (isToday(date) ? "today" : null)}
@@ -61,6 +63,21 @@ export default function MobileCalendar({ onClose }: MobileCalendarProps) {
     </BackClickable>
   );
 }
+
+interface ArrowLabelProps {
+  icon: ReactNode;
+  ariaLabel: string;
+}
+
+const ArrowLabel = ({ icon, ariaLabel }: ArrowLabelProps) => {
+  return <StyledArrow aria-label={ariaLabel}>{icon}</StyledArrow>;
+};
+
+const StyledArrow = styled.div`
+  width: 10px;
+  color: var(--Color-Foundation-orange-500);
+  cursor: pointer;
+`;
 
 const Container = styled.div`
   display: none;
@@ -84,9 +101,5 @@ const DateText = styled.div`
   line-height: 22.7px;
   color: var(--Color-Foundation-orange-500);
   white-space: nowrap;
-  cursor: pointer;
-`;
-
-const Arrow = styled.img`
   cursor: pointer;
 `;
