@@ -1,47 +1,32 @@
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
-import { useEffect, useState } from "react";
+import BreakfastIcon from "assets/icons/breakfast.svg";
+import LunchIcon from "assets/icons/lunch.svg";
+import DinnerIcon from "assets/icons/dinner.svg";
+
+const MEALS = [
+  { key: "BR", label: "아침", Icon: BreakfastIcon },
+  { key: "LU", label: "점심", Icon: LunchIcon },
+  { key: "DN", label: "저녁", Icon: DinnerIcon },
+];
 
 export default function Meal() {
-  const state = useStateContext();
-  const { meal } = state;
-
+  const { meal } = useStateContext();
   const { setMeal } = useDispatchContext();
-
-  const [isBR, setIsBR] = useState(false);
-  const [isLU, setIsLU] = useState(false);
-  const [isDN, setIsDN] = useState(false);
-
-  useEffect(() => {
-    if (meal == "BR") {
-      setIsBR(true);
-      setIsLU(false);
-      setIsDN(false);
-    } else if (meal == "LU") {
-      setIsBR(false);
-      setIsLU(true);
-      setIsDN(false);
-    } else if (meal == "DN") {
-      setIsBR(false);
-      setIsLU(false);
-      setIsDN(true);
-    }
-  }, [meal]);
 
   return (
     <Container>
-      <MealButton onClick={() => setMeal("BR")}>
-        <MealIcon src={isBR ? "/img/breakfast-active.svg" : "/img/breakfast.svg"} alt="아침" />
-        <MealText active={isBR}>아침</MealText>
-      </MealButton>
-      <MealButton onClick={() => setMeal("LU")}>
-        <MealIcon src={isLU ? "/img/lunch-active.svg" : "/img/lunch.svg"} alt="점심" />
-        <MealText active={isLU}>점심</MealText>
-      </MealButton>
-      <MealButton onClick={() => setMeal("DN")}>
-        <MealIcon src={isDN ? "/img/dinner-active.svg" : "/img/dinner.svg"} alt="저녁" />
-        <MealText active={isDN}>저녁</MealText>
-      </MealButton>
+      {MEALS.map(({ key, label, Icon }) => {
+        const isActive = meal === key;
+        return (
+          <MealButton key={key} onClick={() => setMeal(key)}>
+            <MealIcon isActive={isActive}>
+              <Icon aria-label={label} />
+            </MealIcon>
+            <MealText active={isActive}>{label}</MealText>
+          </MealButton>
+        );
+      })}
     </Container>
   );
 }
@@ -75,10 +60,12 @@ const MealButton = styled.div`
   }
 `;
 
-const MealIcon = styled.img`
+const MealIcon = styled.div<{ isActive: boolean }>`
   width: 30px;
   height: 30px;
   padding-bottom: 2px;
+  color: ${({ isActive }) =>
+    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
   @media (max-width: 768px) {
     width: 20px;
@@ -102,8 +89,5 @@ const MealText = styled.div`
     font-size: 10px;
     line-height: 11px;
     font-weight: 400;
-
-    color: ${(props: { active: boolean }) =>
-      props.active ? "var(--Color-Foundation-orange-500)" : "#919191"};
   }
 `;
