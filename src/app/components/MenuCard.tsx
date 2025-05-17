@@ -42,20 +42,17 @@ export default function MenuCard({ data }: { data: Data }) {
                 />
               </StyledIcon>
               {isFavorite(data.id) ? (
-                <StarFilledIcon aria-label="좋아요" onClick={() => toggleFavorite(data.id)} />
+                <StyledIcon>
+                  <StarFilledIcon aria-label="좋아요" onClick={() => toggleFavorite(data.id)} />
+                </StyledIcon>
               ) : (
-                <StarOutlinedIcon
-                  aria-label="좋아요 해제"
-                  onClick={() => toggleFavorite(data.id)}
-                />
+                <StyledIcon>
+                  <StarOutlinedIcon
+                    aria-label="좋아요 해제"
+                    onClick={() => toggleFavorite(data.id)}
+                  />
+                </StyledIcon>
               )}
-              {/* <ButtonIcon
-                src={
-                  isFavorite(data.id) ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"
-                }
-                onClick={() => toggleFavorite(data.id)}
-                alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
-              /> */}
             </TitleIconList>
           </TitleContainer>
           <InfoContainer>
