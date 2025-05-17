@@ -120,7 +120,7 @@ const Navigation = styled.div<{ isCalOpened: boolean }>`
   align-items: center;
   align-self: stretch;
   border-radius: 10px;
-  background: var(--Color-Foundation-base-white, #fff);
+  background: var(--Color-Foundation-base-white, var(--Color-Foundation-base-white));
   box-shadow: ${(props) => (props.isCalOpened ? "0px 0px 10px 0px rgba(0, 0, 0, 0.1)" : "none")};
 `;
 
@@ -135,7 +135,7 @@ const Calendar = styled.div`
   align-items: center;
   gap: 34px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--Color-Foundation-base-white);
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
 `;
 

@@ -152,7 +152,7 @@ const DesktopContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  background: var(--foundation-base-white);
+  background: var(--Color-Foundation-base-var(--Color-Foundation-base-white));
   border-radius: 10px;
 
   @media (max-width: 768px) {
@@ -168,7 +168,7 @@ const MobileContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--Color-Foundation-base-white);
     border: solid 1px #e8e8e8;
     box-sizing: border-box;
     border-radius: 8px;

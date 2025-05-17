@@ -196,7 +196,7 @@ const Nickname = styled.div`
   }
 `;
 const PostDate = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
@@ -228,7 +228,7 @@ const DesktopActionButton = styled.div`
   border: none;
   padding: 0;
 
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
@@ -280,7 +280,7 @@ const LikesAndComments = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 const Comments = styled.div`
   display: flex;
@@ -297,17 +297,17 @@ const Footer = styled.div`
   padding-bottom: 17.7px;
   border-bottom: 1px solid #eeeeee;
   @media (max-width: 768px) {
-    border-color: #f0f0f0;
+    border-color: var(--Color-Foundation-gray-100);
     padding-bottom: 12.5px;
   }
 `;
 const FooterButton = styled.button`
   display: flex;
   align-items: center;
-  border: 1px solid #ff9522;
+  border: 1px solid var(--Color-Foundation-orange-500);
   border-radius: 8px;
-  background-color: #ffffff;
-  color: #ff9522;
+  background-color: var(--Color-Foundation-base-white);
+  color: var(--Color-Foundation-orange-500);
   font-weight: 700;
   font-size: 13px;
   line-height: 14.75px;
@@ -320,9 +320,12 @@ const FooterButton = styled.button`
 `;
 const LikeButton = styled(FooterButton)<{ isLiked?: boolean | null }>`
   padding: 8.5px 12.4px;
-  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
-  border-color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
-  color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
+  background-color: ${(props) =>
+    props.isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
+  border-color: ${(props) =>
+    props.isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
+  color: ${(props) =>
+    props.isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
   @media (max-width: 768px) {
     padding: 6.5px 8.25px;
   }
@@ -343,7 +346,8 @@ const FooterIcon = styled.img`
   }
 `;
 const LikeButtonIcon = styled(FooterIcon)<{ isLiked?: boolean | null }>`
-  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
+  background-color: ${(props) =>
+    props.isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
 `;
 
 const CommentContainer = styled.div``;

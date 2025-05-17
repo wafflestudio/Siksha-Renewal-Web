@@ -236,10 +236,10 @@ const Container = styled.div`
 const DesktopHeader = styled.div`
   font-size: 20px;
   font-weight: bold;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   text-align: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid #ff9522;
+  border-bottom: 1px solid var(--Color-Foundation-orange-500);
   margin: 19px 0 12px 0;
 
   @media (max-width: 768px) {
@@ -255,7 +255,7 @@ const Icon = styled.img`
 const TitleInput = styled.input`
   width: 100%;
   padding: 15px 14px;
-  background-color: #f8f8f8;
+  background-color: var(--Color-Foundation-gray-50);
   border: none;
   outline: none;
   border-radius: 8px;
@@ -264,7 +264,7 @@ const TitleInput = styled.input`
   font-size: 18px;
 
   &::placeholder {
-    color: #b7b7b7;
+    color: var(--Color-Foundation-gray-500);
     font-weight: bold;
   }
 
@@ -286,7 +286,7 @@ const ContentInput = styled.textarea`
   font-size: 16px;
 
   &::placeholder {
-    color: #b7b7b7;
+    color: var(--Color-Foundation-gray-500);
     font-weight: bold;
   }
 
@@ -306,7 +306,7 @@ const Footer = styled.div`
 `;
 const Options = styled.div`
   height: 36px;
-  border-bottom: 0.5px solid #b7b7b7;
+  border-bottom: 0.5px solid var(--Color-Foundation-gray-500);
 
   @media (max-width: 768px) {
     font-size: 12px;
@@ -321,7 +321,7 @@ const Option = styled.label`
   cursor: pointer;
 
   &.active {
-    color: #ff9522;
+    color: var(--Color-Foundation-orange-500);
   }
 `;
 
@@ -335,7 +335,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 14px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   flex: 1;
   align-items: end;
 
@@ -360,10 +360,10 @@ const Button = styled.button`
     background-color: #eeeeee;
   }
   &.submit {
-    color: white;
-    background-color: #adadad;
+    color: var(--Color-Foundation-base-white);
+    background-color: var(--Color-Foundation-gray-600);
     &.active {
-      background-color: #ff9522;
+      background-color: var(--Color-Foundation-orange-500);
     }
   }
 

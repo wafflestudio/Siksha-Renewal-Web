@@ -55,7 +55,8 @@ export default function MyPost() {
 const Container = styled.div<{ $isEmpty: boolean }>`
   padding: 0 18.5px;
   width: 701px;
-  background: #ffffff;
+  background: var(--Color-Foundation-base-white);
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -67,12 +68,11 @@ const Container = styled.div<{ $isEmpty: boolean }>`
 `;
 
 const Header = styled.div`
-  margin: 24px 0 22px 20px;
-  color: #262728;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 140%;
-  letter-spacing: -0.3px;
+  margin: 24.08px 0 29.42px 4.5px;
+  color: var(--Main-Orange, var(--Color-Foundation-orange-500));
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 23px;
 
   @media (max-width: 768px) {
     display: none;

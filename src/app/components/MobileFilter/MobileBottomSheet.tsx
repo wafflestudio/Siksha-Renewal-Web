@@ -111,13 +111,12 @@ const BottomSheetBackdrop = styled.div<{ isVisible: boolean }>`
   transition: background-color 0.3s ease-in-out;
 `;
 
-const BottomSheetHandle = styled.div`
-  display: flex;
-  width: 100%;
-  height: 34px;
-  align-items: center;
-  justify-content: center;
-  cursor: grab;
+const BottomSheetSlideBar = styled.div`
+  width: 42px;
+  height: 4px;
+  background-color: var(--Color-Foundation-gray-300);
+  border-radius: 2px;
+  margin: 10px auto;
 `;
 
 const CloseButton = styled.button<{ showHandle: boolean }>`
@@ -152,9 +151,9 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  background-color: var(--Color-Foundation-base-white);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   transition: transform 0.3s ease-in-out;

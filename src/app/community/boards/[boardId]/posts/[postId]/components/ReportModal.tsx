@@ -124,7 +124,7 @@ const MainContainer = styled.div`
   width: 701px;
   height: 623.49px;
   box-sizing: border-box;
-  background: white;
+  background: var(--Color-Foundation-base-white);
   border-radius: 5px;
   flex-shrink: 0;
   //padding: 27px 30px 30px 33.5px;
@@ -160,7 +160,7 @@ const Title = styled.h3`
   font-weight: 700;
   line-height: 23px;
   margin-top: 0;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 const Image = styled.img``;
 const CloseButton = styled.button`
@@ -314,8 +314,8 @@ const CancelButton = styled(Button)`
   }
 `;
 const ReportButton = styled(Button)`
-  color: ${(props) => (props.disabled ? "#8e8e8e" : "white")};
-  background-color: ${(props) => (props.disabled ? "#eee" : "#ff9522")};
+  color: ${(props) => (props.disabled ? "#8e8e8e" : "var(--Color-Foundation-base-white)")};
+  background-color: ${(props) => (props.disabled ? "#eee" : "var(--Color-Foundation-orange-500)")};
 
   @media (max-width: 768px) {
     width: 100%;

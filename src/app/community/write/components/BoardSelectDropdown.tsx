@@ -68,7 +68,7 @@ const BoardMenu = styled.button`
   position: relative;
   text-align: center;
   width: 100%;
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--Color-Foundation-gray-300);
   border-radius: 8px;
   cursor: pointer;
   height: 39px;
@@ -94,7 +94,7 @@ const BoardMenuList = styled.div<{ isOpen: boolean }>`
   position: absolute;
   flex-direction: column;
   width: 100%;
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--Color-Foundation-gray-300);
   border-radius: 8px;
   margin-top: -5px;
 `;
@@ -105,11 +105,11 @@ const BoardMenuItem = styled.div`
   width: 100%;
   height: 39px;
   line-height: 39px;
-  background: #ffffff;
+  background: var(--Color-Foundation-base-white);
   cursor: pointer;
 
   &.selected {
-    color: #ff9522;
+    color: var(--Color-Foundation-orange-500);
 
     ::after {
       content: "";
@@ -133,7 +133,7 @@ const BoardMenuItem = styled.div`
     background: #f6f6f6;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid var(--Color-Foundation-gray-300);
   }
   &:first-child {
     border-radius: 8px 8px 0 0;

@@ -38,7 +38,7 @@ const Content = styled.div`
   gap: 24px;
   align-self: stretch;
   border-radius: 10px;
-  background: var(--Color-Foundation-base-white, #fff);
+  background: var(--Color-Foundation-base-var(--Color-Foundation-base-white), #fff);
 `;
 
 const HLine = styled.div`

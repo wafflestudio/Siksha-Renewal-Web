@@ -61,7 +61,7 @@ const MobileHeader = styled.div`
   display: none;
   margin: 0;
   top: 0;
-  background: #ff9522;
+  background: var(--Color-Foundation-orange-500);
   position: absolute;
   width: 100%;
   height: 44px;
@@ -82,9 +82,8 @@ const BackButton = styled.img`
 `;
 
 const Title = styled.div`
-  color: white;
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: 16px;
+  color: var(--Color-Foundation-base-white);
+  font-size: 20px;
   font-weight: 800;
   line-height: 140%;
   max-width: calc(100vw - 96px);

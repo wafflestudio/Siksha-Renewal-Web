@@ -287,7 +287,7 @@ const CountText = styled.div<{ disableWith: number }>`
   font-size: 15px;
   line-height: 17px;
   font-weight: 400;
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
 
   color: var(--Color-Foundation-gray-700, #727478);
   font-size: 14px;

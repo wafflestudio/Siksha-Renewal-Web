@@ -110,7 +110,7 @@ const Container = styled.div<{ show: boolean }>`
   align-self: stretch;
 
   max-height: 266px;
-  background: white;
+  background: var(--Color-Foundation-base-white);
   box-sizing: border-box;
   gap: 22px;
 `;

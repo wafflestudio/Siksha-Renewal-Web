@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   padding-bottom: 24.7px;
   bottom: 0;
   left: 0;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   width: 100%;
   z-index: 1;
 
@@ -73,7 +73,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: #f8f8f8;
+  background-color: var(--Color-Foundation-gray-50);
   width: 100%;
   height: 46px;
   border-radius: 8px;
@@ -93,7 +93,8 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
   background-color: transparent;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.isAnonymous ? "#ff9522" : "#575757")};
+  color: ${(props) =>
+    props.isAnonymous ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-800)"};
   font-weight: ${(props) => (props.isAnonymous ? 700 : 400)};
   font-size: 14px;
   line-height: 16px;
@@ -125,7 +126,7 @@ const Icon = styled.img``;
 const CommentInput = styled.input`
   box-sizing: border-box;
   width: 100%;
-  background-color: #f8f8f8;
+  background-color: var(--Color-Foundation-gray-50);
 
   border: none;
   padding: 0;
@@ -136,7 +137,7 @@ const CommentInput = styled.input`
 
   outline: none;
   &::placeholder {
-    color: #b7b7b7;
+    color: var(--Color-Foundation-gray-500);
   }
   @media (max-width: 768px) {
     font-size: 12px;
@@ -145,7 +146,7 @@ const CommentInput = styled.input`
 `;
 
 const SubmitButton = styled.button<{ isValid: boolean }>`
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   width: 58px;
   height: 32px;
   flex-shrink: 0;
@@ -153,7 +154,7 @@ const SubmitButton = styled.button<{ isValid: boolean }>`
 
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--Color-Foundation-base-white);
   border: none;
   border-radius: 8px;
   font-size: 13px;

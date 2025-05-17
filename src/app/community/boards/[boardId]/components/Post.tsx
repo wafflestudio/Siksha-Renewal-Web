@@ -66,7 +66,7 @@ const Container = styled.div`
 
     @media (max-width: 768px) {
       width: calc(100% + 25px);
-      background-color: #f0f0f0;
+      background-color: var(--Color-Foundation-gray-100);
     }
   }
 `;
@@ -102,7 +102,7 @@ const Title = styled.div`
   }
 `;
 const ContentPreview = styled.div`
-  color: #393939;
+  color: var(--Color-Foundation-gray-900);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -123,7 +123,7 @@ const LikesAndComments = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 const Comments = styled.div`
   display: flex;

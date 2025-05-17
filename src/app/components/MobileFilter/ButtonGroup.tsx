@@ -64,6 +64,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background: var(--Color-Foundation-orange-100, #ffead3);
-  box-shadow: inset 0 0 0 1px var(--Color-Foundation-orange-500, #ff9522);
+  background-color: var(--Color-Main-Active);
+  border: 1px solid var(--Color-Foundation-orange-500);
 `;

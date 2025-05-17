@@ -67,13 +67,9 @@ export default function UserSetting() {
 
 const Container = styled.div`
   width: 544px;
-  background-color: #ffffff;
-  border: 1px solid #e5e6e9;
-  border-radius: 10px;
-  padding: 24px 20px 20px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  background-color: var(--Color-Foundation-base-white);
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
 
   @media (max-width: 768px) {
     width: calc(100% - 41px);
@@ -82,12 +78,11 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  color: #262728;
-  font-family: NanumSquareOTF;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 140%;
-  letter-spacing: -0.3px;
+  margin: 24.57px 0 0 22.45px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--Color-Foundation-orange-500);
+  margin-bottom: 30.43px;
 
   @media (max-width: 768px) {
     display: none;

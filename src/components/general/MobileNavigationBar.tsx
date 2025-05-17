@@ -125,8 +125,8 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 83px;
-  background: var(--Color-Foundation-base-white, #fff);
-  box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
+  background-color: var(--Color-Foundation-base-white);
+  border-top: 0.5px solid var(--Color-Foundation-gray-500);
   z-index: 1;
 
   @media (max-width: 768px) {

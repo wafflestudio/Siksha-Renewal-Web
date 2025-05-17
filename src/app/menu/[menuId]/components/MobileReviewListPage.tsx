@@ -19,7 +19,7 @@ export default function MobileReviewListPage({ reviews }: { reviews: ReviewListT
 const Container = styled.div`
   display: flex;
   position: relative;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   min-height: calc(100vh - 60px);
   padding: 24px 16px;
   width: 100vw;

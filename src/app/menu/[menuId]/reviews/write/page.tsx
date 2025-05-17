@@ -568,7 +568,7 @@ const MobilePhotoAttacher = styled.label`
   width: 134px;
   height: 32px;
   flex: 0 0 auto;
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   border-radius: 50px;
   padding: 8px 25px;
   text-align: center;
@@ -632,10 +632,10 @@ const ReviewPostButton = styled.button`
   height: 46px;
   border-radius: 8px;
   color: black;
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   justify-content: center;
   align-items: center;
-  color: white;
+  color: var(--Color-Foundation-base-white);
   border: none;
   font-size: 16px;
   font-weight: 700;
@@ -645,7 +645,7 @@ const ReviewPostButton = styled.button`
     content: "평가 등록";
   }
   &:disabled {
-    background-color: #adadad;
+    background-color: var(--Color-Foundation-gray-600);
   }
   @media (max-width: 768px) {
     width: 100%;

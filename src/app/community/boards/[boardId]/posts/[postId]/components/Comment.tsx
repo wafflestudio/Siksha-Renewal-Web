@@ -130,7 +130,7 @@ const Container = styled.div`
     }
   }
   @media (max-width: 768px) {
-    border-color: #f0f0f0;
+    border-color: var(--Color-Foundation-gray-100);
     padding-bottom: 0;
   }
 `;
@@ -189,7 +189,7 @@ const DesktopCommentActions = styled.div`
   }
 `;
 const DesktopActionButton = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
@@ -212,7 +212,7 @@ const MobileLikeButton = styled.button`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f8f8f8;
+    background: var(--Color-Foundation-gray-50);
     width: 35.6px;
     height: 53px;
     border: none;
@@ -227,7 +227,7 @@ const MobileLikeIcon = styled.img`
   height: 11px;
 `;
 const MobileLikes = styled.div`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 400;
   font-size: 10px;
   margin-top: 8px;
@@ -250,7 +250,7 @@ const MobileMoreActionsButton = styled.img`
 `;
 
 const CommentDate = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
 `;
@@ -279,7 +279,7 @@ const DesktopLikeIcon = styled.img`
   height: 13px;
 `;
 const DesktopLikes = styled.div`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 400;
   font-size: 12px;
   margin-left: 4px;
@@ -295,5 +295,5 @@ const NotAvailableContainer = styled.div`
 `;
 const NotAvailableMessage = styled.div`
   font-size: 12px;
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
 `;

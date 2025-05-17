@@ -2,7 +2,6 @@
 
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import AccountLayout from "./layout";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
@@ -134,8 +133,8 @@ const Container = styled.div`
 
 const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
-  background-color: #ffffff;
-  width: 100%;
+  background-color: var(--Color-Foundation-base-white);
+  width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
   border: 1px solid #e8e8e8;
   border-radius: 8px;
@@ -171,7 +170,7 @@ const Text = styled.span`
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
-  color: black;
+  color: var(--Color-Foundation-base-black);
 
   @media (max-width: 768px) {
     font-size: 15px;
@@ -191,7 +190,7 @@ const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
 const InquiryText = styled(Text)`
   font-size: 16px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 
 const BreakLine = styled.hr`

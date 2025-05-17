@@ -61,9 +61,9 @@ const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
   padding-bottom: 12.68px;
-  border: 1px solid #e5e6e9;
-  border-radius: 10px;
-  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  background-color: var(--Color-Foundation-base-white);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -74,12 +74,12 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  margin: 24px 0 6px 20px;
-  color: #262728;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 140%;
-  letter-spacing: -0.3px;
+  margin-top: 24.57px;
+  margin-left: 22.45px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: var(--Color-Foundation-orange-500);
 
   @media (max-width: 768px) {
     display: none;
@@ -102,7 +102,7 @@ const Description = styled.p`
     width: 100%;
     height: 50px;
     margin: 0;
-    background-color: #ffffff;
+    background-color: var(--Color-Foundation-base-white);
     z-index: 1;
   }
 `;
@@ -131,7 +131,7 @@ const DragBox = styled.div`
   @media (max-width: 768px) {
     width: calc(100% - 40px);
     margin: 7.92px 0px 0px 20px;
-    background-color: white;
+    background-color: var(--Color-Foundation-base-white);
   }
 `;
 
@@ -153,7 +153,8 @@ const DragButton = styled.div<{ dragging: boolean }>`
   align-items: center;
   width: 34px;
   height: 34px;
-  background-color: ${(props) => (props.dragging ? "#ff9522" : "#dfdfdf")};
+  background-color: ${(props) =>
+    props.dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
   border-radius: 8px;
   margin: 7.5px;
 `;
@@ -161,6 +162,6 @@ const DragButton = styled.div<{ dragging: boolean }>`
 const Line = styled.div`
   width: 19px;
   height: 0px;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--Color-Foundation-base-white);
   margin: 2.08px 0;
 `;

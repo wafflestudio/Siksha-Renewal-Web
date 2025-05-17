@@ -51,7 +51,7 @@ export default function Date() {
 }
 
 const Container = styled.div`
-  background: white;
+  background: var(--Color-Foundation-base-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
