@@ -122,7 +122,7 @@ const LoginButton = styled.button`
   padding: 8px 10px;
   border-radius: 8px;
   background: var(--Color-Foundation-orange-400, #ffaa4e);
-  color: var(--Color-Foundation-base-var(--Color-Foundation-base-white), #fff);
+  color: var(--Color-Foundation-base-white-2);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
