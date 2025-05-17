@@ -92,7 +92,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background: #F8F8F8;
+    background: var(--Color-Background-main);
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
 
@@ -106,7 +106,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   a {
     text-decoration: none;
-    color: #000000;
+    color: var(--Color-Foundation-base-black);
   }
   input, button, select, option, textarea {
     font-size: 100%;
