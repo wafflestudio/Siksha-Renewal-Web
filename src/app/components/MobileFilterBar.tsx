@@ -12,6 +12,8 @@ import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 import { formatPrice } from "utils/FormatUtil";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
+import FilterIcon from "assets/icons/filter.svg";
+import DownArrowIcon from "assets/icons/down-arrow.svg";
 
 export default function MobileFilterBar() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -143,27 +145,14 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <IconWrapper>
+        <IconBox>
           <StyledFilterIcon aria-label="필터 아이콘" />
-        </IconWrapper>
-        {/* <Image
-          src="/img/filter-icon.svg"
-          alt="필터 아이콘"
-          width={33.586}
-          height={34}
-          onClick={() => setFilterState("all", true)}
-        /> */}
+        </IconBox>
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
         <Button isActive={isSet.priceMin || isSet.priceMax} onClick={handlePriceFilterOpen}>
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
@@ -175,13 +164,7 @@ export default function MobileFilterBar() {
                 }`
               : "가격"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
         <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
@@ -200,25 +183,13 @@ export default function MobileFilterBar() {
           <ButtonText isActive={isSet.ratingMin}>
             {isSet.ratingMin ? `평점 ${filterList.ratingMin.toFixed(1)} 이상` : "최소 평점"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
         {/* <Button isActive={isSet.category}>
           <ButtonText isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+<StyledDownArrowIcon aria-label="아래 화살표" />
         </Button> */}
       </Container>
     </>
@@ -268,7 +239,7 @@ const Button = styled.button<{ isActive?: boolean }>`
     ${(props) =>
       props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
   background: ${(props) =>
-    props.isActive ? "var(--Color-Main-Active)" : "var(--Color-Foundation-base-white)"};
+    props.isActive ? "var(--Color-Foundation-Tint-orange)" : "var(--Color-Foundation-gray-200)"};
 
   font-family: NanumSquare_ac;
 `;
@@ -285,14 +256,20 @@ const ButtonText = styled.span<{ isActive?: boolean }>`
 
 const StyledFilterIcon = styled(FilterIcon)`
   color: var(--Color-Foundation-gray-500);
-  width: 20;
-  height: 20;
-`;
-
-const IconWrapper = styled.div`
   width: 33.59px;
   height: 34px;
+`;
+
+const IconBox = styled.div<{ size?: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: ${({ size }) => (size ? `${size}px` : "auto")};
+  height: ${({ size }) => (size ? `${size}px` : "auto")};
+`;
+
+const StyledDownArrowIcon = styled(DownArrowIcon)`
+  color: var(--Color-Foundation-gray-700);
+  width: 16px;
+  height: 6px;
 `;
