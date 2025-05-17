@@ -143,22 +143,17 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <FilterIconWrapper onClick={handleMainFilterOpen}>
-          <Image
-            src="/img/filter-icon.svg"
-            alt="필터 아이콘"
-            width={33.586}
-            height={34}
-            style={{
-              background: "var(--Color-Background-main, #F8F8F8)",
-              paddingLeft: "8px",
-              paddingRight: isScrolled ? "4.41px" : "0",
-            }}
-          />
-          <FilterIconGradient visible={isScrolled} />
-        </FilterIconWrapper>
-        <div style={{ width: "37px", flexShrink: "0" }} />
-        <Button isActive={isSet.length} onClick={handleDistanceFilterOpen}>
+        <IconWrapper>
+          <StyledFilterIcon aria-label="필터 아이콘" />
+        </IconWrapper>
+        {/* <Image
+          src="/img/filter-icon.svg"
+          alt="필터 아이콘"
+          width={33.586}
+          height={34}
+          onClick={() => setFilterState("all", true)}
+        /> */}
+        <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
@@ -286,4 +281,18 @@ const ButtonText = styled.span<{ isActive?: boolean }>`
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
   line-height: 20px;
+`;
+
+const StyledFilterIcon = styled(FilterIcon)`
+  color: var(--Color-Foundation-gray-500);
+  width: 20;
+  height: 20;
+`;
+
+const IconWrapper = styled.div`
+  width: 33.59px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
