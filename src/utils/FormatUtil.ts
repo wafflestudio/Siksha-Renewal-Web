@@ -14,6 +14,10 @@ export function formatWeekday(date) {
   return week[date.getDay()];
 }
 
+export function formatMonthForMobile(date) {
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
 export function formatMonth(date) {
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
 }
