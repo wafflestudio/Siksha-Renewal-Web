@@ -128,9 +128,9 @@ const MenuName = styled.div`
   flex-grow: 1;
 
   @media (max-width: 768px) {
-    color: black;
+    color: var(--Color-Foundation-base-black);
     font-size: 14px;
-    line-height: 21px;
+    line-height: 140%;
     font-weight: 400;
   }
 `;

@@ -9,7 +9,7 @@ import useAuth from "hooks/UseAuth";
 import AccountIcon from "assets/icons/mobile-nav-account.svg";
 import CommunityIcon from "assets/icons/mobile-nav-community.svg";
 import MenuIcon from "assets/icons/mobile-nav-menu.svg";
-import StarIcon from "assets/icons/mobile-nav-star.svg";
+import StarFilledIcon from "assets/icons/star-filled.svg";
 
 export default function MobileNavigationBar() {
   const addr = usePathname();
@@ -48,7 +48,11 @@ export default function MobileNavigationBar() {
           else openLoginModal();
         }}
       >
-        <NavButton isActive={active === "favorite"} icon={<StarIcon />} name="즐겨찾기" />
+        <NavButton
+          isActive={active === "favorite"}
+          icon={<StarFilledIcon width="25px" />}
+          name="즐겨찾기"
+        />
       </Link>
       <Link href="/" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "menu"} icon={<MenuIcon />} name="식단" />
