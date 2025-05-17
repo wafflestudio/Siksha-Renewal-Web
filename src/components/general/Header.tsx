@@ -4,7 +4,7 @@ import NavigationBar from "components/general/NavigationBar";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function Header() {
   const router = useRouter();
@@ -62,7 +62,7 @@ export default function Header() {
 }
 
 const Background = styled.div`
-  background: var(--Color-Foundation-orange-500, #FF9522);
+  background: var(--Color-Foundation-orange-500, #ff9522);
 `;
 
 const DesktopContainer = styled(TwoColumnLayout.Container)`
@@ -81,7 +81,7 @@ const MobileContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background: #ff9522;
+    background: var(--Color-Foundation-orange-500);
     height: 44px;
     width: auto;
     z-index: 1;
@@ -105,7 +105,7 @@ const TitleContainer = styled.div`
 
 const Title = styled.span`
   margin: 2px 0;
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--Color-Foundation-base-white, #fff);
   font-size: 14px;
   font-weight: 400;
   white-space: nowrap;
@@ -121,8 +121,8 @@ const Right = styled(TwoColumnLayout.Right)`
 const LoginButton = styled.button`
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--Color-Foundation-orange-400, #FFAA4E);
-  color: var(--Color-Foundation-base-white, #FFF);
+  background: var(--Color-Foundation-orange-400, #ffaa4e);
+  color: var(--Color-Foundation-base-var(--Color-Foundation-base-white), #fff);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;

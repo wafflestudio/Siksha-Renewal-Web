@@ -89,7 +89,7 @@ const Container = styled.div`
 `;
 
 const TrendingPostWrapper = styled.div`
-  background-color: #ff952233;
+  background-color: var(--Color-Foundation-orange-500) 33;
   padding: 15px 17px;
   border-radius: 8px;
   box-sizing: border-box;
@@ -141,7 +141,7 @@ const Title = styled.div`
 const ContentPreview = styled.div`
   flex: 1;
   width: 100%;
-  color: #393939;
+  color: var(--Color-Foundation-gray-900);
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 14px;
@@ -150,7 +150,7 @@ const ContentPreview = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-size: 12px;
   @media (max-width: 768px) {
     font-size: 10px;

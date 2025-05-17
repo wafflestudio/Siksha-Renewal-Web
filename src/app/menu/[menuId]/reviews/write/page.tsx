@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useId, useState } from "react";
 import styled from "styled-components";
@@ -26,7 +26,7 @@ const emptyReviewInputs: ReviewInputs = {
 export default function ReviewPost() {
   const router = useRouter();
   const { menuId } = useParams<{ menuId: string }>();
-  
+
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
@@ -78,21 +78,13 @@ export default function ReviewPost() {
 
   return (
     <>
-      <MobileSubHeader
-        title="나의 평가 남기기"
-        handleBack={() => router.back()}
-      />
+      <MobileSubHeader title="나의 평가 남기기" handleBack={() => router.back()} />
       <Container>
         <TitleWrapper onClick={() => router.back()}>
-          <Image
-            src={"/img/left-arrow-mobile.svg"}
-            alt="뒤로 가기"
-            width={20}
-            height={20}
-          />
+          <Image src={"/img/left-arrow-mobile.svg"} alt="뒤로 가기" width={20} height={20} />
           <Title>나의 평가 남기기</Title>
         </TitleWrapper>
-        
+
         <Header>
           <ReviewTitle>
             &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
@@ -103,7 +95,9 @@ export default function ReviewPost() {
             {[1, 2, 3, 4, 5].map((i) => (
               <Star
                 key={i}
-                src={i <= inputs.score ? "/img/general/star-on.svg" : "/img/general/star-off-28.svg"}
+                src={
+                  i <= inputs.score ? "/img/general/star-on.svg" : "/img/general/star-off-28.svg"
+                }
                 onClick={() => setInputs({ ...inputs, score: i })}
                 alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
               />
@@ -161,13 +155,17 @@ export default function ReviewPost() {
             </MobilePhotoAttacher>
           )}
         </PhotoSection>
-        
+
         <Footer>
           <ReviewCancelButton
-            onClick={() => {router.back()}}
+            onClick={() => {
+              router.back();
+            }}
           />
           <ReviewPostButton
-            onClick={() => {handleSubmit()}}
+            onClick={() => {
+              handleSubmit();
+            }}
             disabled={inputs.comment.length === 0}
           />
         </Footer>
@@ -181,10 +179,10 @@ const Container = styled(OneColumnLayout.Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px; 
+  padding: 24px;
 
   border-radius: 10px;
-  background: var(--Color-Foundation-base-white, #FFF);
+  background: var(--Color-Foundation-base-white, #fff);
 
   @media (max-width: 768px) {
     position: relative;
@@ -209,7 +207,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, var(--Color-Foundation-orange-500));
   text-align: center;
 
   /* text-14/Bold */
@@ -256,8 +254,7 @@ const MenuNameText = styled.div`
   white-space: nowrap;
 `;
 
-const ReviewTitleText = styled.span`
-`;
+const ReviewTitleText = styled.span``;
 
 const SelectStarText = styled.span`
   display: none;
@@ -339,7 +336,7 @@ const CommentTextArea = styled.textarea`
   width: 100%;
   height: 137px;
   margin-top: 10px;
-  background: var(--Color-Foundation-gray-100, #F2F3F4);
+  background: var(--Color-Foundation-gray-100, #f2f3f4);
   border-radius: 6px;
   border: 1px solid #eeeeee;
   padding: 12px;
@@ -355,7 +352,7 @@ const CommentTextArea = styled.textarea`
   line-height: 150%; /* 22.5px */
 
   ::placeholder {
-    color: var(--Color-Foundation-gray-600, #989AA0);
+    color: var(--Color-Foundation-gray-600, #989aa0);
   }
 
   @media (max-width: 768px) {
@@ -364,7 +361,7 @@ const CommentTextArea = styled.textarea`
 `;
 
 const CommentTitle = styled.div`
-  color: var(--Color-Foundation-gray-800, #4C4D50);
+  color: var(--Color-Foundation-gray-800, #4c4d50);
 
   /* text-16/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquareOTF);
@@ -432,7 +429,7 @@ const PhotoAttacher = styled.label<{ photosLength: number }>`
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 8px;
-  border: 2px solid var(--Color-Foundation-gray-200, #E5E6E9);
+  border: 2px solid var(--Color-Foundation-gray-200, #e5e6e9);
   text-align: center;
   cursor: pointer;
 
@@ -448,7 +445,7 @@ const AddImage = styled.div`
   align-items: center;
   height: 100%;
 
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
   font-family: NanumSquareOTF;
   font-size: 13px;
@@ -470,9 +467,9 @@ const AddImage = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
 
-    color: var(--Color-Foundation-base-white, #FFF);
+    color: var(--Color-Foundation-base-white, #fff);
     text-align: center;
-    font-feature-settings: 'liga' off, 'clig' off;
+    font-feature-settings: "liga" off, "clig" off;
     font-family: NanumSquareOTF;
     font-size: 14px;
     font-style: normal;
@@ -496,7 +493,7 @@ const MobilePhotoAttacher = styled.label`
   width: 134px;
   height: 32px;
   flex: 0 0 auto;
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   border-radius: 50px;
   padding: 8px 25px;
   text-align: center;
@@ -560,10 +557,10 @@ const ReviewPostButton = styled.button`
   height: 46px;
   border-radius: 8px;
   color: black;
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   justify-content: center;
   align-items: center;
-  color: white;
+  color: var(--Color-Foundation-base-white);
   border: none;
   font-size: 16px;
   font-weight: 700;
@@ -573,7 +570,7 @@ const ReviewPostButton = styled.button`
     content: "평가 등록";
   }
   &:disabled {
-    background-color: #adadad;
+    background-color: var(--Color-Foundation-gray-600);
   }
   @media (max-width: 768px) {
     width: 100%;

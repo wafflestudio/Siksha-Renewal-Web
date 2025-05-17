@@ -104,7 +104,7 @@ export default function SettingProfile() {
 
 const Container = styled.div`
   width: 533px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -122,7 +122,7 @@ const Title = styled.div`
   margin: 24px 0 0 22.48px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 
   @media (max-width: 768px) {
     display: none;
@@ -143,7 +143,7 @@ const ButtonGroup = styled.div`
 const Button = styled.button`
   width: calc(50% - 4px);
   height: 46px;
-  background-color: #ff9522;
+  background-color: var(--Color-Foundation-orange-500);
   border: none;
   border-radius: 8px;
   color: white;
@@ -168,7 +168,8 @@ const CancelButton = styled(Button)`
 `;
 
 const CompleteButton = styled(Button)<{ isValid: boolean }>`
-  background-color: ${({ isValid }) => (isValid ? "#ff9522" : "#8e8e8e")};
+  background-color: ${({ isValid }) =>
+    isValid ? "var(--Color-Foundation-orange-500)" : "#8e8e8e"};
   cursor: pointer;
 
   @media (max-width: 768px) {

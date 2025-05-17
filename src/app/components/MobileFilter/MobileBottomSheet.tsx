@@ -42,7 +42,7 @@ const BottomSheetBackdrop = styled.div`
 const BottomSheetSlideBar = styled.div`
   width: 42px;
   height: 4px;
-  background-color: #dfdfdf;
+  background-color: var(--Color-Foundation-gray-300);
   border-radius: 2px;
   margin: 10px auto;
 `;
@@ -64,7 +64,7 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);

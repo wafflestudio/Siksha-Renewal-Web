@@ -7,6 +7,7 @@ import Script from "next/script";
 import { GlobalStyle } from "styles/globalstyle";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
@@ -37,7 +38,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FF9522",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FF9522" },
+    { media: "(prefers-color-scheme: dark)", color: "#F28C1D" },
+  ],
   initialScale: 1.0,
   width: "device-width",
   viewportFit: "cover",
@@ -49,13 +53,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <GlobalStyle />
         <StyledComponentsRegistry>
-          <ContextProvider>
-            <ModalsProvider>
-              <Suspense>
-                <Layout>{children}</Layout>
-              </Suspense>
-            </ModalsProvider>
-          </ContextProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ContextProvider>
+              <ModalsProvider>
+                <Suspense>
+                  <Layout>{children}</Layout>
+                </Suspense>
+              </ModalsProvider>
+            </ContextProvider>
+          </ThemeProvider>
         </StyledComponentsRegistry>
         <Script
           type="text/javascript"

@@ -52,12 +52,7 @@ export default function MenuSection({
       <MenuOverview>
         <MenuHeader>
           <RestaurantWrapper>
-            <Image
-              src={"/img/distance.svg"}
-              alt="식당"
-              width={20}
-              height={20}
-            />
+            <Image src={"/img/distance.svg"} alt="식당" width={20} height={20} />
             <Restaurant>{restaurantName}</Restaurant>
           </RestaurantWrapper>
           <MenuInfoContainer>
@@ -70,7 +65,7 @@ export default function MenuSection({
         </MenuHeader>
 
         <MobileDivider />
-        
+
         <MenuEvaluation>
           <ReviewDistribution
             reviewsTotalCount={reviewsTotalCount}
@@ -89,14 +84,14 @@ export default function MenuSection({
         </MenuEvaluation>
       </MenuOverview>
       <MobileDivider />
-      <PhotoReviewsSection menuId={menu.id} images={images}/>
+      <PhotoReviewsSection menuId={menu.id} images={images} />
     </Container>
   );
 }
 
 const Container = styled.section<{ $isNotShow: boolean }>`
   border-radius: 10px;
-  background-color: var(--Color-Foundation-base-white, #FFF);
+  background-color: var(--Color-Foundation-base-white, #fff);
 
   display: flex;
   flex-direction: column;
@@ -152,7 +147,7 @@ const RestaurantWrapper = styled.div`
 `;
 
 const Restaurant = styled.div`
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
 
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquareOTF);
@@ -197,12 +192,11 @@ const MenuTitle = styled.div`
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 28px */
   @media (max-width: 768px) {
-
   }
 `;
 
 const Price = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
 
   /* text-15/Bold */
   font-family: var(--Font-family-sans, NanumSquareOTF);
@@ -214,7 +208,7 @@ const Price = styled.div`
 
 const MobileDivider = styled.div`
   display: none;
-  background: var(--Color-Foundation-gray-100, #F2F3F4);
+  background: var(--Color-Foundation-gray-100, #f2f3f4);
   width: 100%;
   height: 10px;
   @media (max-width: 768px) {
@@ -242,10 +236,10 @@ const ReviewPostButton = styled.button`
   align-items: center;
   align-self: stretch;
   border-radius: 8px;
-  background: var(--Color-Foundation-orange-500, #FF9522);
+  background: var(--Color-Foundation-orange-500, #ff9522);
   cursor: pointer;
 
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--Color-Foundation-base-white, #ffffff);
 
   font-family: var(--Font-family-sans, NanumSquareOTF);
   font-size: var(--Font-size-14, 14px);

@@ -50,7 +50,7 @@ const MobileHeader = styled.div`
   font-size: 20px;
   margin: 0;
   top: 0;
-  background: #ff9522;
+  background: var(--Color-Foundation-orange-500);
   position: absolute;
   width: 100%;
   height: 44px;
@@ -71,7 +71,7 @@ const BackButton = styled.img`
 `;
 
 const Title = styled.div`
-  color: white;
+  color: var(--Color-Foundation-base-white);
   font-size: 20px;
   font-weight: 800;
   max-width: calc(100vw - 96px);

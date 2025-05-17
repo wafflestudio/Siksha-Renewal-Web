@@ -35,7 +35,7 @@ const PicketText = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 2px;
-  background: var(--Color-Foundation-gray-100, #f0f0f0);
+  background: var(--Color-Foundation-gray-100, var(--Color-Foundation-gray-100));
   color: var(--Color-Foundation-gray-800, #707070);
 
   text-align: center;
@@ -54,5 +54,5 @@ const PicketBottom = styled.img<{ left: number }>`
   top: -15px;
   width: 6px;
   height: 5px;
-  fill: var(--Color-Foundation-gray-100, #f0f0f0);
+  fill: var(--Color-Foundation-gray-100, var(--Color-Foundation-gray-100));
 `;

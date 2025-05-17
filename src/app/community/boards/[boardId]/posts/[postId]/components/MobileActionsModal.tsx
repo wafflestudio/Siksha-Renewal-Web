@@ -44,14 +44,14 @@ const MainContainer = styled.div`
   left: 50%;
   width: calc(100% - 40px);
   transform: translateX(-50%) translateY(-50%);
-  background: white;
+  background: var(--Color-Foundation-base-white);
   border-radius: 26px;
 `;
 
 const ActionWrapper = styled.div`
   text-align: center;
   padding: 18px 0;
-  border-bottom: 1px solid #e3e3e3;
+  border-bottom: 1px solid var(--Color-Foundation-gray-200);
   font-weight: 400;
   font-size: 16px;
   cursor: pointer;
@@ -60,7 +60,7 @@ const ActionWrapper = styled.div`
 const CancelWrapper = styled.div`
   text-align: center;
   padding: 18px 0;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;

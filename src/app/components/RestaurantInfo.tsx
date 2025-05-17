@@ -120,7 +120,7 @@ const Container = styled.div`
 `;
 
 const InfoBox = styled.div`
-  background: white;
+  background: var(--Color-Foundation-base-white);
   border-radius: 15px;
   width: 90vw;
   max-width: 1000px;
@@ -200,7 +200,7 @@ const LocationText = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-  color: #575757;
+  color: var(--Color-Foundation-gray-800);
   padding-left: 4px;
 `;
 
@@ -227,13 +227,13 @@ const BelowMap = styled.div`
 const EmptyText = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: #575757;
+  color: var(--Color-Foundation-gray-800);
   padding-top: 25px;
   font-weight: 400;
 `;
 
 const EmptyBox = styled.div<{ height: string }>`
   height: ${(props) => props.height};
-  background: white;
+  background: var(--Color-Foundation-base-white);
   width: 1px;
 `;

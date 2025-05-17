@@ -67,7 +67,7 @@ const ReviewScore = styled.div`
 `;
 
 const ReviewScoreValue = styled.span`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-size: 12px;
   font-weight: 700;
   margin-left: 10px;

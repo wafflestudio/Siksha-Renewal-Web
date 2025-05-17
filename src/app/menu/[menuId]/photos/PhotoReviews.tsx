@@ -89,7 +89,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
 
 const Container = styled.div`
   position: relative;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   width: 100%;
   min-height: calc(100vh - 271px);
   @media (max-width: 768px) {
@@ -130,7 +130,7 @@ const GalleryTitle = styled.h1`
 const PhotoReviewsCount = styled.div`
   margin-left: 4px;
   margin-top: 2px;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-size: 16px;
   font-weight: 800;
 `;
@@ -183,14 +183,14 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: #ff9522;
+  background: var(--Color-Foundation-orange-500);
   width: 200px;
 
   padding: 14px 25px;
   border: none;
   border-radius: 5px;
 
-  color: white;
+  color: var(--Color-Foundation-base-white);
   text-align: center;
   font-size: 16px;
   font-weight: 700;

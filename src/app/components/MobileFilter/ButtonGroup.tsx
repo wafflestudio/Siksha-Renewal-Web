@@ -54,6 +54,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background-color: #ffe8ce;
-  border: 1px solid #ff9522;
+  background-color: var(--Color-Main-Active);
+  border: 1px solid var(--Color-Foundation-orange-500);
 `;

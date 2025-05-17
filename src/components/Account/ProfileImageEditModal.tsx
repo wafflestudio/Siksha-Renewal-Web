@@ -81,7 +81,7 @@ const Container = styled.div<{ modalPosition: ModalPosition }>`
   top: ${(props) => `${props.modalPosition.top}px`};
   left: ${(props) => `${props.modalPosition.left}px`};
   width: 135.375px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   border-radius: 8px;
   padding: 8px 0;
   box-shadow: 0px 0px 7px 0px rgba(80, 20, 20, 0.1);
@@ -93,7 +93,7 @@ const Container = styled.div<{ modalPosition: ModalPosition }>`
     left: 50%;
     width: calc(100% - 60px);
     transform: translateX(-50%);
-    background: white;
+    background: var(--Color-Foundation-base-white);
     border-radius: 26px;
   }
 `;
@@ -109,7 +109,7 @@ const EditOption = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: var(--Color-Foundation-gray-100);
     @media (max-width: 768px) {
       background: none;
     }
@@ -118,7 +118,7 @@ const EditOption = styled.button`
   @media (max-width: 768px) {
     text-align: center;
     padding: 18px 0;
-    border-bottom: 1px solid #e3e3e3;
+    border-bottom: 1px solid var(--Color-Foundation-gray-200);
     font-weight: 400;
     font-size: 16px;
   }
@@ -128,7 +128,7 @@ const CancelWrapper = styled.div`
   display: none;
   text-align: center;
   padding: 18px 0;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;

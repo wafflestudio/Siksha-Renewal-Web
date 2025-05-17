@@ -146,8 +146,8 @@ const EditIconFrame = styled.div`
   gap: 10px;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 1px solid #f0f0f0;
-  background: #ffffff;
+  border: 1px solid var(--Color-Foundation-gray-100);
+  background: var(--Color-Foundation-base-white);
 `;
 
 const EditIcon = styled.img`
@@ -202,7 +202,8 @@ const ResultImage = styled.img<{ isDuplicate: boolean }>`
 `;
 
 const ResultText = styled.span<{ isDuplicate: boolean }>`
-  color: ${(props) => (props.isDuplicate ? "#ff9522" : "#ADADAD")};
+  color: ${(props) =>
+    props.isDuplicate ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
   font-size: 14px;
   font-weight: 400;
   line-height: 23px;

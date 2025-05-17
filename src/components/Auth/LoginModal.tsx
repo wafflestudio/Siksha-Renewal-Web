@@ -102,7 +102,7 @@ const MainContainer = styled.div`
   width: 497px;
   height: 565px;
   transform: translate(-50%, -50%);
-  background: #ff9522;
+  background: var(--Color-Foundation-orange-500);
   border-radius: 13px;
 
   @media (max-width: 768px) {
@@ -135,7 +135,7 @@ const LoginTitle = styled.p`
   font-family: NanumSquare;
   font-weight: 800;
   font-size: 20px;
-  color: #ffffff;
+  color: var(--Color-Foundation-base-white);
 `;
 
 const CloseButton = styled.img`
@@ -184,9 +184,9 @@ const SocialButton = styled.div`
   font-family: NanumSquare;
   font-size: 14px;
   background-color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
-    props.provider === "kakao" ? "#fee500" : "#ffffff"};
+    props.provider === "kakao" ? "#fee500" : "var(--Color-Foundation-base-white)"};
   color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
-    props.provider === "kakao" ? "#181600" : "#393939"};
+    props.provider === "kakao" ? "#181600" : "var(--Color-Foundation-gray-900)"};
 
   border-radius: 6px;
   position: relative;

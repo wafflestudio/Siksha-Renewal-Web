@@ -17,7 +17,7 @@ const Content = styled(OneColumnLayout.Container)`
   margin-top: 37px;
   margin-bottom: 80px;
   height: 100%;
-  background: white;
+  background: var(--Color-Foundation-base-white);
   border-radius: 10px;
   padding: 0 20px;
   box-sizing: border-box;

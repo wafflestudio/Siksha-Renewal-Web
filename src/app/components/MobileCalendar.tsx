@@ -82,7 +82,7 @@ const DateText = styled.div`
   font-weight: 800;
   font-size: 15px;
   line-height: 22.7px;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   white-space: nowrap;
   cursor: pointer;
 `;

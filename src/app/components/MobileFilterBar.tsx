@@ -161,14 +161,15 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Grey-2, #DFDFDF)"};
-  background: ${(props) => (props.isActive ? "var(--Main-Active, #FFE8CE)" : "#FFF")};
+      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+  background: ${(props) =>
+    props.isActive ? "var(--Color-Main-Active)" : "var(--Color-Foundation-base-white)"};
 
   font-family: NanumSquare_ac;
 `;
 
 const ButtonText = styled.span<{ isActive?: boolean }>`
-  color: var(--Main-Balck, #000);
+  color: var(--Color-Foundation-base-black);
   leading-trim: both;
   text-edge: cap;
   font-size: 13px;

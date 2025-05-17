@@ -45,7 +45,9 @@ export default function RestaurantList() {
         <Title>식당 찾기</Title>
         <Pagination>
           <Image
-            src={ (page === 1) ? "/img/left-arrow-darkgrey-inactive.svg" : "/img/left-arrow-darkgrey.svg"}
+            src={
+              page === 1 ? "/img/left-arrow-darkgrey-inactive.svg" : "/img/left-arrow-darkgrey.svg"
+            }
             width={20}
             height={20}
             alt={"이전 식당 페이지"}
@@ -54,12 +56,19 @@ export default function RestaurantList() {
           />
           <Page>{`${page}/${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
           <Image
-            src={(page === Math.ceil(favoriteFirstRestaurants.length / 10)) ? "/img/right-arrow-darkgrey-inactive.svg" : "/img/right-arrow-darkgrey.svg"}
+            src={
+              page === Math.ceil(favoriteFirstRestaurants.length / 10)
+                ? "/img/right-arrow-darkgrey-inactive.svg"
+                : "/img/right-arrow-darkgrey.svg"
+            }
             width={20}
             height={20}
             alt={"다음 식당 페이지"}
             onClick={nextPage}
-            style={{ cursor: page === Math.ceil(favoriteFirstRestaurants.length / 10) ? "default" : "pointer" }}
+            style={{
+              cursor:
+                page === Math.ceil(favoriteFirstRestaurants.length / 10) ? "default" : "pointer",
+            }}
           />
         </Pagination>
       </Header>
@@ -99,7 +108,7 @@ const Container = styled.div<{ show: boolean }>`
   align-self: stretch;
 
   max-height: 266px;
-  background: white;
+  background: var(--Color-Foundation-base-white);
   box-sizing: border-box;
   gap: 22px;
 `;

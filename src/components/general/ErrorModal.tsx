@@ -74,7 +74,7 @@ const DesktopContainer = styled(Container)`
   height: 230px;
   border-radius: 13px;
   padding: 27px 30px 30px 33px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
 `;
 
 const Header = styled.div`
@@ -114,8 +114,8 @@ const CancelButton = styled(Button)`
   color: #8e8e8e;
 `;
 const RetryButton = styled(Button)`
-  background-color: #ff9522;
-  color: white;
+  background-color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-base-white);
 `;
 
 const MobileContainer = styled(Container)`
@@ -124,7 +124,7 @@ const MobileContainer = styled(Container)`
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
-  background-color: #fff;
+  background-color: var(--Color-Foundation-base-white);
 `;
 const MobileHeader = styled.div`
   display: flex;
@@ -143,7 +143,7 @@ const MobileMessage = styled.div`
   line-height: 15px;
 `;
 const MobileFooter = styled.div`
-  border-top: 1px solid #e3e3e3;
+  border-top: 1px solid var(--Color-Foundation-gray-200);
   flex: 1;
 `;
 
@@ -159,8 +159,8 @@ const MobileButton = styled.button`
 `;
 
 const MobileRetryButton = styled(MobileButton)`
-  color: #ff9522;
-  border-left: 1px solid #e3e3e3;
+  color: var(--Color-Foundation-orange-500);
+  border-left: 1px solid var(--Color-Foundation-gray-200);
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};

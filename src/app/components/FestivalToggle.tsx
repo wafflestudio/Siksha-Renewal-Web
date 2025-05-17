@@ -15,13 +15,14 @@ export default function FestivalToggle() {
   }, [active]);
 
   return (
-    isFestivalDate && 
-    <ToggleWrapper onClick={() => setActive(!active)}>
-      <ToggleContainer active={active}>
-        <ToggleCircle />
-      </ToggleContainer>
-      <ToggleText active={active}>축제</ToggleText>
-    </ToggleWrapper>
+    isFestivalDate && (
+      <ToggleWrapper onClick={() => setActive(!active)}>
+        <ToggleContainer active={active}>
+          <ToggleCircle />
+        </ToggleContainer>
+        <ToggleText active={active}>축제</ToggleText>
+      </ToggleWrapper>
+    )
   );
 }
 
@@ -41,10 +42,13 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   height: 34.864px;
   box-sizing: border-box;
   border-radius: 17.432px;
-  background-color: ${({ active }) => (active ? `var(--Color-Foundation-orange-500, #FF9522)` : `var(--Grey-3, #B7B7B7)`)}; // 주황색 / 회색
+  background-color: ${({ active }) =>
+    active
+      ? `var(--Color-Foundation-orange-500, #FF9522)`
+      : `var(--Grey-3, var(--Color-Foundation-gray-500))`}; // 주황색 / 회색
   display: flex;
   align-items: center;
-  justify-content: ${({ active }) => (active ? 'flex-end' : 'flex-start')};
+  justify-content: ${({ active }) => (active ? "flex-end" : "flex-start")};
   padding: 2.14px 2.49px 2.14px 2.88px;
   cursor: pointer;
 
@@ -60,11 +64,11 @@ const ToggleText = styled.span<{ active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: ${({ active }) => (active ? '11.7px' : '39.28px')};
+  margin-left: ${({ active }) => (active ? "11.7px" : "39.28px")};
 
-  color: #FFF;
+  color: var(--Color-Foundation-base-white);
   text-align: center;
-  font-feature-settings: 'liga' off, 'clig' off;
+  font-feature-settings: "liga" off, "clig" off;
   font-family: NanumSquareOTF;
   font-size: 16px;
   font-style: normal;
@@ -76,7 +80,7 @@ const ToggleText = styled.span<{ active: boolean }>`
   @media (max-width: 768px) {
     font-size: 9px;
     letter-spacing: -0.3px;
-    margin-left: ${({ active }) => (active ? '6.5px' : '21.83px')};
+    margin-left: ${({ active }) => (active ? "6.5px" : "21.83px")};
   }
 `;
 
@@ -84,10 +88,10 @@ const ToggleCircle = styled.div`
   width: 30.59px;
   height: 30.59px;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   z-index: 1;
 
-  fill: var(--Main-White, #FFF);
+  fill: var(--Main-White, var(--Color-Foundation-base-white));
   filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
 
   @media (max-width: 768px) {

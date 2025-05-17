@@ -74,7 +74,7 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -90,7 +90,7 @@ const Title = styled.div`
   margin: 24.04px 0 0 23.5px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 
   @media (max-width: 768px) {
     display: none;
@@ -224,8 +224,8 @@ const ButtonCancel = styled(Button)`
 `;
 
 const ButtonConfirm = styled(Button)`
-  background-color: #ff9522;
-  color: #ffffff;
+  background-color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-base-white);
   margin-left: 14px;
 
   @media (max-width: 768px) {

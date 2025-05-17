@@ -65,7 +65,7 @@ export default function UserSetting() {
 
 const Container = styled.div`
   width: 544px;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -78,7 +78,7 @@ const Title = styled.div`
   margin: 24.57px 0 0 22.45px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   margin-bottom: 30.43px;
 
   @media (max-width: 768px) {
