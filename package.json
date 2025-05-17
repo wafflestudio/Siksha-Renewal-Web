@@ -36,6 +36,7 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.4.5",
     "babel-plugin-styled-components": "^2.1.4",
     "eslint": "7.29.0",
