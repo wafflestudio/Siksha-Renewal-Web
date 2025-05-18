@@ -4,6 +4,9 @@ import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
 import "styles/calendar.css";
+import CalendarIcon from "assets/icons/calendar.svg";
+import LeftArrowIcon from "assets/icons/left-arrow.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export default function DesktopCalendar() {
   const state = useStateContext();
@@ -37,43 +40,31 @@ export default function DesktopCalendar() {
   return (
     <Container>
       <Navigation isCalOpened={isCalOpened}>
-        <Arrow
-          onClick={movePrevDay}
-          src={"/img/left-arrow-calendar-nav.svg"}
-          height={"21px"}
-          alt="지난날로 이동"
-        />
+        <StyledLeftArrowIcon onClick={movePrevDay} aria-label="지난날로 이동" />
         <DateBox onClick={toggleCal}>
-          <Icon src={"/img/calendar.svg"} />
-          <DateText color={"var(--Color-Foundation-gray-900, #262728)"} lineHeight={"150%"}>
+          <StyledCalendarIcon />
+          <DateText color={"var(--Color-Foundation-gray-900)"} lineHeight={"150%"}>
             {formatDate(date)}
           </DateText>
         </DateBox>
-        <Arrow
-          onClick={moveNextDay}
-          src={"/img/right-arrow-calendar-nav.svg"}
-          height={"21px"}
-          alt="다음날로 이동"
-        />
+        <StyledRightArrowIcon onClick={moveNextDay} aria-label="다음날로 이동" />
       </Navigation>
       {isCalOpened && (
         <Calendar>
           <Header>
-            <DateText color={"var(--Color-Foundation-orange-500, #ff9522)"} lineHeight={"140%"}>
+            <DateText color={"var(--Color-Foundation-orange-500)"} lineHeight={"140%"}>
               {formatMonth(date)}
             </DateText>
             <ArrowBox>
-              <Arrow
+              <StyledLeftArrowIcon
                 onClick={movePrevMonth}
-                src={"/img/left-arrow.svg"}
-                height={"21px"}
-                alt="지난달로 이동"
+                aria-label="지난달로 이동"
+                color="orange"
               />
-              <Arrow
+              <StyledRightArrowIcon
                 onClick={moveNextMonth}
-                src={"/img/right-arrow.svg"}
-                height={"21px"}
-                alt="다음달로 이동"
+                aria-label="다음달로 이동"
+                color="orange"
               />
             </ArrowBox>
           </Header>
@@ -147,9 +138,10 @@ const DateBox = styled.div`
   cursor: pointer;
 `;
 
-const Icon = styled.img`
+const StyledCalendarIcon = styled(CalendarIcon)`
   width: 24px;
   height: 24px;
+  color: var(--Color-Foundation-gray-900);
 `;
 
 const Header = styled.div`
@@ -172,6 +164,16 @@ const ArrowBox = styled.div`
   gap: 20px;
 `;
 
-const Arrow = styled.img`
+const StyledLeftArrowIcon = styled(LeftArrowIcon)`
   cursor: pointer;
+  height: 21px;
+  color: ${({ color }) =>
+    color === "orange" ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-700)"};
+`;
+
+const StyledRightArrowIcon = styled(RightArrowIcon)<{ color: string }>`
+  cursor: pointer;
+  height: 21px;
+  color: ${({ color }) =>
+    color === "orange" ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-700)"};
 `;
