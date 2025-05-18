@@ -149,7 +149,7 @@ const ListGroup = styled.div<{ isLast?: boolean }>`
   background-color: var(--Color-Foundation-base-white-5);
   width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid var(--Color-Foundation-gray-200);
+  border: 1px solid var(--Color-Foundation-gray-200-2);
   border-radius: 8px;
 
   @media (max-width: 768px) {
