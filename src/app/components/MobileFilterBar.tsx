@@ -136,8 +136,10 @@ const Button = styled.button<{ isActive?: boolean }>`
   border: 1px solid
     ${(props) =>
       props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
-  background: ${(props) =>
-    props.isActive ? "var(--Color-Foundation-Tint-orange)" : "var(--Color-Foundation-gray-200)"};
+  background-color: ${(props) =>
+    props.isActive
+      ? "var(--Color-Foundation-Tint-orange)"
+      : "var(--Color-Foundation-base-white-5)"};
 
   font-family: NanumSquare_ac;
 `;
