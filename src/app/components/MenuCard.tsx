@@ -273,18 +273,6 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
   }
 `;
 
-const ButtonIcon = styled.img`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-
-  /* App버전을 참고한 디자인 */
-  @media (max-width: 768px) {
-    width: 20px;
-    height: 20px;
-  }
-`;
-
 const IconWrapper = styled.div`
   width: 24px;
   height: 24px;

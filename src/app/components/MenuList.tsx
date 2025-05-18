@@ -84,7 +84,7 @@ const Container = styled.div`
 `;
 
 const EmptyText = styled.div`
-  color: #919191;
+  color: var(--Color-Foundation-gray-600);
   font-weight: 400;
   padding-top: 25px;
   padding-bottom: 30px;

@@ -6,6 +6,10 @@ import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import { RawMenu } from "types";
+import HeartIcon from "assets/icons/heart.svg";
+import CommentIcon from "assets/icons/comment.svg";
+import DotsIcon from "assets/icons/dots.svg";
+import NoMeatIcon from "assets/icons/no-meat.svg";
 
 export default function Menu({ menu }: { menu: RawMenu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -14,8 +18,6 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
   const reviewCount = menu.review_cnt;
 
-  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
-  const isReviewedImg = "/img/general/comment-off.svg"; //리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
@@ -67,26 +69,27 @@ export default function Menu({ menu }: { menu: RawMenu }) {
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && (
-          <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
+          <StyledNoMeatIcon aria-label="채식 메뉴" />
         )}
       </MenuName>
-      <Dots src={"/img/dots.svg"} />
+      <StyledDotsIcon />
       <MenuInfo>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
-          <CountIcon
-            src={isLikedImg}
+          <StyledLikeIcon
+            isLiked={isLiked}
+            aria-label="좋아요"
             onClick={(e) => {
               isLikedToggle();
               e.stopPropagation();
             }}
-            alt="좋아요"
           />
           <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
-          <CountIcon src={isReviewedImg} alt="댓글" />
+          {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
+          <StyledCommentIcon isLiked={false} aria-label="댓글" />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
@@ -104,7 +107,7 @@ const Container = styled.div`
 
   @media (pointer: fine) {
     &:hover {
-      background: #f5f5f5;
+      background: var(--Color-Foundation-gray-100);
     }
   }
 
@@ -146,10 +149,10 @@ const MenuInfo = styled.div`
   }
 `;
 
-const Dots = styled.img`
+const StyledDotsIcon = styled(DotsIcon)`
   width: 40px;
   height: 22px;
-
+  color: var(--Color-Foundation-gray-500);
   @media (max-width: 1200px) {
     display: none;
   }
@@ -227,9 +230,10 @@ const Rate = styled.div`
   }
 `;
 
-const NoMeat = styled.img`
+const StyledNoMeatIcon = styled(NoMeatIcon)`
   width: 19px;
   padding-bottom: 2px;
+  color: #b0b0b0; // 아이콘 자체에 마스킹 처리되는 부분이 흰색으로 표현됨.
 
   @media (max-width: 768px) {
     padding-left: 5px;
@@ -257,11 +261,22 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const CountIcon = styled.img`
+const StyledLikeIcon = styled(HeartIcon)<{ isLiked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;
   z-index: 0;
+  color: ${({ isLiked }) =>
+    isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+`;
+
+const StyledCommentIcon = styled(CommentIcon)<{ isLiked: boolean }>`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 0;
+  color: ${({ isLiked }) =>
+    isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`
