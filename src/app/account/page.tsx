@@ -8,9 +8,11 @@ import { useEffect } from "react";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import UseProfile from "hooks/UseProfile";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 export default function Account() {
   const router = useRouter();
+  const currentTheme = UseCurrentTheme();
 
   const { userInfo } = UseProfile();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
@@ -19,7 +21,10 @@ export default function Account() {
 
   useEffect(authGuard, [authStatus]);
 
-  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
+  const profileURL =
+    userInfo?.image ?? currentTheme === "dark"
+      ? "/img/default-profile-dark.svg"
+      : "/img/default-profile.svg";
   const nickname = userInfo?.nickname;
 
   return (
