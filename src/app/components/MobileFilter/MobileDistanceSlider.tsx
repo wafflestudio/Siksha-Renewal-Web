@@ -107,14 +107,6 @@ const SliderWrapper = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
-  .rc-slider-track {
-    background-color: var(--Color-Foundation-orange-500, #ff9522);
-  }
-
-  .rc-slider-rail {
-    background-color: #dbdbdb;
-  }
-
   .rc-slider-handle {
     width: 18px;
     height: 18px;
