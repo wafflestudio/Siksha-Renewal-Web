@@ -19,6 +19,8 @@ import useError from "hooks/useError";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
+import { analytics } from "utils/api/firebase";
+import { logEvent } from "firebase/analytics";
 
 export default function Home() {
   const state = useStateContext();
