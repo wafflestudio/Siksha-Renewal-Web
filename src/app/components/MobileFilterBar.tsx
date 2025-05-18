@@ -1,5 +1,4 @@
 import UseFilter from "hooks/UseFilter";
-import Image from "next/image";
 import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
 import { useState } from "react";
@@ -8,6 +7,7 @@ import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBott
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 import FilterIcon from "assets/icons/filter.svg";
 import DownArrowIcon from "assets/icons/down-arrow.svg";
+import CheckIcon from "assets/icons/check.svg";
 
 export default function MobileFilterBar() {
   const { filterList, isSet, changeFilterOption } = UseFilter();
@@ -84,15 +84,11 @@ export default function MobileFilterBar() {
         </Button>
         <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
-          {isSet.isAvailableOnly && (
-            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          )}
+          {isSet.isAvailableOnly && <StyledCheckIcon />}
           <ButtonText isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
         </Button>
         <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
-          {isSet.isReview && (
-            <Image src="/img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          )}
+          {isSet.isReview && <StyledCheckIcon />}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
         <Button isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
@@ -158,6 +154,12 @@ const StyledFilterIcon = styled(FilterIcon)`
   color: var(--Color-Foundation-gray-500);
   width: 33.59px;
   height: 34px;
+`;
+
+const StyledCheckIcon = styled(CheckIcon)`
+  width: 16px;
+  height: 16px;
+  color: var(--Color-Foundation-gray-800);
 `;
 
 const IconBox = styled.div<{ size?: number }>`
