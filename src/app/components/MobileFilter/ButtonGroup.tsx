@@ -38,7 +38,6 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
   box-sizing: content-box;
   align-content: center;
 `;
-
 const ButtonItem = styled.button`
   display: flex;
   border-radius: 30px;
@@ -64,6 +63,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background-color: var(--Color-Main-Active);
+  background-color: var(--Color-Foundation-Tint-orange);
   border: 1px solid var(--Color-Foundation-orange-500);
 `;
