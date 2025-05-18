@@ -145,6 +145,7 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-gray-100: #F2F3F4;
     --Color-Foundation-gray-100-2: #F2F3F4;
     --Color-Foundation-gray-100-3: #F2F3F4;
+    --Color-Foundation-gray-100-4: #F2F3F4;
     --Color-Foundation-gray-200: #E5E6E9;
     --Color-Foundation-gray-200-2: #E5E6E9;
     --Color-Foundation-gray-200-3: #E5E6E9;
@@ -187,6 +188,7 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-gray-100: #202020;
     --Color-Foundation-gray-100-2: #232323;
     --Color-Foundation-gray-100-3: #1E1E1E;
+    --Color-Foundation-gray-100-4: #2D2D2D;
     --Color-Foundation-gray-200: #232323;
     --Color-Foundation-gray-200-2: #2D2D2D;
     --Color-Foundation-gray-200-3: #404040;

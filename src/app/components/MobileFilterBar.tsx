@@ -61,7 +61,7 @@ export default function MobileFilterBar() {
           onClose={() => setFilterState("category", false)}
         /> */}
         <IconBox>
-          <StyledFilterIcon aria-label="필터 아이콘" />
+          <StyledFilterIcon aria-label="필터 아이콘" onClick={() => setFilterState("all", true)} />
         </IconBox>
         <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText isActive={isSet.length}>
