@@ -243,5 +243,5 @@ const StyledText = styled.span<{
     `}
   }
 `;
-
+export { variantStyles };
 export default Text;

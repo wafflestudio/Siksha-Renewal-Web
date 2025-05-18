@@ -175,7 +175,10 @@ const Price = styled(Text).attrs(props => ({
   }
 `;
 
-const Rate = styled.div`
+const Rate = styled(Text).attrs({
+  variant: "text-14-regular",
+  as: "div",
+})`
   display: flex;
   justify-content: center;
   width: 58px;
@@ -200,13 +203,6 @@ const Rate = styled.div`
 
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
-
-    /* text-14/Regular */
-    font-family: var(--Font-family-sans, NanumSquare);
-    font-size: var(--Font-size-14, 14px);
-    font-style: normal;
-    font-weight: var(--Font-weight-regular, 400);
-    line-height: 150%; /* 21px */
   }
 `;
 

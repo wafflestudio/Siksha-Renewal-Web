@@ -9,6 +9,7 @@ import { sanitizeCssSelector } from "utils/FormatUtil";
 import OperatingHour from "./OperatingHour";
 import { RawMenu, RawRestaurant } from "types";
 import getCurrentOperatingHours from "utils/getCurrentOperatingHours";
+import Text from "components/general/Text";
 
 type Data = RawRestaurant & {
   menus: RawMenu[];
@@ -231,18 +232,15 @@ const HeaderDataList = styled.div`
   }
 `;
 
-const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
+const HeaderDataText = styled(Text).attrs<{ disableWidth?: number; shrinkWidth?: number }>
+(props => ({
+  as: 'p',
+  variant: 'text-13-regular',
+  color: 'var(--Color-Foundation-orange-500, #FF9522)',
+  textAlign: 'center',
+  mobileVariant: 'text-12-regular',
+}))`
   width: 58px;
-  color: var(--Color-Foundation-orange-500, #FF9522);
-  text-align: center;
-
-  /* text-13/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-13, 13px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 140%; /* 18.2px */
-
   margin: 0;
 
   @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
@@ -255,13 +253,6 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
 
   @media (max-width: 768px) {
     width: fit-content;
-
-    /* text-12/Regular */
-    font-family: var(--Font-family-sans, NanumSquare);
-    font-size: var(--Font-size-12, 12px);
-    font-style: normal;
-    font-weight: var(--Font-weight-regular, 400);
-    line-height: 140%; /* 16.8px */
   }
 `;
 
