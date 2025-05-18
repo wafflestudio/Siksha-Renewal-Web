@@ -7,8 +7,10 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
 import { RawMenu } from "types";
-import HeartSvg from "assets/icons/heart.svg";
-import DotsSvg from "assets/icons/dots.svg";
+import HeartIcon from "assets/icons/heart.svg";
+import CommentIcon from "assets/icons/comment.svg";
+import DotsIcon from "assets/icons/dots.svg";
+import NoMeatIcon from "assets/icons/no-meat.svg";
 
 export default function Menu({ menu }: { menu: RawMenu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -16,7 +18,6 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
   const reviewCount = menu.review_cnt;
-  const isReviewedImg = "/img/general/comment-off.svg"; //리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
@@ -75,7 +76,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && (
-          <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
+          <StyledNoMeatIcon aria-label="채식 메뉴" />
         )}
       </MenuName>
       <StyledDotsIcon />
@@ -85,6 +86,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         <CountBox>
           <StyledLikeIcon
             $isLiked={isLiked}
+            aria-label="좋아요"
             onClick={(e) => {
               isLikedToggle();
               e.stopPropagation();
@@ -93,7 +95,8 @@ export default function Menu({ menu }: { menu: RawMenu }) {
           <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
-          <CountIcon src={isReviewedImg} alt="댓글" />
+          {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
+          <StyledCommentIcon isLiked={false} aria-label="댓글" />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
@@ -111,7 +114,7 @@ const Container = styled.div`
 
   @media (pointer: fine) {
     &:hover {
-      background: var(--Color-Foundation-gray-100, #f5f5f5);
+      background: var(--Color-Foundation-gray-100);
     }
   }
 
@@ -153,28 +156,16 @@ const MenuInfo = styled.div`
   }
 `;
 
-const StyledDotsIcon = styled(DotsSvg)`
+const StyledDotsIcon = styled(DotsIcon)`
   width: 40px;
   height: 22px;
-  color: var(--Color-Foundation-gray-500, #b3b3b3);
-
+  color: var(--Color-Foundation-gray-500);
   @media (max-width: 1200px) {
     display: none;
   }
 `;
 
-const StyledLikeIcon = styled(HeartSvg)<{ $isLiked: boolean }>`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 0;
-  color: ${(props) =>
-    props.$isLiked
-      ? "var(--Color-Accent-like, #f86627)"
-      : "var(--SemanticColor-Icon-Like, var(--Color-Foundation-gray-200, #e5e6e9))"};
-`;
-
-const Price = styled.div`
+const Price = styled.div<{ hasPrice: boolean }>`
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -246,9 +237,10 @@ const Rate = styled.div`
   }
 `;
 
-const NoMeat = styled.img`
+const StyledNoMeatIcon = styled(NoMeatIcon)`
   width: 19px;
   padding-bottom: 2px;
+  color: #b0b0b0; // 아이콘 자체에 마스킹 처리되는 부분이 흰색으로 표현됨.
 
   @media (max-width: 768px) {
     padding-left: 5px;
@@ -276,11 +268,22 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const CountIcon = styled.img`
+const StyledLikeIcon = styled(HeartIcon)<{ $isLiked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;
   z-index: 0;
+  color: ${({ $isLiked }) =>
+    $isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+`;
+
+const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 0;
+  color: ${({ $isLiked }) =>
+    $isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

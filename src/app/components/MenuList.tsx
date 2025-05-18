@@ -96,8 +96,7 @@ const Container = styled.div`
 `;
 
 const EmptyText = styled.div`
-  width: 100%;
-  color: #919191;
+  color: var(--Color-Foundation-gray-600);
   font-weight: 400;
   font-size: 16px;
   text-align: center;
