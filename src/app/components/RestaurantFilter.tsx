@@ -13,6 +13,7 @@ import WebDistanceSlider from "./WebDistanceSlider";
 import WebPriceSlider from "./WebPriceSlider";
 import { trackEvent } from "utils/MixPanel";
 import { AnalyticsEvent, EventNames } from "constants/track";
+import RefreshIcon from "assets/icons/refresh.svg";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();
@@ -136,7 +137,7 @@ export default function RestaurantFilter() {
       <Header>
         <Title>메뉴 필터</Title>
         <RefreshBox onClick={resetFilter}>
-          <RefreshIcon src={"/img/refresh.svg"} />
+          <StyledRefreshIcon />
           <RefreshText>초기화</RefreshText>
         </RefreshBox>
       </Header>
@@ -261,9 +262,10 @@ const RefreshBox = styled.div`
   cursor: pointer;
 `;
 
-const RefreshIcon = styled.img`
+const StyledRefreshIcon = styled(RefreshIcon)`
   width: 24px;
   height: 24px;
+  color: var(--Color-Foundation-gray-600);
 `;
 
 const RefreshText = styled.span`
