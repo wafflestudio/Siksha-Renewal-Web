@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Board as BoardType, RawBoard } from "types";
 import { getBoardList } from "utils/api/community";
 import { boardParser } from "utils/DataUtil";
+import LeftArrowMobileIcon from "assets/icons/left-arrow-mobile.svg";
 
 export default function MobileSubHeader({
   title,
@@ -50,18 +51,24 @@ export default function MobileSubHeader({
   );
 
   if (rootElement) {
-    return createPortal(headerContent, rootElement);
+    return createPortal(
+      <MobileHeader>
+        <BackButton onClick={handleBack} aria-label="뒤로 가기" />
+        <Title>{title || boardTitle}</Title>
+      </MobileHeader>,
+      rootElement,
+    );
   }
 
   // Fallback: render directly if portal target not found
   return headerContent;
 }
-
+// --Color-Foundation-base-white-5
 const MobileHeader = styled.div`
   display: none;
   margin: 0;
   top: 0;
-  background: var(--Color-Foundation-orange-500);
+  background: var(--Color-Foundation-orange-500-2);
   position: absolute;
   width: 100%;
   height: 44px;
@@ -73,16 +80,17 @@ const MobileHeader = styled.div`
   }
 `;
 
-const BackButton = styled.img`
+const BackButton = styled(LeftArrowMobileIcon)`
   position: absolute;
   width: 10px;
   height: 16px;
   left: 16px;
+  color: var(--Color-Foundation-base-white-2);
   cursor: pointer;
 `;
 
 const Title = styled.div`
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Foundation-base-white-2);
   font-size: 20px;
   font-weight: 800;
   line-height: 140%;
