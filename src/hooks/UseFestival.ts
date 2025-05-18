@@ -19,7 +19,7 @@ export default function useFestival() {
       .catch((e) => {
         onHttpError(e);
       });
-    };
+  };
 
   useEffect(() => {
     if (date) {

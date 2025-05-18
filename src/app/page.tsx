@@ -96,7 +96,6 @@ export default function Home() {
           alignItems: "center",
         }}>
           <Meal />
-          <FestivalToggle />
         </div>
         <MobileFilterBar />
         <MenuList />
