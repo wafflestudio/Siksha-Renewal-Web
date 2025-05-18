@@ -47,13 +47,11 @@ export default function Layout({ children }: LayoutProps) {
 
   useEffect(() => {
     if (analytics) {
-      console.log("analytics wee", analytics);
       logEvent(analytics, "page_view", {
         page_path: pathname,
       });
       logEvent(analytics, "test_event");
     } else {
-      console.warn("Analytics is not initialized");
     }
   }, [pathname]);
 

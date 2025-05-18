@@ -21,9 +21,6 @@ export const app = initializeApp(firebaseConfig);
 
 export let analytics: Analytics | null = null;
 
-console.log("typeof window", typeof window);
-
 if (typeof window !== "undefined") {
   analytics = getAnalytics(app);
-  console.log("analytics", analytics);
 }
