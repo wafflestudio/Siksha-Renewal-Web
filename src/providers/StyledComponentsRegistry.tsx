@@ -20,7 +20,12 @@ export default function StyledComponentsRegistry({ children }: { children: React
 
   if (typeof window !== "undefined") return <>{children}</>;
 
+  const StyleSheetManagerFixed = StyleSheetManager as unknown as React.ComponentType<{
+    sheet: any;
+    children: React.ReactNode;
+  }>;
+
   return (
-    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManager>
+    <StyleSheetManagerFixed sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManagerFixed>
   );
 }

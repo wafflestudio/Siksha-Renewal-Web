@@ -1,10 +1,11 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Stars from "./Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
 import { formatReviewDate } from "utils/FormatUtil";
 import useIsMobile from "hooks/UseIsMobile";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function ReviewItem({ review }: { review: ReviewType }) {
   const isMobile = useIsMobile();
@@ -20,9 +21,9 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
           flex: "1 0 0",
         }}>
           <Id>ID {review.user_id}</Id>
-          <ThemeProvider theme={{ width: 60 }}>
+          <ThemedWrapper theme={{ width: 60 }}>
             <Stars score={review.score || 0} />
-          </ThemeProvider>
+          </ThemedWrapper>
         </div>
         <Date>{formatReviewDate(review.created_at.substring(0, 10))}</Date>
       </Header>
