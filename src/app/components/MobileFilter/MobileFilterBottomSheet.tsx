@@ -11,6 +11,7 @@ import {
   DISTANCE_FILTER_OPTIONS,
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
+import StarFilledIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -142,32 +143,17 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
-              { label: "전체", id: "ALL" },
+              { label: "모두", id: "ALL" },
               {
-                label: (
-                  <div>
-                    3.5
-                    <StarIcon src="/img/general/star-on.svg" />
-                  </div>
-                ),
+                label: <RatingLabel ratingValue="3.5" />,
                 id: "3.5",
               },
               {
-                label: (
-                  <div>
-                    4.0
-                    <StarIcon src="/img/general/star-on.svg" />
-                  </div>
-                ),
+                label: <RatingLabel ratingValue="4.0" />,
                 id: "4",
               },
               {
-                label: (
-                  <div>
-                    4.5
-                    <StarIcon src="/img/general/star-on.svg" />
-                  </div>
-                ),
+                label: <RatingLabel ratingValue="4.5" />,
                 id: "4.5",
               },
             ]}
@@ -194,10 +180,25 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
   );
 }
 
-const StarIcon = styled.img`
-  width: 12px;
-  height: 12px;
-  margin-left: 4px;
+const RatingLabel = ({ ratingValue }: { ratingValue: string }) => {
+  return (
+    <RatingLabelWrapper>
+      {ratingValue}
+      <StyledStarIcon />
+    </RatingLabelWrapper>
+  );
+};
+
+const RatingLabelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+`;
+
+const StyledStarIcon = styled(StarFilledIcon)`
+  width: 14px;
+  color: var(--Color-Foundation-orange-500);
 `;
 
 export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
