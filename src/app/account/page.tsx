@@ -9,6 +9,8 @@ import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import UseProfile from "hooks/UseProfile";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
+import RightArrowMobileIcon from "assets/icons/right-arrow-mobile.svg";
+import HideCircleIcon from "assets/icons/hide-circle.svg";
 
 export default function Account() {
   const router = useRouter();
@@ -37,7 +39,7 @@ export default function Account() {
         >
           <Profile src={profileURL} alt="프로필 이미지" />
           <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="오른쪽 화살표" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -47,7 +49,7 @@ export default function Account() {
           }}
         >
           <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -57,7 +59,7 @@ export default function Account() {
           }}
         >
           <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -66,24 +68,16 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
-          {isExceptEmpty ? (
-            <CheckButton
-              src="/img/account/hide-circle-active.svg"
-              alt="활성화"
-              onClick={toggleIsExceptEmpty}
-            />
-          ) : (
-            <CheckButton
-              src="/img/account/hide-circle-inactive.svg"
-              alt="비활성화"
-              onClick={toggleIsExceptEmpty}
-            />
-          )}
+          <CheckButton
+            isActive={isExceptEmpty}
+            onClick={toggleIsExceptEmpty}
+            aria-label={isExceptEmpty ? "활성화" : "비활성화"}
+          />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -92,7 +86,7 @@ export default function Account() {
           }}
         >
           <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup isLast={true}>
@@ -102,6 +96,7 @@ export default function Account() {
           }}
         >
           <InquiryText>1:1 문의하기</InquiryText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
@@ -109,12 +104,52 @@ export default function Account() {
   );
 }
 
+const ArrowButton = () => {
+  return (
+    <ArrowButtonWrapper>
+      <RightArrowMobileIcon />
+    </ArrowButtonWrapper>
+  );
+};
+const ArrowButtonWrapper = styled.div`
+  width: 6.25px;
+  height: 10px;
+  margin-right: 15.47px;
+  margin-left: auto;
+  color: var(--Color-Foundation-gray-500);
+  margin-bottom: 7px;
+
+  @media (max-width: 768px) {
+    margin-right: 13.75px;
+  }
+`;
+
+const CheckButton = ({ isActive, onClick }: { isActive: boolean; onClick: () => void }) => {
+  return (
+    <CheckButtonWrapper isActive={isActive} onClick={onClick}>
+      <HideCircleIcon />
+    </CheckButtonWrapper>
+  );
+};
+
+const CheckButtonWrapper = styled.div<{ isActive: boolean }>`
+  width: 19px;
+  height: 19px;
+  margin-right: 12.22px;
+  margin-left: auto;
+  color: ${({ isActive }) =>
+    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+  @media (max-width: 768px) {
+    margin-right: 15.5px;
+  }
+`;
+
 const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--Color-Foundation-base-white-5);
   width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -178,29 +213,6 @@ const InquiryText = styled(Text)`
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: #e8e8e8;
+  background: var(--Color-Foundation-gray-200-2);
   margin: 0 6px;
-`;
-
-const Button = styled.img`
-  margin-left: auto;
-`;
-
-const ArrowButton = styled(Button)`
-  width: 6.25px;
-  height: 10px;
-  margin-right: 15.47px;
-
-  @media (max-width: 768px) {
-    margin-right: 13.75px;
-  }
-`;
-
-const CheckButton = styled(Button)`
-  width: 19px;
-  height: 19px;
-  margin-right: 12.22px;
-  @media (max-width: 768px) {
-    margin-right: 15.5px;
-  }
 `;
