@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ButtonGroup from "./ButtonGroup";
 import { defaultFilters } from "constants/filterOptions";
+import StarIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterRatingBottomSheetProps {
   isOpen: boolean;
@@ -84,7 +85,7 @@ const RatingContent = ({ value }: { value: string }) => {
   return (
     <RatingContentWrapper>
       {value}
-      <StarIcon src="/img/general/star-on.svg" />
+      <StyledStarIcon />
     </RatingContentWrapper>
   );
 };
@@ -95,8 +96,8 @@ const RatingContentWrapper = styled.div`
   gap: 4px;
 `;
 
-const StarIcon = styled.img`
-  width: 12px;
-  height: 12px;
+const StyledStarIcon = styled(StarIcon)`
+  width: 14px;
   margin-bottom: 2px;
+  color: var(--Color-Foundation-orange-500);
 `;
