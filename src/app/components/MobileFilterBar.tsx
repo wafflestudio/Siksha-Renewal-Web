@@ -105,7 +105,7 @@ export default function MobileFilterBar() {
           <ButtonText isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
-<StyledDownArrowIcon aria-label="아래 화살표" />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button> */}
       </Container>
     </>
