@@ -23,25 +23,18 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const { authStatus, getAccessToken } = useAuth();
   const { openLoginModal } = useModals();
 
+  const getScoreLevel = (score: number): "high" | "middle" | "low" => {
+    if (score >= 4) return "high";
+    if (score > 3) return "middle";
+    return "low";
+  };
+
   useEffect(() => {
     setIsLiked(menu?.is_liked);
-  }, [menu?.is_liked]);
-
-  useEffect(() => {
     setLikeCount(menu.like_cnt);
-  }, [menu.like_cnt]);
-
-  useEffect(() => {
-    if (!menu.price) setHasPrice(false);
-  }, [menu.price]);
-
-  useEffect(() => {
-    if (menu.score) {
-      if (menu.score >= 4) setScore("high");
-      else if (menu.score > 3) setScore("middle");
-      else setScore("low");
-    }
-  }, [menu.score]);
+    setHasPrice(!!menu.price);
+    setScore(menu.score ? getScoreLevel(menu.score) : null);
+  }, [menu]);
 
   const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
