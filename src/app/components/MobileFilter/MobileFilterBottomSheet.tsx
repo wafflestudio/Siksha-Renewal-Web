@@ -246,6 +246,7 @@ const RatingLabelWrapper = styled.div`
 
 const StyledStarIcon = styled(StarFilledIcon)`
   width: 14px;
+  margin-bottom: 2px;
   color: var(--Color-Foundation-orange-500);
 `;
 

@@ -8,6 +8,7 @@ import ButtonGroup from "./ButtonGroup";
 import { defaultFilters } from "constants/filterOptions";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
+import StarIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterRatingBottomSheetProps {
   isOpen: boolean;
@@ -107,7 +108,7 @@ const RatingContent = ({ value }: { value: string }) => {
   return (
     <RatingContentWrapper>
       {value}
-      <StarIcon src="/img/general/star-on-14.svg" />
+      <StyledStarIcon />
     </RatingContentWrapper>
   );
 };
@@ -118,8 +119,8 @@ const RatingContentWrapper = styled.div`
   gap: 4px;
 `;
 
-const StarIcon = styled.img`
-  width: 12px;
-  height: 12px;
+const StyledStarIcon = styled(StarIcon)`
+  width: 14px;
   margin-bottom: 2px;
+  color: var(--Color-Foundation-orange-500);
 `;
