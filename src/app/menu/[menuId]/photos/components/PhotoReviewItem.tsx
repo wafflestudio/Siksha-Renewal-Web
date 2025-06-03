@@ -1,6 +1,7 @@
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Stars from "app/menu/[menuId]/components/Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
   return (
@@ -13,9 +14,9 @@ export default function PhotoReviewItem({ review }: { review: ReviewType }) {
         </ReviewInfo>
         <ReviewContent>{review.comment}</ReviewContent>
         <ReviewScore>
-          <ThemeProvider theme={{ width: 73 }}>
+          <ThemedWrapper theme={{ width: 73 }}>
             <Stars score={review.score || 0} />
-          </ThemeProvider>
+          </ThemedWrapper>
           <ReviewScoreValue>{review.score}</ReviewScoreValue>
         </ReviewScore>
       </ItemContainer>

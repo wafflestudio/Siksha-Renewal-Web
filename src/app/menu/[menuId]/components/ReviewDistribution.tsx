@@ -1,8 +1,9 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Stars from "./Stars";
 import Image from "next/image";
 import useIsMobile from "hooks/UseIsMobile";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function ReviewDistribution({
   reviewsTotalCount,
@@ -30,9 +31,9 @@ export default function ReviewDistribution({
           <Score>{score.toFixed(1)}</Score>
           <MaximumScore>/5</MaximumScore>
         </div>
-        <ThemeProvider theme={{ width: isMobile ? 71.09 : 140 }}>
+        <ThemedWrapper theme={{ width: isMobile ? 71.09 : 140 }}>
           <Stars score={score} />
-        </ThemeProvider>
+        </ThemedWrapper>
         <ReviewsTotalCount>
           후기 {reviewsTotalCount}개
         </ReviewsTotalCount>

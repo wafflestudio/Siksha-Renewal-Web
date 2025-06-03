@@ -9,7 +9,9 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { loginRefresh } from "utils/api/auth";
 import Modals from "./Modals";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { analytics } from "utils/api/firebase";
+import { logEvent } from "firebase/analytics";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,6 +21,7 @@ export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const boardId = searchParams?.get("boardId");
+  const pathname = usePathname();
 
   const { setIsFilterFavorite } = useDispatchContext();
   const isMobile = useIsMobile();
@@ -41,6 +44,16 @@ export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
   }, [isMobile]);
+
+  useEffect(() => {
+    if (analytics) {
+      logEvent(analytics, "page_view", {
+        page_path: pathname,
+      });
+      logEvent(analytics, "test_event");
+    } else {
+    }
+  }, [pathname]);
 
   // write page로 router.back하지 않도록
   useEffect(() => {
