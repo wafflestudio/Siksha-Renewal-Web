@@ -81,10 +81,6 @@ export default function Home() {
     fetchData();
   }, [date, authStatus, meal, isFilterFavorite]);
 
-  useEffect(() => {
-    initMixpanel();
-  }, []);
-
   return (
     <>
       <DesktopContainer>

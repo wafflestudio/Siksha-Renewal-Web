@@ -12,4 +12,10 @@ export const initMixpanel = () => {
   });
 };
 
+export const trackEvent = (event: string, properties?: Record<string, any>) => {
+  if (typeof window !== "undefined") {
+    mixpanel.track(event, properties);
+  }
+};
+
 export default mixpanel;

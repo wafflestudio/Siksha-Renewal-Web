@@ -53,11 +53,7 @@ export default function MobileNavigationBar() {
           srcActive="/img/mobile-nav-star-active.svg"
           srcInactive="/img/mobile-nav-star-inactive.svg"
         />
-        <IconLabel
-          isActive={active === "favorite"}
-        >
-          즐겨찾기
-        </IconLabel>
+        <IconLabel isActive={active === "favorite"}>즐겨찾기</IconLabel>
       </Link>
       <Link
         href="/"
@@ -72,15 +68,13 @@ export default function MobileNavigationBar() {
           srcActive="/img/mobile-nav-menu-active.svg"
           srcInactive="/img/mobile-nav-menu-inactive.svg"
         />
-        <IconLabel
-          isActive={active === "menu"}
-        >
-          식단
-        </IconLabel>
+        <IconLabel isActive={active === "menu"}>식단</IconLabel>
       </Link>
       <Link
         href="/community/boards/1"
-        onClick={() => setIsFilterFavorite(false)}
+        onClick={() => {
+          setIsFilterFavorite(false);
+        }}
         style={{
           width: "36px",
           height: "46px",
@@ -91,11 +85,7 @@ export default function MobileNavigationBar() {
           srcActive="/img/mobile-nav-community-active.svg"
           srcInactive="/img/mobile-nav-community-inactive.svg"
         />
-        <IconLabel
-          isActive={active === "community"}
-        >
-          게시판
-        </IconLabel>
+        <IconLabel isActive={active === "community"}>게시판</IconLabel>
       </Link>
       <Link
         href="/account"
@@ -110,11 +100,7 @@ export default function MobileNavigationBar() {
           srcActive="/img/mobile-nav-account-active.svg"
           srcInactive="/img/mobile-nav-account-inactive.svg"
         />
-        <IconLabel
-          isActive={active === "account"}
-        >
-          설정
-        </IconLabel>
+        <IconLabel isActive={active === "account"}>설정</IconLabel>
       </Link>
     </Container>,
     rootElement,
@@ -130,7 +116,7 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 83px;
-  background: var(--Color-Foundation-base-white, #FFF);
+  background: var(--Color-Foundation-base-white, #fff);
   box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
   z-index: 1;
 
@@ -154,9 +140,12 @@ const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: str
 const IconLabel = styled.div<{ isActive: boolean }>`
   width: 36px;
 
-  color: ${({ isActive }) => isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Color-Foundation-gray-500, #BEC1C8)"};
+  color: ${({ isActive }) =>
+    isActive
+      ? "var(--Color-Foundation-orange-500, #FF9522)"
+      : "var(--Color-Foundation-gray-500, #BEC1C8)"};
   text-align: center;
-  font-feature-settings: 'liga' off, 'clig' off;
+  font-feature-settings: "liga" off, "clig" off;
   font-family: NanumSquare;
   font-size: 9px;
   font-style: normal;
