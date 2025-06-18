@@ -47,14 +47,32 @@ export default function MobileFilterBar() {
   };
 
   const handleOnClickIsAvailableOnly = () => {
+    const value = !filterList.isAvailableOnly;
     changeFilterOption({
-      isAvailableOnly: !filterList.isAvailableOnly,
+      isAvailableOnly: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "is_open_now",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
     });
   };
 
   const handleOnClickIsReview = () => {
+    const value = !filterList.isReview;
     changeFilterOption({
-      isReview: !filterList.isReview,
+      isReview: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "has_reviews",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
     });
   };
 

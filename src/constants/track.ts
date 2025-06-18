@@ -2,7 +2,7 @@ export type AnalyticsEvent =
   | { name: "filter_modal_opened"; props: { entry_point: FilterEntryPoint; page_name?: string } }
   | {
       name: "instant_filter_toggled";
-      props: { filter_type: string; filter_value: string; page_name?: string };
+      props: { filter_type: InstantFilter; filter_value: boolean; page_name?: string };
     }
   | {
       name: "filter_modal_applied";
@@ -24,6 +24,8 @@ export type AnalyticsEvent =
 export type FilterEntryPoint = "main_filter" | "distance_filter" | "price_filter" | "rating_filter";
 
 export type AppliedEntryPoint = "main" | "distance" | "price" | "min_rating";
+
+export type InstantFilter = "is_open_now" | "has_reviews";
 
 export type MainFilterOptions = {
   price_min: number;
