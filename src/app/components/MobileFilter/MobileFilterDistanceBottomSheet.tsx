@@ -17,7 +17,7 @@ export default function MobileFilterDistanceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterDistanceBottomSheetProps) {
-  const { filterList, changeFilterOption } = UseFilter();
+  const { filterList, changeFilterOption, countChangedFilters } = UseFilter();
   const [length, setLength] = useState(defaultFilters.length);
 
   useEffect(() => {
@@ -29,6 +29,18 @@ export default function MobileFilterDistanceBottomSheet({
       length === DISTANCE_FILTER_OPTIONS.val_infinity ? defaultFilters.length : length;
     changeFilterOption({
       length: valLength,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "distance_filter",
+        applied_filter_options: {
+          max_distance_km: valLength / 1000,
+        },
+        number_of_applied_filters: countChangedFilters({ length: valLength }),
+        page_name: "meal_list_page",
+      },
     });
     onClose();
   };

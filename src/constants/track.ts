@@ -1,29 +1,35 @@
-export type AnalyticsEvent =
-  | { name: "filter_modal_opened"; props: { entry_point: FilterEntryPoint; page_name?: string } }
-  | {
-      name: "instant_filter_toggled";
-      props: { filter_type: InstantFilter; filter_value: boolean; page_name?: string };
-    }
-  | {
-      name: "filter_modal_applied";
-      props: {
-        entry_point: AppliedEntryPoint;
-        applied_filter_options: AppliedFilterOptions;
-        number_of_applied_filters?: number;
-        page_name?: string;
-      };
-    }
-  | {
-      name: "filter_reset";
-      props: {
-        entry_point: FilterEntryPoint;
-        page_name?: string;
-      };
-    };
+export type AnalyticsEventMap = {
+  filter_modal_opened: {
+    entry_point: FilterEntryPoint;
+    page_name?: string;
+  };
+  instant_filter_toggled: {
+    filter_type: InstantFilter;
+    filter_value: boolean;
+    page_name?: string;
+  };
+  filter_modal_applied: {
+    entry_point: keyof AppliedFilterOptionsByEntryPoint;
+    applied_filter_options: AppliedFilterOptionsByEntryPoint[keyof AppliedFilterOptionsByEntryPoint];
+    number_of_applied_filters?: number;
+    page_name?: string;
+  };
+  filter_reset: {
+    entry_point: FilterEntryPoint;
+    page_name?: string;
+  };
+};
+
+export type EventName = keyof AnalyticsEventMap;
+
+export type AnalyticsEvent = {
+  [K in EventName]: {
+    name: K;
+    props: AnalyticsEventMap[K];
+  };
+}[EventName];
 
 export type FilterEntryPoint = "main_filter" | "distance_filter" | "price_filter" | "rating_filter";
-
-export type AppliedEntryPoint = "main" | "distance" | "price" | "min_rating";
 
 export type InstantFilter = "is_open_now" | "has_reviews";
 
@@ -53,7 +59,7 @@ export type AppliedFilterOptionsByEntryPoint = {
   main_filter: MainFilterOptions;
   distance_filter: DistanceFilterOptions;
   price_filter: PriceFilterOptions;
-  min_rating: MinRatingOptions;
+  rating_filter: MinRatingOptions;
 };
 
 export type AppliedFilterOptions = {

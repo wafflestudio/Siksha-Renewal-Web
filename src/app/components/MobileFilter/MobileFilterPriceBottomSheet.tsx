@@ -17,7 +17,7 @@ export default function MobileFilterPriceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterPriceBottomSheetProps) {
-  const { filterList, changeFilterOption } = UseFilter();
+  const { filterList, changeFilterOption, countChangedFilters } = UseFilter();
   const [priceMin, setPriceMin] = useState(defaultFilters.priceMin);
   const [priceMax, setPriceMax] = useState(defaultFilters.priceMax);
 
@@ -28,6 +28,22 @@ export default function MobileFilterPriceBottomSheet({
     changeFilterOption({
       priceMax: valPriceMax,
       priceMin: valPriceMin,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "price_filter",
+        applied_filter_options: {
+          price_max: valPriceMax,
+          price_min: valPriceMin,
+        },
+        number_of_applied_filters: countChangedFilters({
+          priceMax,
+          priceMin,
+        }),
+        page_name: "meal_list_page",
+      },
     });
     onClose();
   };

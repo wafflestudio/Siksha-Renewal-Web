@@ -12,10 +12,10 @@ import {
 import WebDistanceSlider from "./WebDistanceSlider";
 import WebPriceSlider from "./WebPriceSlider";
 import { trackEvent } from "utils/MixPanel";
-import { EventNames } from "constants/track";
+import { AnalyticsEvent, EventNames } from "constants/track";
 
 export default function RestaurantFilter() {
-  const { filterList, setFilterList, resetFilterList } = UseFilter();
+  const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
@@ -59,23 +59,62 @@ export default function RestaurantFilter() {
   }, [resetFilterList]);
 
   const applyFilter = useCallback(() => {
+    const length =
+      selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+        ? defaultFilters.length
+        : selectedFilters.length;
+
+    const priceMin =
+      selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
+        ? defaultFilters.priceMin
+        : selectedFilters.priceMin;
+
+    const priceMax =
+      selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
+        ? defaultFilters.priceMax
+        : selectedFilters.priceMax;
+
+    const ratingMin = selectedFilters.ratingMin;
+
+    const isReview = selectedFilters.isReview;
+
+    const isAvailableOnly = selectedFilters.isAvailableOnly;
+
     setFilterList({
-      length:
-        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
-          ? defaultFilters.length
-          : selectedFilters.length,
-      priceMin:
-        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
-          ? defaultFilters.priceMin
-          : selectedFilters.priceMin,
-      priceMax:
-        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
-          ? defaultFilters.priceMax
-          : selectedFilters.priceMax,
-      ratingMin: selectedFilters.ratingMin,
-      isReview: selectedFilters.isReview,
-      isAvailableOnly: selectedFilters.isAvailableOnly,
+      length,
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
       isFestival: filterList.isFestival,
+    });
+
+    // 기본값과 다른 필터 수 세기
+    const appliedFilterCount = countChangedFilters({
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
+      length,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "main_filter",
+        applied_filter_options: {
+          price_min: priceMin,
+          price_max: priceMax,
+          min_rating: ratingMin,
+          is_open_now: isAvailableOnly,
+          has_reviews: isReview,
+          max_distance_km: length / 1000,
+        },
+        number_of_applied_filters: appliedFilterCount,
+        page_name: "meal_list_page_web",
+      },
     });
   }, [setFilterList, selectedFilters]);
 

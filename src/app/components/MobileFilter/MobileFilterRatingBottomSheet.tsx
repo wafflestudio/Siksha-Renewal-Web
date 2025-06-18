@@ -18,7 +18,7 @@ export default function MobileFilterRatingBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterRatingBottomSheetProps) {
-  const { filterList, changeFilterOption } = UseFilter();
+  const { filterList, changeFilterOption, countChangedFilters } = UseFilter();
   const [ratingMin, setRatingMin] = useState(0);
 
   useEffect(() => {
@@ -28,6 +28,20 @@ export default function MobileFilterRatingBottomSheet({
   const handleOnComplete = () => {
     changeFilterOption({
       ratingMin,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "rating_filter",
+        applied_filter_options: {
+          min_rating: ratingMin,
+        },
+        number_of_applied_filters: countChangedFilters({
+          ratingMin,
+        }),
+        page_name: "meal_list_page",
+      },
     });
     onClose();
   };
