@@ -8,9 +8,15 @@ export default function UseCurrentTheme() {
   // hydration 이슈 방지
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return null;
-
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
-  return currentTheme;
+  const defaultProfileURL = () => {
+    if (!mounted) return "/img/default-profile.svg";
+    return currentTheme === "dark" ? "/img/default-profile-dark.svg" : "/img/default-profile.svg";
+  };
+
+  return {
+    currentTheme: mounted ? currentTheme : "light",
+    defaultProfileURL: defaultProfileURL(),
+  };
 }

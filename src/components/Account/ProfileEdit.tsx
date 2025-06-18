@@ -3,6 +3,7 @@ import styled from "styled-components";
 import useModals from "hooks/UseModals";
 import ProfileImageEditModal from "./ProfileImageEditModal";
 import UseProfile from "hooks/UseProfile";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface ProfileEditProps {
   nickname: string;
@@ -28,6 +29,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
     isNicknameValid,
   } = props;
   const { userInfo } = UseProfile();
+  const { defaultProfileURL } = UseCurrentTheme();
 
   const { openModal } = useModals();
   const profileFrameRef = useRef<HTMLDivElement>(null);
@@ -60,10 +62,10 @@ export default function ProfileEdit(props: ProfileEditProps) {
         <Profile
           src={
             changeToDefaultImage
-              ? "/img/default-profile.svg"
+              ? defaultProfileURL
               : imageBlob
               ? URL.createObjectURL(imageBlob)
-              : userInfo?.image ?? "/img/default-profile.svg"
+              : userInfo?.image ?? defaultProfileURL
           }
           alt="프로필 사진"
         />
