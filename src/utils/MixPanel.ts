@@ -1,3 +1,4 @@
+import { AnalyticsEvent } from "constants/track";
 import mixpanel from "mixpanel-browser";
 
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
@@ -12,9 +13,9 @@ export const initMixpanel = () => {
   });
 };
 
-export const trackEvent = (event: string, properties?: Record<string, any>) => {
+export const trackEvent = (event: AnalyticsEvent) => {
   if (typeof window !== "undefined") {
-    mixpanel.track(event, properties);
+    mixpanel.track(event.name, event.props);
   }
 };
 
