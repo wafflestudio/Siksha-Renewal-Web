@@ -16,7 +16,7 @@ export type AnalyticsEvent =
   | {
       name: "filter_reset";
       props: {
-        entry_point: string;
+        entry_point: FilterEntryPoint;
         page_name?: string;
       };
     };

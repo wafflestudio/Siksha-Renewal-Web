@@ -5,6 +5,8 @@ import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobilePriceSlider from "./MobilePriceSlider";
 import { PRICE_FILTER_OPTIONS, defaultFilters } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterPriceBottomSheetProps {
   isOpen: boolean;
@@ -48,6 +50,13 @@ export default function MobileFilterPriceBottomSheet({
     changeFilterOption({
       priceMax: defaultPriceMax,
       priceMin: defaultPriceMin,
+    });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "price_filter",
+        page_name: "meal_list_page",
+      },
     });
   };
 

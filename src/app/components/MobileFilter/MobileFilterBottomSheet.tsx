@@ -11,6 +11,8 @@ import {
   DISTANCE_FILTER_OPTIONS,
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -50,6 +52,13 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       ratingMin: 0,
       isReview: false,
       isAvailableOnly: false,
+    });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page",
+      },
     });
   }, [resetFilterList]);
 
@@ -203,7 +212,11 @@ const StarIcon = styled.img`
   margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string; addShadow?: boolean }>`
+export const FilterActionSection = styled.div<{
+  marginBottom: string;
+  marginTop?: string;
+  addShadow?: boolean;
+}>`
   display: grid;
   padding: 0 16px;
   padding-bottom: ${(props) => `${props.marginBottom}px`};
@@ -212,7 +225,7 @@ export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?
   width: 100%;
   grid-template-columns: 1fr 1fr;
   gap: 7px;
-  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};;
+  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};
 `;
 
 const FilterContentWrapper = styled.div`
@@ -229,8 +242,7 @@ const FilterContentWrapper = styled.div`
   }
 `;
 
-const FilterContent = styled.div`
-`;
+const FilterContent = styled.div``;
 
 const MobileFilterHeader = styled.div`
   color: var(--Color-Foundation-base-black, #000);

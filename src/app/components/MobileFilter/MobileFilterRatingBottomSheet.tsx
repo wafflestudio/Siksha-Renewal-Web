@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ButtonGroup from "./ButtonGroup";
 import { defaultFilters } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterRatingBottomSheetProps {
   isOpen: boolean;
@@ -35,6 +37,13 @@ export default function MobileFilterRatingBottomSheet({
     setRatingMin(defaultRatingMin);
     changeFilterOption({
       ratingMin: defaultRatingMin,
+    });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "rating_filter",
+        page_name: "meal_list_page",
+      },
     });
   };
 

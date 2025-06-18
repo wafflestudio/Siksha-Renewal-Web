@@ -11,6 +11,8 @@ import {
 } from "constants/filterOptions";
 import WebDistanceSlider from "./WebDistanceSlider";
 import WebPriceSlider from "./WebPriceSlider";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList } = UseFilter();
@@ -46,6 +48,13 @@ export default function RestaurantFilter() {
       ratingMin: 0,
       isReview: false,
       isAvailableOnly: false,
+    });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page_web",
+      },
     });
   }, [resetFilterList]);
 
