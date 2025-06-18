@@ -68,7 +68,7 @@ const BackButton = styled(LeftArrowMobileIcon)`
   width: 10px;
   height: 16px;
   left: 16px;
-  color: var(--Color-Foundation-base-white-2);
+  color: var(--Color-Foundation-base-white-5);
   cursor: pointer;
 `;
 

@@ -14,7 +14,7 @@ import HideCircleIcon from "assets/icons/hide-circle.svg";
 
 export default function Account() {
   const router = useRouter();
-  const currentTheme = UseCurrentTheme();
+  const { defaultProfileURL } = UseCurrentTheme();
 
   const { userInfo } = UseProfile();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
@@ -23,10 +23,7 @@ export default function Account() {
 
   useEffect(authGuard, [authStatus]);
 
-  const profileURL =
-    userInfo?.image ?? currentTheme === "dark"
-      ? "/img/default-profile-dark.svg"
-      : "/img/default-profile.svg";
+  const profileURL = userInfo?.image ?? defaultProfileURL;
   const nickname = userInfo?.nickname;
 
   return (
