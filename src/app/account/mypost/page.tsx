@@ -55,7 +55,7 @@ export default function MyPost() {
 const Container = styled.div<{ $isEmpty: boolean }>`
   padding: 0 18.5px;
   width: 701px;
-  background: var(--Color-Foundation-base-white);
+  background: var(--Color-Foundation-base-white-4);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   box-sizing: border-box;
@@ -97,5 +97,5 @@ const BreakLine = styled.hr`
   margin-bottom: 29.4px;
   border: 0;
   height: 1px;
-  background: #eeeeee;
+  background: var(--Color-Foundation-gray-100);
 `;
