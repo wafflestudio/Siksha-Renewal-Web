@@ -49,7 +49,7 @@ const EmptyText = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 23px;
-  color: #a6a6a6;
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     height: calc(100% - 83px);
