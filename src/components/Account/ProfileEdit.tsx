@@ -4,6 +4,7 @@ import useModals from "hooks/UseModals";
 import ProfileImageEditModal from "./ProfileImageEditModal";
 import UseProfile from "hooks/UseProfile";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
+import PhotoCameraIcon from "assets/icons/photo_camera.svg";
 
 interface ProfileEditProps {
   nickname: string;
@@ -70,7 +71,7 @@ export default function ProfileEdit(props: ProfileEditProps) {
           alt="프로필 사진"
         />
         <EditIconFrame>
-          <EditIcon src="/img/account/edit-profile.svg" alt="사진 업로드" />
+          <StyledPhotoCameraIcon aria-label="사진 업로드" />
         </EditIconFrame>
         <input
           type="file"
@@ -141,21 +142,23 @@ const EditIconFrame = styled.div`
   box-sizing: border-box;
   width: 41.607px;
   height: 41.607px;
-  padding: 10px 11px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
   border-radius: 50%;
   border: 1px solid var(--Color-Foundation-gray-100);
   background: var(--Color-Foundation-base-white);
 `;
 
-const EditIcon = styled.img`
+const StyledPhotoCameraIcon = styled(PhotoCameraIcon)`
+  color: var(--Color-Foundation-gray-600);
+  display: block;
   width: 22.5px;
   height: 18px;
-  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
 `;
 
 const InputBox = styled.label`
@@ -163,7 +166,7 @@ const InputBox = styled.label`
   justify-content: space-between;
   align-items: center;
   margin: 36.51px 22.48px 36.51px 22.48px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   padding-left: 14px;
 
@@ -187,6 +190,7 @@ const Input = styled.input`
   @media (max-width: 768px) {
     width: 100%;
   }
+  background-color: transparent;
 `;
 
 const DuplicateCheck = styled.div`
