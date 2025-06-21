@@ -52,7 +52,7 @@ const Container = styled.div`
   padding: 0 18.5px;
   width: 701px;
   background: var(--Color-Foundation-base-white-4);
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -65,7 +65,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   margin: 24.08px 0 29.42px 4.5px;
-  color: var(--Main-Orange, var(--Color-Foundation-orange-500));
+  color: var(--Color-Foundation-orange-500);
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;

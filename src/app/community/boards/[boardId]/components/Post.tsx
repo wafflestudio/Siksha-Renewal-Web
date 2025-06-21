@@ -61,7 +61,7 @@ const Container = styled.div`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: #eeeeee;
+    background-color: var(--Color-Foundation-gray-100);
     transform: translateX(-50%);
 
     @media (max-width: 768px) {
