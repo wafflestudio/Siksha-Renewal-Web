@@ -8,7 +8,7 @@ interface RestaurantOrderEditorProps {
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
-export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
+export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
   const pathname = usePathname();
   const isFavorite = pathname?.includes("favorite");
 
@@ -61,7 +61,7 @@ const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
   padding-bottom: 12.68px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   background-color: var(--Color-Foundation-base-white);
 
@@ -89,10 +89,9 @@ const Title = styled.h2`
 const Description = styled.p`
   margin: 0 0 20px 20px;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 140%;
-  letter-spacing: -0.3px;
-  color: #989aa0;
+  font-size: 11px;
+  line-height: 19px;
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     display: flex;
@@ -115,7 +114,7 @@ const DragZone = styled.div`
 `;
 const DragContainer = styled.div<{ dragging: boolean }>`
   &:hover {
-    background-color: #f2f2f2;
+    background-color: var(--Color-Foundation-gray-100);
   }
 `;
 
@@ -124,7 +123,7 @@ const DragBox = styled.div`
   justify-content: space-between;
   width: 499.04px;
   height: 49px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   margin: 7.92px 22.15px;
 
