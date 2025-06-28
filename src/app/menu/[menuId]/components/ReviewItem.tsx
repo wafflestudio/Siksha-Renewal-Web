@@ -109,8 +109,8 @@ const Comment = styled.div`
     border-radius: 8px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
     padding: 10px;
-    margin: 8px 10px 6px 0;
-
+    margin: 8px 0 6px 0;
+    background-color: var(--SemanticColor-Background-Secondary);
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-13/Regular */
@@ -144,7 +144,7 @@ const Images = styled.div`
 `;
 
 const Id = styled.div`
-  color: var(--Color-Foundation-gray-800, #4C4D50);
+  color: var(--Color-Foundation-base-black, #000);
 
   /* text-13/Bold */
   font-family: var(--Font-family-sans, NanumSquareOTF);
