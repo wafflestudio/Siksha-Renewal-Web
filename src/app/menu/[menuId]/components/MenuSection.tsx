@@ -239,7 +239,7 @@ const ReviewPostButton = styled.button`
   background: var(--Color-Foundation-orange-500, #ff9522);
   cursor: pointer;
 
-  color: var(--Color-Foundation-base-white, #fff);
+  color: var(--SemanticColor-Text-Button, #ffffff);
 
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);

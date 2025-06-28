@@ -148,6 +148,7 @@ const ScoreContainer = styled.div`
 
     border-radius: 16px;
     border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+    background: var(--SemanticColor-Background-Secondary);
   }
 `;
 
