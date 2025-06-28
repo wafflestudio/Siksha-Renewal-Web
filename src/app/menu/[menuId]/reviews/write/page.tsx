@@ -211,7 +211,7 @@ const Title = styled.div`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -226,6 +226,9 @@ const Header = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 36px;
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
 `;
 
 const ReviewTitle = styled.div`
@@ -235,11 +238,11 @@ const ReviewTitle = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
 
-  /* text-20/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  /* text-20/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
+  font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 28px */
 
   @media (max-width: 768px) {
@@ -264,7 +267,7 @@ const SelectStarText = styled.span`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -304,7 +307,7 @@ const Score = styled.div`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -313,12 +316,12 @@ const Score = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 7px;
-    margin-bottom: 35px;
+    margin-bottom: 26px;
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 
     /* text-20/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-20, 20px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -338,14 +341,14 @@ const CommentTextArea = styled.textarea`
   margin-top: 10px;
   background: var(--Color-Foundation-gray-100, #f2f3f4);
   border-radius: 6px;
-  border: 1px solid #eeeeee;
+  border: none;
   padding: 12px;
   resize: none;
 
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -363,11 +366,11 @@ const CommentTextArea = styled.textarea`
 const CommentTitle = styled.div`
   color: var(--Color-Foundation-gray-800, #4c4d50);
 
-  /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  /* text-16/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
+  font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 22.4px */
 
   margin-left: 6px;
@@ -394,7 +397,7 @@ const PhotoSection = styled.div`
   margin-top: 12px;
   margin-bottom: 52px;
   @media (max-width: 768px) {
-    margin-top: 16px;
+    margin-top: 8px;
     margin-bottom: 98px;
   }
 `;
@@ -447,7 +450,7 @@ const AddImage = styled.div`
 
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
-  font-family: NanumSquareOTF;
+  font-family: NanumSquare;
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
@@ -467,10 +470,10 @@ const AddImage = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
 
-    color: var(--Color-Foundation-base-white, #fff);
+    color: var(--SemanticColor-Text-Button, #fff);
     text-align: center;
     font-feature-settings: "liga" off, "clig" off;
-    font-family: NanumSquareOTF;
+    font-family: NanumSquare;
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
@@ -556,11 +559,10 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: black;
+  color: var(--SemanticColor-Text-Button, #fff);
   background-color: var(--Color-Foundation-orange-500);
   justify-content: center;
   align-items: center;
-  color: var(--Color-Foundation-base-white);
   border: none;
   font-size: 16px;
   font-weight: 700;
@@ -584,7 +586,7 @@ const ReviewCancelButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  background-color: #eeeeee;
+  background-color: var(--Color-Foundation-gray-100);
   text-align: center;
   color: #8e8e8e;
   border: none;
