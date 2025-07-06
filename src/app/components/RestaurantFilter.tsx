@@ -116,7 +116,7 @@ export default function RestaurantFilter() {
         page_name: "meal_list_page_web",
       },
     });
-  }, [setFilterList, selectedFilters]);
+  }, [setFilterList, selectedFilters, filterList, countChangedFilters]);
 
   const handleSliderChange = useCallback((value: number | [number, number]) => {
     setSelectedFilters((prev) => {
