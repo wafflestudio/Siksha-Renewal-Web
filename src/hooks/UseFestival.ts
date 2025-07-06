@@ -7,23 +7,23 @@ import { formatISODate } from "utils/FormatUtil";
 export default function useFestival() {
   const { date } = useStateContext();
   const { onHttpError } = useError();
-  const [ isFestivalDate, setIsFestivalDate ] = useState(false);
+  const [isFestivalDate, setIsFestivalDate] = useState(false);
 
   const fetchIsFestivalDate = async () => {
     const dateString = formatISODate(date);
-    getIsFestival(dateString)
-      .then((response) => {
-        console.log("isFestivalDate", response);
-        setIsFestivalDate(response.is_festival);
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
+    // getIsFestival(dateString)
+    //   .then((response) => {
+    //     console.log("isFestivalDate", response);
+    //     setIsFestivalDate(response.is_festival);
+    //   })
+    //   .catch((e) => {
+    //     onHttpError(e);
+    //   });
   };
 
   useEffect(() => {
     if (date) {
-      fetchIsFestivalDate()
+      fetchIsFestivalDate();
     }
   }, [date]);
 

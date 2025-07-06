@@ -10,6 +10,8 @@ import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBott
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 import { formatPrice } from "utils/FormatUtil";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 export default function MobileFilterBar() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -22,13 +24,13 @@ export default function MobileFilterBar() {
     };
 
     const scrollEl = scrollRef.current;
-    scrollEl?.addEventListener('scroll', handleScroll);
+    scrollEl?.addEventListener("scroll", handleScroll);
 
     return () => {
-      scrollEl?.removeEventListener('scroll', handleScroll);
+      scrollEl?.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   const { filterList, isSet, changeFilterOption } = UseFilter();
   const [filters, setFilters] = useState({
     all: false,
@@ -45,14 +47,76 @@ export default function MobileFilterBar() {
   };
 
   const handleOnClickIsAvailableOnly = () => {
+    const value = !filterList.isAvailableOnly;
     changeFilterOption({
-      isAvailableOnly: !filterList.isAvailableOnly,
+      isAvailableOnly: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "is_open_now",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
     });
   };
 
   const handleOnClickIsReview = () => {
+    const value = !filterList.isReview;
     changeFilterOption({
-      isReview: !filterList.isReview,
+      isReview: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "has_reviews",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleMainFilterOpen = () => {
+    setFilterState("all", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleDistanceFilterOpen = () => {
+    setFilterState("distance", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "distance_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handlePriceFilterOpen = () => {
+    setFilterState("price", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "price_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleRatingFilterOpen = () => {
+    setFilterState("rating", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "rating_filter",
+        page_name: "meal_list_page",
+      },
     });
   };
 
@@ -79,7 +143,7 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <FilterIconWrapper onClick={() => setFilterState("all", true)}>
+        <FilterIconWrapper onClick={handleMainFilterOpen}>
           <Image
             src="/img/filter-icon.svg"
             alt="필터 아이콘"
@@ -91,10 +155,10 @@ export default function MobileFilterBar() {
               paddingRight: isScrolled ? "4.41px" : "0",
             }}
           />
-          <FilterIconGradient visible={isScrolled}/>
+          <FilterIconGradient visible={isScrolled} />
         </FilterIconWrapper>
-        <div style={{ width: "37px", flexShrink: "0", }}/>
-        <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
+        <div style={{ width: "37px", flexShrink: "0" }} />
+        <Button isActive={isSet.length} onClick={handleDistanceFilterOpen}>
           <ButtonText isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
@@ -106,14 +170,13 @@ export default function MobileFilterBar() {
             style={{ padding: "0 2.5px" }}
           />
         </Button>
-        <Button
-          isActive={isSet.priceMin || isSet.priceMax}
-          onClick={() => setFilterState("price", true)}
-        >
+        <Button isActive={isSet.priceMin || isSet.priceMax} onClick={handlePriceFilterOpen}>
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
               ? `${formatPrice(filterList.priceMin)}원 ~ ${
-                  isFinite(filterList.priceMax) ? `${formatPrice(filterList.priceMax)}원` : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
+                  isFinite(filterList.priceMax)
+                    ? `${formatPrice(filterList.priceMax)}원`
+                    : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
                 }`
               : "가격"}
           </ButtonText>
@@ -138,7 +201,7 @@ export default function MobileFilterBar() {
           )}
           <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
-        <Button isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
+        <Button isActive={isSet.ratingMin} onClick={handleRatingFilterOpen}>
           <ButtonText isActive={isSet.ratingMin}>
             {isSet.ratingMin ? `평점 ${filterList.ratingMin.toFixed(1)} 이상` : "최소 평점"}
           </ButtonText>
@@ -192,7 +255,7 @@ const FilterIconWrapper = styled.div`
 const FilterIconGradient = styled.div<{ visible: boolean }>`
   width: 16px;
   height: 36px;
-  background: linear-gradient(90deg, #F8F8F8 0%, rgba(248, 248, 248, 0.00) 100%);
+  background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
   opacity: ${({ visible }) => (visible ? 1 : 0)};
 `;
 
@@ -208,8 +271,13 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500, #FF9522)" : "var(--Color-Foundation-gray-200, #E5E6E9)"};
-  background: ${(props) => (props.isActive ? "var(--Color-Foundation-orange-100, #FFEAD3)" : " var(--Color-Foundation-base-white, #FFF)")};
+      props.isActive
+        ? "var(--Color-Foundation-orange-500, #FF9522)"
+        : "var(--Color-Foundation-gray-200, #E5E6E9)"};
+  background: ${(props) =>
+    props.isActive
+      ? "var(--Color-Foundation-orange-100, #FFEAD3)"
+      : " var(--Color-Foundation-base-white, #FFF)"};
 
   font-family: NanumSquare_ac;
 `;

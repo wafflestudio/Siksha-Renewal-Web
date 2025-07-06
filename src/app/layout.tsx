@@ -7,6 +7,7 @@ import Script from "next/script";
 import { GlobalStyleFixed } from "styles/globalstyle";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
+import ClientMixpanelInitializer from "./components/ClientMixpanelInitializer";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <body>
         <GlobalStyleFixed />
+        <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
           <ContextProvider>
             <ModalsProvider>

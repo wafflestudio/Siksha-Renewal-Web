@@ -19,6 +19,7 @@ import useError from "hooks/useError";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
+import { initMixpanel } from "utils/MixPanel";
 
 export default function Home() {
   const state = useStateContext();
@@ -88,13 +89,15 @@ export default function Home() {
       </DesktopContainer>
       <MobileContainer>
         <Date />
-        <div style={{
-          display: "flex",
-          position: "relative",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Meal />
         </div>
         <MobileFilterBar />
