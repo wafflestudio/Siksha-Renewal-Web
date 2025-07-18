@@ -183,20 +183,27 @@ export const GlobalStyle = createGlobalStyle`
 
     --SemanticColor-Background-Primary: var(--Color-Foundation-base-white);
     --SemanticColor-Background-Secondary: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-100);
+    --SemanticColor-Background-Quaternary: var(--Color-Foundation-base-white);
     --SemanticColor-Background-Dark: var(--Color-Foundation-base-black);
     --SemanticColor-Background-GNB: var(--Color-Foundation-orange-500);
+    --SemanticColor-Background-GNB-Secondary: var(--Color-Foundation-orange-500);
+    --SemanticColor-Background-GNB-Button: var(--Color-Foundation-orange-400);
     --SemanticColor-Background-Toast: var(--Color-Foundation-gray-700);
     --SemanticColor-Border-Primary: var(--Color-Foundation-gray-200);
     --SemanticColor-Border-Secondary: var(--Color-Foundation-gray-200);
     --SemanticColor-Text-Button: var(--Color-Foundation-base-white);
     --SemanticColor-Text-Accent: var(--Color-Foundation-orange-500);
     --SemanticColor-Text-GNB: var(--Color-Foundation-base-white);
+    --SemanticColor-Text-GNB-Secondary: var(--Color-Foundation-orange-200);
     --SemanticColor-Text-Dim: var(--Color-Foundation-base-white);
     --SemanticColor-Icon-Close_bg: var(--Color-Foundation-gray-400);
     --SemanticColor-Icon-WhiteIcon: var(--Color-Foundation-base-white);
     --SemanticColor-Icon-Like: var(--Color-Foundation-gray-200);
+    --SemanticColor-Icon-Star: var(--Color-Foundation-gray-300);
     --SemanticColor-Element-Chip: var(--Color-Foundation-gray-100);
     --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-100);
+    --SemanticColor-Element-Tooltip2: var(--Color-Foundation-base-white);
     --SemanticColor-Element-Control: var(--Color-Foundation-gray-200);
   }
 
@@ -244,21 +251,28 @@ export const GlobalStyle = createGlobalStyle`
 
     --SemanticColor-Background-Primary: var(--Color-Background-main);
     --SemanticColor-Background-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-400);
+    --SemanticColor-Background-Quaternary: var(--Color-Foundation-gray-500);
     --SemanticColor-Background-Dark: var(--Color-Foundation-base-white);
     --SemanticColor-Background-GNB: var(--Color-Background-main);
+    --SemanticColor-Background-GNB-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-GNB-Button: var(--Color-Foundation-gray-500);
     --SemanticColor-Background-Toast: var(--Color-Foundation-gray-400);
     --SemanticColor-Border-Primary: var(--Color-Foundation-gray-400);
     --SemanticColor-Border-Secondary: var(--Color-Foundation-gray-500);
     --SemanticColor-Text-Button: var(--Color-Foundation-base-black);
     --SemanticColor-Text-Accent: var(--Color-Foundation-base-black);
     --SemanticColor-Text-GNB: var(--Color-Foundation-gray-900);
+    --SemanticColor-Text-GNB-Secondary: var(--Color-Foundation-gray-600);
     --SemanticColor-Text-Dim: var(--Color-Foundation-base-black);
     --SemanticColor-Icon-Close_bg: var(--Color-Foundation-gray-500);
     --SemanticColor-Icon-WhiteIcon: var(--Color-Foundation-base-black);
     --SemanticColor-Icon-Like: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-Star: var(--Color-Foundation-gray-500);
     --SemanticColor-Element-Chip: var(--Color-Foundation-gray-50);
     --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-400);
-    --SemanticColor-Element-Control: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Tooltip2: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Control: var(--Color-Foundation-gray-500);
   }
 `;
 
