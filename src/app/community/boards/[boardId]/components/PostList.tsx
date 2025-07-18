@@ -46,13 +46,10 @@ const EmptyText = styled.div`
   align-items: center;
   width: 100%;
   height: 160.84px;
-
-  color: var(--Color-Foundation-gray-700, #727478);
-  text-align: center;
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 23px;
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     height: 100%;
