@@ -61,12 +61,12 @@ const Container = styled.div`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: #eeeeee;
+    background-color: var(--SemanticColor-Border-Primary);
     transform: translateX(-50%);
 
     @media (max-width: 768px) {
       width: calc(100% + 25px);
-      background-color: var(--Color-Foundation-gray-100);
+      background-color: var(--SemanticColor-Border-Primary);
     }
   }
 `;
@@ -96,13 +96,14 @@ const Title = styled.div`
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 14px;
     font-weight: 800;
   }
 `;
 const ContentPreview = styled.div`
-  color: var(--Color-Foundation-gray-900);
+  color: var(--Color-Foundation-gray-700);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -128,7 +129,7 @@ const Likes = styled.div`
 const Comments = styled.div`
   display: flex;
   align-items: center;
-  color: #797979;
+  color: var(--Color-Foundation-gray-600);
 `;
 const Icon = styled.img`
   margin-right: 4px;
