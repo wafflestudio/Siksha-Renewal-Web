@@ -89,7 +89,7 @@ const Container = styled.div`
 `;
 
 const TrendingPostWrapper = styled.div`
-  background-color: var(--Color-Foundation-orange-500) 33;
+  background-color: var(--Color-Foundation-Tint-orange);
   padding: 15px 17px;
   border-radius: 8px;
   box-sizing: border-box;
@@ -137,11 +137,12 @@ const Title = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--Color-Foundation-base-black);
 `;
 const ContentPreview = styled.div`
   flex: 1;
   width: 100%;
-  color: var(--Color-Foundation-gray-900);
+  color: var(--Color-Foundation-base-black);
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 14px;
@@ -168,6 +169,7 @@ const NoTrendingPostsMessage = styled.span`
   font-size: 16px;
   height: 18px;
   cursor: default;
+  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 12px;
     height: 14px;
