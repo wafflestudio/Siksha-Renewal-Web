@@ -119,7 +119,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 14px;
-  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
+  border-bottom: 1px solid #eeeeee;
   margin: 0;
 
   & > div {
@@ -130,7 +130,7 @@ const Container = styled.div`
     }
   }
   @media (max-width: 768px) {
-    border-color: var(--SemanticColor-Border-Primary);
+    border-color: var(--Color-Foundation-gray-100);
     padding-bottom: 0;
   }
 `;
@@ -165,7 +165,6 @@ const Nickname = styled.div`
   font-size: 14px;
   line-height: 16px;
   margin-left: 9px;
-  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-weight: 700;
     font-size: 11px;
@@ -200,7 +199,6 @@ const Content = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 19.3px;
-  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 12px;
     line-height: 18px;
@@ -214,7 +212,7 @@ const MobileLikeButton = styled.button`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: var(--SemanticColor-Element-Chip);
+    background: var(--Color-Foundation-gray-50);
     width: 35.6px;
     height: 53px;
     border: none;
@@ -293,7 +291,7 @@ const NotAvailableContainer = styled.div`
   align-items: center;
   height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
+  border-bottom: 1px solid #eeeeee;
 `;
 const NotAvailableMessage = styled.div`
   font-size: 12px;
