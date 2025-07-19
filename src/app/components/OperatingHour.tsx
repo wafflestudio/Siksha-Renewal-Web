@@ -1,4 +1,4 @@
-import styled from "styled-components";
+  import styled from "styled-components";
 import BreakfastIcon from "assets/icons/breakfast.svg";
 import LunchIcon from "assets/icons/lunch.svg";
 import DinnerIcon from "assets/icons/dinner.svg";
