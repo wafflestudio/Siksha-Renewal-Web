@@ -68,13 +68,11 @@ const BoardMenu = styled.button`
   position: relative;
   text-align: center;
   width: 100%;
-  border: 1px solid var(--SemanticColor-Border-Primary);
+  border: 1px solid var(--Color-Foundation-gray-300);
   border-radius: 8px;
   cursor: pointer;
   height: 39px;
   margin-bottom: 12px;
-  background: var(--SemanticColor-Background-Primary);
-  color: var(--Color-Foundation-base-black);
 
   @media (max-width: 768px) {
     margin: 14.43px 0 6px 0;
@@ -96,10 +94,9 @@ const BoardMenuList = styled.div<{ isOpen: boolean }>`
   position: absolute;
   flex-direction: column;
   width: 100%;
-  border: 1px solid var(--SemanticColor-Border-Primary);
+  border: 1px solid var(--Color-Foundation-gray-300);
   border-radius: 8px;
   margin-top: -5px;
-  z-index: 10;
 `;
 
 const BoardMenuItem = styled.div`
@@ -108,9 +105,8 @@ const BoardMenuItem = styled.div`
   width: 100%;
   height: 39px;
   line-height: 39px;
-  background: var(--SemanticColor-Background-Primary);
+  background: var(--Color-Foundation-base-white);
   cursor: pointer;
-  color: var(--Color-Foundation-base-black);
 
   &.selected {
     color: var(--Color-Foundation-orange-500);
@@ -134,10 +130,10 @@ const BoardMenuItem = styled.div`
   }
 
   &:active {
-    background: var(--SemanticColor-Element-Chip);
+    background: #f6f6f6;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid var(--SemanticColor-Border-Primary);
+    border-bottom: 1px solid var(--Color-Foundation-gray-300);
   }
   &:first-child {
     border-radius: 8px 8px 0 0;
