@@ -36,7 +36,7 @@ export default function MenuList() {
     )
       setHasData(false);
     else setHasData(true);
-  }, [data, meal, isFilterFavorite, filterList]);
+  }, [data, meal, isFilterFavorite, filterList, location]);
 
   return (
     <Container key={date + meal}>
