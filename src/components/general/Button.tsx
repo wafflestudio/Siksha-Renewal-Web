@@ -23,8 +23,8 @@ export default function Button({ children, onClick, variant = "primary", ...prop
 }
 
 const NeutralButton = styled.button`
-  background-color: var(--Color-Foundation-gray-500);
-  color: var(--Color-Foundation-base-white-2);
+  background-color: var(--SemanticColor-Background-Quaternary);
+  color: var(--SemanticColor-Text-Button);
   padding: 10px 20px;
   height: 38px;
   width: 168px;
@@ -32,8 +32,8 @@ const NeutralButton = styled.button`
 `;
 
 const PrimaryButton = styled.button`
-  background-color: var(--Color-Foundation-orange-500);
-  color: var(--Color-Foundation-base-white-2);
+  background-color: var(--SemanticColor-Text-Accent);
+  color: var(--SemanticColor-Text-Button);
   padding: 10px 20px;
   height: 38px;
   width: 168px;

@@ -117,6 +117,7 @@ const Container = styled.div`
   padding: 0 9px 17px 9px;
   box-sizing: border-box;
   gap: 5px;
+  background-color: var(--Color-Background-main);
 `;
 
 const Button = styled.button<{ isActive?: boolean }>`
@@ -128,20 +129,20 @@ const Button = styled.button<{ isActive?: boolean }>`
   align-items: center;
   gap: 2px;
 
-  border-radius: 30px;
+  border-radius: 10px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
   background-color: ${(props) =>
     props.isActive
       ? "var(--Color-Foundation-Tint-orange)"
-      : "var(--Color-Foundation-base-white-5)"};
+      : "var(--SemanticColor-Background-Secondary)"};
 
   font-family: NanumSquare_ac;
 `;
 
 const ButtonText = styled.span<{ isActive?: boolean }>`
-  color: var(--Color-Foundation-base-black);
+  color: var(--SemanticColor-Text-GNB, #000);
   leading-trim: both;
   text-edge: cap;
   font-size: 13px;

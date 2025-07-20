@@ -199,7 +199,7 @@ const RatingLabelWrapper = styled.div`
 const StyledStarIcon = styled(StarFilledIcon)`
   width: 14px;
   margin-bottom: 2px;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--SemanticColor-Text-Accent);
 `;
 
 export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
@@ -227,9 +227,11 @@ const MobileFilterHeader = styled.div`
   font-weight: 700;
   margin-bottom: 14px;
   align-items: center;
+  color: var(--SemanticColor-Text-GNB);
 `;
 
 export const MobileFilterText = styled.div`
   font-size: 16px;
   font-weight: 800;
+  color: var(--SemanticColor-Text-GNB);
 `;

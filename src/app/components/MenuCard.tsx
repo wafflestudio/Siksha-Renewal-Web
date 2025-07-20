@@ -162,7 +162,7 @@ const DesktopContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  background: var(--Color-Foundation-base-var(--Color-Foundation-base-white));
+  background: var(--SemanticColor-Background-Primary, #fff);
   border-radius: 10px;
 
   @media (max-width: 768px) {
@@ -178,8 +178,8 @@ const MobileContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
-    background: var(--Color-Foundation-base-white-5);
-    border: solid 1px var(--Color-Foundation-gray-200);
+    background: var(--SemanticColor-Background-Primary, #fff);
+    border: solid 1px var(--SemanticColor-Border-Primary, #e5e6e9);
     box-sizing: border-box;
     border-radius: 8px;
     width: 95vw;
@@ -297,7 +297,7 @@ interface StyledIconProps {
 const StyledIcon = ({ children }: StyledIconProps) => <IconWrapper>{children}</IconWrapper>;
 
 const Name = styled.div`
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--SemanticColor-Text-GNB, #262728);
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -310,7 +310,7 @@ const Name = styled.div`
   line-height: 140%; /* 25.2px */
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black, #000);
+    color: var(--SemanticColor-Text-GNB, #000);
 
     /* text-16/ExtraBold */
     font-family: var(--Font-family-sans, NanumSquareOTF);
@@ -341,7 +341,7 @@ const MenuInfoLabels = styled.div`
 const HLine = styled.div`
   height: 2px;
   align-self: stretch;
-  background: var(--Color-Foundation-orange-500);
+  background: var(--SemanticColor-Text-Accent, #ff9522);
   margin: 8px 0 14px;
 
   @media (max-width: 768px) {

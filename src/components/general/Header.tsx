@@ -62,7 +62,7 @@ export default function Header() {
 }
 
 const Background = styled.div`
-  background: var(--Color-Foundation-orange-500, #ff9522);
+  background: var(--SemanticColor-Background-GNB, #ff9522);
 `;
 
 const DesktopContainer = styled(TwoColumnLayout.Container)`
@@ -81,7 +81,7 @@ const MobileContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background: var(--Color-Foundation-orange-500-2);
+    background: var(--SemanticColor-Background-GNB, #ff9522);
     height: 44px;
     width: auto;
     z-index: 1;
@@ -105,7 +105,7 @@ const TitleContainer = styled.div`
 
 const Title = styled.span`
   margin: 2px 0;
-  color: var(--Color-Foundation-base-white, #fff);
+  color: var(--SemanticColor-Text-GNB, #fff);
   font-size: 14px;
   font-weight: 400;
   white-space: nowrap;
@@ -121,8 +121,8 @@ const Right = styled(TwoColumnLayout.Right)`
 const LoginButton = styled.button`
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--Color-Foundation-orange-400, #ffaa4e);
-  color: var(--Color-Foundation-base-white-2);
+  background: var(--SemanticColor-Background-GNB-Button, #ffaa4e);
+  color: var(--SemanticColor-Text-Button, #fff);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
@@ -133,6 +133,7 @@ const LoginButton = styled.button`
     right: 5vw;
     padding: 0;
     background: none;
+    color: var(--SemanticColor-Text-GNB, #fff);
     font-size: 16px;
     font-weight: 400;
   }
