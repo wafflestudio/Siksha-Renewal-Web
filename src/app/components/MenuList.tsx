@@ -36,7 +36,7 @@ export default function MenuList() {
     )
       setHasData(false);
     else setHasData(true);
-  }, [data, meal, isFilterFavorite, filterList]);
+  }, [data, meal, isFilterFavorite, filterList, location]);
 
   // Calculate the filtered list directly
   const filteredList = hasData ? filterMenuList(data, location)[meal] : [];
