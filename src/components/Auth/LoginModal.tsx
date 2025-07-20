@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import BackClickable from "components/general/BackClickable";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface LoginModalProps {
   onClose: () => void;
@@ -8,6 +9,9 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ onClose }: LoginModalProps) {
+  const currentTheme = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
+
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -72,7 +76,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={41}
               left={10.5}
               right={74}
-              src={"/img/modal/login/google-union.svg"}
+              src={isDark ? "/img/modal/login/google-union-dark.png" : "/img/modal/login/google-union.svg"}
               alt="구글 로그인"
             />
             Login with Google
@@ -83,7 +87,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={18}
               left={16.5}
               right={77}
-              src={"/img/modal/login/apple-union.svg"}
+              src={isDark ? "/img/modal/login/apple-union-dark.png" : "/img/modal/login/apple-union.svg"}
               alt="애플 로그인"
             />
             Login with Apple
