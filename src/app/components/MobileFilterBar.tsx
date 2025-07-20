@@ -201,24 +201,7 @@ const Container = styled.div`
   padding: 0 8px 17px 0;
   box-sizing: border-box;
   gap: 5px;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const FilterIconWrapper = styled.div`
-  position: absolute;
-  display: flex;
-`;
-
-const FilterIconGradient = styled.div<{ visible: boolean }>`
-  width: 16px;
-  height: 36px;
-  background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  background-color: var(--Color-Background-main);
 `;
 
 const Button = styled.button<{ isActive?: boolean }>`
@@ -230,20 +213,20 @@ const Button = styled.button<{ isActive?: boolean }>`
   align-items: center;
   gap: 2px;
 
-  border-radius: 30px;
+  border-radius: 10px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
   background-color: ${(props) =>
     props.isActive
       ? "var(--Color-Foundation-Tint-orange)"
-      : "var(--Color-Foundation-base-white-5)"};
+      : "var(--SemanticColor-Background-Secondary)"};
 
   font-family: NanumSquare_ac;
 `;
 
 const ButtonText = styled.span<{ isActive?: boolean }>`
-  color: var(--Color-Foundation-base-black);
+  color: var(--SemanticColor-Text-GNB, #000);
   leading-trim: both;
   text-edge: cap;
   font-size: 13px;

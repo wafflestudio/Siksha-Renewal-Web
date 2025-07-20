@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   padding-bottom: 24.7px;
   bottom: 0;
   left: 0;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--SemanticColor-Background-Primary);
   width: 100%;
   z-index: 1;
 
@@ -73,7 +73,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: var(--Color-Foundation-gray-50);
+  background-color: var(--SemanticColor-Background-Secondary);
   width: 100%;
   height: 46px;
   border-radius: 8px;
@@ -94,7 +94,7 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.isAnonymous ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-800)"};
+    props.isAnonymous ? "var(--SemanticColor-Text-Accent)" : "var(--SemanticColor-Text-GNB-Secondary)"};
   font-weight: ${(props) => (props.isAnonymous ? 700 : 400)};
   font-size: 14px;
   line-height: 16px;
@@ -126,7 +126,7 @@ const Icon = styled.img``;
 const CommentInput = styled.input`
   box-sizing: border-box;
   width: 100%;
-  background-color: var(--Color-Foundation-gray-50);
+  background-color: var(--SemanticColor-Background-Secondary);
 
   border: none;
   padding: 0;

@@ -29,7 +29,7 @@ const MenuContainer = styled.div`
     display: flex;
     align-self: center;
     width: calc(100% + 25px);
-    border-bottom: 1px solid var(--Color-Foundation-gray-100);
+    border-bottom: 1px solid var(--SemanticColor-Border-Primary, var(--Color-Foundation-gray-100));
   }
 `;
 const MenuInnerContainer = styled.div`
@@ -67,7 +67,7 @@ const MenuItem = styled.div`
   width: 94px;
   padding: 12px 37px 12px 15px;
 
-  color: #979797;
+  color: var(--SemanticColor-Text-GNB-Secondary, #979797);
   font-feature-settings: "liga" off, "clig" off;
   font-size: 16px;
   font-style: normal;
@@ -77,12 +77,12 @@ const MenuItem = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: #f2f2f2;
+    background: var(--SemanticColor-Background-Secondary, #f2f2f2);
   }
 
   &.selected {
-    color: var(--Color-Foundation-orange-500);
-    background: var(--Color-Foundation-base-white);
+    color: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
+    background: var(--SemanticColor-Background-Primary, var(--Color-Foundation-base-white));
 
     &::before {
       content: "";
@@ -90,13 +90,13 @@ const MenuItem = styled.div`
       left: 0;
       width: 3px;
       height: 100%;
-      background-color: var(--Color-Foundation-orange-500);
+      background-color: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
     }
   }
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-gray-500);
-    background: #f2f2f2;
+    color: var(--SemanticColor-Text-GNB-Secondary, var(--Color-Foundation-gray-500));
+    background: var(--SemanticColor-Background-Secondary, #f2f2f2);
     border-radius: 12px;
     width: max-content;
     height: auto;
@@ -107,8 +107,8 @@ const MenuItem = styled.div`
     font-size: 15px;
 
     &.selected {
-      color: var(--Color-Foundation-base-white);
-      background: var(--Color-Foundation-orange-500);
+      color: var(--SemanticColor-Text-Button, var(--Color-Foundation-base-white));
+      background: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
 
       &::before {
         display: none;

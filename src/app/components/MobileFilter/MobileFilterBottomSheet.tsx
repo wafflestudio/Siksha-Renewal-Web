@@ -247,7 +247,7 @@ const RatingLabelWrapper = styled.div`
 const StyledStarIcon = styled(StarFilledIcon)`
   width: 14px;
   margin-bottom: 2px;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--SemanticColor-Text-Accent);
 `;
 
 export const FilterActionSection = styled.div<{
@@ -297,19 +297,11 @@ const MobileFilterHeader = styled.div`
   justify-content: center;
   margin-bottom: 10.68px;
   align-items: center;
+  color: var(--SemanticColor-Text-GNB);
 `;
 
 export const MobileFilterText = styled.div`
-  display: flex;
-  height: 27.497px;
-  align-items: center;
-
-  color: var(--Color-Foundation-base-black, #000);
-
-  /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-16, 16px);
-  font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
-  line-height: 140%; /* 22.4px */
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--SemanticColor-Text-GNB);
 `;
