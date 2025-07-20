@@ -91,7 +91,7 @@ export default function MenuSection({
 
 const Container = styled.section<{ $isNotShow: boolean }>`
   border-radius: 10px;
-  background-color: var(--Color-Foundation-base-white, #fff);
+  background-color: var(--SemanticColor-Background-Primary);
 
   display: flex;
   flex-direction: column;
