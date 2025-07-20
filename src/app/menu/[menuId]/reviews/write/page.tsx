@@ -10,6 +10,8 @@ import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
+import StarIcon from "assets/icons/star-filled.svg"
+import CommentReviewIcon from "assets/icons/comment-review.svg";
 
 export type ReviewInputs = {
   score: number;
@@ -92,23 +94,24 @@ export default function ReviewPost() {
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star
-                key={i}
-                src={
-                  i <= inputs.score ? "/img/general/star-on.svg" : "/img/general/star-off-28.svg"
-                }
-                onClick={() => setInputs({ ...inputs, score: i })}
-                alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
-              />
-            ))}
+            {[1, 2, 3, 4, 5].map((i) => {
+              if (i <= inputs.score) {
+                return (
+                  <StyledStarIcon key={i} $isfilled onClick={() => setInputs({ ...inputs, score: i })} alt="별점 채워짐" />
+                );
+              } else {
+                return (
+                  <StyledStarIcon key={i} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 비어짐" />
+                );
+              }
+            })}
           </StarsContainer>
           <Score>{inputs.score}</Score>
         </Header>
 
         <CommentSection>
           <div style={{ display: "flex" }}>
-            <Image src="/img/comment.svg" alt="코멘트 이미지" width={18} height={18} />
+            <StyledCommentReviewIcon />
             <CommentTitle>식단 한 줄 평을 함께 남겨보세요!</CommentTitle>
           </div>
           <div style={{ position: "relative" }}>
@@ -182,7 +185,7 @@ const Container = styled(OneColumnLayout.Container)`
   padding: 24px;
 
   border-radius: 10px;
-  background: var(--Color-Foundation-base-white, #fff);
+  background: var(--SemanticColor-Background-Secondary, #232323);
 
   @media (max-width: 768px) {
     position: relative;
@@ -288,6 +291,17 @@ const Star = styled.img`
   }
 `;
 
+const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  color: ${(props) => (props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)")};
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
 const StarsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -339,7 +353,7 @@ const CommentTextArea = styled.textarea`
   width: 100%;
   height: 137px;
   margin-top: 10px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
+  background: var(--SemanticColor-Background-Tertiary, #2D2D2D);
   border-radius: 6px;
   border: none;
   padding: 12px;
@@ -363,26 +377,46 @@ const CommentTextArea = styled.textarea`
   }
 `;
 
+const StyledCommentReviewIcon = styled(CommentReviewIcon)`
+  fill: var(--Color-Foundation-gray-700, #B7B7B7);
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+  }
+`;
+
 const CommentTitle = styled.div`
-  color: var(--Color-Foundation-gray-800, #4c4d50);
+  color: var(--Color-Foundation-gray-800, #CBCBCC);
 
   /* text-16/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
-  font-weight: var(--Font-weight-bold, 700);
+  font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 22.4px */
 
   margin-left: 6px;
+
+  @media (max-width: 768px) {
+    font-weight: var(--Font-weight-bold, 700);
+  }
 `;
 
 const CommentLength = styled.span`
-  color: #707070;
   font-size: 14px;
   right: 15px;
   bottom: 16px;
   z-index: 1;
   position: absolute;
+
+  color: var(--Color-Foundation-gray-700, #B7B7B7);
+
+  /* text-13/Regular */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 140%; /* 18.2px */
 
   @media (max-width: 768px) {
     font-size: 11px;
@@ -432,7 +466,7 @@ const PhotoAttacher = styled.label<{ photosLength: number }>`
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 8px;
-  border: 2px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  border: 2px solid var(--SemanticColor-Border-Secondary, #404040);
   text-align: center;
   cursor: pointer;
 
@@ -559,7 +593,16 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: var(--SemanticColor-Text-Button, #fff);
+  color: var(--SementicColor-Text-Button, #FFF);
+  text-align: center;
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   background-color: var(--Color-Foundation-orange-500);
   justify-content: center;
   align-items: center;
@@ -586,7 +629,16 @@ const ReviewCancelButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  background-color: var(--Color-Foundation-gray-100);
+  background-color: var(--SemanticColor-Background-Tertiary, #2D2D2D);
+  color: var(--Color-Foundation-gray-600, #919191);
+  text-align: center;
+  
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   text-align: center;
   color: #8e8e8e;
   border: none;
