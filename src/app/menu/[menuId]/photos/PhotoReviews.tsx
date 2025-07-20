@@ -50,7 +50,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
 
   const handleReviewPostButtonClick = () => {
     getAccessToken()
-      .then(() => router.push(`/menu/${menuId}?writeReview=true`))
+      .then(() => router.push(`/menu/${menuId}/reviews/write`))
       .catch(() => openLoginModal());
   };
 
@@ -192,7 +192,7 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
   border: none;
   border-radius: 5px;
 
-  color: var(--Color-Foundation-base-white);
+  color: var(--SemanticColor-Text-Button);
   text-align: center;
   font-size: 16px;
   font-weight: 700;

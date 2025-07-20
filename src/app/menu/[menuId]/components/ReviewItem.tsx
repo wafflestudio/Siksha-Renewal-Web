@@ -147,7 +147,7 @@ const Images = styled.div`
 `;
 
 const Id = styled.div`
-  color: var(--Color-Foundation-base-black, #000);
+  color: var(--Color-Foundation-gray-800, #CBCBCC);
 
   /* text-13/Bold */
   font-family: var(--Font-family-sans, NanumSquare);

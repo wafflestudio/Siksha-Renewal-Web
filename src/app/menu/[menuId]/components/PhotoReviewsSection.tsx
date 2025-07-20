@@ -36,8 +36,13 @@ export default function PhotoReviewsSection({
             cursor: "pointer",
           }}
         >
-          <Label>전체 보기</Label>
-          <Image src="/img/right-arrow-darkgrey.svg" alt="전체 보기" width={18} height={18} />
+          <Label>전체보기</Label>
+          <Image
+            src="/img/right-arrow-darkgrey.svg"
+            alt="전체보기"
+            width={18}
+            height={18}
+          />
         </Link>
       </Header>
       <Photos>

@@ -89,7 +89,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         </CountBox>
         <ReviewBox>
           {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
-          <StyledCommentIcon isLiked={false} aria-label="댓글" />
+          <StyledCommentIcon $isLiked={false} aria-label="댓글" />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>

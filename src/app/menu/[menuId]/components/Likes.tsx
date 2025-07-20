@@ -4,7 +4,7 @@ import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
-import HeartSvg from "assets/icons/heart.svg";
+import HeartIcon from "assets/icons/heart.svg";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -15,12 +15,7 @@ export default function Likes({ menu }) {
 
   const { openLoginModal } = useModals();
 
-  // Sync isLiked state when menu.is_liked changes (e.g., on refresh)
-  useEffect(() => {
-    setIsLiked(menu?.is_liked);
-  }, [menu?.is_liked]);
-
-  const onClickLike = async () => {
+  const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
@@ -46,9 +41,10 @@ export default function Likes({ menu }) {
   return (
     <Container>
       <StyledLikeIcon
-        $isLiked={isLiked}
+        $isliked={isLiked}
+        aria-label="좋아요"
         onClick={(e) => {
-          onClickLike();
+          isLikedToggle();
           e.stopPropagation();
         }}
       />
@@ -65,16 +61,12 @@ const Container = styled.div`
   }
 `;
 
-const StyledLikeIcon = styled(HeartSvg)<{ $isLiked: boolean }>`
+const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
   width: 30px;
   height: 30px;
   cursor: pointer;
-  color: ${(props) =>
-    props.$isLiked
-      ? "var(--Color-Accent-like, #f86627)"
-      : "var(--SemanticColor-Icon-Like, var(--Color-Foundation-gray-200, #e5e6e9))"};
-  @media (max-width: 768px) {
-  }
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const LikesText = styled.div`

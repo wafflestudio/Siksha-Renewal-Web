@@ -178,7 +178,7 @@ const Label = styled.label`
 `;
 
 const Bar = styled.div`
-  background-color: var(--Color-Foundation-gray-100, #f2f3f4);
+  background-color: var(--SemanticColor-Background-Tertiary, #f2f3f4);
   height: 8px;
   flex: 1 0 0;
   border-radius: 4px;
