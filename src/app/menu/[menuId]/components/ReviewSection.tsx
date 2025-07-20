@@ -87,7 +87,7 @@ export default function ReviewSection({
 
 const Container = styled.div`
   border-radius: 10px;
-  background-color: var(--Color-Foundation-base-white, #FFF);
+  background-color: var(--SemanticColor-Background-Primary);
 
   display: flex;
   padding: 24px 28px 36px 24px;

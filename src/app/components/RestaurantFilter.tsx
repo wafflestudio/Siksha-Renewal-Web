@@ -187,7 +187,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   gap: 16px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--SemanticColor-Background-Primary);
   width: 100%;
 `;
 
