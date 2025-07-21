@@ -10,6 +10,8 @@ import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
+import StarIcon from "assets/icons/star-filled.svg"
+import CommentReviewIcon from "assets/icons/comment-review.svg";
 
 export type ReviewInputs = {
   score: number;
@@ -92,23 +94,24 @@ export default function ReviewPost() {
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star
-                key={i}
-                src={
-                  i <= inputs.score ? "/img/general/star-on.svg" : "/img/general/star-off-28.svg"
-                }
-                onClick={() => setInputs({ ...inputs, score: i })}
-                alt={i <= inputs.score ? "별점 채워짐" : "별점 비어짐"}
-              />
-            ))}
+            {[1, 2, 3, 4, 5].map((i) => {
+              if (i <= inputs.score) {
+                return (
+                  <StyledStarIcon key={i} $isfilled onClick={() => setInputs({ ...inputs, score: i })} alt="별점 채워짐" />
+                );
+              } else {
+                return (
+                  <StyledStarIcon key={i} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 비어짐" />
+                );
+              }
+            })}
           </StarsContainer>
           <Score>{inputs.score}</Score>
         </Header>
 
         <CommentSection>
           <div style={{ display: "flex" }}>
-            <Image src="/img/comment.svg" alt="코멘트 이미지" width={18} height={18} />
+            <StyledCommentReviewIcon />
             <CommentTitle>식단 한 줄 평을 함께 남겨보세요!</CommentTitle>
           </div>
           <div style={{ position: "relative" }}>
@@ -182,7 +185,7 @@ const Container = styled(OneColumnLayout.Container)`
   padding: 24px;
 
   border-radius: 10px;
-  background: var(--Color-Foundation-base-white, #fff);
+  background: var(--SemanticColor-Background-Secondary, #232323);
 
   @media (max-width: 768px) {
     position: relative;
@@ -211,7 +214,7 @@ const Title = styled.div`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -226,6 +229,9 @@ const Header = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 36px;
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
 `;
 
 const ReviewTitle = styled.div`
@@ -235,11 +241,11 @@ const ReviewTitle = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
 
-  /* text-20/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  /* text-20/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
+  font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 28px */
 
   @media (max-width: 768px) {
@@ -264,7 +270,7 @@ const SelectStarText = styled.span`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -279,6 +285,17 @@ const Star = styled.img`
   width: 28px;
   height: 28px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
+const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  color: ${(props) => (props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)")};
   @media (max-width: 768px) {
     width: 30px;
     height: 30px;
@@ -304,7 +321,7 @@ const Score = styled.div`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -313,12 +330,12 @@ const Score = styled.div`
 
   @media (max-width: 768px) {
     margin-top: 7px;
-    margin-bottom: 35px;
+    margin-bottom: 26px;
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 
     /* text-20/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-20, 20px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -336,16 +353,16 @@ const CommentTextArea = styled.textarea`
   width: 100%;
   height: 137px;
   margin-top: 10px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
+  background: var(--SemanticColor-Background-Tertiary, #2D2D2D);
   border-radius: 6px;
-  border: 1px solid #eeeeee;
+  border: none;
   padding: 12px;
   resize: none;
 
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -360,26 +377,46 @@ const CommentTextArea = styled.textarea`
   }
 `;
 
-const CommentTitle = styled.div`
-  color: var(--Color-Foundation-gray-800, #4c4d50);
+const StyledCommentReviewIcon = styled(CommentReviewIcon)`
+  fill: var(--Color-Foundation-gray-700, #B7B7B7);
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+  }
+`;
 
-  /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+const CommentTitle = styled.div`
+  color: var(--Color-Foundation-gray-800, #CBCBCC);
+
+  /* text-16/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 22.4px */
 
   margin-left: 6px;
+
+  @media (max-width: 768px) {
+    font-weight: var(--Font-weight-bold, 700);
+  }
 `;
 
 const CommentLength = styled.span`
-  color: #707070;
   font-size: 14px;
   right: 15px;
   bottom: 16px;
   z-index: 1;
   position: absolute;
+
+  color: var(--Color-Foundation-gray-700, #B7B7B7);
+
+  /* text-13/Regular */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 140%; /* 18.2px */
 
   @media (max-width: 768px) {
     font-size: 11px;
@@ -394,7 +431,7 @@ const PhotoSection = styled.div`
   margin-top: 12px;
   margin-bottom: 52px;
   @media (max-width: 768px) {
-    margin-top: 16px;
+    margin-top: 8px;
     margin-bottom: 98px;
   }
 `;
@@ -429,7 +466,7 @@ const PhotoAttacher = styled.label<{ photosLength: number }>`
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 8px;
-  border: 2px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  border: 2px solid var(--SemanticColor-Border-Secondary, #404040);
   text-align: center;
   cursor: pointer;
 
@@ -447,7 +484,7 @@ const AddImage = styled.div`
 
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
-  font-family: NanumSquareOTF;
+  font-family: NanumSquare;
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
@@ -467,10 +504,10 @@ const AddImage = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
 
-    color: var(--Color-Foundation-base-white, #fff);
+    color: var(--SemanticColor-Text-Button, #fff);
     text-align: center;
     font-feature-settings: "liga" off, "clig" off;
-    font-family: NanumSquareOTF;
+    font-family: NanumSquare;
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
@@ -556,11 +593,19 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: black;
+  color: var(--SementicColor-Text-Button, #FFF);
+  text-align: center;
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   background-color: var(--Color-Foundation-orange-500);
   justify-content: center;
   align-items: center;
-  color: var(--Color-Foundation-base-white);
   border: none;
   font-size: 16px;
   font-weight: 700;
@@ -584,7 +629,16 @@ const ReviewCancelButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  background-color: #eeeeee;
+  background-color: var(--SemanticColor-Background-Tertiary, #2D2D2D);
+  color: var(--Color-Foundation-gray-600, #919191);
+  text-align: center;
+  
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   text-align: center;
   color: #8e8e8e;
   border: none;

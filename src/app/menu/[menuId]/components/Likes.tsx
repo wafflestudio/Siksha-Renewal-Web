@@ -5,6 +5,7 @@ import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import Image from "next/image";
+import HeartIcon from "assets/icons/heart.svg";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -17,7 +18,7 @@ export default function Likes({ menu }) {
 
   const { openLoginModal } = useModals();
 
-  const onClickLike = async () => {
+  const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
@@ -36,13 +37,13 @@ export default function Likes({ menu }) {
 
   return (
     <Container>
-      <HeartIcon
-        src={isLikedImg}
+      <StyledLikeIcon
+        $isliked={isLiked}
+        aria-label="좋아요"
         onClick={(e) => {
-          onClickLike();
+          isLikedToggle();
           e.stopPropagation();
         }}
-        alt="좋아요"
       />
       <LikesText>{likeCount}</LikesText>
     </Container>
@@ -57,12 +58,12 @@ const Container = styled.div`
   }
 `;
 
-const HeartIcon = styled.img`
+const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
   width: 30px;
   height: 30px;
   cursor: pointer;
-  @media (max-width: 768px) {
-  }
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const LikesText = styled.div`
@@ -70,7 +71,7 @@ const LikesText = styled.div`
   text-align: center;
 
   /* text-13/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -81,7 +82,7 @@ const LikesText = styled.div`
     text-align: center;
 
     /* text-13/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-13, 13px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
