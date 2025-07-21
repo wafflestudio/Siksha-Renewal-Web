@@ -99,7 +99,7 @@ const Comment = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -114,7 +114,7 @@ const Comment = styled.div`
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-13/Regular */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-13, 13px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);
@@ -144,10 +144,10 @@ const Images = styled.div`
 `;
 
 const Id = styled.div`
-  color: var(--Color-Foundation-base-black, #000);
+  color: var(--Color-Foundation-gray-800, #CBCBCC);
 
   /* text-13/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -160,7 +160,7 @@ const Date = styled.div`
   text-align: right;
 
   /* text-12/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-12, 12px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -171,7 +171,7 @@ const Date = styled.div`
     text-align: right;
 
     /* text-12/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-12, 12px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);

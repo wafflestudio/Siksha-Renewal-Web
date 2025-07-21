@@ -7,6 +7,8 @@ import { useStateContext } from "providers/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
+import CommentReportIcon from "assets/icons/comment_report.svg";
 
 export default function Inquiry() {
   const router = useRouter();
@@ -14,6 +16,7 @@ export default function Inquiry() {
   const { userInfo } = state;
 
   const { getAccessToken, authStatus, authGuard } = useAuth();
+  const { defaultProfileURL } = UseCurrentTheme();
 
   useEffect(authGuard, [authStatus]);
 
@@ -52,11 +55,11 @@ export default function Inquiry() {
       <Container>
         <Title>1:1 문의하기</Title>
         <MobileBox>
-          <Icon src="/img/comment.svg" alt="내용 작성" />
+          <StyledCommentReportIcon />
           <Description>문의할 내용을 남겨주세요.</Description>
         </MobileBox>
         <UserBox>
-          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="프로필 이미지" />
+          <Profile src={userInfo?.image ?? defaultProfileURL} alt="프로필 이미지" />
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
@@ -74,7 +77,7 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--Color-Foundation-base-white-4);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -109,9 +112,8 @@ const MobileBox = styled.div`
   }
 `;
 
-const Icon = styled.img`
-  width: 18px;
-  height: 18px;
+const StyledCommentReportIcon = styled(CommentReportIcon)`
+  color: var(--Color-Foundation-gray-700);
 `;
 
 const Description = styled.p`
@@ -164,7 +166,7 @@ const TextArea = styled.textarea`
   height: 100%;
   padding: 15.73px 16px;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: var(--Color-Foundation-gray-50);
   border: 0;
   border-radius: 8px;
   resize: none;
@@ -225,7 +227,7 @@ const ButtonCancel = styled(Button)`
 
 const ButtonConfirm = styled(Button)`
   background-color: var(--Color-Foundation-orange-500);
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Foundation-base-white-2);
   margin-left: 14px;
 
   @media (max-width: 768px) {

@@ -71,7 +71,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
           <StyledLikeIcon
-            isLiked={isLiked}
+            $isliked={isLiked}
             aria-label="좋아요"
             onClick={(e) => {
               isLikedToggle();
@@ -82,7 +82,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         </CountBox>
         <ReviewBox>
           {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
-          <StyledCommentIcon isLiked={false} aria-label="댓글" />
+          <StyledCommentIcon $isliked={false} aria-label="댓글" />
           <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
@@ -254,22 +254,22 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const StyledLikeIcon = styled(HeartIcon)<{ isLiked: boolean }>`
+const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ isLiked }) =>
-    isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
 `;
 
-const StyledCommentIcon = styled(CommentIcon)<{ isLiked: boolean }>`
+const StyledCommentIcon = styled(CommentIcon)<{ $isliked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ isLiked }) =>
-    isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+  color: ${({ isliked }) =>
+    isliked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

@@ -87,7 +87,7 @@ export default function ReviewSection({
 
 const Container = styled.div`
   border-radius: 10px;
-  background-color: var(--SemanticColor-Background-Primary);
+  background: var(--SemanticColor-Background-Secondary, #232323);
 
   display: flex;
   padding: 24px 28px 36px 24px;
@@ -149,7 +149,7 @@ const ReviewList = styled.div`
 const HLine = styled.div`
   margin: 14px 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-200, #E5E6E9);
+  background-color: var(--SemanticColor-Border-Secondary, #404040);
 `;
 
 const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`

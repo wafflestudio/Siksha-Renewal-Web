@@ -118,6 +118,9 @@ export default function UseFilter() {
 
         // 날짜만 들어있는 key는 필터링 패스
         if (key === "date") return;
+
+        // 배열이 아닌 값들은 필터링 패스
+        if (!Array.isArray(filteredList[key])) return;
         
         // 배열이 아닌 값들은 필터링 패스
         if (!Array.isArray(filteredList[key])) return;
