@@ -65,8 +65,8 @@ export default function UserSetting() {
 
 const Container = styled.div`
   width: 544px;
-  background-color: var(--Color-Foundation-base-white);
-  border: 1px solid #e8e8e8;
+  background-color: var(--Color-Foundation-base-white-5);
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -116,7 +116,7 @@ const LogoutText = styled(Text)`
 const WithdrawalText = styled(Text)`
   margin-top: 10.97px;
   margin-bottom: 14px;
-  color: #8a8a8a;
+  color: var(--Color-Accent-like);
 
   @media (max-width: 768px) {
     margin-top: 8px;
@@ -127,7 +127,7 @@ const WithdrawalText = styled(Text)`
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: #e8e8e8;
+  background: var(--Color-Foundation-gray-200-2);
   margin: 0 6px;
 
   margin-top: 9.97px;

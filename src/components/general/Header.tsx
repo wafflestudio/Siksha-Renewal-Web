@@ -5,9 +5,11 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import Image from "next/image";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 export default function Header() {
   const router = useRouter();
+  const { defaultProfileURL, currentTheme } = UseCurrentTheme();
 
   const { authStatus, logout } = useAuth();
   const { openLoginModal } = useModals();
@@ -16,13 +18,23 @@ export default function Header() {
     <Background>
       <DesktopContainer>
         <Left>
-          <Image
-            src="/manifest/desktop-icon.png"
-            height={50}
-            width={50}
-            onClick={() => router.push("/")}
-            alt="식샤 아이콘"
-          />
+          {currentTheme === "light" ? (
+            <Image
+              src={"/img/siksha.svg"}
+              height={40}
+              width={40}
+              onClick={() => router.push("/")}
+              alt="식샤 아이콘"
+            />
+          ) : (
+            <Image
+              src={"/img/siksha-dark.svg"}
+              height={40}
+              width={40}
+              onClick={() => router.push("/")}
+              alt="식샤 아이콘"
+            />
+          )}
           <TitleContainer>
             <Image
               src="/img/sikshaSplash.svg"
