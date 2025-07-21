@@ -108,7 +108,7 @@ const Container = styled.div<{ show: boolean }>`
   align-self: stretch;
 
   max-height: 266px;
-  background: var(--Color-Foundation-base-white);
+  background: transparent;
   box-sizing: border-box;
   gap: 22px;
 `;
@@ -122,7 +122,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--SemanticColor-Text-GNB, #262728);
   /* text-16/ExtraBold */
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
@@ -137,7 +137,7 @@ const Pagination = styled.div`
 `;
 
 const Page = styled.span`
-  color: var(--Color-Foundation-gray-800, #4c4d50);
+  color: var(--SemanticColor-Text-GNB-Secondary, #4c4d50);
 
   font-family: var(--Font-family-sans, NanumSquareOTF);
   font-size: var(--Font-size-13, 13px);
@@ -165,7 +165,8 @@ const Restaurant = styled.div`
   flex: 1 0 0;
   box-sizing: border-box;
   border-radius: 6px;
-  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  border: 1px solid var(--SemanticColor-Border-Primary, #e5e6e9);
+  background: var(--SemanticColor-Background-Secondary, #fff);
   padding: 0 14.5px;
 
   &:hover {
@@ -176,7 +177,7 @@ const Restaurant = styled.div`
 const RestaurantName = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  color: var(--Color-Foundation-gray-700, #727478);
+  color: var(--SemanticColor-Text-GNB-Secondary, #727478);
   text-align: center;
   text-overflow: ellipsis;
 

@@ -35,7 +35,7 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
   gap: 10px;
   height: 34px;
   border-radius: 30px;
-  border: 1px solid var(--Color-Foundation-gray-200-3);
+  border: 1px solid var(--SemanticColor-Border-Primary);
 `;
 const ButtonItem = styled.button`
   display: flex;
@@ -43,7 +43,7 @@ const ButtonItem = styled.button`
   padding: 10px 20px;
   border-radius: 20px;
   height: 34px;
-  color: var(--Color-Foundation-base-black);
+  color: var(--SemanticColor-Text-GNB);
   width: 100%;
   background-color: transparent;
   border: none;
@@ -54,5 +54,5 @@ const ButtonItem = styled.button`
 
 const SelectedButtonItem = styled(ButtonItem)`
   background-color: var(--Color-Foundation-Tint-orange);
-  border: 1px solid var(--Color-Foundation-orange-500);
+  border: 1px solid var(--SemanticColor-Text-Accent);
 `;

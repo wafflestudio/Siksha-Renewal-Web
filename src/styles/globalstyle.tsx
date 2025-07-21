@@ -249,7 +249,7 @@ export const GlobalStyle = createGlobalStyle`
 
     --Color-Accent-like: #F86627;
 
-    --SemanticColor-Background-Primary: var(--Color-Background-main);
+    --SemanticColor-Background-Primary: var(--Color-Foundation-gray-100);
     --SemanticColor-Background-Secondary: var(--Color-Foundation-gray-200);
     --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-400);
     --SemanticColor-Background-Quaternary: var(--Color-Foundation-gray-500);
