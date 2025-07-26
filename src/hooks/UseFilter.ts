@@ -124,7 +124,10 @@ export default function UseFilter() {
 
         // 날짜만 들어있는 key는 필터링 패스
         if (key === "date") return;
-        
+
+        // 배열이 아닌 값들은 필터링 패스
+        if (!Array.isArray(filteredList[key])) return;
+
         // 축제 기간 필터링
         filteredList[key] = filteredList[key].filter((restaurant) => {
           const isFestivalRestaurant = restaurant.name_kr.startsWith("[축제]");
@@ -189,7 +192,13 @@ export default function UseFilter() {
         });
 
         // 필터링 후 메뉴가 없는 식당은 삭제
-        if (needDistanceFilter || needPriceFilter || needRatingFilter || needReviewFilter || needIsAvailableOnlyFilter) {
+        if (
+          needDistanceFilter ||
+          needPriceFilter ||
+          needRatingFilter ||
+          needReviewFilter ||
+          needIsAvailableOnlyFilter
+        ) {
           filteredList[key] = filteredList[key].filter((restaurant) => {
             if (!restaurant.menus) return false;
             return restaurant.menus.length > 0;
@@ -201,6 +210,21 @@ export default function UseFilter() {
     },
     [filterList],
   );
+
+  const countChangedFilters = (diff?: Partial<FilterList>): number => {
+    const base = diff ?? filterList;
+    return (Object.keys(defaultFilters) as (keyof FilterList)[]).reduce((count, key) => {
+      const target = base[key] ?? filterList[key]; // diff 우선, 없으면 현재값
+      const original = defaultFilters[key];
+
+      const isChanged =
+        Array.isArray(original) && Array.isArray(target)
+          ? JSON.stringify(original) !== JSON.stringify(target)
+          : original !== target;
+
+      return isChanged ? count + 1 : count;
+    }, 0);
+  };
 
   return {
     /**
@@ -232,5 +256,6 @@ export default function UseFilter() {
      * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
      */
     filterMenuList,
+    countChangedFilters,
   };
 }

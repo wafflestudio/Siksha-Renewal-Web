@@ -29,6 +29,8 @@ jobs:
           echo "NEXT_PUBLIC_APPLE_CLIENTID=${{ secrets.NEXT_PUBLIC_APPLE_CLIENTID }}" >> .env
           echo "NEXT_PUBLIC_APPLE_SECRET=${{ secrets.NEXT_PUBLIC_APPLE_SECRET }}" >> .env
           echo "NEXT_PUBLIC_APPLE_REDIRECTURI=${{ secrets.NEXT_PUBLIC_APPLE_REDIRECTURI_DEV }}" >> .env
+          echo "NEXT_PUBLIC_MIXPANEL_TOKEN=${{ secrets.NEXT_PUBLIC_MIXPANEL_TOKEN_DEV }}" >> .env
+
     
       - name: Log in to Amazon ECR
         env:

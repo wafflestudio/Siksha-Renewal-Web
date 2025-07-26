@@ -7,6 +7,9 @@ module.exports = {
   },
   trailingSlash: false,
   compiler: {
-    styledComponents: true,   
+    styledComponents: {
+      ssr: true,
+      displayName: true,
+    },
   }
 }  

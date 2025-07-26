@@ -11,6 +11,8 @@ import {
   DISTANCE_FILTER_OPTIONS,
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -18,7 +20,7 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
-  const { filterList, setFilterList, resetFilterList } = UseFilter();
+  const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -51,26 +53,71 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       isReview: false,
       isAvailableOnly: false,
     });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page",
+      },
+    });
   }, [resetFilterList]);
 
   const onApplyFilter = useCallback(() => {
+    const length =
+      selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+        ? defaultFilters.length
+        : selectedFilters.length;
+
+    const priceMin =
+      selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
+        ? defaultFilters.priceMin
+        : selectedFilters.priceMin;
+
+    const priceMax =
+      selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
+        ? defaultFilters.priceMax
+        : selectedFilters.priceMax;
+
+    const ratingMin = selectedFilters.ratingMin;
+
+    const isReview = selectedFilters.isReview;
+
+    const isAvailableOnly = selectedFilters.isAvailableOnly;
+
     setFilterList({
-      length:
-        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
-          ? defaultFilters.length
-          : selectedFilters.length,
-      priceMin:
-        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
-          ? defaultFilters.priceMin
-          : selectedFilters.priceMin,
-      priceMax:
-        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
-          ? defaultFilters.priceMax
-          : selectedFilters.priceMax,
-      ratingMin: selectedFilters.ratingMin,
-      isReview: selectedFilters.isReview,
-      isAvailableOnly: selectedFilters.isAvailableOnly,
+      length,
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
       isFestival: filterList.isFestival,
+    });
+
+    const appliedFilterCount = countChangedFilters({
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
+      length,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "main_filter",
+        applied_filter_options: {
+          price_min: priceMin,
+          price_max: priceMax,
+          min_rating: ratingMin,
+          is_open_now: isAvailableOnly,
+          has_reviews: isReview,
+          max_distance_km: length / 1000,
+        },
+        number_of_applied_filters: appliedFilterCount,
+        page_name: "meal_list_page",
+      },
     });
     onClose();
   }, [setFilterList, selectedFilters]);
@@ -203,7 +250,11 @@ const StarIcon = styled.img`
   margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string; addShadow?: boolean }>`
+export const FilterActionSection = styled.div<{
+  marginBottom: string;
+  marginTop?: string;
+  addShadow?: boolean;
+}>`
   display: grid;
   padding: 0 16px;
   padding-bottom: ${(props) => `${props.marginBottom}px`};
@@ -212,7 +263,7 @@ export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?
   width: 100%;
   grid-template-columns: 1fr 1fr;
   gap: 7px;
-  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};;
+  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};
 `;
 
 const FilterContentWrapper = styled.div`
@@ -229,8 +280,7 @@ const FilterContentWrapper = styled.div`
   }
 `;
 
-const FilterContent = styled.div`
-`;
+const FilterContent = styled.div``;
 
 const MobileFilterHeader = styled.div`
   color: var(--Color-Foundation-base-black, #000);

@@ -2,7 +2,7 @@
 
 import { createGlobalStyle, css } from "styled-components";
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NIXGONFONTS V2.0';
     src: url('/font/NIXGONFONTS L 2.0.ttf') format('truetype'),
@@ -215,3 +215,5 @@ export const LoadingAnimation = css`
     }
   }
 `;
+
+export const GlobalStyleFixed = GlobalStyle as unknown as React.ComponentType;
