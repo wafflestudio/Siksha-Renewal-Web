@@ -53,7 +53,7 @@ export default function Date() {
 }
 
 const Container = styled.div`
-  background: var(--Color-Foundation-base-white-5);
+  background: var(--SemanticColor-Background-Secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,7 +72,7 @@ const ArrowWrapper = styled.div<{ isActive: boolean }>`
   cursor: pointer;
   padding: 0 16px 0 16px;
   color: ${({ isActive }) =>
-    isActive ? "var(--Color-Foundation-orange-500-3)" : "var(--Color-Foundation-gray-400)"};
+    isActive ? "var(--SemanticColor-Text-Accent)" : "var(--Color-Foundation-gray-400)"};
 `;
 
 const DateText = styled.div`
@@ -87,7 +87,7 @@ const DateText = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 17px;
-    color: var(--Color-Foundation-orange-500-3, #ff9522);
+    color: var(--SemanticColor-Text-Accent);
     white-space: nowrap;
   }
 `;

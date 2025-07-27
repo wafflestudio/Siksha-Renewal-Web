@@ -1,6 +1,6 @@
 .react-calendar {
   padding: 0 24px;
-  background-color: var(--Color-Foundation-base-white-5);
+  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
     padding: 4px 25px 15px 25px;

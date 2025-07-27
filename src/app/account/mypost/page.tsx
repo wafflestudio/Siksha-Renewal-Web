@@ -55,7 +55,7 @@ export default function MyPost() {
 const Container = styled.div<{ $isEmpty: boolean }>`
   padding: 0 18.5px;
   width: 701px;
-  background: var(--Color-Foundation-base-white-4);
+  background: var(--SemanticColor-Background-Primary);
   border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   box-sizing: border-box;

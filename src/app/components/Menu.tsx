@@ -266,8 +266,8 @@ const StyledLikeIcon = styled(HeartIcon)<{ $isLiked: boolean }>`
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ $isLiked }) =>
-    $isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
@@ -275,8 +275,8 @@ const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ $isLiked }) =>
-    $isLiked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+  color: ${({ isliked }) =>
+    isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

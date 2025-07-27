@@ -146,7 +146,7 @@ const Button = styled.button`
   background-color: var(--Color-Foundation-orange-500);
   border: none;
   border-radius: 8px;
-  color: var(--Color-Foundation-base-white-2);
+  color: var(--SemanticColor-Text-Button);
   font-size: 16px;
   font-weight: 700;
   line-height: 22px;
