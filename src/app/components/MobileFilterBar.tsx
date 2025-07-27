@@ -213,7 +213,7 @@ const Button = styled.button<{ isActive?: boolean }>`
   align-items: center;
   gap: 2px;
 
-  border-radius: 10px;
+  border-radius: 30px;
   border: 1px solid
     ${(props) =>
       props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
@@ -226,9 +226,7 @@ const Button = styled.button<{ isActive?: boolean }>`
 `;
 
 const ButtonText = styled.span<{ isActive?: boolean }>`
-  color: var(--SemanticColor-Text-GNB, #000);
-  leading-trim: both;
-  text-edge: cap;
+  color: var(--Color-Foundation-base-black);
   font-size: 13px;
   font-style: normal;
   font-weight: ${(props) => (props.isActive ? 700 : 400)};
