@@ -77,7 +77,7 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: var(--Color-Foundation-base-white-4);
+  background-color: var(--SemanticColor-Background-Primary);
   border: 1px solid #e8e8e8;
   border-radius: 8px;
 
@@ -227,7 +227,7 @@ const ButtonCancel = styled(Button)`
 
 const ButtonConfirm = styled(Button)`
   background-color: var(--Color-Foundation-orange-500);
-  color: var(--Color-Foundation-base-white-2);
+  color: var(--SemanticColor-Text-Button);
   margin-left: 14px;
 
   @media (max-width: 768px) {

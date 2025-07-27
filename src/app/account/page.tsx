@@ -143,10 +143,10 @@ const CheckButtonWrapper = styled.div<{ isActive: boolean }>`
 
 const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
-  background-color: var(--Color-Foundation-base-white-5);
+  background-color: var(--SemanticColor-Background-Secondary);
   width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid var(--Color-Foundation-gray-200-2);
+  border: 1px solid var(--SemanticColor-Border-Primary);
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -210,6 +210,6 @@ const InquiryText = styled(Text)`
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-200-2);
+  background: var(--SemanticColor-Border-Primary);
   margin: 0 6px;
 `;

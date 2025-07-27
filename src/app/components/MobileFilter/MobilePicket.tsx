@@ -35,7 +35,7 @@ const PicketText = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 2px;
-  background: var(--Color-Foundation-gray-100-4);
+  background: var(--SemanticColor-Element-Tooltip);
   color: var(--Color-Foundation-gray-700);
 
   text-align: center;
@@ -54,5 +54,5 @@ const StyledPicketBottom = styled(PicketBottomIcon)<{ left: number }>`
   top: -15px;
   width: 6px;
   height: 5px;
-  color: var(--Color-Foundation-gray-100-4);
+  color: var(--SemanticColor-Element-Tooltip);
 `;

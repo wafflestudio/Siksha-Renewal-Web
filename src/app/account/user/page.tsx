@@ -65,7 +65,7 @@ export default function UserSetting() {
 
 const Container = styled.div`
   width: 544px;
-  background-color: var(--Color-Foundation-base-white-5);
+  background-color: var(--SemanticColor-Background-Secondary);
   border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
 
@@ -127,7 +127,7 @@ const WithdrawalText = styled(Text)`
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-200-2);
+  background: var(--SemanticColor-Border-Primary);
   margin: 0 6px;
 
   margin-top: 9.97px;

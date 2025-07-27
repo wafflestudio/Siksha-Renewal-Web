@@ -45,13 +45,13 @@ export default function MobileSubHeader({
       rootElement,
     );
 }
-// --Color-Foundation-base-white-5
+
 const MobileHeader = styled.div`
   display: none;
   font-size: 20px;
   margin: 0;
   top: 0;
-  background: var(--Color-Foundation-orange-500-2);
+  background: var(--SemanticColor-Background-Secondary);
   position: absolute;
   width: 100%;
   height: 44px;
@@ -68,12 +68,12 @@ const BackButton = styled(LeftArrowMobileIcon)`
   width: 10px;
   height: 16px;
   left: 16px;
-  color: var(--Color-Foundation-base-white-5);
+  color: var(--SemanticColor-Background-Secondary);
   cursor: pointer;
 `;
 
 const Title = styled.div`
-  color: var(--Color-Foundation-base-white-2);
+  color: var(--SemanticColor-Text-GNB);
   font-size: 20px;
   font-weight: 800;
   max-width: calc(100vw - 96px);

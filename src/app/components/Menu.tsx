@@ -260,7 +260,7 @@ const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
   cursor: pointer;
   z-index: 0;
   color: ${({ $isliked }) =>
-    $isliked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const StyledCommentIcon = styled(CommentIcon)<{ $isliked: boolean }>`
@@ -269,7 +269,7 @@ const StyledCommentIcon = styled(CommentIcon)<{ $isliked: boolean }>`
   cursor: pointer;
   z-index: 0;
   color: ${({ isliked }) =>
-    isliked ? "var(--Color-Accent-like)" : "var(--Color-Foundation-gray-200-3)"};
+    isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

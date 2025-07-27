@@ -306,7 +306,7 @@ const DecideButton = styled.button`
   border-radius: 8px;
   background: var(--Color-Foundation-orange-500, #ff9522);
 
-  color: var(--Color-Foundation-base-white-2, #fff);
+  color: var(--SemanticColor-Text-Button);
   text-align: center;
   font-size: 14px;
   font-weight: 700;
