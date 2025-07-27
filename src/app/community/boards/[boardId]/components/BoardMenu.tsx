@@ -29,7 +29,6 @@ const MenuContainer = styled.div`
     display: flex;
     align-self: center;
     width: calc(100% + 25px);
-    border-bottom: 1px solid var(--SemanticColor-Border-Primary, var(--Color-Foundation-gray-100));
   }
 `;
 const MenuInnerContainer = styled.div`
@@ -53,7 +52,7 @@ const Menu = styled.div`
     left: 0;
     top: 0;
     width: auto;
-    padding: 18px 0 19px 0;
+    padding: 18px 0 0 0;
     overflow-x: auto;
     overflow-y: hidden;
     min-height: 35.5px;
@@ -67,7 +66,7 @@ const MenuItem = styled.div`
   width: 94px;
   padding: 12px 37px 12px 15px;
 
-  color: var(--SemanticColor-Text-GNB-Secondary, #979797);
+  color: #979797;
   font-feature-settings: "liga" off, "clig" off;
   font-size: 16px;
   font-style: normal;
@@ -81,7 +80,7 @@ const MenuItem = styled.div`
   }
 
   &.selected {
-    color: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
+    color: var(--Color-Foundation-orange-500);
     background: var(--SemanticColor-Background-Primary, var(--Color-Foundation-base-white));
 
     &::before {
@@ -90,13 +89,13 @@ const MenuItem = styled.div`
       left: 0;
       width: 3px;
       height: 100%;
-      background-color: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
+      background-color: var(--Color-Foundation-orange-500);
     }
   }
 
   @media (max-width: 768px) {
-    color: var(--SemanticColor-Text-GNB-Secondary, var(--Color-Foundation-gray-500));
-    background: var(--SemanticColor-Background-Secondary, #f2f2f2);
+    color: var(--SemanticColor-Text-Bubble);
+    background: var(--Color-Foundation-gray-100);
     border-radius: 12px;
     width: max-content;
     height: auto;
@@ -108,7 +107,7 @@ const MenuItem = styled.div`
 
     &.selected {
       color: var(--SemanticColor-Text-Button, var(--Color-Foundation-base-white));
-      background: var(--SemanticColor-Text-Accent, var(--Color-Foundation-orange-500));
+      background: var(--Color-Foundation-orange-500);
 
       &::before {
         display: none;

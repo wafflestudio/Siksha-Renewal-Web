@@ -196,7 +196,7 @@ const Nickname = styled.div`
   }
 `;
 const PostDate = styled.div`
-  color: var(--Color-Foundation-gray-500);
+  color: var(--Color-Foundation-gray-600);
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
@@ -295,9 +295,9 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 17.7px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
   @media (max-width: 768px) {
-    border-color: var(--Color-Foundation-gray-100);
+    border-color: var(--SemanticColor-Border-Primary);
     padding-bottom: 12.5px;
   }
 `;
