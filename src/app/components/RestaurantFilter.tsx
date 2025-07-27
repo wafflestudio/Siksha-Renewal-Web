@@ -187,7 +187,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   gap: 16px;
-  background-color: var(--SemanticColor-Background-Primary);
+  background-color: var(--SemanticColor-Background-Secondary);
   width: 100%;
 `;
 
@@ -270,7 +270,7 @@ const ButtonGroup = styled.span`
   padding: 4px;
   align-items: center;
   border-radius: 8px;
-  background: var(--Color-Foundation-gray-100, #f2f3f4);
+  background: var(--SemanticColor-Background-Tertiary);
 `;
 
 const FilterButton = styled.button<{ active?: boolean }>`
@@ -282,7 +282,7 @@ const FilterButton = styled.button<{ active?: boolean }>`
   flex: 1 0 0;
   border-radius: 4px;
   background: ${(props) =>
-    props.active ? "var(--Color-Foundation-base-white, #FFF)" : "transparent"};
+    props.active ? "var(--SemanticColor-Background-Quaternary)" : "transparent"};
 
   color: ${(props) =>
     props.active

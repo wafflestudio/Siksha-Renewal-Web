@@ -162,7 +162,7 @@ const DesktopContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  background: var(--SemanticColor-Background-Primary, #fff);
+  background: var(--SemanticColor-Background-Secondary);
   border-radius: 10px;
 
   @media (max-width: 768px) {
@@ -178,8 +178,8 @@ const MobileContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
-    background: var(--SemanticColor-Background-Primary, #fff);
-    border: solid 1px var(--SemanticColor-Border-Primary, #e5e6e9);
+    background: var(--SemanticColor-Background-Secondary);
+    border: solid 1px var(--Color-Foundation-gray-200);
     box-sizing: border-box;
     border-radius: 8px;
     width: 95vw;
@@ -278,6 +278,9 @@ const IconWrapper = styled.div`
   height: 24px;
   cursor: pointer;
   color: var(--Color-Foundation-orange-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
     width: 20px;
@@ -287,6 +290,7 @@ const IconWrapper = styled.div`
   & > svg {
     width: 100%;
     height: 100%;
+    flex-shrink: 0;
   }
 `;
 
@@ -297,7 +301,7 @@ interface StyledIconProps {
 const StyledIcon = ({ children }: StyledIconProps) => <IconWrapper>{children}</IconWrapper>;
 
 const Name = styled.div`
-  color: var(--SemanticColor-Text-GNB, #262728);
+  color: var(--Color-Foundation-base-black);
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -310,8 +314,6 @@ const Name = styled.div`
   line-height: 140%; /* 25.2px */
 
   @media (max-width: 768px) {
-    color: var(--SemanticColor-Text-GNB, #000);
-
     /* text-16/ExtraBold */
     font-family: var(--Font-family-sans, NanumSquareOTF);
     font-size: var(--Font-size-16, 16px);
@@ -341,7 +343,7 @@ const MenuInfoLabels = styled.div`
 const HLine = styled.div`
   height: 2px;
   align-self: stretch;
-  background: var(--SemanticColor-Text-Accent, #ff9522);
+  background: var(--Color-Foundation-orange-500);
   margin: 8px 0 14px;
 
   @media (max-width: 768px) {
