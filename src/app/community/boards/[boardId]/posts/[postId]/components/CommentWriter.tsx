@@ -94,7 +94,7 @@ const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.isAnonymous ? "var(--SemanticColor-Text-Accent)" : "var(--SemanticColor-Text-GNB-Secondary)"};
+    props.isAnonymous ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Text-GNB-Secondary)"};
   font-weight: ${(props) => (props.isAnonymous ? 700 : 400)};
   font-size: 14px;
   line-height: 16px;
