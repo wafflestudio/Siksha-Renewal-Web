@@ -9,7 +9,7 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ onClose }: LoginModalProps) {
-  const currentTheme = UseCurrentTheme();
+  const { currentTheme } = UseCurrentTheme();
   const isDark = currentTheme === "dark";
 
   const handleKakaoLogin = () => {
