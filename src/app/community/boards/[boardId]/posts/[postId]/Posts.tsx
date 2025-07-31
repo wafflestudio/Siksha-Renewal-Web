@@ -49,9 +49,9 @@ export default function Post({ boardId, postId }: { boardId: number; postId: num
 
   const actions: ModalAction[] = post.isMine
     ? [
-        { name: "수정", handleClick: () => updatePost(post.id) },
-        { name: "삭제", handleClick: () => removePost(post.id) },
-      ]
+      { name: "수정", handleClick: () => updatePost(post.id) },
+      { name: "삭제", handleClick: () => removePost(post.id) },
+    ]
     : [{ name: "신고", handleClick: () => reportPost(post.id) }];
 
   const onClickMoreActions = (actions: ModalAction[]) => {

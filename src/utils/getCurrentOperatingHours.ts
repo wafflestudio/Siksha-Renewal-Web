@@ -10,12 +10,12 @@ const getCurrentOperatingHours = (
 
   const getDayType = (): string[] => {
     switch (currentDay) {
-      case 0: // 일요일
-        return hours.holiday;
-      case 6: // 토요일
-        return hours.saturday;
-      default: // 평일
-        return hours.weekdays;
+    case 0: // 일요일
+      return hours.holiday;
+    case 6: // 토요일
+      return hours.saturday;
+    default: // 평일
+      return hours.weekdays;
     }
   };
 

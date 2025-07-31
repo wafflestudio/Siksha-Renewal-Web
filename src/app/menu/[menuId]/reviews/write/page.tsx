@@ -97,11 +97,11 @@ export default function ReviewPost() {
             {[1, 2, 3, 4, 5].map((i) => {
               if (i <= inputs.score) {
                 return (
-                  <StyledStarIcon key={i} $isfilled onClick={() => setInputs({ ...inputs, score: i })} alt="별점 채워짐" />
+                  <StyledStarIcon key={i} $isfilled={true} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 채워짐" />
                 );
               } else {
                 return (
-                  <StyledStarIcon key={i} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 비어짐" />
+                  <StyledStarIcon key={i} $isfilled={false} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 비어짐" />
                 );
               }
             })}

@@ -30,12 +30,12 @@ export default function MobileNavigationBar() {
     isFilterFavorite === true
       ? "favorite"
       : addr === "/" || addr?.startsWith("/menu")
-      ? "menu"
-      : addr?.startsWith("/community")
-      ? "community"
-      : addr?.startsWith("/account")
-      ? "account"
-      : null;
+        ? "menu"
+        : addr?.startsWith("/community")
+          ? "community"
+          : addr?.startsWith("/account")
+            ? "account"
+            : null;
 
   if (!rootElement) return null;
 

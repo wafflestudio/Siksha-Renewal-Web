@@ -1,0 +1,148 @@
+
+> siksha-web@0.1.0 devbuild
+> cross-env NEXT_PUBLIC_NODE_ENV=development next build
+
+ ⚠ Warning: Found multiple lockfiles. Selecting /home/js1044k/package-lock.json.
+   Consider removing the lockfiles at:
+   * /home/js1044k/Siksha-Renewal-Web/package-lock.json
+
+   ▲ Next.js 15.4.5
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 3.0s
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./src/app/account/inquiry/page.tsx
+21:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/mypost/page.tsx
+23:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/page.tsx
+24:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/profile/page.tsx
+25:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+48:6  Warning: React Hook useEffect has a missing dependency: 'userInfo?.nickname'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/restaurant/favorite/page.tsx
+24:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+51:6  Warning: React Hook useEffect has missing dependencies: 'favoriteRestaurants', 'onHttpError', 'orderList', and 'setNewOrderList'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/restaurant/page.tsx
+21:3  Warning: React Hook useEffect has a missing dependency: 'authGuard'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+47:6  Warning: React Hook useEffect has missing dependencies: 'onHttpError', 'orderList', and 'setNewOrderList'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/account/user/page.tsx
+23:6  Warning: React Hook useEffect has missing dependencies: 'authGuard' and 'isLoading'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/auth/apple/page.tsx
+29:6  Warning: React Hook useEffect has missing dependencies: 'login', 'onHttpError', and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/auth/google/page.tsx
+28:6  Warning: React Hook useEffect has missing dependencies: 'login', 'onHttpError', and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/auth/kakao/page.tsx
+28:6  Warning: React Hook useEffect has missing dependencies: 'login', 'onHttpError', and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/community/boards/[boardId]/Boards.tsx
+28:5  Warning: React Hook useCallback has a missing dependency: 'onHttpError'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/community/boards/[boardId]/components/BoardHeader.tsx
+32:6  Warning: React Hook useEffect has missing dependencies: 'checkAccessToken' and 'onHttpError'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/community/boards/[boardId]/posts/[postId]/components/PostImageSwiper.tsx
+32:6  Warning: React Hook useEffect has missing dependencies: 'images.length' and 'updateSnapDisplay'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/community/boards/[boardId]/posts/[postId]/hooks/usePostActions.ts
+77:6  Warning: React Hook useEffect has a missing dependency: 'fetchPost'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/community/write/components/BoardSelectDropdown.tsx
+40:6  Warning: React Hook useEffect has a missing dependency: 'onSelect'. Either include it or remove the dependency array. If 'onSelect' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./src/app/community/write/components/ImagePreview.tsx
+31:11  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+./src/app/community/write/page.tsx
+60:6  Warning: React Hook useEffect has missing dependencies: 'authStatus', 'fetchBoards', 'fetchPreviousPost', 'isAnonymousWriter', and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/components/FestivalToggle.tsx
+15:6  Warning: React Hook useEffect has a missing dependency: 'changeFilterOption'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/components/MenuList.tsx
+39:6  Warning: React Hook useEffect has missing dependencies: 'favoriteRestaurants' and 'filterMenuList'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/components/MobileFilter/MobileFilterBottomSheet.tsx
+76:6  Warning: React Hook useCallback has a missing dependency: 'onClose'. Either include it or remove the dependency array. If 'onClose' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+91:6  Warning: React Hook useCallback has a missing dependency: 'selectedFilters'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/components/MobileFilterBar.tsx
+79:1  Error: Expected indentation of 16 spaces but found 18.  indent
+80:1  Error: Expected indentation of 14 spaces but found 16.  indent
+135:1  Error: Expected indentation of 4 spaces but found 6.  indent
+
+./src/app/components/OperatingHour.tsx
+1:1  Error: Expected indentation of 0 spaces but found 2.  indent
+
+./src/app/components/RestaurantInfo.tsx
+79:1  Error: Expected indentation of 16 spaces but found 18.  indent
+80:1  Error: Expected indentation of 14 spaces but found 16.  indent
+84:1  Error: Expected indentation of 16 spaces but found 18.  indent
+85:1  Error: Expected indentation of 18 spaces but found 20.  indent
+86:1  Error: Expected indentation of 18 spaces but found 20.  indent
+87:1  Error: Expected indentation of 16 spaces but found 18.  indent
+88:1  Error: Expected indentation of 14 spaces but found 16.  indent
+92:1  Error: Expected indentation of 16 spaces but found 18.  indent
+93:1  Error: Expected indentation of 18 spaces but found 20.  indent
+94:1  Error: Expected indentation of 18 spaces but found 20.  indent
+95:1  Error: Expected indentation of 16 spaces but found 18.  indent
+96:1  Error: Expected indentation of 14 spaces but found 16.  indent
+
+./src/app/components/RestaurantList.tsx
+43:6  Warning: React Hook useEffect has missing dependencies: 'isFavorite' and 'meal'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/menu/[menuId]/Menu.tsx
+62:6  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/menu/[menuId]/components/MenuSection.tsx
+48:6  Warning: React Hook useEffect has a missing dependency: 'onHttpError'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/menu/[menuId]/photos/PhotoReviews.tsx
+47:6  Warning: React Hook useEffect has a missing dependency: 'onHttpError'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/menu/[menuId]/reviews/write/page.tsx
+42:6  Warning: React Hook useEffect has missing dependencies: 'fetchMenu' and 'menuId'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/page.tsx
+81:6  Warning: React Hook useEffect has missing dependencies: 'getAccessToken', 'isExceptEmpty', 'onHttpError', 'orderList', 'setData', and 'setLoading'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/Account/ProfileImageEditModal.tsx
+41:6  Warning: React Hook useEffect has a missing dependency: 'profileFrameRef'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/general/InfiniteScrollable.tsx
+29:5  Warning: React Hook useCallback has an unnecessary dependency: 'currentPath'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
+50:44  Warning: The ref value 'observerElement.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'observerElement.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+65:6  Warning: React Hook useEffect has missing dependencies: 'handleFetchMoreData' and 'loadingWrapper'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/general/Layout.tsx
+39:6  Warning: React Hook useEffect has missing dependencies: 'getAccessToken' and 'login'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+43:6  Warning: React Hook useEffect has a missing dependency: 'setIsFilterFavorite'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+61:6  Warning: React Hook useEffect has missing dependencies: 'boardId' and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/general/Modals.tsx
+17:6  Warning: React Hook useEffect has missing dependencies: 'closeModal' and 'openedModals'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/hooks/UseAuth.ts
+23:6  Warning: React Hook useEffect has a missing dependency: 'setAuthStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+30:6  Warning: React Hook useCallback has missing dependencies: 'openLoginModal' and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/hooks/UseFilter.ts
+194:5  Warning: React Hook useCallback has a missing dependency: 'date'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/hooks/UseProfile.ts
+20:6  Warning: React Hook useEffect has missing dependencies: 'getAccessToken' and 'setUserInfo'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

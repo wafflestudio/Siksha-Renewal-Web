@@ -40,14 +40,14 @@ export default function DesktopCalendar() {
   return (
     <Container>
       <Navigation isCalOpened={isCalOpened}>
-        <StyledLeftArrowIcon onClick={movePrevDay} aria-label="지난날로 이동" />
+        <StyledLeftArrowIcon onClick={movePrevDay} aria-label="지난날로 이동" color="gray" />
         <DateBox onClick={toggleCal}>
           <StyledCalendarIcon />
           <DateText color={"var(--Color-Foundation-gray-900)"} lineHeight={"150%"}>
             {formatDate(date)}
           </DateText>
         </DateBox>
-        <StyledRightArrowIcon onClick={moveNextDay} aria-label="다음날로 이동" />
+        <StyledRightArrowIcon onClick={moveNextDay} aria-label="다음날로 이동" color="gray" />
       </Navigation>
       {isCalOpened && (
         <Calendar>

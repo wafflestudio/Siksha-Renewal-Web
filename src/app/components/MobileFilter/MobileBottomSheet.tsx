@@ -28,7 +28,7 @@ interface BottomSheetBackdropProps {
   isVisible: boolean;
 }
 
-const BottomSheetBackdrop = styled.div`
+const BottomSheetBackdrop = styled.div<BottomSheetBackdropProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -36,7 +36,7 @@ const BottomSheetBackdrop = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99;
-  display: ${({ isVisible }: BottomSheetBackdropProps) => (isVisible ? "block" : "none")};
+  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
 `;
 
 const BottomSheetSlideBar = styled.div`

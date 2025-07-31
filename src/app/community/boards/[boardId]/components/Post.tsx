@@ -31,8 +31,8 @@ export function Post({ post }: PropsPost) {
         <PhotoZone>
           {images
             ? images.map((src, idx) =>
-                idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
-              )
+              idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
+            )
             : null}
         </PhotoZone>
       </Container>
@@ -82,11 +82,11 @@ const Info = styled.div<{ isImages: boolean | null }>`
     gap: 9px;
     height: min-content;
 
-    ${(props) =>
-      props.isImages !== null &&
-      css`
-        max-width: calc(100% - 71.5px);
-      `}
+  ${(props) =>
+    props.isImages !== null &&
+    css`
+      max-width: calc(100% - 71.5px);
+    `}
   }
 `;
 

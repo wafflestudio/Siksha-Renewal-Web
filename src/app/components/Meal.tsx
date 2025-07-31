@@ -74,7 +74,7 @@ const MealIcon = styled.div<{ isActive: boolean }>`
   }
 `;
 
-const MealText = styled.div`
+const MealText = styled.div<{ active: boolean }>`
   color: ${(props: { active: boolean }) =>
     props.active ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
