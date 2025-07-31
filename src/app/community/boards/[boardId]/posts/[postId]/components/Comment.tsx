@@ -57,9 +57,9 @@ export default function Comment({ comment, deleteComment, toggleLike }: CommentP
     comment.isMine
       ? { name: "삭제", handleClick: onClickDelete }
       : {
-          name: "신고",
-          handleClick: onClickReport,
-        },
+        name: "신고",
+        handleClick: onClickReport,
+      },
   ];
 
   return (

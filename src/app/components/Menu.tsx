@@ -181,7 +181,7 @@ const Price = styled.div<{ hasPrice: boolean }>`
     min-width: 28px;
 
     display: flex;
-    justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
+    justify-content: ${(props) => (props.hasPrice ? "flex-end" : "center")};
 
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
@@ -275,8 +275,8 @@ const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ isliked }) =>
-    isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const CountText = styled.div<{ disableWith: number }>`

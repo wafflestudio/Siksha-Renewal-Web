@@ -65,8 +65,8 @@ export default function ProfileEdit(props: ProfileEditProps) {
             changeToDefaultImage
               ? defaultProfileURL
               : imageBlob
-              ? URL.createObjectURL(imageBlob)
-              : userInfo?.image ?? defaultProfileURL
+                ? URL.createObjectURL(imageBlob)
+                : userInfo?.image ?? defaultProfileURL
           }
           alt="프로필 사진"
         />

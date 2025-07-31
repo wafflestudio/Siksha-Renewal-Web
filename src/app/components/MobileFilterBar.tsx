@@ -157,11 +157,9 @@ export default function MobileFilterBar() {
         <Button isActive={isSet.priceMin || isSet.priceMax} onClick={handlePriceFilterOpen}>
           <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
-              ? `${formatPrice(filterList.priceMin)}원 ~ ${
-                  isFinite(filterList.priceMax)
-                    ? `${formatPrice(filterList.priceMax)}원`
-                    : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
-                }`
+              ? `${filterList.priceMin}원 ~ ${
+                isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
+              }`
               : "가격"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
@@ -216,7 +214,7 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-      props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
+    props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
   background-color: ${(props) =>
     props.isActive
       ? "var(--Color-Foundation-Tint-orange)"

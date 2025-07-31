@@ -176,7 +176,7 @@ const SocialContainer = styled.div`
   }
 `;
 
-const SocialButton = styled.div`
+const SocialButton = styled.div<{ provider: "kakao" | "google" | "apple" }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -187,9 +187,9 @@ const SocialButton = styled.div`
   line-height: 45px;
   font-family: NanumSquare;
   font-size: 14px;
-  background-color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+  background-color: ${(props) =>
     props.provider === "kakao" ? "#fee500" : "var(--Color-Foundation-base-white)"};
-  color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+  color: ${(props) =>
     props.provider === "kakao" ? "#181600" : "var(--Color-Foundation-gray-900)"};
 
   border-radius: 6px;
@@ -197,9 +197,8 @@ const SocialButton = styled.div`
   cursor: pointer;
 `;
 
-const SocialUnion = styled.img`
-  width: ${(props: { width: number; height: number; left: number; right: number }) =>
-    props.width}px;
+const SocialUnion = styled.img<{ width: number; height: number; left: number; right: number }>`
+  width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   margin-left: ${(props) => props.left}px;
   margin-right: ${(props) => props.right}px;
