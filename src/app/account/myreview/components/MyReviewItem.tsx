@@ -2,26 +2,32 @@ import styled from "styled-components";
 import Image from "next/image";
 import Stars from "app/menu/[menuId]/components/Stars";
 import { formatReviewDate } from "utils/FormatUtil";
+import ThemedWrapper from "components/general/ThemedWrapper";
+import Link from "next/link";
 
 export default function MyReviewItem({
   review,
 }) {
-  const IMAGE_SIZE = 35.84;
+  const IMAGE_SIZE = 48;
   return (
     <>
       <Container>
-        <MenuInfo>
-          <MenuHeader>
-            <div>
-              <MenuTitle>{review.name_kr}</MenuTitle>
-              <RightArrow />
-            </div>
-            <ReviewCreatedAt>
-              {formatReviewDate(review.created_at.substring(0, 10))}
-            </ReviewCreatedAt>
-          </MenuHeader>
-          <Stars score={review.score} />
-        </MenuInfo>
+        <Link href={`/menu/${review.menu_id}`} style={{ width: "100%", cursor: "pointer" }}>
+          <MenuInfo>
+            <MenuHeader>
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <MenuTitle>{review.name_kr}</MenuTitle>
+                <RightArrow src="/img/accordion-arrow.svg" />
+              </div>
+              <ReviewCreatedAt>
+                {formatReviewDate(review.created_at.substring(0, 10))}
+              </ReviewCreatedAt>
+            </MenuHeader>
+            <ThemedWrapper theme={{ width: "61" }}>
+              <Stars score={review.score} />
+            </ThemedWrapper>
+          </MenuInfo>
+        </Link>
         <Body>
           <Content>
             <Comment>{review.comment}</Comment>
@@ -88,7 +94,11 @@ const MenuTitle = styled.div`
   line-height: 150%; /* 16.8px */
 `;
 
-const RightArrow = styled.div``;
+const RightArrow = styled.img`
+  width: 20px;
+  height: 20px;
+  transform: rotate(270deg);
+`;
 
 const ReviewCreatedAt = styled.div`
   color: var(--Color-Foundation-gray-600, #989AA0);
@@ -103,6 +113,7 @@ const ReviewCreatedAt = styled.div`
 const Body = styled.div`
   display: flex;
   align-self: stretch;
+  padding: 0 4px;
 `;
 
 const Content = styled.div`

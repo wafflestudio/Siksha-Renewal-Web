@@ -3,8 +3,6 @@
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
-import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
-import UseProfile from "hooks/UseProfile";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -117,6 +115,7 @@ export default function MyReview() {
         <MobileSubHeader title="나의 평가 관리" handleBack={router.back} />
         <Container>
           <Header>나의 평가 관리</Header>
+            <MyReviewsContainer>
             {mockupReviews.map((reviewGroup) => (
               <MyReviewGroup
                 key={reviewGroup.id}
@@ -124,6 +123,7 @@ export default function MyReview() {
                 reviews={reviewGroup.reviews}
               />
             ))}
+            </MyReviewsContainer>
         </Container>
       </>
     );
@@ -131,7 +131,7 @@ export default function MyReview() {
 }
 
 const Container = styled.div`
-  padding: 0 18.5px;
+  padding: 0 18.5px 18.5px;
   width: 701px;
   background: #ffffff;
   border: 1px solid #e8e8e8;
@@ -139,9 +139,10 @@ const Container = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    width: 100%;
-    margin-top: -4px;
+    width: calc(100% + 32px);
+    margin-top: -24px;
     border: 0;
+    padding: 0;
   }
 `;
 
@@ -155,4 +156,10 @@ const Header = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+const MyReviewsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
