@@ -54,5 +54,5 @@ const ButtonItem = styled.button`
 
 const SelectedButtonItem = styled(ButtonItem)`
   background-color: var(--Color-Foundation-Tint-orange);
-  border: 1px solid var(--SemanticColor-Text-Accent);
+  border: 1px solid var(--Color-Foundation-orange-500);
 `;

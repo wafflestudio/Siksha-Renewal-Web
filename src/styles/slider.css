@@ -18,7 +18,7 @@
 }
 
 .rc-slider-rail {
-  stroke: var(--Color-Foundation-gray-200, #e5e6e9);
+  background-color: var(--SemanticColor-Element-Control, #404040);
   height: 4px;
   border-radius: 2px;
 }

@@ -32,7 +32,7 @@ const NeutralButton = styled.button`
 `;
 
 const PrimaryButton = styled.button`
-  background-color: var(--SemanticColor-Text-Accent);
+  background-color: var(--Color-Foundation-orange-500);
   color: var(--SemanticColor-Text-Button);
   padding: 10px 20px;
   height: 38px;
