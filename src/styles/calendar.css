@@ -97,7 +97,7 @@
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: var(--Color-Foundation-gray-400, #cbcdd3) !important;
+  color: var(--Color-Foundation-gray-500) !important;
 }
 
 .react-calendar__tile {
@@ -132,7 +132,7 @@
   }
 }
 .react-calendar__tile--active {
-  color: var(--Color-Foundation-base-white, #fff);
+  color: var(--SemanticColor-Text-Button); 
   line-height: 150%; /* 21px */
   position: relative;
   z-index: 1;
@@ -151,7 +151,7 @@
   }
 
   &.today {
-    color: var(--Color-Foundation-base-white, #fff);
+    color: var(--SemanticColor-Text-Button); 
     &::before {
       background-color: var(--Color-Foundation-orange-500);
     }
