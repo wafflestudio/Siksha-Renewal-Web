@@ -46,3 +46,31 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
       throw e;
     });
 };
+
+export const getMyReviewList = (
+  accessToken: string,
+  size: number,
+  page: number,
+): Promise<{
+  result: RawReview[];
+  totalCount: number;
+  hasNext: boolean;
+}> => {
+  return axios
+    .get(`${APIendpoint()}/reviews/me?page=${page}&per_page=${size}`, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
+    .then((res) => {
+      const {
+        data: { result, total_count: totalCount, has_next: hasNext },
+      } = res;
+      return {
+        result,
+        totalCount,
+        hasNext,
+      };
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
