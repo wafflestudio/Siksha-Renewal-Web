@@ -166,6 +166,10 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-Tint-orange: #FF952240;
 
     --Color-Main-Active: #FFE8CE;
+    --Color-Main-Orange: #FF9522;
+    --Color-Main-White: #FFFFFF;
+    --Color-Main-Black: #000000;
+
 
     --Color-Accent-like: #F86627;
 
@@ -224,6 +228,9 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-Tint-orange: #F28C1D40;
 
     --Color-Main-Active: #FFEAD3;
+    --Color-Main-Orange: #FF9522;
+    --Color-Main-White: #FFFFFF;
+    --Color-Main-Black: #000000;
 
     --Color-Accent-like: #F86627;
 
