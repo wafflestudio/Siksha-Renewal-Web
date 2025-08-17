@@ -11,8 +11,7 @@ export default function UseCurrentTheme() {
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   const defaultProfileURL = () => {
-    if (!mounted) return "/img/default-profile.svg";
-    return currentTheme === "dark" ? "/img/default-profile-dark.svg" : "/img/default-profile.svg";
+    return "/img/default-profile.svg";
   };
 
   return {
