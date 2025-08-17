@@ -31,12 +31,12 @@ export default function MobileNavigationBar() {
     isFilterFavorite === true
       ? "favorite"
       : addr === "/" || addr?.startsWith("/menu")
-        ? "menu"
-        : addr?.startsWith("/community")
-          ? "community"
-          : addr?.startsWith("/account")
-            ? "account"
-            : null;
+      ? "menu"
+      : addr?.startsWith("/community")
+      ? "community"
+      : addr?.startsWith("/account")
+      ? "account"
+      : null;
 
   if (!rootElement) return null;
 
@@ -109,7 +109,7 @@ const IconWrapper = styled.div<{ $isActive: boolean }>`
   width: 36px;
   height: 36px;
   color: ${({ $isActive }) =>
-    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
 
   display: flex;
   align-items: center;
@@ -129,7 +129,7 @@ const NavName = styled.div<{ $isActive: boolean }>`
   text-align: center;
   vertical-align: middle;
   color: ${({ $isActive }) =>
-    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
 `;
 
 const IconLabel = styled.div<{ isActive: boolean }>`
