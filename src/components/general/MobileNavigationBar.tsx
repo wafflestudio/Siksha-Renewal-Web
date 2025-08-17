@@ -92,7 +92,8 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 83px;
-  background-color: var(--SemanticColor-Background-Primary, #fff);
+  background-color: var(--SemanticColor-Background-Secondary);
+  border-top: 1px solid var(--Color-Foundation-gray-500);
   z-index: 1;
 
   @media (max-width: 768px) {
