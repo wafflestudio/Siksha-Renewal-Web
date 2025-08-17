@@ -53,6 +53,15 @@ export default function Account() {
           <DefaultText>내가 찜한 메뉴</DefaultText>
           <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/myreview");
+          }}
+        >
+          <DefaultText>나의 평가 관리</DefaultText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+        </ContentDiv>
       </ListGroup>
       <ListGroup>
         <ContentDiv
