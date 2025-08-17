@@ -18,10 +18,10 @@ export default function FestivalToggle() {
   return (
     isFestivalDate && (
       <ToggleWrapper onClick={() => setActive(!active)}>
-        <ToggleContainer active={active}>
+        <ToggleContainer $active={active}>
           <ToggleCircle />
         </ToggleContainer>
-        <ToggleText active={active}>축제</ToggleText>
+        <ToggleText $active={active}>축제</ToggleText>
       </ToggleWrapper>
     )
   );
@@ -45,19 +45,19 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const ToggleContainer = styled.div<{ active: boolean }>`
+const ToggleContainer = styled.div<{ $active: boolean }>`
   width: 80.206px;
   height: 34.864px;
   box-sizing: border-box;
   border-radius: 17.432px;
-  background-color: ${({ active }) =>
-    active
+  background-color: ${({ $active }) =>
+    $active
       ? `var(--Color-Foundation-orange-500, #FF9522)`
       : `var(--Grey-3, var(--Color-Foundation-gray-500))`}; // 주황색 / 회색
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  justify-content: ${({ active }) => (active ? "flex-end" : "flex-start")};
+  justify-content: ${({ $active }) => ($active ? "flex-end" : "flex-start")};
   padding: 2.14px 2.49px 2.14px 2.88px;
   cursor: pointer;
 
@@ -79,11 +79,11 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   }
 `;
 
-const ToggleText = styled.span<{ active: boolean }>`
+const ToggleText = styled.span<{ $active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: ${({ active }) => (active ? "11.7px" : "39.28px")};
+  margin-left: ${({ $active }) => ($active ? "11.7px" : "39.28px")};
 
   color: var(--Color-Foundation-base-white);
   text-align: center;
@@ -100,7 +100,7 @@ const ToggleText = styled.span<{ active: boolean }>`
   @media (max-width: 768px) {
     font-size: 9px;
     letter-spacing: -0.3px;
-    margin-left: ${({ active }) => (active ? "6.5px" : "21.83px")};
+    margin-left: ${({ $active }) => ($active ? "6.5px" : "21.83px")};
   }
 `;
 

@@ -88,8 +88,8 @@ export default function MobileFilterPriceBottomSheet({
         }}
       />
 
-      <div style={{ height: 58 }} />
-      <FilterActionSection marginBottom="19">
+      <div style={{ height: 67 }} />
+      <FilterActionSection $marginBottom="45">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

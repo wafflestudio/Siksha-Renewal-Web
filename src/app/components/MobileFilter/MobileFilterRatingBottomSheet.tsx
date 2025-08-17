@@ -91,8 +91,8 @@ export default function MobileFilterRatingBottomSheet({
           setRatingMin(Number(id));
         }}
       />
-      <div style={{ height: 35.7 }} />
-      <FilterActionSection marginBottom="19">
+      <div style={{ height: 36 }} />
+      <FilterActionSection $marginBottom="45">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

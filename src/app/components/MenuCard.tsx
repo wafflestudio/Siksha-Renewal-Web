@@ -69,9 +69,9 @@ export default function MenuCard({ data }: { data: Data }) {
             />
             <HeaderDataList>
               <HeaderDataText>Price</HeaderDataText>
-              <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
-              <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
-              <HeaderDataText disableWidth={1000}>Review</HeaderDataText>
+              <HeaderDataText $disableWidth={900}>Rate</HeaderDataText>
+              <HeaderDataText $shrinkWidth={900}>Like</HeaderDataText>
+              <HeaderDataText $disableWidth={1000}>Review</HeaderDataText>
             </HeaderDataList>
           </InfoContainer>
         </HeaderContainer>
@@ -239,7 +239,7 @@ const HeaderDataList = styled.div`
   }
 `;
 
-const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
+const HeaderDataText = styled.p<{ $disableWidth?: number; $shrinkWidth?: number }>`
   width: 58px;
   color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
@@ -253,11 +253,11 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
 
   margin: 0;
 
-  @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
+  @media ${(props) => `(max-width: ${props.$shrinkWidth ?? 0}px)`} {
     width: 24px;
   }
 
-  @media ${(props) => `(max-width: ${props.disableWidth ?? 0}px)`} {
+  @media ${(props) => `(max-width: ${props.$disableWidth ?? 0}px)`} {
     display: none;
   }
 

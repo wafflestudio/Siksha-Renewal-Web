@@ -76,30 +76,20 @@ export default function MobileBottomSheet({
 
   return (
     <>
-      <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
-      <BottomSheetWrapper isVisible={isOpen} translateY={translateY} isAnimating={isAnimating}>
-        {showHandle ? (
-          <BottomSheetHandle onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
-            <div
-              style={{
-                width: "46px",
-                height: "4px",
-                backgroundColor: "var(--Color-Foundation-gray-200, #E5E6E9)",
-                borderRadius: "2px",
-              }}
-            />
-          </BottomSheetHandle>
-        ) : (
-          <div style={{ marginBottom: 16 }} />
-        )}
-        <CloseButton onClick={onClose} showHandle={showHandle} />
-        <BottomSheetContent headerHeight={headerHeight}>{children}</BottomSheetContent>
+      <BottomSheetBackdrop onClick={onClose} $isVisible={isOpen} />
+      <BottomSheetWrapper $isVisible={isOpen}>
+        {slideBar && <BottomSheetSlideBar />}
+        <BottomSheetContent>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
   );
 }
 
-const BottomSheetBackdrop = styled.div<{ isVisible: boolean }>`
+interface BottomSheetBackdropProps {
+  $isVisible: boolean;
+}
+
+const BottomSheetBackdrop = styled.div<BottomSheetBackdropProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -107,8 +97,7 @@ const BottomSheetBackdrop = styled.div<{ isVisible: boolean }>`
   right: 0;
   background-color: ${({ isVisible }) => (isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
   z-index: 99;
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
-  transition: background-color 0.3s ease-in-out;
+  display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 
 const BottomSheetSlideBar = styled.div`
@@ -141,9 +130,7 @@ const BottomSheetContent = styled.div<{ headerHeight: number }>`
 `;
 
 interface BottomSheetWrapperProps {
-  isVisible: boolean;
-  translateY: number;
-  isAnimating: boolean;
+  $isVisible: boolean;
 }
 
 const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
@@ -157,8 +144,5 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   transition: transform 0.3s ease-in-out;
-  transform: translateY(${({ translateY }) => translateY}px);
-  transition: ${({ isAnimating }) => (isAnimating ? "transform 0.3s ease" : "none")};
-  will-change: transform;
-  touch-action: none;
+  transform: ${({ $isVisible }) => ($isVisible ? "translateY(0)" : "translateY(100%)")};
 `;

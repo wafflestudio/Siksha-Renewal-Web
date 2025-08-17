@@ -148,14 +148,17 @@ export default function MobileFilterBar() {
         <IconBox>
           <StyledFilterIcon aria-label="필터 아이콘" onClick={() => setFilterState("all", true)} />
         </IconBox>
-        <Button isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
-          <ButtonText isActive={isSet.length}>
+        <Button $isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
+          <ButtonText $isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button isActive={isSet.priceMin || isSet.priceMax} onClick={handlePriceFilterOpen}>
-          <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
+        <Button
+          $isActive={isSet.priceMin || isSet.priceMax}
+          onClick={() => setFilterState("price", true)}
+        >
+          <ButtonText $isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
               ? `${filterList.priceMin}원 ~ ${
                 isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
@@ -164,23 +167,23 @@ export default function MobileFilterBar() {
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
+        <Button $isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
           {isSet.isAvailableOnly && <StyledCheckIcon />}
-          <ButtonText isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
+          <ButtonText $isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
         </Button>
-        <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
+        <Button $isActive={isSet.isReview} onClick={handleOnClickIsReview}>
           {isSet.isReview && <StyledCheckIcon />}
-          <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
+          <ButtonText $isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
-        <Button isActive={isSet.ratingMin} onClick={handleRatingFilterOpen}>
-          <ButtonText isActive={isSet.ratingMin}>
-            {isSet.ratingMin ? `평점 ${filterList.ratingMin.toFixed(1)} 이상` : "최소 평점"}
+        <Button $isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
+          <ButtonText $isActive={isSet.ratingMin}>
+            {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        {/* <Button isActive={isSet.category}>
-          <ButtonText isActive={isSet.category}>
+        {/* <Button $isActive={isSet.category}>
+          <ButtonText $isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
@@ -202,7 +205,7 @@ const Container = styled.div`
   background-color: var(--Color-Background-main);
 `;
 
-const Button = styled.button<{ isActive?: boolean }>`
+const Button = styled.button<{ $isActive?: boolean }>`
   display: flex;
   flex: 0 0 auto;
   height: 34px;
@@ -214,20 +217,20 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-    props.isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
+    props.$isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
   background-color: ${(props) =>
-    props.isActive
+    props.$isActive
       ? "var(--Color-Foundation-Tint-orange)"
       : "var(--SemanticColor-Background-Secondary)"};
 
   font-family: NanumSquare_ac;
 `;
 
-const ButtonText = styled.span<{ isActive?: boolean }>`
+const ButtonText = styled.span<{ $isActive?: boolean }>`
   color: var(--Color-Foundation-base-black);
   font-size: 13px;
   font-style: normal;
-  font-weight: ${(props) => (props.isActive ? 700 : 400)};
+  font-weight: ${(props) => (props.$isActive ? 700 : 400)};
   line-height: 20px;
 `;
 

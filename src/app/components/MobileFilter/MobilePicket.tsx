@@ -10,20 +10,20 @@ interface PicketProps {
 export default function MobilePicket({ bodyPos, tailPos, text, ref }: PicketProps) {
   return (
     <>
-      <PicketBox left={bodyPos ?? 0} ref={ref}>
+      <PicketBox $left={bodyPos ?? 0} ref={ref}>
         <PicketText>{text}</PicketText>
       </PicketBox>
-      <StyledPicketBottom left={tailPos ?? 0} />
+      <StyledPicketBottom $left={tailPos ?? 0} />
     </>
   );
 }
 
-const PicketBox = styled.div<{ left: number }>`
+const PicketBox = styled.div<{ $left: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
-  left: ${(props) => `${props.left}%`};
+  left: ${(props) => `${props.$left}%`};
   transform: translateX(-50%);
   top: -40px;
 `;
@@ -51,9 +51,9 @@ const PicketText = styled.div`
   height: 25px;
 `;
 
-const StyledPicketBottom = styled(PicketBottomIcon)<{ left: number }>`
+const StyledPicketBottom = styled(PicketBottomIcon)<{ $left: number }>`
   position: absolute;
-  left: ${(props) => `${props.left}%`}; // hardcoded 3px to center the image
+  left: ${(props) => `${props.$left}%`}; // hardcoded 3px to center the image
   transform: translateX(-50%);
   top: -15px;
   width: 6px;

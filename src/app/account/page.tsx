@@ -150,19 +150,19 @@ const ArrowButtonWrapper = styled.div`
 
 const CheckButton = ({ isActive, onClick }: { isActive: boolean; onClick: () => void }) => {
   return (
-    <CheckButtonWrapper isActive={isActive} onClick={onClick}>
+    <CheckButtonWrapper $isActive={isActive} onClick={onClick}>
       <HideCircleIcon />
     </CheckButtonWrapper>
   );
 };
 
-const CheckButtonWrapper = styled.div<{ isActive: boolean }>`
+const CheckButtonWrapper = styled.div<{ $isActive: boolean }>`
   width: 19px;
   height: 19px;
   margin-right: 12.22px;
   margin-left: auto;
-  color: ${({ isActive }) =>
-    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
   @media (max-width: 768px) {
     margin-right: 15.5px;
   }

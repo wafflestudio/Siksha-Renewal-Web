@@ -20,10 +20,10 @@ export default function Meal() {
         const isActive = meal === key;
         return (
           <MealButton key={key} onClick={() => setMeal(key)}>
-            <MealIcon isActive={isActive}>
+            <MealIcon $isActive={isActive}>
               <Icon aria-label={label} />
             </MealIcon>
-            <MealText active={isActive}>{label}</MealText>
+            <MealText $isActive={isActive}>{label}</MealText>
           </MealButton>
         );
       })}
@@ -60,12 +60,12 @@ const MealButton = styled.div`
   }
 `;
 
-const MealIcon = styled.div<{ isActive: boolean }>`
+const MealIcon = styled.div<{ $isActive: boolean }>`
   width: 30px;
   height: 30px;
   padding-bottom: 2px;
-  color: ${({ isActive }) =>
-    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
   @media (max-width: 768px) {
     width: 20px;
@@ -74,9 +74,9 @@ const MealIcon = styled.div<{ isActive: boolean }>`
   }
 `;
 
-const MealText = styled.div<{ active: boolean }>`
-  color: ${(props: { active: boolean }) =>
-    props.active ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+const MealText = styled.div<{ $isActive: boolean }>`
+  color: ${(props: { $isActive: boolean }) =>
+    props.$isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
   text-align: center;
   font-size: 13px;
