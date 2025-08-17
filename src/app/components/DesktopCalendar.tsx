@@ -39,11 +39,11 @@ export default function DesktopCalendar() {
 
   return (
     <Container>
-      <Navigation isCalOpened={isCalOpened}>
+      <Navigation $isCalOpened={isCalOpened}>
         <StyledLeftArrowIcon onClick={movePrevDay} aria-label="지난날로 이동" color="gray" />
         <DateBox onClick={toggleCal}>
           <StyledCalendarIcon />
-          <DateText color={"var(--Color-Foundation-gray-900)"} lineHeight={"150%"}>
+          <DateText color={"var(--Color-Foundation-gray-900)"} $lineHeight={"150%"}>
             {formatDate(date)}
           </DateText>
         </DateBox>
@@ -52,7 +52,7 @@ export default function DesktopCalendar() {
       {isCalOpened && (
         <Calendar>
           <Header>
-            <DateText color={"var(--Color-Foundation-orange-500)"} lineHeight={"140%"}>
+            <DateText color={"var(--Color-Foundation-orange-500)"} $lineHeight={"140%"}>
               {formatMonth(date)}
             </DateText>
             <ArrowBox>
@@ -104,7 +104,7 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const Navigation = styled.div<{ isCalOpened: boolean }>`
+const Navigation = styled.div<{ $isCalOpened: boolean }>`
   display: flex;
   padding: 13px 16px;
   justify-content: space-between;
@@ -112,7 +112,7 @@ const Navigation = styled.div<{ isCalOpened: boolean }>`
   align-self: stretch;
   border-radius: 10px;
   background: var(--SemanticColor-Background-Secondary);
-  box-shadow: ${(props) => (props.isCalOpened ? "0px 0px 10px 0px rgba(0, 0, 0, 0.1)" : "none")};
+  box-shadow: ${(props) => (props.$isCalOpened ? "0px 0px 10px 0px rgba(0, 0, 0, 0.1)" : "none")};
 `;
 
 const Calendar = styled.div`
@@ -152,11 +152,11 @@ const Header = styled.div`
   align-self: stretch;
 `;
 
-const DateText = styled.div<{ color: string; lineHeight: string }>`
+const DateText = styled.div<{ color: string; $lineHeight: string }>`
   color: ${(props) => props.color};
   font-size: var(--Font-size-16, 16px);
   font-weight: var(--Font-weight-extrabold, 800);
-  line-height: ${(props) => props.lineHeight};
+  line-height: ${(props) => props.$lineHeight};
 `;
 
 const ArrowBox = styled.div`

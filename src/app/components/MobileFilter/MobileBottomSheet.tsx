@@ -15,8 +15,8 @@ export default function MobileBottomSheet({
 }: MobileBottomSheetProps) {
   return (
     <>
-      <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
-      <BottomSheetWrapper isVisible={isOpen}>
+      <BottomSheetBackdrop onClick={onClose} $isVisible={isOpen} />
+      <BottomSheetWrapper $isVisible={isOpen}>
         {slideBar && <BottomSheetSlideBar />}
         <BottomSheetContent>{children}</BottomSheetContent>
       </BottomSheetWrapper>
@@ -25,7 +25,7 @@ export default function MobileBottomSheet({
 }
 
 interface BottomSheetBackdropProps {
-  isVisible: boolean;
+  $isVisible: boolean;
 }
 
 const BottomSheetBackdrop = styled.div<BottomSheetBackdropProps>`
@@ -36,7 +36,7 @@ const BottomSheetBackdrop = styled.div<BottomSheetBackdropProps>`
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99;
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
+  display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 
 const BottomSheetSlideBar = styled.div`
@@ -56,7 +56,7 @@ const BottomSheetContent = styled.div`
 `;
 
 interface BottomSheetWrapperProps {
-  isVisible: boolean;
+  $isVisible: boolean;
 }
 
 const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
@@ -71,5 +71,5 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   z-index: 100;
   padding-top: 16px;
   transition: transform 0.3s ease-in-out;
-  transform: ${({ isVisible }) => (isVisible ? "translateY(0)" : "translateY(100%)")};
+  transform: ${({ $isVisible }) => ($isVisible ? "translateY(0)" : "translateY(100%)")};
 `;

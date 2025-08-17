@@ -9,15 +9,15 @@ export default function OperatingHour({ type, hour }: { type: string; hour: stri
       {hour && (
         <>
           {type == "BR" ? (
-            <IconWrapper mobileWidth={14.1}>
+            <IconWrapper $mobileWidth={14.1}>
               <BreakfastIcon aria-label="아침" />
             </IconWrapper>
           ) : type == "LU" ? (
-            <IconWrapper mobileWidth={16}>
+            <IconWrapper $mobileWidth={16}>
               <LunchIcon aria-label="점심" />
             </IconWrapper>
           ) : (
-            <IconWrapper mobileWidth={12}>
+            <IconWrapper $mobileWidth={12}>
               <DinnerIcon aria-label="저녁" />
             </IconWrapper>
           )}
@@ -41,13 +41,13 @@ const HourText = styled.div`
   color: var(--Color-Foundation-gray-600);
 `;
 
-const IconWrapper = styled.div<{ mobileWidth: number }>`
+const IconWrapper = styled.div<{ $mobileWidth: number }>`
   width: 20px;
   height: 20px;
   color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
-    width: ${(props) => `${props.mobileWidth}px`};
+    width: ${(props) => `${props.$mobileWidth}px`};
   }
   & > svg {
     width: 100%;

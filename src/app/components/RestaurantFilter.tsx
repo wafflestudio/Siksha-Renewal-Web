@@ -95,7 +95,7 @@ export default function RestaurantFilter() {
       <Filter>
         <SliderBox>
           <SliderContent>
-            <ContentBar gap={16} alignItems="end">
+            <ContentBar $gap={16} $alignItems="end">
               <FilterText>거리</FilterText>
               <WebDistanceSlider
                 length={selectedFilters.length}
@@ -104,7 +104,7 @@ export default function RestaurantFilter() {
             </ContentBar>
           </SliderContent>
           <SliderContent>
-            <ContentBar gap={16} alignItems="end">
+            <ContentBar $gap={16} $alignItems="end">
               <FilterText>가격</FilterText>
               <WebPriceSlider
                 priceRange={[selectedFilters.priceMin, selectedFilters.priceMax]}
@@ -113,63 +113,63 @@ export default function RestaurantFilter() {
             </ContentBar>
           </SliderContent>
         </SliderBox>
-        <ContentBar gap={12}>
+        <ContentBar $gap={12}>
           <FilterText>영업시간</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={!selectedFilters.isAvailableOnly}
+              $active={!selectedFilters.isAvailableOnly}
               onClick={() => handleButtonClick("isAvailableOnly", false)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedFilters.isAvailableOnly}
+              $active={selectedFilters.isAvailableOnly}
               onClick={() => handleButtonClick("isAvailableOnly", true)}
             >
               영업 중
             </FilterButton>
           </ButtonGroup>
         </ContentBar>
-        <ContentBar gap={12}>
+        <ContentBar $gap={12}>
           <FilterText>리뷰 유무</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={!selectedFilters.isReview}
+              $active={!selectedFilters.isReview}
               onClick={() => handleButtonClick("isReview", false)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedFilters.isReview}
+              $active={selectedFilters.isReview}
               onClick={() => handleButtonClick("isReview", true)}
             >
               리뷰 있음
             </FilterButton>
           </ButtonGroup>
         </ContentBar>
-        <ContentBar gap={12}>
+        <ContentBar $gap={12}>
           <FilterText>최소 평점</FilterText>
           <ButtonGroup>
             <FilterButton
-              active={![3.5, 4, 4.5].includes(selectedFilters.ratingMin)}
+              $active={![3.5, 4, 4.5].includes(selectedFilters.ratingMin)}
               onClick={() => handleButtonClick("ratingMin", 0)}
             >
               전체
             </FilterButton>
             <FilterButton
-              active={selectedFilters.ratingMin === 3.5}
+              $active={selectedFilters.ratingMin === 3.5}
               onClick={() => handleButtonClick("ratingMin", 3.5)}
             >
               3.5
             </FilterButton>
             <FilterButton
-              active={selectedFilters.ratingMin === 4}
+              $active={selectedFilters.ratingMin === 4}
               onClick={() => handleButtonClick("ratingMin", 4)}
             >
               4.0
             </FilterButton>
             <FilterButton
-              active={selectedFilters.ratingMin === 4.5}
+              $active={selectedFilters.ratingMin === 4.5}
               onClick={() => handleButtonClick("ratingMin", 4.5)}
             >
               4.5
@@ -246,12 +246,12 @@ const SliderContent = styled.div`
   gap: 4px;
 `;
 
-const ContentBar = styled.div<{ gap: number; alignItems?: string }>`
+const ContentBar = styled.div<{ $gap: number; $alignItems?: string }>`
   display: flex;
   flex-direction: row;
-  align-items: ${(props) => props.alignItems ?? "center"};
+  align-items: ${(props) => props.$alignItems ?? "center"};
   justify-content: space-between;
-  gap: ${(props) => props.gap}px;
+  gap: ${(props) => props.$gap}px;
 `;
 
 const FilterText = styled.span`
@@ -273,7 +273,7 @@ const ButtonGroup = styled.span`
   background: var(--SemanticColor-Background-Tertiary);
 `;
 
-const FilterButton = styled.button<{ active?: boolean }>`
+const FilterButton = styled.button<{ $active?: boolean }>`
   display: flex;
   height: 30px;
   flex-direction: column;
@@ -282,15 +282,15 @@ const FilterButton = styled.button<{ active?: boolean }>`
   flex: 1 0 0;
   border-radius: 4px;
   background: ${(props) =>
-    props.active ? "var(--SemanticColor-Background-Quaternary)" : "transparent"};
+    props.$active ? "var(--SemanticColor-Background-Quaternary)" : "transparent"};
 
   color: ${(props) =>
-    props.active
+    props.$active
       ? "var(--Color-Foundation-gray-900, #262728)"
       : "var(--Color-Foundation-gray-600, #989AA0)"};
   font-size: var(--Font-size-12, 12px);
   font-weight: ${(props) =>
-    props.active ? "var(--Font-weight-extrabold, 800)" : "var(--Font-weight-bold, 700)"};
+    props.$active ? "var(--Font-weight-extrabold, 800)" : "var(--Font-weight-bold, 700)"};
   line-height: 140%;
   text-align: center;
 `;
