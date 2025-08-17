@@ -69,7 +69,7 @@ export default function MobileFilterRatingBottomSheet({
         }}
       />
       <div style={{ height: 36 }} />
-      <FilterActionSection marginBottom="45">
+      <FilterActionSection $marginBottom="45">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

@@ -43,7 +43,7 @@ export default function RestaurantList() {
   }, [data, favoriteRestaurants.length]);
 
   return (
-    <Container show={data[meal].length >= 1}>
+    <Container $show={data[meal].length >= 1}>
       <Header>
         <Title>식당 찾기</Title>
         <Pagination>
@@ -51,14 +51,14 @@ export default function RestaurantList() {
             alt="이전 식당 페이지"
             onClick={prevPage}
             style={{ cursor: page === 1 ? "default" : "pointer" }}
-            isActive={page > 1}
+            $isActive={page > 1}
           />
           <Page>{`${page} / ${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
           <StyledRightArrowIcon
             alt="다음 식당 페이지"
             onClick={nextPage}
             style={{ cursor: page === Math.ceil(favoriteFirstRestaurants.length / 10) ? "default" : "pointer" }}
-            isActive={page < Math.ceil(favoriteFirstRestaurants.length / 10)}
+            $isActive={page < Math.ceil(favoriteFirstRestaurants.length / 10)}
           />
         </Pagination>
       </Header>
@@ -90,8 +90,8 @@ export default function RestaurantList() {
   );
 }
 
-const Container = styled.div<{ show: boolean }>`
-  display: ${(props) => (props.show === false ? "none" : "flex")};
+const Container = styled.div<{ $show: boolean }>`
+  display: ${(props) => (props.$show === false ? "none" : "flex")};
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
@@ -193,19 +193,19 @@ const StyledStarIcon = styled(StarIcon)`
   cursor: pointer;
 `;
 
-const StyledLeftArrowIcon = styled(LeftArrowIcon)<{ isActive?: boolean }>`
+const StyledLeftArrowIcon = styled(LeftArrowIcon)<{ $isActive?: boolean }>`
   width: 20px;
   height: 20px;
-  color: ${({ isActive }) => isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
+  color: ${({ $isActive }) => $isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
   fill: var(--SemanticColor-Background-Secondary);
   flex-shrink: 0;
   cursor: pointer;
 `;
 
-const StyledRightArrowIcon = styled(RightArrowIcon)<{ isActive?: boolean }>`
+const StyledRightArrowIcon = styled(RightArrowIcon)<{ $isActive?: boolean }>`
   width: 20px;
   height: 20px;
-  color: ${({ isActive }) => isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
+  color: ${({ $isActive }) => $isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
   fill: var(--SemanticColor-Background-Secondary);
   flex-shrink: 0;
   cursor: pointer;

@@ -12,7 +12,7 @@ interface ButtonGroupProps {
 
 export default function ButtonGroup({ items, onSelect, selectedId }: ButtonGroupProps) {
   return (
-    <ButtonGroupWrapper count={items.length}>
+    <ButtonGroupWrapper $count={items.length}>
       {items.map((item) => {
         const isSelected = item.id === selectedId;
         return isSelected ? (
@@ -29,9 +29,9 @@ export default function ButtonGroup({ items, onSelect, selectedId }: ButtonGroup
   );
 }
 
-const ButtonGroupWrapper = styled.div<{ count: number }>`
+const ButtonGroupWrapper = styled.div<{ $count: number }>`
   display: grid;
-  grid-template-columns: repeat(${(props) => props.count}, 1fr);
+  grid-template-columns: repeat(${(props) => props.$count}, 1fr);
   gap: 10px;
   height: 34px;
   border-radius: 30px;

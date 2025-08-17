@@ -168,7 +168,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <FilterActionSection marginBottom="54" marginTop="19">
+      <FilterActionSection $marginBottom="54" $marginTop="19">
         <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
@@ -202,10 +202,10 @@ const StyledStarIcon = styled(StarFilledIcon)`
   color: var(--SemanticColor-Text-Accent);
 `;
 
-export const FilterActionSection = styled.div<{ marginBottom: string; marginTop?: string }>`
+export const FilterActionSection = styled.div<{ $marginBottom: string; $marginTop?: string }>`
   display: flex;
-  padding-bottom: ${(props) => `${props.marginBottom}px`};
-  padding-top: ${(props) => `${props.marginTop ?? 0}px`};
+  padding-bottom: ${(props) => `${props.$marginBottom}px`};
+  padding-top: ${(props) => `${props.$marginTop ?? 0}px`};
   justify-content: space-between;
   /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
 `;

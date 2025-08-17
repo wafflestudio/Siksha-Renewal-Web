@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import StarIcon from "assets/icons/star-filled.svg";
 
 export default function Stars({ score }: { score: number }) {
@@ -21,13 +21,13 @@ const StarContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 73.18px;
+  width: ${(props) => (props.theme.width ? props.theme.width : 73.18)}px;
   gap: 1px;
 `;
 
 const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
-  width: 14.18px;
-  height: 14.18px;
+  width: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
+  height: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
   color: ${(props) => (props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)")};
 `;
 

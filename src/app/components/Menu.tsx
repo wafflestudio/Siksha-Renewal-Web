@@ -67,7 +67,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
       </MenuName>
       <StyledDotsIcon />
       <MenuInfo>
-        <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
+        <Price $hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
           <StyledLikeIcon
@@ -78,12 +78,12 @@ export default function Menu({ menu }: { menu: RawMenu }) {
               e.stopPropagation();
             }}
           />
-          <CountText disableWith={900}>{likeCount}</CountText>
+          <CountText $disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
           {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
           <StyledCommentIcon $isliked={false} aria-label="댓글" />
-          <CountText disableWith={768}>{reviewCount}</CountText>
+          <CountText $disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
     </Container>
@@ -151,7 +151,7 @@ const StyledDotsIcon = styled(DotsIcon)`
   }
 `;
 
-const Price = styled.div<{ hasPrice: boolean }>`
+const Price = styled.div<{ $hasPrice: boolean }>`
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -174,7 +174,7 @@ const Price = styled.div<{ hasPrice: boolean }>`
     min-width: 28px;
 
     display: flex;
-    justify-content: ${(props) => (props.hasPrice ? "flex-end" : "center")};
+    justify-content: ${(props) => (props.$hasPrice ? "flex-end" : "center")};
 
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
@@ -272,7 +272,7 @@ const StyledCommentIcon = styled(CommentIcon)<{ $isliked: boolean }>`
     $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
-const CountText = styled.div<{ disableWith: number }>`
+const CountText = styled.div<{ $disableWith: number }>`
   font-size: 15px;
   line-height: 17px;
   font-weight: 400;
@@ -283,7 +283,7 @@ const CountText = styled.div<{ disableWith: number }>`
   font-weight: 400;
   line-height: 150%; /* 21px */
 
-  @media (${(props) => `(max-width: ${props.disableWith}px)`}) {
+  @media (${(props) => `(max-width: ${props.$disableWith}px)`}) {
     display: none;
   }
 `;

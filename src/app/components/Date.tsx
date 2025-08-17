@@ -32,7 +32,7 @@ export default function Date() {
   return (
     <Container>
       <ArrowWrapper
-        isActive={!isCalOpened}
+        $isActive={!isCalOpened}
         onClick={() => {
           !isCalOpened && setDate(getYesterday(date));
         }}
@@ -41,7 +41,7 @@ export default function Date() {
       </ArrowWrapper>
       <DateText onClick={onClickDate}>{formatDate(date)}</DateText>
       <ArrowWrapper
-        isActive={!isCalOpened}
+        $isActive={!isCalOpened}
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}
@@ -66,13 +66,13 @@ const Container = styled.div`
   }
 `;
 
-const ArrowWrapper = styled.div<{ isActive: boolean }>`
+const ArrowWrapper = styled.div<{ $isActive: boolean }>`
   width: 10px;
   height: 16px;
   cursor: pointer;
   padding: 0 16px 0 16px;
-  color: ${({ isActive }) =>
-    isActive ? "var(--SemanticColor-Text-Accent)" : "var(--Color-Foundation-gray-400)"};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--SemanticColor-Text-Accent)" : "var(--Color-Foundation-gray-400)"};
 `;
 
 const DateText = styled.div`

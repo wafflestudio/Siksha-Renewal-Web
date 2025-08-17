@@ -77,8 +77,8 @@ interface NavButtonProps {
 const NavButton = ({ isActive, icon, name }: NavButtonProps) => {
   return (
     <>
-      <IconWrapper isActive={isActive}>{icon}</IconWrapper>
-      <NavName isActive={isActive}>{name}</NavName>
+      <IconWrapper $isActive={isActive}>{icon}</IconWrapper>
+      <NavName $isActive={isActive}>{name}</NavName>
     </>
   );
 };
@@ -100,11 +100,11 @@ const Container = styled.div`
   }
 `;
 
-const IconWrapper = styled.div<{ isActive: boolean }>`
+const IconWrapper = styled.div<{ $isActive: boolean }>`
   width: 36px;
   height: 36px;
-  color: ${({ isActive }) =>
-    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
 
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@ const IconWrapper = styled.div<{ isActive: boolean }>`
   flex-direction: column;
 `;
 
-const NavName = styled.div<{ isActive: boolean }>`
+const NavName = styled.div<{ $isActive: boolean }>`
   width: 36;
   height: 10;
   top: 36px;
@@ -123,6 +123,6 @@ const NavName = styled.div<{ isActive: boolean }>`
   letter-spacing: -0.3px;
   text-align: center;
   vertical-align: middle;
-  color: ${({ isActive }) =>
-    isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
 `;
