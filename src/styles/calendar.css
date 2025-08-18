@@ -69,7 +69,7 @@
   margin-bottom: 14px;
 }
 .react-calendar__month-view__weekdays__weekday {
-  color: var(--Color-Foundation-base-black);
+  color: var(--Color-Foundation-gray-600);
   font-size: 13px;
   font-weight: 700;
   line-height: 140%; /* 18.2px */
@@ -84,7 +84,7 @@
 }
 
 .react-calendar__month-view__days__day {
-  color: var(--Color-Foundation-gray-700);
+  color: var(--Color-Foundation-gray-900);
   text-align: center;
   font-size: 14px;
   font-weight: var(--Font-weight-bold, 700);
@@ -132,7 +132,7 @@
   }
 }
 .react-calendar__tile--active {
-  color: var(--SemanticColor-Text-Button); 
+  color: var(--SemanticColor-Text-Button);
   line-height: 150%; /* 21px */
   position: relative;
   z-index: 1;
@@ -151,7 +151,7 @@
   }
 
   &.today {
-    color: var(--SemanticColor-Text-Button); 
+    color: var(--SemanticColor-Text-Button);
     &::before {
       background-color: var(--Color-Foundation-orange-500);
     }
