@@ -168,6 +168,9 @@ const InquireBox = styled.div`
   width: 658px;
   height: 378.11px;
 
+  display: inline-grid;
+  grid-template-areas: "stack";
+
   @media (max-width: 768px) {
     width: calc(100% - 56px);
     margin-left: 28px;
@@ -177,6 +180,7 @@ const InquireBox = styled.div`
 `;
 
 const TextArea = styled.textarea`
+  grid-area: stack;
   width: 100%;
   height: 100%;
   padding: 15.73px 16px;
@@ -185,6 +189,9 @@ const TextArea = styled.textarea`
   border: 0;
   border-radius: 6px;
   resize: none;
+  &::placeholder {
+    color: var(--SemanticColor-Text-Bubble);
+  }
 
   &::placeholder {
     color: #989aa0;
@@ -200,20 +207,17 @@ const TextArea = styled.textarea`
 `;
 
 const WordCnt = styled.div`
-  width: 650px;
-  margin-top: -26.46px;
-  padding-right: 35.95px;
+  grid-area: stack;
+  align-self: end;
+  justify-self: end;
+  /* width: 650px; */
+  margin-right: 8px;
+  margin-bottom: 16px;
   text-align: right;
   font-size: 13px;
   font-weight: 400;
   line-height: 12.48px;
   color: var(--Color-Foundation-gray-700);
-
-  @media (max-width: 768px) {
-    position: absolute;
-    right: 0;
-    padding-right: 35px;
-  }
 `;
 const ButtonBox = styled.div`
   display: flex;
