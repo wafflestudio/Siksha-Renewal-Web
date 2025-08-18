@@ -67,7 +67,7 @@ export default function Inquiry() {
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} />
+          <TextArea value={voc} onChange={handleTextAreaChange} placeholder="내용을 입력해주세요" />
           <WordCnt>{`${voc.length} 자 / 500 자`}</WordCnt>
         </InquireBox>
         <ButtonBox>
@@ -157,6 +157,9 @@ const InquireBox = styled.div`
   width: 658px;
   height: 378.11px;
 
+  display: inline-grid;
+  grid-template-areas: "stack";
+
   @media (max-width: 768px) {
     width: calc(100% - 56px);
     margin-left: 28px;
@@ -165,6 +168,7 @@ const InquireBox = styled.div`
   }
 `;
 const TextArea = styled.textarea`
+  grid-area: stack;
   width: 100%;
   height: 100%;
   padding: 15.73px 16px;
@@ -173,26 +177,26 @@ const TextArea = styled.textarea`
   border: 0;
   border-radius: 8px;
   resize: none;
+  &::placeholder {
+    color: var(--SemanticColor-Text-Bubble);
+  }
 
   &:focus {
     outline: none;
   }
 `;
 const WordCnt = styled.div`
-  width: 650px;
-  margin-top: -26.46px;
-  padding-right: 35.95px;
+  grid-area: stack;
+  align-self: end;
+  justify-self: end;
+  /* width: 650px; */
+  margin-right: 8px;
+  margin-bottom: 16px;
   text-align: right;
   font-size: 11px;
   font-weight: 400;
   line-height: 12.48px;
   color: var(--Color-Foundation-gray-700);
-
-  @media (max-width: 768px) {
-    position: absolute;
-    right: 0;
-    padding-right: 35px;
-  }
 `;
 const ButtonBox = styled.div`
   display: flex;
