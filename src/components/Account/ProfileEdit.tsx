@@ -65,8 +65,8 @@ export default function ProfileEdit(props: ProfileEditProps) {
             changeToDefaultImage
               ? defaultProfileURL
               : imageBlob
-                ? URL.createObjectURL(imageBlob)
-                : userInfo?.image ?? defaultProfileURL
+              ? URL.createObjectURL(imageBlob)
+              : userInfo?.image ?? defaultProfileURL
           }
           alt="프로필 사진"
         />
@@ -166,7 +166,7 @@ const InputBox = styled.label`
   justify-content: space-between;
   align-items: center;
   margin: 36.51px 22.48px 36.51px 22.48px;
-  border: 1px solid var(--Color-Foundation-gray-200);
+  border: 1px solid var(--SemanticColor-Border-Secondary);
   border-radius: 8px;
   padding-left: 14px;
 

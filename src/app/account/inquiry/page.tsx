@@ -51,7 +51,11 @@ export default function Inquiry() {
 
   return (
     <>
-      <MobileSubHeader title="1:1 문의하기" handleBack={() => router.push("/account")} />
+      <MobileSubHeader
+        title="1:1 문의하기"
+        containerColor="secondary"
+        handleBack={() => router.push("/account")}
+      />
       <Container>
         <Title>1:1 문의하기</Title>
         <MobileBox>
@@ -72,10 +76,7 @@ export default function Inquiry() {
         </InquireBox>
         <ButtonBox>
           <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
-          <ButtonConfirm onClick={handlePost}>
-            <DesktopText>등록</DesktopText>
-            <MobileText>완료</MobileText>
-          </ButtonConfirm>
+          <ButtonConfirm onClick={handlePost}>완료</ButtonConfirm>
         </ButtonBox>
       </Container>
     </>
@@ -84,8 +85,7 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: var(--SemanticColor-Background-Primary);
-  border: 1px solid #e8e8e8;
+  background-color: var(--SemanticColor-Background-Secondary);
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -100,7 +100,7 @@ const Title = styled.div`
   margin: 24.04px 0 0 23.5px;
   font-size: 20px;
   font-weight: 700;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-gray-900);
 
   @media (max-width: 768px) {
     display: none;
@@ -181,7 +181,7 @@ const TextArea = styled.textarea`
   height: 100%;
   padding: 15.73px 16px;
   box-sizing: border-box;
-  background-color: var(--Color-Foundation-gray-50);
+  background-color: var(--SemanticColor-Background-Tertiary);
   border: 0;
   border-radius: 6px;
   resize: none;
@@ -206,9 +206,8 @@ const WordCnt = styled.div`
   text-align: right;
   font-size: 13px;
   font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: -0.3px;
-  color: #727478;
+  line-height: 12.48px;
+  color: var(--Color-Foundation-gray-700);
 
   @media (max-width: 768px) {
     position: absolute;
@@ -242,8 +241,8 @@ const Button = styled.div`
 `;
 
 const ButtonCancel = styled(Button)`
-  background-color: #eeeeee;
-  color: #8e8e8e;
+  background-color: var(--SemanticColor-Background-Tertiary);
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     display: none;
