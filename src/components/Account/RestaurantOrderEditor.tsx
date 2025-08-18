@@ -115,8 +115,8 @@ const DragZone = styled.div`
   }
 `;
 const DragContainer = styled.div<{ dragging: boolean }>`
-  &:hover {
-    background-color: var(--Color-Foundation-gray-100);
+  &:focus {
+    background-color: transparent;
   }
 `;
 
@@ -142,6 +142,12 @@ const Restaurant = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  min-width: 0;
 
   @media (max-width: 768px) {
     font-size: 15px;
