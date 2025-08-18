@@ -146,7 +146,6 @@ const ListGroup = styled.div<{ isLast?: boolean }>`
   background-color: var(--SemanticColor-Background-Secondary);
   width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid var(--SemanticColor-Border-Primary);
   border-radius: 8px;
 
   @media (max-width: 768px) {

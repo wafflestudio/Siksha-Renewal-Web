@@ -51,10 +51,9 @@ export default function MyPost() {
 const Container = styled.div`
   padding: 0 18.5px;
   width: 701px;
-  background: var(--SemanticColor-Background-Primary);
-  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   box-sizing: border-box;
+  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -65,7 +64,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   margin: 24.08px 0 29.42px 4.5px;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-gray-900);
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
@@ -92,5 +91,5 @@ const BreakLine = styled.hr`
   margin-bottom: 29.4px;
   border: 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-100);
+  background: var(--Color-Foundation-gray-500);
 `;

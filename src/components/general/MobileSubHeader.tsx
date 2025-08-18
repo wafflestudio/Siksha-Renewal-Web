@@ -5,18 +5,20 @@ import { Board as BoardType, RawBoard } from "types";
 import { getBoardList } from "utils/api/community";
 import { boardParser } from "utils/DataUtil";
 import LeftArrowMobileIcon from "assets/icons/left-arrow-mobile.svg";
+import { BackgroundColor } from "styles/styled";
 
 export default function MobileSubHeader({
   title,
   selectedBoardId,
   handleBack,
+  containerColor = "secondary",
 }: {
   title?: string;
   selectedBoardId?: number;
   handleBack: () => void;
+  containerColor?: BackgroundColor;
 }) {
   const [boards, setBoards] = useState<BoardType[]>([]);
-
   useEffect(() => {
     function setParsedBoards(board: RawBoard) {
       setBoards((prev) => [...prev, boardParser(board)]);
@@ -38,7 +40,7 @@ export default function MobileSubHeader({
 
   if (rootElement)
     return createPortal(
-      <MobileHeader>
+      <MobileHeader $containercolor={containerColor}>
         <BackButton onClick={handleBack} aria-label="뒤로 가기" />
         <Title>{title || boardTitle}</Title>
       </MobileHeader>,
@@ -46,12 +48,15 @@ export default function MobileSubHeader({
     );
 }
 
-const MobileHeader = styled.div`
+const MobileHeader = styled.div<{ $containercolor?: BackgroundColor }>`
   display: none;
   font-size: 20px;
   margin: 0;
   top: 0;
-  background: var(--SemanticColor-Background-Secondary);
+  background: ${({ $containercolor }) =>
+    $containercolor === "secondary"
+      ? "var(--SemanticColor-Background-GNB-Secondary)"
+      : "var(--SemanticColor-Background-GNB)"};
   position: absolute;
   width: 100%;
   height: 44px;
@@ -68,7 +73,7 @@ const BackButton = styled(LeftArrowMobileIcon)`
   width: 10px;
   height: 16px;
   left: 16px;
-  color: var(--SemanticColor-Background-Secondary);
+  color: var(--Color-Static-White);
   cursor: pointer;
 `;
 
