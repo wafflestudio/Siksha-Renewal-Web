@@ -75,7 +75,7 @@ const MenuInfo = styled.div`
 
   border-radius: 8px;
   border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
-  background: var(--SementicColor-Element-Tooltip2, #FFF);
+  background: var(--SemanticColor-Element-Tooltip2, #FFF);
 `;
 
 const MenuHeader = styled.div`
