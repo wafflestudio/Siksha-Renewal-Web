@@ -27,7 +27,7 @@ export default function Account() {
   const nickname = userInfo?.nickname;
 
   return (
-    <>
+    <Container>
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -97,7 +97,7 @@ export default function Account() {
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
-    </>
+    </Container>
   );
 }
 
@@ -118,6 +118,12 @@ const ArrowButtonWrapper = styled.div`
 
   @media (max-width: 768px) {
     margin-right: 13.75px;
+  }
+`;
+
+const Container = styled.div`
+  @media (max-width: 768px) {
+    padding-top: 24px;
   }
 `;
 

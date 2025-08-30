@@ -74,6 +74,7 @@ const Container = styled.div`
   border-radius: 8px;
 
   @media (max-width: 768px) {
+    margin-top: 24px;
     width: calc(100dvw - 40px);
   }
 `;

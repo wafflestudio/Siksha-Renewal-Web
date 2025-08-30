@@ -61,12 +61,12 @@ const Container = styled.div`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: var(--Color-Foundation-gray-500);
+    background-color: var(--SemanticColor-Border-Secondary);
     transform: translateX(-50%);
-
     @media (max-width: 768px) {
+      /* display: none; */
       width: calc(100% + 25px);
-      background-color: var(--Color-Foundation-gray-500);
+      background-color: var(--Color-Foundation-gray-100);
     }
   }
 `;
