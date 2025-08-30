@@ -13,6 +13,7 @@ export default function AccountLayout({ children }) {
     mypost: "secondary",
     inquiry: "secondary",
     restaurant: "secondary",
+    user: "secondary",
   };
   const containerColor = colorMap[sub];
 

@@ -60,6 +60,7 @@ const Container = styled.div<{ $isEmpty: boolean }>`
   background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
+    padding-top: 16px;
     width: 100%;
     padding-top: 16px;
     height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
@@ -96,5 +97,5 @@ const BreakLine = styled.hr`
   margin-bottom: 29.4px;
   border: 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-500);
+  background: var(--Color-Foundation-gray-100);
 `;

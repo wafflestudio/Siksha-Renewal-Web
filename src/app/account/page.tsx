@@ -148,6 +148,12 @@ const ArrowButtonWrapper = styled.div`
   }
 `;
 
+const Container = styled.div`
+  @media (max-width: 768px) {
+    padding-top: 24px;
+  }
+`;
+
 const CheckButton = ({ isActive, onClick }: { isActive: boolean; onClick: () => void }) => {
   return (
     <CheckButtonWrapper $isActive={isActive} onClick={onClick}>
