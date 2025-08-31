@@ -25,7 +25,7 @@ export function PostList({ posts, fetch }: PropsPostList) {
         // available(신고 많이 받으면 false)한 경우만 보여지게 합니다.
         posts
           .filter((post) => post.available === true)
-          .map((post, i) => <Post key={i} post={post} />)
+          .map((post, i) => <Post key={i} post={post} isFirst={i === 0} />)
       ) : (
         <>
           {isLoading ? (
