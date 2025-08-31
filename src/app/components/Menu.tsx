@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import useLikedMenus from "hooks/UseLikedMenus";
 import { RawMenu } from "types";
 
 export default function Menu({ menu }: { menu: RawMenu }) {
@@ -19,6 +20,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
+  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
   const { openLoginModal } = useModals();
 
   useEffect(() => {
@@ -51,6 +53,12 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
+          // Update local storage
+          if (isLiked) {
+            addLikedMenu(menu.id);
+          } else {
+            removeLikedMenu(menu.id);
+          }
         })
         .catch((error) => {
           console.log(error);

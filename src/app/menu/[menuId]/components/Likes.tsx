@@ -1,10 +1,9 @@
-import { useStateContext } from "providers/ContextProvider";
 import { useState } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
-import Image from "next/image";
+import useLikedMenus from "hooks/UseLikedMenus";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
@@ -12,8 +11,8 @@ export default function Likes({ menu }) {
 
   const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
 
-  const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth();
+  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
 
   const { openLoginModal } = useModals();
 
@@ -27,6 +26,12 @@ export default function Likes({ menu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
+          // Update local storage
+          if (isLiked) {
+            addLikedMenu(menu.id);
+          } else {
+            removeLikedMenu(menu.id);
+          }
         })
         .catch((res) => {
           console.log(res);

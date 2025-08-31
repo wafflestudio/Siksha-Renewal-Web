@@ -41,7 +41,16 @@ export default function Account() {
             router.push("/account/mypost");
           }}
         >
-          <DefaultText>내가 쓴 글</DefaultText>
+          <DefaultText isFirst={true}>내가 쓴 글</DefaultText>
+          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/menu/favorite");
+          }}
+        >
+          <DefaultText>내가 찜한 메뉴</DefaultText>
           <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
       </ListGroup>
