@@ -30,6 +30,7 @@ const Container = styled(OneColumnLayout.Container)<{ color?: string }>`
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 0;
   }
 `;
 const Content = styled.div`
