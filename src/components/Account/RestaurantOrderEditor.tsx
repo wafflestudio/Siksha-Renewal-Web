@@ -103,7 +103,7 @@ const Description = styled.p`
     width: 100%;
     height: 50px;
     margin: 0;
-    /* background-color: var(--Color-Foundation-base-white); */
+    background-color: var(--Color-Background-main);
     z-index: 1;
   }
 `;
