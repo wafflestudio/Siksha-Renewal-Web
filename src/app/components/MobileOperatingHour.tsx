@@ -27,32 +27,32 @@ export default function MobileOperatingHour({ type, etc }: MobileOperatingHourPr
             {infoData.etc.operating_hours[type].length == 3 ? (
               <>
                 <Hour>
-                  <Meal>아침</Meal>
-                  <Time>{infoData.etc.operating_hours[type][0]}</Time>
+                  <MealIcon src="/img/breakfast.svg" alt="아침" />
+                  <Time>{infoData.etc.operating_hours[type][0].replace('-', ' - ')}</Time>
                 </Hour>
                 <Hour>
-                  <Meal>점심</Meal>
-                  <Time>{infoData.etc.operating_hours[type][1]}</Time>
+                  <MealIcon src="/img/lunch.svg" alt="점심" />
+                  <Time>{infoData.etc.operating_hours[type][1].replace('-', ' - ')}</Time>
                 </Hour>
                 <Hour>
-                  <Meal>저녁</Meal>
-                  <Time>{infoData.etc.operating_hours[type][2]}</Time>
+                  <MealIcon src="/img/dinner.svg" alt="저녁" />
+                  <Time>{infoData.etc.operating_hours[type][2].replace('-', ' - ')}</Time>
                 </Hour>
               </>
             ) : infoData.etc.operating_hours[type].length == 2 ? (
               <>
                 <Hour>
-                  <Meal>{isFestival ? "5/13, 5/14" : "점심"}</Meal>
-                  <Time>{infoData.etc.operating_hours[type][0]}</Time>
+                  <MealIcon src={isFestival ? "/img/lunch.svg" : "/img/lunch.svg"} alt={isFestival ? "5/13, 5/14" : "점심"} />
+                  <Time>{infoData.etc.operating_hours[type][0].replace('-', ' - ')}</Time>
                 </Hour>
                 <Hour>
-                  <Meal>{isFestival ? "5/15" : "저녁"}</Meal>
-                  <Time>{infoData.etc.operating_hours[type][1]}</Time>
+                  <MealIcon src={isFestival ? "/img/dinner.svg" : "/img/dinner.svg"} alt={isFestival ? "5/15" : "저녁"} />
+                  <Time>{infoData.etc.operating_hours[type][1].replace('-', ' - ')}</Time>
                 </Hour>
               </>
             ) : (
               <Hour>
-                <Meal>{!isFestival && "점심"}</Meal>
+                <MealIcon src="/img/lunch.svg" alt="점심" />
                 <Time>{infoData.etc.operating_hours[type][0]}</Time>
               </Hour>
             )}
@@ -65,9 +65,8 @@ export default function MobileOperatingHour({ type, etc }: MobileOperatingHourPr
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
-  padding-top: 12px;
   width: 100%;
 `;
 
@@ -75,26 +74,31 @@ const LeftSide = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 102px;
+  flex-shrink: 0;
 `;
 
 const Text = styled.div`
+  font-family: 'NanumSquare', sans-serif;
   font-size: 14px;
-  line-height: 16px;
-  color: black;
-  justify-content: flex-start;
-  padding-bottom: 8px;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #262728;
+  letter-spacing: -0.3px;
+  min-width: 40px;
 `;
 
 const RightSide = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 const Hour = styled.div`
   display: flex;
-  padding-bottom: 8px;
-  justify-content: end;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
 `;
 
 const Meal = styled.div`
@@ -105,10 +109,16 @@ const Meal = styled.div`
   font-weight: 400;
 `;
 
+const MealIcon = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
 const Time = styled.div`
-  font-size: 14px;
-  line-height: 16px;
-  color: #575757;
-  padding-left: 10px;
+  font-family: 'NanumSquare', sans-serif;
+  font-size: 15px;
   font-weight: 400;
+  line-height: 1.5;
+  color: #262728;
+  letter-spacing: -0.3px;
 `;
