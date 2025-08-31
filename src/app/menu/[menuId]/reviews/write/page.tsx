@@ -8,11 +8,7 @@ import useMenu from "hooks/UseMenu";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
-import useAuth from "hooks/UseAuth";
-import useModals from "hooks/UseModals";
-import ConfirmModal from "app/components/ConfirmModal";
 import { MyReviewType } from "types";
 import StarIcon from "assets/icons/star-filled.svg"
 import CommentReviewIcon from "assets/icons/comment-review.svg";
@@ -45,12 +41,10 @@ export default function ReviewPost() {
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
 
-  const { menu, fetchMenu, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
+  const { menu, fetchMenu, fetchReview, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
-
-  const { getAccessToken } = useAuth();
 
   const MAX_COMMENT_LENGTH = 150;
 
@@ -75,6 +69,9 @@ export default function ReviewPost() {
           score: reviewData.score ?? 3,
           comment: reviewData.comment,
           images: reviewData.etc?.images || [],
+          taste: reviewData.etc?.taste || "",
+          price: reviewData.etc?.price || "",
+          food_composition: reviewData.etc?.food_composition || "",
         });
       })
       .catch((e) => {
@@ -87,6 +84,10 @@ export default function ReviewPost() {
       fetchMenu(Number(menuId));
     }
   }, [menu, authStatus, fetchMenu, menuId]);
+
+  if (reviewId) {
+    console.log("editing review with id", reviewId);
+  }
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {

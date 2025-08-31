@@ -168,5 +168,5 @@ const MobileRetryButton = styled(MobileButton)<{ isServerError: boolean }>`
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};
-  color: #797979;
+  color: #797979; 
 `;
