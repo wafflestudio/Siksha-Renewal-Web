@@ -46,7 +46,11 @@ export default function UserSetting() {
 
   return (
     <>
-      <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
+      <MobileSubHeader
+        title="계정관리"
+        handleBack={() => router.push("/account")}
+        containerColor="primary"
+      />
       <Container>
         <Title>계정 관리</Title>
         <ContentDiv onClick={handleLogout}>
@@ -70,6 +74,7 @@ const Container = styled.div`
   border-radius: 8px;
 
   @media (max-width: 768px) {
+    margin-top: 24px;
     width: calc(100dvw - 40px);
   }
 `;
@@ -78,7 +83,7 @@ const Title = styled.div`
   margin: 24.57px 0 0 22.45px;
   font-size: 20px;
   font-weight: 700;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-gray-900);
   margin-bottom: 30.43px;
 
   @media (max-width: 768px) {

@@ -2,18 +2,23 @@ import styled, { css } from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
 import { LoadingAnimation } from "styles/globalstyle";
+import { useTheme } from "next-themes";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface PropsPost {
   post: PostType;
+  isFirst?: boolean;
 }
 
-export function Post({ post }: PropsPost) {
+export function Post({ post, isFirst = false }: PropsPost) {
   const { boardId, id, title, content, isLiked, likeCount, commentCount, images } = post;
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
+  const { currentTheme } = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
 
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
-      <Container>
+      <Container $isFirst={isFirst} $isDark={isDark}>
         <Info isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
@@ -31,8 +36,8 @@ export function Post({ post }: PropsPost) {
         <PhotoZone>
           {images
             ? images.map((src, idx) =>
-              idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
-            )
+                idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
+              )
             : null}
         </PhotoZone>
       </Container>
@@ -40,7 +45,7 @@ export function Post({ post }: PropsPost) {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
   ${LoadingAnimation}
   display: flex;
   position: relative;
@@ -61,12 +66,20 @@ const Container = styled.div`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: var(--SemanticColor-Border-Primary);
+    background-color: var(--SemanticColor-Border-Secondary);
     transform: translateX(-50%);
-
     @media (max-width: 768px) {
+      /* display: none; */
       width: calc(100% + 25px);
-      background-color: var(--SemanticColor-Border-Primary);
+      ${(props) =>
+        !props.$isDark
+          ? css`
+              background-color: var(--Color-Foundation-gray-100);
+            `
+          : props.$isFirst &&
+            css`
+              background-color: var(--Color-Foundation-gray-100);
+            `}
     }
   }
 `;
@@ -82,11 +95,11 @@ const Info = styled.div<{ isImages: boolean | null }>`
     gap: 9px;
     height: min-content;
 
-  ${(props) =>
-    props.isImages !== null &&
-    css`
-      max-width: calc(100% - 71.5px);
-    `}
+    ${(props) =>
+      props.isImages !== null &&
+      css`
+        max-width: calc(100% - 71.5px);
+      `}
   }
 `;
 

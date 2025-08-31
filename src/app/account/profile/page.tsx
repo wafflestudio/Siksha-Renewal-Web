@@ -76,7 +76,7 @@ export default function SettingProfile() {
     <>
       <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
       <Container>
-        <Title>닉네임 설정</Title>
+        <Title>프로필 관리</Title>
         <ProfileEdit
           nickname={nickname}
           setNickname={setNickname}
@@ -104,7 +104,7 @@ export default function SettingProfile() {
 
 const Container = styled.div`
   width: 533px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--SemanticColor-Background-Secondary);
   border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
 
@@ -122,7 +122,7 @@ const Title = styled.div`
   margin: 24px 0 0 22.48px;
   font-size: 20px;
   font-weight: 700;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-gray-900);
 
   @media (max-width: 768px) {
     display: none;
@@ -134,6 +134,7 @@ const ButtonGroup = styled.div`
   justify-content: space-between;
   width: calc(100% - 39px);
   margin: 0 19.5px 18px 19.5px;
+  background-color: transparent;
 
   @media (max-width: 768px) {
     margin-bottom: 32.06px;

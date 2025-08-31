@@ -195,6 +195,11 @@ export const GlobalStyle = createGlobalStyle`
     --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-100);
     --SemanticColor-Element-Tooltip2: var(--Color-Foundation-base-white);
     --SemanticColor-Element-Control: var(--Color-Foundation-gray-200);
+
+    --Color-Static-Orange: #FF9522;
+    --Color-Static-White: #FFFFFF;
+    --Color-Static-Black: #000000;
+
   }
 
   .dark {
@@ -253,6 +258,10 @@ export const GlobalStyle = createGlobalStyle`
     --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-400);
     --SemanticColor-Element-Tooltip2: var(--Color-Foundation-gray-400);
     --SemanticColor-Element-Control: var(--Color-Foundation-gray-500);
+
+    --Color-Static-Orange: #FF9522;
+    --Color-Static-White: #FFFFFF;
+    --Color-Static-Black: #000000;
   }
 `;
 

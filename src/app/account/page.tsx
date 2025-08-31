@@ -27,7 +27,7 @@ export default function Account() {
   const nickname = userInfo?.nickname;
 
   return (
-    <>
+    <Container>
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -97,7 +97,7 @@ export default function Account() {
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
-    </>
+    </Container>
   );
 }
 
@@ -118,6 +118,12 @@ const ArrowButtonWrapper = styled.div`
 
   @media (max-width: 768px) {
     margin-right: 13.75px;
+  }
+`;
+
+const Container = styled.div`
+  @media (max-width: 768px) {
+    padding-top: 24px;
   }
 `;
 
@@ -146,8 +152,8 @@ const ListGroup = styled.div<{ isLast?: boolean }>`
   background-color: var(--SemanticColor-Background-Secondary);
   width: 544px;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid var(--SemanticColor-Border-Primary);
   border-radius: 8px;
+  border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
 
   @media (max-width: 768px) {
     width: calc(100dvw - 40px);

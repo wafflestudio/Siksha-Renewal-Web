@@ -37,7 +37,7 @@ export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrd
                       {...provided.dragHandleProps}
                       dragging={snapshot.isDragging}
                     >
-                      <DragBox>
+                      <DragBox dragging={snapshot.isDragging}>
                         <Restaurant>{nameKr}</Restaurant>
                         <DragButton dragging={snapshot.isDragging}>
                           <Line />
@@ -63,7 +63,7 @@ const Container = styled.div`
   padding-bottom: 12.68px;
   border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -79,7 +79,7 @@ const Title = styled.h2`
   font-weight: 700;
   font-size: 20px;
   line-height: 23px;
-  color: var(--Color-Foundation-orange-500);
+  color: var(--Color-Foundation-gray-900);
 
   @media (max-width: 768px) {
     display: none;
@@ -103,7 +103,7 @@ const Description = styled.p`
     width: 100%;
     height: 50px;
     margin: 0;
-    background-color: var(--Color-Foundation-base-white);
+    background-color: var(--Color-Background-main);
     z-index: 1;
   }
 `;
@@ -115,12 +115,12 @@ const DragZone = styled.div`
   }
 `;
 const DragContainer = styled.div<{ dragging: boolean }>`
-  &:hover {
-    background-color: var(--Color-Foundation-gray-100);
+  &:focus {
+    background-color: transparent;
   }
 `;
 
-const DragBox = styled.div`
+const DragBox = styled.div<{ dragging: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 499.04px;
@@ -128,11 +128,12 @@ const DragBox = styled.div`
   border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   margin: 7.92px 22.15px;
+  background-color: ${(props) =>
+    props.dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};
 
   @media (max-width: 768px) {
     width: calc(100% - 40px);
     margin: 7.92px 0px 0px 20px;
-    background-color: var(--Color-Foundation-base-white);
   }
 `;
 
@@ -141,6 +142,12 @@ const Restaurant = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  min-width: 0;
 
   @media (max-width: 768px) {
     font-size: 15px;
@@ -163,6 +170,6 @@ const DragButton = styled.div<{ dragging: boolean }>`
 const Line = styled.div`
   width: 19px;
   height: 0px;
-  border: 1px solid var(--Color-Foundation-base-white);
+  border: 1px solid var(--Color-Static-White);
   margin: 2.08px 0;
 `;

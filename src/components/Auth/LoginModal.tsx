@@ -76,7 +76,11 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={41}
               left={10.5}
               right={74}
-              src={isDark ? "/img/modal/login/google-union-dark.png" : "/img/modal/login/google-union.svg"}
+              src={
+                isDark
+                  ? "/img/modal/login/google-union-dark.png"
+                  : "/img/modal/login/google-union.svg"
+              }
               alt="구글 로그인"
             />
             Login with Google
@@ -87,7 +91,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={18}
               left={16.5}
               right={77}
-              src={isDark ? "/img/modal/login/apple-union-dark.png" : "/img/modal/login/apple-union.svg"}
+              src={"/img/modal/login/apple-union.svg"}
               alt="애플 로그인"
             />
             Login with Apple
@@ -106,7 +110,7 @@ const MainContainer = styled.div`
   width: 497px;
   height: 565px;
   transform: translate(-50%, -50%);
-  background: var(--Color-Foundation-orange-500);
+  background: var(--Color-Static-Orange);
   border-radius: 13px;
 
   @media (max-width: 768px) {
@@ -139,7 +143,7 @@ const LoginTitle = styled.p`
   font-family: NanumSquare;
   font-weight: 800;
   font-size: 20px;
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Static-White);
 `;
 
 const CloseButton = styled.img`
@@ -188,9 +192,8 @@ const SocialButton = styled.div<{ provider: "kakao" | "google" | "apple" }>`
   font-family: NanumSquare;
   font-size: 14px;
   background-color: ${(props) =>
-    props.provider === "kakao" ? "#fee500" : "var(--Color-Foundation-base-white)"};
-  color: ${(props) =>
-    props.provider === "kakao" ? "#181600" : "var(--Color-Foundation-gray-900)"};
+    props.provider === "kakao" ? "#fee500" : "var(--Color-Static-White)"};
+  color: var(--Color-Static-Black);
 
   border-radius: 6px;
   position: relative;
