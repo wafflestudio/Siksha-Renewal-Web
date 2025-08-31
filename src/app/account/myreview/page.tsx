@@ -14,68 +14,71 @@ export default function MyReview() {
   const [ reviews, setReviews ] = useState<RawReview[]>([]);
   const mockupReviews: any = [
     {
-      id: 1,
-      restaurantName: "기숙사식당>아워홈",
+      restaurant_id: 1,
+      name_Kr: "기숙사식당>아워홈",
+      name_En: "Dormitory Restaurant > Our Home",
       reviews: [
         {
-          comment: "그냥 저냥 먹을만한가?",
           created_at: "2025-06-28T19:33:49+09:00",
-          etc: null,
+          updated_at: "2025-06-28T19:33:49+09:00",
           id: 429,
           menu_id: 142075,
           name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
-          score: 3,
-          updated_at: "2025-06-28T19:33:49+09:00",
           user_id: 11303,
+          score: 3,
+          comment: "그냥 저냥 먹을만한가?",
+          etc: null,
         },
         {
-          comment: "그냥 저냥 먹을만한가?",
           created_at: "2025-06-28T19:33:49+09:00",
-          etc: null,
-          id: 430,
+          updated_at: "2025-06-28T19:33:49+09:00",
+          id: 429,
           menu_id: 142075,
           name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
-          score: 3,
-          updated_at: "2025-06-28T19:33:49+09:00",
           user_id: 11303,
+          score: 3,
+          comment: "그냥 저냥 먹을만한가?",
+          etc: null,
         },
       ]
     },
     {
-      id: 2,
-      restaurantName: "학생회관식당",
+      restaurant_id: 2,
+      name_Kr: "학생회관식당",
+      name_En: "Student Union Restaurant",
       reviews: [
         {
-          comment: "test",
           created_at: "2025-03-10T10:28:30+09:00",
-          etc: {
-            images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-121039/user-11303/0.jpeg" ],
-          },
+          updated_at: "2025-03-10T10:28:30+09:00",
           id: 4290,
           menu_id: 121039,
           name_kr: "콩나물밥&부추양념장",
-          score: 5,
-          updated_at: "2025-03-10T10:28:30+09:00",
           user_id: 11303,
+          score: 5,
+          comment: "test",
+          etc: {
+            images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-121039/user-11303/0.jpeg" ],
+          },
         },
       ]
     },
     {
-      id: 3,
-      restaurantName: "버거운버거",
+      restaurant_id: 3,
+      name_Kr: "버거운버거",
+      name_En: "Burger Un Burger",
       reviews: [
         {
-          comment: "dd",
           created_at: "2025-03-09T22:22:08+09:00",
-          etc: {
-          images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-120347/user-11303/0.jpeg" ]
-          },
+          updated_at: "2025-03-09T22:22:08+09:00",
           id: 4285,
           menu_id: 120347,
           name_kr: "버거운치킨버거",
+          user_id: 11303,
           score: 5,
-          updated_at: "2025-03-09T22:22:08+09:00",
-          user_id: 11303
+          comment: "dd",
+          etc: {
+            images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-120347/user-11303/0.jpeg" ]
+          },
         },
       ]
     },
@@ -118,8 +121,8 @@ export default function MyReview() {
             <MyReviewsContainer>
             {mockupReviews.map((reviewGroup) => (
               <MyReviewGroup
-                key={reviewGroup.id}
-                restaurantName={reviewGroup.restaurantName}
+                key={reviewGroup.restaurant_id}
+                restaurantName={reviewGroup.name_Kr}
                 reviews={reviewGroup.reviews}
               />
             ))}
