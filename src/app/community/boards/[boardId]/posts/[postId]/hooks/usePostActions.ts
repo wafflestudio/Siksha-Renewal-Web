@@ -4,7 +4,7 @@ import { Post as PostType } from "types";
 import { postParser } from "utils/DataUtil";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "app/components/DeleteModal";
 import { useRouter } from "next/navigation";
 import { ReportModal } from "../components/ReportModal";
 import useError from "hooks/useError";

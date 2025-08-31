@@ -4,11 +4,15 @@ import Stars from "app/menu/[menuId]/components/Stars";
 import { formatReviewDate } from "utils/FormatUtil";
 import ThemedWrapper from "components/general/ThemedWrapper";
 import Link from "next/link";
+import useReviewActions from "../hooks/useReviewActions";
 
 export default function MyReviewItem({
   review,
 }) {
   const IMAGE_SIZE = 48;
+  const { removeReview, updateReview } = useReviewActions();
+  const handleDelete = () => removeReview(review.id);
+  const handleEdit = () => updateReview(review.menu_id, review.id);
   return (
     <>
       <Container>
@@ -49,6 +53,14 @@ export default function MyReviewItem({
             )}
           </Content>
         </Body>
+        <Footer>
+          <DeleteButton onClick={handleDelete}>
+            삭제하기
+          </DeleteButton>
+          <EditButton onClick={handleEdit}>
+            수정하기
+          </EditButton>
+        </Footer>
       </Container>
     </>
   );
@@ -143,4 +155,21 @@ const Images = styled.div`
   margin-top: 6px;
   align-self: stretch;
   flex-wrap: wrap;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  gap: 16px;
+`;
+
+const DeleteButton = styled.button`
+  color: var(--Color-Foundation-gray-600, #989AA0);
+  font-size: 11px;
+  font-weight: 700;
+`;
+
+const EditButton = styled.button`
+  color: var(--Color-Foundation-orange-500, #FF9522);
+  font-size: 11px;
+  font-weight: 700;
 `;

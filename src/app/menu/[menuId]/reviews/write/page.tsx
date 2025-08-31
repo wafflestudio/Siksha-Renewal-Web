@@ -5,11 +5,12 @@ import styled from "styled-components";
 import Image from "next/image";
 import useError from "hooks/useError";
 import useMenu from "hooks/UseMenu";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
+import useAuth from "hooks/UseAuth";
 
 export type ReviewInputs = {
   score: number;
@@ -25,11 +26,15 @@ const emptyReviewInputs: ReviewInputs = {
 
 export default function ReviewPost() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const reviewId = searchParams.get("reviewId");
   const { menuId } = useParams<{ menuId: string }>();
 
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
+
+  const { getAccessToken } = useAuth();
 
   const MAX_COMMENT_LENGTH = 150;
 
@@ -38,6 +43,10 @@ export default function ReviewPost() {
       fetchMenu(Number(menuId));
     }
   }, [menu]);
+
+  if (reviewId) {
+    console.log("editing review with id", reviewId);
+  }
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {

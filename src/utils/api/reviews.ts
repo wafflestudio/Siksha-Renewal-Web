@@ -100,3 +100,27 @@ export const getMyReviewList = (
       throw e;
     });
 };
+
+export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
+  return axios
+    .put(`${APIendpoint()}/reviews/${reviewId}`, body, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 수정에 실패했습니다.";
+      throw new Error(err);
+    });
+};
+
+export const deleteReview = (reviewId: number, accessToken: string) => {
+  return axios
+    .delete(`${APIendpoint()}/reviews/${reviewId}`, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 삭제에 실패했습니다.";
+      throw new Error(err);
+    });
+};
