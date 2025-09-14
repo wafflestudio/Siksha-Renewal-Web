@@ -19,10 +19,7 @@ import useError from "hooks/useError";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
-import { initMixpanel } from "utils/MixPanel";
 import useLikedMenuIntro from "hooks/UseLikedMenuIntro";
-import { getIsFestival } from "utils/api/festival";
-import { set } from "react-hook-form";
 
 export default function Home() {
   const state = useStateContext();
