@@ -5,9 +5,8 @@ import { useCallback } from "react";
 import { useMemo } from "react";
 import { useStateContext } from "providers/ContextProvider";
 import { defaultFilters } from "constants/filterOptions";
-import useFestival from "./UseFestival";
 
-export type FilterList = {
+type DefaultFilterList = {
   length: number;
   priceMin: number;
   priceMax: number;
@@ -15,8 +14,13 @@ export type FilterList = {
   isAvailableOnly: boolean;
   isReview: boolean;
   category: string[];
-  isFestival: boolean;
 };
+
+type EventFilterList = {
+  isFestival: boolean;
+}
+
+export type FilterList = DefaultFilterList & EventFilterList;
 
 // JSON.stringify 시 Infinity 값을 문자열로 변환
 function replacer(key: string, value: any) {
@@ -42,7 +46,8 @@ function reviver(key: string, value: any) {
  */
 export default function UseFilter() {
   // 영업 중 여부 확인을 위해 date를 불러옵니다.
-  const { date } = useStateContext();
+  // 축제 기간에만 isFestival을 사용하기 위해 isFestivalDate도 불러옵니다.
+  const { date, isFestivalDate } = useStateContext();
 
   const defaultFiltersJson = JSON.stringify(defaultFilters, replacer);
 
@@ -50,9 +55,6 @@ export default function UseFilter() {
   const { value, set: setStorage } = useLocalStorage("filterList", defaultFiltersJson);
 
   const filterList: FilterList = JSON.parse(value || defaultFiltersJson, reviver);
-
-  // 축제 기간에만 isFestival을 사용하기 위해 useFestival 훅을 사용합니다.
-  const { isFestivalDate } = useFestival();
 
   /**
    * 필터의 각 옵션의 변경 여부를 반환합니다.
