@@ -10,8 +10,9 @@ import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
-import StarIcon from "assets/icons/star-filled.svg"
+import StarIcon from "assets/icons/star-filled.svg";
 import CommentReviewIcon from "assets/icons/comment-review.svg";
+import KeywordReviewForm from "../../components/KeywordReviewForm";
 
 export type ReviewInputs = {
   score: number;
@@ -97,18 +98,28 @@ export default function ReviewPost() {
             {[1, 2, 3, 4, 5].map((i) => {
               if (i <= inputs.score) {
                 return (
-                  <StyledStarIcon key={i} $isfilled={true} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 채워짐" />
+                  <StyledStarIcon
+                    key={i}
+                    $isfilled={true}
+                    onClick={() => setInputs({ ...inputs, score: i })}
+                    alt="별점 채워짐"
+                  />
                 );
               } else {
                 return (
-                  <StyledStarIcon key={i} $isfilled={false} onClick={() => setInputs({ ...inputs, score: i })} alt="별점 비어짐" />
+                  <StyledStarIcon
+                    key={i}
+                    $isfilled={false}
+                    onClick={() => setInputs({ ...inputs, score: i })}
+                    alt="별점 비어짐"
+                  />
                 );
               }
             })}
           </StarsContainer>
           <Score>{inputs.score}</Score>
         </Header>
-
+        <KeywordReviewForm />
         <CommentSection>
           <div style={{ display: "flex" }}>
             <StyledCommentReviewIcon />
@@ -295,7 +306,8 @@ const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
   width: 28px;
   height: 28px;
   cursor: pointer;
-  color: ${(props) => (props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)")};
+  color: ${(props) =>
+    props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)"};
   @media (max-width: 768px) {
     width: 30px;
     height: 30px;
@@ -327,10 +339,10 @@ const Score = styled.div`
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 22.4px */
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  margin-bottom: 36px;
 
   @media (max-width: 768px) {
     margin-top: 7px;
-    margin-bottom: 26px;
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 
@@ -353,7 +365,7 @@ const CommentTextArea = styled.textarea`
   width: 100%;
   height: 137px;
   margin-top: 10px;
-  background: var(--SemanticColor-Background-Tertiary, #2D2D2D);
+  background: var(--SemanticColor-Background-Tertiary, #2d2d2d);
   border-radius: 6px;
   border: none;
   padding: 12px;
@@ -378,7 +390,7 @@ const CommentTextArea = styled.textarea`
 `;
 
 const StyledCommentReviewIcon = styled(CommentReviewIcon)`
-  fill: var(--Color-Foundation-gray-700, #B7B7B7);
+  fill: var(--Color-Foundation-gray-700, #b7b7b7);
   @media (max-width: 768px) {
     width: 18px;
     height: 18px;
@@ -386,7 +398,7 @@ const StyledCommentReviewIcon = styled(CommentReviewIcon)`
 `;
 
 const CommentTitle = styled.div`
-  color: var(--Color-Foundation-gray-800, #CBCBCC);
+  color: var(--Color-Foundation-gray-800, #cbcbcc);
 
   /* text-16/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -409,7 +421,7 @@ const CommentLength = styled.span`
   z-index: 1;
   position: absolute;
 
-  color: var(--Color-Foundation-gray-700, #B7B7B7);
+  color: var(--Color-Foundation-gray-700, #b7b7b7);
 
   /* text-13/Regular */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -593,7 +605,7 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: var(--SementicColor-Text-Button, #FFF);
+  color: var(--SementicColor-Text-Button, #fff);
   text-align: center;
 
   /* text-14/Bold */
@@ -629,10 +641,10 @@ const ReviewCancelButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  background-color: var(--SemanticColor-Background-Tertiary, #2D2D2D);
+  background-color: var(--SemanticColor-Background-Tertiary, #2d2d2d);
   color: var(--Color-Foundation-gray-600, #919191);
   text-align: center;
-  
+
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
