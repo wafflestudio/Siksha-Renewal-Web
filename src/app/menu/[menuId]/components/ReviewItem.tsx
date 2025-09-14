@@ -5,7 +5,7 @@ import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
 import { formatReviewDate } from "utils/FormatUtil";
 import useIsMobile from "hooks/UseIsMobile";
-import ThemedWrapper from "components/general/ThemedWrapper";
+import KeywordReviewChips from "./KeywordReviewChips";
 
 export default function ReviewItem({ review }: { review: ReviewType }) {
   const isMobile = useIsMobile();
@@ -32,7 +32,8 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
       <Body>
         <Content>
           <Comment>{review.comment}</Comment>
-          {!!review.etc?.images?.length && (
+          <KeywordReviewChips keywords={["또 먹고 싶어요", "가성비 좋아요"]} />
+          {review.etc && (
             <Images>
               {review.etc.images.map((image) => (
                 <Image
@@ -147,7 +148,7 @@ const Images = styled.div`
 `;
 
 const Id = styled.div`
-  color: var(--Color-Foundation-gray-800, #CBCBCC);
+  color: var(--Color-Foundation-gray-800, #cbcbcc);
 
   /* text-13/Bold */
   font-family: var(--Font-family-sans, NanumSquare);

@@ -12,7 +12,7 @@ import useError from "hooks/useError";
 import Image from "next/image";
 import PhotoReviewsSection from "./PhotoReviewsSection";
 import Link from "next/link";
-import KeywordReview from "./KeywordReview";
+import KeywordReviewChart from "./KeywordReviewChart";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -73,7 +73,7 @@ export default function MenuSection({
             score={menu.score || 0}
             distribution={reviewDistribution}
           />
-          <KeywordReview />
+          <KeywordReviewChart />
           {
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
