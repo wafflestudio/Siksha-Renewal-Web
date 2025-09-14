@@ -1,3 +1,4 @@
+import ConfirmModal from "app/components/ConfirmModal";
 import DeleteModal from "app/components/DeleteModal";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
@@ -22,8 +23,14 @@ export default function useReviewActions() {
       onClose: () => { },
       onSubmit: () =>
         getAccessToken()
-          .then((accessToken) => deleteReview(reviewId, accessToken))
-          .then(() => router.back()) // 아직 action 미정
+          // TODO: 리뷰 삭제 API 완성되면 주석 해제
+          // .then((accessToken) => deleteReview(reviewId, accessToken))
+          .then(() => {
+            openModal(ConfirmModal, {
+              type: "delete",
+              onClose: () => { router.refresh(); },
+            });
+          })
           .catch(onHttpError),
     });
   };
