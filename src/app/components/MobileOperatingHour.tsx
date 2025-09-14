@@ -74,7 +74,7 @@ const LeftSide = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 102px;
+  width: 83px;
   flex-shrink: 0;
 `;
 

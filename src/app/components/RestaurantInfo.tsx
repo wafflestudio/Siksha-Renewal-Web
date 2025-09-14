@@ -63,11 +63,15 @@ export default function RestaurantInfo() {
     <BackClickable onClickBackground={() => toggleShowInfo()}>
       <Container>
         <InfoBox>
-          <Header>
-            <RestName>{infoData.name_kr}</RestName>
-            <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} alt="닫기" />
-          </Header>
-          <TitleDivider />
+          <HeaderSection>
+            <Header>
+              <RestNameContainer>
+                <RestName>{infoData.name_kr}</RestName>
+              </RestNameContainer>
+              <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} alt="닫기" />
+            </Header>
+            <TitleDivider />
+          </HeaderSection>
           
           <ContentArea>
             {/* Operating Hours Section */}
@@ -77,6 +81,7 @@ export default function RestaurantInfo() {
                 <SectionTitle>영업 시간</SectionTitle>
               </SectionHeader>
               <OperatingHoursContent>
+                <SectionDivider />
                 {infoData.etc?.operating_hours ? (
                   <>
                     {infoData.etc.operating_hours.weekdays?.length > 0 && (
@@ -129,27 +134,48 @@ const Container = styled.div`
 `;
 
 const InfoBox = styled.div`
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  width: 90vw;
-  max-width: 648px;
-  max-height: 90vh;
+  display: inline-flex;
+  width: 640px;
+  height: 467px;
   padding: 22px 30px 28px 30px;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  border-radius: 14px;
+  background: var(--SementicColor-Background-Secondary, #FFF);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
   box-sizing: border-box;
-  overflow: hidden;
-  
+
   @media (max-width: 768px) {
     width: 95vw;
+    height: auto;
     padding: 16px 20px 20px 20px;
   }
+`;
+
+const HeaderSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  width: 100%;
+  gap: 40px;
+`;
+
+const RestNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1px 0;
+  flex: 1;
+  min-height: 38px;
 `;
 
 const RestName = styled.h1`
@@ -157,9 +183,10 @@ const RestName = styled.h1`
   font-size: 24px;
   font-weight: 800;
   line-height: 1.4;
-  color: #262728;
+  color: var(--Color-Foundation-gray-900, #262728);
   font-style: normal;
   letter-spacing: -0.3px;
+  margin: 0;
 `;
 
 const CloseIcon = styled.img`
@@ -169,85 +196,14 @@ const CloseIcon = styled.img`
 `;
 
 const TitleDivider = styled.div`
-  width: 100%;
+  width: 580px;
   height: 2px;
-  background: var(--Color-Foundation-orange-500, #ff9522);
-  margin-bottom: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='583' height='2' viewBox='0 0 583 2' fill='none'%3E%3Cpath d='M1.5 1H581.5' stroke='%23FF9522' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  align-self: stretch;
 `;
 
-const HLine = styled.div<{ color: string; margin: string }>`
-  width: 100%;
-  height: 1px;
-  background: ${(props) => props.color};
-  margin-top: ${(props) => props.margin};
-`;
-
-const ScrollArea = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: scroll;
-  margin-top: 16px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  width: 100%;
-  box-sizing: border-box;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const AboveMap = styled.div`
-  width: 100%;
-  padding-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Text = styled.div`
-  font-size: 15px;
-  line-height: 150%;
-  color: black;
-  font-weight: 400;
-`;
-
-const LocationBox = styled.div`
-  display: flex;
-`;
-
-const LocationIcon = styled.img`
-  width: 16px;
-`;
-
-const LocationText = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  color: #575757;
-  padding-left: 4px;
-`;
-
-const Map = styled.div`
-  width: 100%;
-  width: 100%;
-  height: 247px;
-  min-height: 247px;
-`;
-
-const Division = styled.div`
-  width: 100%;
-  height: 10px;
-  background: rgba(145, 145, 145, 0.1);
-  margin: 24px 0;
-`;
-
-const BelowMap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-`;
 
 const EmptyText = styled.div`
   font-family: 'NanumSquare', sans-serif;
@@ -259,43 +215,55 @@ const EmptyText = styled.div`
   padding: 40px 0;
 `;
 
-const EmptyBox = styled.div<{ height: string }>`
-  height: ${(props) => props.height};
-  background: white;
-  width: 1px;
-`;
 
 // Content Layout
 const ContentArea = styled.div`
   display: flex;
-  gap: 40px;
-  
+  width: 580px;
+  height: 337px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 68px 40px;
+  flex-wrap: wrap;
+
   @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
     flex-direction: column;
     gap: 24px;
+    flex-wrap: nowrap;
   }
 `;
 
 // Operating Hours Section
 const OperatingHoursSection = styled.div`
-  flex: 0 0 240px;
+  display: flex;
+  width: 240px;
+  height: 337px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   position: relative;
-  
+
   @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
     flex: none;
   }
 `;
 
 const SectionHeader = styled.div`
   display: flex;
+  width: 100%;
+  height: 28px;
   align-items: center;
   gap: 6px;
-  margin-bottom: 10px;
 `;
 
 const ScheduleIcon = styled.img`
   width: 24px;
   height: 24px;
+  margin: 2px 0;
 `;
 
 const DistanceIcon = styled.img`
@@ -317,23 +285,28 @@ const OperatingHoursContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-top: 12px;
+  width: 100%;
 `;
 
 const SectionDivider = styled.div`
   width: 100%;
-  height: 1px;
-  background: #e5e6e9;
+  height: 2px;
+  align-self: stretch;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='241' height='2' viewBox='0 0 241 2' fill='none'%3E%3Cpath d='M0.5 1H240.5' stroke='%23E5E6E9' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 `;
 
 const VerticalDivider = styled.div`
   position: absolute;
-  left: 280px;
+  left: 71px;
   top: 40px;
   width: 1px;
   height: 297px;
-  background: #e5e6e9;
-  
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='299' viewBox='0 0 1 299' fill='none'%3E%3Cpath d='M0.5 1L0.500013 298' stroke='%23E5E6E9' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -342,7 +315,9 @@ const VerticalDivider = styled.div`
 // Location Section
 const LocationSection = styled.div`
   flex: 0 0 300px;
-  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   @media (max-width: 768px) {
     flex: none;
   }
@@ -350,8 +325,8 @@ const LocationSection = styled.div`
 
 const MapContainer = styled.div`
   width: 100%;
-  height: 297px;
-  min-height: 297px;
+  height: 299px;
+  min-height: 299px;
   background: #cbcdd3;
   border-radius: 10px;
   overflow: hidden;
