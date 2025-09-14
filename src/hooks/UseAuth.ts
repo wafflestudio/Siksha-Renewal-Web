@@ -16,7 +16,11 @@ export default function useAuth() {
     remove: removeStorage,
   } = useLocalStorage("access_token", undefined);
 
+  // TODO: 안티패턴이므로 수정 필요
+  // 전역적으로 수행되어야 하는 동작이 useAuth 내 useEffect의 callback function으로 들어가 있음
+  // 서로 다른 컴포넌트에서 useAuth() 객체가 생성됨에 따라 중복 실행이 발생함
   useEffect(() => {
+    console.log("useAuth", accessToken);
     if (accessToken === undefined) setAuthStatus("loading");
     else if (accessToken) setAuthStatus("login");
     else setAuthStatus("logout");
