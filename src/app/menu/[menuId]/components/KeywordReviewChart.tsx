@@ -8,7 +8,7 @@ const feedbacks: FeedbackItem[] = [
   { emoji: "🍱", text: "알찬 편이에요", count: 17, gauge: 55 },
 ];
 
-export default function KeywordReview({}: KeywordReviewProps) {
+export default function KeywordReviewChart({}: KeywordReviewProps) {
   return (
     <Container>
       {feedbacks.map((item, idx) => (

@@ -5,6 +5,7 @@ import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
 import { formatReviewDate } from "utils/FormatUtil";
 import useIsMobile from "hooks/UseIsMobile";
+import KeywordReviewChips from "./KeywordReviewChips";
 
 export default function ReviewItem({ review }: { review: ReviewType }) {
   const isMobile = useIsMobile();
@@ -13,12 +14,14 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
     <Container>
       <Header>
         <Profile src={"/img/default-profile.svg"} alt="프로필 이미지" />
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          flex: "1 0 0",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            flex: "1 0 0",
+          }}
+        >
           <Id>ID {review.user_id}</Id>
           <ThemeProvider theme={{ width: 60 }}>
             <Stars score={review.score || 0} />
@@ -29,6 +32,7 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
       <Body>
         <Content>
           <Comment>{review.comment}</Comment>
+          <KeywordReviewChips keywords={["또 먹고 싶어요", "가성비 좋아요"]} />
           {review.etc && (
             <Images>
               {review.etc.images.map((image) => (
@@ -104,7 +108,7 @@ const Comment = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
   line-height: 150%; /* 22.5px */
-  
+
   @media (max-width: 768px) {
     border-radius: 8px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
@@ -144,7 +148,7 @@ const Images = styled.div`
 `;
 
 const Id = styled.div`
-  color: var(--Color-Foundation-gray-800, #CBCBCC);
+  color: var(--Color-Foundation-gray-800, #cbcbcc);
 
   /* text-13/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -152,11 +156,10 @@ const Id = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 18.2px */
-  
 `;
 
 const Date = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: right;
 
   /* text-12/Bold */
@@ -165,9 +168,9 @@ const Date = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 16.8px */
-  
+
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-gray-600, #989AA0);
+    color: var(--Color-Foundation-gray-600, #989aa0);
     text-align: right;
 
     /* text-12/Bold */
