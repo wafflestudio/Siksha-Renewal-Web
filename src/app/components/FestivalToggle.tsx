@@ -1,12 +1,12 @@
 "use client";
 
-import useFestival from "hooks/UseFestival";
 import UseFilter from "hooks/UseFilter";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useStateContext } from "providers/ContextProvider";
 
 export default function FestivalToggle() {
-  const { isFestivalDate } = useFestival();
+  const { isFestivalDate } = useStateContext();
   const { changeFilterOption, filterList } = UseFilter();
 
   const [active, setActive] = useState(filterList.isFestival);

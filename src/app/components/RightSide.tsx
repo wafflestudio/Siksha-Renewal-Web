@@ -15,6 +15,7 @@ export default function RightSide() {
         alignItems: "center",
       }}>
         <Meal />
+        <FestivalToggle />
       </div>
       <MenuList />
     </Container>
