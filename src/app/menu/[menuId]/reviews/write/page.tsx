@@ -15,6 +15,8 @@ import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
 import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
+import ConfirmModal from "app/components/ConfirmModal";
 
 export type ReviewInputs = {
   score: number;
@@ -84,10 +86,6 @@ export default function ReviewPost() {
       fetchMenu(Number(menuId));
     }
   }, [menu, authStatus, fetchMenu, menuId]);
-
-  if (reviewId) {
-    console.log("editing review with id", reviewId);
-  }
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {
