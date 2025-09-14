@@ -17,6 +17,7 @@ export default function RightSide() {
         }}
       >
         <Meal />
+        <FestivalToggle />
       </div>
       <MenuList />
     </Container>

@@ -11,6 +11,7 @@ export interface State {
   isLoginModal: boolean;
   userInfo: User | null;
   isFilterFavorite: boolean;
+  isFestivalDate: boolean;
 }
 
 export type Action =

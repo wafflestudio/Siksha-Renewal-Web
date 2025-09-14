@@ -18,6 +18,7 @@ const initialState: State = {
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
+  isFestivalDate: false,
 };
 
 interface dispatchers {
@@ -30,6 +31,7 @@ interface dispatchers {
   setAuthStatus: (status: "loading" | "login" | "logout") => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
+  setIsFestivalDate: (isFestival: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -77,34 +79,27 @@ const ContextProvider = ({ children }) => {
     (value: boolean) => setState((prevState) => ({ ...prevState, isFilterFavorite: value })),
     [],
   );
-
-  const dispatchValue = useMemo(
-    () => ({
-      setDate,
-      setMeal,
-      setData,
-      setLoading,
-      setInfoData,
-      toggleShowInfo,
-      setAuthStatus,
-      setUserInfo,
-      setIsFilterFavorite,
-    }),
-    [
-      setDate,
-      setMeal,
-      setData,
-      setLoading,
-      setInfoData,
-      toggleShowInfo,
-      setAuthStatus,
-      setUserInfo,
-      setIsFilterFavorite,
-    ],
+  const setIsFestivalDate = useCallback(
+    (isFestival: boolean) =>
+      setState((prevState) => ({ ...prevState, isFestivalDate: isFestival })),
+    [],
   );
 
   return (
-    <dispatchContext.Provider value={dispatchValue}>
+    <dispatchContext.Provider
+      value={{
+        setDate,
+        setMeal,
+        setData,
+        setLoading,
+        setInfoData,
+        toggleShowInfo,
+        setAuthStatus,
+        setUserInfo,
+        setIsFilterFavorite,
+        setIsFestivalDate,
+      }}
+    >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>
     </dispatchContext.Provider>
   );
