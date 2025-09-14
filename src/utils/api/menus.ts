@@ -1,6 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
-import { RawMenuList, RawMenu } from "types";
+import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
 
 export const getMenuList = (
   date: string,
@@ -85,6 +85,21 @@ export const setMenuUnlike = (
         data: { is_liked: isLiked, like_cnt: likeCount },
       } = res;
       return { isLiked, likeCount };
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+
+export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
+  return axios
+    .get(
+      `${APIendpoint()}/menus/me`,
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+    )
+    .then((res) => {
+      const { data } = res;
+      return data;
     })
     .catch((e) => {
       throw e;

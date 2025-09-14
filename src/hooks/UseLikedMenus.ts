@@ -1,31 +1,96 @@
-import useLocalStorage from "./UseLocalStorage";
+import { useState, useEffect } from "react";
+import { getLikedMenus, setMenuLike, setMenuUnlike } from "utils/api/menus";
+import useAuth from "./UseAuth";
+import useError from "./useError";
 
 export default function useLikedMenus() {
-  const { value, set: setStorage } = useLocalStorage("liked_menus", "[]");
-  // localStorage가 구독되어 변화를 감지하므로, 따로 state를 만들어주기 보다는 JSON parse 결과를 바로 이용해야 합니다.
-  const likedMenuIds: number[] = JSON.parse(value || "[]");
+  const { getAccessToken, authStatus } = useAuth();
+  const { onHttpError } = useError();
+  const [likedMenuIds, setLikedMenuIds] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const toggleLikedMenu = (menuId: number) => {
-    const newLikedList = likedMenuIds.includes(menuId)
-      ? likedMenuIds.filter((id) => id !== menuId)
-      : [...likedMenuIds, menuId];
+  const fetchLikedMenus = async () => {
+    if (authStatus !== "login") return;
+    
+    try {
+      setLoading(true);
+      const accessToken = await getAccessToken();
+      const response = await getLikedMenus(accessToken);
+      
+      // Extract menu IDs from the response
+      const menuIds: number[] = [];
+      response.result.forEach(restaurant => {
+        restaurant.menus.forEach(menu => {
+          if (menu.is_liked) {
+            menuIds.push(menu.id);
+          }
+        });
+      });
+      
+      setLikedMenuIds(menuIds);
+    } catch (error) {
+      onHttpError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // 변경값 반영
-    setStorage(JSON.stringify(newLikedList));
+  useEffect(() => {
+    fetchLikedMenus();
+  }, [authStatus]);
+
+  const toggleLikedMenu = async (menuId: number) => {
+    if (authStatus !== "login") return;
+    
+    try {
+      const accessToken = await getAccessToken();
+      const isCurrentlyLiked = likedMenuIds.includes(menuId);
+      
+      if (isCurrentlyLiked) {
+        await setMenuUnlike(menuId, accessToken);
+        setLikedMenuIds(prev => prev.filter(id => id !== menuId));
+      } else {
+        await setMenuLike(menuId, accessToken);
+        setLikedMenuIds(prev => [...prev, menuId]);
+      }
+    } catch (error) {
+      onHttpError(error);
+    }
   };
 
   const isMenuLiked = (menuId: number) => likedMenuIds.includes(menuId);
 
-  const addLikedMenu = (menuId: number) => {
-    if (!likedMenuIds.includes(menuId)) {
-      setStorage(JSON.stringify([...likedMenuIds, menuId]));
+  const addLikedMenu = async (menuId: number) => {
+    if (authStatus !== "login" || likedMenuIds.includes(menuId)) return;
+    
+    try {
+      const accessToken = await getAccessToken();
+      await setMenuLike(menuId, accessToken);
+      setLikedMenuIds(prev => [...prev, menuId]);
+    } catch (error) {
+      onHttpError(error);
     }
   };
 
-  const removeLikedMenu = (menuId: number) => {
-    const newLikedList = likedMenuIds.filter((id) => id !== menuId);
-    setStorage(JSON.stringify(newLikedList));
+  const removeLikedMenu = async (menuId: number) => {
+    if (authStatus !== "login") return;
+    
+    try {
+      const accessToken = await getAccessToken();
+      await setMenuUnlike(menuId, accessToken);
+      setLikedMenuIds(prev => prev.filter(id => id !== menuId));
+    } catch (error) {
+      onHttpError(error);
+    }
   };
 
-  return { likedMenuIds, toggleLikedMenu, isMenuLiked, addLikedMenu, removeLikedMenu };
+  return { 
+    likedMenuIds, 
+    toggleLikedMenu, 
+    isMenuLiked, 
+    addLikedMenu, 
+    removeLikedMenu,
+    loading,
+    refetch: fetchLikedMenus
+  };
 }

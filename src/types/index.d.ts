@@ -207,3 +207,12 @@ export interface RestaurantPreview {
   nameKr: string;
   nameEn: string;
 }
+
+export interface LikedMenusResponse {
+  count: number;
+  result: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
+}

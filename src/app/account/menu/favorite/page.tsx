@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { getMenuList } from "utils/api/menus";
+import { getLikedMenus } from "utils/api/menus";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import { RawMenuList } from "types";
+import { LikedMenusResponse } from "types";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
 import useError from "hooks/useError";
@@ -12,35 +12,25 @@ import { formatPrice } from "utils/FormatUtil";
 
 export default function FavoriteMenus() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
-  const { likedMenuIds, removeLikedMenu } = useLikedMenus();
+  const { removeLikedMenu } = useLikedMenus();
   const { onHttpError } = useError();
   const router = useRouter();
-  const [favoriteMenus, setFavoriteMenus] = useState<RawMenuList[]>([]);
+  const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
     const fetchFavoriteMenus = async () => {
-      if (likedMenuIds.length === 0) {
+      if (authStatus !== "login") {
         setLoading(false);
         return;
       }
 
       try {
-        const accessToken = await getAccessToken().catch(() => "");
-        const today = new Date().toISOString().slice(0, 10);
-        const { result } = await getMenuList(today, false, accessToken);
-        
-        // Filter menus to only show liked ones
-        const likedMenus = result.filter(restaurant => 
-          restaurant.menus.some(menu => likedMenuIds.includes(menu.id))
-        ).map(restaurant => ({
-          ...restaurant,
-          menus: restaurant.menus.filter(menu => likedMenuIds.includes(menu.id))
-        }));
-
-        setFavoriteMenus(likedMenus);
+        const accessToken = await getAccessToken();
+        const response = await getLikedMenus(accessToken);
+        setFavoriteMenus(response.result);
       } catch (error) {
         onHttpError(error);
       } finally {
@@ -49,10 +39,10 @@ export default function FavoriteMenus() {
     };
 
     fetchFavoriteMenus();
-  }, [likedMenuIds, getAccessToken, onHttpError]);
+  }, [authStatus, getAccessToken, onHttpError]);
 
-  const handleUnlikeMenu = (menuId: number) => {
-    removeLikedMenu(menuId);
+  const handleUnlikeMenu = async (menuId: number) => {
+    await removeLikedMenu(menuId);
     // Update the current display by filtering out the unliked menu
     setFavoriteMenus(prev => 
       prev.map(restaurant => ({
