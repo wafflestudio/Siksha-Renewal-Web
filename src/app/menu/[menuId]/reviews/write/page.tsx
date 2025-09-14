@@ -11,6 +11,8 @@ import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
 import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
+import ConfirmModal from "app/components/ConfirmModal";
 
 export type ReviewInputs = {
   score: number;
@@ -31,6 +33,7 @@ export default function ReviewPost() {
   const { menuId } = useParams<{ menuId: string }>();
 
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
+  const { openModal } = useModals();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
 
@@ -43,10 +46,6 @@ export default function ReviewPost() {
       fetchMenu(Number(menuId));
     }
   }, [menu]);
-
-  if (reviewId) {
-    console.log("editing review with id", reviewId);
-  }
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {
@@ -72,9 +71,16 @@ export default function ReviewPost() {
       body.append("images", image);
     });
 
+    // TODO: 수정 API 완성 시, 수정 요청은 해당 api로 보내야 함
     return submitReview(body)
-      .then((res) => {
-        fetchReviews(Number(menuId));
+      .then(() => {
+        openModal(ConfirmModal, {
+          type: reviewId ? "edit" : "submit",
+          onClose: () => {
+            router.back();
+            fetchReviews(Number(menuId));
+          },
+        });
       })
       .catch((err) => {
         const errorCode = err.response?.status ?? null;
