@@ -38,7 +38,7 @@ export default function ReviewDistribution({
         </ThemedWrapper>
         <ReviewsTotalCount>후기 {reviewsTotalCount}개</ReviewsTotalCount>
       </ScoreContainer>
-      <DistributionChart>
+      {/* <DistributionChart>
         {distribution.map((count, i) => (
           // 텍스트, 바, 숫자 순
           <div
@@ -57,7 +57,7 @@ export default function ReviewDistribution({
             <Count>{count}</Count>
           </div>
         ))}
-      </DistributionChart>
+      </DistributionChart> */}
     </Container>
   );
 }
