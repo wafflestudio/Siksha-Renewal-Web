@@ -12,7 +12,6 @@ export default function UseProfile() {
   // 전역적으로 수행되어야 하는 동작이 useProfile 내 useEffect의 callback function으로 들어가 있음
   // 서로 다른 컴포넌트에서 useProfile() 객체가 생성됨에 따라 중복 실행이 발생함
   useEffect(() => {
-    console.log("UseProfile", authStatus);
     if (authStatus === "loading") return;
     if (authStatus === "logout") {
       setUserInfo(null);
