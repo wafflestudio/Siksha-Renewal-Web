@@ -1,8 +1,7 @@
 # Multi-stage build
 
 # 1단계: 환경 설정 및 dependancy 설치
-FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:22-slim AS deps
 
 # 명령어를 실행할 디렉터리 지정
 WORKDIR /usr/src/app
@@ -11,19 +10,19 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./ 
 
 # Dependancy 설치 (새로운 lock 파일 수정 또는 생성 방지)
-RUN yarn --frozen-lockfile 
+RUN yarn install --frozen-lockfile
 
 ###########################################################
 
 # 2단계: next.js 빌드 단계
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
+
+# 명령어를 실행할 디렉터리 지정
+WORKDIR /usr/src/app
 
 # Docker를 build할때 개발 모드 구분용 환경 변수를 명시함
 ARG ENV_MODE 
 ENV ENV_MODE=${ENV_MODE}
-
-# 명령어를 실행할 디렉터리 지정
-WORKDIR /usr/src/app
 
 # node_modules 등의 dependancy를 복사함.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
@@ -35,7 +34,7 @@ RUN if [ "$ENV_MODE" = "production" ]; then yarn build; else yarn devbuild; fi
 ###########################################################
 
 # 3단계: next.js 실행 단계
-FROM node:22-alpine AS runner
+FROM node:22-slim AS runner
 
 # 명령어를 실행할 디렉터리 지정
 WORKDIR /usr/src/app
