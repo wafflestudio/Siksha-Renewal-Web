@@ -32,8 +32,8 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
       <Body>
         <Content>
           <Comment>{review.comment}</Comment>
-          <KeywordReviewChips keywords={["또 먹고 싶어요", "가성비 좋아요"]} />
-          {review.etc && (
+          <KeywordReviewChips keywords={review.keyword_reviews} />
+          {Array.isArray(review.etc?.images) && (
             <Images>
               {review.etc.images.map((image) => (
                 <Image

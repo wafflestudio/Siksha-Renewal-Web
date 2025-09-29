@@ -9,7 +9,7 @@ import { MyReviewType } from "types";
 export default function useMenu() {
   const { menu, reviews, menuLoading } = useMenuStateContext();
   const { setMenu, setReviews, setMenuLoading } = useMenuDispatchContext();
-  const { authStatus, getAccessToken } = useAuth();
+  const { getAccessToken } = useAuth();
   const { onHttpError } = useError(); // Error handling
 
   const fetchMenu = useCallback(

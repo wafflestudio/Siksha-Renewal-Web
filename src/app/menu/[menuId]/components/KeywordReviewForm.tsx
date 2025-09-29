@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
+import { ReviewInputs } from "../reviews/write/page";
 
 type Option = {
   id: string;
@@ -54,15 +55,19 @@ const categories: Category[] = [
   },
 ];
 
-export default function KeywordReviewForm() {
-  const [selected, setSelected] = useState<{ [key: string]: string | null }>({
-    taste: null,
-    price: null,
-    composition: null,
-  });
+type KeywordReviewFormProps = {
+  inputs: ReviewInputs;
+  setInputs: React.Dispatch<React.SetStateAction<ReviewInputs>>;
+};
 
+export default function KeywordReviewForm({ inputs, setInputs }: KeywordReviewFormProps) {
   const handleSelect = (categoryId: string, optionId: string) => {
-    setSelected((prev) => ({ ...prev, [categoryId]: optionId }));
+    setInputs((prev) => {
+      if (categoryId === "taste") return { ...prev, taste: optionId };
+      if (categoryId === "price") return { ...prev, price: optionId };
+      if (categoryId === "composition") return { ...prev, food_composition: optionId };
+      return prev;
+    });
   };
 
   return (
@@ -82,7 +87,11 @@ export default function KeywordReviewForm() {
             {cat.options.map((opt) => (
               <OptionButton
                 key={opt.id}
-                selected={selected[cat.id] === opt.id}
+                selected={
+                  (cat.id === "taste" && inputs.taste === opt.id) ||
+                  (cat.id === "price" && inputs.price === opt.id) ||
+                  (cat.id === "composition" && inputs.food_composition === opt.id)
+                }
                 onClick={() => handleSelect(cat.id, opt.id)}
               >
                 {opt.label}

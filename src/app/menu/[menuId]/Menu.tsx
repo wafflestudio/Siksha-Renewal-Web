@@ -40,6 +40,9 @@ export interface ReviewType {
   etc: { images?: string[] } | null;
   created_at: string;
   updated_at: string;
+  like_count: number;
+  is_liked: boolean;
+  keyword_reviews: string[];
 }
 
 export interface ReviewListType {
@@ -71,7 +74,7 @@ export default function Menu({ menuId }: { menuId: number }) {
     var updatedImages: string[] = [];
     reviews.result.map((review) => {
       if (review.etc?.images) {
-        updatedImages = updatedImages.concat(review.etc.images);
+        updatedImages = updatedImages.concat(review.etc?.images);
       }
     });
     setImages(updatedImages);

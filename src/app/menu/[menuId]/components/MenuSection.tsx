@@ -4,7 +4,7 @@ import { MenuType } from "app/menu/[menuId]/Menu";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
-import { getReviewScore } from "utils/api/reviews";
+import { getKeywordReviewScore, getReviewScore } from "utils/api/reviews";
 import { useRouter } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate, formatPrice } from "utils/FormatUtil";
@@ -13,6 +13,7 @@ import Image from "next/image";
 import PhotoReviewsSection from "./PhotoReviewsSection";
 import Link from "next/link";
 import KeywordReviewChart from "./KeywordReviewChart";
+import { KeywordReviewScore } from "types";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -33,17 +34,27 @@ export default function MenuSection({
 
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
+  const [keywordReviewScore, setKeywordReviewScore] = useState<KeywordReviewScore>({
+    food_composition_cnt: 0,
+    food_composition_keyword: "음식구성",
+    price_cnt: 0,
+    price_keyword: "가격",
+    taste_cnt: 0,
+    taste_keyword: "맛",
+  });
 
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    Promise.all([getRestaurantList(), getReviewScore(menu.id)])
-      .then(([restaurantListData, reviewScoreData]) => {
+    Promise.all([getRestaurantList(), getReviewScore(menu.id), getKeywordReviewScore(menu.id)])
+      .then(([restaurantListData, reviewScoreData, keywordReviewScoreData]) => {
         const restaurantName = restaurantListData.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
         if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
+
+        if (keywordReviewScore) setKeywordReviewScore(keywordReviewScoreData);
       })
       .catch(onHttpError);
   }, [menu]);
@@ -73,7 +84,7 @@ export default function MenuSection({
             score={menu.score || 0}
             distribution={reviewDistribution}
           />
-          <KeywordReviewChart />
+          <KeywordReviewChart data={keywordReviewScore} />
           {
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음

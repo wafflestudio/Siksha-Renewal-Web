@@ -1,14 +1,32 @@
 import { styled } from "styled-components";
+import { KeywordReviewScore } from "types";
 
-interface KeywordReviewProps {}
+interface KeywordReviewProps {
+  data: KeywordReviewScore;
+}
 
-const feedbacks: FeedbackItem[] = [
-  { emoji: "😊", text: "또 먹고 싶어요", count: 22, gauge: 70 },
-  { emoji: "👛", text: "가성비 좋아요", count: 10, gauge: 40 },
-  { emoji: "🍱", text: "알찬 편이에요", count: 17, gauge: 55 },
-];
+export default function KeywordReviewChart({ data }: KeywordReviewProps) {
+  const feedbacks: FeedbackItem[] = [
+    {
+      emoji: "😊",
+      text: data.taste_keyword,
+      count: data.taste_cnt,
+      gauge: 70, // TODO: gauge 계산 로직 필요
+    },
+    {
+      emoji: "👛",
+      text: data.price_keyword,
+      count: data.price_cnt,
+      gauge: 40,
+    },
+    {
+      emoji: "🍱",
+      text: data.food_composition_keyword,
+      count: data.food_composition_cnt,
+      gauge: 55,
+    },
+  ];
 
-export default function KeywordReviewChart({}: KeywordReviewProps) {
   return (
     <Container>
       {feedbacks.map((item, idx) => (

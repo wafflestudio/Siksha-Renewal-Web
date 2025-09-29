@@ -39,11 +39,11 @@ export default function Layout({ children }: LayoutProps) {
         const { message } = error;
         if (message !== "Login required") console.error(error);
       });
-  }, []);
+  }, [getAccessToken, login]);
 
   useEffect(() => {
     if (!isMobile) setIsFilterFavorite(false);
-  }, [isMobile]);
+  }, [isMobile, setIsFilterFavorite]);
 
   useEffect(() => {
     if (analytics) {
@@ -71,7 +71,7 @@ export default function Layout({ children }: LayoutProps) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [boardId, router]);
 
   return (
     <>
