@@ -6,10 +6,10 @@ export async function generateStaticParams() {
   const staticParams: { menuId: string }[] = [];
   const { result } = await getMenuList(dateString, true);
   result.map((rawMenuList) => {
-    ["BR", "LU", "DN"].forEach((key) => {
+    ["br", "lu", "dn"].forEach((key) => {
       rawMenuList[key].map(({ menus }) => {
         menus.map(({ id: menuId }) => {
-          staticParams.push({ menuId: menuId.toString() })
+          staticParams.push({ menuId: menuId.toString() });
         });
       });
     });

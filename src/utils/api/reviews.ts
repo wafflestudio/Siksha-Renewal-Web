@@ -9,21 +9,19 @@ export const getReviews = (
   hasNext: boolean;
   result: RawReview[];
 }> => {
-  return axios
-    .get(`${APIendpoint()}/reviews/?menu_id=${menuID}&page=1&per_page=100`)
-    .then((res) => {
-      const {
-        data: { total_count: totalCount, has_next: hasNext, result },
-      } = res;
-      return { totalCount, hasNext, result };
-    });
+  return axios.get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`).then((res) => {
+    const {
+      data: { total_count: totalCount, has_next: hasNext, result },
+    } = res;
+    return { totalCount, hasNext, result };
+  });
 };
 
 export const setReview = (body: FormData, accessToken: string): Promise<void> => {
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        authorization: `Bearer ${accessToken}`,
       },
     })
     .then(() => {})

@@ -101,7 +101,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     .post(
       `${APIendpoint()}/auth/refresh`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -116,8 +116,8 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
 
 export const getMyData = async (accessToken: string): Promise<User> => {
   return axios
-    .get(`${APIendpoint()}/auth/me/image`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+    .get(`${APIendpoint()}/auth/me`, {
+      headers: { authorization: `Bearer ${accessToken}` },
     })
     .then((res: { data: RawUser }) => {
       const {
@@ -137,7 +137,7 @@ export const updateProfile = async (formData: FormData, accessToken: string): Pr
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        authorization: `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -163,7 +163,7 @@ export const updateProfileWithImage = async (
   return axios
     .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        authorization: `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -181,7 +181,7 @@ export const updateProfileWithImage = async (
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   return axios
     .delete(`${APIendpoint()}/auth/`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {

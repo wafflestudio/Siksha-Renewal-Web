@@ -139,17 +139,17 @@ export interface Restaurant {
 }
 
 export interface RawMenuList {
-  BR: Array<
+  br: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }
   >;
-  DN: Array<
+  dn: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }
   >;
-  LU: Array<
+  lu: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }

@@ -8,11 +8,11 @@ export default function OperatingHour({ type, hour }: { type: string; hour: stri
     <Container>
       {hour && (
         <>
-          {type == "BR" ? (
+          {type == "br" ? (
             <IconWrapper $mobileWidth={14.1}>
               <BreakfastIcon aria-label="아침" />
             </IconWrapper>
-          ) : type == "LU" ? (
+          ) : type == "lu" ? (
             <IconWrapper $mobileWidth={16}>
               <LunchIcon aria-label="점심" />
             </IconWrapper>
