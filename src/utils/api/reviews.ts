@@ -1,6 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
-import { RawReview } from "types";
+import { KeywordReviewScore, RawReview } from "types";
 
 export const getReviews = (
   menuID: number,
@@ -39,6 +39,17 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
         data: { dist },
       } = res;
       return dist;
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+
+export const getKeywordReviewScore = (menuID: number): Promise<KeywordReviewScore> => {
+  return axios
+    .get(`${APIendpoint()}/reviews/keyword/dist?menu_id=${menuID}`)
+    .then((res) => {
+      return res.data;
     })
     .catch((e) => {
       throw e;

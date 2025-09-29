@@ -14,7 +14,7 @@ export default function Modals() {
       const { Component } = openedModals[openedModals.length - 1];
       closeModal(Component);
     }
-  }, [currentPath]);
+  }, [closeModal, currentPath, openedModals]);
 
   return (
     <>

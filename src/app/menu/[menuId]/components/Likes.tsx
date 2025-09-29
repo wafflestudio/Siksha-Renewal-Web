@@ -4,14 +4,11 @@ import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
-import Image from "next/image";
 import HeartIcon from "assets/icons/heart.svg";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
-
-  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
 
   const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth();
@@ -67,7 +64,7 @@ const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
 `;
 
 const LikesText = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
 
   /* text-13/Bold */
@@ -92,7 +89,7 @@ const LikesText = styled.div`
     }
 
     ::after {
-      content: "개"
+      content: "개";
     }
   }
 `;

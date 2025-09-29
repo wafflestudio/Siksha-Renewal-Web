@@ -10,7 +10,9 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  const apiUrl = `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const apiUrl = `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}&is_private=${
+    !!accessToken ? "true" : "false"
+  }`;
   const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
@@ -27,9 +29,7 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/menus/${menuID}`
-    : `${APIendpoint()}/menus/plain/${menuID}?is_private=true`;
+  const apiUrl = `${APIendpoint()}/menus/${menuID}?is_private=${!!accessToken ? "true" : "false"}`;
   const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
 
   return axios

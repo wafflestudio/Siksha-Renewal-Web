@@ -26,19 +26,8 @@ export default function InfiniteScrollable({
         setPage((prevPage) => prevPage + 1);
       }
     },
-    [hasNext, currentPath],
+    [hasNext],
   );
-
-  async function loadingWrapper(callback: () => Promise<void>) {
-    if (page === 1) setIsLoading?.(true);
-    await callback();
-    setIsLoading?.(false);
-  }
-
-  async function handleFetchMoreData() {
-    const hasNext = await fetchMoreData(size, page);
-    if (typeof hasNext === "boolean") setHasNext(hasNext);
-  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback);
@@ -60,9 +49,19 @@ export default function InfiniteScrollable({
 
   // page가 0일 때 page를 1로 변경, page가 1일 때부터 fetch 요청 시작
   useEffect(() => {
+    async function loadingWrapper(callback: () => Promise<void>) {
+      if (page === 1) setIsLoading?.(true);
+      await callback();
+      setIsLoading?.(false);
+    }
+
+    async function handleFetchMoreData() {
+      const hasNext = await fetchMoreData(size, page);
+      if (typeof hasNext === "boolean") setHasNext(hasNext);
+    }
     if (page === 0) setPage(1);
     else loadingWrapper(handleFetchMoreData);
-  }, [page]);
+  }, [fetchMoreData, page, setIsLoading, size]);
 
   return (
     <Container>

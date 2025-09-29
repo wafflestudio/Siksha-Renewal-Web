@@ -18,12 +18,18 @@ export type ReviewInputs = {
   score: number;
   comment: string;
   images: File[];
+  taste: string;
+  price: string;
+  food_composition: string;
 };
 
 const emptyReviewInputs: ReviewInputs = {
   score: 3,
   comment: "",
   images: [],
+  taste: "",
+  price: "",
+  food_composition: "",
 };
 
 export default function ReviewPost() {
@@ -119,7 +125,7 @@ export default function ReviewPost() {
           </StarsContainer>
           <Score>{inputs.score}</Score>
         </Header>
-        <KeywordReviewForm />
+        <KeywordReviewForm inputs={inputs} setInputs={setInputs} />
         <CommentSection>
           <div style={{ display: "flex" }}>
             <StyledCommentReviewIcon />

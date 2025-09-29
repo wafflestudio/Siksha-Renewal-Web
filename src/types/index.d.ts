@@ -186,6 +186,15 @@ export interface RawReview {
   etc: Record<string, any>;
 }
 
+export interface KeywordReviewScore {
+  taste_keyword: string;
+  taste_cnt: number;
+  price_keyword: string;
+  price_cnt: number;
+  food_composition_keyword: string;
+  food_composition_cnt: number;
+}
+
 export interface RawUser {
   id: number;
   type: string;

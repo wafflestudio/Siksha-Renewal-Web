@@ -4,7 +4,7 @@ import { Restaurant, RawRestaurant } from "types";
 
 export const getRestaurantList = (): Promise<Restaurant[]> => {
   return axios
-    .get(`${APIendpoint()}/restaurants/`)
+    .get(`${APIendpoint()}/restaurants`)
     .then((res) => {
       const {
         data: { result: rawData },
