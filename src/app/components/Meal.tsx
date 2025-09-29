@@ -5,9 +5,9 @@ import LunchIcon from "assets/icons/lunch.svg";
 import DinnerIcon from "assets/icons/dinner.svg";
 
 const MEALS = [
-  { key: "BR", label: "아침", Icon: BreakfastIcon },
-  { key: "LU", label: "점심", Icon: LunchIcon },
-  { key: "DN", label: "저녁", Icon: DinnerIcon },
+  { key: "br", label: "아침", Icon: BreakfastIcon },
+  { key: "lu", label: "점심", Icon: LunchIcon },
+  { key: "dn", label: "저녁", Icon: DinnerIcon },
 ];
 
 export default function Meal() {

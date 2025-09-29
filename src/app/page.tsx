@@ -61,7 +61,7 @@ export default function Home() {
       } else {
         getMenuList(dateString, isExceptEmpty, accessToken)
           .then(({ result }) => {
-            const { BR, LU, DN } = result[0];
+            const { br, lu, dn } = result[0];
 
             const sortFunction = (a, b) => {
               const aOrder = orderHash.get(a.id)?.order ?? Infinity;
@@ -70,9 +70,9 @@ export default function Home() {
               else return aOrder - bOrder;
             };
 
-            if (BR) result[0].BR = BR.sort(sortFunction);
-            if (LU) result[0].LU = LU.sort(sortFunction);
-            if (DN) result[0].DN = DN.sort(sortFunction);
+            result[0].br = br.sort(sortFunction);
+            result[0].lu = lu.sort(sortFunction);
+            result[0].dn = dn.sort(sortFunction);
 
             setData(result[0]);
           })

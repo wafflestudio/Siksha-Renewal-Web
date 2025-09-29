@@ -8,8 +8,8 @@ const initDate = new Date();
 
 const initialState: State = {
   date: initDate,
-  meal: initDate.getHours() < 9 ? "BR" : initDate.getHours() < 16 ? "LU" : "DN",
-  data: { BR: [], LU: [], DN: [], date: formatISODate(initDate) },
+  meal: initDate.getHours() < 9 ? "br" : initDate.getHours() < 16 ? "lu" : "dn",
+  data: { br: [], lu: [], dn: [], date: formatISODate(initDate) },
   today: initDate,
   showInfo: false,
   loading: false,

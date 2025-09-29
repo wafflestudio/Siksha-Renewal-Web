@@ -10,11 +10,7 @@ export const getReviews = (
   hasNext: boolean;
   result: RawReview[];
 }> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
-    : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
-  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
-  return axios.get(apiUrl, config).then((res) => {
+  return axios.get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`).then((res) => {
     const {
       data: { total_count: totalCount, has_next: hasNext, result },
     } = res;
