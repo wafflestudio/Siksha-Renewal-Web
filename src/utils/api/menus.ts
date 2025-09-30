@@ -13,7 +13,7 @@ export const getMenuList = (
   const apiUrl = `${APIendpoint()}/menus${
     !!accessToken ? "" : "/web"
   }?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -21,24 +21,11 @@ export const getMenuList = (
       const {
         data: { count, result: rawData },
       } = res;
-      if (count === 0) {
-        return {
-          count: 0,
-          result: [
-            {
-              date: date,
-              BR: [],
-              LU: [],
-              DN: [],
-            },
-          ],
-        };
-      }
       const result = rawData.map((menuList) => ({
         date: menuList.date,
-        BR: menuList.br || menuList.BR || [],
-        LU: menuList.lu || menuList.LU || [],
-        DN: menuList.dn || menuList.DN || [],
+        BR: menuList.br,
+        LU: menuList.lu,
+        DN: menuList.dn,
       }));
       return { count, result };
     })
