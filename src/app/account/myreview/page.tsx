@@ -32,7 +32,7 @@ export default function MyReview() {
         {
           created_at: "2025-06-28T19:33:49+09:00",
           updated_at: "2025-06-28T19:33:49+09:00",
-          id: 429,
+          id: 430,
           menu_id: 142075,
           name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
           user_id: 11303,
