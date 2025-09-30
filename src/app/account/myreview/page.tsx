@@ -37,7 +37,8 @@ export default function MyReview() {
           name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
           user_id: 11303,
           score: 3,
-          comment: "그냥 저냥 먹을만한가?",
+          comment: "학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ ",
+          keywords: ["또 먹고 싶어요", "가성비 좋아요", "알찬 편이에요"],
           etc: null,
         },
       ]
@@ -76,6 +77,7 @@ export default function MyReview() {
           user_id: 11303,
           score: 5,
           comment: "dd",
+          keywords: ["또 먹고 싶어요", "가성비 좋아요", "알찬 편이에요"],
           etc: {
             images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-120347/user-11303/0.jpeg" ]
           },
