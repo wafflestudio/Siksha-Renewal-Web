@@ -110,8 +110,11 @@ export default function ReviewPost() {
         
         <Header>
           <ReviewTitle>
-            &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
-            <ReviewTitleText>{getParticle(menu?.name_kr ?? "")} 어땠나요?</ReviewTitleText>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
+              <ReviewTitleText>{getParticle(menu?.name_kr ?? "")}</ReviewTitleText>
+            </div>
+            <ReviewTitleText>어땠나요?</ReviewTitleText>
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
@@ -246,7 +249,6 @@ const Header = styled.div`
 `;
 
 const ReviewTitle = styled.div`
-  display: flex;
   margin: 30px 0 22px 0;
 
   color: var(--Color-Foundation-gray-900, #262728);
@@ -269,6 +271,7 @@ const MenuNameText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  max-width: 500px;
 `;
 
 const ReviewTitleText = styled.span`
