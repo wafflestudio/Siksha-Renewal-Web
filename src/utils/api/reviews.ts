@@ -33,15 +33,12 @@ export const getReviews = (
   };
 
   return axios
-    .get(`${APIendpoint()}${endpoint}`, { ...config, params })
-    .then((res) => parse(res.data))
-    .catch((e) => {
-      const status = e?.response?.status;
-      if (status !== 404) throw e;
-      // Legacy endpoint (pre Spring): GET /reviews/?menu_id=...&page=...&per_page=...
-      return axios
-        .get(`${APIendpoint()}/reviews/`, { ...config, params })
-        .then((res) => parse(res.data));
+    .get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`)
+    .then((res) => {
+      const {
+        data: { total_count: totalCount, has_next: hasNext, result },
+      } = res;
+      return { totalCount, hasNext, result };
     });
 };
 
@@ -49,7 +46,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
@@ -82,8 +79,8 @@ export const getMyReviewList = (
   hasNext: boolean;
 }> => {
   return axios
-    .get(`${APIendpoint()}/reviews/me?page=${page}&per_page=${size}`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+    .get(`${APIendpoint()}/reviews/me?page=${page}&perPage=${size}`, {
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const {
@@ -103,7 +100,7 @@ export const getMyReviewList = (
 export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
   return axios
     .put(`${APIendpoint()}/reviews/${reviewId}`, body, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
@@ -114,7 +111,7 @@ export const updateReview = (reviewId: number, body: FormData, accessToken: stri
 export const deleteReview = (reviewId: number, accessToken: string) => {
   return axios
     .delete(`${APIendpoint()}/reviews/${reviewId}`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {

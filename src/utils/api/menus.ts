@@ -1,7 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
-import { isMockToken, getMockLikedMenus, getMockMenuList } from "utils/mockAuth";
 
 export const getMenuList = (
   date: string,
@@ -11,22 +10,13 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  if (accessToken && isMockToken(accessToken)) {
-    return Promise.resolve(getMockMenuList(date));
-  }
-
-  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
-
-  const springUrl = !!accessToken
-    ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
-    : `${APIendpoint()}/menus/web?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-
-  const legacyUrl = !!accessToken
-    ? `${APIendpoint()}/menus/lo?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
-    : `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const apiUrl = `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
 
   return axios
-    .get(springUrl, config)
+    .get(apiUrl, config)
     .then((res) => {
       const {
         data: { count, result: rawData },
@@ -53,62 +43,24 @@ export const getMenuList = (
       return { count, result };
     })
     .catch((e) => {
-      const status = e?.response?.status;
-      if (status !== 404) throw e;
-      return axios.get(legacyUrl, config).then((res) => {
-        const {
-          data: { count, result: rawData },
-        } = res;
-        if (count === 0) {
-          return {
-            count: 0,
-            result: [
-              {
-                date: date,
-                BR: [],
-                LU: [],
-                DN: [],
-              },
-            ],
-          };
-        }
-        const result = rawData.map((menuList: any) => ({
-          date: menuList.date,
-          BR: menuList.br || menuList.BR || [],
-          LU: menuList.lu || menuList.LU || [],
-          DN: menuList.dn || menuList.DN || [],
-        }));
-        return { count, result };
-      });
+      throw e;
     });
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
-
-  const springUrl = !!accessToken
-    ? `${APIendpoint()}/menus/${menuID}`
-    : `${APIendpoint()}/menus/${menuID}/web`;
-
-  const legacyUrl = !!accessToken
-    ? `${APIendpoint()}/menus/${menuID}`
-    : `${APIendpoint()}/menus/plain/${menuID}`;
+  const apiUrl = `${APIendpoint()}/menus/${menuID}`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
 
   return axios
-    .get(springUrl, config)
+    .get(apiUrl, config)
     .then((res) => {
       const { data } = res;
       return data;
     })
     .catch((e) => {
-      const status = e?.response?.status;
-      if (status !== 404) throw e;
-      return axios
-        .get(legacyUrl, config)
-        .then((res) => res.data)
-        .catch((err) => {
-          throw err;
-        });
+      throw e;
     });
 };
 
@@ -120,7 +72,7 @@ export const setMenuLike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/like`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -141,7 +93,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -155,9 +107,6 @@ export const setMenuUnlike = (
 };
 
 export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
-  if (isMockToken(accessToken)) {
-    return Promise.resolve(getMockLikedMenus());
-  }
 
   return axios
     .get(`${APIendpoint()}/menus/me`, {

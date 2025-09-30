@@ -63,21 +63,19 @@ export default function useModals() {
         : defaultMessage;
       const status = options.isUserFail ? 400 : isAxiosError ? error.response?.status ?? 500 : 500;
 
-      openModal(ErrorModal, {
-        code: status,
-        message: message,
-        onClose: () => {
-          options.onClose ? options.onClose() : router.back();
-          closeModal(ErrorModal);
-        },
-        onRetry: () => {
-          options.onRetry ? options.onRetry() : router.refresh();
-          closeModal(ErrorModal);
-        },
-      });
-    },
-    [closeModal, openModal, router],
-  );
+    openModal(ErrorModal, {
+      code: status,
+      message: message,
+      onClose: () => {
+        // options.onClose ? options.onClose() : router.back();
+        closeModal(ErrorModal);
+      },
+      onRetry: () => {
+        options.onRetry ? options.onRetry() : router.refresh();
+        closeModal(ErrorModal);
+      },
+    });
+  };
 
   return {
     openModal,

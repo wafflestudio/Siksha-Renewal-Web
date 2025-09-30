@@ -23,7 +23,7 @@ export const loginKakao = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/kakao`,
         {},
         {
-          headers: { Authorization: `Bearer ${access_token}` },
+          headers: { "Authorization": `Bearer ${access_token}` },
         },
       ),
     )
@@ -34,6 +34,7 @@ export const loginKakao = async (code: string): Promise<string> => {
       return accessToken;
     })
     .catch((e) => {
+      console.error("message", e.message);
       throw e;
     });
 };
@@ -62,7 +63,7 @@ export const loginGoogle = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/google`,
         {},
         {
-          headers: { Authorization: `Bearer ${id_token}` },
+          headers: { "Authorization": `Bearer ${id_token}` },
         },
       ),
     )
@@ -83,7 +84,7 @@ export const loginApple = async (id_token: string): Promise<string> => {
       `${APIendpoint()}/auth/login/apple`,
       {},
       {
-        headers: { Authorization: `Bearer ${id_token}` },
+        headers: { "Authorization": `Bearer ${id_token}` },
       },
     )
     .then((res) => {
@@ -106,7 +107,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     .post(
       `${APIendpoint()}/auth/refresh`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -133,8 +134,15 @@ export const getMyData = async (accessToken: string): Promise<User> => {
   };
 
   return axios
-    .get(`${APIendpoint()}/auth/me`, config)
-    .then((res: { data: RawUser }) => parse(res.data))
+    .get(`${APIendpoint()}/auth/me`, {
+      headers: { "Authorization": `Bearer ${accessToken}` },
+    })
+    .then((res: { data: RawUser }) => {
+      const {
+        data: { id, nickname, profile_url },
+      } = res;
+      return { id, nickname, image: profile_url };
+    })
     .catch((e) => {
       const status = e?.response?.status;
       if (status !== 404) throw e;
@@ -152,7 +160,7 @@ export const updateProfile = async (formData: FormData, accessToken: string): Pr
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -175,15 +183,13 @@ export const updateProfileWithImage = async (
     throw new Error("image is required");
   }
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "multipart/form-data",
-    },
-  };
-
   return axios
-    .patch(`${APIendpoint()}/auth/me/profile`, formData, config)
+    .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((res: { data: RawUser }) => {
       const {
         data: { id, nickname, profile_url },
@@ -208,7 +214,9 @@ export const updateProfileWithImage = async (
 export const deleteAccount = async (accessToken: string): Promise<void> => {
   const config = { headers: { Authorization: `Bearer ${accessToken}` } };
   return axios
-    .delete(`${APIendpoint()}/auth`, config)
+    .delete(`${APIendpoint()}/auth/`, {
+      headers: { "Authorization": `Bearer ${accessToken}` },
+    })
     .then(() => {})
     .catch((e) => {
       const status = e?.response?.status;
