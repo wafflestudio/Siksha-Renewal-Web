@@ -35,6 +35,13 @@ export default function MyReviewItem({
         <Body>
           <Content>
             <Comment>{review.comment}</Comment>
+            {review.keywords && (
+              <Keywords>
+                {review.keywords.map((keyword) => (
+                  <Keyword key={`${review.id}-${keyword}`}>{keyword}</Keyword>
+                ))}
+              </Keywords>
+            )}
             {review.etc && (
               <Images>
                 {review.etc.images.map((image) => (
@@ -119,7 +126,7 @@ const ReviewCreatedAt = styled.div`
   font-size: 12px;
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 12.544px */
+  line-height: 140%;
 `;
 
 const Body = styled.div`
@@ -133,7 +140,7 @@ const Content = styled.div`
   padding: 0 4px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   align-self: stretch;
 `;
 
@@ -155,6 +162,27 @@ const Images = styled.div`
   margin-top: 6px;
   align-self: stretch;
   flex-wrap: wrap;
+`;
+
+const Keywords = styled.div`
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 8px;
+`;
+
+const Keyword = styled.div`
+  padding: 4px;
+  border-radius: 4px;
+  background: var(--SementicColor-Element-Chip, #F2F3F4);
+
+  color: var(--Color-Foundation-gray-700, #727478);
+  text-align: center;
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%;
 `;
 
 const Footer = styled.div`
