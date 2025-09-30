@@ -54,14 +54,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   box-sizing: border-box;
 `;
 
 const DesktopContainer = styled(Container)`
   gap: 47px 30px;
-  top: 423px;
   width: 497px;
   height: 230px;
   border-radius: 13px;
