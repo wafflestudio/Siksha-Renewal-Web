@@ -27,9 +27,8 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
       },
     })
     .then(() => {})
-    .catch((err) => {
-      err.message = "리뷰 등록에 실패했습니다.";
-      throw new Error(err);
+    .catch((e) => {
+      throw e;
     });
 };
 
@@ -81,9 +80,8 @@ export const updateReview = (reviewId: number, body: FormData, accessToken: stri
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
-    .catch((err) => {
-      err.message = "리뷰 수정에 실패했습니다.";
-      throw new Error(err);
+    .catch((e) => {
+      throw e;
     });
 };
 
@@ -93,8 +91,7 @@ export const deleteReview = (reviewId: number, accessToken: string) => {
       headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
-    .catch((err) => {
-      err.message = "리뷰 삭제에 실패했습니다.";
-      throw new Error(err);
+    .catch((e) => {
+      throw e;
     });
 };
