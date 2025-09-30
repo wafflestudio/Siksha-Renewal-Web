@@ -25,7 +25,7 @@ export default function usePostActions(boardId: number, postId: number) {
   };
 
   const updatePost = (postId: number) => {
-    router.push(`/community/write/?postId=${postId}`);
+    router.push(`/community/write?postId=${postId}`);
   };
 
   const fetchPost = () => {

@@ -10,19 +10,23 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/menus/lo?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
-    : `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const apiUrl = `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
   const config = !!accessToken
-    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
     : {};
 
   return axios
     .get(apiUrl, config)
     .then((res) => {
       const {
-        data: { count, result },
+        data: { count, result: rawData },
       } = res;
+      const result = rawData.map((menuList) => ({
+        date: menuList.date,
+        BR: menuList.br,
+        LU: menuList.lu,
+        DN: menuList.dn,
+      }));
       return { count, result };
     })
     .catch((e) => {
@@ -31,11 +35,9 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/menus/${menuID}`
-    : `${APIendpoint()}/menus/plain/${menuID}`;
+  const apiUrl = `${APIendpoint()}/menus/${menuID}`;
   const config = !!accessToken
-    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
     : {};
 
   return axios
@@ -57,7 +59,7 @@ export const setMenuLike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/like`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -78,7 +80,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {

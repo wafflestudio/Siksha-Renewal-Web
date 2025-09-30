@@ -10,7 +10,7 @@ export const getReviews = (
   result: RawReview[];
 }> => {
   return axios
-    .get(`${APIendpoint()}/reviews/?menu_id=${menuID}&page=1&per_page=100`)
+    .get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`)
     .then((res) => {
       const {
         data: { total_count: totalCount, has_next: hasNext, result },
@@ -23,7 +23,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
@@ -56,8 +56,8 @@ export const getMyReviewList = (
   hasNext: boolean;
 }> => {
   return axios
-    .get(`${APIendpoint()}/reviews/me?page=${page}&per_page=${size}`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+    .get(`${APIendpoint()}/reviews/me?page=${page}&perPage=${size}`, {
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const {
@@ -77,7 +77,7 @@ export const getMyReviewList = (
 export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
   return axios
     .put(`${APIendpoint()}/reviews/${reviewId}`, body, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
@@ -88,7 +88,7 @@ export const updateReview = (reviewId: number, body: FormData, accessToken: stri
 export const deleteReview = (reviewId: number, accessToken: string) => {
   return axios
     .delete(`${APIendpoint()}/reviews/${reviewId}`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {

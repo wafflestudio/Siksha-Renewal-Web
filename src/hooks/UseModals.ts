@@ -57,7 +57,7 @@ export default function useModals() {
       code: status,
       message: message,
       onClose: () => {
-        options.onClose ? options.onClose() : router.back();
+        // options.onClose ? options.onClose() : router.back();
         closeModal(ErrorModal);
       },
       onRetry: () => {
