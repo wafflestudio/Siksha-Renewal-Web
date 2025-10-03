@@ -191,16 +191,7 @@ export default function UseFilter() {
 
       return filteredList as RawMenuList;
     },
-    [
-      date,
-      filterList.isAvailableOnly,
-      filterList.isFestival,
-      filterList.isReview,
-      filterList.length,
-      filterList.priceMax,
-      filterList.priceMin,
-      filterList.ratingMin,
-    ],
+    [filterList],
   );
 
   return {

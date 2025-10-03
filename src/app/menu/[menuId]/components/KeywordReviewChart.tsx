@@ -11,19 +11,19 @@ export default function KeywordReviewChart({ data }: KeywordReviewProps) {
       emoji: "😊",
       text: data.taste_keyword,
       count: data.taste_cnt,
-      gauge: 70, // TODO: gauge 계산 로직 필요
+      gauge: 0, // TODO: gauge 계산 로직 필요
     },
     {
       emoji: "👛",
       text: data.price_keyword,
       count: data.price_cnt,
-      gauge: 40,
+      gauge: 0,
     },
     {
       emoji: "🍱",
       text: data.food_composition_keyword,
       count: data.food_composition_cnt,
-      gauge: 55,
+      gauge: 0,
     },
   ];
 
@@ -96,13 +96,13 @@ const Emoji = styled.span`
 
 const Text = styled.span`
   font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 700;
+  color: var(--Color-Foundation-gray-800);
 `;
 
 const Count = styled.span`
   font-size: 14px;
-  font-weight: 600;
-  color: #f97316;
+  font-weight: 800;
+  color: var(--Color-Foundation-orange-500);
   z-index: 1;
 `;

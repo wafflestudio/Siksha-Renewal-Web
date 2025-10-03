@@ -20,14 +20,14 @@ export default function useAuth() {
     if (accessToken === undefined) setAuthStatus("loading");
     else if (accessToken) setAuthStatus("login");
     else setAuthStatus("logout");
-  }, [accessToken, setAuthStatus]);
+  }, [accessToken]);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
       router.push(`/`);
       openLoginModal();
     }
-  }, [authStatus, openLoginModal, router]);
+  }, [authStatus]);
 
   const getAccessToken = (): Promise<string> => {
     return new Promise((resolve, reject) => {
