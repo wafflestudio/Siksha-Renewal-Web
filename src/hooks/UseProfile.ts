@@ -20,7 +20,7 @@ export default function UseProfile() {
         .then((token) => getMyData(token))
         .then((profile) => setUserInfo(profile));
     }
-  }, [authStatus, getAccessToken, setUserInfo]);
+  }, [authStatus]);
 
   const setProfile = (nickname: string, image?: string) => {
     if (userInfo !== null) setUserInfo({ ...userInfo, nickname, image: image ?? null });
