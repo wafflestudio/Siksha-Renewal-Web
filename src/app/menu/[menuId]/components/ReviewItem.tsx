@@ -9,6 +9,7 @@ import KeywordReviewChips from "./KeywordReviewChips";
 import ReviewLikes from "./ReviewLikes";
 import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
+import TailIcon from "assets/icons/review-comment-tail.svg";
 
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);
@@ -66,7 +67,19 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
       </Header>
       <Body>
         <Content>
-          <Comment>{review.comment}</Comment>
+          <CommentReviewWrapper>
+            <CommentWrapper>
+              {isMobile && <StyledTailIcon />}
+              <Comment>{review.comment}</Comment>
+            </CommentWrapper>
+            {isMobile && (
+              <ReviewLikes
+                count={review.like_count}
+                isLiked={review.is_liked}
+                onClick={handleReviewLike}
+              />
+            )}
+          </CommentReviewWrapper>
           <KeywordReviewChips keywords={review.keyword_reviews} />
           {Array.isArray(review.etc?.images) && (
             <Images>
@@ -86,11 +99,13 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
             </Images>
           )}
           {/* ReviewLikes 클릭 이벤트 연결 */}
-          <ReviewLikes
-            count={review.like_count}
-            isLiked={review.is_liked}
-            onClick={handleReviewLike}
-          />
+          {!isMobile && (
+            <ReviewLikes
+              count={review.like_count}
+              isLiked={review.is_liked}
+              onClick={handleReviewLike}
+            />
+          )}
         </Content>
       </Body>
     </Container>
@@ -140,6 +155,8 @@ const Comment = styled.div`
   padding: 4px 24px 4px 0px;
   align-items: flex-start;
   align-self: stretch;
+  flex-grow: 1;
+  min-width: 0;
 
   color: var(--Color-Foundation-gray-900, #262728);
 
@@ -166,6 +183,29 @@ const Comment = styled.div`
     line-height: 140%; /* 18.2px */
     letter-spacing: var(--Font-letter-spacing-0, -0.3px);
   }
+`;
+
+const CommentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  flex-grow: 1;
+  gap: 0;
+`;
+
+const StyledTailIcon = styled(TailIcon)`
+  color: var(--SemanticColor-Background-Secondary);
+  margin-right: -3px;
+  overflow: visible;
+`;
+
+const CommentReviewWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10.5px;
+  align-items: center;
+  width: 100%;
 `;
 
 const Images = styled.div`
