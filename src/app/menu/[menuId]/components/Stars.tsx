@@ -28,6 +28,6 @@ const StarContainer = styled.div`
 const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
   width: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
   height: ${(props) => (props.theme.width ? props.theme.width / 5 : 14.18)}px;
-  color: ${(props) => (props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)")};
+  color: ${(props) =>
+    props.$isfilled ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-Like)"};
 `;
-

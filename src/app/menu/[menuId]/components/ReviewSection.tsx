@@ -5,6 +5,8 @@ import useIsMobile from "hooks/UseIsMobile";
 import Image from "next/image";
 import MobileLayout from "styles/layouts/MobileLayout";
 import MobileReviewListPage from "./MobileReviewListPage";
+import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export interface MenuType {
   id: number;
@@ -76,7 +78,11 @@ export default function ReviewSection({
           </ReviewList>
           <MoreReviews onClick={() => handleReviewListPage(true)}>
             <Label>리뷰 더보기</Label>
-            <Image src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" width={12} height={17} />
+            {isMobile ? (
+              <MobileRightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
+            ) : (
+              <RightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
+            )}
           </MoreReviews>
         </Container>
       )}
@@ -124,7 +130,7 @@ const HeaderText = styled.div`
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-18/Bold */
-    font-family: var(--Font-family-sans, NanumSquareOTF);
+    font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-18, 18px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -195,7 +201,7 @@ const Label = styled.div`
   text-align: right;
 
   /* text-12/Bold */
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-12, 12px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);

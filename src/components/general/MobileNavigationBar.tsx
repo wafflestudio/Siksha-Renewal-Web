@@ -93,8 +93,8 @@ const Container = styled.div`
   width: 100%;
   height: 83px;
   background-color: var(--SemanticColor-Background-Secondary);
-  border-top: 1px solid var(--Color-Foundation-gray-500);
   z-index: 1;
+  box-shadow: 0px -2px 6px 0px #0000000d;
 
   @media (max-width: 768px) {
     display: flex;
@@ -117,7 +117,7 @@ const NavName = styled.div<{ $isActive: boolean }>`
   width: 36;
   height: 10;
   top: 36px;
-  font-family: NanumSquareOTF;
+  font-family: NanumSquare;
   font-weight: 800;
   font-size: 9px;
   line-height: 100%;
