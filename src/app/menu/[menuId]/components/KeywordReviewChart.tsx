@@ -57,6 +57,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+  }
 `;
 
 const FeedbackRow = styled.div`
@@ -87,6 +91,7 @@ const Left = styled.div`
   align-items: center;
   gap: 6px;
   z-index: 1; /* 게이지 위로 */
+  height: 24px;
 `;
 
 const Emoji = styled.span`
@@ -98,6 +103,11 @@ const Text = styled.span<{ gauge: number }>`
   font-weight: 700;
   color: ${({ gauge }) =>
     gauge === 0 ? `var(--Color-Foundation-gray-600)` : `var(--Color-Foundation-gray-800)`};
+  line-height: 140%;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
 `;
 
 const Count = styled.span`

@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
 import { ReviewInputs } from "../reviews/write/page";
+import TasteIcon from "assets/icons/keyword-taste.svg";
+import PriceIcon from "assets/icons/keyword-price.svg";
+import CompositionIcon from "assets/icons/keyword-composition.svg";
 
 type Option = {
   id: string;
@@ -11,7 +14,7 @@ type Option = {
 
 type Category = {
   id: string;
-  emoji: string;
+  emoji: ReactNode;
   title: string;
   options: Option[];
 };
@@ -19,7 +22,7 @@ type Category = {
 const categories: Category[] = [
   {
     id: "taste",
-    emoji: "😊",
+    emoji: <TasteIcon />,
     title: "맛",
     options: [
       { id: "t1", label: "또 먹고 싶어요" },
@@ -31,7 +34,7 @@ const categories: Category[] = [
   },
   {
     id: "price",
-    emoji: "👛",
+    emoji: <PriceIcon />,
     title: "가격",
     options: [
       { id: "p1", label: "혜자스러워요" },
@@ -43,7 +46,7 @@ const categories: Category[] = [
   },
   {
     id: "composition",
-    emoji: "🍱",
+    emoji: <CompositionIcon />,
     title: "음식 구성",
     options: [
       { id: "c1", label: "조화로워요" },

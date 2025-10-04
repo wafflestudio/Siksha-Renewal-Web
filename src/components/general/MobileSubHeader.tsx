@@ -96,7 +96,7 @@ const BackButton = styled(LeftArrowMobileIcon)`
 
 const Title = styled.div`
   color: var(--SemanticColor-Text-GNB);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 140%;
   max-width: calc(100vw - 96px);
