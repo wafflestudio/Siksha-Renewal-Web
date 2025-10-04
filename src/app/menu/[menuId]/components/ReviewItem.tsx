@@ -1,15 +1,46 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
 import Stars from "./Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
 import { formatReviewDate } from "utils/FormatUtil";
 import useIsMobile from "hooks/UseIsMobile";
 import KeywordReviewChips from "./KeywordReviewChips";
+import ReviewLikes from "./ReviewLikes";
+import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
+import useAuth from "hooks/UseAuth";
 
-export default function ReviewItem({ review }: { review: ReviewType }) {
+export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
+  const [review, setReview] = useState(initialReview);
   const isMobile = useIsMobile();
   const IMAGE_SIZE = isMobile ? 102 : 80;
+  const { getAccessToken } = useAuth();
+
+  const handleReviewLike = async () => {
+    const accessToken = await getAccessToken();
+    try {
+      if (review.is_liked) {
+        // UI 먼저 업데이트
+        setReview({
+          ...review,
+          is_liked: false,
+          like_count: review.like_count - 1,
+        });
+        await setReviewUnlike(review.id, accessToken); // 서버 요청
+      } else {
+        setReview({
+          ...review,
+          is_liked: true,
+          like_count: review.like_count + 1,
+        });
+        await setReviewLike(review.id, accessToken); // 서버 요청
+      }
+    } catch (err) {
+      console.error(err);
+      // 실패 시 rollback 필요하면 setReview로 원래 값 복원
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -27,7 +58,7 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
             <Stars score={review.score || 0} />
           </ThemedWrapper>
         </div>
-        <Date>{formatReviewDate(review.created_at.substring(0, 10))}</Date>
+        <Date>{review.created_at.substring(0, 10)}</Date>
       </Header>
       <Body>
         <Content>
@@ -50,6 +81,12 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
               ))}
             </Images>
           )}
+          {/* ReviewLikes 클릭 이벤트 연결 */}
+          <ReviewLikes
+            count={review.like_count}
+            isLiked={review.is_liked}
+            onClick={handleReviewLike}
+          />
         </Content>
       </Body>
     </Container>
@@ -127,22 +164,12 @@ const Comment = styled.div`
   }
 `;
 
-const Keywords = styled.div`
-  display: flex;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 8px;
-  align-self: stretch;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-`;
-
 const Images = styled.div`
   display: flex;
   align-items: flex-start;
   align-content: flex-start;
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 10px;
   align-self: stretch;
   flex-wrap: wrap;
 `;

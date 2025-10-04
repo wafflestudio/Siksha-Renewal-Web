@@ -1,26 +1,35 @@
 import { styled } from "styled-components";
 import { KeywordReviewScore } from "types";
+import TasteIcon from "assets/icons/keyword-taste.svg";
+import PriceIcon from "assets/icons/keyword-price.svg";
+import CompositionIcon from "assets/icons/keyword-composition.svg";
+import { ReactNode } from "react";
 
 interface KeywordReviewProps {
   data: KeywordReviewScore;
 }
-
+type FeedbackItem = {
+  emoji: ReactNode;
+  text: string;
+  count: number;
+  gauge: number; // 0 ~ 100 (%)
+};
 export default function KeywordReviewChart({ data }: KeywordReviewProps) {
   const feedbacks: FeedbackItem[] = [
     {
-      emoji: "😊",
+      emoji: <TasteIcon />,
       text: data.taste_keyword,
       count: data.taste_cnt,
       gauge: 0, // TODO: gauge 계산 로직 필요
     },
     {
-      emoji: "👛",
+      emoji: <PriceIcon />,
       text: data.price_keyword,
       count: data.price_cnt,
       gauge: 0,
     },
     {
-      emoji: "🍱",
+      emoji: <CompositionIcon />,
       text: data.food_composition_keyword,
       count: data.food_composition_cnt,
       gauge: 0,
@@ -34,7 +43,7 @@ export default function KeywordReviewChart({ data }: KeywordReviewProps) {
           <Gauge gauge={item.gauge} />
           <Left>
             <Emoji>{item.emoji}</Emoji>
-            <Text>{item.text}</Text>
+            <Text gauge={item.gauge}>{item.text}</Text>
           </Left>
           <Count>{item.count}</Count>
         </FeedbackRow>
@@ -49,13 +58,6 @@ const Container = styled.div`
   gap: 8px;
   width: 100%;
 `;
-
-type FeedbackItem = {
-  emoji: string;
-  text: string;
-  count: number;
-  gauge: number; // 0 ~ 100 (%)
-};
 
 const FeedbackRow = styled.div`
   position: relative;
@@ -83,21 +85,19 @@ const Gauge = styled.div<{ gauge: number }>`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 6px;
   z-index: 1; /* 게이지 위로 */
 `;
 
 const Emoji = styled.span`
   font-size: 16px;
-  padding: 4px;
-  position: relative;
-  top: -2px;
 `;
 
-const Text = styled.span`
+const Text = styled.span<{ gauge: number }>`
   font-size: 14px;
   font-weight: 700;
-  color: var(--Color-Foundation-gray-800);
+  color: ${({ gauge }) =>
+    gauge === 0 ? `var(--Color-Foundation-gray-600)` : `var(--Color-Foundation-gray-800)`};
 `;
 
 const Count = styled.span`

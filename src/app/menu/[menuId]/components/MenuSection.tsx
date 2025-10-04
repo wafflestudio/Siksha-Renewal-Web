@@ -14,6 +14,7 @@ import PhotoReviewsSection from "./PhotoReviewsSection";
 import Link from "next/link";
 import KeywordReviewChart from "./KeywordReviewChart";
 import { KeywordReviewScore } from "types";
+import DistanceIcon from "assets/icons/distance.svg";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -64,7 +65,7 @@ export default function MenuSection({
       <MenuOverview>
         <MenuHeader>
           <RestaurantWrapper>
-            <Image src={"/img/distance.svg"} alt="식당" width={20} height={20} />
+            <DistanceIcon color="var(--Color-Foundation-orange-500)" />
             <Restaurant>{restaurantName}</Restaurant>
           </RestaurantWrapper>
           <MenuInfoContainer>

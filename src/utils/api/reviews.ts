@@ -121,3 +121,31 @@ export const deleteReview = (reviewId: number, accessToken: string) => {
       throw e;
     });
 };
+
+export const setReviewLike = (reviewId: number, accessToken: string): Promise<void> => {
+  return axios
+    .post(`${APIendpoint()}/reviews/${reviewId}/like`, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 좋아요에 실패했습니다.";
+      throw new Error(err);
+    });
+};
+
+export const setReviewUnlike = (reviewId: number, accessToken: string): Promise<void> => {
+  return axios
+    .delete(`${APIendpoint()}/reviews/${reviewId}/like`, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 좋아요 취소에 실패했습니다.";
+      throw new Error(err);
+    });
+};
