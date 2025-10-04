@@ -10,13 +10,15 @@ export default function KeywordReviewChips({ keywords = [] }: { keywords?: strin
   );
 }
 
-function KeywordReviewChip({ keyword }: { keyword: string }) {
+function KeywordReviewChip({ keyword }: { keyword?: string }) {
+  if (!keyword) return;
   return <Chip>{keyword}</Chip>;
 }
 
 const Container = styled.div`
   display: flex;
   gap: 8px;
+  margin-top: 6px;
 `;
 
 const Chip = styled.span`
@@ -25,7 +27,11 @@ const Chip = styled.span`
   border-radius: 4px;
   color: var(--Color-Foundation-gray-700);
   line-height: 140%;
-  font-size: 11px;
-  font-weight: 700;
   letter-spacing: -0.3px;
+  font-size: 13px;
+  font-weight: 400;
+  @media (max-width: 768px) {
+    font-size: 11px;
+    font-weight: 700;
+  }
 `;
