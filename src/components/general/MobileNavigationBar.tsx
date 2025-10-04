@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 
 export default function MobileNavigationBar() {
+  const router = useRouter();
   const addr = usePathname();
 
   const state = useStateContext();
@@ -87,9 +88,18 @@ export default function MobileNavigationBar() {
         />
         <IconLabel isActive={active === "community"}>게시판</IconLabel>
       </Link>
-      <Link
-        href="/account"
-        onClick={() => setIsFilterFavorite(false)}
+      <div
+        /**
+         * NOTE: Link href를 /account로 하면 authGuard에 의해 튕겨나가므로
+         * login 시에만 /account로 이동하도록 설정
+         */
+        onClick={() => {
+          if (authStatus === "login") {
+            setIsFilterFavorite(false);
+            router.push(`/account`);
+          }
+          else openLoginModal();
+        }}
         style={{
           width: "36px",
           height: "46px",
@@ -101,7 +111,7 @@ export default function MobileNavigationBar() {
           srcInactive="/img/mobile-nav-account-inactive.svg"
         />
         <IconLabel isActive={active === "account"}>설정</IconLabel>
-      </Link>
+      </div>
     </Container>,
     rootElement,
   );
