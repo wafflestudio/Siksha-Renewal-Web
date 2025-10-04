@@ -23,7 +23,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
   const { openLoginModal, openErrorModal } = useModals();
   const { onHttpError } = useError();
   const isMobile = useIsMobile();
-  const mobileSubHeaderTitle = "사진 리뷰 모아보기";
+  const mobileSubHeaderTitle = "사진 리뷰";
   const { getAccessToken } = useAuth();
 
   useEffect(() => {

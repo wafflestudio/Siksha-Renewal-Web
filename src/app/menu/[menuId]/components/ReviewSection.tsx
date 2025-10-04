@@ -5,6 +5,8 @@ import useIsMobile from "hooks/UseIsMobile";
 import Image from "next/image";
 import MobileLayout from "styles/layouts/MobileLayout";
 import MobileReviewListPage from "./MobileReviewListPage";
+import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export interface MenuType {
   id: number;
@@ -76,7 +78,11 @@ export default function ReviewSection({
           </ReviewList>
           <MoreReviews onClick={() => handleReviewListPage(true)}>
             <Label>리뷰 더보기</Label>
-            <Image src="/img/right-arrow-darkgrey.svg" alt="리뷰 더보기" width={12} height={17} />
+            {isMobile ? (
+              <MobileRightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
+            ) : (
+              <RightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
+            )}
           </MoreReviews>
         </Container>
       )}

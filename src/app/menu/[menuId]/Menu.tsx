@@ -93,7 +93,7 @@ export default function Menu({ menuId }: { menuId: number }) {
       console.error("menu is not loaded");
       return;
     }
-    setMobileSubHeaderTitle(isOpen ? "리뷰" : menu.name_kr);
+    setMobileSubHeaderTitle(isOpen ? "전체 리뷰" : menu.name_kr);
     setIsReviewListPageOpen(isOpen);
   };
 

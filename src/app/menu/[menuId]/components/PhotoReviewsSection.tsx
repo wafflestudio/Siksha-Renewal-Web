@@ -2,6 +2,8 @@ import useIsMobile from "hooks/UseIsMobile";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export default function PhotoReviewsSection({
   menuId,
@@ -37,12 +39,13 @@ export default function PhotoReviewsSection({
           }}
         >
           <Label>전체보기</Label>
-          <Image
-            src="/img/right-arrow-darkgrey.svg"
-            alt="전체보기"
-            width={18}
-            height={18}
-          />
+          {isMobile ? (
+            <MobileRightArrowIcon width={7.5} color="var(--Color-Foundation-gray-600)" />
+          ) : (
+            <RightArrowIcon width={13.87} color="var(--Color-Foundation-gray-600)" />
+          )}
+
+          {/* <Image src="/img/right-arrow-darkgrey.svg" alt="전체보기" width={18} height={18} /> */}
         </Link>
       </Header>
       <Photos>
