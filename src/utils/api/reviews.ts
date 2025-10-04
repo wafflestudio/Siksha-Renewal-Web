@@ -1,3 +1,4 @@
+import { ReviewType } from "app/menu/[menuId]/Menu";
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { KeywordReviewScore, RawReview } from "types";
@@ -7,7 +8,7 @@ export const getReviews = (
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
-  result: RawReview[];
+  result: ReviewType[];
 }> => {
   return axios.get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`).then((res) => {
     const {
