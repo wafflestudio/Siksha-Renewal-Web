@@ -65,9 +65,17 @@ export default function MobileNavigationBar() {
       <Link href="/community/boards/1" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "community"} icon={<CommunityIcon />} name="게시판" />
       </Link>
-      <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
-        <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
-      </Link>
+      {
+        authStatus === "login" ? (
+          <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
+            <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
+          </Link>
+        ) : (
+          <div onClick={() => openLoginModal()}>
+            <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
+          </div>
+        )
+      }
     </Container>,
     rootElement,
   );
