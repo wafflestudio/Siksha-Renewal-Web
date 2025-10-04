@@ -123,8 +123,10 @@ const Description = styled.p`
   text-align: center;
   margin: 0;
   margin-left: 10px;
-  font-size: 20px;
-  font-weight: 700;
+  color: var(--Color-Foundation-base-black);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 140%;
 `;
 
 const UserBox = styled.div`

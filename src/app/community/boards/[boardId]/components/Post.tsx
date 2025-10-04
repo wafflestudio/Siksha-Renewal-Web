@@ -2,18 +2,23 @@ import styled, { css } from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
 import { LoadingAnimation } from "styles/globalstyle";
+import { useTheme } from "next-themes";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface PropsPost {
   post: PostType;
+  isFirst?: boolean;
 }
 
-export function Post({ post }: PropsPost) {
+export function Post({ post, isFirst = false }: PropsPost) {
   const { boardId, id, title, content, isLiked, likeCount, commentCount, images } = post;
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
+  const { currentTheme } = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
 
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
-      <Container>
+      <Container $isFirst={isFirst} $isDark={isDark}>
         <Info isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
@@ -40,7 +45,7 @@ export function Post({ post }: PropsPost) {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
   ${LoadingAnimation}
   display: flex;
   position: relative;
@@ -66,7 +71,15 @@ const Container = styled.div`
     @media (max-width: 768px) {
       /* display: none; */
       width: calc(100% + 25px);
-      background-color: var(--Color-Foundation-gray-100);
+      ${(props) =>
+        !props.$isDark
+          ? css`
+              background-color: var(--Color-Foundation-gray-100);
+            `
+          : props.$isFirst &&
+            css`
+              background-color: var(--Color-Foundation-gray-100);
+            `}
     }
   }
 `;
