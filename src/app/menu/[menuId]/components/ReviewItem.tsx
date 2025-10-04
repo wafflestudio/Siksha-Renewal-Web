@@ -58,7 +58,11 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
             <Stars score={review.score || 0} />
           </ThemeProvider>
         </div>
-        <Date>{review.created_at.substring(0, 10)}</Date>
+        <Date>
+          {isMobile
+            ? formatReviewDate(review.created_at.substring(0, 10))
+            : review.created_at.substring(0, 10)}
+        </Date>
       </Header>
       <Body>
         <Content>

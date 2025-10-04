@@ -1,17 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MenuType } from "app/menu/[menuId]/Menu";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getKeywordReviewScore, getReviewScore } from "utils/api/reviews";
-import { useRouter } from "next/navigation";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate, formatPrice } from "utils/FormatUtil";
 import useError from "hooks/useError";
-import Image from "next/image";
 import PhotoReviewsSection from "./PhotoReviewsSection";
-import Link from "next/link";
 import KeywordReviewChart from "./KeywordReviewChart";
 import { KeywordReviewScore } from "types";
 import DistanceIcon from "assets/icons/distance.svg";
@@ -80,12 +77,14 @@ export default function MenuSection({
         <MobileDivider />
 
         <MenuEvaluation>
-          <ReviewDistribution
-            reviewsTotalCount={reviewsTotalCount}
-            score={menu.score || 0}
-            distribution={reviewDistribution}
-          />
-          <KeywordReviewChart data={keywordReviewScore} />
+          <ReviewArrangement>
+            <ReviewDistribution
+              reviewsTotalCount={reviewsTotalCount}
+              score={menu.score || 0}
+              distribution={reviewDistribution}
+            />
+            <KeywordReviewChart data={keywordReviewScore} />
+          </ReviewArrangement>
           {
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
@@ -233,7 +232,7 @@ const MobileDivider = styled.div`
 const MenuEvaluation = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
   align-self: stretch;
   @media (max-width: 768px) {
@@ -266,5 +265,17 @@ const ReviewPostButton = styled.button`
     padding: 10px 20px;
     align-self: center;
     border-radius: 50px;
+    height: 36px;
+  }
+`;
+
+const ReviewArrangement = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+  @media (max-width: 768px) {
+    flex-direction: row;
   }
 `;

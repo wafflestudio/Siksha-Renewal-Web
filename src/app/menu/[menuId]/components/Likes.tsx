@@ -5,10 +5,12 @@ import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import HeartIcon from "assets/icons/heart.svg";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
+  const isMobile = useIsMobile();
 
   const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth();
@@ -42,7 +44,7 @@ export default function Likes({ menu }) {
           e.stopPropagation();
         }}
       />
-      <LikesText>{likeCount}</LikesText>
+      {isMobile ? <LikesText>찜 {likeCount}개</LikesText> : <LikesText>{likeCount}</LikesText>}
     </Container>
   );
 }
@@ -84,12 +86,5 @@ const LikesText = styled.div`
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
     line-height: 140%; /* 18.2px */
-    ::before {
-      content: "찜 ";
-    }
-
-    ::after {
-      content: "개";
-    }
   }
 `;

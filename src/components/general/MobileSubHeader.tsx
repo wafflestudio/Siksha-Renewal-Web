@@ -50,7 +50,6 @@ export default function MobileSubHeader({
 
 const MobileHeader = styled.div<{ $containercolor?: BackgroundColor }>`
   display: none;
-  font-size: 20px;
   margin: 0;
   top: 0;
   background: ${({ $containercolor }) =>
@@ -79,7 +78,7 @@ const BackButton = styled(LeftArrowMobileIcon)`
 
 const Title = styled.div`
   color: var(--SemanticColor-Text-GNB);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
   max-width: calc(100vw - 96px);
   text-overflow: ellipsis;

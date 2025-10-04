@@ -13,6 +13,7 @@ import { getParticle } from "utils/FormatUtil";
 import StarIcon from "assets/icons/star-filled.svg";
 import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
+import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 
 export type ReviewInputs = {
   score: number;
@@ -127,7 +128,7 @@ export default function ReviewPost() {
         </Header>
         <KeywordReviewForm inputs={inputs} setInputs={setInputs} />
         <CommentSection>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <StyledCommentReviewIcon />
             <CommentTitle>식단 한 줄 평을 함께 남겨보세요!</CommentTitle>
           </div>
@@ -203,6 +204,8 @@ const Container = styled(OneColumnLayout.Container)`
 
   border-radius: 10px;
   background: var(--SemanticColor-Background-Secondary, #232323);
+  margin-bottom: 33px;
+  margin-top: 22px;
 
   @media (max-width: 768px) {
     position: relative;
@@ -211,6 +214,8 @@ const Container = styled(OneColumnLayout.Container)`
     box-sizing: border-box;
     padding-top: 44px;
     flex: 1;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 `;
 
@@ -253,7 +258,7 @@ const Header = styled.div`
 
 const ReviewTitle = styled.div`
   display: flex;
-  margin: 30px 0 22px 0;
+  margin-top: 28px;
 
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
@@ -275,9 +280,12 @@ const MenuNameText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-weight: var(--Font-weight-extrabold, 800);
 `;
 
-const ReviewTitleText = styled.span``;
+const ReviewTitleText = styled.span`
+  font-weight: var(--Font-weight-extrabold, 800);
+`;
 
 const SelectStarText = styled.span`
   display: none;
@@ -325,6 +333,7 @@ const StarsContainer = styled.div`
   align-items: center;
   width: 140px;
   margin-bottom: 2px;
+  margin-top: 12px;
   cursor: pointer;
   @media (max-width: 768px) {
     width: 150px;
@@ -345,7 +354,6 @@ const Score = styled.div`
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 22.4px */
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);
-  margin-bottom: 36px;
 
   @media (max-width: 768px) {
     margin-top: 7px;
@@ -377,7 +385,7 @@ const CommentTextArea = styled.textarea`
   padding: 12px;
   resize: none;
 
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--Color-Foundation-gray-900);
 
   /* text-15/Regular */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -396,7 +404,7 @@ const CommentTextArea = styled.textarea`
 `;
 
 const StyledCommentReviewIcon = styled(CommentReviewIcon)`
-  fill: var(--Color-Foundation-gray-700, #b7b7b7);
+  color: var(--Color-Foundation-gray-700, #b7b7b7);
   @media (max-width: 768px) {
     width: 18px;
     height: 18px;
@@ -591,6 +599,16 @@ const DeleteButton = styled.button`
 
   @media (max-width: 768px) {
   }
+`;
+
+const StyledDeleteIcon = styled(PhotoDeleteIcon)`
+  cursor: pointer;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: -6px;
+  right: -6px;
+  color: var(--Color-Foundation-gray-700);
 `;
 
 const Footer = styled.div`
