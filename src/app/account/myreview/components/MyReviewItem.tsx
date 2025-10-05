@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import Image from "next/image";
-import Stars from "app/menu/[menuId]/components/Stars";
 import { formatReviewDate } from "utils/FormatUtil";
-import ThemedWrapper from "components/general/ThemedWrapper";
 import Link from "next/link";
 import useReviewActions from "../hooks/useReviewActions";
+import Stars from "./Stars";
 
 export default function MyReviewItem({
   review,
@@ -27,9 +26,7 @@ export default function MyReviewItem({
                 {formatReviewDate(review.created_at.substring(0, 10))}
               </ReviewCreatedAt>
             </MenuHeader>
-            <ThemedWrapper theme={{ width: "61" }}>
-              <Stars score={review.score} />
-            </ThemedWrapper>
+            <Stars score={review.score} />
           </MenuInfo>
         </Link>
         <Body>
