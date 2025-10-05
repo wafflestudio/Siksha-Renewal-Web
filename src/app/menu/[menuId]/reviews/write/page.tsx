@@ -378,9 +378,10 @@ const CommentTextArea = styled.textarea`
   resize: none;
 
   color: var(--Color-Foundation-gray-900, #262728);
+  -webkit-text-fill-color: var(--Color-Foundation-gray-900, #262728) !important;
+  opacity: 1;
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
