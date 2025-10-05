@@ -33,8 +33,7 @@ const Container = styled.div`
 const MobileContainer = styled(Container)`
   top: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% - 94px);
-  max-width: 497px;
+  width: 315px;
 
   border-radius: 26px;
   background-color: #fff;
