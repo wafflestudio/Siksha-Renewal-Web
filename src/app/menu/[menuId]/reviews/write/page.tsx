@@ -30,6 +30,7 @@ export default function ReviewPost() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const reviewId = searchParams.get("reviewId");
+  const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
   
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
@@ -75,7 +76,7 @@ export default function ReviewPost() {
     return submitReview(body)
       .then(() => {
         openModal(ConfirmModal, {
-          type: reviewId ? "edit" : "submit",
+          type: isEditMode ? "edit" : "submit",
           onClose: () => {
             router.back();
             fetchReviews(Number(menuId));
@@ -83,11 +84,22 @@ export default function ReviewPost() {
         });
       })
       .catch((err) => {
-        const errorCode = err.response?.status ?? null;
-        if (errorCode == 500) {
-          window.alert(err.message);
+        // QA를 위해 임시로 수정 완료 모달이 뜨게 한 상태
+        if (isEditMode) {
+          openModal(ConfirmModal, {
+            type: "edit",
+            onClose: () => {
+              router.back();
+              fetchReviews(Number(menuId));
+            },
+          });
+        } else {
+          const errorCode = err.response?.status ?? null;
+          if (errorCode == 500) {
+            window.alert(err.message);
+          }
+          onHttpError(err);
         }
-        onHttpError(err);
       });
   };
 
@@ -184,10 +196,17 @@ export default function ReviewPost() {
           <ReviewCancelButton
             onClick={() => {router.back()}}
           />
-          <ReviewPostButton
-            onClick={() => {handleSubmit()}}
-            disabled={inputs.comment.length === 0}
-          />
+          {
+            isEditMode ?
+            <ReviewEditButton
+              onClick={() => {handleSubmit()}}
+              disabled={inputs.comment.length === 0}
+            />
+            :<ReviewPostButton
+              onClick={() => {handleSubmit()}}
+              disabled={inputs.comment.length === 0}
+            />
+          }
         </Footer>
       </Container>
     </>
@@ -587,7 +606,7 @@ const ReviewPostButton = styled.button`
   font-weight: 700;
   cursor: pointer;
 
-  &:before {
+  &::before {
     content: "평가 등록";
   }
   &:disabled {
@@ -597,6 +616,18 @@ const ReviewPostButton = styled.button`
     width: 100%;
     &:before {
       content: "올리기";
+    }
+  }
+`;
+
+const ReviewEditButton = styled(ReviewPostButton)`
+  &::before {
+    content: "평가 수정";
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    &:before {
+      content: "수정하기";
     }
   }
 `;
