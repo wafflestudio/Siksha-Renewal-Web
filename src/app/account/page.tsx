@@ -23,7 +23,7 @@ export default function Account() {
   const nickname = userInfo?.nickname;
 
   return (
-    <>
+    <Container>
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -109,21 +109,27 @@ export default function Account() {
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
-    </>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  width: 544px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 24px 20px 0;
+  }
+`;
 
 const ListGroup = styled.div<{ isLast?: boolean }>`
   cursor: pointer;
   background-color: #ffffff;
-  width: 544px;
+  width: 100%;
   margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
   border: 1px solid #e8e8e8;
   border-radius: 8px;
-
-  @media (max-width: 768px) {
-    width: calc(100dvw - 40px);
-  }
 `;
 
 const ContentDiv = styled.button`
