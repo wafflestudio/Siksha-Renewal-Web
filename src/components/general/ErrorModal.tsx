@@ -120,7 +120,7 @@ const RetryButton = styled(Button)`
 
 const MobileContainer = styled(Container)`
   gap: 11px 17px;
-  width: calc(100% - 60px);
+  width: 315px;
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;

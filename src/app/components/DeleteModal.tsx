@@ -113,7 +113,7 @@ const MobileContainer = styled(Container)`
   top: 50%;
   transform: translate(-50%, -50%);
   gap: 11px 17px;
-  width: calc(100% - 60px);
+  width: 315px;
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
@@ -126,14 +126,22 @@ const MobileHeader = styled.div`
 `;
 const MobileTitle = styled.div`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 19px;
 `;
 const MobileMessage = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 12px;
-  line-height: 15px;
+
+    color: var(--Color-Foundation-base-black, #000);
+  text-align: center;
+
+  /* text-13/Regular */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 140%; /* 18.2px */
 `;
 const MobileFooter = styled.div`
   border-top: 1px solid #e3e3e3;
