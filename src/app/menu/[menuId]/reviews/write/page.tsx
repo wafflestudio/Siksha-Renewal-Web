@@ -152,11 +152,22 @@ export default function ReviewPost() {
         router.push(`/menu/${menuId}`);
       })
       .catch((err) => {
-        const errorCode = err.response?.status ?? null;
-        if (errorCode == 500) {
-          window.alert(err.message);
+        // QA를 위해 임시로 수정 완료 모달이 뜨게 한 상태
+        if (isEditMode) {
+          openModal(ConfirmModal, {
+            type: "edit",
+            onClose: () => {
+              router.back();
+              fetchReviews(Number(menuId));
+            },
+          });
+        } else {
+          const errorCode = err.response?.status ?? null;
+          if (errorCode == 500) {
+            window.alert(err.message);
+          }
+          onHttpError(err);
         }
-        onHttpError(err);
       });
   };
 
