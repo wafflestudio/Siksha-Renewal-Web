@@ -76,7 +76,6 @@ const Container = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
 
-  // TODO: account/layout.tsx 수정 후에 그에 맞춰서 수정해야 함.
   @media (max-width: 768px) {
     width: calc(100% - 16px);
     margin-top: 20px;
