@@ -76,11 +76,8 @@ const Container = styled.div`
   gap: 20px;
 
   @media (max-width: 768px) {
-    width: calc(100dvw - 40px);
-    padding: 0;
-    border: 1px solid #e8e8e8;
-    border-radius: 8px;
-    gap: 0;
+    width: calc(100% - 41px);
+    margin-top: 24px;
   }
 `;
 
