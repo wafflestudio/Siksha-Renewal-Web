@@ -20,6 +20,7 @@ import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
 import { initMixpanel } from "utils/MixPanel";
+import useLikedMenuIntro from "hooks/UseLikedMenuIntro";
 
 export default function Home() {
   const state = useStateContext();
@@ -31,6 +32,9 @@ export default function Home() {
   const { onHttpError } = useError();
   const { orderList } = useOrder(isFilterFavorite ? "favorite" : "nonFavorite");
   const { isExceptEmpty } = useIsExceptEmpty();
+
+  // Show liked menu intro modal for first-time users
+  useLikedMenuIntro();
 
   useEffect(() => {
     async function fetchData() {

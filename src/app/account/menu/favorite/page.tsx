@@ -69,7 +69,7 @@ export default function FavoriteMenus() {
       <Container>
         {favoriteMenus.length === 0 ? (
           <EmptyState>
-            <EmptyText>찜한 메뉴가 없습니다</EmptyText>
+            <EmptyText>내가 찜한 메뉴가 없어요</EmptyText>
             <EmptySubText>메뉴를 찜하면 여기에 표시됩니다</EmptySubText>
           </EmptyState>
         ) : (
@@ -144,9 +144,13 @@ const EmptyState = styled.div`
 `;
 
 const EmptyText = styled.div`
-  font-size: 18px;
+  color: var(--Color-Foundation-gray-600, #989AA0);
+  text-align: center;
+  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-size: 15px;
   font-weight: 700;
-  color: #333;
+  line-height: 150%;
+  letter-spacing: -0.3px;
   margin-bottom: 8px;
 `;
 
