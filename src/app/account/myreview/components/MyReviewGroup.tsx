@@ -22,7 +22,7 @@ export default function MyReviewGroup({
 
   return (
     <>
-      <Container>
+      <Container $isOpen={isOpen}>
         <Header onClick={handleAccordionButtonClick}>
           <RestaurantName>
             {restaurantName}
@@ -45,8 +45,8 @@ export default function MyReviewGroup({
   );
 }
 
-const Container = styled.div`
-  padding: 12px 8px 16px 8px;
+const Container = styled.div<{ $isOpen: boolean }>`
+  padding: ${(props) => props.$isOpen ? '12px 8px 16px' : '12px 8px'};
   border-radius: 8px;
   border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
   background: var(--SemanticColor-Background-Secondary, #FFF);

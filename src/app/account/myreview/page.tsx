@@ -168,4 +168,8 @@ const MyReviewsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 70px;
+  }
 `;
