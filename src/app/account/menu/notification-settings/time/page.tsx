@@ -47,13 +47,10 @@ export default function NotificationTimeSettings() {
         </SettingsCard>
 
         <ExplanationText>
-          <ExplanationLine>
-            아침에 한 번에 받기: 당일에 나온 찜한 메뉴를 한 번에 알려드려요.
-          </ExplanationLine>
-          <ExplanationLine>
-            식사시간마다 받기: 아침·점심·저녁 메뉴를 해당 시간대에 맞춰 나누어 안내드려요. (아침
-            7:30 / 점심 10:30 / 저녁 16:30)
-          </ExplanationLine>
+          아침에 한 번에 받기: 당일에 나온 찜한 메뉴를 한 번에 알려드려요.
+          <br />
+          식사시간마다 받기: 아침·점심·저녁 메뉴를 해당 시간대에 맞춰 나누어 안내드려요. (아침 7:30
+          / 점심 10:30 / 저녁 16:30)
         </ExplanationText>
       </Container>
     </>
