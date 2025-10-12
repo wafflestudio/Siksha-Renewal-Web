@@ -43,12 +43,14 @@ export default function PhotoReviewsSection({
       <Photos>
         {images.length > 0 ? (
           images.map((image, index) => (
-            <ImageWrapper key={index}>
-              {isMobile && imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES && index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
-                <Link href={`/menu/${menuId}/photos`}>
-                  <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
-                </Link>
-              )}
+            <ImageWrapper key={image + index}>
+              {isMobile &&
+                imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES &&
+                index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
+                  <Link href={`/menu/${menuId}/photos`}>
+                    <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
+                  </Link>
+                )}
               <Image
                 src={image}
                 alt="리뷰 이미지"
