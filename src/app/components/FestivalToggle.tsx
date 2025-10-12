@@ -21,13 +21,14 @@ export default function FestivalToggle() {
   };
 
   return (
-    isFestivalDate && 
-    <ToggleWrapper onClick={handleClick}>
-      <ToggleContainer active={active}>
-        <ToggleCircle active={active} />
-      </ToggleContainer>
-      <ToggleText active={active}>축제</ToggleText>
-    </ToggleWrapper>
+    isFestivalDate && (
+      <ToggleWrapper onClick={handleClick}>
+        <ToggleContainer active={active}>
+          <ToggleCircle active={active} />
+        </ToggleContainer>
+        <ToggleText active={active}>축제</ToggleText>
+      </ToggleWrapper>
+    )
   );
 }
 
@@ -60,7 +61,7 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   justify-content: flex-end;
   align-items: center;
   box-sizing: border-box;
-  background: var(--Grey-3, #B7B7B7); 
+  background: var(--Grey-3, #b7b7b7);
   cursor: pointer;
 
   &::before {
@@ -68,7 +69,7 @@ const ToggleContainer = styled.div<{ active: boolean }>`
     border-radius: 90.323px;
     position: absolute;
     inset: 0;
-    background: linear-gradient(270deg, #FF9DA4 40%, #FF9522 100%);
+    background: linear-gradient(270deg, #ff9da4 40%, #ff9522 100%);
     opacity: ${({ active }) => (active ? 1 : 0)};
     transition: opacity 300ms ease-out;
     z-index: 1;
@@ -85,25 +86,25 @@ const ToggleText = styled.span<{ active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ active }) => (active ? '8px' : 'calc(100% - 31px)')};
+  left: ${({ active }) => (active ? "8px" : "calc(100% - 31px)")};
   z-index: 1;
 
   width: 23px;
 
-  color: #FFF;
+  color: #fff;
   text-align: center;
-  font-feature-settings: 'liga' off, 'clig' off;
+  font-feature-settings: "liga" off, "clig" off;
   font-family: NanumSquare;
   font-size: 12.6px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
-  
+
   transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? '6px' : 'calc(100% - 24px)')};
+    left: ${({ active }) => (active ? "6px" : "calc(100% - 24px)")};
     width: 18px;
     font-size: 10px;
   }
@@ -113,7 +114,7 @@ const ToggleCircle = styled.div<{ active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ active }) => (active ? "calc(100% - 25.9px)" : '2.1px')};
+  left: ${({ active }) => (active ? "calc(100% - 25.9px)" : "2.1px")};
 
   width: 23.8px;
   height: 23.8px;
@@ -121,15 +122,17 @@ const ToggleCircle = styled.div<{ active: boolean }>`
   z-index: 1;
 
   border-radius: 100%;
-  background: #FFF;
-  box-shadow: 0px 0px 0px 0.881px rgba(0, 0, 0, 0.04), 0px 2.644px 7.052px 0px rgba(0, 0, 0, 0.15), 0px 2.644px 0.881px 0px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  box-shadow: 0px 0px 0px 0.881px rgba(0, 0, 0, 0.04), 0px 2.644px 7.052px 0px rgba(0, 0, 0, 0.15),
+    0px 2.644px 0.881px 0px rgba(0, 0, 0, 0.06);
 
   transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? "calc(100% - 22px)" : '2px')};
+    left: ${({ active }) => (active ? "calc(100% - 22px)" : "2px")};
     width: 20px;
     height: 20px;
-    box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15), 0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15),
+      0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
   }
 `;

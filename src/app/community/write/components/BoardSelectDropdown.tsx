@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Board } from "types";
 
-interface BoardSelectDropdownProps{
+interface BoardSelectDropdownProps {
   boards: Board[];
   onSelect: (boardId: number) => void;
-};
+}
 
 export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -14,13 +14,13 @@ export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownPro
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   };
 
   const handleClickItem = (boardId: number) => {
     setSelectedBoardId(boardId);
     setIsOpen(false);
-  }
+  };
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -29,31 +29,35 @@ export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownPro
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   useEffect(() => {
     onSelect(selectedBoardId);
   }, [selectedBoardId]);
-  
+
   return (
-      <Container ref={dropdownRef}>
-        <BoardMenu onClick={toggleDropdown}>
-          <span>{selectedBoardName}</span>
-          <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
-        </BoardMenu>
-        <BoardMenuList isOpen={isOpen}>
-          {boards.map((board) => (
-            <BoardMenuItem key={board.id} onClick={() => handleClickItem(board.id)} className={board.id === selectedBoardId ? "selected" : ""}>
-              <span>{board.name}</span>
-            </BoardMenuItem>
-          ))}
-        </BoardMenuList>
-      </Container>
-    );
+    <Container ref={dropdownRef}>
+      <BoardMenu onClick={toggleDropdown}>
+        <span>{selectedBoardName}</span>
+        <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
+      </BoardMenu>
+      <BoardMenuList isOpen={isOpen}>
+        {boards.map((board) => (
+          <BoardMenuItem
+            key={board.id}
+            onClick={() => handleClickItem(board.id)}
+            className={board.id === selectedBoardId ? "selected" : ""}
+          >
+            <span>{board.name}</span>
+          </BoardMenuItem>
+        ))}
+      </BoardMenuList>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -86,7 +90,7 @@ const Icon = styled.img`
 `;
 
 const BoardMenuList = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
   position: absolute;
   flex-direction: column;
   width: 100%;
@@ -108,17 +112,17 @@ const BoardMenuItem = styled.div`
     color: #ff9522;
 
     ::after {
-      content: '';
+      content: "";
       position: absolute;
       width: 13px;
       height: 11px;
       margin-left: 9px;
       top: 50%;
       transform: translateY(-50%);
-      background: url('/img/check.svg') no-repeat;
+      background: url("/img/check.svg") no-repeat;
       background-size: contain;
 
-      @media (max-width: 768px){
+      @media (max-width: 768px) {
         width: 10px;
         height: 8px;
       }

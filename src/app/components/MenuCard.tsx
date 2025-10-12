@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 import Menu from "app/components/Menu";
@@ -38,9 +38,7 @@ export default function MenuCard({ data }: { data: Data }) {
               />
               <ButtonIcon
                 src={
-                  isFavorite(data.id)
-                    ? "/img/general/star-on.svg"
-                    : "/img/general/star-off-24.svg"
+                  isFavorite(data.id) ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"
                 }
                 onClick={() => toggleFavorite(data.id)}
                 alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
@@ -233,7 +231,7 @@ const HeaderDataList = styled.div`
 
 const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
   width: 58px;
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
 
   /* text-13/Regular */

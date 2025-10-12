@@ -50,17 +50,17 @@ export default function ToastProvider({ children }: ToastProviderProps) {
       variant: options?.variant ?? "default",
       animationType: options?.animationType ?? "slide",
     };
-    setToasts(prev => [...prev, toastItem]);
+    setToasts((prev) => [...prev, toastItem]);
   }, []);
 
   const dismissToast = useCallback((id: number) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {toasts.map(toast => (
+      {toasts.map((toast) => (
         <Toast
           key={toast.id}
           message={toast.message}

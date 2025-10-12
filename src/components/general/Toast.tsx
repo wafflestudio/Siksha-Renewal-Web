@@ -21,7 +21,7 @@ export default function Toast({
   animationDuration,
   variant,
   animationType,
-  onDismiss
+  onDismiss,
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -137,13 +137,14 @@ const ToastContainer = styled.div<{
   transform: translateX(-50%);
   z-index: 9999;
 
-  animation: ${props => {
-    if (props.$animationType === "slide") {
-      return props.$isExiting ? slideDownFadeOut : slideUpFadeIn;
-    } else {
-      return props.$isExiting ? fadeOut : fadeIn;
-    }
-  }} ${props => props.$animationDuration}ms ease-out forwards;
+  animation: ${(props) => {
+      if (props.$animationType === "slide") {
+        return props.$isExiting ? slideDownFadeOut : slideUpFadeIn;
+      } else {
+        return props.$isExiting ? fadeOut : fadeIn;
+      }
+    }}
+    ${(props) => props.$animationDuration}ms ease-out forwards;
 
   @media (max-width: 768px) {
     bottom: 100px;
@@ -153,14 +154,17 @@ const ToastContainer = styled.div<{
 const ToastContent = styled.div<{ $variant: ToastVariant }>`
   display: flex;
   align-items: center;
-  gap: ${props => props.$variant === "default" ? "10px" : "0"};
-  padding: ${props => props.$variant === "default" ? "9px 13px" : "0"};
-  background-color: ${props => props.$variant === "default" ? "#727478" : "transparent"};
-  border-radius: ${props => props.$variant === "default" ? "8px" : "0"};
-  box-shadow: ${props => props.$variant === "default" ? "0px 0px 4px 0px rgba(0, 0, 0, 0.2)" : "none"};
+  gap: ${(props) => (props.$variant === "default" ? "10px" : "0")};
+  padding: ${(props) => (props.$variant === "default" ? "9px 13px" : "0")};
+  background-color: ${(props) => (props.$variant === "default" ? "#727478" : "transparent")};
+  border-radius: ${(props) => (props.$variant === "default" ? "8px" : "0")};
+  box-shadow: ${(props) =>
+    props.$variant === "default" ? "0px 0px 4px 0px rgba(0, 0, 0, 0.2)" : "none"};
   position: relative;
 
-  ${props => props.$variant === "speech-bubble" && `
+  ${(props) =>
+    props.$variant === "speech-bubble" &&
+    `
     background-image: url('/img/general/speech-bubble.svg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -189,11 +193,11 @@ const CheckIcon = styled.img`
 `;
 
 const ToastMessage = styled.p<{ $variant: ToastVariant }>`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 12px;
   font-weight: 700;
   line-height: 22px;
-  color: ${props => props.$variant === "default" ? "#ffffff" : "#000000"};
+  color: ${(props) => (props.$variant === "default" ? "#ffffff" : "#000000")};
   letter-spacing: -0.408px;
   margin: 0;
   white-space: nowrap;

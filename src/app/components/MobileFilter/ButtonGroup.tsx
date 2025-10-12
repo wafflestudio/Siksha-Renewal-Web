@@ -34,7 +34,7 @@ const ButtonGroupWrapper = styled.div<{ count: number }>`
   grid-template-columns: repeat(${(props) => props.count}, 1fr);
   height: 34px;
   border-radius: 30px;
-  box-shadow: inset 0 0 0 1px var(--Color-Foundation-gray-200, #E5E6E9);
+  box-shadow: inset 0 0 0 1px var(--Color-Foundation-gray-200, #e5e6e9);
   box-sizing: content-box;
   align-content: center;
 `;
@@ -64,6 +64,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background: var(--Color-Foundation-orange-100, #FFEAD3);
+  background: var(--Color-Foundation-orange-100, #ffead3);
   box-shadow: inset 0 0 0 1px var(--Color-Foundation-orange-500, #ff9522);
 `;

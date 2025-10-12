@@ -6,7 +6,10 @@ import styled from "styled-components";
 export default function PhotoReviewsSection({
   menuId,
   images,
-}: { menuId: number; images: string[]; }) {
+}: {
+  menuId: number;
+  images: string[];
+}) {
   const isMobile = useIsMobile();
 
   const imagesCount = images.length;
@@ -34,23 +37,20 @@ export default function PhotoReviewsSection({
           }}
         >
           <Label>전체 보기</Label>
-          <Image
-            src="/img/right-arrow-darkgrey.svg"
-            alt="전체 보기"
-            width={18}
-            height={18}
-          />
+          <Image src="/img/right-arrow-darkgrey.svg" alt="전체 보기" width={18} height={18} />
         </Link>
       </Header>
       <Photos>
         {images.length > 0 ? (
           images.map((image, index) => (
             <ImageWrapper key={image + index}>
-              {isMobile && imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES && index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
-                <Link href={`/menu/${menuId}/photos`}>
-                  <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
-                </Link>
-              )}
+              {isMobile &&
+                imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES &&
+                index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
+                  <Link href={`/menu/${menuId}/photos`}>
+                    <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
+                  </Link>
+                )}
               <Image
                 src={image}
                 alt="리뷰 이미지"
@@ -77,7 +77,7 @@ const Container = styled.div`
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     padding-top: 14px;
   }
 `;
@@ -100,7 +100,7 @@ const HeaderTextWrapper = styled.div`
 
 const HeaderText = styled.div`
   align-self: stretch;
-  
+
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-16/ExtraBold */
@@ -123,7 +123,7 @@ const HeaderText = styled.div`
 `;
 
 const Label = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
 
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -178,7 +178,7 @@ const MoreImages = styled.button`
   border-radius: 10px;
   box-shadow: none;
 
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--Color-Foundation-base-white, #fff);
   text-align: center;
 
   /* text-12/Bold */

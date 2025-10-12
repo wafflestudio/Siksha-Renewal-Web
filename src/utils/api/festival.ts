@@ -1,8 +1,7 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 
-export const getFestivalDates = ()
-  : Promise<{ festival_dates: String[] }> => {
+export const getFestivalDates = (): Promise<{ festival_dates: String[] }> => {
   const apiUrl = `${APIendpoint()}/menus/festival/dates`;
   return axios
     .get(apiUrl)
@@ -15,9 +14,7 @@ export const getFestivalDates = ()
     });
 };
 
-export const getIsFestival = (
-  date: String
-) : Promise<{ is_festival: boolean }> => {
+export const getIsFestival = (date: String): Promise<{ is_festival: boolean }> => {
   const apiUrl = `${APIendpoint()}/menus/festival/${date}`;
   return axios
     .get(apiUrl)

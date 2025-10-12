@@ -150,7 +150,7 @@
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: var(--Color-Foundation-gray-400, #CBCDD3) !important;
+  color: var(--Color-Foundation-gray-400, #cbcdd3) !important;
 }
 
 .react-calendar__tile {

@@ -2,18 +2,14 @@ import styled, { css } from "styled-components";
 import ReviewItem from "./ReviewItem";
 import { ReviewListType } from "../Menu";
 
-export default function MobileReviewListPage({
-  reviews
-}: { reviews: ReviewListType }) {
+export default function MobileReviewListPage({ reviews }: { reviews: ReviewListType }) {
   return (
     <Container>
       <ReviewList>
         {reviews.result.length > 0 ? (
           reviews.result.map((review) => <ReviewItem key={review.id} review={review} />)
         ) : (
-          <NoReviewMessage>
-            아직 등록된 리뷰가 없어요.
-          </NoReviewMessage>
+          <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
         )}
       </ReviewList>
     </Container>
@@ -39,7 +35,6 @@ const ReviewList = styled.div`
   gap: 32px;
 `;
 
-
 const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   display: flex;
   align-items: center;
@@ -58,7 +53,7 @@ const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
   line-height: 150%; /* 21px */
-  
+
   @media (max-width: 768px) {
     font-size: 18px;
   }

@@ -93,10 +93,9 @@ export const setMenuUnlike = (
 
 export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
   return axios
-    .get(
-      `${APIendpoint()}/menus/me`,
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
-    )
+    .get(`${APIendpoint()}/menus/me`, {
+      headers: { "authorization-token": `Bearer ${accessToken}` },
+    })
     .then((res) => {
       const { data } = res;
       return data;

@@ -18,9 +18,9 @@ export default function useLikedMenuIntro() {
       return;
     }
 
-    const hasSeenIntro = localStorage.getItem('likedMenuIntroSeen');
+    const hasSeenIntro = localStorage.getItem("likedMenuIntroSeen");
 
-    if (hasSeenIntro === 'true') {
+    if (hasSeenIntro === "true") {
       setShouldShow(false);
     } else {
       setShouldShow(true);
@@ -34,7 +34,7 @@ export default function useLikedMenuIntro() {
     }
 
     openModal(LikedMenuIntroModal, {
-      onClose: () => {}
+      onClose: () => {},
     });
   }, [shouldShow, openModal]);
 

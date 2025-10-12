@@ -24,17 +24,17 @@ export default function FavoriteMenus() {
 
   // Show speech-bubble toast on first visit
   useEffect(() => {
-    const hasSeenBellToast = localStorage.getItem('likedMenuBellToastSeen');
+    const hasSeenBellToast = localStorage.getItem("likedMenuBellToastSeen");
 
-    if (!hasSeenBellToast && authStatus === 'login' && !loading) {
+    if (!hasSeenBellToast && authStatus === "login" && !loading) {
       const timer = setTimeout(() => {
-        showToast('메뉴 알림을 받아보세요!', {
-          variant: 'speech-bubble',
-          animationType: 'fade',
+        showToast("메뉴 알림을 받아보세요!", {
+          variant: "speech-bubble",
+          animationType: "fade",
           duration: 5000,
-          delay: 500
+          delay: 500,
         });
-        localStorage.setItem('likedMenuBellToastSeen', 'true');
+        localStorage.setItem("likedMenuBellToastSeen", "true");
       }, 500);
 
       return () => clearTimeout(timer);
@@ -65,16 +65,18 @@ export default function FavoriteMenus() {
   const handleUnlikeMenu = async (menuId: number) => {
     await removeLikedMenu(menuId);
     // Update the current display by filtering out the unliked menu
-    setFavoriteMenus(prev =>
-      prev.map(restaurant => ({
-        ...restaurant,
-        menus: restaurant.menus.filter(menu => menu.id !== menuId)
-      })).filter(restaurant => restaurant.menus.length > 0)
+    setFavoriteMenus((prev) =>
+      prev
+        .map((restaurant) => ({
+          ...restaurant,
+          menus: restaurant.menus.filter((menu) => menu.id !== menuId),
+        }))
+        .filter((restaurant) => restaurant.menus.length > 0),
     );
   };
 
   const handleBellClick = () => {
-    router.push('/account/menu/notification-settings');
+    router.push("/account/menu/notification-settings");
   };
 
   if (loading) {
@@ -108,11 +110,7 @@ export default function FavoriteMenus() {
           </EmptyState>
         ) : (
           favoriteMenus.map((restaurant) => (
-            <LikedMenuCard
-              key={restaurant.id}
-              data={restaurant}
-              onUnlikeMenu={handleUnlikeMenu}
-            />
+            <LikedMenuCard key={restaurant.id} data={restaurant} onUnlikeMenu={handleUnlikeMenu} />
           ))
         )}
       </Container>
@@ -152,7 +150,7 @@ const EmptyState = styled.div`
 `;
 
 const EmptyText = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
   font-family: var(--Font-family-sans, NanumSquareOTF);
   font-size: 15px;

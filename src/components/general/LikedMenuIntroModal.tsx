@@ -20,17 +20,17 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
   const handleComplete = () => {
     if (choice === "like") {
       // User wants notifications - store preference (Firebase SDK will handle permission later)
-      localStorage.setItem('likedMenuNotificationPreference', 'enabled');
+      localStorage.setItem("likedMenuNotificationPreference", "enabled");
     } else if (choice === "later") {
       // User doesn't want notifications now - store preference
-      localStorage.setItem('likedMenuNotificationPreference', 'deferred');
+      localStorage.setItem("likedMenuNotificationPreference", "deferred");
     }
 
     // Mark that user has seen this intro
-    localStorage.setItem('likedMenuIntroSeen', 'true');
+    localStorage.setItem("likedMenuIntroSeen", "true");
 
     // Show toast notification
-    showToast('메뉴 알림 설정이 저장되었습니다.');
+    showToast("메뉴 알림 설정이 저장되었습니다.");
 
     onClose();
     router.push("/account/menu/favorite");
@@ -38,8 +38,8 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
 
   const handleSkip = () => {
     // Mark that user has seen this intro but didn't engage
-    localStorage.setItem('likedMenuIntroSeen', 'true');
-    localStorage.setItem('likedMenuNotificationPreference', 'skipped');
+    localStorage.setItem("likedMenuIntroSeen", "true");
+    localStorage.setItem("likedMenuNotificationPreference", "skipped");
     onClose();
   };
 
@@ -59,11 +59,13 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
           <Content>
             <TextSection>
               <MainTitle>
-                찜한 메뉴, 이제는 나올 때마다<br />
+                찜한 메뉴, 이제는 나올 때마다
+                <br />
                 알림으로 받을 수 있어요!
               </MainTitle>
               <Subtitle>
-                알림 받을 메뉴는 [설정 &gt; 내가 찜한 메뉴] 탭에서<br />
+                알림 받을 메뉴는 [설정 &gt; 내가 찜한 메뉴] 탭에서
+                <br />
                 언제든 개별적으로 ON/OFF 설정할 수 있어요.
               </Subtitle>
             </TextSection>
@@ -107,11 +109,13 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
         <MobileContent>
           <MobileTextSection>
             <MobileMainTitle>
-              찜한 메뉴, 이제는 나올 때마다<br />
+              찜한 메뉴, 이제는 나올 때마다
+              <br />
               알림으로 받을 수 있어요!
             </MobileMainTitle>
             <MobileSubtitle>
-              알림 받을 메뉴는 [설정 &gt; 내가 찜한 메뉴] 탭에서<br />
+              알림 받을 메뉴는 [설정 &gt; 내가 찜한 메뉴] 탭에서
+              <br />
               언제든 개별적으로 ON/OFF 설정할 수 있어요.
             </MobileSubtitle>
           </MobileTextSection>
@@ -195,7 +199,7 @@ const Banner = styled.div`
   position: relative;
   width: 100%;
   height: 280px;
-  background-color: #F7ECD1;
+  background-color: #f7ecd1;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -235,7 +239,7 @@ const TextSection = styled.div`
 `;
 
 const MainTitle = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
@@ -244,7 +248,7 @@ const MainTitle = styled.div`
 `;
 
 const Subtitle = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
@@ -269,7 +273,7 @@ const Radio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: ${props => props.$selected ? 'none' : '1.538px solid #BEC1C8'};
+  border: ${(props) => (props.$selected ? "none" : "1.538px solid #BEC1C8")};
   background: transparent;
   display: flex;
   align-items: center;
@@ -285,7 +289,7 @@ const Radio = styled.div<{ $selected: boolean }>`
 `;
 
 const RadioLabel = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -303,7 +307,7 @@ const Button = styled.button`
   flex: 1;
   height: 44px;
   border-radius: 8px;
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -312,8 +316,8 @@ const Button = styled.button`
 `;
 
 const SecondaryButton = styled(Button)`
-  background: #F2F3F4;
-  color: #989AA0;
+  background: #f2f3f4;
+  color: #989aa0;
 
   &:hover {
     background: #e9ecef;
@@ -321,12 +325,12 @@ const SecondaryButton = styled(Button)`
 `;
 
 const PrimaryButton = styled(Button)<{ $enabled: boolean }>`
-  background: ${props => props.$enabled ? '#FF9522' : '#F2F3F4'};
-  color: ${props => props.$enabled ? 'white' : '#989AA0'};
-  cursor: ${props => props.$enabled ? 'pointer' : 'not-allowed'};
+  background: ${(props) => (props.$enabled ? "#FF9522" : "#F2F3F4")};
+  color: ${(props) => (props.$enabled ? "white" : "#989AA0")};
+  cursor: ${(props) => (props.$enabled ? "pointer" : "not-allowed")};
 
   &:hover {
-    background: ${props => props.$enabled ? '#e8821e' : '#F2F3F4'};
+    background: ${(props) => (props.$enabled ? "#e8821e" : "#F2F3F4")};
   }
 
   &:disabled {
@@ -346,7 +350,7 @@ const MobileBanner = styled.div`
   position: relative;
   width: 100%;
   height: 216px;
-  background-color: #F7ECD1;
+  background-color: #f7ecd1;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -386,7 +390,7 @@ const MobileTextSection = styled.div`
 `;
 
 const MobileMainTitle = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
@@ -395,7 +399,7 @@ const MobileMainTitle = styled.div`
 `;
 
 const MobileSubtitle = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
@@ -420,7 +424,7 @@ const MobileRadio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: ${props => props.$selected ? 'none' : '1.538px solid #BEC1C8'};
+  border: ${(props) => (props.$selected ? "none" : "1.538px solid #BEC1C8")};
   background: transparent;
   display: flex;
   align-items: center;
@@ -436,7 +440,7 @@ const MobileRadio = styled.div<{ $selected: boolean }>`
 `;
 
 const MobileRadioLabel = styled.div`
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -454,7 +458,7 @@ const MobileButton = styled.button`
   flex: 1;
   height: 44px;
   border-radius: 8px;
-  font-family: 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -463,8 +467,8 @@ const MobileButton = styled.button`
 `;
 
 const MobileSecondaryButton = styled(MobileButton)`
-  background: #F2F3F4;
-  color: #989AA0;
+  background: #f2f3f4;
+  color: #989aa0;
 
   &:active {
     background: #e9ecef;
@@ -472,12 +476,12 @@ const MobileSecondaryButton = styled(MobileButton)`
 `;
 
 const MobilePrimaryButton = styled(MobileButton)<{ $enabled: boolean }>`
-  background: ${props => props.$enabled ? '#FF9522' : '#F2F3F4'};
-  color: ${props => props.$enabled ? 'white' : '#989AA0'};
-  cursor: ${props => props.$enabled ? 'pointer' : 'not-allowed'};
+  background: ${(props) => (props.$enabled ? "#FF9522" : "#F2F3F4")};
+  color: ${(props) => (props.$enabled ? "white" : "#989AA0")};
+  cursor: ${(props) => (props.$enabled ? "pointer" : "not-allowed")};
 
   &:active {
-    background: ${props => props.$enabled ? '#e8821e' : '#F2F3F4'};
+    background: ${(props) => (props.$enabled ? "#e8821e" : "#F2F3F4")};
   }
 
   &:disabled {

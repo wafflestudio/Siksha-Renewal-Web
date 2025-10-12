@@ -21,10 +21,10 @@ export default function NotificationSettings() {
 
   // Load settings from localStorage
   useEffect(() => {
-    const enabled = localStorage.getItem('likedMenuNotificationsEnabled') === 'true';
+    const enabled = localStorage.getItem("likedMenuNotificationsEnabled") === "true";
     setNotificationsEnabled(enabled);
 
-    const savedMenuIds = localStorage.getItem('likedMenuNotificationMenuIds');
+    const savedMenuIds = localStorage.getItem("likedMenuNotificationMenuIds");
     if (savedMenuIds) {
       setSelectedMenuIds(new Set(JSON.parse(savedMenuIds)));
     }
@@ -55,7 +55,7 @@ export default function NotificationSettings() {
   const handleToggleChange = () => {
     const newValue = !notificationsEnabled;
     setNotificationsEnabled(newValue);
-    localStorage.setItem('likedMenuNotificationsEnabled', String(newValue));
+    localStorage.setItem("likedMenuNotificationsEnabled", String(newValue));
   };
 
   const handleMenuToggle = (menuId: number) => {
@@ -66,11 +66,14 @@ export default function NotificationSettings() {
       newSelectedMenuIds.add(menuId);
     }
     setSelectedMenuIds(newSelectedMenuIds);
-    localStorage.setItem('likedMenuNotificationMenuIds', JSON.stringify(Array.from(newSelectedMenuIds)));
+    localStorage.setItem(
+      "likedMenuNotificationMenuIds",
+      JSON.stringify(Array.from(newSelectedMenuIds)),
+    );
   };
 
   const handleTimeSettingsClick = () => {
-    router.push('/account/menu/notification-settings/time');
+    router.push("/account/menu/notification-settings/time");
   };
 
   return (
@@ -111,9 +114,17 @@ export default function NotificationSettings() {
                       <MenuItem key={menu.id}>
                         <MenuName>{menu.name_kr}</MenuName>
                         {selectedMenuIds.has(menu.id) ? (
-                          <CheckboxIcon src="/img/account/checkbox-checked.svg" alt="선택됨" onClick={() => handleMenuToggle(menu.id)} />
+                          <CheckboxIcon
+                            src="/img/account/checkbox-checked.svg"
+                            alt="선택됨"
+                            onClick={() => handleMenuToggle(menu.id)}
+                          />
                         ) : (
-                          <CheckboxIcon src="/img/account/checkbox-empty.svg" alt="선택 안 됨" onClick={() => handleMenuToggle(menu.id)} />
+                          <CheckboxIcon
+                            src="/img/account/checkbox-empty.svg"
+                            alt="선택 안 됨"
+                            onClick={() => handleMenuToggle(menu.id)}
+                          />
                         )}
                       </MenuItem>
                     ))}
@@ -158,7 +169,7 @@ const SettingsRow = styled.div<{ $clickable?: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding: 9px 0;
-  cursor: ${props => props.$clickable ? 'pointer' : 'default'};
+  cursor: ${(props) => (props.$clickable ? "pointer" : "default")};
 `;
 
 const Label = styled.div`
@@ -174,7 +185,7 @@ const ToggleSwitch = styled.div<{ $enabled: boolean }>`
   width: 36px;
   height: 22px;
   border-radius: 59.14px;
-  background-color: ${props => props.$enabled ? '#ff9522' : '#e5e6e9'};
+  background-color: ${(props) => (props.$enabled ? "#ff9522" : "#e5e6e9")};
   position: relative;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -189,10 +200,11 @@ const ToggleCircle = styled.div<{ $enabled: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: ${props => props.$enabled ? '2px' : 'auto'};
-  left: ${props => props.$enabled ? 'auto' : '2px'};
+  right: ${(props) => (props.$enabled ? "2px" : "auto")};
+  left: ${(props) => (props.$enabled ? "auto" : "2px")};
   transition: left 0.3s ease, right 0.3s ease;
-  box-shadow: 0px 0px 0px 0.643px rgba(0, 0, 0, 0.04), 0px 1.93px 5.146px 0px rgba(0, 0, 0, 0.15), 0px 1.93px 0.643px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 0px 0px 0.643px rgba(0, 0, 0, 0.04), 0px 1.93px 5.146px 0px rgba(0, 0, 0, 0.15),
+    0px 1.93px 0.643px 0px rgba(0, 0, 0, 0.06);
 `;
 
 const Separator = styled.div`
@@ -214,7 +226,7 @@ const InstructionText = styled.p`
   font-weight: 700;
   line-height: 1.5;
   letter-spacing: -0.3px;
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   margin: 0;
   padding: 0 14px;
 `;

@@ -16,7 +16,7 @@ export default function NotificationTimeSettings() {
 
   // Load saved preference from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('likedMenuNotificationTime') as NotificationTimePreference;
+    const saved = localStorage.getItem("likedMenuNotificationTime") as NotificationTimePreference;
     if (saved) {
       setTimePreference(saved);
     }
@@ -24,7 +24,7 @@ export default function NotificationTimeSettings() {
 
   const handlePreferenceChange = (preference: NotificationTimePreference) => {
     setTimePreference(preference);
-    localStorage.setItem('likedMenuNotificationTime', preference);
+    localStorage.setItem("likedMenuNotificationTime", preference);
   };
 
   return (
@@ -37,16 +37,12 @@ export default function NotificationTimeSettings() {
         <SettingsCard>
           <OptionRow onClick={() => handlePreferenceChange("once_morning")}>
             <OptionLabel>아침에 한 번에 받기</OptionLabel>
-            {timePreference === "once_morning" && (
-              <CheckIcon src="/img/radio.svg" alt="선택됨" />
-            )}
+            {timePreference === "once_morning" && <CheckIcon src="/img/radio.svg" alt="선택됨" />}
           </OptionRow>
           <Separator />
           <OptionRow onClick={() => handlePreferenceChange("per_meal")}>
             <OptionLabel>식사시간마다 받기</OptionLabel>
-            {timePreference === "per_meal" && (
-              <CheckIcon src="/img/radio.svg" alt="선택됨" />
-            )}
+            {timePreference === "per_meal" && <CheckIcon src="/img/radio.svg" alt="선택됨" />}
           </OptionRow>
         </SettingsCard>
 
@@ -55,8 +51,8 @@ export default function NotificationTimeSettings() {
             아침에 한 번에 받기: 당일에 나온 찜한 메뉴를 한 번에 알려드려요.
           </ExplanationLine>
           <ExplanationLine>
-            식사시간마다 받기: 아침·점심·저녁 메뉴를 해당 시간대에 맞춰 나누어 안내드려요.
-            (아침 7:30 / 점심 10:30 / 저녁 16:30)
+            식사시간마다 받기: 아침·점심·저녁 메뉴를 해당 시간대에 맞춰 나누어 안내드려요. (아침
+            7:30 / 점심 10:30 / 저녁 16:30)
           </ExplanationLine>
         </ExplanationText>
       </Container>
@@ -133,7 +129,7 @@ const ExplanationLine = styled.p`
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.3px;
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   margin: 0;
 `;
 

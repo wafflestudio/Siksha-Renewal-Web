@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -40,9 +40,7 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
             <TitleIconList>
               <ButtonIcon
                 src={
-                  isFavorite(data.id)
-                    ? "/img/general/star-on.svg"
-                    : "/img/general/star-off-24.svg"
+                  isFavorite(data.id) ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"
                 }
                 onClick={() => toggleFavorite(data.id)}
                 alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
@@ -61,10 +59,7 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
         <MenuInfo>
           <Menus>
             {data.menus.map((menu) => (
-              <MenuRow
-                key={menu.id}
-                onClick={() => router.push(`/menu/${menu.id}`)}
-              >
+              <MenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
                 <MenuName>
                   {menu.name_kr}
                   {menu.etc && menu.etc.find((e) => e == "No meat") && (
@@ -122,10 +117,7 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
         <HLine />
         <Menus>
           {data.menus.map((menu) => (
-            <MobileMenuRow
-              key={menu.id}
-              onClick={() => router.push(`/menu/${menu.id}`)}
-            >
+            <MobileMenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
               <MenuName>
                 {menu.name_kr}
                 {menu.etc && menu.etc.find((e) => e == "No meat") && (
@@ -239,7 +231,7 @@ const HeaderDataList = styled.div`
 
 const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
   width: 58px;
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
 
   /* text-13/Regular */

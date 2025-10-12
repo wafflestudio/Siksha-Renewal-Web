@@ -187,7 +187,7 @@ const Price = styled.div`
 
     display: flex;
     justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
-    
+
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 

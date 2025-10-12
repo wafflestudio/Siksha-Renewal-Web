@@ -71,7 +71,7 @@ const HeartIcon = styled.img`
 `;
 
 const LikesText = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
 
   /* text-13/Bold */
@@ -96,7 +96,7 @@ const LikesText = styled.div`
     }
 
     ::after {
-      content: "개"
+      content: "개";
     }
   }
 `;

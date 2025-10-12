@@ -11,22 +11,22 @@ export default function useLikedMenus() {
 
   const fetchLikedMenus = async () => {
     if (authStatus !== "login") return;
-    
+
     try {
       setLoading(true);
       const accessToken = await getAccessToken();
       const response = await getLikedMenus(accessToken);
-      
+
       // Extract menu IDs from the response
       const menuIds: number[] = [];
-      response.result.forEach(restaurant => {
-        restaurant.menus.forEach(menu => {
+      response.result.forEach((restaurant) => {
+        restaurant.menus.forEach((menu) => {
           if (menu.is_liked) {
             menuIds.push(menu.id);
           }
         });
       });
-      
+
       setLikedMenuIds(menuIds);
     } catch (error) {
       onHttpError(error);
@@ -41,17 +41,17 @@ export default function useLikedMenus() {
 
   const toggleLikedMenu = async (menuId: number) => {
     if (authStatus !== "login") return;
-    
+
     try {
       const accessToken = await getAccessToken();
       const isCurrentlyLiked = likedMenuIds.includes(menuId);
-      
+
       if (isCurrentlyLiked) {
         await setMenuUnlike(menuId, accessToken);
-        setLikedMenuIds(prev => prev.filter(id => id !== menuId));
+        setLikedMenuIds((prev) => prev.filter((id) => id !== menuId));
       } else {
         await setMenuLike(menuId, accessToken);
-        setLikedMenuIds(prev => [...prev, menuId]);
+        setLikedMenuIds((prev) => [...prev, menuId]);
       }
     } catch (error) {
       onHttpError(error);
@@ -62,11 +62,11 @@ export default function useLikedMenus() {
 
   const addLikedMenu = async (menuId: number) => {
     if (authStatus !== "login" || likedMenuIds.includes(menuId)) return;
-    
+
     try {
       const accessToken = await getAccessToken();
       await setMenuLike(menuId, accessToken);
-      setLikedMenuIds(prev => [...prev, menuId]);
+      setLikedMenuIds((prev) => [...prev, menuId]);
     } catch (error) {
       onHttpError(error);
     }
@@ -74,23 +74,23 @@ export default function useLikedMenus() {
 
   const removeLikedMenu = async (menuId: number) => {
     if (authStatus !== "login") return;
-    
+
     try {
       const accessToken = await getAccessToken();
       await setMenuUnlike(menuId, accessToken);
-      setLikedMenuIds(prev => prev.filter(id => id !== menuId));
+      setLikedMenuIds((prev) => prev.filter((id) => id !== menuId));
     } catch (error) {
       onHttpError(error);
     }
   };
 
-  return { 
-    likedMenuIds, 
-    toggleLikedMenu, 
-    isMenuLiked, 
-    addLikedMenu, 
+  return {
+    likedMenuIds,
+    toggleLikedMenu,
+    isMenuLiked,
+    addLikedMenu,
     removeLikedMenu,
     loading,
-    refetch: fetchLikedMenus
+    refetch: fetchLikedMenus,
   };
 }

@@ -7,13 +7,15 @@ import FestivalToggle from "./FestivalToggle";
 export default function RightSide() {
   return (
     <Container>
-      <div style={{
-        display: "flex",
-        position: "relative",
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Meal />
       </div>
       <MenuList />

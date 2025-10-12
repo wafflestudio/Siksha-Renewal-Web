@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import styled from "styled-components";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";

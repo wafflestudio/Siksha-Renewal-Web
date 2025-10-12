@@ -9,7 +9,7 @@ export async function generateStaticParams() {
     ["BR", "LU", "DN"].forEach((key) => {
       rawMenuList[key].map(({ menus }) => {
         menus.map(({ id: menuId }) => {
-          staticParams.push({ menuId: menuId.toString() })
+          staticParams.push({ menuId: menuId.toString() });
         });
       });
     });
@@ -23,7 +23,7 @@ export default async function Page({ params }) {
 
   return (
     <>
-    <PhotoReviews menuId={menuId} />
+      <PhotoReviews menuId={menuId} />
     </>
   );
 }
