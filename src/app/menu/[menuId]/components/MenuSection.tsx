@@ -63,7 +63,7 @@ export default function MenuSection({
         <MenuHeader>
           <RestaurantWrapper>
             <DistanceIcon color="var(--Color-Foundation-orange-500)" />
-            <Restaurant>{restaurantName}</Restaurant>
+            <Restaurant>{restaurantName ?? "정보 없음"}</Restaurant>
           </RestaurantWrapper>
           <MenuInfoContainer>
             <MenuInfo>
@@ -277,5 +277,6 @@ const ReviewArrangement = styled.div`
   gap: 20px;
   @media (max-width: 768px) {
     flex-direction: row;
+    gap: 12px;
   }
 `;

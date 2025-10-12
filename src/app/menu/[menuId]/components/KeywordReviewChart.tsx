@@ -96,6 +96,7 @@ const Left = styled.div`
 
 const Emoji = styled.span`
   font-size: 16px;
+  height: 24px;
 `;
 
 const Text = styled.span<{ gauge: number }>`
