@@ -9,10 +9,14 @@ export default function MobileSubHeader({
   title,
   selectedBoardId,
   handleBack,
+  rightIcon,
+  onRightIconClick,
 }: {
   title?: string;
   selectedBoardId?: number;
   handleBack: () => void;
+  rightIcon?: string;
+  onRightIconClick?: () => void;
 }) {
   const [boards, setBoards] = useState<BoardType[]>([]);
 
@@ -40,6 +44,9 @@ export default function MobileSubHeader({
       <MobileHeader>
         <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
         <Title>{title || boardTitle}</Title>
+        {rightIcon && onRightIconClick && (
+          <RightIconButton src={rightIcon} onClick={onRightIconClick} alt="알림 설정" />
+        )}
       </MobileHeader>,
       rootElement,
     );
@@ -78,4 +85,12 @@ const Title = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const RightIconButton = styled.img`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 16px;
+  cursor: pointer;
 `;

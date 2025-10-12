@@ -3,6 +3,7 @@ import BackClickable from "./BackClickable";
 import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import useToast from "hooks/UseToast";
 
 interface LikedMenuIntroModalProps {
   onClose: () => void;
@@ -13,6 +14,7 @@ type NotificationChoice = "like" | "later" | null;
 export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProps) {
   const isMobile = useIsMobile();
   const router = useRouter();
+  const { showToast } = useToast();
   const [choice, setChoice] = useState<NotificationChoice>(null);
 
   const handleComplete = () => {
@@ -26,6 +28,9 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
 
     // Mark that user has seen this intro
     localStorage.setItem('likedMenuIntroSeen', 'true');
+
+    // Show toast notification
+    showToast('메뉴 알림 설정이 저장되었습니다.');
 
     onClose();
     router.push("/account/menu/favorite");
@@ -264,16 +269,18 @@ const Radio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1.538px solid ${props => props.$selected ? '#FF9522' : '#BEC1C8'};
-  background-color: white;
+  border: ${props => props.$selected ? 'none' : '1.538px solid #BEC1C8'};
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  padding: 0;
 
   img {
     width: 20px;
     height: 20px;
+    display: block;
   }
 `;
 
@@ -413,16 +420,18 @@ const MobileRadio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1.538px solid ${props => props.$selected ? '#FF9522' : '#BEC1C8'};
-  background-color: white;
+  border: ${props => props.$selected ? 'none' : '1.538px solid #BEC1C8'};
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  padding: 0;
 
   img {
     width: 20px;
     height: 20px;
+    display: block;
   }
 `;
 

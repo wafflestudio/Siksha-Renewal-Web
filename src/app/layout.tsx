@@ -3,6 +3,7 @@ import { Viewport } from "next";
 import StyledComponentsRegistry from "providers/StyledComponentsRegistry";
 import ContextProvider from "providers/ContextProvider";
 import { ModalsProvider } from "providers/ModalsProvider";
+import ToastProvider from "providers/ToastProvider";
 import Script from "next/script";
 import { GlobalStyleFixed } from "styles/globalstyle";
 import Layout from "components/general/Layout";
@@ -53,9 +54,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StyledComponentsRegistry>
           <ContextProvider>
             <ModalsProvider>
-              <Suspense>
-                <Layout>{children}</Layout>
-              </Suspense>
+              <ToastProvider>
+                <Suspense>
+                  <Layout>{children}</Layout>
+                </Suspense>
+              </ToastProvider>
             </ModalsProvider>
           </ContextProvider>
         </StyledComponentsRegistry>
