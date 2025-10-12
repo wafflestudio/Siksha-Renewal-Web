@@ -24,6 +24,25 @@ export default function FavoriteMenus() {
 
   useEffect(authGuard, [authStatus]);
 
+  // Show speech-bubble toast on first visit
+  useEffect(() => {
+    const hasSeenBellToast = localStorage.getItem('likedMenuBellToastSeen');
+
+    if (!hasSeenBellToast && authStatus === 'login' && !loading) {
+      const timer = setTimeout(() => {
+        showToast('메뉴 알림을 받아보세요!', {
+          variant: 'speech-bubble',
+          animationType: 'fade',
+          duration: 5000,
+          delay: 500
+        });
+        localStorage.setItem('likedMenuBellToastSeen', 'true');
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [authStatus, loading, showToast]);
+
   useEffect(() => {
     if (authStatus !== "login") {
       if (authStatus === "logout") setLoading(false);
@@ -94,7 +113,11 @@ export default function FavoriteMenus() {
           </EmptyState>
         ) : (
           favoriteMenus.map((restaurant) => (
-            <LikedMenuCard key={restaurant.id} data={restaurant} onUnlikeMenu={handleUnlikeMenu} />
+            <LikedMenuCard
+              key={restaurant.id}
+              data={restaurant}
+              onUnlikeMenu={handleUnlikeMenu}
+            />
           ))
         )}
       </Container>
