@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const Chip = styled.span`
-  padding: 4px;
+  padding: 3px 6px;
   background-color: var(--SemanticColor-Element-Chip);
   border-radius: 4px;
   color: var(--Color-Foundation-gray-700);

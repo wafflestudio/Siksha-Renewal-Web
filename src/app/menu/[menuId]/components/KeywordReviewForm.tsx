@@ -76,7 +76,7 @@ export default function KeywordReviewForm({ inputs, setInputs }: KeywordReviewFo
   return (
     <Container>
       <Title>
-        어떤 점이 얼마나 좋았나요? <span>(선택)</span>
+        어떤 점이 얼마나 좋았나요? <span>(필수)</span>
       </Title>
 
       {categories.map((cat) => (
