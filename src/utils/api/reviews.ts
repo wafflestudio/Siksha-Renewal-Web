@@ -5,13 +5,18 @@ import { MyReviewGroupType, MyReviewType, RawReview, KeywordReviewScore } from "
 
 export const getReviews = (
   menuID: number,
-  accessToken?: string,
+  accessToken: string = "",
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
   result: ReviewType[];
 }> => {
-  return axios.get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`).then((res) => {
+  const apiUrl = `${APIendpoint()}/reviews${
+    !!accessToken ? "" : "/web"
+  }?menu_id=${menuID}&page=1&per_page=100`;
+  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+
+  return axios.get(apiUrl, config).then((res) => {
     const {
       data: { total_count: totalCount, has_next: hasNext, result },
     } = res;
@@ -125,7 +130,7 @@ export const deleteReview = (reviewId: number, accessToken: string) => {
 
 export const setReviewLike = (reviewId: number, accessToken: string): Promise<void> => {
   return axios
-    .post(`${APIendpoint()}/reviews/${reviewId}/like`, {
+    .post(`${APIendpoint()}/reviews/${reviewId}/like`, null, {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },

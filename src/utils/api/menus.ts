@@ -12,9 +12,7 @@ export const getMenuList = (
 }> => {
   const apiUrl = `${APIendpoint()}/menus${
     !!accessToken ? "" : "/web"
-  }?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}&is_private=${
-    !!accessToken ? "true" : "false"
-  }`;
+  }?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
   const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
