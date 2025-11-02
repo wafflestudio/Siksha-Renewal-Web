@@ -1,6 +1,7 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
+import { isMockToken, getMockLikedMenus } from "utils/mockAuth";
 
 export const getMenuList = (
   date: string,
