@@ -98,6 +98,10 @@ export const loginApple = async (id_token: string): Promise<string> => {
 };
 
 export const loginRefresh = async (accessToken: string): Promise<string> => {
+  if (isMockToken(accessToken)) {
+    return Promise.resolve(accessToken);
+  }
+
   return axios
     .post(
       `${APIendpoint()}/auth/refresh`,

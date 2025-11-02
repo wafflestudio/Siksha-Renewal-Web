@@ -1,11 +1,12 @@
 "use client";
 
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import { sanitizeCssSelector } from "utils/FormatUtil";
-import { formatPrice } from "utils/FormatUtil";
-import useFavorite from "hooks/UseFavorite";
+import Menu from "app/components/Menu";
+import { useDispatchContext } from "providers/ContextProvider";
+import { RawMenu } from "types";
 
 type LikedMenu = {
   id: number;
@@ -28,8 +29,31 @@ interface LikedMenuCardProps {
 }
 
 export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps) {
-  const { toggleFavorite, isFavorite } = useFavorite();
-  const router = useRouter();
+  const { setInfoData, toggleShowInfo } = useDispatchContext();
+  const [isFavorite, setIsFavorite] = useState(true); // Restaurant is favorited if it appears here
+
+  // Convert LikedMenu to RawMenu format for Menu component
+  const convertToRawMenu = (menu: LikedMenu): RawMenu => ({
+    id: menu.id,
+    name_kr: menu.name_kr,
+    name_en: "",
+    price: menu.price,
+    score: menu.score,
+    etc: menu.etc || [],
+    is_liked: true, // All menus here are liked
+    like_cnt: 0, // We don't have this data in liked menu response
+    review_cnt: 0, // We don't have this data in liked menu response
+    created_at: "",
+    updated_at: "",
+    restaurant_id: data.id,
+    code: data.code,
+    date: "",
+    type: "",
+  });
+
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <>
@@ -39,11 +63,17 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
             <Name>{data.name_kr}</Name>
             <TitleIconList>
               <ButtonIcon
-                src={
-                  isFavorite(data.id) ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"
-                }
-                onClick={() => toggleFavorite(data.id)}
-                alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
+                src={"/img/info.svg"}
+                onClick={() => {
+                  setInfoData(data);
+                  toggleShowInfo();
+                }}
+                alt="위치 정보"
+              />
+              <ButtonIcon
+                src={isFavorite ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"}
+                onClick={handleToggleFavorite}
+                alt={isFavorite ? "좋아요" : "좋아요 해제"}
               />
             </TitleIconList>
           </TitleContainer>
@@ -59,29 +89,7 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
         <MenuInfo>
           <Menus>
             {data.menus.map((menu) => (
-              <MenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
-                <MenuName>
-                  {menu.name_kr}
-                  {menu.etc && menu.etc.find((e) => e == "No meat") && (
-                    <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
-                  )}
-                </MenuName>
-                <Dots src={"/img/dots.svg"} />
-                <MenuDataSection>
-                  <Price>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-                  <Rate>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
-                  <LikeBox>
-                    <HeartIcon
-                      src="/img/general/heart-on.svg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onUnlikeMenu(menu.id);
-                      }}
-                      alt="찜 해제"
-                    />
-                  </LikeBox>
-                </MenuDataSection>
-              </MenuRow>
+              <Menu menu={convertToRawMenu(menu)} key={menu.id} />
             ))}
           </Menus>
         </MenuInfo>
@@ -91,19 +99,19 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
-              {isFavorite(data.id) ? (
-                <ButtonIcon
-                  src="/img/general/star-on.svg"
-                  onClick={() => toggleFavorite(data.id)}
-                  alt="좋아요"
-                />
-              ) : (
-                <ButtonIcon
-                  src="/img/general/star-off-24.svg"
-                  onClick={() => toggleFavorite(data.id)}
-                  alt=""
-                />
-              )}
+              <ButtonIcon
+                src={"/img/info.svg"}
+                onClick={() => {
+                  setInfoData(data);
+                  toggleShowInfo();
+                }}
+                alt="정보"
+              />
+              <ButtonIcon
+                src={isFavorite ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"}
+                onClick={handleToggleFavorite}
+                alt={isFavorite ? "좋아요" : "좋아요 해제"}
+              />
             </TitleIconList>
           </TitleContainer>
           <InfoContainer>
@@ -117,26 +125,7 @@ export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps
         <HLine />
         <Menus>
           {data.menus.map((menu) => (
-            <MobileMenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
-              <MenuName>
-                {menu.name_kr}
-                {menu.etc && menu.etc.find((e) => e == "No meat") && (
-                  <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
-                )}
-              </MenuName>
-              <MobileMenuData>
-                <MobilePrice>{menu.price ? formatPrice(menu.price) : "-"}</MobilePrice>
-                <MobileRate>{menu.score ? menu.score.toFixed(1) : "-"}</MobileRate>
-                <HeartIcon
-                  src="/img/general/heart-on.svg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onUnlikeMenu(menu.id);
-                  }}
-                  alt="찜 해제"
-                />
-              </MobileMenuData>
-            </MobileMenuRow>
+            <Menu menu={convertToRawMenu(menu)} key={menu.id} />
           ))}
         </Menus>
       </MobileContainer>
@@ -338,157 +327,4 @@ const Menus = styled.div`
     gap: 10px;
     width: 100%;
   }
-`;
-
-const MenuRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  align-items: flex-start;
-  gap: 10px;
-
-  @media (pointer: fine) {
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
-`;
-
-const MobileMenuRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const MenuName = styled.div`
-  display: flex;
-  color: var(--Color-Foundation-gray-900);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 150%; /* 21px */
-  flex-grow: 1;
-
-  @media (max-width: 768px) {
-    color: black;
-    font-size: 14px;
-    line-height: 21px;
-    font-weight: 400;
-  }
-`;
-
-const NoMeat = styled.img`
-  width: 19px;
-  padding-bottom: 2px;
-
-  @media (max-width: 768px) {
-    padding-left: 5px;
-    padding-bottom: 0;
-  }
-`;
-
-const Dots = styled.img`
-  width: 40px;
-  height: 22px;
-
-  @media (max-width: 1200px) {
-    display: none;
-  }
-`;
-
-const MenuDataSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const MobileMenuData = styled.div`
-  display: flex;
-  align-items: center;
-  height: 24px;
-  gap: 16px;
-`;
-
-const Price = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 58px;
-  color: var(--Color-Foundation-gray-900, #262728);
-  text-align: center;
-
-  /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
-`;
-
-const MobilePrice = styled.div`
-  width: fit-content;
-  min-width: 28px;
-  display: flex;
-  justify-content: flex-end;
-  color: var(--Color-Foundation-base-black, #000);
-  text-align: center;
-
-  /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
-`;
-
-const Rate = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 58px;
-  height: 21px;
-  font-weight: 400;
-  font-size: 14px;
-  color: var(--Color-Foundation-gray-900, #262728);
-  font-style: normal;
-  line-height: 150%; /* 21px */
-  letter-spacing: -0.3px;
-
-  @media (min-width: 769px) and (max-width: 901px) {
-    display: none;
-  }
-`;
-
-const MobileRate = styled.div`
-  width: 23px;
-  color: var(--Color-Foundation-base-black, #000);
-  text-align: center;
-
-  /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
-`;
-
-const LikeBox = styled.div`
-  width: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (min-width: 901px) {
-    width: 58px;
-  }
-`;
-
-const HeartIcon = styled.img`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 0;
 `;

@@ -10,12 +10,15 @@ import useLikedMenus from "hooks/UseLikedMenus";
 import useError from "hooks/useError";
 import useToast from "hooks/UseToast";
 import LikedMenuCard from "app/components/LikedMenuCard";
+import RestaurantInfo from "app/components/RestaurantInfo";
+import { useStateContext } from "providers/ContextProvider";
 
 export default function FavoriteMenus() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
   const { removeLikedMenu } = useLikedMenus();
   const { onHttpError } = useError();
   const { showToast } = useToast();
+  const { showInfo } = useStateContext();
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
@@ -114,6 +117,11 @@ export default function FavoriteMenus() {
           ))
         )}
       </Container>
+      {showInfo && (
+        <Info>
+          <RestaurantInfo />
+        </Info>
+      )}
     </>
   );
 }
@@ -158,4 +166,9 @@ const EmptyText = styled.div`
   line-height: 150%;
   letter-spacing: -0.3px;
   white-space: nowrap;
+`;
+
+const Info = styled.div`
+  display: flex;
+  z-index: 100;
 `;
