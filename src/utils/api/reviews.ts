@@ -4,7 +4,7 @@ import { MyReviewGroupType, MyReviewType, RawReview } from "types";
 
 export const getReviews = (
   menuID: number,
-  accessToken: string = "",
+  accessToken?: string,
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
