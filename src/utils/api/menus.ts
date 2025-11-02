@@ -1,6 +1,7 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
+import { isMockToken, getMockLikedMenus } from "utils/mockAuth";
 
 export const getMenuList = (
   date: string,
@@ -92,6 +93,10 @@ export const setMenuUnlike = (
 };
 
 export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
+  if (isMockToken(accessToken)) {
+    return Promise.resolve(getMockLikedMenus());
+  }
+
   return axios
     .get(`${APIendpoint()}/menus/me`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },

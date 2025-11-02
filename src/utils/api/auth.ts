@@ -1,6 +1,7 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { User, RawUser } from "types";
+import { isMockToken, getMockUser } from "utils/mockAuth";
 
 export const loginKakao = async (code: string): Promise<string> => {
   const grantType = "authorization_code";
@@ -115,6 +116,10 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
 };
 
 export const getMyData = async (accessToken: string): Promise<User> => {
+  if (isMockToken(accessToken)) {
+    return Promise.resolve(getMockUser());
+  }
+
   return axios
     .get(`${APIendpoint()}/auth/me/image`, {
       headers: { "authorization-token": `Bearer ${accessToken}` },

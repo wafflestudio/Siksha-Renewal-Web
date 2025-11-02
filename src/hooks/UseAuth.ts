@@ -3,6 +3,7 @@ import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
+import { MOCK_ACCESS_TOKEN, isMockAuthEnabled } from "utils/mockAuth";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
@@ -17,6 +18,12 @@ export default function useAuth() {
   } = useLocalStorage("access_token", undefined);
 
   useEffect(() => {
+    if (isMockAuthEnabled() && !accessToken) {
+      setStorage(MOCK_ACCESS_TOKEN);
+      setAuthStatus("login");
+      return;
+    }
+
     if (accessToken === undefined) setAuthStatus("loading");
     else if (accessToken) setAuthStatus("login");
     else setAuthStatus("logout");
