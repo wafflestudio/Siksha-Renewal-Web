@@ -1,7 +1,7 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
-import { isMockToken, getMockLikedMenus } from "utils/mockAuth";
+import { isMockToken, getMockLikedMenus, getMockMenuList } from "utils/mockAuth";
 
 export const getMenuList = (
   date: string,
@@ -11,6 +11,10 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
+  if (accessToken && isMockToken(accessToken)) {
+    return Promise.resolve(getMockMenuList(date));
+  }
+
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
     : `${APIendpoint()}/menus/web?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
