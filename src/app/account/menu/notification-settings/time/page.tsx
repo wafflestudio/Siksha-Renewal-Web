@@ -37,21 +37,21 @@ export default function NotificationTimeSettings() {
         <SettingsCard>
           <OptionRow onClick={() => handlePreferenceChange("once_morning")}>
             <OptionLabel>아침에 한 번에 받기</OptionLabel>
-            {timePreference === "once_morning" && <CheckIcon src="/img/radio.svg" alt="선택됨" />}
+            {timePreference === "once_morning" && <CheckIcon src="/img/check.svg" alt="선택됨" />}
           </OptionRow>
           <Separator />
           <OptionRow onClick={() => handlePreferenceChange("per_meal")}>
             <OptionLabel>식사시간마다 받기</OptionLabel>
-            {timePreference === "per_meal" && <CheckIcon src="/img/radio.svg" alt="선택됨" />}
+            {timePreference === "per_meal" && <CheckIcon src="/img/check.svg" alt="선택됨" />}
           </OptionRow>
         </SettingsCard>
 
-        <ExplanationText>
+        <ExplanationLine>
           아침에 한 번에 받기: 당일에 나온 찜한 메뉴를 한 번에 알려드려요.
           <br />
           식사시간마다 받기: 아침·점심·저녁 메뉴를 해당 시간대에 맞춰 나누어 안내드려요. (아침 7:30
           / 점심 10:30 / 저녁 16:30)
-        </ExplanationText>
+        </ExplanationLine>
       </Container>
     </>
   );
@@ -124,7 +124,7 @@ const ExplanationLine = styled.p`
   font-family: var(--Font-family-sans, NanumSquareOTF);
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.4;
   letter-spacing: -0.3px;
   color: var(--Color-Foundation-gray-600, #989aa0);
   margin: 0;

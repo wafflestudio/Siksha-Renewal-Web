@@ -3,23 +3,41 @@
   "info": { "title": "Siksha Spring", "description": "식샤 스프링 API Docs", "version": "v1.0.0" },
   "servers": [{ "url": "/" }],
   "security": [{ "bearerAuth": [] }],
+  "tags": [
+    { "name": "Reviews", "description": "리뷰 관리 엔드포인트" },
+    { "name": "Restaurants", "description": "식당 정보 관리 엔드포인트" },
+    { "name": "Auth", "description": "인증 및 사용자 관리 엔드포인트" },
+    { "name": "Comments", "description": "커뮤니티 댓글 관리 엔드포인트" },
+    { "name": "Boards", "description": "커뮤니티 게시판 관리 엔드포인트" },
+    { "name": "Menus", "description": "메뉴 관리 엔드포인트" },
+    { "name": "Posts", "description": "커뮤니티 게시글 관리 엔드포인트" }
+  ],
   "paths": {
+    "/voc": {
+      "post": {
+        "tags": ["Basic"],
+        "operationId": "postVoc",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VocRequest" } }
+          },
+          "required": true
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
     "/reviews": {
       "get": {
-        "tags": ["review-controller"],
-        "operationId": "getReviews",
+        "tags": ["Reviews"],
+        "summary": "메뉴의 리뷰 목록 조회 (로그인)",
+        "description": "특정 메뉴의 리뷰 목록을 조회합니다 (로그인).",
+        "operationId": "getReviewsLogin",
         "parameters": [
           {
             "name": "menu_id",
             "in": "query",
             "required": true,
             "schema": { "type": "integer", "format": "int32" }
-          },
-          {
-            "name": "is_private",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "boolean" }
           },
           {
             "name": "page",
@@ -41,10 +59,13 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/ReviewListResponse" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       },
       "post": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "새 리뷰 작성",
+        "description": "메뉴에 대한 새로운 리뷰를 작성합니다",
         "operationId": "postReview",
         "requestBody": {
           "content": {
@@ -57,12 +78,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/reviews/{review_id}/like": {
       "post": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "리뷰 좋아요",
+        "description": "특정 리뷰에 좋아요를 누릅니다",
         "operationId": "likeReview",
         "parameters": [
           {
@@ -72,10 +96,13 @@
             "schema": { "type": "integer", "format": "int32" }
           }
         ],
-        "responses": { "201": { "description": "Created" } }
+        "responses": { "201": { "description": "Created" } },
+        "security": [{ "bearerAuth": [] }]
       },
       "delete": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "리뷰 좋아요 취소",
+        "description": "특정 리뷰의 좋아요를 취소합니다",
         "operationId": "unlikeReview",
         "parameters": [
           {
@@ -90,26 +117,20 @@
             "description": "No Content",
             "content": { "*/*": { "schema": { "type": "boolean" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/reviews/images": {
       "post": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "이미지와 함께 새 리뷰 작성",
+        "description": "이미지 업로드와 함께 메뉴에 대한 새로운 리뷰를 작성합니다",
         "operationId": "postReviewWithImages",
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "required": ["menu_id", "score"],
-                "type": "object",
-                "properties": {
-                  "menu_id": { "type": "integer", "format": "int32" },
-                  "score": { "type": "integer", "format": "int32" },
-                  "comment": { "type": "string" },
-                  "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
-                }
-              }
+              "schema": { "$ref": "#/components/schemas/ReviewWithImagesRequest" }
             }
           }
         },
@@ -118,12 +139,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/menus/{menu_id}/unlike": {
       "post": {
-        "tags": ["menu-controller"],
+        "tags": ["Menus"],
+        "summary": "메뉴 좋아요 취소",
+        "description": "특정 메뉴의 좋아요를 취소합니다",
         "operationId": "unlikeMenu",
         "parameters": [
           {
@@ -138,12 +162,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/menus/{menu_id}/like": {
       "post": {
-        "tags": ["menu-controller"],
+        "tags": ["Menus"],
+        "summary": "메뉴 좋아요",
+        "description": "특정 메뉴에 좋아요를 추가합니다",
         "operationId": "likeMenu",
         "parameters": [
           {
@@ -158,12 +185,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 목록 조회 (로그인)",
+        "description": "특정 게시판의 게시글 목록을 조회합니다 (로그인)",
         "operationId": "getPostsWithAuth",
         "parameters": [
           {
@@ -192,32 +222,18 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/PaginatedPostsResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       },
       "post": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 작성",
+        "description": "새로운 게시글을 작성합니다",
         "operationId": "createPost",
-        "parameters": [
-          {
-            "name": "board_id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int32" }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "required": ["content", "title"],
-                "type": "object",
-                "properties": {
-                  "title": { "type": "string" },
-                  "content": { "type": "string" },
-                  "anonymous": { "type": "boolean" },
-                  "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
-                }
-              }
+              "schema": { "$ref": "#/components/schemas/PostCreateRequestDto" }
             }
           }
         },
@@ -226,12 +242,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/{postId}/unlike": {
       "post": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 좋아요 취소",
+        "description": "특정 게시글의 좋아요를 취소합니다",
         "operationId": "createPostUnlike",
         "parameters": [
           {
@@ -246,12 +265,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/{postId}/report": {
       "post": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 신고",
+        "description": "특정 게시글을 신고합니다",
         "operationId": "createPostReport",
         "parameters": [
           {
@@ -276,12 +298,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/PostsReportResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/{postId}/like": {
       "post": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 좋아요",
+        "description": "특정 게시글에 좋아요를 추가합니다",
         "operationId": "createPostLike",
         "parameters": [
           {
@@ -296,12 +321,15 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments": {
       "get": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 목록 조회 (로그인)",
+        "description": "특정 게시글의 댓글 목록을 조회합니다 (로그인)",
         "operationId": "getComments",
         "parameters": [
           {
@@ -330,10 +358,13 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/GetCommentsResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       },
       "post": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 작성",
+        "description": "새로운 댓글을 작성합니다",
         "operationId": "createComment",
         "requestBody": {
           "content": {
@@ -350,12 +381,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/CommentResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments/{commentId}/unlike": {
       "post": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 좋아요 취소",
+        "description": "특정 댓글의 좋아요를 취소합니다",
         "operationId": "createCommentUnlike",
         "parameters": [
           {
@@ -372,12 +406,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/CommentResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments/{commentId}/report": {
       "post": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 신고",
+        "description": "특정 댓글을 신고합니다",
         "operationId": "createCommentReport",
         "parameters": [
           {
@@ -402,12 +439,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/CommentsReportResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments/{commentId}/like": {
       "post": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 좋아요",
+        "description": "특정 댓글에 좋아요를 추가합니다",
         "operationId": "createCommentLike",
         "parameters": [
           {
@@ -424,12 +464,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/CommentResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/boards": {
       "get": {
-        "tags": ["board-controller"],
+        "tags": ["Boards"],
+        "summary": "게시판 목록 조회",
+        "description": "모든 게시판 목록을 조회합니다",
         "operationId": "getBoards",
         "responses": {
           "200": {
@@ -443,7 +486,9 @@
         }
       },
       "post": {
-        "tags": ["board-controller"],
+        "tags": ["Boards"],
+        "summary": "게시판 생성",
+        "description": "새로운 게시판을 생성합니다",
         "operationId": "addBoard",
         "requestBody": {
           "content": {
@@ -456,24 +501,54 @@
             "description": "Created",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/BoardDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/auth/userDevice": {
+      "post": {
+        "tags": ["Auth"],
+        "operationId": "createUserDevice",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UserDeviceDto" } }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Auth"],
+        "operationId": "deleteUserDevice",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UserDeviceDto" } }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/auth/refresh": {
       "post": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "액세스 토큰 재발급",
+        "description": "인증된 사용자의 액세스 토큰을 재발급합니다",
         "operationId": "refreshAccessToken",
         "responses": {
           "200": {
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/AuthResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/auth/login/test": {
       "post": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "테스트 로그인",
+        "description": "테스트 환경에서 사용하는 로그인입니다",
         "operationId": "loginTypeTest",
         "requestBody": {
           "content": {
@@ -493,7 +568,9 @@
     },
     "/auth/login/kakao": {
       "post": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "Kakao 로그인",
+        "description": "Kakao 소셜 로그인을 통해 인증합니다",
         "operationId": "loginTypeKakao",
         "responses": {
           "200": {
@@ -505,7 +582,9 @@
     },
     "/auth/login/google": {
       "post": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "Google 로그인",
+        "description": "Google 소셜 로그인을 통해 인증합니다",
         "operationId": "loginTypeGoogle",
         "responses": {
           "200": {
@@ -517,7 +596,9 @@
     },
     "/auth/login/apple": {
       "post": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "Apple 로그인",
+        "description": "Apple 소셜 로그인을 통해 인증합니다",
         "operationId": "loginTypeApple",
         "responses": {
           "200": {
@@ -529,8 +610,10 @@
     },
     "/reviews/{review_id}": {
       "get": {
-        "tags": ["review-controller"],
-        "operationId": "getReview",
+        "tags": ["Reviews"],
+        "summary": "리뷰 상세 조회 (로그인)",
+        "description": "특정 리뷰의 상세 정보를 조회합니다 (로그인)",
+        "operationId": "getReviewLogin",
         "parameters": [
           {
             "name": "review_id",
@@ -544,10 +627,13 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MyReviewResponse" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       },
       "delete": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "리뷰 삭제",
+        "description": "기존 리뷰를 삭제합니다",
         "operationId": "deleteReview",
         "parameters": [
           {
@@ -557,10 +643,13 @@
             "schema": { "type": "integer", "format": "int32" }
           }
         ],
-        "responses": { "204": { "description": "No Content" } }
+        "responses": { "204": { "description": "No Content" } },
+        "security": [{ "bearerAuth": [] }]
       },
       "patch": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "이미지와 함께 리뷰 수정",
+        "description": "이미지 업로드와 함께 기존 리뷰를 수정합니다",
         "operationId": "updateReviewWithImages",
         "parameters": [
           {
@@ -573,16 +662,7 @@
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "required": ["menu_id", "score"],
-                "type": "object",
-                "properties": {
-                  "menu_id": { "type": "integer", "format": "int32" },
-                  "score": { "type": "integer", "format": "int32" },
-                  "comment": { "type": "string" },
-                  "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
-                }
-              }
+              "schema": { "$ref": "#/components/schemas/ReviewWithImagesRequest" }
             }
           }
         },
@@ -591,12 +671,15 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/{post_id}": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 상세 조회 (로그인)",
+        "description": "특정 게시글의 상세 정보를 조회합니다 (로그인)",
         "operationId": "getPostWithAuth",
         "parameters": [
           {
@@ -611,10 +694,13 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       },
       "delete": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 삭제",
+        "description": "기존 게시글을 삭제합니다",
         "operationId": "deletePost",
         "parameters": [
           {
@@ -624,10 +710,13 @@
             "schema": { "type": "integer", "format": "int32" }
           }
         ],
-        "responses": { "204": { "description": "No Content" } }
+        "responses": { "204": { "description": "No Content" } },
+        "security": [{ "bearerAuth": [] }]
       },
       "patch": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 수정",
+        "description": "기존 게시글을 수정합니다",
         "operationId": "patchPost",
         "parameters": [
           {
@@ -640,16 +729,7 @@
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "required": ["content", "title"],
-                "type": "object",
-                "properties": {
-                  "title": { "type": "string" },
-                  "content": { "type": "string" },
-                  "anonymous": { "type": "boolean" },
-                  "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
-                }
-              }
+              "schema": { "$ref": "#/components/schemas/PostPatchRequestDto" }
             }
           }
         },
@@ -658,12 +738,15 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments/{commentId}": {
       "delete": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 삭제",
+        "description": "기존 댓글을 삭제합니다",
         "operationId": "deleteComment",
         "parameters": [
           {
@@ -673,10 +756,13 @@
             "schema": { "type": "integer", "format": "int32" }
           }
         ],
-        "responses": { "204": { "description": "No Content" } }
+        "responses": { "204": { "description": "No Content" } },
+        "security": [{ "bearerAuth": [] }]
       },
       "patch": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 수정",
+        "description": "기존 댓글을 수정합니다",
         "operationId": "patchComment",
         "parameters": [
           {
@@ -701,25 +787,20 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/CommentResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/auth/me/profile": {
       "patch": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "내 프로필 수정",
+        "description": "인증된 사용자의 프로필 정보를 수정합니다",
         "operationId": "updateUserProfile",
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "required": ["change_to_default_image", "image", "nickname"],
-                "type": "object",
-                "properties": {
-                  "nickname": { "type": "string" },
-                  "image": { "type": "string", "format": "binary" },
-                  "change_to_default_image": { "type": "boolean" }
-                }
-              }
+              "schema": { "$ref": "#/components/schemas/UserProfilePatchDto" }
             }
           }
         },
@@ -728,12 +809,73 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UserResponseDto" } } }
           }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/reviews/{review_id}/web": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "리뷰 상세 조회 (비로그인)",
+        "description": "특정 리뷰의 상세 정보를 조회합니다 (비로그인)",
+        "operationId": "getReviewWithoutAuth",
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MyReviewResponse" } } }
+          }
+        }
+      }
+    },
+    "/reviews/web": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "메뉴의 리뷰 목록 조회 (비로그인)",
+        "description": "특정 메뉴의 리뷰 목록을 조회합니다 (비로그인).",
+        "operationId": "getReviewsWithoutAuth",
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ReviewListResponse" } }
+            }
+          }
         }
       }
     },
     "/reviews/me": {
       "get": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "내 리뷰 조회",
+        "description": "인증된 사용자가 작성한 리뷰를 조회합니다",
         "operationId": "getMyReviews",
         "parameters": [
           {
@@ -754,12 +896,15 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MyReviewsResponse" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/reviews/keyword/dist": {
       "get": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "키워드 점수 분포 조회",
+        "description": "메뉴의 키워드 기반 점수 분포를 조회합니다",
         "operationId": "getKeywordScoreDistribution",
         "parameters": [
           {
@@ -783,8 +928,10 @@
     },
     "/reviews/filter": {
       "get": {
-        "tags": ["review-controller"],
-        "operationId": "getFilteredReviews",
+        "tags": ["Reviews"],
+        "summary": "메뉴의 필터링된 리뷰 조회 (로그인)",
+        "description": "특정 메뉴의 리뷰를 댓글/이미지 필터와 함께 조회합니다 (로그인).",
+        "operationId": "getFilteredReviewsLogin",
         "parameters": [
           {
             "name": "menu_id",
@@ -793,7 +940,7 @@
             "schema": { "type": "integer", "format": "int32" }
           },
           { "name": "comment", "in": "query", "required": false, "schema": { "type": "boolean" } },
-          { "name": "etc", "in": "query", "required": false, "schema": { "type": "boolean" } },
+          { "name": "image", "in": "query", "required": false, "schema": { "type": "boolean" } },
           {
             "name": "page",
             "in": "query",
@@ -805,12 +952,45 @@
             "in": "query",
             "required": false,
             "schema": { "type": "integer", "format": "int32", "default": 10 }
-          },
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ReviewListResponse" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/reviews/filter/web": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "메뉴의 필터링된 리뷰 조회 (비로그인)",
+        "description": "특정 메뉴의 리뷰를 댓글/이미지 필터와 함께 조회합니다 (비로그인).",
+        "operationId": "getFilteredReviews",
+        "parameters": [
           {
-            "name": "is_private",
+            "name": "menu_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          { "name": "comment", "in": "query", "required": false, "schema": { "type": "boolean" } },
+          { "name": "image", "in": "query", "required": false, "schema": { "type": "boolean" } },
+          {
+            "name": "page",
             "in": "query",
             "required": false,
-            "schema": { "type": "boolean" }
+            "schema": { "type": "integer", "format": "int32", "default": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
           }
         ],
         "responses": {
@@ -825,7 +1005,9 @@
     },
     "/reviews/dist": {
       "get": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "리뷰 점수 분포 조회",
+        "description": "메뉴의 점수 분포를 조회합니다",
         "operationId": "getReviewScoreDistribution",
         "parameters": [
           {
@@ -849,7 +1031,9 @@
     },
     "/reviews/comments/recommendation": {
       "get": {
-        "tags": ["review-controller"],
+        "tags": ["Reviews"],
+        "summary": "댓글 추천 조회",
+        "description": "점수 기반 추천 댓글을 조회합니다",
         "operationId": "getCommentRecommendation",
         "parameters": [
           {
@@ -871,7 +1055,9 @@
     },
     "/restaurants": {
       "get": {
-        "tags": ["restaurant-controller"],
+        "tags": ["Restaurants"],
+        "summary": "식당 목록 조회",
+        "description": "모든 식당 목록을 조회합니다",
         "operationId": "getRestaurants",
         "responses": {
           "200": {
@@ -883,10 +1069,103 @@
         }
       }
     },
+    "/ping": {
+      "get": {
+        "tags": ["Basic"],
+        "operationId": "ping",
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "string" } } } }
+        }
+      }
+    },
     "/menus": {
       "get": {
-        "tags": ["menu-controller"],
+        "tags": ["Menus"],
+        "summary": "기간별 메뉴 목록 조회 (로그인)",
+        "description": "지정된 기간 동안의 메뉴 목록을 조회합니다 (로그인)",
         "operationId": "getMenusWhereDate",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "except_empty",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean", "default": false }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/MenuListResponseDto" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/menus/{menu_id}": {
+      "get": {
+        "tags": ["Menus"],
+        "summary": "메뉴 상세 조회 (로그인)",
+        "description": "특정 메뉴의 상세 정보를 조회합니다 (로그인)",
+        "operationId": "getMenuById",
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/menus/{menu_id}/web": {
+      "get": {
+        "tags": ["Menus"],
+        "summary": "메뉴 상세 조회 (비로그인)",
+        "description": "특정 메뉴의 상세 정보를 조회합니다 (비로그인)",
+        "operationId": "getMenuByIdWithoutAuth",
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
+          }
+        }
+      }
+    },
+    "/menus/web": {
+      "get": {
+        "tags": ["Menus"],
+        "summary": "기간별 메뉴 목록 조회 (비로그인)",
+        "description": "지정된 기간 동안의 메뉴 목록을 조회합니다 (비로그인)",
+        "operationId": "getMenusWhereDateWithoutAuth",
         "parameters": [
           {
             "name": "start_date",
@@ -917,29 +1196,11 @@
         }
       }
     },
-    "/menus/{menu_id}": {
-      "get": {
-        "tags": ["menu-controller"],
-        "operationId": "getMenuById",
-        "parameters": [
-          {
-            "name": "menu_id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int32" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuDetailsDto" } } }
-          }
-        }
-      }
-    },
     "/menus/me": {
       "get": {
-        "tags": ["menu-controller"],
+        "tags": ["Menus"],
+        "summary": "내가 좋아요한 메뉴 조회",
+        "description": "인증된 사용자가 좋아요한 메뉴 목록을 조회합니다",
         "operationId": "getMyMenus",
         "responses": {
           "200": {
@@ -948,12 +1209,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/MyMenuListResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/{post_id}/web": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 상세 조회 (비로그인)",
+        "description": "특정 게시글의 상세 정보를 조회합니다 (비로그인)",
         "operationId": "getPostWithoutAuth",
         "parameters": [
           {
@@ -973,7 +1237,9 @@
     },
     "/community/posts/web": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "게시글 목록 조회 (비로그인)",
+        "description": "특정 게시판의 게시글 목록을 조회합니다 (비로그인)",
         "operationId": "getPostsWithoutAuth",
         "parameters": [
           {
@@ -1007,7 +1273,9 @@
     },
     "/community/posts/popular/trending": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "인기 게시글 조회 (트렌딩, 로그인)",
+        "description": "최근 인기있는 게시글을 조회합니다 (로그인)",
         "operationId": "getTrendingPosts",
         "parameters": [
           {
@@ -1028,12 +1296,15 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostsResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/popular/trending/web": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "인기 게시글 조회 (트렌딩, 비로그인)",
+        "description": "최근 인기있는 게시글을 조회합니다 (비로그인)",
         "operationId": "getTrendingPostsWithoutAuth",
         "parameters": [
           {
@@ -1059,7 +1330,9 @@
     },
     "/community/posts/popular/best": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "인기 게시글 조회 (베스트, 로그인)",
+        "description": "베스트 게시글을 조회합니다 (로그인)",
         "operationId": "getBestPosts",
         "parameters": [
           {
@@ -1074,12 +1347,15 @@
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostsResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/posts/popular/best/web": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "인기 게시글 조회 (베스트, 비로그인)",
+        "description": "베스트 게시글을 조회합니다 (비로그인)",
         "operationId": "getBestPostsWithoutAuth",
         "parameters": [
           {
@@ -1099,7 +1375,9 @@
     },
     "/community/posts/me": {
       "get": {
-        "tags": ["post-controller"],
+        "tags": ["Posts"],
+        "summary": "내 게시글 조회",
+        "description": "인증된 사용자가 작성한 게시글 목록을 조회합니다",
         "operationId": "getMyPosts",
         "parameters": [
           {
@@ -1122,12 +1400,15 @@
               "*/*": { "schema": { "$ref": "#/components/schemas/PaginatedPostsResponseDto" } }
             }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/community/comments/web": {
       "get": {
-        "tags": ["comment-controller"],
+        "tags": ["Comments"],
+        "summary": "댓글 목록 조회 (비로그인)",
+        "description": "특정 게시글의 댓글 목록을 조회합니다 (비로그인)",
         "operationId": "getCommentsWithoutAuth",
         "parameters": [
           {
@@ -1161,7 +1442,9 @@
     },
     "/community/boards/{board_id}": {
       "get": {
-        "tags": ["board-controller"],
+        "tags": ["Boards"],
+        "summary": "게시판 상세 조회",
+        "description": "특정 게시판의 상세 정보를 조회합니다",
         "operationId": "getBoard",
         "parameters": [
           {
@@ -1181,7 +1464,9 @@
     },
     "/auth/privacy-policy": {
       "get": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "개인정보 처리방침 조회",
+        "description": "서비스의 개인정보 처리방침을 HTML 형식으로 조회합니다",
         "operationId": "getPrivacyPolicy",
         "responses": {
           "200": {
@@ -1193,7 +1478,9 @@
     },
     "/auth/nicknames/validate": {
       "get": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "닉네임 유효성 검증",
+        "description": "닉네임의 중복 여부 및 유효성을 검증합니다",
         "operationId": "validateNickname",
         "parameters": [
           { "name": "nickname", "in": "query", "required": true, "schema": { "type": "string" } }
@@ -1203,36 +1490,47 @@
     },
     "/auth/me": {
       "get": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "내 정보 조회",
+        "description": "인증된 사용자의 프로필 정보를 조회합니다",
         "operationId": "getMyInfo",
         "responses": {
           "200": {
             "description": "OK",
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UserResponseDto" } } }
           }
-        }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/auth": {
       "delete": {
-        "tags": ["auth-controller"],
+        "tags": ["Auth"],
+        "summary": "회원 탈퇴",
+        "description": "인증된 사용자의 계정을 삭제합니다",
         "operationId": "deleteUser",
-        "responses": { "204": { "description": "No Content" } }
+        "responses": { "204": { "description": "No Content" } },
+        "security": [{ "bearerAuth": [] }]
       }
     }
   },
   "components": {
     "schemas": {
+      "VocRequest": {
+        "required": ["voc"],
+        "type": "object",
+        "properties": { "voc": { "type": "string" }, "platform": { "type": "string" } }
+      },
       "ReviewRequest": {
-        "required": ["foodComposition", "menuId", "price", "score", "taste"],
+        "required": ["food_composition", "menu_id", "price", "score", "taste"],
         "type": "object",
         "properties": {
-          "menuId": { "type": "integer", "format": "int32" },
+          "menu_id": { "type": "integer", "format": "int32" },
           "score": { "maximum": 5, "minimum": 1, "type": "integer", "format": "int32" },
           "comment": { "type": "string" },
           "taste": { "type": "string" },
           "price": { "type": "string" },
-          "foodComposition": { "type": "string" }
+          "food_composition": { "type": "string" }
         }
       },
       "MenuDetailsDto": {
@@ -1266,6 +1564,30 @@
           "review_cnt": { "type": "integer", "format": "int32" },
           "is_liked": { "type": "boolean" },
           "like_cnt": { "type": "integer", "format": "int32" }
+        }
+      },
+      "ReviewWithImagesRequest": {
+        "required": ["food_composition", "menu_id", "price", "score", "taste"],
+        "type": "object",
+        "properties": {
+          "menu_id": { "type": "integer", "format": "int32" },
+          "score": { "maximum": 5, "minimum": 1, "type": "integer", "format": "int32" },
+          "comment": { "type": "string" },
+          "taste": { "type": "string" },
+          "price": { "type": "string" },
+          "food_composition": { "type": "string" },
+          "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
+        }
+      },
+      "PostCreateRequestDto": {
+        "required": ["board_id", "content", "title"],
+        "type": "object",
+        "properties": {
+          "board_id": { "type": "integer", "format": "int32" },
+          "title": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "content": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "anonymous": { "type": "boolean" },
+          "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
         }
       },
       "JsonNode": { "type": "object" },
@@ -1391,6 +1713,11 @@
           "updated_at": { "type": "string", "format": "date-time" }
         }
       },
+      "UserDeviceDto": {
+        "required": ["fcmToken"],
+        "type": "object",
+        "properties": { "fcmToken": { "type": "string" } }
+      },
       "AuthResponseDto": {
         "required": ["access_token"],
         "type": "object",
@@ -1401,9 +1728,26 @@
         "type": "object",
         "properties": { "identity": { "type": "string" } }
       },
+      "PostPatchRequestDto": {
+        "type": "object",
+        "properties": {
+          "title": { "maxLength": 200, "minLength": 0, "type": "string" },
+          "content": { "maxLength": 1000, "minLength": 0, "type": "string" },
+          "anonymous": { "type": "boolean" },
+          "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
+        }
+      },
       "PatchCommentRequestDto": {
         "type": "object",
         "properties": { "content": { "type": "string" }, "anonymous": { "type": "boolean" } }
+      },
+      "UserProfilePatchDto": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "image": { "type": "string", "format": "binary" },
+          "change_to_default_image": { "type": "boolean" }
+        }
       },
       "UserResponseDto": {
         "required": ["created_at", "id", "identity", "nickname", "type", "updated_at"],
@@ -1457,7 +1801,16 @@
         }
       },
       "MyReviewResponse": {
-        "required": ["createdAt", "id", "keywordReviews", "menuId", "score", "updatedAt", "userId"],
+        "required": [
+          "createdAt",
+          "id",
+          "isLiked",
+          "keywordReviews",
+          "menuId",
+          "score",
+          "updatedAt",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "id": { "type": "integer", "format": "int32" },
@@ -1470,7 +1823,8 @@
           "etc": { "type": "string" },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" },
-          "keywordReviews": { "type": "array", "items": { "type": "string" } }
+          "keywordReviews": { "type": "array", "items": { "type": "string" } },
+          "isLiked": { "type": "boolean" }
         }
       },
       "MyReviewsResponse": {
@@ -1502,19 +1856,25 @@
         "required": [
           "foodCompositionCnt",
           "foodCompositionKeyword",
+          "foodCompositionTotal",
           "priceCnt",
           "priceKeyword",
+          "priceTotal",
           "tasteCnt",
-          "tasteKeyword"
+          "tasteKeyword",
+          "tasteTotal"
         ],
         "type": "object",
         "properties": {
           "tasteKeyword": { "type": "string" },
           "tasteCnt": { "type": "integer", "format": "int32" },
+          "tasteTotal": { "type": "integer", "format": "int32" },
           "priceKeyword": { "type": "string" },
           "priceCnt": { "type": "integer", "format": "int32" },
+          "priceTotal": { "type": "integer", "format": "int32" },
           "foodCompositionKeyword": { "type": "string" },
-          "foodCompositionCnt": { "type": "integer", "format": "int32" }
+          "foodCompositionCnt": { "type": "integer", "format": "int32" },
+          "foodCompositionTotal": { "type": "integer", "format": "int32" }
         }
       },
       "ReviewScoreDistributionResponse": {

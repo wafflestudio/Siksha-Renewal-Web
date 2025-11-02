@@ -27,7 +27,8 @@ export default function useMenu() {
 
   const fetchReviews = useCallback(
     async (menuId) => {
-      getReviews(menuId)
+      const accessToken = await getAccessToken().catch((error) => "");
+      getReviews(menuId, accessToken)
         .then((reviewsData) => {
           setReviews({
             result: reviewsData.result,
@@ -38,7 +39,7 @@ export default function useMenu() {
           onHttpError(e);
         });
     },
-    [setReviews, onHttpError],
+    [setReviews, getAccessToken, onHttpError],
   );
 
   const submitReview = useCallback(

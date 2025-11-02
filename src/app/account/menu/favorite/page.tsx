@@ -153,8 +153,8 @@ const EmptyText = styled.div`
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
   font-family: var(--Font-family-sans, NanumSquareOTF);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 150%;
   letter-spacing: -0.3px;
   white-space: nowrap;

@@ -184,6 +184,9 @@ export interface RawReview {
   score: number;
   comment: string;
   etc: Record<string, any>;
+  keywordReviews?: string[];
+  likeCount?: number;
+  isLiked?: boolean;
 }
 
 export interface RawUser {

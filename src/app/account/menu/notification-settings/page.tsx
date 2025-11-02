@@ -93,7 +93,7 @@ export default function NotificationSettings() {
           <Separator />
           <SettingsRow $clickable onClick={handleTimeSettingsClick}>
             <Label>메뉴 알림 시간</Label>
-            <ChevronIcon src="/img/general/right-arrow.svg" alt="시간 설정" />
+            <ChevronIcon src="/img/right-arrow.svg" alt="시간 설정" />
           </SettingsRow>
         </SettingsCard>
 

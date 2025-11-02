@@ -4,13 +4,19 @@ import { RawReview } from "types";
 
 export const getReviews = (
   menuID: number,
+  accessToken?: string,
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
   result: RawReview[];
 }> => {
+  const endpoint = accessToken ? "/reviews" : "/reviews/web";
+  const config = accessToken
+    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
+    : {};
+
   return axios
-    .get(`${APIendpoint()}/reviews/?menu_id=${menuID}&page=1&per_page=100`)
+    .get(`${APIendpoint()}${endpoint}?menu_id=${menuID}&page=1&per_page=100`, config)
     .then((res) => {
       const {
         data: { total_count: totalCount, has_next: hasNext, result },
