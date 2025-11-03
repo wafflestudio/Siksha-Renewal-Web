@@ -187,6 +187,28 @@ export interface RawReview {
   etc: Record<string, any>;
 }
 
+export interface MyReviewGroupType {
+  restaurant_id: number;
+  name_kr: string;
+  name_en: string;
+  reviews: MyReviewType[];
+}
+
+export interface MyReviewType {
+  id: number;
+  menu_id: number;
+  name_kr: string;
+  name_en: string;
+  user_id: number;
+  score: number;
+  comment: string;
+  etc: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+  keyword_reviews: string[];
+  isLiked?: boolean;
+}
+
 export interface RawUser {
   id: number;
   type: string;

@@ -10,7 +10,9 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  const apiUrl = `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
+    : `${APIendpoint()}/menus/web?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
   const config = !!accessToken
     ? { headers: { "Authorization": `Bearer ${accessToken}` } }
     : {};
@@ -21,6 +23,14 @@ export const getMenuList = (
       const {
         data: { count, result: rawData },
       } = res;
+      if (count === 0) {
+        return { count: 0, result: [{
+          date: date,
+          BR: [],
+          LU: [],
+          DN: [],
+        }] };
+      }
       const result = rawData.map((menuList) => ({
         date: menuList.date,
         BR: menuList.br,
@@ -35,7 +45,9 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const apiUrl = `${APIendpoint()}/menus/${menuID}`;
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus/${menuID}`
+    : `${APIendpoint()}/menus/${menuID}/web`;
   const config = !!accessToken
     ? { headers: { "Authorization": `Bearer ${accessToken}` } }
     : {};
