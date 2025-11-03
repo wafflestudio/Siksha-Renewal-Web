@@ -70,7 +70,7 @@ export default function Menu({ menuId }: { menuId: number }) {
   useEffect(() => {
     var updatedImages: string[] = [];
     reviews.result.map((review) => {
-      if (review.etc && review.etc.images && review.etc.images.length > 0) {
+      if (review.etc?.images) {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
