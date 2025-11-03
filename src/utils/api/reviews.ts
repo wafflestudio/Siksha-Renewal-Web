@@ -1,39 +1,23 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
-import { RawReview } from "types";
+import { MyReviewGroupType, MyReviewType, RawReview } from "types";
 
 export const getReviews = (
   menuID: number,
-  accessToken?: string,
+  accessToken: string = "",
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
   result: RawReview[];
 }> => {
-  const endpoint = accessToken ? "/reviews" : "/reviews/web";
-  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
-
-  const params = {
-    menu_id: menuID,
-    page: 1,
-    size: 100,
-    // Legacy Django param name; Spring will ignore it.
-    per_page: 100,
-  };
-
-  const parse = (data: any) => {
-    const totalCount = data?.totalCount ?? data?.total_count ?? 0;
-    const hasNext = data?.hasNext ?? data?.has_next ?? false;
-    const result = data?.result ?? [];
-    return { totalCount, hasNext, result } as {
-      totalCount: number;
-      hasNext: boolean;
-      result: RawReview[];
-    };
-  };
-
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
+    : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
   return axios
-    .get(`${APIendpoint()}/reviews?menu_id=${menuID}&page=1&per_page=100`)
+    .get(apiUrl, config)
     .then((res) => {
       const {
         data: { total_count: totalCount, has_next: hasNext, result },
@@ -41,6 +25,27 @@ export const getReviews = (
       return { totalCount, hasNext, result };
     });
 };
+
+export const getReview = (
+  reviewID: number,
+  accessToken: string = "",
+): Promise<MyReviewType> => {
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/reviews/${reviewID}`
+    : `${APIendpoint()}/reviews/${reviewID}/web`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
+  return axios
+  .get(apiUrl, config)
+  .then((res) => {
+    const { data } = res;
+    return data;
+  })
+  .catch((e) => {
+    throw e;
+  });
+}
 
 export const setReview = (body: FormData, accessToken: string): Promise<void> => {
   return axios
@@ -74,7 +79,7 @@ export const getMyReviewList = (
   size: number,
   page: number,
 ): Promise<{
-  result: RawReview[];
+  result: MyReviewGroupType[];
   totalCount: number;
   hasNext: boolean;
 }> => {
@@ -99,7 +104,7 @@ export const getMyReviewList = (
 
 export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
   return axios
-    .put(`${APIendpoint()}/reviews/${reviewId}`, body, {
+    .patch(`${APIendpoint()}/reviews/${reviewId}`, body, {
       headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then(() => {})
