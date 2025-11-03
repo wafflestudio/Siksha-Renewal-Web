@@ -21,6 +21,14 @@ export const getMenuList = (
       const {
         data: { count, result: rawData },
       } = res;
+      if (count === 0) {
+        return { count: 0, result: [{
+          date: date,
+          BR: [],
+          LU: [],
+          DN: [],
+        }] };
+      }
       const result = rawData.map((menuList) => ({
         date: menuList.date,
         BR: menuList.br,
