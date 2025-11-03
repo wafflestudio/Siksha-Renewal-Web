@@ -23,13 +23,13 @@ export default function useReviewActions() {
       onClose: () => { },
       onSubmit: () =>
         getAccessToken()
-          // TODO: 리뷰 삭제 API 완성되면 주석 해제
-          // .then((accessToken) => deleteReview(reviewId, accessToken))
+          .then((accessToken) => deleteReview(reviewId, accessToken))
           .then(() => {
             openModal(ConfirmModal, {
               type: "delete",
               onClose: () => { router.refresh(); },
             });
+            router.refresh();
           })
           .catch(onHttpError),
     });

@@ -13,6 +13,7 @@ import { getParticle } from "utils/FormatUtil";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import ConfirmModal from "app/components/ConfirmModal";
+import { MyReviewType } from "types";
 
 export type ReviewInputs = {
   score: number;
@@ -33,7 +34,7 @@ export default function ReviewPost() {
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
   
-  const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
+  const { menu, fetchMenu, fetchReviews, fetchReview, submitReview, editReview } = useMenu();
   const { openModal } = useModals();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
@@ -41,6 +42,36 @@ export default function ReviewPost() {
   const { getAccessToken } = useAuth();
 
   const MAX_COMMENT_LENGTH = 150;
+
+  useEffect(() => {
+    if (!isEditMode)
+      return;
+
+    fetchReview(Number(reviewId))
+      .then((reviewData: MyReviewType) => {
+        // 서버에서 etc를 object로 보내주지 않는 문제 임시 대응
+        // TODO: 서버한테 etc를 object로 보내달라고 하기
+        if (reviewData.etc) {
+          if (typeof reviewData.etc === "string") {
+            try {
+              reviewData.etc = JSON.parse(reviewData.etc);
+            } catch (e) {
+              console.error("Failed to parse review etc field", e);
+              reviewData.etc = {};
+            }
+          }
+        }
+        console.log(reviewData.etc);
+        setInputs({
+          score: reviewData.score ?? 3,
+          comment: reviewData.comment,
+          images: reviewData.etc?.images || [],
+        });
+      })
+      .catch((e) => {
+        onHttpError(e);
+      });
+  }, [reviewId, isEditMode]);
 
   useEffect(() => {
     if (!menu) {
@@ -58,6 +89,14 @@ export default function ReviewPost() {
     setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
 
+  const convertToBlob = async (image: string | File) => {
+    if (typeof image === "string") {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      return blob;
+    } else return image;
+  };
+
   const handleSubmit = async () => {
     if (!menu) {
       console.error("menu is not loaded");
@@ -67,15 +106,23 @@ export default function ReviewPost() {
     const body = new FormData();
     body.append("menu_id", menuId);
     body.append("score", String(inputs.score));
-    body.append("comment", inputs.comment);
-    inputs.images.forEach((image) => {
-      body.append("images", image);
-    });
+    body.append("comment", inputs.comment);    
+    // TODO: 키워드 리뷰 UI 추가 후 수정
+    body.append("taste", "");
+    body.append("price", "");
+    body.append("food_composition", "");
 
-    // TODO: 수정 API 완성 시, 수정 요청은 해당 api로 보내야 함
-    return submitReview(body)
+    return Promise.all(inputs.images.map(convertToBlob))
+      .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
       .then(() => {
-        openModal(ConfirmModal, {
+        const actionFunction = isEditMode
+        ? () => editReview(Number(reviewId), body)
+        : () => submitReview(body);
+        console.log(body);
+        return actionFunction();
+      })
+      .then(() => {
+        openModal(ConfirmModal, { 
           type: isEditMode ? "edit" : "submit",
           onClose: () => {
             router.back();
@@ -84,22 +131,12 @@ export default function ReviewPost() {
         });
       })
       .catch((err) => {
-        // QA를 위해 임시로 수정 완료 모달이 뜨게 한 상태
-        if (isEditMode) {
-          openModal(ConfirmModal, {
-            type: "edit",
-            onClose: () => {
-              router.back();
-              fetchReviews(Number(menuId));
-            },
-          });
-        } else {
-          const errorCode = err.response?.status ?? null;
-          if (errorCode == 500) {
-            window.alert(err.message);
-          }
-          onHttpError(err);
+        const errorCode = err.response?.status ?? null;
+        console.log(err); // DEBUG
+        if (errorCode == 500) {
+          window.alert(err.message);
         }
+        onHttpError(err);
       });
   };
 
@@ -173,9 +210,9 @@ export default function ReviewPost() {
                 />
               </PhotoAttacher>
             )}
-            {inputs.images.map((photoObj, i) => (
+            {inputs.images.map((image, i) => (
               <PhotoContainer key={i}>
-                <Photo src={URL.createObjectURL(photoObj)} alt="리뷰 이미지" />
+                <Photo src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="리뷰 이미지" />
                 <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
               </PhotoContainer>
             ))}
@@ -383,7 +420,6 @@ const CommentTextArea = styled.textarea`
   resize: none;
 
   color: var(--Color-Foundation-gray-900, #262728);
-  -webkit-text-fill-color: var(--Color-Foundation-gray-900, #262728) !important;
   opacity: 1;
 
   /* text-15/Regular */
