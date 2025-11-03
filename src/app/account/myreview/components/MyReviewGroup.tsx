@@ -32,7 +32,7 @@ export default function MyReviewGroup({ restaurantName, reviews, isFirst }) {
       }
     }
     return etc;
-  };
+  }
 
   return (
     <>
