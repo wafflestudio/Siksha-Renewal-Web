@@ -4,6 +4,7 @@ import { ReviewType } from "app/menu/[menuId]/Menu";
 import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
+  const hasImage = Array.isArray(review.etc?.images) && review.etc.images.length > 0;
   return (
     <>
       <ItemContainer>
