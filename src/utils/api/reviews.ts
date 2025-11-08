@@ -24,6 +24,27 @@ export const getReviews = (
   });
 };
 
+export const getPhotoReviews = (
+  menuID: number,
+  accessToken: string = "",
+): Promise<{
+  totalCount: number;
+  hasNext: boolean;
+  result: ReviewType[];
+}> => {
+  const apiUrl = `${APIendpoint()}/reviews/filter${
+    !!accessToken ? "" : "/web"
+  }?menu_id=${menuID}&page=1&per_page=100&image=true`;
+  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+
+  return axios.get(apiUrl, config).then((res) => {
+    const {
+      data: { total_count: totalCount, has_next: hasNext, result },
+    } = res;
+    return { totalCount, hasNext, result };
+  });
+};
+
 export const setReview = (body: FormData, accessToken: string): Promise<void> => {
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {

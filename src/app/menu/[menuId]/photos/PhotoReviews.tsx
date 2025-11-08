@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getReviews } from "utils/api/reviews";
+import { getPhotoReviews } from "utils/api/reviews";
 import useError from "hooks/useError";
 
 export default function PhotoReviews({ menuId }: { menuId: number }) {
@@ -32,7 +32,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
     }
 
     const fetchPhotoReviews = () => {
-      getReviews(Number(menuId))
+      getPhotoReviews(Number(menuId))
         .then(({ totalCount, result }) => {
           const photoReviews = result.filter((review) => review.etc);
           setReviews({
