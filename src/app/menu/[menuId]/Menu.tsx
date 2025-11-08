@@ -64,7 +64,7 @@ export default function Menu({ menuId }: { menuId: number }) {
     if (authStatus !== "loading") {
       fetchData(menuId);
     }
-  }, [menuId, authStatus, fetchData]);
+  }, [menuId, authStatus]);
 
   useEffect(() => {
     if (menu) {

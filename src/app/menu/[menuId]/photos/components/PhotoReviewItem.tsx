@@ -3,10 +3,11 @@ import Stars from "app/menu/[menuId]/components/Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
+  const hasImage = Array.isArray(review.etc?.images) && review.etc.images.length > 0;
   return (
     <>
       <ItemContainer>
-        <Thumbnail src={review.etc.images[0]} alt="리뷰 이미지" />
+        {hasImage && <Thumbnail src={review.etc.images[0]} alt="리뷰 이미지" />}
         <ReviewInfo>
           <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
           <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>

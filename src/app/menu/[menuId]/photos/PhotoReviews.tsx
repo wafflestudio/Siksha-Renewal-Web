@@ -24,7 +24,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
   const { onHttpError } = useError();
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰";
-  const { getAccessToken } = useAuth();
+  const { getAccessToken, authStatus } = useAuth();
 
   useEffect(() => {
     if (!menuId) {
@@ -42,9 +42,10 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
         })
         .catch(onHttpError);
     };
-
-    fetchPhotoReviews();
-  }, [menuId]);
+    if (authStatus !== "loading") {
+      fetchPhotoReviews();
+    }
+  }, [menuId, authStatus, onHttpError]);
 
   const handleReviewPostButtonClick = () => {
     getAccessToken()
