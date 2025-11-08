@@ -22,7 +22,6 @@ const StarContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: ${(props) => (props.theme.width ? props.theme.width : 73.18)}px;
-  gap: 1px;
 `;
 
 const StyledStarIcon = styled(StarIcon)<{ $isfilled: boolean }>`
