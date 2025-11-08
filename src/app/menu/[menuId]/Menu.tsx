@@ -61,8 +61,10 @@ export default function Menu({ menuId }: { menuId: number }) {
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchData(menuId);
-  }, [menuId]);
+    if (authStatus !== "loading") {
+      fetchData(menuId);
+    }
+  }, [menuId, authStatus, fetchData]);
 
   useEffect(() => {
     if (menu) {
