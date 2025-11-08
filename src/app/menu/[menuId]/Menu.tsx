@@ -141,7 +141,6 @@ export default function Menu({ menuId }: { menuId: number }) {
               isReviewListPageOpen={isReviewListPageOpen}
               handleReviewListPage={handleReviewListPage}
             />
-            <MobileNavigationBar />
           </MobileContainer>
         </>
       )}
