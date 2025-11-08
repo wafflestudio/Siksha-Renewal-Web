@@ -9,16 +9,18 @@ import KeywordReviewChips from "./KeywordReviewChips";
 import ReviewLikes from "./ReviewLikes";
 import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
-import TailIcon from "assets/icons/review-comment-tail.svg";
-
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);
   const isMobile = useIsMobile();
   const IMAGE_SIZE = isMobile ? 102 : 80;
   const { getAccessToken } = useAuth();
+  const { currentTheme } = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
 
   const handleReviewLike = async () => {
     const accessToken = await getAccessToken();
+    console.debug(accessToken);
     try {
       if (review.is_liked) {
         // UI 먼저 업데이트
@@ -68,9 +70,8 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
       <Body>
         <Content>
           <CommentReviewWrapper>
-            <CommentWrapper>
-              {isMobile && <StyledTailIcon />}
-              <Comment>{review.comment}</Comment>
+            <CommentWrapper isDark={isDark}>
+              <Comment isDark={isDark}>{review.comment}</Comment>
             </CommentWrapper>
             {isMobile && (
               <ReviewLikes
@@ -141,6 +142,10 @@ const Body = styled.div`
   align-items: flex-start;
   gap: 14px;
   align-self: stretch;
+
+  @media (max-width: 768px) {
+    padding-left: 15.5px;
+  }
 `;
 
 const Content = styled.div`
@@ -150,8 +155,9 @@ const Content = styled.div`
   align-self: stretch;
 `;
 
-const Comment = styled.div`
+const Comment = styled.div<{ isDark: boolean }>`
   display: flex;
+  position: relative;
   padding: 4px 24px 4px 0px;
   align-items: flex-start;
   align-self: stretch;
@@ -168,11 +174,6 @@ const Comment = styled.div`
   line-height: 150%; /* 22.5px */
 
   @media (max-width: 768px) {
-    border-radius: 8px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
-    padding: 10px;
-    margin: 8px 0 6px 0;
-    background-color: var(--SemanticColor-Background-Secondary);
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-13/Regular */
@@ -182,24 +183,28 @@ const Comment = styled.div`
     font-weight: var(--Font-weight-regular, 400);
     line-height: 140%; /* 18.2px */
     letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+    padding: 0;
   }
 `;
 
-const CommentWrapper = styled.div`
-  display: flex;
+const CommentWrapper = styled.div<{ isDark: boolean }>`
+  position: relative;
+  display: inline-flex;
   flex-direction: row;
   width: 100%;
   align-items: center;
-  flex-grow: 1;
+  max-width: 100%;
   gap: 0;
+  @media (max-width: 768px) {
+    background-image: ${({ isDark }) =>
+      isDark ? 'url("/img/review-comment-dark.svg")' : 'url("/img/review-comment-light.svg")'};
+    background-repeat: no-repeat; /* 세로로만 반복 */
+    background-size: 100% 100%; /* 가로는 꽉 채우고, 세로는 자동 */
+    background-position: center;
+    background-origin: border-box;
+    padding: 10px 20px 10px 23px;
+  }
 `;
-
-const StyledTailIcon = styled(TailIcon)`
-  color: var(--SemanticColor-Background-Secondary);
-  margin-right: -3px;
-  overflow: visible;
-`;
-
 const CommentReviewWrapper = styled.div`
   display: flex;
   flex-direction: row;

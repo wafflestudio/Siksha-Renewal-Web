@@ -14,6 +14,7 @@ export default function useMenu() {
   const fetchMenu = useCallback(
     async (menuId) => {
       const accessToken = await getAccessToken().catch((error) => "");
+      console.debug("accessToken:", accessToken);
       getMenu(menuId, accessToken)
         .then((menuData) => {
           setMenu(menuData);

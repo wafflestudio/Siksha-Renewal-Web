@@ -14,6 +14,7 @@ import StarIcon from "assets/icons/star-filled.svg";
 import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
 import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
+import useAuth from "hooks/UseAuth";
 
 export type ReviewInputs = {
   score: number;
@@ -40,6 +41,7 @@ export default function ReviewPost() {
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
+  const { authStatus } = useAuth();
 
   const MAX_COMMENT_LENGTH = 150;
 
@@ -47,7 +49,7 @@ export default function ReviewPost() {
     if (!menu) {
       fetchMenu(Number(menuId));
     }
-  }, [menu]);
+  }, [menu, authStatus, fetchMenu, menuId]);
 
   const handlePhotoAttach = (newPhoto: File | undefined) => {
     if (newPhoto) {
