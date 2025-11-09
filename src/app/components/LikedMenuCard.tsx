@@ -310,7 +310,7 @@ const StyledDotsIcon = styled(DotsSvg)`
   flex-shrink: 0;
   color: var(--Color-Foundation-gray-500, #b3b3b3);
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -375,7 +375,7 @@ const Rate = styled.div`
 `;
 
 const LikeBox = styled.div`
-  width: 24px;
+  width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;

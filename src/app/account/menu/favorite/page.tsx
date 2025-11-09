@@ -11,12 +11,14 @@ import useError from "hooks/useError";
 import LikedMenuCard from "app/components/LikedMenuCard";
 import RestaurantInfo from "app/components/RestaurantInfo";
 import { useStateContext } from "providers/ContextProvider";
+import useToast from "hooks/UseToast";
 
 export default function FavoriteMenus() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
   const { removeLikedMenu } = useLikedMenus();
   const { onHttpError } = useError();
   const { showInfo } = useStateContext();
+  const { showToast } = useToast();
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
