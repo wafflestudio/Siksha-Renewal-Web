@@ -11,9 +11,7 @@ export const getReviews = (
   result: RawReview[];
 }> => {
   const endpoint = accessToken ? "/reviews" : "/reviews/web";
-  const config = accessToken
-    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
-    : {};
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(`${APIendpoint()}${endpoint}?menu_id=${menuID}&page=1&per_page=100`, config)

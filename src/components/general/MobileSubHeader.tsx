@@ -39,17 +39,22 @@ export default function MobileSubHeader({
     setRootElement(document.getElementById("root-layout"));
   }, []);
 
-  if (rootElement)
-    return createPortal(
-      <MobileHeader>
-        <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
-        <Title>{title || boardTitle}</Title>
-        {rightIcon && onRightIconClick && (
-          <RightIconButton src={rightIcon} onClick={onRightIconClick} alt="알림 설정" />
-        )}
-      </MobileHeader>,
-      rootElement,
-    );
+  const headerContent = (
+    <MobileHeader>
+      <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
+      <Title>{title || boardTitle}</Title>
+      {rightIcon && onRightIconClick && (
+        <RightIconButton src={rightIcon} onClick={onRightIconClick} alt="알림 설정" />
+      )}
+    </MobileHeader>
+  );
+
+  if (rootElement) {
+    return createPortal(headerContent, rootElement);
+  }
+
+  // Fallback: render directly if portal target not found
+  return headerContent;
 }
 
 const MobileHeader = styled.div`

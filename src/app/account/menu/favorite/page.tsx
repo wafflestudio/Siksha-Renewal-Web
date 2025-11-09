@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { getLikedMenus } from "utils/api/menus";
@@ -8,7 +8,6 @@ import { LikedMenusResponse } from "types";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
 import useError from "hooks/useError";
-import useToast from "hooks/UseToast";
 import LikedMenuCard from "app/components/LikedMenuCard";
 import RestaurantInfo from "app/components/RestaurantInfo";
 import { useStateContext } from "providers/ContextProvider";
@@ -17,32 +16,12 @@ export default function FavoriteMenus() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
   const { removeLikedMenu } = useLikedMenus();
   const { onHttpError } = useError();
-  const { showToast } = useToast();
   const { showInfo } = useStateContext();
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(authGuard, [authStatus]);
-
-  // Show speech-bubble toast on first visit
-  useEffect(() => {
-    const hasSeenBellToast = localStorage.getItem("likedMenuBellToastSeen");
-
-    if (!hasSeenBellToast && authStatus === "login" && !loading) {
-      const timer = setTimeout(() => {
-        showToast("메뉴 알림을 받아보세요!", {
-          variant: "speech-bubble",
-          animationType: "fade",
-          duration: 5000,
-          delay: 500,
-        });
-        localStorage.setItem("likedMenuBellToastSeen", "true");
-      }, 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [authStatus, loading, showToast]);
 
   useEffect(() => {
     const fetchFavoriteMenus = async () => {
@@ -63,34 +42,34 @@ export default function FavoriteMenus() {
     };
 
     fetchFavoriteMenus();
-  }, [authStatus, getAccessToken, onHttpError]);
+  }, [authStatus]); // Removed getAccessToken and onHttpError to prevent unnecessary re-fetches
 
-  const handleUnlikeMenu = async (menuId: number) => {
-    await removeLikedMenu(menuId);
-    // Update the current display by filtering out the unliked menu
-    setFavoriteMenus((prev) =>
-      prev
-        .map((restaurant) => ({
-          ...restaurant,
-          menus: restaurant.menus.filter((menu) => menu.id !== menuId),
-        }))
-        .filter((restaurant) => restaurant.menus.length > 0),
-    );
-  };
+  // Memoize callback to prevent recreation on every render
+  const handleUnlikeMenu = useCallback(
+    async (menuId: number) => {
+      await removeLikedMenu(menuId);
+      // Update the current display by filtering out the unliked menu
+      setFavoriteMenus((prev) =>
+        prev
+          .map((restaurant) => ({
+            ...restaurant,
+            menus: restaurant.menus.filter((menu) => menu.id !== menuId),
+          }))
+          .filter((restaurant) => restaurant.menus.length > 0),
+      );
+    },
+    [removeLikedMenu],
+  );
 
-  const handleBellClick = () => {
-    router.push("/account/menu/notification-settings");
-  };
+  // Memoize back handler to prevent recreation
+  const handleBack = useCallback(() => {
+    router.push("/account");
+  }, []);
 
   if (loading) {
     return (
       <>
-        <MobileSubHeader
-          title="내가 찜한 메뉴"
-          handleBack={() => router.push("/account")}
-          rightIcon="/img/mage_notification-bell-plus.svg"
-          onRightIconClick={handleBellClick}
-        />
+        <MobileSubHeader title="내가 찜한 메뉴" handleBack={handleBack} />
         <Container>
           <LoadingText>로딩 중...</LoadingText>
         </Container>
@@ -100,13 +79,11 @@ export default function FavoriteMenus() {
 
   return (
     <>
-      <MobileSubHeader
-        title="내가 찜한 메뉴"
-        handleBack={() => router.push("/account")}
-        rightIcon="/img/mage_notification-bell-plus.svg"
-        onRightIconClick={handleBellClick}
-      />
+      <MobileSubHeader title="내가 찜한 메뉴" handleBack={handleBack} />
       <Container>
+        <TitleCard>
+          <TitleText>내가 찜한 메뉴</TitleText>
+        </TitleCard>
         {favoriteMenus.length === 0 ? (
           <EmptyState>
             <EmptyText>내가 찜한 메뉴가 없어요</EmptyText>
@@ -131,14 +108,43 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 20px;
-  gap: 20px;
+  padding: 0 20px 20px;
+  gap: 16px;
+  max-width: 1242px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     margin-top: 0px;
     padding: 16px;
     height: calc(100% - 60px);
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
+`;
+
+const TitleCard = styled.div`
+  display: flex;
+  padding: 18px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  border-radius: 10px;
+  background: var(--SemanticColor-Background-Secondary, #ffffff);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const TitleText = styled.div`
+  color: var(--Color-Foundation-gray-900, #262728);
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-18, 18px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 `;
 
 const LoadingText = styled.div`

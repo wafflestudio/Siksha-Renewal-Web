@@ -3,7 +3,7 @@
 import MenuCard from "./MenuCard";
 import styled from "styled-components";
 import { useStateContext } from "../../providers/ContextProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
 import { RawMenu, RawMenuList, RawRestaurant } from "types";
@@ -16,6 +16,7 @@ export default function MenuList() {
   const { favoriteRestaurants } = useFavorite();
   const { filterList, filterMenuList } = UseFilter();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({
@@ -25,31 +26,36 @@ export default function MenuList() {
     });
   }, []);
 
-  const [hasData, setHasData] = useState(false);
+  // Memoize filtered data to prevent recalculation on every render
+  const filteredData = useMemo(() => {
+    return filterMenuList(data, location);
+  }, [data, location, filterList, filterMenuList]);
 
-  useEffect(() => {
-    if (!data[meal] || data[meal].length == 0) setHasData(false);
-    else if (
-      isFilterFavorite &&
-      filterMenuList(data, location)[meal].filter((res) => favoriteRestaurants.includes(res.id))
-        .length === 0
-    )
-      setHasData(false);
-    else setHasData(true);
-  }, [data, meal, isFilterFavorite, filterList]);
+  // Memoize the meal-specific list
+  const filteredMealList = useMemo(() => {
+    return filteredData[meal] || [];
+  }, [filteredData, meal]);
 
-  // Calculate the filtered list directly
-  const filteredList = hasData ? filterMenuList(data, location)[meal] : [];
+  // Memoize hasData calculation
+  const hasData = useMemo(() => {
+    if (!filteredMealList || filteredMealList.length === 0) return false;
+
+    if (isFilterFavorite) {
+      return filteredMealList.some((res) => favoriteRestaurants.includes(res.id));
+    }
+
+    return true;
+  }, [filteredMealList, isFilterFavorite, favoriteRestaurants]);
 
   return (
     <Container key={date + meal}>
       {loading ? (
         <EmptyText>식단을 불러오는 중입니다.</EmptyText>
-      ) : filteredList.length === 0 ? (
+      ) : !hasData ? (
         <EmptyText>식단 정보가 없습니다.</EmptyText>
       ) : (
         <>
-          {filterMenuList(data, location)[meal].map(
+          {filteredMealList.map(
             (
               restaurant: RawRestaurant & {
                 menus: RawMenu[];

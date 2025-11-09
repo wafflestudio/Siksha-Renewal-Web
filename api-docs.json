@@ -189,6 +189,52 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/menus/{menu_id}/alarm/on": {
+      "post": {
+        "tags": ["Menus"],
+        "operationId": "menuAlarmOn",
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MenuAlarmRequestDto" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuAlarmDto" } } }
+          }
+        }
+      }
+    },
+    "/menus/{menu_id}/alarm/off": {
+      "post": {
+        "tags": ["Menus"],
+        "operationId": "menuAlarmOff",
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuAlarmDto" } } }
+          }
+        }
+      }
+    },
     "/community/posts": {
       "get": {
         "tags": ["Posts"],
@@ -1577,6 +1623,41 @@
           "price": { "type": "string" },
           "food_composition": { "type": "string" },
           "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
+        }
+      },
+      "MenuAlarmRequestDto": {
+        "required": ["notificationType"],
+        "type": "object",
+        "properties": { "notificationType": { "type": "string", "enum": ["DAILY", "EACH_MEAL"] } }
+      },
+      "MenuAlarmDto": {
+        "required": [
+          "alarm",
+          "code",
+          "created_at",
+          "date",
+          "etc",
+          "id",
+          "is_liked",
+          "restaurant_id",
+          "type",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "id": { "type": "integer", "format": "int32" },
+          "restaurant_id": { "type": "integer", "format": "int32" },
+          "code": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "type": { "type": "string" },
+          "name_kr": { "type": "string" },
+          "name_en": { "type": "string" },
+          "price": { "type": "integer", "format": "int32" },
+          "etc": { "type": "array", "items": { "type": "string" } },
+          "is_liked": { "type": "boolean" },
+          "alarm": { "type": "boolean" }
         }
       },
       "PostCreateRequestDto": {

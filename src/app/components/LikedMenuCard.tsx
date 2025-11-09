@@ -1,12 +1,11 @@
 "use client";
 
 import styled from "styled-components";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, memo, useCallback } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import { sanitizeCssSelector } from "utils/FormatUtil";
 import { formatPrice } from "utils/FormatUtil";
-import { useDispatchContext } from "providers/ContextProvider";
+import useFavorite from "hooks/UseFavorite";
 
 type LikedMenu = {
   id: number;
@@ -28,387 +27,276 @@ interface LikedMenuCardProps {
   onUnlikeMenu: (menuId: number) => void;
 }
 
-export default function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps) {
-  const { setInfoData, toggleShowInfo } = useDispatchContext();
-  const [isFavorite, setIsFavorite] = useState(true); // Restaurant is favorited if it appears here
-  const router = useRouter();
+// Wrap component in React.memo to prevent unnecessary re-renders
+const LikedMenuCard = memo(function LikedMenuCard({ data, onUnlikeMenu }: LikedMenuCardProps) {
+  const [unlikedMenuIds, setUnlikedMenuIds] = useState<Set<number>>(new Set());
+  const { toggleFavorite, isFavorite } = useFavorite();
 
-  const handleToggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+  // Memoize callback to prevent recreation on every render
+  const handleUnlikeClick = useCallback(
+    (e: React.MouseEvent, menuId: number) => {
+      e.stopPropagation();
+      // Mark as unliked in local state (grayed out)
+      setUnlikedMenuIds((prev) => new Set(prev).add(menuId));
+      // Call the API to unlike
+      onUnlikeMenu(menuId);
+    },
+    [onUnlikeMenu],
+  );
+
+  // Memoize toggle favorite callback
+  const handleToggleFavorite = useCallback(() => {
+    toggleFavorite(data.id);
+  }, [toggleFavorite, data.id]);
 
   return (
-    <>
-      <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <HeaderContainer>
-          <TitleContainer>
-            <Name>{data.name_kr}</Name>
-            <TitleIconList>
-              <ButtonIcon
-                src={"/img/info.svg"}
-                onClick={() => {
-                  setInfoData(data);
-                  toggleShowInfo();
-                }}
-                alt="위치 정보"
-              />
-              <ButtonIcon
-                src={isFavorite ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"}
-                onClick={handleToggleFavorite}
-                alt={isFavorite ? "좋아요" : "좋아요 해제"}
-              />
-            </TitleIconList>
-          </TitleContainer>
-          <InfoContainer>
-            <HeaderDataList>
-              <HeaderDataText>Price</HeaderDataText>
-              <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
-              <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
-            </HeaderDataList>
-          </InfoContainer>
-        </HeaderContainer>
-        <HLine />
-        <MenuInfo>
-          <Menus>
-            {data.menus.map((menu) => (
-              <MenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
-                <MenuName>
-                  {menu.name_kr}
-                  {menu.etc && menu.etc.find((e) => e == "No meat") && (
-                    <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
-                  )}
-                </MenuName>
-                <Dots src={"/img/dots.svg"} />
-                <MenuDataSection>
-                  <Price>{menu.price ? formatPrice(menu.price) : "-"}</Price>
-                  <Rate>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
-                  <LikeBox>
-                    <HeartIcon
-                      src="/img/general/heart-on.svg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onUnlikeMenu(menu.id);
-                      }}
-                      alt="찜 해제"
-                    />
-                  </LikeBox>
-                </MenuDataSection>
-              </MenuRow>
-            ))}
-          </Menus>
-        </MenuInfo>
-      </DesktopContainer>
-      <MobileContainer className={"a" + sanitizeCssSelector(data.code)}>
-        <HeaderContainer>
-          <TitleContainer>
-            <Name>{data.name_kr}</Name>
-            <TitleIconList>
-              <ButtonIcon
-                src={"/img/info.svg"}
-                onClick={() => {
-                  setInfoData(data);
-                  toggleShowInfo();
-                }}
-                alt="정보"
-              />
-              <ButtonIcon
-                src={isFavorite ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"}
-                onClick={handleToggleFavorite}
-                alt={isFavorite ? "좋아요" : "좋아요 해제"}
-              />
-            </TitleIconList>
-          </TitleContainer>
-          <InfoContainer>
-            <HeaderDataList>
-              <HeaderDataText>Price</HeaderDataText>
-              <HeaderDataText>Rate</HeaderDataText>
-              <HeaderDataText>Like</HeaderDataText>
-            </HeaderDataList>
-          </InfoContainer>
-        </HeaderContainer>
-        <HLine />
-        <Menus>
-          {data.menus.map((menu) => (
-            <MobileMenuRow key={menu.id} onClick={() => router.push(`/menu/${menu.id}`)}>
+    <Container className={"a" + sanitizeCssSelector(data.code)}>
+      <HeaderContainer>
+        <TitleContainer>
+          <Name>{data.name_kr}</Name>
+          <StarIcon
+            src={isFavorite(data.id) ? "/img/general/star-on.svg" : "/img/general/star-off-24.svg"}
+            onClick={handleToggleFavorite}
+            alt={isFavorite(data.id) ? "즐겨찾기" : "즐겨찾기 해제"}
+          />
+        </TitleContainer>
+        <InfoContainer>
+          <HeaderDataList>
+            <HeaderDataText>Price</HeaderDataText>
+            <HeaderDataText>Rate</HeaderDataText>
+            <HeaderDataText>Like</HeaderDataText>
+          </HeaderDataList>
+        </InfoContainer>
+      </HeaderContainer>
+      <HLine />
+      <MenusContainer>
+        {data.menus.map((menu) => {
+          const isUnliked = unlikedMenuIds.has(menu.id);
+          return (
+            <MenuRow key={menu.id} $isUnliked={isUnliked}>
               <MenuName>
                 {menu.name_kr}
-                {menu.etc && menu.etc.find((e) => e == "No meat") && (
+                {menu.etc && menu.etc.find((e) => e === "No meat") && (
                   <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
                 )}
               </MenuName>
-              <MobileMenuData>
-                <MobilePrice>{menu.price ? formatPrice(menu.price) : "-"}</MobilePrice>
-                <MobileRate>{menu.score ? menu.score.toFixed(1) : "-"}</MobileRate>
-                <HeartIcon
-                  src="/img/general/heart-on.svg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onUnlikeMenu(menu.id);
-                  }}
-                  alt="찜 해제"
-                />
-              </MobileMenuData>
-            </MobileMenuRow>
-          ))}
-        </Menus>
-      </MobileContainer>
-    </>
+              <Dots src={"/img/dots.svg"} />
+              <MenuDataSection>
+                <Price>{menu.price ? formatPrice(menu.price) : "-"}</Price>
+                <Rate>{menu.score ? menu.score.toFixed(1) : "-"}</Rate>
+                <LikeBox>
+                  <HeartIcon
+                    src={isUnliked ? "/img/general/heart-off.svg" : "/img/general/heart-on.svg"}
+                    onClick={(e) => handleUnlikeClick(e, menu.id)}
+                    alt={isUnliked ? "찜 취소됨" : "찜 해제"}
+                  />
+                </LikeBox>
+              </MenuDataSection>
+            </MenuRow>
+          );
+        })}
+      </MenusContainer>
+    </Container>
   );
-}
+});
 
-const DesktopContainer = styled.div`
+export default LikedMenuCard;
+
+const Container = styled.div`
   ${LoadingAnimation}
   display: flex;
-  padding: 24px 28px;
-  margin-right: 16px;
+  padding: 24px 20px;
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  background: var(--foundation-base-white);
+  background: var(--SemanticColor-Background-Secondary, #ffffff);
   border-radius: 10px;
+  gap: 16px;
 
   @media (max-width: 768px) {
-    margin: 0 24px 28px 0;
-    display: none;
-  }
-`;
-
-const MobileContainer = styled.div`
-  ${LoadingAnimation}
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    background: white;
+    padding: 18px 16px;
     border: solid 1px #e8e8e8;
-    box-sizing: border-box;
     border-radius: 8px;
-    width: 95vw;
-    padding: 18px 14px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    gap: 11px;
+    gap: 8px;
   }
 `;
 
 const TitleContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 768px) {
     gap: 6px;
   }
 `;
 
-const InfoContainer = styled.div`
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 372px;
-  flex-direction: row;
-  align-self: stretch;
-  justify-content: flex-end;
-
-  @media (min-width: 1001px) {
-    flex-grow: 1;
-  }
-
-  @media (max-width: 900px) {
-    min-width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    justify-content: space-between;
-  }
-`;
-
-const HeaderDataList = styled.div`
-  display: flex;
-  align-items: center;
-  align-self: stretch;
-  gap: 6px;
-
-  @media (max-width: 768px) {
-    gap: 16px;
-  }
-`;
-
-const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
-  width: 58px;
-  color: var(--Color-Foundation-orange-500, #ff9522);
-  text-align: center;
-
-  /* text-13/Regular */
+const Name = styled.div`
+  color: var(--Color-Foundation-gray-900, #262728);
   font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-13, 13px);
+  font-size: 16px;
   font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 140%; /* 18.2px */
-
-  margin: 0;
-
-  @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
-    width: 24px;
-  }
-
-  @media ${(props) => `(max-width: ${props.disableWidth ?? 0}px)`} {
-    display: none;
-  }
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  flex: 1 1 auto;
+  min-width: 0;
+  word-wrap: break-word;
+  word-break: break-word;
 
   @media (max-width: 768px) {
-    width: fit-content;
-
-    /* text-12/Regular */
-    font-family: var(--Font-family-sans, NanumSquare);
-    font-size: var(--Font-size-12, 12px);
-    font-style: normal;
-    font-weight: var(--Font-weight-regular, 400);
-    line-height: 140%; /* 16.8px */
+    color: var(--Color-Foundation-base-black, #000);
+    font-size: 16px;
   }
 `;
 
-const ButtonIcon = styled.img`
+const StarIcon = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
+  flex-shrink: 0;
 
-  /* App버전을 참고한 디자인 */
   @media (max-width: 768px) {
     width: 20px;
     height: 20px;
   }
 `;
 
-const Name = styled.div`
-  color: var(--Color-Foundation-gray-900, #262728);
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: break-word;
-
-  /* text-18/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-18, 18px);
-  font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
-  line-height: 140%; /* 25.2px */
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: auto;
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black, #000);
-
-    /* text-16/ExtraBold */
-    font-family: var(--Font-family-sans, NanumSquare);
-    font-size: var(--Font-size-16, 16px);
-    font-style: normal;
-    font-weight: var(--Font-weight-extrabold, 800);
-    line-height: 140%; /* 22.4px */
-    letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+    justify-content: flex-end;
   }
 `;
 
-const TitleIconList = styled.div`
+const HeaderDataList = styled.div`
   display: flex;
-  gap: 4px;
   align-items: center;
+  gap: 6px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+`;
+
+const HeaderDataText = styled.p`
+  color: var(--Color-Foundation-orange-500, #ff9522);
+  text-align: center;
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  margin: 0;
+
+  &:nth-child(1) {
+    width: 58px;
+  }
+  &:nth-child(2) {
+    width: 42px;
+  }
+  &:nth-child(3) {
+    width: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    width: fit-content !important;
+  }
 `;
 
 const HLine = styled.div`
-  height: 2px;
+  height: 1px;
   align-self: stretch;
-  background: var(--Color-Foundation-orange-500);
-  margin: 8px 0 14px;
+  background: var(--Color-Foundation-orange-500, #ff9522);
+  width: 100%;
+
+  @media (min-width: 769px) {
+    height: 2px;
+  }
+`;
+
+const MenusContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 
   @media (max-width: 768px) {
-    width: calc(95vw - 32px);
-    height: 1px;
+    gap: 12px;
   }
 `;
 
-const MenuInfo = styled.div`
-  display: flex;
-  padding-bottom: 12px;
-
-  @media (min-width: 769px) {
-    width: 100%;
-    padding-bottom: 0;
-  }
-`;
-
-const Menus = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-
-  @media (min-width: 769px) {
-    gap: 10px;
-    width: 100%;
-  }
-`;
-
-const MenuRow = styled.div`
+const MenuRow = styled.div<{ $isUnliked?: boolean }>`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  align-items: flex-start;
-  gap: 10px;
-
-  @media (pointer: fine) {
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
-`;
-
-const MobileMenuRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
   align-items: center;
-  margin-bottom: 12px;
+  gap: 10px;
+  opacity: ${(props) => (props.$isUnliked ? 0.4 : 1)};
+  transition: opacity 0.2s ease-in-out;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
 `;
 
 const MenuName = styled.div`
   display: flex;
-  color: var(--Color-Foundation-gray-900);
+  align-items: center;
+  gap: 6px;
+  color: var(--Color-Foundation-gray-900, #262728);
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%; /* 21px */
-  flex-grow: 1;
+  line-height: 150%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  flex: 1 1 auto;
+  min-width: 0;
+  word-wrap: break-word;
+  word-break: break-word;
 
   @media (max-width: 768px) {
-    color: black;
-    font-size: 14px;
-    line-height: 21px;
-    font-weight: 400;
+    color: var(--Color-Foundation-base-black, #000);
   }
 `;
 
 const NoMeat = styled.img`
   width: 19px;
-  padding-bottom: 2px;
-
-  @media (max-width: 768px) {
-    padding-left: 5px;
-    padding-bottom: 0;
-  }
+  height: 17px;
+  flex-shrink: 0;
 `;
 
 const Dots = styled.img`
   width: 40px;
-  height: 22px;
+  height: 1px;
+  flex-shrink: 0;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -417,90 +305,65 @@ const MenuDataSection = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-`;
+  flex-shrink: 0;
 
-const MobileMenuData = styled.div`
-  display: flex;
-  align-items: center;
-  height: 24px;
-  gap: 16px;
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
 `;
 
 const Price = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 58px;
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
-
-  /* text-14/Regular */
   font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
+  font-size: 14px;
   font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
-`;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
-const MobilePrice = styled.div`
-  width: fit-content;
-  min-width: 28px;
-  display: flex;
-  justify-content: flex-end;
-  color: var(--Color-Foundation-base-black, #000);
-  text-align: center;
-
-  /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
+  @media (max-width: 768px) {
+    color: var(--Color-Foundation-base-black, #000);
+    width: fit-content;
+    min-width: 28px;
+  }
 `;
 
 const Rate = styled.div`
   display: flex;
   justify-content: center;
-  width: 58px;
-  height: 21px;
-  font-weight: 400;
-  font-size: 14px;
+  align-items: center;
+  width: 42px;
   color: var(--Color-Foundation-gray-900, #262728);
-  font-style: normal;
-  line-height: 150%; /* 21px */
-  letter-spacing: -0.3px;
-
-  @media (min-width: 769px) and (max-width: 901px) {
-    display: none;
-  }
-`;
-
-const MobileRate = styled.div`
-  width: 23px;
-  color: var(--Color-Foundation-base-black, #000);
   text-align: center;
-
-  /* text-14/Regular */
   font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
+  font-size: 14px;
   font-style: normal;
-  font-weight: var(--Font-weight-regular, 400);
-  line-height: 150%; /* 21px */
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+
+  @media (max-width: 768px) {
+    color: var(--Color-Foundation-base-black, #000);
+    width: fit-content;
+    min-width: 23px;
+  }
 `;
 
 const LikeBox = styled.div`
-  width: 24px;
+  width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media (min-width: 901px) {
-    width: 58px;
-  }
 `;
 
 const HeartIcon = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  z-index: 0;
+  flex-shrink: 0;
 `;
