@@ -28,7 +28,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
     <Container>
       {images && images.map((image, i) => (
         <Preview key={i}>
-          <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
+          <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="" />
           <DeleteButton onClick={() => handleImageDelete(i)}>
             <Icon src="/img/photo-delete.svg" alt="사진 삭제" />
           </DeleteButton>

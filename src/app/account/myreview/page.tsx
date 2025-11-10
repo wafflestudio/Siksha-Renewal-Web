@@ -6,12 +6,12 @@ import useError from "hooks/useError";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { RawReview } from "types";
+import { MyReviewGroupType } from "types";
 import { getMyReviewList } from "utils/api/reviews";
 import MyReviewGroup from "./components/MyReviewGroup";
 
 export default function MyReview() {
-  const [ reviews, setReviews ] = useState<RawReview[]>([]);
+  const [ reviews, setReviews ] = useState<MyReviewGroupType[]>([]);
   const mockupReviews: any = [
     {
       restaurant_id: 1,
@@ -96,7 +96,7 @@ export default function MyReview() {
     getAccessToken()
       .then((accessToken) => getMyReviewList(accessToken, size, page))
       .then(({ result, hasNext }) => {
-        result.map((rawReview) => setReviews((prev) => [...prev, rawReview]));
+        setReviews((prev) => [...prev, ...result]);
         return hasNext;
       })
       .catch(onHttpError);

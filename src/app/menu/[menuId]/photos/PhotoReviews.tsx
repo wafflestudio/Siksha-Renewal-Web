@@ -34,7 +34,9 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
     const fetchPhotoReviews = () => {
       getReviews(Number(menuId))
         .then(({ totalCount, result }) => {
-          const photoReviews = result.filter((review) => review.etc);
+          const photoReviews = result.filter(
+            (review) => review.etc && review.etc.images && review.etc.images.length > 0
+          );
           setReviews({
             result: photoReviews,
             total_count: photoReviews.length,
