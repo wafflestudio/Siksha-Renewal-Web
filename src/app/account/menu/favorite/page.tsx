@@ -105,17 +105,18 @@ export default function FavoriteMenus() {
 
 const Container = styled.div`
   display: flex;
+  width: 544px;
+  padding-bottom: 100px;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 0 20px 20px;
+  align-items: flex-start;
   gap: 16px;
-  max-width: 1242px;
   margin: 0 auto;
 
   @media (max-width: 768px) {
     margin-top: 0px;
     padding: 16px;
+    padding-bottom: 100px;
+    width: 100%;
     height: calc(100% - 60px);
     box-sizing: border-box;
     overflow-x: hidden;

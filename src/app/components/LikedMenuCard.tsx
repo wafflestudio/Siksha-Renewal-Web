@@ -108,10 +108,10 @@ const Container = styled.div`
   padding: 24px 20px;
   flex-direction: column;
   align-items: flex-start;
-  align-self: stretch;
-  background: var(--SemanticColor-Background-Secondary, #ffffff);
-  border-radius: 10px;
   gap: 16px;
+  align-self: stretch;
+  border-radius: 10px;
+  background: var(--SemanticColor-Background-Secondary, #ffffff);
 
   @media (max-width: 768px) {
     padding: 18px 16px;
@@ -149,20 +149,24 @@ const TitleContainer = styled.div`
 
 const Name = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
-  font-family: var(--Font-family-sans, NanumSquare);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
-  line-height: 140%;
-  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
   flex: 1 1 auto;
   min-width: 0;
   word-wrap: break-word;
   word-break: break-word;
 
+  /* text-18/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-18, 18px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%;
+
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
-    font-size: 16px;
+    font-size: var(--Font-size-16, 16px);
+    font-weight: var(--Font-weight-extrabold, 800);
+    line-height: 140%;
+    letter-spacing: var(--Font-letter-spacing-0, -0.3px);
   }
 `;
 
@@ -293,10 +297,10 @@ const NoMeat = styled.img`
 
 const Dots = styled.img`
   width: 40px;
-  height: 1px;
+  height: 22px;
   flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     display: none;
   }
 `;
