@@ -85,14 +85,14 @@ export default function RestaurantInfo() {
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
-                <MobileOperatingHour type={"weekdays"} />
+                <MobileOperatingHour type={"weekdays"} etc={etc} />
               )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
                 <>
                   <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"saturday"} />
+                  <MobileOperatingHour type={"saturday"} etc={etc} />
                 </>
               )}
               {infoData.etc &&
@@ -100,7 +100,7 @@ export default function RestaurantInfo() {
                 infoData.etc.operating_hours.holiday.length != 0 && (
                 <>
                   <HLine color={"#ECECEC"} margin={"2px"} />
-                  <MobileOperatingHour type={"holiday"} />
+                  <MobileOperatingHour type={"holiday"} etc={etc} />
                 </>
               )}
               {(!infoData.etc || !infoData.etc.operating_hours) && (

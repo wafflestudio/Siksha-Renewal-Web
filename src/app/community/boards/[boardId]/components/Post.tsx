@@ -36,8 +36,8 @@ export function Post({ post, isFirst = false }: PropsPost) {
         <PhotoZone>
           {images
             ? images.map((src, idx) =>
-                idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
-              )
+              idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
+            )
             : null}
         </PhotoZone>
       </Container>

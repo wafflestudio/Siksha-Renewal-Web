@@ -160,8 +160,10 @@ export default function MobileFilterBar() {
         >
           <ButtonText $isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
-              ? `${filterList.priceMin}원 ~ ${
-                isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
+              ? `${formatPrice(filterList.priceMin)}원 ~ ${
+                isFinite(filterList.priceMax)
+                  ? `${formatPrice(filterList.priceMax)}원`
+                  : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
               }`
               : "가격"}
           </ButtonText>
