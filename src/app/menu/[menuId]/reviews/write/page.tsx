@@ -194,14 +194,14 @@ export default function ReviewPost() {
           />
           {
             isEditMode ?
-            <ReviewEditButton
-              onClick={() => {handleSubmit()}}
-              disabled={inputs.comment.length === 0}
-            />
-            :<ReviewPostButton
-              onClick={() => {handleSubmit()}}
-              disabled={inputs.comment.length === 0}
-            />
+              <ReviewEditButton
+                onClick={() => {handleSubmit()}}
+                disabled={inputs.comment.length === 0}
+              />
+              :<ReviewPostButton
+                onClick={() => {handleSubmit()}}
+                disabled={inputs.comment.length === 0}
+              />
           }
         </Footer>
       </Container>
