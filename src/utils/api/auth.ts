@@ -162,7 +162,7 @@ export const updateProfileWithImage = async (
   }
 
   return axios
-    .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
+    .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",

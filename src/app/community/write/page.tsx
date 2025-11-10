@@ -54,10 +54,16 @@ export default function PostWriter() {
   useEffect(() => {
     if (authStatus === "logout") router.push("/community/boards/1");
     fetchBoards();
-    fetchPreviousPost();
     // update inputs' isAnoymous state
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
   }, []);
+
+  // Fetch previous post only when auth is ready
+  useEffect(() => {
+    if (authStatus === "login" && postId) {
+      fetchPreviousPost();
+    }
+  }, [authStatus, postId]);
 
   // 게시판 초기 선택
   useEffect(() => {
@@ -113,7 +119,7 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
 
-      return Promise.all(inputs.images.map(convertToBlob))
+      return Promise.all((inputs.images || []).map(convertToBlob))
         .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
         .then(getAccessToken)
         .then((accessToken) => {

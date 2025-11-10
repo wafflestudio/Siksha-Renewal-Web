@@ -44,7 +44,7 @@ export default function PhotoReviewsSection({
       </Header>
       <Photos>
         {images.length > 0 ? (
-          images.map((image, index) => (
+          images.filter((image) => image && image.trim() !== "").map((image, index) => (
             <ImageWrapper key={image + index}>
               {isMobile && imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES && index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
                 <Link href={`/menu/${menuId}/photos`}>

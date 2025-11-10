@@ -105,7 +105,7 @@ export interface RawComment {
   updated_at: string;
   id: number;
   nickname: string;
-  profile_url: string | null;
+  profile_uri: string | null;
   available: boolean;
   anonymous: boolean;
   is_mine: boolean;
