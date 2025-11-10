@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useStateContext } from "providers/ContextProvider";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
