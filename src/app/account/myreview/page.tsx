@@ -120,7 +120,7 @@ export default function MyReview() {
         <MobileSubHeader title="나의 평가 관리" handleBack={router.back} />
         <Container>
           <Header>나의 평가 관리</Header>
-            <MyReviewsContainer>
+          <MyReviewsContainer>
             {mockupReviews.map((reviewGroup) => (
               <MyReviewGroup
                 key={reviewGroup.restaurant_id}
@@ -128,7 +128,7 @@ export default function MyReview() {
                 reviews={reviewGroup.reviews}
               />
             ))}
-            </MyReviewsContainer>
+          </MyReviewsContainer>
         </Container>
       </>
     );

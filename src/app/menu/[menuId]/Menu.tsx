@@ -60,7 +60,7 @@ export default function Menu({ menuId }: { menuId: number }) {
   useEffect(() => {
     fetchData(menuId);
   }
-    , [menuId]);
+  , [menuId]);
 
   useEffect(() => {
     if (menu) {

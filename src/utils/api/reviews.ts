@@ -37,14 +37,14 @@ export const getReview = (
     ? { headers: { "Authorization": `Bearer ${accessToken}` } }
     : {};
   return axios
-  .get(apiUrl, config)
-  .then((res) => {
-    const { data } = res;
-    return data;
-  })
-  .catch((e) => {
-    throw e;
-  });
+    .get(apiUrl, config)
+    .then((res) => {
+      const { data } = res;
+      return data;
+    })
+    .catch((e) => {
+      throw e;
+    });
 }
 
 export const setReview = (body: FormData, accessToken: string): Promise<void> => {

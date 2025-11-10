@@ -23,7 +23,7 @@ export default async function Page({ params }) {
 
   return (
     <>
-    <PhotoReviews menuId={menuId} />
+      <PhotoReviews menuId={menuId} />
     </>
   );
 }
