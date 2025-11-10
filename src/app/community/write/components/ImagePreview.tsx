@@ -26,7 +26,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
 
   return (
     <Container>
-      {images.map((image, i) => (
+      {images && images.map((image, i) => (
         <Preview key={i}>
           <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
           <DeleteButton onClick={() => handleImageDelete(i)}>
@@ -34,7 +34,7 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
           </DeleteButton>
         </Preview>
       ))}
-      {images.length < 5 ? (
+      {images && images.length < 5 ? (
         <ImageAttacher>
           {images.length > 0 ? (
             <Icon

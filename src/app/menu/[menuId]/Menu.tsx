@@ -37,7 +37,7 @@ export interface ReviewType {
   user_id: number;
   score: number | null;
   comment: string;
-  etc: Record<string, any>;
+  etc: { images?: string[] } | null;
   created_at: string;
   updated_at: string;
 }
@@ -70,7 +70,7 @@ export default function Menu({ menuId }: { menuId: number }) {
   useEffect(() => {
     var updatedImages: string[] = [];
     reviews.result.map((review) => {
-      if (review.etc) {
+      if (review.etc && review.etc.images && review.etc.images.length > 0) {
         updatedImages = updatedImages.concat(review.etc.images);
       }
     });
