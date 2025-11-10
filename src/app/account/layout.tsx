@@ -11,10 +11,16 @@ export default function AccountLayout({ children }) {
   );
 }
 const Container = styled(OneColumnLayout.Container)`
+  padding: 0;
+  margin: 22px auto 0 auto;
+  max-width: none;
+  
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin-top: 0;
+    padding-top: 44px;
   }
 `;
 const Content = styled.div`

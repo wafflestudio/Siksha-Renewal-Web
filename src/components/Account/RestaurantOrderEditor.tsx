@@ -61,8 +61,8 @@ const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
   padding-bottom: 12.68px;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
+  border: 1px solid #e5e6e9;
+  border-radius: 10px;
   background-color: #ffffff;
 
   @media (max-width: 768px) {
@@ -74,12 +74,12 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  margin-top: 24.57px;
-  margin-left: 22.45px;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 23px;
-  color: #ff9522;
+  margin: 24px 0 6px 20px;
+  color: #262728;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 140%;
+  letter-spacing: -0.3px;
 
   @media (max-width: 768px) {
     display: none;
@@ -87,13 +87,12 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  margin-top: 7.92px;
-  margin-left: 22.49px;
-  margin-bottom: 11.66px;
+  margin: 0 0 20px 20px;
   font-weight: 400;
-  font-size: 11px;
-  line-height: 19px;
-  color: #a6a6a6;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: -0.3px;
+  color: #989aa0;
 
   @media (max-width: 768px) {
     display: flex;

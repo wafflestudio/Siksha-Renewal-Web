@@ -60,12 +60,19 @@ export default function Inquiry() {
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} />
-          <WordCnt>{`${voc.length} 자 / 500 자`}</WordCnt>
+          <TextArea
+            value={voc}
+            onChange={handleTextAreaChange}
+            placeholder="문의할 내용을 입력해주세요."
+          />
+          <WordCnt>{`${voc.length}/150자`}</WordCnt>
         </InquireBox>
         <ButtonBox>
           <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
-          <ButtonConfirm onClick={handlePost}>전송하기</ButtonConfirm>
+          <ButtonConfirm onClick={handlePost}>
+            <DesktopText>등록</DesktopText>
+            <MobileText>완료</MobileText>
+          </ButtonConfirm>
         </ButtonBox>
       </Container>
     </>
@@ -74,9 +81,9 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: white;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e5e6e9;
+  border-radius: 10px;
 
   @media (max-width: 768px) {
     display: flex;
@@ -87,10 +94,10 @@ const Container = styled.div`
   }
 `;
 const Title = styled.div`
-  margin: 24.04px 0 0 23.5px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ff9522;
+  margin: 24px 0 22px 20px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #262728;
 
   @media (max-width: 768px) {
     display: none;
@@ -145,6 +152,13 @@ const Profile = styled.img`
 
 const Nickname = styled.div`
   margin-left: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  color: #262728;
+  display: flex;
+  align-items: center;
 `;
 
 const InquireBox = styled.div`
@@ -159,29 +173,40 @@ const InquireBox = styled.div`
     height: 280px;
   }
 `;
+
 const TextArea = styled.textarea`
   width: 100%;
   height: 100%;
   padding: 15.73px 16px;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: #f2f3f4;
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   resize: none;
+
+  &::placeholder {
+    color: #989aa0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
+  }
 
   &:focus {
     outline: none;
   }
 `;
+
 const WordCnt = styled.div`
   width: 650px;
   margin-top: -26.46px;
   padding-right: 35.95px;
   text-align: right;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 12.48px;
-  color: #707070;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  color: #727478;
 
   @media (max-width: 768px) {
     position: absolute;
@@ -192,6 +217,7 @@ const WordCnt = styled.div`
 const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   margin-bottom: 33.1px;
 
   @media (max-width: 768px) {
@@ -204,7 +230,6 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 66.38px;
   width: 324px;
   height: 46px;
   border-radius: 8px;
@@ -231,5 +256,19 @@ const ButtonConfirm = styled(Button)`
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
+  }
+`;
+
+const DesktopText = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileText = styled.span`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: inline;
   }
 `;

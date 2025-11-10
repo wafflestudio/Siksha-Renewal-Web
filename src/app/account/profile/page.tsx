@@ -76,7 +76,7 @@ export default function SettingProfile() {
     <>
       <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
       <Container>
-        <Title>닉네임 설정</Title>
+        <Title>프로필 관리</Title>
         <ProfileEdit
           nickname={nickname}
           setNickname={setNickname}
@@ -103,26 +103,29 @@ export default function SettingProfile() {
 }
 
 const Container = styled.div`
-  width: 533px;
-  background-color: white;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
+  width: 544px;
+  background-color: #ffffff;
+  border: 1px solid #e5e6e9;
+  border-radius: 10px;
 
   @media (max-width: 768px) {
     width: 100%;
     height: 100%;
     border: none;
     border-radius: 0;
-
     display: flex;
     flex-direction: column;
   }
 `;
+
 const Title = styled.div`
-  margin: 24px 0 0 22.48px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ff9522;
+  margin: 24px 0 22px 20px;
+  color: #262728;
+  font-family: NanumSquareOTF;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 140%;
+  letter-spacing: -0.3px;
 
   @media (max-width: 768px) {
     display: none;
