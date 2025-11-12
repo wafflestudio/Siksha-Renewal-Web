@@ -47,7 +47,6 @@ export default function MobileSubHeader({
 
 const MobileHeader = styled.div`
   display: none;
-  font-size: 20px;
   margin: 0;
   top: 0;
   background: #ff9522;
@@ -72,8 +71,10 @@ const BackButton = styled.img`
 
 const Title = styled.div`
   color: white;
-  font-size: 20px;
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: 16px;
   font-weight: 800;
+  line-height: 140%;
   max-width: calc(100vw - 96px);
   text-overflow: ellipsis;
   overflow: hidden;

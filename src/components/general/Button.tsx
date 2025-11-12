@@ -24,7 +24,7 @@ export default function Button({ children, onClick, variant = "primary", ...prop
 
 const NeutralButton = styled.button`
   background-color: var(--Color-Foundation-gray-500, #BEC1C8);
-  color: var(--SementicColor-Text-Button, #FFF);
+  color: var(--SemanticColor-Text-Button, #FFF);
   text-align: center;
 
   /* text-16/Bold */
@@ -42,7 +42,7 @@ const NeutralButton = styled.button`
 
 const PrimaryButton = styled.button`
   background-color: var(--Color-Foundation-orange-500, #ff9522);
-  color: var(--SementicColor-Text-Button, #FFF);
+  color: var(--SemanticColor-Text-Button, #FFF);
   text-align: center;
 
   /* text-16/Bold */

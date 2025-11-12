@@ -11,6 +11,7 @@ export default function AccountLayout({ children }) {
   );
 }
 const Container = styled(OneColumnLayout.Container)`
+  padding: 0;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;

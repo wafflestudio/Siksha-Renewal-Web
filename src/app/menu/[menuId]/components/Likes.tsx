@@ -1,5 +1,5 @@
 import { useStateContext } from "providers/ContextProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
@@ -16,6 +16,11 @@ export default function Likes({ menu }) {
   const { authStatus, getAccessToken } = useAuth();
 
   const { openLoginModal } = useModals();
+
+  // Sync isLiked state when menu.is_liked changes (e.g., on refresh)
+  useEffect(() => {
+    setIsLiked(menu?.is_liked);
+  }, [menu?.is_liked]);
 
   const onClickLike = async () => {
     if (authStatus === "logout") openLoginModal();

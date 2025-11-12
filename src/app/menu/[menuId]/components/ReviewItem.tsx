@@ -30,22 +30,22 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
       <Body>
         <Content>
           <Comment>{review.comment}</Comment>
-          {review.etc && (
-          <Images>
-            {review.etc.images.map((image) => (
-              <Image
-                key={image}
-                src={image}
-                alt="리뷰 이미지"
-                width={IMAGE_SIZE}
-                height={IMAGE_SIZE}
-                style={{
-                  borderRadius: "8px",
-                  objectFit: "cover",
-                }}
-              />
-            ))}
-          </Images>
+          {review.etc && review.etc.images && review.etc.images.length > 0 && (
+            <Images>
+              {review.etc.images.map((image) => (
+                <Image
+                  key={image}
+                  src={image}
+                  alt="리뷰 이미지"
+                  width={IMAGE_SIZE}
+                  height={IMAGE_SIZE}
+                  style={{
+                    borderRadius: "8px",
+                    objectFit: "cover",
+                  }}
+                />
+              ))}
+            </Images>
           )}
         </Content>
       </Body>

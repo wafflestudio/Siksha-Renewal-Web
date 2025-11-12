@@ -24,9 +24,9 @@ export default function ReviewDistribution({
     <Container>
       <ScoreContainer>
         <div style={{
-            display: "flex",
-            alignItems: "flex-end",
-            gap: "4px",
+          display: "flex",
+          alignItems: "flex-end",
+          gap: "4px",
         }}>
           <Score>{score.toFixed(1)}</Score>
           <MaximumScore>/5</MaximumScore>

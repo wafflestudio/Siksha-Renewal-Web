@@ -40,20 +40,20 @@ export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownPro
   }, [selectedBoardId]);
   
   return (
-      <Container ref={dropdownRef}>
-        <BoardMenu onClick={toggleDropdown}>
-          <span>{selectedBoardName}</span>
-          <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
-        </BoardMenu>
-        <BoardMenuList isOpen={isOpen}>
-          {boards.map((board) => (
-            <BoardMenuItem key={board.id} onClick={() => handleClickItem(board.id)} className={board.id === selectedBoardId ? "selected" : ""}>
-              <span>{board.name}</span>
-            </BoardMenuItem>
-          ))}
-        </BoardMenuList>
-      </Container>
-    );
+    <Container ref={dropdownRef}>
+      <BoardMenu onClick={toggleDropdown}>
+        <span>{selectedBoardName}</span>
+        <Icon src="/img/down-arrow.svg" style={{ width: "11px" }} alt="게시판 선택" />
+      </BoardMenu>
+      <BoardMenuList isOpen={isOpen}>
+        {boards.map((board) => (
+          <BoardMenuItem key={board.id} onClick={() => handleClickItem(board.id)} className={board.id === selectedBoardId ? "selected" : ""}>
+            <span>{board.name}</span>
+          </BoardMenuItem>
+        ))}
+      </BoardMenuList>
+    </Container>
+  );
 }
 
 const Container = styled.div`

@@ -5,11 +5,14 @@ import styled from "styled-components";
 import Image from "next/image";
 import useError from "hooks/useError";
 import useMenu from "hooks/UseMenu";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
+import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
+import ConfirmModal from "app/components/ConfirmModal";
 
 export type ReviewInputs = {
   score: number;
@@ -25,11 +28,17 @@ const emptyReviewInputs: ReviewInputs = {
 
 export default function ReviewPost() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const reviewId = searchParams.get("reviewId");
+  const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
   
   const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
+  const { openModal } = useModals();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
+
+  const { getAccessToken } = useAuth();
 
   const MAX_COMMENT_LENGTH = 150;
 
@@ -63,16 +72,34 @@ export default function ReviewPost() {
       body.append("images", image);
     });
 
+    // TODO: 수정 API 완성 시, 수정 요청은 해당 api로 보내야 함
     return submitReview(body)
-      .then((res) => {
-        fetchReviews(Number(menuId));
+      .then(() => {
+        openModal(ConfirmModal, {
+          type: isEditMode ? "edit" : "submit",
+          onClose: () => {
+            router.back();
+            fetchReviews(Number(menuId));
+          },
+        });
       })
       .catch((err) => {
-        const errorCode = err.response?.status ?? null;
-        if (errorCode == 500) {
-          window.alert(err.message);
+        // QA를 위해 임시로 수정 완료 모달이 뜨게 한 상태
+        if (isEditMode) {
+          openModal(ConfirmModal, {
+            type: "edit",
+            onClose: () => {
+              router.back();
+              fetchReviews(Number(menuId));
+            },
+          });
+        } else {
+          const errorCode = err.response?.status ?? null;
+          if (errorCode == 500) {
+            window.alert(err.message);
+          }
+          onHttpError(err);
         }
-        onHttpError(err);
       });
   };
 
@@ -95,8 +122,11 @@ export default function ReviewPost() {
         
         <Header>
           <ReviewTitle>
-            &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
-            <ReviewTitleText>{getParticle(menu?.name_kr ?? "")} 어땠나요?</ReviewTitleText>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
+              <ReviewTitleText>{getParticle(menu?.name_kr ?? "")}</ReviewTitleText>
+            </div>
+            <ReviewTitleText>어땠나요?</ReviewTitleText>
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
@@ -166,10 +196,17 @@ export default function ReviewPost() {
           <ReviewCancelButton
             onClick={() => {router.back()}}
           />
-          <ReviewPostButton
-            onClick={() => {handleSubmit()}}
-            disabled={inputs.comment.length === 0}
-          />
+          {
+            isEditMode ?
+              <ReviewEditButton
+                onClick={() => {handleSubmit()}}
+                disabled={inputs.comment.length === 0}
+              />
+              :<ReviewPostButton
+                onClick={() => {handleSubmit()}}
+                disabled={inputs.comment.length === 0}
+              />
+          }
         </Footer>
       </Container>
     </>
@@ -231,7 +268,6 @@ const Header = styled.div`
 `;
 
 const ReviewTitle = styled.div`
-  display: flex;
   margin: 30px 0 22px 0;
 
   color: var(--Color-Foundation-gray-900, #262728);
@@ -254,6 +290,7 @@ const MenuNameText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  max-width: 500px;
 `;
 
 const ReviewTitleText = styled.span`
@@ -346,9 +383,10 @@ const CommentTextArea = styled.textarea`
   resize: none;
 
   color: var(--Color-Foundation-gray-900, #262728);
+  -webkit-text-fill-color: var(--Color-Foundation-gray-900, #262728) !important;
+  opacity: 1;
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -569,7 +607,7 @@ const ReviewPostButton = styled.button`
   font-weight: 700;
   cursor: pointer;
 
-  &:before {
+  &::before {
     content: "평가 등록";
   }
   &:disabled {
@@ -579,6 +617,18 @@ const ReviewPostButton = styled.button`
     width: 100%;
     &:before {
       content: "올리기";
+    }
+  }
+`;
+
+const ReviewEditButton = styled(ReviewPostButton)`
+  &::before {
+    content: "평가 수정";
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    &:before {
+      content: "수정하기";
     }
   }
 `;
