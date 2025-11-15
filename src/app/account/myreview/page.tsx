@@ -22,7 +22,6 @@ export default function MyReview() {
   const fetchMyReviews = (size: number, page: number) =>
     getAccessToken()
       .then((accessToken) => {
-        console.log("getMyReviewList called");
         return getMyReviewList(accessToken, size, page);
       })
       .then(({ result, hasNext }) => {
@@ -40,7 +39,6 @@ export default function MyReview() {
 
   // TODO: 리뷰를 비롯한 모든 서버 데이터는 react-query로 관리해야 함
   useEffect(() => {
-    console.log("My reviews fetched:", reviews);
     if (reviews.length == 0 && authStatus === "login") {
       fetchMyReviews(100, 1);
     }
