@@ -61,7 +61,6 @@ export default function ReviewPost() {
             }
           }
         }
-        console.log(reviewData.etc);
         setInputs({
           score: reviewData.score ?? 3,
           comment: reviewData.comment,
@@ -118,7 +117,6 @@ export default function ReviewPost() {
         const actionFunction = isEditMode
         ? () => editReview(Number(reviewId), body)
         : () => submitReview(body);
-        console.log(body);
         return actionFunction();
       })
       .then(() => {
@@ -132,7 +130,6 @@ export default function ReviewPost() {
       })
       .catch((err) => {
         const errorCode = err.response?.status ?? null;
-        console.log(err); // DEBUG
         if (errorCode == 500) {
           window.alert(err.message);
         }
