@@ -154,7 +154,6 @@ export default function ReviewPost() {
       })
       .catch((err) => {
         const errorCode = err.response?.status ?? null;
-        console.log(err); // DEBUG
         if (errorCode == 500) {
           window.alert(err.message);
         }
