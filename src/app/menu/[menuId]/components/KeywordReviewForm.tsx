@@ -7,16 +7,11 @@ import TasteIcon from "assets/icons/keyword-taste.svg";
 import PriceIcon from "assets/icons/keyword-price.svg";
 import CompositionIcon from "assets/icons/keyword-composition.svg";
 
-type Option = {
-  id: string;
-  label: string;
-};
-
 type Category = {
   id: string;
   emoji: ReactNode;
   title: string;
-  options: Option[];
+  options: string[];
 };
 
 const categories: Category[] = [
@@ -24,37 +19,19 @@ const categories: Category[] = [
     id: "taste",
     emoji: <TasteIcon />,
     title: "맛",
-    options: [
-      { id: "t1", label: "또 먹고 싶어요" },
-      { id: "t2", label: "생각보다 맛있어요" },
-      { id: "t3", label: "무난해요" },
-      { id: "t4", label: "아쉬운 맛이에요" },
-      { id: "t5", label: "별로예요" },
-    ],
+    options: ["또 먹고 싶어요", "생각보다 맛있어요", "무난해요", "아쉬운 맛이에요", "별로예요"],
   },
   {
     id: "price",
     emoji: <PriceIcon />,
     title: "가격",
-    options: [
-      { id: "p1", label: "혜자스러워요" },
-      { id: "p2", label: "가성비 좋아요" },
-      { id: "p3", label: "합리적이에요" },
-      { id: "p4", label: "약간 비싸요" },
-      { id: "p5", label: "너무 비싸요" },
-    ],
+    options: ["혜자스러워요", "가성비 좋아요", "합리적이에요", "약간 비싸요", "너무 비싸요"],
   },
   {
     id: "composition",
     emoji: <CompositionIcon />,
     title: "음식 구성",
-    options: [
-      { id: "c1", label: "조화로워요" },
-      { id: "c2", label: "알찬 편이에요" },
-      { id: "c3", label: "기본적이에요" },
-      { id: "c4", label: "다소 단조로워요" },
-      { id: "c5", label: "너무 빈약해요" },
-    ],
+    options: ["조화로워요", "알찬 편이에요", "기본적이에요", "다소 단조로워요", "너무 빈약해요"],
   },
 ];
 
@@ -64,11 +41,11 @@ type KeywordReviewFormProps = {
 };
 
 export default function KeywordReviewForm({ inputs, setInputs }: KeywordReviewFormProps) {
-  const handleSelect = (categoryId: string, optionId: string) => {
+  const handleSelect = (categoryId: string, label: string) => {
     setInputs((prev) => {
-      if (categoryId === "taste") return { ...prev, taste: optionId };
-      if (categoryId === "price") return { ...prev, price: optionId };
-      if (categoryId === "composition") return { ...prev, food_composition: optionId };
+      if (categoryId === "taste") return { ...prev, taste: label };
+      if (categoryId === "price") return { ...prev, price: label };
+      if (categoryId === "composition") return { ...prev, food_composition: label };
       return prev;
     });
   };
@@ -89,15 +66,15 @@ export default function KeywordReviewForm({ inputs, setInputs }: KeywordReviewFo
           <Options>
             {cat.options.map((opt) => (
               <OptionButton
-                key={opt.id}
+                key={opt}
                 selected={
-                  (cat.id === "taste" && inputs.taste === opt.id) ||
-                  (cat.id === "price" && inputs.price === opt.id) ||
-                  (cat.id === "composition" && inputs.food_composition === opt.id)
+                  (cat.id === "taste" && inputs.taste === opt) ||
+                  (cat.id === "price" && inputs.price === opt) ||
+                  (cat.id === "composition" && inputs.food_composition === opt)
                 }
-                onClick={() => handleSelect(cat.id, opt.id)}
+                onClick={() => handleSelect(cat.id, opt)}
               >
-                {opt.label}
+                {opt}
               </OptionButton>
             ))}
           </Options>

@@ -1,13 +1,11 @@
 import styled, { css } from "styled-components";
-import { ReviewListType, ReviewType } from "app/menu/[menuId]/Menu";
+import { ReviewListType } from "app/menu/[menuId]/Menu";
 import ReviewItem from "./ReviewItem";
 import useIsMobile from "hooks/UseIsMobile";
-import Image from "next/image";
 import MobileLayout from "styles/layouts/MobileLayout";
 import MobileReviewListPage from "./MobileReviewListPage";
 import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
 import RightArrowIcon from "assets/icons/right-arrow.svg";
-import { useEffect } from "react";
 
 export interface MenuType {
   id: number;
@@ -37,21 +35,6 @@ export default function ReviewSection({
   isReviewListPageOpen,
   handleReviewListPage,
 }: ReviewSectionProps) {
-  useEffect(() => {
-    reviews.result.push({
-      id: 0,
-      menu_id: 0,
-      user_id: 0,
-      score: 3,
-      comment:
-        "테스트 진행중테스트 진행중테스트 진행중테스트 진행중테스트 진행중테스트 진행중테스트 진행중테스트 진행중",
-      created_at: "2025-01-01",
-      updated_at: "2025-01-01",
-      like_count: 0,
-      is_liked: false,
-      keyword_reviews: ["키워드 리뷰"],
-    } as ReviewType);
-  }, []);
   const isMobile = useIsMobile();
   const PREVIEW_REVIEWS_COUNT = 5;
   let previewReviews = reviews.result;

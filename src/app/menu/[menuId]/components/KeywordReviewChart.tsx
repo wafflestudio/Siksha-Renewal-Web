@@ -20,19 +20,19 @@ export default function KeywordReviewChart({ data }: KeywordReviewProps) {
       emoji: <TasteIcon />,
       text: data.taste_keyword,
       count: data.taste_cnt,
-      gauge: 0, // TODO: gauge 계산 로직 필요
+      gauge: getPercentage(data.taste_cnt, data.taste_total),
     },
     {
       emoji: <PriceIcon />,
       text: data.price_keyword,
       count: data.price_cnt,
-      gauge: 0,
+      gauge: getPercentage(data.price_cnt, data.price_total),
     },
     {
       emoji: <CompositionIcon />,
       text: data.food_composition_keyword,
       count: data.food_composition_cnt,
-      gauge: 0,
+      gauge: getPercentage(data.food_composition_cnt, data.food_composition_total),
     },
   ];
 
@@ -51,6 +51,11 @@ export default function KeywordReviewChart({ data }: KeywordReviewProps) {
     </Container>
   );
 }
+
+const getPercentage = (cnt, total) => {
+  if (!cnt || total === 0) return 0;
+  return (cnt / total) * 100;
+};
 
 const Container = styled.div`
   display: flex;

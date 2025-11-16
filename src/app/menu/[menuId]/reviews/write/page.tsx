@@ -38,7 +38,7 @@ export default function ReviewPost() {
   const router = useRouter();
   const { menuId } = useParams<{ menuId: string }>();
 
-  const { menu, fetchMenu, fetchReviews, submitReview } = useMenu();
+  const { menu, fetchMenu, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
@@ -67,17 +67,45 @@ export default function ReviewPost() {
       return;
     }
 
-    const body = new FormData();
-    body.append("menu_id", menuId);
-    body.append("score", String(inputs.score));
-    body.append("comment", inputs.comment);
-    inputs.images.forEach((image) => {
-      body.append("images", image);
-    });
+    const { score, comment, taste, price, food_composition } = inputs;
+    console.debug(inputs);
 
-    return submitReview(body)
+    const hasImages =
+      inputs.images.length > 0 &&
+      inputs.images.some((image) => image instanceof File && image.size > 0);
+
+    let request;
+
+    if (hasImages) {
+      const body = new FormData();
+      body.append("menu_id", menuId);
+      body.append("score", String(inputs.score));
+      body.append("comment", inputs.comment);
+      body.append("taste", taste);
+      body.append("price", price);
+      body.append("food_composition", food_composition);
+      inputs.images.forEach((image) => {
+        body.append("images", image);
+      });
+
+      request = submitReviewWithImages(body);
+    } else {
+      const json = {
+        menu_id: menuId,
+        score,
+        comment,
+        taste,
+        price,
+        food_composition,
+      };
+      console.debug(json);
+      request = submitReview(json);
+    }
+
+    return request
       .then((res) => {
         fetchReviews(Number(menuId));
+        router.push(`/menu/${menuId}`);
       })
       .catch((err) => {
         const errorCode = err.response?.status ?? null;

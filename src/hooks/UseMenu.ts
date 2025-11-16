@@ -2,7 +2,7 @@ import { useMenuDispatchContext, useMenuStateContext } from "providers/MenuProvi
 import useAuth from "./UseAuth";
 import useError from "./useError";
 import { getMenu } from "utils/api/menus";
-import { getReviews, setReview } from "utils/api/reviews";
+import { getReviews, setReview, setReviewWithImages } from "utils/api/reviews";
 import { useCallback } from "react";
 
 export default function useMenu() {
@@ -43,9 +43,17 @@ export default function useMenu() {
   );
 
   const submitReview = useCallback(
-    async (body: FormData) => {
+    async (body: any) => {
       const accessToken = await getAccessToken().catch((error) => "");
       return setReview(body, accessToken);
+    },
+    [getAccessToken],
+  );
+
+  const submitReviewWithImages = useCallback(
+    async (body: FormData) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      return setReviewWithImages(body, accessToken);
     },
     [getAccessToken],
   );
@@ -69,6 +77,7 @@ export default function useMenu() {
     fetchMenu,
     fetchReviews,
     submitReview,
+    submitReviewWithImages,
     fetchData,
   };
 }

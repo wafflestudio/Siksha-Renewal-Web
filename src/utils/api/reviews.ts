@@ -45,9 +45,23 @@ export const getPhotoReviews = (
   });
 };
 
-export const setReview = (body: FormData, accessToken: string): Promise<void> => {
+export const setReviewWithImages = (body: FormData, accessToken: string): Promise<void> => {
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 등록에 실패했습니다.";
+      throw new Error(err);
+    });
+};
+
+export const setReview = (body: any, accessToken: string): Promise<void> => {
+  return axios
+    .post(`${APIendpoint()}/reviews`, body, {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },

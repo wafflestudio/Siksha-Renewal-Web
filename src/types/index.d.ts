@@ -189,10 +189,13 @@ export interface RawReview {
 export interface KeywordReviewScore {
   taste_keyword: string;
   taste_cnt: number;
+  taste_total: number;
   price_keyword: string;
   price_cnt: number;
+  price_total: number;
   food_composition_keyword: string;
   food_composition_cnt: number;
+  food_composition_total: number;
 }
 
 export interface RawUser {
