@@ -15,7 +15,6 @@ export default function useMenu() {
   const fetchMenu = useCallback(
     async (menuId) => {
       const accessToken = await getAccessToken().catch((error) => "");
-      console.debug("accessToken:", accessToken);
       getMenu(menuId, accessToken)
         .then((menuData) => {
           setMenu(menuData);
@@ -29,7 +28,8 @@ export default function useMenu() {
 
   const fetchReviews = useCallback(
     async (menuId) => {
-      getReviews(menuId)
+      const accessToken = await getAccessToken().catch((error) => "");
+      getReviews(menuId, accessToken)
         .then((reviewsData) => {
           setReviews({
             result: reviewsData.result,
