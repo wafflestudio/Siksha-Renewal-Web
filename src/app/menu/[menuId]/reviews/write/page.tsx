@@ -45,8 +45,7 @@ export default function ReviewPost() {
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
 
-  const { menu, fetchMenu, fetchReviews, fetchReview, submitReview, editReview } = useMenu();
-  const { openModal } = useModals();
+  const { menu, fetchMenu, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
@@ -113,31 +112,45 @@ export default function ReviewPost() {
       return;
     }
 
-    const body = new FormData();
-    body.append("menu_id", menuId);
-    body.append("score", String(inputs.score));
-    body.append("comment", inputs.comment);
-    // TODO: 키워드 리뷰 UI 추가 후 수정
-    body.append("taste", "");
-    body.append("price", "");
-    body.append("food_composition", "");
+    const { score, comment, taste, price, food_composition } = inputs;
+    console.debug(inputs);
 
-    return Promise.all(inputs.images.map(convertToBlob))
-      .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
-      .then(() => {
-        const actionFunction = isEditMode
-          ? () => editReview(Number(reviewId), body)
-          : () => submitReview(body);
-        return actionFunction();
-      })
-      .then(() => {
-        openModal(ConfirmModal, {
-          type: isEditMode ? "edit" : "submit",
-          onClose: () => {
-            router.back();
-            fetchReviews(Number(menuId));
-          },
-        });
+    const hasImages =
+      inputs.images.length > 0 &&
+      inputs.images.some((image) => image instanceof File && image.size > 0);
+
+    let request;
+
+    if (hasImages) {
+      const body = new FormData();
+      body.append("menu_id", menuId);
+      body.append("score", String(inputs.score));
+      body.append("comment", inputs.comment);
+      body.append("taste", taste);
+      body.append("price", price);
+      body.append("food_composition", food_composition);
+      inputs.images.forEach((image) => {
+        body.append("images", image);
+      });
+
+      request = submitReviewWithImages(body);
+    } else {
+      const json = {
+        menu_id: menuId,
+        score,
+        comment,
+        taste,
+        price,
+        food_composition,
+      };
+      console.debug(json);
+      request = submitReview(json);
+    }
+
+    return request
+      .then((res) => {
+        fetchReviews(Number(menuId));
+        router.push(`/menu/${menuId}`);
       })
       .catch((err) => {
         const errorCode = err.response?.status ?? null;
