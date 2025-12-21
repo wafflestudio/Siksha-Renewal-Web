@@ -375,7 +375,7 @@ const Rate = styled.div`
 `;
 
 const LikeBox = styled.div`
-  width: 30px;
+  width: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
