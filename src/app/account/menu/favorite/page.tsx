@@ -109,7 +109,7 @@ const Container = styled.div`
   padding-bottom: 100px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   margin: 0 auto;
 
   @media (max-width: 768px) {
@@ -120,6 +120,7 @@ const Container = styled.div`
     height: calc(100% - 60px);
     box-sizing: border-box;
     overflow-x: hidden;
+    gap: 12px;
   }
 `;
 
@@ -141,7 +142,7 @@ const TitleCard = styled.div`
 const TitleText = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
   font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-18, 18px);
+  font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%;
@@ -150,7 +151,7 @@ const TitleText = styled.div`
 
 const LoadingText = styled.div`
   font-size: 16px;
-  color: #999;
+  color: var(--Color-Foundation-gray-600, #989AA0);
   text-align: center;
   padding: 40px;
 `;

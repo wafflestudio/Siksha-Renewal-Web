@@ -84,8 +84,10 @@ const BackButton = styled.img`
 
 const Title = styled.div`
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
+  line-height: 140%;
+  letter-spacing: 0;
   max-width: calc(100vw - 96px);
   text-overflow: ellipsis;
   overflow: hidden;

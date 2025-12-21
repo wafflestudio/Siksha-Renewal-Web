@@ -7,6 +7,8 @@ import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
 import { RawMenu } from "types";
+import HeartSvg from "assets/icons/heart.svg";
+import DotsSvg from "assets/icons/dots.svg";
 
 export default function Menu({ menu }: { menu: RawMenu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -14,8 +16,6 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
   const reviewCount = menu.review_cnt;
-
-  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
   const isReviewedImg = "/img/general/comment-off.svg"; //리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴
   const router = useRouter();
 
@@ -78,18 +78,17 @@ export default function Menu({ menu }: { menu: RawMenu }) {
           <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
         )}
       </MenuName>
-      <Dots src={"/img/dots.svg"} />
+      <StyledDotsIcon />
       <MenuInfo>
         <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
-          <CountIcon
-            src={isLikedImg}
+          <StyledLikeIcon
+            $isLiked={isLiked}
             onClick={(e) => {
               isLikedToggle();
               e.stopPropagation();
             }}
-            alt="좋아요"
           />
           <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
@@ -112,7 +111,7 @@ const Container = styled.div`
 
   @media (pointer: fine) {
     &:hover {
-      background: #f5f5f5;
+      background: var(--Color-Foundation-gray-100, #f5f5f5);
     }
   }
 
@@ -136,7 +135,7 @@ const MenuName = styled.div`
   flex-grow: 1;
 
   @media (max-width: 768px) {
-    color: black;
+    color: var(--Color-Foundation-base-black, #000);
     font-size: 14px;
     line-height: 21px;
     font-weight: 400;
@@ -154,13 +153,25 @@ const MenuInfo = styled.div`
   }
 `;
 
-const Dots = styled.img`
+const StyledDotsIcon = styled(DotsSvg)`
   width: 40px;
   height: 22px;
+  color: var(--Color-Foundation-gray-500, #b3b3b3);
 
   @media (max-width: 1200px) {
     display: none;
   }
+`;
+
+const StyledLikeIcon = styled(HeartSvg)<{ $isLiked: boolean }>`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 0;
+  color: ${(props) =>
+    props.$isLiked
+      ? "var(--Color-Accent-like, #f86627)"
+      : "var(--SemanticColor-Icon-Like, var(--Color-Foundation-gray-200, #e5e6e9))"};
 `;
 
 const Price = styled.div`

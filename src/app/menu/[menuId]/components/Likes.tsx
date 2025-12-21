@@ -4,12 +4,11 @@ import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import useLikedMenus from "hooks/UseLikedMenus";
+import HeartSvg from "assets/icons/heart.svg";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
-
-  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
 
   const { authStatus, getAccessToken } = useAuth();
   const { addLikedMenu, removeLikedMenu } = useLikedMenus();
@@ -41,13 +40,12 @@ export default function Likes({ menu }) {
 
   return (
     <Container>
-      <HeartIcon
-        src={isLikedImg}
+      <StyledLikeIcon
+        $isLiked={isLiked}
         onClick={(e) => {
           onClickLike();
           e.stopPropagation();
         }}
-        alt="좋아요"
       />
       <LikesText>{likeCount}</LikesText>
     </Container>
@@ -62,10 +60,14 @@ const Container = styled.div`
   }
 `;
 
-const HeartIcon = styled.img`
+const StyledLikeIcon = styled(HeartSvg)<{ $isLiked: boolean }>`
   width: 30px;
   height: 30px;
   cursor: pointer;
+  color: ${(props) =>
+    props.$isLiked
+      ? "var(--Color-Accent-like, #f86627)"
+      : "var(--SemanticColor-Icon-Like, var(--Color-Foundation-gray-200, #e5e6e9))"};
   @media (max-width: 768px) {
   }
 `;

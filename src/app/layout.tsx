@@ -5,7 +5,8 @@ import ContextProvider from "providers/ContextProvider";
 import { ModalsProvider } from "providers/ModalsProvider";
 import ToastProvider from "providers/ToastProvider";
 import Script from "next/script";
-import { GlobalStyleFixed } from "styles/globalstyle";
+import { GlobalStyle } from "styles/globalstyle";
+import { ThemeProvider } from "next-themes";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
 import ClientMixpanelInitializer from "./components/ClientMixpanelInitializer";
@@ -39,7 +40,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FF9522",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FF9522" },
+    { media: "(prefers-color-scheme: dark)", color: "#F28C1D" },
+  ],
   initialScale: 1.0,
   width: "device-width",
   viewportFit: "cover",
@@ -47,20 +51,22 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body>
-        <GlobalStyleFixed />
+        <GlobalStyle />
         <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
-          <ContextProvider>
-            <ModalsProvider>
-              <ToastProvider>
-                <Suspense>
-                  <Layout>{children}</Layout>
-                </Suspense>
-              </ToastProvider>
-            </ModalsProvider>
-          </ContextProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+            <ContextProvider>
+              <ModalsProvider>
+                <ToastProvider>
+                  <Suspense>
+                    <Layout>{children}</Layout>
+                  </Suspense>
+                </ToastProvider>
+              </ModalsProvider>
+            </ContextProvider>
+          </ThemeProvider>
         </StyledComponentsRegistry>
         <Script
           type="text/javascript"
