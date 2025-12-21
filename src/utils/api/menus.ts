@@ -114,7 +114,7 @@ export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> 
 
   return axios
     .get(`${APIendpoint()}/menus/me`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "Authorization": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const { data } = res;

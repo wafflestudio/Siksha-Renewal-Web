@@ -125,7 +125,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     return Promise.resolve(getMockUser());
   }
 
-  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
   const parse = (data: any): User => {
     const id = data?.id;
     const nickname = data?.nickname;
@@ -144,12 +144,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      const status = e?.response?.status;
-      if (status !== 404) throw e;
-      // Legacy endpoint (pre Spring)
-      return axios
-        .get(`${APIendpoint()}/auth/me/image`, config)
-        .then((res: { data: RawUser }) => parse(res.data));
+      throw e;
     });
 };
 
@@ -212,7 +207,7 @@ export const updateProfileWithImage = async (
 };
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
-  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
   return axios
     .delete(`${APIendpoint()}/auth/`, {
       headers: { "Authorization": `Bearer ${accessToken}` },

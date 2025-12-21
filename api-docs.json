@@ -201,12 +201,6 @@
             "schema": { "type": "integer", "format": "int32" }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/MenuAlarmRequestDto" } }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -233,6 +227,13 @@
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MenuAlarmDto" } } }
           }
         }
+      }
+    },
+    "/menus/alarm/off": {
+      "post": {
+        "tags": ["Menus"],
+        "operationId": "menuAlarmOffAll",
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/community/posts": {
@@ -652,6 +653,33 @@
             "content": { "*/*": { "schema": { "$ref": "#/components/schemas/AuthResponseDto" } } }
           }
         }
+      }
+    },
+    "/auth/alarm": {
+      "get": {
+        "tags": ["Auth"],
+        "operationId": "getAlarm",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/UserAlarmResponseDto" } }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Auth"],
+        "operationId": "setAlarm",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AlarmSettingRequestDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/reviews/{review_id}": {
@@ -1622,13 +1650,8 @@
           "taste": { "type": "string" },
           "price": { "type": "string" },
           "food_composition": { "type": "string" },
-          "images": { "type": "array", "items": { "type": "string", "format": "binary" } }
+          "images": { "type": "object" }
         }
-      },
-      "MenuAlarmRequestDto": {
-        "required": ["notificationType"],
-        "type": "object",
-        "properties": { "notificationType": { "type": "string", "enum": ["DAILY", "EACH_MEAL"] } }
       },
       "MenuAlarmDto": {
         "required": [
@@ -1751,7 +1774,7 @@
           "created_at": { "type": "string", "format": "date-time" },
           "updated_at": { "type": "string", "format": "date-time" },
           "nickname": { "type": "string" },
-          "profile_uri": { "type": "string" },
+          "profile_url": { "type": "string" },
           "available": { "type": "boolean" },
           "anonymous": { "type": "boolean" },
           "is_mine": { "type": "boolean" },
@@ -1808,6 +1831,11 @@
         "required": ["identity"],
         "type": "object",
         "properties": { "identity": { "type": "string" } }
+      },
+      "AlarmSettingRequestDto": {
+        "required": ["type"],
+        "type": "object",
+        "properties": { "type": { "type": "string", "enum": ["DAILY", "EVERY_MEAL"] } }
       },
       "PostPatchRequestDto": {
         "type": "object",
@@ -2018,15 +2046,15 @@
             "writeOnly": true,
             "items": { "$ref": "#/components/schemas/RestaurantInListDto" }
           },
-          "dn": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/RestaurantInListDto" }
-          },
           "br": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/RestaurantInListDto" }
           },
-          "lu": { "type": "array", "items": { "$ref": "#/components/schemas/RestaurantInListDto" } }
+          "lu": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RestaurantInListDto" }
+          },
+          "dn": { "type": "array", "items": { "$ref": "#/components/schemas/RestaurantInListDto" } }
         }
       },
       "MenuInListDto": {
@@ -2084,6 +2112,35 @@
           "menus": { "type": "array", "items": { "$ref": "#/components/schemas/MenuInListDto" } }
         }
       },
+      "MyMenuInListDto": {
+        "required": [
+          "alarm",
+          "code",
+          "created_at",
+          "etc",
+          "id",
+          "is_liked",
+          "like_cnt",
+          "review_cnt",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "id": { "type": "integer", "format": "int32" },
+          "code": { "type": "string" },
+          "name_kr": { "type": "string" },
+          "name_en": { "type": "string" },
+          "price": { "type": "integer", "format": "int32" },
+          "etc": { "type": "array", "items": { "type": "string" } },
+          "score": { "type": "number", "format": "double" },
+          "review_cnt": { "type": "integer", "format": "int32" },
+          "like_cnt": { "type": "integer", "format": "int32" },
+          "is_liked": { "type": "boolean" },
+          "alarm": { "type": "boolean" }
+        }
+      },
       "MyMenuListResponseDto": {
         "required": ["count", "result"],
         "type": "object",
@@ -2091,8 +2148,25 @@
           "count": { "type": "integer", "format": "int32" },
           "result": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/RestaurantInListDto" }
+            "items": { "$ref": "#/components/schemas/MyRestaurantInListDto" }
           }
+        }
+      },
+      "MyRestaurantInListDto": {
+        "required": ["code", "created_at", "etc", "id", "menus", "updated_at"],
+        "type": "object",
+        "properties": {
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "id": { "type": "integer", "format": "int32" },
+          "code": { "type": "string" },
+          "name_kr": { "type": "string" },
+          "name_en": { "type": "string" },
+          "addr": { "type": "string" },
+          "lat": { "type": "number", "format": "double" },
+          "lng": { "type": "number", "format": "double" },
+          "etc": { "$ref": "#/components/schemas/JsonNode" },
+          "menus": { "type": "array", "items": { "$ref": "#/components/schemas/MyMenuInListDto" } }
         }
       },
       "PaginatedPostsResponseDto": {
@@ -2125,6 +2199,11 @@
           "total_count": { "type": "integer", "format": "int64" },
           "has_next": { "type": "boolean" }
         }
+      },
+      "UserAlarmResponseDto": {
+        "required": ["alarm_type"],
+        "type": "object",
+        "properties": { "alarm_type": { "type": "string", "enum": ["DAILY", "EVERY_MEAL"] } }
       }
     },
     "securitySchemes": {
