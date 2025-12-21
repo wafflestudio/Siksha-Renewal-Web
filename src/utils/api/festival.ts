@@ -10,6 +10,10 @@ export const getFestivalDates = (): Promise<{ festival_dates: String[] }> => {
       return data;
     })
     .catch((e) => {
+      const status = e?.response?.status;
+      if (status === 404) {
+        return { festival_dates: [] };
+      }
       throw e;
     });
 };
@@ -23,6 +27,10 @@ export const getIsFestival = (date: String): Promise<{ is_festival: boolean }> =
       return data;
     })
     .catch((e) => {
+      const status = e?.response?.status;
+      if (status === 404) {
+        return { is_festival: false };
+      }
       throw e;
     });
 };

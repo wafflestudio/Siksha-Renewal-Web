@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { State, RawMenuList, User } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
@@ -40,33 +40,72 @@ const ContextProvider = ({ children }) => {
 
   // dispatch functions
   // 추후 useCallback으로 memorization 해두는 건 어떨까요?
-  const setDate = (date: Date) => setState((prevState) => ({ ...prevState, date: date }));
-  const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
-  const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
-  const setLoading = (loading: boolean) =>
-    setState((prevState) => ({ ...prevState, loading: loading }));
-  const setInfoData = (infoData) => setState((prevState) => ({ ...prevState, infoData: infoData }));
-  const toggleShowInfo = () =>
-    setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
-  const setAuthStatus = (status: "loading" | "login" | "logout") =>
-    setState((prevState) => ({ ...prevState, authStatus: status }));
-  const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
-  const setIsFilterFavorite = (value) =>
-    setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
+  const setDate = useCallback(
+    (date: Date) => setState((prevState) => ({ ...prevState, date })),
+    [],
+  );
+  const setMeal = useCallback(
+    (meal: string) => setState((prevState) => ({ ...prevState, meal })),
+    [],
+  );
+  const setData = useCallback(
+    (data: RawMenuList) => setState((prevState) => ({ ...prevState, data })),
+    [],
+  );
+  const setLoading = useCallback(
+    (loading: boolean) => setState((prevState) => ({ ...prevState, loading })),
+    [],
+  );
+  const setInfoData = useCallback(
+    (infoData) => setState((prevState) => ({ ...prevState, infoData })),
+    [],
+  );
+  const toggleShowInfo = useCallback(
+    () => setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo })),
+    [],
+  );
+  const setAuthStatus = useCallback(
+    (status: "loading" | "login" | "logout") =>
+      setState((prevState) => ({ ...prevState, authStatus: status })),
+    [],
+  );
+  const setUserInfo = useCallback(
+    (userInfo: User | null) => setState((prevState) => ({ ...prevState, userInfo })),
+    [],
+  );
+  const setIsFilterFavorite = useCallback(
+    (value: boolean) => setState((prevState) => ({ ...prevState, isFilterFavorite: value })),
+    [],
+  );
+
+  const dispatchValue = useMemo(
+    () => ({
+      setDate,
+      setMeal,
+      setData,
+      setLoading,
+      setInfoData,
+      toggleShowInfo,
+      setAuthStatus,
+      setUserInfo,
+      setIsFilterFavorite,
+    }),
+    [
+      setDate,
+      setMeal,
+      setData,
+      setLoading,
+      setInfoData,
+      toggleShowInfo,
+      setAuthStatus,
+      setUserInfo,
+      setIsFilterFavorite,
+    ],
+  );
 
   return (
     <dispatchContext.Provider
-      value={{
-        setDate,
-        setMeal,
-        setData,
-        setLoading,
-        setInfoData,
-        toggleShowInfo,
-        setAuthStatus,
-        setUserInfo,
-        setIsFilterFavorite,
-      }}
+      value={dispatchValue}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>
     </dispatchContext.Provider>

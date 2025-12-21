@@ -27,44 +27,48 @@ export default function useAuth() {
     if (accessToken === undefined) setAuthStatus("loading");
     else if (accessToken) setAuthStatus("login");
     else setAuthStatus("logout");
-  }, [accessToken]);
+  }, [accessToken, setAuthStatus, setStorage]);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {
       router.push(`/`);
       openLoginModal();
     }
-  }, [authStatus]);
+  }, [authStatus, openLoginModal, router]);
 
-  const getAccessToken = (): Promise<string> => {
+  const getAccessToken = useCallback((): Promise<string> => {
     return new Promise((resolve, reject) => {
       if (authStatus !== "login") {
         reject(new Error("Login required"));
+        return;
       }
 
       if (!accessToken) {
         setAuthStatus("logout");
         reject(new Error("Access token not found"));
-      } else resolve(accessToken);
-    });
-  };
+        return;
+      }
 
-  const checkAccessToken = () => {
+      resolve(accessToken);
+    });
+  }, [accessToken, authStatus, setAuthStatus]);
+
+  const checkAccessToken = useCallback(() => {
     if (authStatus !== "login") {
       return Promise.resolve(null);
     }
     return getAccessToken();
-  };
+  }, [authStatus, getAccessToken]);
 
-  const login = (accessToken: string) => {
+  const login = useCallback((accessToken: string) => {
     setStorage(accessToken);
     setAuthStatus("login");
-  };
+  }, [setAuthStatus, setStorage]);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     removeStorage();
     setAuthStatus("logout");
-  };
+  }, [removeStorage, setAuthStatus]);
 
   return { authStatus, authGuard, getAccessToken, checkAccessToken, login, logout };
 }

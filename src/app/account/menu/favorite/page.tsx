@@ -20,20 +20,23 @@ export default function FavoriteMenus() {
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    const fetchFavoriteMenus = async () => {
-      if (authStatus !== "login") {
-        setLoading(false);
-        return;
-      }
+    if (authStatus !== "login") {
+      if (authStatus === "logout") setLoading(false);
+      return;
+    }
+    if (hasFetched) return;
 
+    const fetchFavoriteMenus = async () => {
       try {
         const accessToken = await getAccessToken();
         const response = await getLikedMenus(accessToken);
         setFavoriteMenus(response.result);
+        setHasFetched(true);
       } catch (error) {
         onHttpError(error);
       } finally {
@@ -42,7 +45,8 @@ export default function FavoriteMenus() {
     };
 
     fetchFavoriteMenus();
-  }, [authStatus]); // Removed getAccessToken and onHttpError to prevent unnecessary re-fetches
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authStatus]); // Only depend on authStatus to prevent infinite re-fetches
 
   // Memoize callback to prevent recreation on every render
   const handleUnlikeMenu = useCallback(

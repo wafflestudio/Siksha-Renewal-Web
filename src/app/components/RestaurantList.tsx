@@ -23,6 +23,8 @@ export default function RestaurantList() {
   const [favoriteFirstRestaurants, setFavoriteFirstRestaurants] = useState<Array<any>>([]);
   const [page, setPage] = useState(1);
 
+  const restaurants = data?.[meal] ?? [];
+
   const nextPage = () => {
     if (page < Math.ceil(favoriteFirstRestaurants.length / 10)) setPage(page + 1);
   };
@@ -32,15 +34,15 @@ export default function RestaurantList() {
   };
 
   useEffect(() => {
-    const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
-    const nonFavorites = data[meal].filter((restaurant) => isFavorite(restaurant.id) === false);
+    const favorites = restaurants.filter((restaurant) => isFavorite(restaurant.id));
+    const nonFavorites = restaurants.filter((restaurant) => isFavorite(restaurant.id) === false);
 
     const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
-  }, [data, favoriteRestaurants.length]);
+  }, [data, meal, favoriteRestaurants.length]);
 
   return (
-    <Container show={data[meal].length >= 1}>
+    <Container show={restaurants.length >= 1}>
       <Header>
         <Title>식당 찾기</Title>
         <Pagination>

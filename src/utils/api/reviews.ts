@@ -11,15 +11,33 @@ export const getReviews = (
   result: RawReview[];
 }> => {
   const endpoint = accessToken ? "/reviews" : "/reviews/web";
-  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { "Authorization": `Bearer ${accessToken}` } } : {};
+
+  const params = {
+    menu_id: menuID,
+    page: 1,
+    size: 100,
+    // Legacy Django param name; Spring will ignore it.
+    per_page: 100,
+  };
+
+  const parse = (data: any) => {
+    const totalCount = data?.totalCount ?? data?.total_count ?? 0;
+    const hasNext = data?.hasNext ?? data?.has_next ?? false;
+    const result = data?.result ?? [];
+    return { totalCount, hasNext, result } as { totalCount: number; hasNext: boolean; result: RawReview[] };
+  };
 
   return axios
-    .get(`${APIendpoint()}${endpoint}?menu_id=${menuID}&page=1&per_page=100`, config)
-    .then((res) => {
-      const {
-        data: { total_count: totalCount, has_next: hasNext, result },
-      } = res;
-      return { totalCount, hasNext, result };
+    .get(`${APIendpoint()}${endpoint}`, { ...config, params })
+    .then((res) => parse(res.data))
+    .catch((e) => {
+      const status = e?.response?.status;
+      if (status !== 404) throw e;
+      // Legacy endpoint (pre Spring): GET /reviews/?menu_id=...&page=...&per_page=...
+      return axios
+        .get(`${APIendpoint()}/reviews/`, { ...config, params })
+        .then((res) => parse(res.data));
     });
 };
 
@@ -27,7 +45,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
       },
     })
     .then(() => {})

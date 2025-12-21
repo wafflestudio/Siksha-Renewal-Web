@@ -69,9 +69,9 @@ export default function Home() {
               else return aOrder - bOrder;
             };
 
-            result[0].BR = BR.sort(sortFunction);
-            result[0].LU = LU.sort(sortFunction);
-            result[0].DN = DN.sort(sortFunction);
+            if (BR) result[0].BR = BR.sort(sortFunction);
+            if (LU) result[0].LU = LU.sort(sortFunction);
+            if (DN) result[0].DN = DN.sort(sortFunction);
 
             setData(result[0]);
           })

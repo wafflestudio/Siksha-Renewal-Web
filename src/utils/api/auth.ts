@@ -23,7 +23,7 @@ export const loginKakao = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/kakao`,
         {},
         {
-          headers: { "kakao-token": `Bearer ${access_token}` },
+          headers: { "Authorization": `Bearer ${access_token}` },
         },
       ),
     )
@@ -62,7 +62,7 @@ export const loginGoogle = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/google`,
         {},
         {
-          headers: { "google-token": `Bearer ${id_token}` },
+          headers: { "Authorization": `Bearer ${id_token}` },
         },
       ),
     )
@@ -83,7 +83,7 @@ export const loginApple = async (id_token: string): Promise<string> => {
       `${APIendpoint()}/auth/login/apple`,
       {},
       {
-        headers: { "apple-token": `Bearer ${id_token}` },
+        headers: { "Authorization": `Bearer ${id_token}` },
       },
     )
     .then((res) => {
@@ -106,7 +106,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     .post(
       `${APIendpoint()}/auth/refresh`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -124,18 +124,22 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     return Promise.resolve(getMockUser());
   }
 
+  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
+  const parse = (data: any): User => {
+    const id = data?.id;
+    const nickname = data?.nickname;
+    const profileUrl = data?.profile_url ?? data?.profileUrl ?? null;
+    return { id, nickname, image: profileUrl };
+  };
+
   return axios
-    .get(`${APIendpoint()}/auth/me/image`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
-    })
-    .then((res: { data: RawUser }) => {
-      const {
-        data: { id, nickname, profile_url },
-      } = res;
-      return { id, nickname, image: profile_url };
-    })
+    .get(`${APIendpoint()}/auth/me`, config)
+    .then((res: { data: RawUser }) => parse(res.data))
     .catch((e) => {
-      throw e;
+      const status = e?.response?.status;
+      if (status !== 404) throw e;
+      // Legacy endpoint (pre Spring)
+      return axios.get(`${APIendpoint()}/auth/me/image`, config).then((res: { data: RawUser }) => parse(res.data));
     });
 };
 
@@ -146,7 +150,7 @@ export const updateProfile = async (formData: FormData, accessToken: string): Pr
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
-        "authorization-token": `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -169,13 +173,15 @@ export const updateProfileWithImage = async (
     throw new Error("image is required");
   }
 
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
   return axios
-    .patch(`${APIendpoint()}/auth/me/image/profile`, formData, {
-      headers: {
-        "authorization-token": `Bearer ${accessToken}`,
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .patch(`${APIendpoint()}/auth/me/profile`, formData, config)
     .then((res: { data: RawUser }) => {
       const {
         data: { id, nickname, profile_url },
@@ -183,18 +189,30 @@ export const updateProfileWithImage = async (
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      throw e;
+      const status = e?.response?.status;
+      if (status !== 404) throw e;
+      // Legacy endpoint (pre Spring)
+      return axios
+        .patch(`${APIendpoint()}/auth/me/image/profile`, formData, config)
+        .then((res: { data: RawUser }) => {
+          const {
+            data: { id, nickname, profile_url },
+          } = res;
+          return { id, nickname, image: profile_url };
+        });
     });
 };
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
+  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
   return axios
-    .delete(`${APIendpoint()}/auth/`, {
-      headers: { "authorization-token": `Bearer ${accessToken}` },
-    })
+    .delete(`${APIendpoint()}/auth`, config)
     .then(() => {})
     .catch((e) => {
-      throw e;
+      const status = e?.response?.status;
+      if (status !== 404) throw e;
+      // Legacy endpoint allowed trailing slash
+      return axios.delete(`${APIendpoint()}/auth/`, config).then(() => {});
     });
 };
 
