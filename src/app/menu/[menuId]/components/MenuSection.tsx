@@ -33,12 +33,15 @@ export default function MenuSection({
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
   const [keywordReviewScore, setKeywordReviewScore] = useState<KeywordReviewScore>({
-    food_composition_cnt: 0,
-    food_composition_keyword: "음식구성",
-    price_cnt: 0,
-    price_keyword: "가격",
-    taste_cnt: 0,
     taste_keyword: "맛",
+    taste_cnt: 0,
+    taste_total: 0,
+    price_keyword: "가격",
+    price_cnt: 0,
+    price_total: 0,
+    food_composition_keyword: "음식구성",
+    food_composition_cnt: 0,
+    food_composition_total: 0,
   });
 
   const isMobile = useIsMobile();
