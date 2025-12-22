@@ -107,8 +107,7 @@ export const setReviewLike = (reviewId: number, accessToken: string): Promise<vo
     })
     .then(() => {})
     .catch((err) => {
-      err.message = "리뷰 좋아요에 실패했습니다.";
-      throw new Error(err);
+      throw err;
     });
 };
 
