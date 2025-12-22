@@ -10,6 +10,7 @@ import ReviewLikes from "./ReviewLikes";
 import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
+import useError from "hooks/useError";
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);
   const isMobile = useIsMobile();
@@ -17,30 +18,32 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
   const { getAccessToken } = useAuth();
   const { currentTheme } = UseCurrentTheme();
   const isDark = currentTheme === "dark";
+  const { onHttpError } = useError();
 
   const handleReviewLike = async () => {
     const accessToken = await getAccessToken();
     console.debug(accessToken);
     try {
       if (review.is_liked) {
-        // UI 먼저 업데이트
+        await setReviewUnlike(review.id, accessToken); // 서버 요청
+        // 성공 시 UI 업데이트
         setReview({
           ...review,
           is_liked: false,
           like_count: review.like_count - 1,
         });
-        await setReviewUnlike(review.id, accessToken); // 서버 요청
       } else {
+        await setReviewLike(review.id, accessToken); // 서버 요청
+        // 성공 시 UI 업데이트
         setReview({
           ...review,
           is_liked: true,
           like_count: review.like_count + 1,
         });
-        await setReviewLike(review.id, accessToken); // 서버 요청
       }
     } catch (err) {
       console.error(err);
-      // 실패 시 rollback 필요하면 setReview로 원래 값 복원
+      onHttpError(err, { preventNavigation: true });
     }
   };
 
