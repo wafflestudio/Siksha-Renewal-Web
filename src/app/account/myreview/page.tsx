@@ -6,85 +6,12 @@ import useError from "hooks/useError";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MyReviewGroupType } from "types";
+import { MyReviewGroupType, RawReview } from "types";
 import { getMyReviewList } from "utils/api/reviews";
 import MyReviewGroup from "./components/MyReviewGroup";
 
 export default function MyReview() {
   const [ reviews, setReviews ] = useState<MyReviewGroupType[]>([]);
-  const mockupReviews: any = [
-    {
-      restaurant_id: 1,
-      name_Kr: "기숙사식당>아워홈",
-      name_En: "Dormitory Restaurant > Our Home",
-      reviews: [
-        {
-          created_at: "2025-06-28T19:33:49+09:00",
-          updated_at: "2025-06-28T19:33:49+09:00",
-          id: 429,
-          menu_id: 142075,
-          name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
-          user_id: 11303,
-          score: 3,
-          comment: "그냥 저냥 먹을만한가?",
-          etc: null,
-        },
-        {
-          created_at: "2025-06-28T19:33:49+09:00",
-          updated_at: "2025-06-28T19:33:49+09:00",
-          id: 430,
-          menu_id: 142075,
-          name_kr: "치킨마요덮밥&불닭소스꼬치어묵",
-          user_id: 11303,
-          score: 3,
-          comment: "학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ 학교 생활의 낙을 담당하는 맛!! 이거 먹으려고 학교 다닙니다 ㅎㅎ ",
-          keywords: ["또 먹고 싶어요", "가성비 좋아요", "알찬 편이에요"],
-          etc: null,
-        },
-      ]
-    },
-    {
-      restaurant_id: 2,
-      name_Kr: "학생회관식당",
-      name_En: "Student Union Restaurant",
-      reviews: [
-        {
-          created_at: "2025-03-10T10:28:30+09:00",
-          updated_at: "2025-03-10T10:28:30+09:00",
-          id: 4290,
-          menu_id: 121039,
-          name_kr: "콩나물밥&부추양념장",
-          user_id: 11303,
-          score: 5,
-          comment: "test",
-          etc: {
-            images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-121039/user-11303/0.jpeg" ],
-          },
-        },
-      ]
-    },
-    {
-      restaurant_id: 3,
-      name_Kr: "버거운버거",
-      name_En: "Burger Un Burger",
-      reviews: [
-        {
-          created_at: "2025-03-09T22:22:08+09:00",
-          updated_at: "2025-03-09T22:22:08+09:00",
-          id: 4285,
-          menu_id: 120347,
-          name_kr: "버거운치킨버거",
-          user_id: 11303,
-          score: 5,
-          comment: "dd",
-          keywords: ["또 먹고 싶어요", "가성비 좋아요", "알찬 편이에요"],
-          etc: {
-            images: [ "https://siksha-dev.s3.ap-northeast-2.amazonaws.com/review-images/menu-120347/user-11303/0.jpeg" ]
-          },
-        },
-      ]
-    },
-  ];
   
   const router = useRouter();
   const { authStatus, getAccessToken, authGuard } = useAuth();
@@ -94,25 +21,28 @@ export default function MyReview() {
 
   const fetchMyReviews = (size: number, page: number) =>
     getAccessToken()
-      .then((accessToken) => getMyReviewList(accessToken, size, page))
+      .then((accessToken) => {
+        return getMyReviewList(accessToken, size, page);
+      })
       .then(({ result, hasNext }) => {
-        setReviews((prev) => [...prev, ...result]);
+        result.forEach((myReviewGroup) => setReviews((prev) => {
+          // TODO: 리뷰가 중복되어 추가되는 문제를 임시로 방지하는 코드
+          // 원천적으로 중복된 api call을 막도록 개선해야 함
+          if (prev.some((group) => group.restaurant_id === myReviewGroup.restaurant_id)) {
+            return prev;
+          }
+          return [...prev, myReviewGroup];
+        }));
         return hasNext;
       })
       .catch(onHttpError);
 
+  // TODO: 리뷰를 비롯한 모든 서버 데이터는 react-query로 관리해야 함
   useEffect(() => {
-    setReviews([]);
-  }, []);
-
-  // for debugging purposes
-  useEffect(() => {
-    if (reviews.length > 0) {
-      console.log("My reviews fetched:", reviews);
-    } else if (authStatus === "login") {
-      fetchMyReviews(10, 1);
+    if (reviews.length == 0 && authStatus === "login") {
+      fetchMyReviews(100, 1);
     }
-  }, [reviews]);
+  }, [reviews, authStatus]);
 
   if (authStatus === "login") {
     return (
@@ -120,12 +50,13 @@ export default function MyReview() {
         <MobileSubHeader title="나의 평가 관리" handleBack={router.back} />
         <Container>
           <Header>나의 평가 관리</Header>
-          <MyReviewsContainer>
-            {mockupReviews.map((reviewGroup) => (
+            <MyReviewsContainer>
+            {reviews.map((reviewGroup, index) => (
               <MyReviewGroup
                 key={reviewGroup.restaurant_id}
-                restaurantName={reviewGroup.name_Kr}
+                restaurantName={reviewGroup.name_kr}
                 reviews={reviewGroup.reviews}
+                isFirst={index === 0}
               />
             ))}
           </MyReviewsContainer>

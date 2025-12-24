@@ -39,7 +39,7 @@ export default function MyReviewItem({
                 ))}
               </Keywords>
             )}
-            {review.etc && (
+            {review.etc?.images && (
               <Images>
                 {review.etc.images.map((image) => (
                   <Image
