@@ -104,9 +104,7 @@ const ContextProvider = ({ children }) => {
   );
 
   return (
-    <dispatchContext.Provider
-      value={dispatchValue}
-    >
+    <dispatchContext.Provider value={dispatchValue}>
       <stateContext.Provider value={state}>{children}</stateContext.Provider>
     </dispatchContext.Provider>
   );

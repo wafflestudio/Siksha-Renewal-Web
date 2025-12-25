@@ -42,15 +42,15 @@ export default function useModals() {
    */
   const openErrorModal = useCallback(
     (
-    error: Error | AxiosError,
-    options: {
-      message?: string;
-      isUserFail: boolean;
-      onClose?: () => void;
-      onRetry?: () => void;
-    } = {
-      isUserFail: false,
-    },
+      error: Error | AxiosError,
+      options: {
+        message?: string;
+        isUserFail: boolean;
+        onClose?: () => void;
+        onRetry?: () => void;
+      } = {
+        isUserFail: false,
+      },
     ) => {
       const defaultMessage = "알 수 없는 오류가 발생했습니다.";
 

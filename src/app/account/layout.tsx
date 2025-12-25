@@ -13,7 +13,7 @@ export default function AccountLayout({ children }) {
 const Container = styled(OneColumnLayout.Container)`
   padding: 0;
   max-width: none;
-  
+
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;

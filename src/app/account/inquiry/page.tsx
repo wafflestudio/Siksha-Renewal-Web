@@ -267,7 +267,7 @@ const DesktopText = styled.span`
 
 const MobileText = styled.span`
   display: none;
-  
+
   @media (max-width: 768px) {
     display: inline;
   }

@@ -118,7 +118,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     padding: 14px;
     gap: 10px;
-    border: solid 1px var(--SemanticColor-Border-Primary, #E5E6E9);
+    border: solid 1px var(--SemanticColor-Border-Primary, #e5e6e9);
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box;

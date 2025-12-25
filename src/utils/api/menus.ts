@@ -15,9 +15,7 @@ export const getMenuList = (
     return Promise.resolve(getMockMenuList(date));
   }
 
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   const springUrl = !!accessToken
     ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
@@ -86,9 +84,7 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   const springUrl = !!accessToken
     ? `${APIendpoint()}/menus/${menuID}`
@@ -124,7 +120,7 @@ export const setMenuLike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/like`,
       {},
-      { headers: { "Authorization": `Bearer ${accessToken}` } },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -145,7 +141,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { "Authorization": `Bearer ${accessToken}` } },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -165,7 +161,7 @@ export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> 
 
   return axios
     .get(`${APIendpoint()}/menus/me`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then((res) => {
       const { data } = res;

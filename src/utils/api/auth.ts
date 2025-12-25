@@ -23,7 +23,7 @@ export const loginKakao = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/kakao`,
         {},
         {
-          headers: { "Authorization": `Bearer ${access_token}` },
+          headers: { Authorization: `Bearer ${access_token}` },
         },
       ),
     )
@@ -62,7 +62,7 @@ export const loginGoogle = async (code: string): Promise<string> => {
         `${APIendpoint()}/auth/login/google`,
         {},
         {
-          headers: { "Authorization": `Bearer ${id_token}` },
+          headers: { Authorization: `Bearer ${id_token}` },
         },
       ),
     )
@@ -83,7 +83,7 @@ export const loginApple = async (id_token: string): Promise<string> => {
       `${APIendpoint()}/auth/login/apple`,
       {},
       {
-        headers: { "Authorization": `Bearer ${id_token}` },
+        headers: { Authorization: `Bearer ${id_token}` },
       },
     )
     .then((res) => {
@@ -106,7 +106,7 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
     .post(
       `${APIendpoint()}/auth/refresh`,
       {},
-      { headers: { "Authorization": `Bearer ${accessToken}` } },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -124,7 +124,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
     return Promise.resolve(getMockUser());
   }
 
-  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
+  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
   const parse = (data: any): User => {
     const id = data?.id;
     const nickname = data?.nickname;
@@ -139,7 +139,9 @@ export const getMyData = async (accessToken: string): Promise<User> => {
       const status = e?.response?.status;
       if (status !== 404) throw e;
       // Legacy endpoint (pre Spring)
-      return axios.get(`${APIendpoint()}/auth/me/image`, config).then((res: { data: RawUser }) => parse(res.data));
+      return axios
+        .get(`${APIendpoint()}/auth/me/image`, config)
+        .then((res: { data: RawUser }) => parse(res.data));
     });
 };
 
@@ -150,7 +152,7 @@ export const updateProfile = async (formData: FormData, accessToken: string): Pr
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -175,7 +177,7 @@ export const updateProfileWithImage = async (
 
   const config = {
     headers: {
-      "Authorization": `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
     },
   };
@@ -204,7 +206,7 @@ export const updateProfileWithImage = async (
 };
 
 export const deleteAccount = async (accessToken: string): Promise<void> => {
-  const config = { headers: { "Authorization": `Bearer ${accessToken}` } };
+  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
   return axios
     .delete(`${APIendpoint()}/auth`, config)
     .then(() => {})

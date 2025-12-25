@@ -315,4 +315,3 @@ export const LoadingAnimation = css`
     }
   }
 `;
-

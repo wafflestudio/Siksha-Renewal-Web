@@ -60,10 +60,13 @@ export default function useAuth() {
     return getAccessToken();
   }, [authStatus, getAccessToken]);
 
-  const login = useCallback((accessToken: string) => {
-    setStorage(accessToken);
-    setAuthStatus("login");
-  }, [setAuthStatus, setStorage]);
+  const login = useCallback(
+    (accessToken: string) => {
+      setStorage(accessToken);
+      setAuthStatus("login");
+    },
+    [setAuthStatus, setStorage],
+  );
 
   const logout = useCallback(() => {
     removeStorage();

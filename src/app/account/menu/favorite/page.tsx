@@ -155,7 +155,7 @@ const TitleText = styled.div`
 
 const LoadingText = styled.div`
   font-size: 16px;
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
   padding: 40px;
 `;

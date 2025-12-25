@@ -11,7 +11,7 @@ export const getReviews = (
   result: RawReview[];
 }> => {
   const endpoint = accessToken ? "/reviews" : "/reviews/web";
-  const config = accessToken ? { headers: { "Authorization": `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   const params = {
     menu_id: menuID,
@@ -25,7 +25,11 @@ export const getReviews = (
     const totalCount = data?.totalCount ?? data?.total_count ?? 0;
     const hasNext = data?.hasNext ?? data?.has_next ?? false;
     const result = data?.result ?? [];
-    return { totalCount, hasNext, result } as { totalCount: number; hasNext: boolean; result: RawReview[] };
+    return { totalCount, hasNext, result } as {
+      totalCount: number;
+      hasNext: boolean;
+      result: RawReview[];
+    };
   };
 
   return axios
@@ -45,7 +49,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
