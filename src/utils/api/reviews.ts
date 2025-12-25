@@ -51,7 +51,7 @@ export const setReview = (body: FormData, accessToken: string): Promise<void> =>
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
