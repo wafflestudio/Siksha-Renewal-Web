@@ -33,7 +33,7 @@ export default function ReviewPost() {
   const reviewId = searchParams.get("reviewId");
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
-  
+
   const { menu, fetchMenu, fetchReviews, fetchReview, submitReview, editReview } = useMenu();
   const { openModal } = useModals();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
@@ -44,8 +44,7 @@ export default function ReviewPost() {
   const MAX_COMMENT_LENGTH = 150;
 
   useEffect(() => {
-    if (!isEditMode)
-      return;
+    if (!isEditMode) return;
 
     fetchReview(Number(reviewId))
       .then((reviewData: MyReviewType) => {
@@ -105,7 +104,7 @@ export default function ReviewPost() {
     const body = new FormData();
     body.append("menu_id", menuId);
     body.append("score", String(inputs.score));
-    body.append("comment", inputs.comment);    
+    body.append("comment", inputs.comment);
     // TODO: 키워드 리뷰 UI 추가 후 수정
     body.append("taste", "");
     body.append("price", "");
@@ -115,12 +114,12 @@ export default function ReviewPost() {
       .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
       .then(() => {
         const actionFunction = isEditMode
-        ? () => editReview(Number(reviewId), body)
-        : () => submitReview(body);
+          ? () => editReview(Number(reviewId), body)
+          : () => submitReview(body);
         return actionFunction();
       })
       .then(() => {
-        openModal(ConfirmModal, { 
+        openModal(ConfirmModal, {
           type: isEditMode ? "edit" : "submit",
           onClose: () => {
             router.back();
@@ -203,7 +202,10 @@ export default function ReviewPost() {
             )}
             {inputs.images.map((image, i) => (
               <PhotoContainer key={i}>
-                <Photo src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="리뷰 이미지" />
+                <Photo
+                  src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                  alt="리뷰 이미지"
+                />
                 <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
               </PhotoContainer>
             ))}
@@ -226,17 +228,21 @@ export default function ReviewPost() {
               router.back();
             }}
           />
-          {
-            isEditMode ?
-              <ReviewEditButton
-                onClick={() => {handleSubmit()}}
-                disabled={inputs.comment.length === 0}
-              />
-              :<ReviewPostButton
-                onClick={() => {handleSubmit()}}
-                disabled={inputs.comment.length === 0}
-              />
-          }
+          {isEditMode ? (
+            <ReviewEditButton
+              onClick={() => {
+                handleSubmit();
+              }}
+              disabled={inputs.comment.length === 0}
+            />
+          ) : (
+            <ReviewPostButton
+              onClick={() => {
+                handleSubmit();
+              }}
+              disabled={inputs.comment.length === 0}
+            />
+          )}
         </Footer>
       </Container>
     </>

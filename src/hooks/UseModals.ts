@@ -56,12 +56,12 @@ export default function useModals() {
 
       const isAxiosError = error instanceof AxiosError;
 
-    const message = options.message
-      ? options.message
-      : isAxiosError
+      const message = options.message
+        ? options.message
+        : isAxiosError
         ? error.response?.data.message ?? defaultMessage
         : defaultMessage;
-    const status = options.isUserFail ? 400 : isAxiosError ? error.response?.status ?? 500 : 500;
+      const status = options.isUserFail ? 400 : isAxiosError ? error.response?.status ?? 500 : 500;
 
       openModal(ErrorModal, {
         code: status,

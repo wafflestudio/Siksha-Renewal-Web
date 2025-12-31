@@ -27,12 +27,12 @@ export default function MobileNavigationBar() {
     isFilterFavorite === true
       ? "favorite"
       : addr === "/" || addr?.startsWith("/menu")
-        ? "menu"
-        : addr?.startsWith("/community")
-          ? "community"
-          : addr?.startsWith("/account")
-            ? "account"
-            : null;
+      ? "menu"
+      : addr?.startsWith("/community")
+      ? "community"
+      : addr?.startsWith("/account")
+      ? "account"
+      : null;
 
   if (!rootElement) return null;
 
@@ -97,8 +97,7 @@ export default function MobileNavigationBar() {
           if (authStatus === "login") {
             setIsFilterFavorite(false);
             router.push(`/account`);
-          }
-          else openLoginModal();
+          } else openLoginModal();
         }}
         style={{
           width: "36px",

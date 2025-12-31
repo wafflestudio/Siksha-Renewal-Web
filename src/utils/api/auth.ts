@@ -135,7 +135,7 @@ export const getMyData = async (accessToken: string): Promise<User> => {
 
   return axios
     .get(`${APIendpoint()}/auth/me`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then((res: { data: RawUser }) => {
       const {
@@ -181,7 +181,7 @@ export const updateProfileWithImage = async (
   return axios
     .patch(`${APIendpoint()}/auth/me/profile`, formData, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
       },
     })
@@ -192,17 +192,7 @@ export const updateProfileWithImage = async (
       return { id, nickname, image: profile_url };
     })
     .catch((e) => {
-      const status = e?.response?.status;
-      if (status !== 404) throw e;
-      // Legacy endpoint (pre Spring)
-      return axios
-        .patch(`${APIendpoint()}/auth/me/image/profile`, formData, config)
-        .then((res: { data: RawUser }) => {
-          const {
-            data: { id, nickname, profile_url },
-          } = res;
-          return { id, nickname, image: profile_url };
-        });
+      throw e;
     });
 };
 
@@ -210,7 +200,7 @@ export const deleteAccount = async (accessToken: string): Promise<void> => {
   const config = { headers: { Authorization: `Bearer ${accessToken}` } };
   return axios
     .delete(`${APIendpoint()}/auth/`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {

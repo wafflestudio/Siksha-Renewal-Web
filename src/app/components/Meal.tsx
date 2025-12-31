@@ -104,6 +104,6 @@ const MealText = styled.div`
     font-weight: 400;
 
     color: ${(props: { active: boolean }) =>
-    props.active ? "var(--Color-Foundation-orange-500)" : "#919191"};
+      props.active ? "var(--Color-Foundation-orange-500)" : "#919191"};
   }
 `;

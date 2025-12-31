@@ -32,7 +32,7 @@ export default function ReviewItem({ review }: { review: ReviewType }) {
       <Body>
         <Content>
           <Comment>{review.comment}</Comment>
-          {review.etc && (
+          {!!review.etc?.images?.length && (
             <Images>
               {review.etc.images.map((image) => (
                 <Image

@@ -18,9 +18,7 @@ export const getMenuList = (
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
     : `${APIendpoint()}/menus/web?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -29,12 +27,17 @@ export const getMenuList = (
         data: { count, result: rawData },
       } = res;
       if (count === 0) {
-        return { count: 0, result: [{
-          date: date,
-          BR: [],
-          LU: [],
-          DN: [],
-        }] };
+        return {
+          count: 0,
+          result: [
+            {
+              date: date,
+              BR: [],
+              LU: [],
+              DN: [],
+            },
+          ],
+        };
       }
       const result = rawData.map((menuList) => ({
         date: menuList.date,
@@ -53,9 +56,7 @@ export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMe
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/menus/${menuID}`
     : `${APIendpoint()}/menus/${menuID}/web`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -111,7 +112,6 @@ export const setMenuUnlike = (
 };
 
 export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
-
   return axios
     .get(`${APIendpoint()}/menus/me`, {
       headers: { Authorization: `Bearer ${accessToken}` },

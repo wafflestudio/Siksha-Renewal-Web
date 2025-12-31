@@ -90,7 +90,7 @@ export default function Home() {
     async function fetchIsFestivalDate() {
       const dateString = formatISODate(date);
       console.log("dateString", dateString);
-      
+
       // 하드코딩된 버전: date가 20250916, 20250918 사이면 true
       const startFestivalDate = "2025-09-16";
       const endFestivalDate = "2025-09-18";

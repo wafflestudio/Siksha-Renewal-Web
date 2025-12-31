@@ -62,8 +62,8 @@ export default function ProfileEdit(props: ProfileEditProps) {
             changeToDefaultImage
               ? "/img/default-profile.svg"
               : imageBlob
-                ? URL.createObjectURL(imageBlob)
-                : userInfo?.image ?? "/img/default-profile.svg"
+              ? URL.createObjectURL(imageBlob)
+              : userInfo?.image ?? "/img/default-profile.svg"
           }
           alt="프로필 사진"
         />

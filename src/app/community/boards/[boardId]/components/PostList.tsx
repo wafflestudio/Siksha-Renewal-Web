@@ -56,7 +56,7 @@ const EmptyText = styled.div`
 
   @media (max-width: 768px) {
     height: 100%;
-    color: var(--Color-Foundation-gray-600, #989AA0);
+    color: var(--Color-Foundation-gray-600, #989aa0);
     font-size: var(--Font-size-15, 15px);
     font-weight: var(--Font-weight-bold, 700);
   }

@@ -18,25 +18,28 @@ export default function useReviewActions() {
 
   const removeReview = (reviewId: number) => {
     if (authStatus === "logout") openLoginModal();
-    else openModal(DeleteModal, {
-      type: "review",
-      onClose: () => { },
-      onSubmit: () =>
-        getAccessToken()
-          .then((accessToken) => deleteReview(reviewId, accessToken))
-          .then(() => {
-            openModal(ConfirmModal, {
-              type: "delete",
-              onClose: () => { router.refresh(); },
-            });
-            router.refresh();
-          })
-          .catch(onHttpError),
-    });
+    else
+      openModal(DeleteModal, {
+        type: "review",
+        onClose: () => {},
+        onSubmit: () =>
+          getAccessToken()
+            .then((accessToken) => deleteReview(reviewId, accessToken))
+            .then(() => {
+              openModal(ConfirmModal, {
+                type: "delete",
+                onClose: () => {
+                  router.refresh();
+                },
+              });
+              router.refresh();
+            })
+            .catch(onHttpError),
+      });
   };
 
   return {
     removeReview,
-    updateReview
+    updateReview,
   };
 }

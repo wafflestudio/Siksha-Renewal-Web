@@ -13,29 +13,20 @@ export const getReviews = (
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
     : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
-  return axios
-    .get(apiUrl, config)
-    .then((res) => {
-      const {
-        data: { total_count: totalCount, has_next: hasNext, result },
-      } = res;
-      return { totalCount, hasNext, result };
-    });
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  return axios.get(apiUrl, config).then((res) => {
+    const {
+      data: { total_count: totalCount, has_next: hasNext, result },
+    } = res;
+    return { totalCount, hasNext, result };
+  });
 };
 
-export const getReview = (
-  reviewID: number,
-  accessToken: string = "",
-): Promise<MyReviewType> => {
+export const getReview = (reviewID: number, accessToken: string = ""): Promise<MyReviewType> => {
   const apiUrl = !!accessToken
     ? `${APIendpoint()}/reviews/${reviewID}`
     : `${APIendpoint()}/reviews/${reviewID}/web`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
   return axios
     .get(apiUrl, config)
     .then((res) => {
@@ -45,7 +36,7 @@ export const getReview = (
     .catch((e) => {
       throw e;
     });
-}
+};
 
 export const setReview = (body: FormData, accessToken: string): Promise<void> => {
   return axios
@@ -85,7 +76,7 @@ export const getMyReviewList = (
 }> => {
   return axios
     .get(`${APIendpoint()}/reviews/me?page=${page}&perPage=${size}`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then((res) => {
       const {
@@ -105,7 +96,7 @@ export const getMyReviewList = (
 export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
   return axios
     .patch(`${APIendpoint()}/reviews/${reviewId}`, body, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
@@ -116,7 +107,7 @@ export const updateReview = (reviewId: number, body: FormData, accessToken: stri
 export const deleteReview = (reviewId: number, accessToken: string) => {
   return axios
     .delete(`${APIendpoint()}/reviews/${reviewId}`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
