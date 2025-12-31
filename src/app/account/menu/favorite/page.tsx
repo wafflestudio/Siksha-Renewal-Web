@@ -22,7 +22,6 @@ export default function FavoriteMenus() {
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(authGuard, [authStatus]);
 
@@ -46,28 +45,45 @@ export default function FavoriteMenus() {
   }, [authStatus, loading, showToast]);
 
   useEffect(() => {
-    if (authStatus !== "login") {
-      if (authStatus === "logout") setLoading(false);
+    // Wait for auth status to be determined
+    if (authStatus === "loading") {
       return;
     }
-    if (hasFetched) return;
+
+    // Not logged in - show empty state
+    if (authStatus !== "login") {
+      setLoading(false);
+      return;
+    }
+
+    // Logged in - fetch data
+    let isCancelled = false;
 
     const fetchFavoriteMenus = async () => {
       try {
         const accessToken = await getAccessToken();
         const response = await getLikedMenus(accessToken);
-        setFavoriteMenus(response.result);
-        setHasFetched(true);
+        if (!isCancelled) {
+          setFavoriteMenus(response.result);
+        }
       } catch (error) {
-        onHttpError(error);
+        if (!isCancelled) {
+          onHttpError(error);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchFavoriteMenus();
+
+    return () => {
+      isCancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authStatus]); // Only depend on authStatus to prevent infinite re-fetches
+  }, [authStatus]);
 
   // Memoize callback to prevent recreation on every render
   const handleUnlikeMenu = useCallback(

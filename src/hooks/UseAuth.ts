@@ -3,7 +3,6 @@ import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import useModals from "./UseModals";
 import useLocalStorage from "./UseLocalStorage";
-import { MOCK_ACCESS_TOKEN, isMockAuthEnabled } from "utils/mockAuth";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
@@ -21,16 +20,10 @@ export default function useAuth() {
   // 전역적으로 수행되어야 하는 동작이 useAuth 내 useEffect의 callback function으로 들어가 있음
   // 서로 다른 컴포넌트에서 useAuth() 객체가 생성됨에 따라 중복 실행이 발생함
   useEffect(() => {
-    if (isMockAuthEnabled() && !accessToken) {
-      setStorage(MOCK_ACCESS_TOKEN);
-      setAuthStatus("login");
-      return;
-    }
-
     if (accessToken === undefined) setAuthStatus("loading");
     else if (accessToken) setAuthStatus("login");
     else setAuthStatus("logout");
-  }, [accessToken, setAuthStatus, setStorage]);
+  }, [accessToken, setAuthStatus]);
 
   const authGuard = useCallback(() => {
     if (authStatus === "logout") {

@@ -243,7 +243,7 @@ const HLine = styled.div`
   align-self: stretch;
   background: var(--Color-Foundation-orange-500, #ff9522);
   width: 100%;
-  margin-top: -8px;
+  margin-top: 0px;
 
   @media (min-width: 769px) {
     height: 2px;
@@ -293,7 +293,7 @@ const MenuName = styled.div`
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
     font-size: 15px;
-    line-height: 140%;
+    line-height: 150%;
     letter-spacing: 0;
   }
 `;
@@ -342,9 +342,12 @@ const Price = styled.div`
 
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
-    font-size: 12px;
-    line-height: 140%;
-    letter-spacing: 0;
+    text-align: center;
+    font-family: var(--Font-family-sans, NanumSquare);
+    font-size: var(--Font-size-14, 14px);
+    font-style: normal;
+    font-weight: var(--Font-weight-regular, 400);
+    line-height: 150%;
     width: fit-content;
     min-width: 28px;
   }
@@ -366,9 +369,12 @@ const Rate = styled.div`
 
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
-    font-size: 12px;
-    line-height: 140%;
-    letter-spacing: 0;
+    text-align: center;
+    font-family: var(--Font-family-sans, NanumSquare);
+    font-size: var(--Font-size-14, 14px);
+    font-style: normal;
+    font-weight: var(--Font-weight-regular, 400);
+    line-height: 150%;
     width: fit-content;
     min-width: 23px;
   }

@@ -1,7 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
 import { User, RawUser } from "types";
-import { isMockToken, getMockUser } from "utils/mockAuth";
 
 export const loginKakao = async (code: string): Promise<string> => {
   const grantType = "authorization_code";
@@ -99,10 +98,6 @@ export const loginApple = async (id_token: string): Promise<string> => {
 };
 
 export const loginRefresh = async (accessToken: string): Promise<string> => {
-  if (isMockToken(accessToken)) {
-    return Promise.resolve(accessToken);
-  }
-
   return axios
     .post(
       `${APIendpoint()}/auth/refresh`,
@@ -121,18 +116,6 @@ export const loginRefresh = async (accessToken: string): Promise<string> => {
 };
 
 export const getMyData = async (accessToken: string): Promise<User> => {
-  if (isMockToken(accessToken)) {
-    return Promise.resolve(getMockUser());
-  }
-
-  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
-  const parse = (data: any): User => {
-    const id = data?.id;
-    const nickname = data?.nickname;
-    const profileUrl = data?.profile_url ?? data?.profileUrl ?? null;
-    return { id, nickname, image: profileUrl };
-  };
-
   return axios
     .get(`${APIendpoint()}/auth/me`, {
       headers: { Authorization: `Bearer ${accessToken}` },
