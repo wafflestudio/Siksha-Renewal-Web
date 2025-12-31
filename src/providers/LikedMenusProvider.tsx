@@ -110,7 +110,10 @@ export function LikedMenusProvider({ children }: { children: ReactNode }) {
     [authStatus, getAccessToken, likedMenuIds, onHttpError],
   );
 
-  const isMenuLiked = useCallback((menuId: number) => likedMenuIds.includes(menuId), [likedMenuIds]);
+  const isMenuLiked = useCallback(
+    (menuId: number) => likedMenuIds.includes(menuId),
+    [likedMenuIds],
+  );
 
   const addLikedMenu = useCallback(
     async (menuId: number) => {

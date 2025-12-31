@@ -11,38 +11,17 @@ import useError from "hooks/useError";
 import LikedMenuCard from "app/components/LikedMenuCard";
 import RestaurantInfo from "app/components/RestaurantInfo";
 import { useStateContext } from "providers/ContextProvider";
-import useToast from "hooks/UseToast";
 
 export default function FavoriteMenus() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
   const { removeLikedMenu } = useLikedMenus();
   const { onHttpError } = useError();
   const { showInfo } = useStateContext();
-  const { showToast } = useToast();
   const router = useRouter();
   const [favoriteMenus, setFavoriteMenus] = useState<LikedMenusResponse["result"]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(authGuard, [authStatus]);
-
-  // Show speech-bubble toast on first visit
-  useEffect(() => {
-    const hasSeenBellToast = localStorage.getItem("likedMenuBellToastSeen");
-
-    if (!hasSeenBellToast && authStatus === "login" && !loading) {
-      const timer = setTimeout(() => {
-        showToast("메뉴 알림을 받아보세요!", {
-          variant: "speech-bubble",
-          animationType: "fade",
-          duration: 5000,
-          delay: 500,
-        });
-        localStorage.setItem("likedMenuBellToastSeen", "true");
-      }, 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [authStatus, loading, showToast]);
 
   useEffect(() => {
     // Wait for auth status to be determined
