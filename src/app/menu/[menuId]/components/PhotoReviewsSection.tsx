@@ -15,7 +15,7 @@ export default function PhotoReviewsSection({
   const isMobile = useIsMobile();
 
   const imagesCount = images.length;
-  const MAX_NUMBER_OF_PREVIEW_IMAGES = isMobile ? 3 : 4;
+  const MAX_NUMBER_OF_PREVIEW_IMAGES = isMobile ? 6 : 4;
   const IMAGE_SIZE = isMobile ? 120 : 160;
 
   if (images.length > MAX_NUMBER_OF_PREVIEW_IMAGES) {
@@ -167,6 +167,7 @@ const ImageWrapper = styled.div`
   width: var(--image-width);
   border-radius: 10px;
   overflow: hidden;
+  flex-shrink: 0;
 
   --image-height: 160px;
   --image-width: 160px;
