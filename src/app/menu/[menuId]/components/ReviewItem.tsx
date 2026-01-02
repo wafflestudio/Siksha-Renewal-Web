@@ -84,6 +84,7 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
               />
             )}
           </CommentReviewWrapper>
+          <KeywordAndImagesWrapper>
           <KeywordReviewChips keywords={review.keyword_reviews} />
           {Array.isArray(review.etc?.images) && (
             <Images>
@@ -102,6 +103,7 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
               ))}
             </Images>
           )}
+          </KeywordAndImagesWrapper>
           {/* ReviewLikes 클릭 이벤트 연결 */}
           {!isMobile && (
             <ReviewLikes
@@ -207,6 +209,12 @@ const CommentWrapper = styled.div<{ isDark: boolean }>`
     background-origin: border-box;
     padding: 10px 20px 10px 23px;
   }
+`;
+
+const KeywordAndImagesWrapper = styled.div`
+@media (max-width: 768px) {
+  padding-left: 20px;
+}
 `;
 const CommentReviewWrapper = styled.div`
   display: flex;
