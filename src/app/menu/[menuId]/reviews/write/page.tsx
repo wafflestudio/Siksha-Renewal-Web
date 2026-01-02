@@ -204,11 +204,16 @@ export default function ReviewPost() {
           </StarsContainer>
           <Score>{inputs.score}</Score>
         </Header>
+        <Divider />
+        <FormContainer>
         <KeywordReviewForm inputs={inputs} setInputs={setInputs} />
         <CommentSection>
           <div style={{ display: "flex", alignItems: "center" }}>
             <StyledCommentReviewIcon />
-            <CommentTitle>식단 한 줄 평을 함께 남겨보세요!</CommentTitle>
+            <CommentTitle>식단 한 줄 평을 함께 남겨보세요!
+ <span>(선택)</span>
+
+            </CommentTitle>
           </div>
           <div style={{ position: "relative" }}>
             <CommentTextArea
@@ -280,6 +285,7 @@ export default function ReviewPost() {
             />
           )}
         </Footer>
+        </FormContainer>
       </Container>
     </>
   );
@@ -306,6 +312,8 @@ const Container = styled(OneColumnLayout.Container)`
     flex: 1;
     margin-top: 0px;
     margin-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 `;
 
@@ -394,16 +402,7 @@ const SelectStarText = styled.span`
 
   @media (max-width: 768px) {
     display: inherit;
-  }
-`;
-
-const Star = styled.img`
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    width: 30px;
-    height: 30px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -428,7 +427,8 @@ const StarsContainer = styled.div`
   cursor: pointer;
   @media (max-width: 768px) {
     width: 150px;
-    margin-bottom: 7px;
+    margin-top: 0px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -447,7 +447,8 @@ const Score = styled.div`
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
   @media (max-width: 768px) {
-    margin-top: 7px;
+    margin-top: 0px;
+    margin-bottom: 20px;
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 
@@ -457,6 +458,27 @@ const Score = styled.div`
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
     line-height: 140%; /* 28px */
+  }
+`;
+
+const Divider = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    height: 10px;
+    width: 100%;
+    background-color: var(--Color-Foundation-gray-100);
+  }
+`;
+
+const FormContainer = styled.div`
+
+
+@media (max-width: 768px) {
+position: relative;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 `;
 
@@ -497,8 +519,7 @@ const CommentTextArea = styled.textarea`
 const StyledCommentReviewIcon = styled(CommentReviewIcon)`
   color: var(--Color-Foundation-gray-700, #b7b7b7);
   @media (max-width: 768px) {
-    width: 18px;
-    height: 18px;
+  color: var(--Color-Foundation-base-black);
   }
 `;
 
@@ -514,8 +535,23 @@ const CommentTitle = styled.div`
 
   margin-left: 6px;
 
+    span {
+    letter-spacing: -0.3px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 150%;
+    color: var(--Color-Foundation-gray-600);
+    margin-left: 4px;
+
+    @media (max-width: 768px) {
+      color: var(--Color-Foundation-gray-700);
+      font-size: 12px;
+    }
+  }
+
   @media (max-width: 768px) {
-    font-weight: var(--Font-weight-bold, 700);
+    color: var(--Color-Foundation-base-black);
+    font-size: 18px;
   }
 `;
 
@@ -711,7 +747,10 @@ const Footer = styled.div`
     position: absolute;
     display: inherit;
     bottom: 0;
-    padding: 0 24px 24px;
+    padding-bottom: 24px;
+    left: 16px;
+    right: 16px;
+    width: auto;
   }
 `;
 

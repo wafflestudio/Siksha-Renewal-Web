@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { ReviewInputs } from "../reviews/write/page";
 import TasteIcon from "assets/icons/keyword-taste.svg";
@@ -92,6 +92,11 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    margin-top: 26px;
+    padding-bottom: 36px;
+  }
 `;
 
 const Title = styled.h2`
@@ -108,6 +113,16 @@ const Title = styled.h2`
     line-height: 150%;
     color: var(--Color-Foundation-gray-600);
     margin-left: 4px;
+
+    @media (max-width: 768px) {
+      color: var(--Color-Foundation-gray-700);
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    color: var(--Color-Foundation-base-black);
+    font-size: 18px;
   }
 `;
 
