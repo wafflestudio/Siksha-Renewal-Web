@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Image from "next/image";
 import useIsMobile from "hooks/UseIsMobile";
 import CloseIcon from "assets/icons/close.svg";
+import LeftArrowIcon from "assets/icons/left-arrow-lightbox.svg";
+import RightArrowIcon from "assets/icons/right-arrow-lightbox.svg";
 
 interface ImageLightboxProps {
   images: string[];
@@ -42,11 +44,15 @@ export default function ImageLightbox({
   if (!isOpen) return null;
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    if (currentIndex < images.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
   };
 
   const handleBackgroundClick = (e: React.MouseEvent) => {
@@ -75,22 +81,12 @@ export default function ImageLightbox({
 
       <ContentWrapper onClick={(e) => e.stopPropagation()}>
         {!isMobile && (
-          <NavigationButton $position="left" onClick={handlePrevious}>
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M20 8L12 16L20 24"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <NavigationButton 
+            $position="left" 
+            $isActive={currentIndex > 0}
+            onClick={handlePrevious}
+          >
+            <LeftArrowIcon />
           </NavigationButton>
         )}
 
@@ -105,22 +101,12 @@ export default function ImageLightbox({
         </ImageContainer>
 
         {!isMobile && (
-          <NavigationButton $position="right" onClick={handleNext}>
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 8L20 16L12 24"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <NavigationButton 
+            $position="right" 
+            $isActive={currentIndex < images.length - 1}
+            onClick={handleNext}
+          >
+            <RightArrowIcon />
           </NavigationButton>
         )}
 
@@ -140,7 +126,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  background: #000000B2;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -153,8 +139,8 @@ const Overlay = styled.div`
 
 const MobileHeader = styled.div`
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 14.5px;
+  left: 30.84px;
   right: 16px;
   display: flex;
   align-items: center;
@@ -169,10 +155,8 @@ const Spacer = styled.div`
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 44px;
-  height: 44px;
+  top: 58.94px;
+  right: 58.94px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -183,12 +167,21 @@ const CloseButton = styled.button`
   padding: 0;
   flex-shrink: 0;
 
-  &:hover {
-    opacity: 0.8;
+
+  & svg {
+    width: 42.12px;
+    height: 42.12px;
   }
 
   @media (max-width: 768px) {
     position: static;
+    top: 20px;
+    right: 20px;
+
+    & svg {
+      width: 12px;
+      height: 12px;
+    }
   }
 `;
 
@@ -219,31 +212,29 @@ const StyledImage = styled(Image)`
   height: 100%;
 `;
 
-const NavigationButton = styled.button<{ $position: "left" | "right" }>`
+const NavigationButton = styled.button<{ 
+  $position: "left" | "right"; 
+  $isActive: boolean;
+}>`
   position: absolute;
-  ${(props) => (props.$position === "left" ? "left: 40px" : "right: 40px")};
+  ${(props) => (props.$position === "left" ? "left: 44px" : "right: 44px")};
   top: 50%;
   transform: translateY(-50%);
   width: 56px;
   height: 56px;
-  background: rgba(0, 0, 0, 0.5);
   border: none;
-  border-radius: 50%;
-  cursor: pointer;
+  cursor: ${(props) => (props.$isActive ? "pointer" : "default")};
   z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: background 0.2s;
+  transition: color 0.2s;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  &:active {
-    background: rgba(0, 0, 0, 0.9);
-  }
+  color: ${(props) =>
+    props.$isActive
+      ? "var(--SemanticColor-Icon-WhiteIcon)"
+      : "var(--SemanticColor-Icon-GrayIcon)"};
 `;
 
 const MobilePageIndicator = styled.div`
@@ -264,16 +255,16 @@ const PageIndicator = styled.div`
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 20px;
-  color: white;
+  padding: 8px 12px;
+  border-radius: 29px;
 
-  /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
-  font-size: var(--Font-size-14, 14px);
-  font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
-  line-height: 150%;
+  line-height: 140%;
+  letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+  color: var(--SemanticColor-Text-Dim);
+  background: var(--SemanticColor-Background-Toast);
+  font-size: var(--Font-size-16, 16px);
+
 `;
 
