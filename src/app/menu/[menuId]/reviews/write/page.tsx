@@ -232,7 +232,7 @@ export default function ReviewPost() {
         <PhotoSection>
           <PhotoViewer>
             {inputs.images.length < 5 && (
-              <PhotoAttacher photosLength={inputs.images.length}>
+              <PhotoAttacher $photosLength={inputs.images.length}>
                 <AddImage>{inputs.images.length === 0 && "사진 추가"}</AddImage>
                 <FileInput
                   type="file"
@@ -356,6 +356,8 @@ const Header = styled.div`
 
 const ReviewTitle = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 28px;
 
   color: var(--Color-Foundation-gray-900, #262728);
@@ -611,7 +613,7 @@ const PhotoContainer = styled.div`
   }
 `;
 
-const PhotoAttacher = styled.label<{ photosLength: number }>`
+const PhotoAttacher = styled.label<{ $photosLength: number }>`
   width: 96px;
   height: 96px;
   flex: 0 0 auto;

@@ -68,7 +68,7 @@ const CountText = styled.div<{ $isLiked?: boolean }>`
   line-height: 140%;
   letter-spacing: -0.3px;
   color: ${({ $isLiked }) =>
-    isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+    $isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
   @media (max-width: 768px) {
     font-weight: 800;
