@@ -1,22 +1,23 @@
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Stars from "app/menu/[menuId]/components/Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
   const hasImage = Array.isArray(review.etc?.images) && review.etc.images.length > 0;
   return (
     <>
       <ItemContainer>
-        {hasImage && <Thumbnail src={review.etc.images[0]} alt="리뷰 이미지" />}
+        {hasImage && <Thumbnail src={review.etc?.images?.[0] || ''} alt="리뷰 이미지" />}
         <ReviewInfo>
           <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
           <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>
         </ReviewInfo>
         <ReviewContent>{review.comment}</ReviewContent>
         <ReviewScore>
-          <ThemeProvider theme={{ width: 73 }}>
+          <ThemedWrapper theme={{ width: 73 }}>
             <Stars score={review.score || 0} />
-          </ThemeProvider>
+          </ThemedWrapper>
           <ReviewScoreValue>{review.score}</ReviewScoreValue>
         </ReviewScore>
       </ItemContainer>

@@ -10,17 +10,33 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  const apiUrl = `${APIendpoint()}/menus${
-    !!accessToken ? "" : "/web"
-  }?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
+    : `${APIendpoint()}/menus/web?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
 
   return axios
     .get(apiUrl, config)
     .then((res) => {
       const {
-        data: { count, result },
+        data: { count, result: rawData },
       } = res;
+      if (count === 0) {
+        return { count: 0, result: [{
+          date: date,
+          BR: [],
+          LU: [],
+          DN: [],
+        }] };
+      }
+      const result = rawData.map((menuList) => ({
+        date: menuList.date,
+        BR: menuList.br,
+        LU: menuList.lu,
+        DN: menuList.dn,
+      }));
       return { count, result };
     })
     .catch((e) => {
@@ -29,8 +45,12 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const apiUrl = `${APIendpoint()}/menus/${menuID}${!!accessToken ? "" : "/web"}`;
-  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/menus/${menuID}`
+    : `${APIendpoint()}/menus/${menuID}/web`;
+  const config = !!accessToken
+    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+    : {};
 
   return axios
     .get(apiUrl, config)
@@ -51,7 +71,7 @@ export const setMenuLike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/like`,
       {},
-      { headers: { authorization: `Bearer ${accessToken}` } },
+      { headers: { "Authorization": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -72,7 +92,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {

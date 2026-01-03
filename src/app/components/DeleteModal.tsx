@@ -1,9 +1,10 @@
 import BackClickable from "components/general/BackClickable";
 import useIsMobile from "hooks/UseIsMobile";
 import styled from "styled-components";
+import { getParticle } from "utils/FormatUtil";
 
 interface DeleteModalProps {
-  type: "post" | "comment";
+  type: "post" | "comment" | "review";
   onClose: () => void;
   onSubmit: () => void;
 }
@@ -11,7 +12,8 @@ interface DeleteModalProps {
 export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProps) {
   const isMobile = useIsMobile();
 
-  const target = type === "post" ? "게시물" : "댓글";
+  const target = type === "post" ? "게시물" : type === "comment" ? "댓글" : "평가";
+  const particle = getParticle(target, ["을", "를"]);
 
   if (!isMobile)
     return (
@@ -23,7 +25,7 @@ export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProp
               <Icon src="/img/modal-close.svg" alt="닫기" />
             </CloseButton>
           </Header>
-          <Message>해당 {target}을 삭제하시겠습니까?</Message>
+          <Message>해당 {target}{particle} 삭제하시겠습니까?</Message>
           <Footer>
             <CancelButton onClick={onClose}>취소</CancelButton>
             <DeleteButton onClick={onSubmit}>삭제</DeleteButton>
@@ -38,7 +40,7 @@ export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProp
           <MobileHeader>
             <MobileTitle>{target} 삭제</MobileTitle>
           </MobileHeader>
-          <MobileMessage>{target}을 정말 삭제하시겠습니까?</MobileMessage>
+          <MobileMessage>{target === "평가" && "해당 "}{target}{particle} 정말 삭제하시겠습니까?</MobileMessage>
           <MobileFooter>
             <MobileCancelButton onClick={onClose}>취소</MobileCancelButton>
             <MobileDeleteButton onClick={onSubmit}>삭제</MobileDeleteButton>
@@ -52,14 +54,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   box-sizing: border-box;
 `;
 
 const DesktopContainer = styled(Container)`
   gap: 47px 30px;
-  top: 423px;
   width: 497px;
   height: 230px;
   border-radius: 13px;
@@ -111,7 +113,7 @@ const MobileContainer = styled(Container)`
   top: 50%;
   transform: translate(-50%, -50%);
   gap: 11px 17px;
-  width: calc(100% - 60px);
+  width: 315px;
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
@@ -124,14 +126,22 @@ const MobileHeader = styled.div`
 `;
 const MobileTitle = styled.div`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 19px;
 `;
 const MobileMessage = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 12px;
-  line-height: 15px;
+
+    color: var(--Color-Foundation-base-black, #000);
+  text-align: center;
+
+  /* text-13/Regular */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-13, 13px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
+  line-height: 140%; /* 18.2px */
 `;
 const MobileFooter = styled.div`
   border-top: 1px solid var(--Color-Foundation-gray-200);

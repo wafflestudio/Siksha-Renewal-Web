@@ -11,6 +11,7 @@ export interface State {
   isLoginModal: boolean;
   userInfo: User | null;
   isFilterFavorite: boolean;
+  isFestivalDate: boolean;
 }
 
 export type Action =
@@ -104,7 +105,7 @@ export interface RawComment {
   updated_at: string;
   id: number;
   nickname: string;
-  profile_url: string | null;
+  profile_uri: string | null;
   available: boolean;
   anonymous: boolean;
   is_mine: boolean;
@@ -196,6 +197,30 @@ export interface KeywordReviewScore {
   food_composition_keyword: string;
   food_composition_cnt: number;
   food_composition_total: number;
+}
+export interface MyReviewGroupType {
+  restaurant_id: number;
+  name_kr: string;
+  name_en: string;
+  reviews: MyReviewType[];
+}
+
+export interface MyReviewType {
+  id: number;
+  menu_id: number;
+  name_kr: string;
+  name_en: string;
+  user_id: number;
+  score: number;
+  comment: string;
+  etc: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+  keyword_reviews: string[];
+  isLiked?: boolean;
+  taste?: string;
+  price?: string;
+  food_composition?: string;
 }
 
 export interface RawUser {

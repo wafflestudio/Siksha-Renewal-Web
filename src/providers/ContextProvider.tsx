@@ -18,6 +18,7 @@ const initialState: State = {
   isLoginModal: false,
   userInfo: null,
   isFilterFavorite: false,
+  isFestivalDate: false,
 };
 
 interface dispatchers {
@@ -30,6 +31,7 @@ interface dispatchers {
   setAuthStatus: (status: "loading" | "login" | "logout") => void;
   setUserInfo: (userInfo: User | null) => void;
   setIsFilterFavorite: (value: boolean) => void;
+  setIsFestivalDate: (isFestival: boolean) => void;
 }
 
 const stateContext = createContext<State | null>(null);
@@ -40,7 +42,10 @@ const ContextProvider = ({ children }) => {
 
   // dispatch functions
   // 추후 useCallback으로 memorization 해두는 건 어떨까요?
-  const setDate = (date: Date) => setState((prevState) => ({ ...prevState, date: date }));
+  const setDate = (date: Date) => {
+    console.log("setDate", date);
+    setState((prevState) => ({ ...prevState, date: date }));
+  };
   const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
   const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
   const setLoading = (loading: boolean) =>
@@ -53,6 +58,8 @@ const ContextProvider = ({ children }) => {
   const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
   const setIsFilterFavorite = (value) =>
     setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
+  const setIsFestivalDate = (isFestival) =>
+    setState((prevState) => ({ ...prevState, isFestivalDate: isFestival }));
 
   return (
     <dispatchContext.Provider
@@ -66,6 +73,7 @@ const ContextProvider = ({ children }) => {
         setAuthStatus,
         setUserInfo,
         setIsFilterFavorite,
+        setIsFestivalDate,
       }}
     >
       <stateContext.Provider value={state}>{children}</stateContext.Provider>

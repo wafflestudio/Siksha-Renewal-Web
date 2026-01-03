@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
 import { ReactNode, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import MenuIcon from "assets/icons/mobile-nav-menu.svg";
 import StarFilledIcon from "assets/icons/star-filled.svg";
 
 export default function MobileNavigationBar() {
+  const router = useRouter();
   const addr = usePathname();
 
   const state = useStateContext();
@@ -30,12 +31,12 @@ export default function MobileNavigationBar() {
     isFilterFavorite === true
       ? "favorite"
       : addr === "/" || addr?.startsWith("/menu")
-      ? "menu"
-      : addr?.startsWith("/community")
-      ? "community"
-      : addr?.startsWith("/account")
-      ? "account"
-      : null;
+        ? "menu"
+        : addr?.startsWith("/community")
+          ? "community"
+          : addr?.startsWith("/account")
+            ? "account"
+            : null;
 
   if (!rootElement) return null;
 
@@ -47,12 +48,17 @@ export default function MobileNavigationBar() {
           if (authStatus === "login") setIsFilterFavorite(true);
           else openLoginModal();
         }}
+        style={{
+          width: "36px",
+          height: "46px",
+        }}
       >
         <NavButton
           isActive={active === "favorite"}
           icon={<StarFilledIcon width="25px" />}
           name="즐겨찾기"
         />
+        <IconLabel isActive={active === "favorite"}>즐겨찾기</IconLabel>
       </Link>
       <Link href="/" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "menu"} icon={<MenuIcon />} name="식단" />
@@ -93,6 +99,7 @@ const Container = styled.div`
   width: 100%;
   height: 83px;
   background-color: var(--SemanticColor-Background-Secondary);
+  box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
   z-index: 1;
   box-shadow: 0px -2px 6px 0px #0000000d;
 
@@ -126,4 +133,31 @@ const NavName = styled.div<{ $isActive: boolean }>`
   vertical-align: middle;
   color: ${({ $isActive }) =>
     $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
+`;
+const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
+  display: flex;
+  height: 36px;
+  width: 36px;
+  background-image: ${({ isActive, srcActive, srcInactive }) =>
+    `url(${isActive ? srcActive : srcInactive})`};
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translateZ(0);
+  opacity: 0.99;
+`;
+
+const IconLabel = styled.div<{ isActive: boolean }>`
+  width: 36px;
+
+  color: ${({ isActive }) =>
+    isActive
+      ? "var(--Color-Foundation-orange-500, #FF9522)"
+      : "var(--Color-Foundation-gray-500, #BEC1C8)"};
+  text-align: center;
+  font-feature-settings: "liga" off, "clig" off;
+  font-family: NanumSquare;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
 `;

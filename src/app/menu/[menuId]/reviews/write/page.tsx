@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import useError from "hooks/useError";
 import useMenu from "hooks/UseMenu";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import Link from "next/link";
@@ -15,6 +15,9 @@ import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
 import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
+import ConfirmModal from "app/components/ConfirmModal";
+import { MyReviewType } from "types";
 
 export type ReviewInputs = {
   score: number;
@@ -36,14 +39,52 @@ const emptyReviewInputs: ReviewInputs = {
 
 export default function ReviewPost() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const reviewId = searchParams.get("reviewId");
+  const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
-
-  const { menu, fetchMenu, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
+  
+  const { menu, fetchMenu, submitReview, submitReviewWithImages, fetchReviews, fetchReview } = useMenu();
+  const { openModal } = useModals();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
 
+  const { getAccessToken } = useAuth();
+
   const MAX_COMMENT_LENGTH = 150;
+
+  useEffect(() => {
+    if (!isEditMode)
+      return;
+
+    fetchReview(Number(reviewId))
+      .then((reviewData: MyReviewType) => {
+        // 서버에서 etc를 object로 보내주지 않는 문제 임시 대응
+        // TODO: 서버한테 etc를 object로 보내달라고 하기
+        if (reviewData.etc) {
+          if (typeof reviewData.etc === "string") {
+            try {
+              reviewData.etc = JSON.parse(reviewData.etc);
+            } catch (e) {
+              console.error("Failed to parse review etc field", e);
+              reviewData.etc = {};
+            }
+          }
+        }
+        setInputs({
+          score: reviewData.score ?? 3,
+          comment: reviewData.comment,
+          images: reviewData.etc?.images || [],
+          taste: reviewData.taste || "맛",
+          price: reviewData.price || "가격",
+          food_composition: reviewData.food_composition || "구성",
+        });
+      })
+      .catch((e) => {
+        onHttpError(e);
+      });
+  }, [reviewId, isEditMode]);
 
   useEffect(() => {
     if (!menu) {
@@ -61,6 +102,14 @@ export default function ReviewPost() {
     setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
 
+  const convertToBlob = async (image: string | File) => {
+    if (typeof image === "string") {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      return blob;
+    } else return image;
+  };
+
   const handleSubmit = async () => {
     if (!menu) {
       console.error("menu is not loaded");
@@ -75,15 +124,15 @@ export default function ReviewPost() {
       inputs.images.some((image) => image instanceof File && image.size > 0);
 
     let request;
+    const body = new FormData();
+    body.append("menu_id", menuId);
+    body.append("score", String(inputs.score));
+    body.append("comment", inputs.comment);
+    body.append("taste", taste);
+    body.append("price", price);
+    body.append("food_composition", food_composition);
 
     if (hasImages) {
-      const body = new FormData();
-      body.append("menu_id", menuId);
-      body.append("score", String(inputs.score));
-      body.append("comment", inputs.comment);
-      body.append("taste", taste);
-      body.append("price", price);
-      body.append("food_composition", food_composition);
       inputs.images.forEach((image) => {
         body.append("images", image);
       });
@@ -98,8 +147,8 @@ export default function ReviewPost() {
         price,
         food_composition,
       };
-      console.debug(json);
-      request = submitReview(json);
+        console.debug(json);
+        request = submitReview(body);
     }
 
     return request
@@ -127,8 +176,11 @@ export default function ReviewPost() {
 
         <Header>
           <ReviewTitle>
-            &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
-            <ReviewTitleText>{getParticle(menu?.name_kr ?? "")} 어땠나요?</ReviewTitleText>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              &apos; <MenuNameText>{menu?.name_kr ?? ""} </MenuNameText>&apos;{" "}
+              <ReviewTitleText>{getParticle(menu?.name_kr ?? "")}</ReviewTitleText>
+            </div>
+            <ReviewTitleText>어땠나요?</ReviewTitleText>
           </ReviewTitle>
           <SelectStarText>별점을 선택해 주세요.</SelectStarText>
           <StarsContainer>
@@ -193,9 +245,9 @@ export default function ReviewPost() {
                 />
               </PhotoAttacher>
             )}
-            {inputs.images.map((photoObj, i) => (
+            {inputs.images.map((image, i) => (
               <PhotoContainer key={i}>
-                <Photo src={URL.createObjectURL(photoObj)} alt="리뷰 이미지" />
+                <Photo src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="리뷰 이미지" />
                 <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
               </PhotoContainer>
             ))}
@@ -301,7 +353,7 @@ const ReviewTitle = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
 
-  /* text-20/Bold */
+  /* text-20/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
@@ -319,6 +371,7 @@ const MenuNameText = styled.div`
   overflow: hidden;
   white-space: nowrap;
   font-weight: var(--Font-weight-extrabold, 800);
+  max-width: 500px;
 `;
 
 const ReviewTitleText = styled.span`
@@ -716,7 +769,7 @@ const ReviewPostButton = styled.button`
   font-weight: 700;
   cursor: pointer;
 
-  &:before {
+  &::before {
     content: "평가 등록";
   }
   &:disabled {
@@ -726,6 +779,18 @@ const ReviewPostButton = styled.button`
     width: 100%;
     &:before {
       content: "올리기";
+    }
+  }
+`;
+
+const ReviewEditButton = styled(ReviewPostButton)`
+  &::before {
+    content: "평가 수정";
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    &:before {
+      content: "수정하기";
     }
   }
 `;

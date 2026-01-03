@@ -5,6 +5,8 @@ import Button from "components/general/Button";
 import { useEffect, useState } from "react";
 import MobileDistanceSlider from "./MobileDistanceSlider";
 import { DISTANCE_FILTER_OPTIONS, defaultFilters } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterDistanceBottomSheetProps {
   isOpen: boolean;
@@ -15,7 +17,7 @@ export default function MobileFilterDistanceBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterDistanceBottomSheetProps) {
-  const { filterList, changeFilterOption } = UseFilter();
+  const { filterList, changeFilterOption, countChangedFilters } = UseFilter();
   const [length, setLength] = useState(defaultFilters.length);
 
   useEffect(() => {
@@ -28,6 +30,18 @@ export default function MobileFilterDistanceBottomSheet({
     changeFilterOption({
       length: valLength,
     });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "distance_filter",
+        applied_filter_options: {
+          max_distance_km: valLength / 1000,
+        },
+        number_of_applied_filters: countChangedFilters({ length: valLength }),
+        page_name: "meal_list_page",
+      },
+    });
     onClose();
   };
 
@@ -37,15 +51,22 @@ export default function MobileFilterDistanceBottomSheet({
     changeFilterOption({
       length: defaultLength,
     });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "distance_filter",
+        page_name: "meal_list_page",
+      },
+    });
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>거리</MobileFilterText>
-      <div style={{ height: 65.5 }} />
+      <div style={{ height: 56.5 }} />
       <MobileDistanceSlider length={length} onLengthChange={(value) => setLength(value)} />
-      <div style={{ height: 67 }} />
-      <FilterActionSection $marginBottom="45">
+      <div style={{ height: 58 }} />
+      <FilterActionSection $marginBottom="19">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

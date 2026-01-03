@@ -39,9 +39,13 @@ const PicketText = styled.div`
   color: var(--Color-Foundation-gray-700);
 
   text-align: center;
+
+  /* text-12/Bold */
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-12, 12px);
+  font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 15.4px */
+  line-height: 140%; /* 16.8px */
 
   white-space: nowrap;
   height: 25px;

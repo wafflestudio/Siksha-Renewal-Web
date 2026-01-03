@@ -39,7 +39,7 @@ export default function MyPost() {
     return (
       <>
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
-        <Container>
+        <Container $isEmpty={posts.length === 0}>
           <Header>내가 쓴 글</Header>
           <PostList posts={posts} fetch={fetchMyPosts} />
         </Container>
@@ -47,7 +47,7 @@ export default function MyPost() {
     );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isEmpty: boolean }>`
   padding: 0 18.5px;
   width: 701px;
   border-radius: 8px;
@@ -59,6 +59,7 @@ const Container = styled.div`
     width: 100%;
     margin-top: -4px;
     border: none;
+    height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
   }
 `;
 

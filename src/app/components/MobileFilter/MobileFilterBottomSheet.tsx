@@ -12,6 +12,8 @@ import {
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
 import StarFilledIcon from "assets/icons/star-filled.svg";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
@@ -19,7 +21,7 @@ interface MobileFilterBottomSheetProps {
 }
 
 export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilterBottomSheetProps) {
-  const { filterList, setFilterList, resetFilterList } = UseFilter();
+  const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -52,25 +54,71 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
       isReview: false,
       isAvailableOnly: false,
     });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page",
+      },
+    });
   }, [resetFilterList]);
 
   const onApplyFilter = useCallback(() => {
+    const length =
+      selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
+        ? defaultFilters.length
+        : selectedFilters.length;
+
+    const priceMin =
+      selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
+        ? defaultFilters.priceMin
+        : selectedFilters.priceMin;
+
+    const priceMax =
+      selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
+        ? defaultFilters.priceMax
+        : selectedFilters.priceMax;
+
+    const ratingMin = selectedFilters.ratingMin;
+
+    const isReview = selectedFilters.isReview;
+
+    const isAvailableOnly = selectedFilters.isAvailableOnly;
+
     setFilterList({
-      length:
-        selectedFilters.length === DISTANCE_FILTER_OPTIONS.val_infinity
-          ? defaultFilters.length
-          : selectedFilters.length,
-      priceMin:
-        selectedFilters.priceMin === PRICE_FILTER_OPTIONS.min
-          ? defaultFilters.priceMin
-          : selectedFilters.priceMin,
-      priceMax:
-        selectedFilters.priceMax === PRICE_FILTER_OPTIONS.max
-          ? defaultFilters.priceMax
-          : selectedFilters.priceMax,
-      ratingMin: selectedFilters.ratingMin,
-      isReview: selectedFilters.isReview,
-      isAvailableOnly: selectedFilters.isAvailableOnly,
+      length,
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
+      isFestival: filterList.isFestival,
+    });
+
+    const appliedFilterCount = countChangedFilters({
+      priceMin,
+      priceMax,
+      ratingMin,
+      isReview,
+      isAvailableOnly,
+      length,
+    });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "main_filter",
+        applied_filter_options: {
+          price_min: priceMin,
+          price_max: priceMax,
+          min_rating: ratingMin,
+          is_open_now: isAvailableOnly,
+          has_reviews: isReview,
+          max_distance_km: length / 1000,
+        },
+        number_of_applied_filters: appliedFilterCount,
+        page_name: "meal_list_page",
+      },
     });
     onClose();
   }, [setFilterList, selectedFilters]);
@@ -138,7 +186,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
             }}
           />
         </FilterContent>
-        <FilterContent>
+        <FilterContent style={{ marginBottom: 40 }}>
           <MobileFilterText>최소 평점</MobileFilterText>
           <div style={{ height: 14.5 }} />
           <ButtonGroup
@@ -216,16 +264,30 @@ const FilterContentWrapper = styled.div`
   flex-direction: column;
   overflow-y: auto;
   gap: 40px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const FilterContent = styled.div``;
 
 const MobileFilterHeader = styled.div`
+  color: var(--Color-Foundation-base-black, #000);
+  text-align: center;
+
+  /* text-14/Bold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 150%; /* 21px */
+
   display: flex;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 10.68px;
   align-items: center;
   color: var(--SemanticColor-Text-GNB);
 `;

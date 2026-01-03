@@ -4,10 +4,11 @@ import StyledComponentsRegistry from "providers/StyledComponentsRegistry";
 import ContextProvider from "providers/ContextProvider";
 import { ModalsProvider } from "providers/ModalsProvider";
 import Script from "next/script";
-import { GlobalStyle } from "styles/globalstyle";
+import { GlobalStyleFixed } from "styles/globalstyle";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
 import { ThemeProvider } from "next-themes";
+import ClientMixpanelInitializer from "./components/ClientMixpanelInitializer";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",
@@ -51,7 +52,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
-        <GlobalStyle />
+        <GlobalStyleFixed />
+        <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ContextProvider>

@@ -47,6 +47,16 @@ export default function Account() {
         >
           <DefaultText>내가 쓴 글</DefaultText>
           <ArrowButton aria-label="상세보기" />
+
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/myreview");
+          }}
+        >
+          <DefaultText>나의 평가 관리</DefaultText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>

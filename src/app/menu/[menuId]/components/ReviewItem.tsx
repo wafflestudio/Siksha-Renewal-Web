@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Stars from "./Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import useAuth from "hooks/UseAuth";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
 import useError from "hooks/useError";
 import ImageLightbox from "components/general/ImageLightbox";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);
@@ -69,9 +70,9 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
           }}
         >
           <Id>ID {review.user_id}</Id>
-          <ThemeProvider theme={{ width: 60 }}>
+          <ThemedWrapper theme={{ width: 60 }}>
             <Stars score={review.score || 0} />
-          </ThemeProvider>
+          </ThemedWrapper>
         </div>
         <Date>
           {isMobile

@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ButtonGroup from "./ButtonGroup";
 import { defaultFilters } from "constants/filterOptions";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 import StarIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterRatingBottomSheetProps {
@@ -17,7 +19,7 @@ export default function MobileFilterRatingBottomSheet({
   isOpen,
   onClose,
 }: MobileFilterRatingBottomSheetProps) {
-  const { filterList, changeFilterOption } = UseFilter();
+  const { filterList, changeFilterOption, countChangedFilters } = UseFilter();
   const [ratingMin, setRatingMin] = useState(0);
 
   useEffect(() => {
@@ -28,6 +30,20 @@ export default function MobileFilterRatingBottomSheet({
     changeFilterOption({
       ratingMin,
     });
+
+    trackEvent({
+      name: EventNames.FILTER_MODAL_APPLIED,
+      props: {
+        entry_point: "rating_filter",
+        applied_filter_options: {
+          min_rating: ratingMin,
+        },
+        number_of_applied_filters: countChangedFilters({
+          ratingMin,
+        }),
+        page_name: "meal_list_page",
+      },
+    });
     onClose();
   };
 
@@ -37,15 +53,22 @@ export default function MobileFilterRatingBottomSheet({
     changeFilterOption({
       ratingMin: defaultRatingMin,
     });
+    trackEvent({
+      name: EventNames.FILTER_RESET,
+      props: {
+        entry_point: "rating_filter",
+        page_name: "meal_list_page",
+      },
+    });
   };
 
   return (
-    <MobileBottomSheet isOpen={isOpen} onClose={onClose} slideBar={false}>
+    <MobileBottomSheet isOpen={isOpen} onClose={onClose} showHandle={false}>
       <MobileFilterText>최소 평점</MobileFilterText>
-      <div style={{ height: 14.5 }} />
+      <div style={{ height: 20.5 }} />
       <ButtonGroup
         items={[
-          { label: "모두", id: "ALL" },
+          { label: "전체", id: "ALL" },
           {
             label: <RatingContent value="3.5" />,
             id: "3.5",

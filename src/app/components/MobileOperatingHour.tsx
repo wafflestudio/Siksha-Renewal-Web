@@ -1,10 +1,20 @@
 import styled from "styled-components";
 import { useStateContext } from "providers/ContextProvider";
 
-export default function MobileOperatingHour({ type }) {
+interface MobileOperatingHourProps {
+  type: string;
+  etc?: {
+    isFestival: boolean;
+    isFoodTruck: boolean;
+  };
+};
+
+export default function MobileOperatingHour({ type, etc }: MobileOperatingHourProps) {
   const state = useStateContext();
 
   const { infoData } = state;
+
+  const isFestival = etc?.isFestival;
 
   return (
     <Container>
@@ -32,17 +42,17 @@ export default function MobileOperatingHour({ type }) {
             ) : infoData.etc.operating_hours[type].length == 2 ? (
               <>
                 <Hour>
-                  <Meal>점심</Meal>
+                  <Meal>{isFestival ? "5/13, 5/14" : "점심"}</Meal>
                   <Time>{infoData.etc.operating_hours[type][0]}</Time>
                 </Hour>
                 <Hour>
-                  <Meal>저녁</Meal>
+                  <Meal>{isFestival ? "5/15" : "저녁"}</Meal>
                   <Time>{infoData.etc.operating_hours[type][1]}</Time>
                 </Hour>
               </>
             ) : (
               <Hour>
-                <Meal>점심</Meal>
+                <Meal>{!isFestival && "점심"}</Meal>
                 <Time>{infoData.etc.operating_hours[type][0]}</Time>
               </Hour>
             )}
@@ -84,6 +94,7 @@ const RightSide = styled.div`
 const Hour = styled.div`
   display: flex;
   padding-bottom: 8px;
+  justify-content: end;
 `;
 
 const Meal = styled.div`

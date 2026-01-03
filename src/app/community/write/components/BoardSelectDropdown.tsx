@@ -47,11 +47,7 @@ export function BoardSelectDropdown({ boards, onSelect }: BoardSelectDropdownPro
       </BoardMenu>
       <BoardMenuList isOpen={isOpen}>
         {boards.map((board) => (
-          <BoardMenuItem
-            key={board.id}
-            onClick={() => handleClickItem(board.id)}
-            className={board.id === selectedBoardId ? "selected" : ""}
-          >
+          <BoardMenuItem key={board.id} onClick={() => handleClickItem(board.id)} className={board.id === selectedBoardId ? "selected" : ""}>
             <span>{board.name}</span>
           </BoardMenuItem>
         ))}

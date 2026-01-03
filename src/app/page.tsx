@@ -22,9 +22,9 @@ import FestivalToggle from "./components/FestivalToggle";
 
 export default function Home() {
   const state = useStateContext();
-  const { setLoading, setData } = useDispatchContext();
+  const { setLoading, setData, setIsFestivalDate } = useDispatchContext();
 
-  const { date, showInfo, meal, isFilterFavorite } = state;
+  const { date, showInfo, meal, isFilterFavorite, isFestivalDate } = state;
 
   const { authStatus, getAccessToken } = useAuth();
   const { onHttpError } = useError();
@@ -78,7 +78,33 @@ export default function Home() {
     }
 
     fetchData();
-  }, [date, authStatus, meal, isFilterFavorite]);
+  }, [date, authStatus, meal, isFilterFavorite]); // TODO: meal, isFilterFavorite 의존성 배열에서 제거
+
+  useEffect(() => {
+    async function fetchIsFestivalDate() {
+      const dateString = formatISODate(date);
+      console.log("dateString", dateString);
+      
+      // 하드코딩된 버전: date가 20250916, 20250918 사이면 true
+      const startFestivalDate = "2025-09-16";
+      const endFestivalDate = "2025-09-18";
+      setIsFestivalDate(dateString >= startFestivalDate && dateString <= endFestivalDate);
+
+      // TODO: Festival API 완성되면 주석 해제
+      // getIsFestival(dateString)
+      //   .then((response) => {
+      //     console.log("isFestivalDate", response);
+      //     setIsFestivalDate(response.is_festival);
+      //   })
+      //   .catch((e) => {
+      //     onHttpError(e);
+      //   });
+    }
+
+    if (date) {
+      fetchIsFestivalDate();
+    }
+  }, [date]);
 
   return (
     <>

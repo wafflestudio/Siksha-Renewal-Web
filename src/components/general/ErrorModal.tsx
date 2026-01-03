@@ -49,7 +49,7 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
             <MobileCancelButton onClick={onClose} isServerError={code >= 500}>
               이전으로
             </MobileCancelButton>
-            <MobileRetryButton onClick={code >= 500 ? () => onRetry : () => router.push("/")}>
+            <MobileRetryButton onClick={code >= 500 ? () => onRetry : () => router.push("/")} isServerError={code >= 500}>
               {code >= 500 ? "다시시도" : "처음으로"}
             </MobileRetryButton>
           </MobileFooter>
@@ -120,7 +120,7 @@ const RetryButton = styled(Button)`
 
 const MobileContainer = styled(Container)`
   gap: 11px 17px;
-  width: calc(100% - 60px);
+  width: 315px;
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
@@ -144,6 +144,7 @@ const MobileMessage = styled.div`
 `;
 const MobileFooter = styled.div`
   border-top: 1px solid var(--Color-Foundation-gray-200);
+  display: flex;
   flex: 1;
 `;
 
@@ -158,11 +159,14 @@ const MobileButton = styled.button`
   cursor: pointer;
 `;
 
-const MobileRetryButton = styled(MobileButton)`
+const MobileRetryButton = styled(MobileButton)<{ isServerError: boolean }>`
+  color: var(--Color-Foundation-orange-500);
+  border-left: 1px solid var(--Color-Foundation-gray-200);
+  display: ${({ isServerError }) => (isServerError ? "inherit" : "none")};
   color: var(--Color-Foundation-orange-500);
   border-left: 1px solid var(--Color-Foundation-gray-200);
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};
-  color: #797979;
+  color: #797979; 
 `;

@@ -4,7 +4,7 @@ import { formatPostCommentDate } from "utils/FormatUtil";
 import MobileActionsModal, { ModalAction } from "./MobileActionsModal";
 import { ReportModal } from "./ReportModal";
 import useModals from "hooks/UseModals";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "app/components/DeleteModal";
 import useAuth from "hooks/UseAuth";
 
 interface CommentProps {

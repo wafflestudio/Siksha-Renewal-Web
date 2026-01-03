@@ -31,7 +31,7 @@ export function PostList({ posts, fetch }: PropsPostList) {
           {isLoading ? (
             <EmptyText> 불러오는 중입니다 </EmptyText>
           ) : (
-            <EmptyText> 게시물이 없습니다 </EmptyText>
+            <EmptyText> 내가 쓴 글이 없어요 </EmptyText>
           )}
         </>
       )}
@@ -46,13 +46,18 @@ const EmptyText = styled.div`
   align-items: center;
   width: 100%;
   height: 160.84px;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 23px;
-  color: var(--Color-Foundation-gray-600);
+
+  color: var(--Color-Foundation-gray-700, #727478);
+  text-align: center;
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-14, 14px);
+  font-style: normal;
+  font-weight: var(--Font-weight-regular, 400);
 
   @media (max-width: 768px) {
-    height: calc(100% - 83px);
-    font-size: 15px;
+    height: 100%;
+    color: var(--Color-Foundation-gray-600, #989AA0);
+    font-size: var(--Font-size-15, 15px);
+    font-weight: var(--Font-weight-bold, 700);
   }
 `;

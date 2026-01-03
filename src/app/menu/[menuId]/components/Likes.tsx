@@ -1,5 +1,5 @@
 import { useStateContext } from "providers/ContextProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
@@ -17,7 +17,12 @@ export default function Likes({ menu }) {
 
   const { openLoginModal } = useModals();
 
-  const isLikedToggle = async () => {
+  // Sync isLiked state when menu.is_liked changes (e.g., on refresh)
+  useEffect(() => {
+    setIsLiked(menu?.is_liked);
+  }, [menu?.is_liked]);
+
+  const onClickLike = async () => {
     if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
@@ -40,7 +45,7 @@ export default function Likes({ menu }) {
         $isliked={isLiked}
         aria-label="좋아요"
         onClick={(e) => {
-          isLikedToggle();
+          onClickLike();
           e.stopPropagation();
         }}
       />

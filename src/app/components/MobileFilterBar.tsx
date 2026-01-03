@@ -1,15 +1,38 @@
+"use client";
+
 import UseFilter from "hooks/UseFilter";
 import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
 import FilterIcon from "assets/icons/filter.svg";
 import DownArrowIcon from "assets/icons/down-arrow.svg";
 import CheckIcon from "assets/icons/check.svg";
+import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
+import { formatPrice } from "utils/FormatUtil";
+import { trackEvent } from "utils/MixPanel";
+import { EventNames } from "constants/track";
 
 export default function MobileFilterBar() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollRef.current) return;
+      setIsScrolled(scrollRef.current.scrollLeft > 0);
+    };
+
+    const scrollEl = scrollRef.current;
+    scrollEl?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      scrollEl?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const { filterList, isSet, changeFilterOption } = UseFilter();
   const [filters, setFilters] = useState({
     all: false,
@@ -26,20 +49,82 @@ export default function MobileFilterBar() {
   };
 
   const handleOnClickIsAvailableOnly = () => {
+    const value = !filterList.isAvailableOnly;
     changeFilterOption({
-      isAvailableOnly: !filterList.isAvailableOnly,
+      isAvailableOnly: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "is_open_now",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
     });
   };
 
   const handleOnClickIsReview = () => {
+    const value = !filterList.isReview;
     changeFilterOption({
-      isReview: !filterList.isReview,
+      isReview: value,
+    });
+    trackEvent({
+      name: EventNames.INSTANT_FILTER_TOGGLED,
+      props: {
+        filter_type: "has_reviews",
+        filter_value: value,
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleMainFilterOpen = () => {
+    setFilterState("all", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "main_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleDistanceFilterOpen = () => {
+    setFilterState("distance", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "distance_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handlePriceFilterOpen = () => {
+    setFilterState("price", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "price_filter",
+        page_name: "meal_list_page",
+      },
+    });
+  };
+
+  const handleRatingFilterOpen = () => {
+    setFilterState("rating", true);
+    trackEvent({
+      name: EventNames.FILTER_MODAL_OPENED,
+      props: {
+        entry_point: "rating_filter",
+        page_name: "meal_list_page",
+      },
     });
   };
 
   return (
     <>
-      <Container>
+      <Container ref={scrollRef}>
         <MobileFilterBottomSheet
           isOpen={filters.all}
           onClose={() => setFilterState("all", false)}
@@ -60,19 +145,19 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-        <IconBox>
-          <StyledFilterIcon aria-label="필터 아이콘" onClick={() => setFilterState("all", true)} />
-        </IconBox>
-        <Button $isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
+
+        <FilterIconWrapper onClick={handleMainFilterOpen}>
+        <StyledFilterIcon aria-label="필터 아이콘" />
+          <FilterIconGradient visible={isScrolled} />
+        </FilterIconWrapper>
+        <div style={{ width: "37px", flexShrink: "0" }} />
+        <Button $isActive={isSet.length} onClick={handleDistanceFilterOpen}>
           <ButtonText $isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button
-          $isActive={isSet.priceMin || isSet.priceMax}
-          onClick={() => setFilterState("price", true)}
-        >
+        <Button $isActive={isSet.priceMin || isSet.priceMax} onClick={() => setFilterState("price", true)}>
           <ButtonText $isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
               ? `${filterList.priceMin}원 ~ ${
@@ -114,10 +199,27 @@ const Container = styled.div`
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 0 9px 17px 9px;
+  padding: 0 8px 17px 0;
   box-sizing: border-box;
   gap: 5px;
   background-color: var(--Color-Background-main);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const FilterIconWrapper = styled.div`
+  position: absolute;
+  display: flex;
+`;
+
+const FilterIconGradient = styled.div<{ visible: boolean }>`
+  width: 16px;
+  height: 36px;
+  background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
 `;
 
 const Button = styled.button<{ $isActive?: boolean }>`
@@ -132,11 +234,14 @@ const Button = styled.button<{ $isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-    props.$isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
-  background-color: ${(props) =>
+
     props.$isActive
-      ? "var(--Color-Foundation-Tint-orange)"
-      : "var(--SemanticColor-Background-Secondary)"};
+      ? "var(--Color-Foundation-orange-500, #FF9522)"
+      : "var(--Color-Foundation-gray-200, #E5E6E9)"};
+  background: ${(props) =>
+    props.$isActive
+      ? "var(--Color-Foundation-orange-100, #FFEAD3)"
+      : " var(--Color-Foundation-base-white, #FFF)"};
 
   font-family: NanumSquare_ac;
 `;

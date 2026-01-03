@@ -37,7 +37,7 @@ export interface ReviewType {
   user_id: number;
   score: number | null;
   comment: string;
-  etc: Record<string, any>;
+  etc: { images?: string[] } | null;
   created_at: string;
   updated_at: string;
   like_count: number;

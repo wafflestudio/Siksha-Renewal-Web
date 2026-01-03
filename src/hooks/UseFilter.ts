@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { useStateContext } from "providers/ContextProvider";
 import { defaultFilters } from "constants/filterOptions";
 
-export type FilterList = {
+type DefaultFilterList = {
   length: number;
   priceMin: number;
   priceMax: number;
@@ -14,8 +14,13 @@ export type FilterList = {
   isAvailableOnly: boolean;
   isReview: boolean;
   category: string[];
-  isFestival: boolean;
 };
+
+type EventFilterList = {
+  isFestival: boolean;
+}
+
+export type FilterList = DefaultFilterList & EventFilterList;
 
 // JSON.stringify 시 Infinity 값을 문자열로 변환
 function replacer(key: string, value: any) {
@@ -41,7 +46,8 @@ function reviver(key: string, value: any) {
  */
 export default function UseFilter() {
   // 영업 중 여부 확인을 위해 date를 불러옵니다.
-  const { date } = useStateContext();
+  // 축제 기간에만 isFestival을 사용하기 위해 isFestivalDate도 불러옵니다.
+  const { date, isFestivalDate } = useStateContext();
 
   const defaultFiltersJson = JSON.stringify(defaultFilters, replacer);
 
@@ -85,10 +91,12 @@ export default function UseFilter() {
   };
 
   /**
-   * 필터 리스트를 초기화합니다.
+   * 필터 리스트를 초기화합니다. (축제 토글 제외)
    */
   const resetFilterList = () => {
+    const oldIsFestival = filterList.isFestival;
     setStorage(defaultFiltersJson);
+    changeFilterOption({ isFestival: oldIsFestival });
   };
 
   /**
@@ -122,14 +130,11 @@ export default function UseFilter() {
         // 배열이 아닌 값들은 필터링 패스
         if (!Array.isArray(filteredList[key])) return;
 
-        // 배열이 아닌 값들은 필터링 패스
-        if (!Array.isArray(filteredList[key])) return;
-
         // 축제 기간 필터링
         filteredList[key] = filteredList[key].filter((restaurant) => {
           const isFestivalRestaurant = restaurant.name_kr.startsWith("[축제]");
-          if (filterList.isFestival && isFestivalRestaurant) return true;
-          if (!filterList.isFestival && !isFestivalRestaurant) return true;
+          if (filterList.isFestival && isFestivalDate && isFestivalRestaurant) return true;
+          if ((!filterList.isFestival || !isFestivalDate) && !isFestivalRestaurant) return true;
           return false;
         });
 
@@ -187,12 +192,41 @@ export default function UseFilter() {
             return true;
           });
         });
+
+        // 필터링 후 메뉴가 없는 식당은 삭제
+        if (
+          needDistanceFilter ||
+          needPriceFilter ||
+          needRatingFilter ||
+          needReviewFilter ||
+          needIsAvailableOnlyFilter
+        ) {
+          filteredList[key] = filteredList[key].filter((restaurant) => {
+            if (!restaurant.menus) return false;
+            return restaurant.menus.length > 0;
+          });
+        }
       });
 
       return filteredList as RawMenuList;
     },
     [filterList],
   );
+
+  const countChangedFilters = (diff?: Partial<FilterList>): number => {
+    const base = diff ?? filterList;
+    return (Object.keys(defaultFilters) as (keyof FilterList)[]).reduce((count, key) => {
+      const target = base[key] ?? filterList[key]; // diff 우선, 없으면 현재값
+      const original = defaultFilters[key];
+
+      const isChanged =
+        Array.isArray(original) && Array.isArray(target)
+          ? JSON.stringify(original) !== JSON.stringify(target)
+          : original !== target;
+
+      return isChanged ? count + 1 : count;
+    }, 0);
+  };
 
   return {
     /**
@@ -224,5 +258,6 @@ export default function UseFilter() {
      * @param {RawMenuList} menuList - 필터링할 메뉴 데이터
      */
     filterMenuList,
+    countChangedFilters,
   };
 }
