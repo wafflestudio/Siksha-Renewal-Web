@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MenuType } from "app/menu/[menuId]/Menu";
 import Likes from "./Likes";
 import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
-import { getReviewScore } from "utils/api/reviews";
-import { useRouter } from "next/navigation";
+import { getKeywordReviewScore, getReviewScore } from "utils/api/reviews";
 import useIsMobile from "hooks/UseIsMobile";
 import { formatDate, formatPrice } from "utils/FormatUtil";
 import useError from "hooks/useError";
-import Image from "next/image";
 import PhotoReviewsSection from "./PhotoReviewsSection";
-import Link from "next/link";
+import KeywordReviewChart from "./KeywordReviewChart";
+import { KeywordReviewScore } from "types";
+import DistanceIcon from "assets/icons/distance.svg";
 
 interface MenuSectionProps {
   menu: MenuType;
@@ -32,17 +32,30 @@ export default function MenuSection({
 
   const [restaurantName, setRestaurantName] = useState("");
   const [reviewDistribution, setReviewDistribution] = useState<number[]>([]);
+  const [keywordReviewScore, setKeywordReviewScore] = useState<KeywordReviewScore>({
+    taste_keyword: "맛",
+    taste_cnt: 0,
+    taste_total: 0,
+    price_keyword: "가격",
+    price_cnt: 0,
+    price_total: 0,
+    food_composition_keyword: "음식구성",
+    food_composition_cnt: 0,
+    food_composition_total: 0,
+  });
 
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    Promise.all([getRestaurantList(), getReviewScore(menu.id)])
-      .then(([restaurantListData, reviewScoreData]) => {
+    Promise.all([getRestaurantList(), getReviewScore(menu.id), getKeywordReviewScore(menu.id)])
+      .then(([restaurantListData, reviewScoreData, keywordReviewScoreData]) => {
         const restaurantName = restaurantListData.find(
           (restaurant) => restaurant.id === menu.restaurant_id,
         );
         if (restaurantName) setRestaurantName(restaurantName.nameKr);
         setReviewDistribution(reviewScoreData);
+
+        if (keywordReviewScore) setKeywordReviewScore(keywordReviewScoreData);
       })
       .catch(onHttpError);
   }, [menu]);
@@ -52,13 +65,8 @@ export default function MenuSection({
       <MenuOverview>
         <MenuHeader>
           <RestaurantWrapper>
-            <Image
-              src={"/img/distance.svg"}
-              alt="식당"
-              width={20}
-              height={20}
-            />
-            <Restaurant>{restaurantName}</Restaurant>
+            <DistanceIcon color="var(--Color-Foundation-orange-500)" />
+            <Restaurant>{restaurantName ?? "정보 없음"}</Restaurant>
           </RestaurantWrapper>
           <MenuInfoContainer>
             <MenuInfo>
@@ -70,13 +78,16 @@ export default function MenuSection({
         </MenuHeader>
 
         <MobileDivider />
-        
+
         <MenuEvaluation>
-          <ReviewDistribution
-            reviewsTotalCount={reviewsTotalCount}
-            score={menu.score || 0}
-            distribution={reviewDistribution}
-          />
+          <ReviewArrangement>
+            <ReviewDistribution
+              reviewsTotalCount={reviewsTotalCount}
+              score={menu.score || 0}
+              distribution={reviewDistribution}
+            />
+            <KeywordReviewChart data={keywordReviewScore} />
+          </ReviewArrangement>
           {
             // formateDate -> "2021-08-01 (수)" 식으로 나옴
             // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
@@ -89,14 +100,14 @@ export default function MenuSection({
         </MenuEvaluation>
       </MenuOverview>
       <MobileDivider />
-      <PhotoReviewsSection menuId={menu.id} images={images}/>
+      <PhotoReviewsSection menuId={menu.id} images={images} />
     </Container>
   );
 }
 
 const Container = styled.section<{ $isNotShow: boolean }>`
   border-radius: 10px;
-  background-color: var(--Color-Foundation-base-white, #FFF);
+  background: var(--SemanticColor-Background-Secondary, #232323);
 
   display: flex;
   flex-direction: column;
@@ -152,7 +163,7 @@ const RestaurantWrapper = styled.div`
 `;
 
 const Restaurant = styled.div`
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
 
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -197,12 +208,11 @@ const MenuTitle = styled.div`
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 28px */
   @media (max-width: 768px) {
-
   }
 `;
 
 const Price = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
 
   /* text-15/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -214,7 +224,7 @@ const Price = styled.div`
 
 const MobileDivider = styled.div`
   display: none;
-  background: var(--Color-Foundation-gray-100, #F2F3F4);
+  background: var(--Color-Foundation-gray-100, #f2f3f4);
   width: 100%;
   height: 10px;
   @media (max-width: 768px) {
@@ -225,7 +235,7 @@ const MobileDivider = styled.div`
 const MenuEvaluation = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
   align-self: stretch;
   @media (max-width: 768px) {
@@ -242,10 +252,10 @@ const ReviewPostButton = styled.button`
   align-items: center;
   align-self: stretch;
   border-radius: 8px;
-  background: var(--Color-Foundation-orange-500, #FF9522);
+  background: var(--Color-Foundation-orange-500, #ff9522);
   cursor: pointer;
 
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--SemanticColor-Text-Button, #ffffff);
 
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
@@ -258,5 +268,18 @@ const ReviewPostButton = styled.button`
     padding: 10px 20px;
     align-self: center;
     border-radius: 50px;
+    height: 36px;
+  }
+`;
+
+const ReviewArrangement = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 12px;
   }
 `;

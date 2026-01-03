@@ -20,9 +20,9 @@ const getCurrentOperatingHours = (
   };
 
   const dayType = getDayType();
-  const [BR, LU, DN] = dayType.length === 3 ? dayType : [null, ...dayType]; // 길이에 따라 [BR, LU, DN] 처리
+  const [br, lu, dn] = dayType.length === 3 ? dayType : [null, ...dayType]; // 길이에 따라 [br, lu, dn] 처리
 
-  return (type === "BR" ? BR : type === "LU" ? LU : DN) ?? "";
+  return (type === "br" ? br : type === "lu" ? lu : dn) ?? "";
 };
 
 export default getCurrentOperatingHours;

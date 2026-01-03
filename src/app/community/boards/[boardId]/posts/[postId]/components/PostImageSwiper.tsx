@@ -74,7 +74,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
 const Swiper = styled.div`
   position: relative;
   aspect-ratio: 1 / 1;
-  background-color: white;
+  background-color: var(--Color-Foundation-base-white);
 
   --slide-width: 100%;
 `;
@@ -124,8 +124,8 @@ const SelectedSnapDisplay = styled.div<{ isHovered: boolean }>`
   top: 20px;
   right: 20px;
   height: 25px;
-  color: white;
-  background-color: #575757;
+  color: var(--Color-Foundation-base-white);
+  background-color: var(--Color-Foundation-gray-800);
   border-radius: 14px;
   padding: 0 7.5px;
   font-weight: 400;

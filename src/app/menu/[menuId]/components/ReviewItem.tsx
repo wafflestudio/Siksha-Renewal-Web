@@ -1,54 +1,139 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Stars from "./Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
 import { formatReviewDate } from "utils/FormatUtil";
 import useIsMobile from "hooks/UseIsMobile";
+import KeywordReviewChips from "./KeywordReviewChips";
+import ReviewLikes from "./ReviewLikes";
+import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
+import useAuth from "hooks/UseAuth";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
+import useError from "hooks/useError";
+import ImageLightbox from "components/general/ImageLightbox";
 import ThemedWrapper from "components/general/ThemedWrapper";
 
-export default function ReviewItem({ review }: { review: ReviewType }) {
+export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
+  const [review, setReview] = useState(initialReview);
   const isMobile = useIsMobile();
   const IMAGE_SIZE = isMobile ? 102 : 80;
+  const { getAccessToken } = useAuth();
+  const { currentTheme } = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
+  const { onHttpError } = useError();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const handleReviewLike = async () => {
+    const accessToken = await getAccessToken();
+    console.debug(accessToken);
+    try {
+      if (review.is_liked) {
+        await setReviewUnlike(review.id, accessToken); // 서버 요청
+        // 성공 시 UI 업데이트
+        setReview({
+          ...review,
+          is_liked: false,
+          like_count: review.like_count - 1,
+        });
+      } else {
+        await setReviewLike(review.id, accessToken); // 서버 요청
+        // 성공 시 UI 업데이트
+        setReview({
+          ...review,
+          is_liked: true,
+          like_count: review.like_count + 1,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      onHttpError(err, { preventNavigation: true });
+    }
+  };
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
+  };
+
   return (
     <Container>
       <Header>
         <Profile src={"/img/default-profile.svg"} alt="프로필 이미지" />
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          flex: "1 0 0",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            flex: "1 0 0",
+          }}
+        >
           <Id>ID {review.user_id}</Id>
           <ThemedWrapper theme={{ width: 60 }}>
             <Stars score={review.score || 0} />
           </ThemedWrapper>
         </div>
-        <Date>{formatReviewDate(review.created_at.substring(0, 10))}</Date>
+        <Date>
+          {isMobile
+            ? formatReviewDate(review.created_at.substring(0, 10))
+            : review.created_at.substring(0, 10)}
+        </Date>
       </Header>
       <Body>
         <Content>
-          <Comment>{review.comment}</Comment>
-          {review.etc?.images && (
-          <Images>
-            {review.etc.images.map((image) => (
-              <Image
-                key={image}
-                src={image}
-                alt="리뷰 이미지"
-                width={IMAGE_SIZE}
-                height={IMAGE_SIZE}
-                style={{
-                  borderRadius: "8px",
-                  objectFit: "cover",
-                }}
+          <CommentReviewWrapper>
+            <CommentWrapper isDark={isDark}>
+              <Comment isDark={isDark}>{review.comment}</Comment>
+            </CommentWrapper>
+            {isMobile && (
+              <ReviewLikes
+                count={review.like_count}
+                isLiked={review.is_liked}
+                onClick={handleReviewLike}
               />
-            ))}
-          </Images>
+            )}
+          </CommentReviewWrapper>
+          <KeywordAndImagesWrapper>
+          <KeywordReviewChips keywords={review.keyword_reviews} />
+          {Array.isArray(review.etc?.images) && (
+            <Images>
+              {review.etc.images.map((image, index) => (
+                <ImageClickWrapper key={image} onClick={() => handleImageClick(index)}>
+                  <Image
+                    src={image}
+                    alt="리뷰 이미지"
+                    width={IMAGE_SIZE}
+                    height={IMAGE_SIZE}
+                    style={{
+                      borderRadius: "8px",
+                      objectFit: "cover",
+                      cursor: "pointer",
+                    }}
+                  />
+                </ImageClickWrapper>
+              ))}
+            </Images>
+          )}
+          </KeywordAndImagesWrapper>
+          {/* ReviewLikes 클릭 이벤트 연결 */}
+          {!isMobile && (
+            <ReviewLikes
+              count={review.like_count}
+              isLiked={review.is_liked}
+              onClick={handleReviewLike}
+            />
           )}
         </Content>
       </Body>
+      {Array.isArray(review.etc?.images) && review.etc.images.length > 0 && (
+        <ImageLightbox
+          images={review.etc.images}
+          initialIndex={selectedImageIndex}
+          isOpen={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </Container>
   );
 }
@@ -82,6 +167,10 @@ const Body = styled.div`
   align-items: flex-start;
   gap: 14px;
   align-self: stretch;
+
+  @media (max-width: 768px) {
+    padding-left: 15.5px;
+  }
 `;
 
 const Content = styled.div`
@@ -91,11 +180,14 @@ const Content = styled.div`
   align-self: stretch;
 `;
 
-const Comment = styled.div`
+const Comment = styled.div<{ isDark: boolean }>`
   display: flex;
+  position: relative;
   padding: 4px 24px 4px 0px;
   align-items: flex-start;
   align-self: stretch;
+  flex-grow: 1;
+  min-width: 0;
 
   color: var(--Color-Foundation-gray-900, #262728);
 
@@ -105,13 +197,8 @@ const Comment = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
   line-height: 150%; /* 22.5px */
-  
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
-    padding: 10px;
-    margin: 8px 10px 6px 0;
 
+  @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-13/Regular */
@@ -121,17 +208,40 @@ const Comment = styled.div`
     font-weight: var(--Font-weight-regular, 400);
     line-height: 140%; /* 18.2px */
     letter-spacing: var(--Font-letter-spacing-0, -0.3px);
+    padding: 0;
   }
 `;
 
-const Keywords = styled.div`
+const CommentWrapper = styled.div<{ isDark: boolean }>`
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  max-width: 100%;
+  gap: 0;
+  @media (max-width: 768px) {
+    background-image: ${({ isDark }) =>
+      isDark ? 'url("/img/review-comment-dark.svg")' : 'url("/img/review-comment-light.svg")'};
+    background-repeat: no-repeat; /* 세로로만 반복 */
+    background-size: 100% 100%; /* 가로는 꽉 채우고, 세로는 자동 */
+    background-position: center;
+    background-origin: border-box;
+    padding: 10px 20px 10px 23px;
+  }
+`;
+
+const KeywordAndImagesWrapper = styled.div`
+@media (max-width: 768px) {
+  padding-left: 20px;
+}
+`;
+const CommentReviewWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 8px;
-  align-self: stretch;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+  flex-direction: row;
+  gap: 10.5px;
+  align-items: center;
+  width: 100%;
 `;
 
 const Images = styled.div`
@@ -139,13 +249,18 @@ const Images = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 10px;
   align-self: stretch;
   flex-wrap: wrap;
 `;
 
+const ImageClickWrapper = styled.div`
+  display: inline-block;
+  cursor: pointer;
+`;
+
 const Id = styled.div`
-  color: var(--Color-Foundation-gray-800, #4C4D50);
+  color: var(--Color-Foundation-gray-800, #cbcbcc);
 
   /* text-13/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -153,11 +268,10 @@ const Id = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 18.2px */
-  
 `;
 
 const Date = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: right;
 
   /* text-12/Bold */
@@ -166,9 +280,9 @@ const Date = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%; /* 16.8px */
-  
+
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-gray-600, #989AA0);
+    color: var(--Color-Foundation-gray-600, #989aa0);
     text-align: right;
 
     /* text-12/Bold */

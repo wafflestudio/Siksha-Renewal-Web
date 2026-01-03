@@ -119,7 +119,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 14px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
   margin: 0;
 
   & > div {
@@ -130,7 +130,7 @@ const Container = styled.div`
     }
   }
   @media (max-width: 768px) {
-    border-color: #f0f0f0;
+    border-color: var(--SemanticColor-Border-Primary);
     padding-bottom: 0;
   }
 `;
@@ -165,6 +165,7 @@ const Nickname = styled.div`
   font-size: 14px;
   line-height: 16px;
   margin-left: 9px;
+  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-weight: 700;
     font-size: 11px;
@@ -189,7 +190,7 @@ const DesktopCommentActions = styled.div`
   }
 `;
 const DesktopActionButton = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
@@ -199,6 +200,7 @@ const Content = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 19.3px;
+  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 12px;
     line-height: 18px;
@@ -212,7 +214,7 @@ const MobileLikeButton = styled.button`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f8f8f8;
+    background: var(--SemanticColor-Element-Chip);
     width: 35.6px;
     height: 53px;
     border: none;
@@ -227,7 +229,7 @@ const MobileLikeIcon = styled.img`
   height: 11px;
 `;
 const MobileLikes = styled.div`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 400;
   font-size: 10px;
   margin-top: 8px;
@@ -250,7 +252,7 @@ const MobileMoreActionsButton = styled.img`
 `;
 
 const CommentDate = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
 `;
@@ -279,7 +281,7 @@ const DesktopLikeIcon = styled.img`
   height: 13px;
 `;
 const DesktopLikes = styled.div`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 400;
   font-size: 12px;
   margin-left: 4px;
@@ -291,9 +293,9 @@ const NotAvailableContainer = styled.div`
   align-items: center;
   height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
 `;
 const NotAvailableMessage = styled.div`
   font-size: 12px;
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
 `;

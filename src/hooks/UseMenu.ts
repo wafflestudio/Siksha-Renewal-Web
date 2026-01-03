@@ -2,7 +2,7 @@ import { useMenuDispatchContext, useMenuStateContext } from "providers/MenuProvi
 import useAuth from "./UseAuth";
 import useError from "./useError";
 import { getMenu } from "utils/api/menus";
-import { getReview, getReviews, setReview, updateReview } from "utils/api/reviews";
+import { getReview, getReviews, setReview, updateReview, setReviewWithImages } from "utils/api/reviews";
 import { useCallback } from "react";
 import { MyReviewType } from "types";
 
@@ -12,29 +12,45 @@ export default function useMenu() {
   const { authStatus, getAccessToken } = useAuth();
   const { onHttpError } = useError();   // Error handling
 
-  const fetchMenu = useCallback(async (menuId) => {
-    const accessToken = await getAccessToken().catch((error) => "");
-    getMenu(menuId, accessToken)
-      .then((menuData) => {
-        setMenu(menuData);
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
-  }, [setMenu, getAccessToken, onHttpError]);
-
-  const fetchReviews = useCallback(async (menuId) => {
-    getReviews(menuId)
-      .then((reviewsData) => {
-        setReviews({
-          result: reviewsData.result,
-          total_count: reviewsData.totalCount,
+  const fetchMenu = useCallback(
+    async (menuId) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      getMenu(menuId, accessToken)
+        .then((menuData) => {
+          setMenu(menuData);
+        })
+        .catch((e) => {
+          onHttpError(e);
         });
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
-  }, [setReviews, onHttpError]);
+    },
+    [setMenu, getAccessToken, onHttpError],
+  );
+
+  const fetchReviews = useCallback(
+    async (menuId) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      getReviews(menuId, accessToken)
+        .then((reviewsData) => {
+          setReviews({
+            result: reviewsData.result,
+            total_count: reviewsData.totalCount,
+          });
+        })
+        .catch((e) => {
+          onHttpError(e);
+        });
+    },
+    [setReviews, onHttpError],
+  );
+
+
+  const submitReviewWithImages = useCallback(
+    async (body: FormData) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      return setReviewWithImages(body, accessToken);
+    },
+    [getAccessToken],
+  );
 
   const fetchReview = useCallback(async (reviewId: number) => {
     const accessToken = await getAccessToken().catch((error) => "");
@@ -56,15 +72,18 @@ export default function useMenu() {
     const accessToken = await getAccessToken().catch((error) => "");
     return updateReview(reviewId, body, accessToken);
   }, [getAccessToken]);
-
-  const fetchData = useCallback(async (menuId) => {
-    setMenuLoading(true);
-    try {
-      await Promise.all([fetchMenu(menuId), fetchReviews(menuId)]);
-    } finally {
-      setMenuLoading(false);
-    }
-  }, [fetchMenu, fetchReviews, setMenuLoading]);
+  
+  const fetchData = useCallback(
+    async (menuId) => {
+      setMenuLoading(true);
+      try {
+        await Promise.all([fetchMenu(menuId), fetchReviews(menuId)]);
+      } finally {
+        setMenuLoading(false);
+      }
+    },
+    [fetchMenu, fetchReviews, setMenuLoading],
+  );
 
   return {
     menu,
@@ -74,7 +93,8 @@ export default function useMenu() {
     fetchReviews,
     fetchReview,
     submitReview,
+    submitReviewWithImages,
     editReview,
     fetchData,
-  }
+  };
 }

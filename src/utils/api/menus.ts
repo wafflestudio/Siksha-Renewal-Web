@@ -26,16 +26,16 @@ export const getMenuList = (
       if (count === 0) {
         return { count: 0, result: [{
           date: date,
-          BR: [],
-          LU: [],
-          DN: [],
+          br: [],
+          lu: [],
+          dn: [],
         }] };
       }
       const result = rawData.map((menuList) => ({
         date: menuList.date,
-        BR: menuList.br,
-        LU: menuList.lu,
-        DN: menuList.dn,
+        br: menuList.br,
+        lu: menuList.lu,
+        dn: menuList.dn,
       }));
       return { count, result };
     })
@@ -92,7 +92,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { "Authorization": `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {

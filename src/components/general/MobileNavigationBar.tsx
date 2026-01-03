@@ -3,9 +3,13 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatchContext, useStateContext } from "providers/ContextProvider";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import AccountIcon from "assets/icons/mobile-nav-account.svg";
+import CommunityIcon from "assets/icons/mobile-nav-community.svg";
+import MenuIcon from "assets/icons/mobile-nav-menu.svg";
+import StarFilledIcon from "assets/icons/star-filled.svg";
 
 export default function MobileNavigationBar() {
   const router = useRouter();
@@ -49,73 +53,41 @@ export default function MobileNavigationBar() {
           height: "46px",
         }}
       >
-        <Icon
+        <NavButton
           isActive={active === "favorite"}
-          srcActive="/img/mobile-nav-star-active.svg"
-          srcInactive="/img/mobile-nav-star-inactive.svg"
+          icon={<StarFilledIcon width="25px" />}
+          name="즐겨찾기"
         />
-        <IconLabel isActive={active === "favorite"}>즐겨찾기</IconLabel>
+        <IconLabel $isActive={active === "favorite"}>즐겨찾기</IconLabel>
       </Link>
-      <Link
-        href="/"
-        onClick={() => setIsFilterFavorite(false)}
-        style={{
-          width: "36px",
-          height: "46px",
-        }}
-      >
-        <Icon
-          isActive={active === "menu"}
-          srcActive="/img/mobile-nav-menu-active.svg"
-          srcInactive="/img/mobile-nav-menu-inactive.svg"
-        />
-        <IconLabel isActive={active === "menu"}>식단</IconLabel>
+      <Link href="/" onClick={() => setIsFilterFavorite(false)}>
+        <NavButton isActive={active === "menu"} icon={<MenuIcon />} name="식단" />
       </Link>
-      <Link
-        href="/community/boards/1"
-        onClick={() => {
-          setIsFilterFavorite(false);
-        }}
-        style={{
-          width: "36px",
-          height: "46px",
-        }}
-      >
-        <Icon
-          isActive={active === "community"}
-          srcActive="/img/mobile-nav-community-active.svg"
-          srcInactive="/img/mobile-nav-community-inactive.svg"
-        />
-        <IconLabel isActive={active === "community"}>게시판</IconLabel>
+      <Link href="/community/boards/1" onClick={() => setIsFilterFavorite(false)}>
+        <NavButton isActive={active === "community"} icon={<CommunityIcon />} name="게시판" />
       </Link>
-      <div
-        /**
-         * NOTE: Link href를 /account로 하면 authGuard에 의해 튕겨나가므로
-         * login 시에만 /account로 이동하도록 설정
-         */
-        onClick={() => {
-          if (authStatus === "login") {
-            setIsFilterFavorite(false);
-            router.push(`/account`);
-          }
-          else openLoginModal();
-        }}
-        style={{
-          width: "36px",
-          height: "46px",
-        }}
-      >
-        <Icon
-          isActive={active === "account"}
-          srcActive="/img/mobile-nav-account-active.svg"
-          srcInactive="/img/mobile-nav-account-inactive.svg"
-        />
-        <IconLabel isActive={active === "account"}>설정</IconLabel>
-      </div>
+      <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
+        <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
+      </Link>
     </Container>,
     rootElement,
   );
 }
+
+interface NavButtonProps {
+  isActive: boolean;
+  icon: ReactNode;
+  name: string;
+}
+
+const NavButton = ({ isActive, icon, name }: NavButtonProps) => {
+  return (
+    <>
+      <IconWrapper $isActive={isActive}>{icon}</IconWrapper>
+      <NavName $isActive={isActive}>{name}</NavName>
+    </>
+  );
+};
 
 const Container = styled.div`
   position: fixed;
@@ -126,32 +98,59 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 83px;
-  background: var(--Color-Foundation-base-white, #fff);
+  background-color: var(--SemanticColor-Background-Secondary);
   box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
   z-index: 1;
+  box-shadow: 0px -2px 6px 0px #0000000d;
 
   @media (max-width: 768px) {
     display: flex;
   }
 `;
 
-const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
+const IconWrapper = styled.div<{ $isActive: boolean }>`
+  width: 36px;
+  height: 36px;
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const NavName = styled.div<{ $isActive: boolean }>`
+  width: 36;
+  height: 10;
+  top: 36px;
+  font-family: NanumSquare;
+  font-weight: 800;
+  font-size: 9px;
+  line-height: 100%;
+  letter-spacing: -0.3px;
+  text-align: center;
+  vertical-align: middle;
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
+`;
+const Icon = styled.div<{ $isActive: boolean; $srcActive: string; $srcInactive: string }>`
   display: flex;
   height: 36px;
   width: 36px;
-  background-image: ${({ isActive, srcActive, srcInactive }) =>
-    `url(${isActive ? srcActive : srcInactive})`};
+  background-image: ${({ $isActive, $srcActive, $srcInactive }) =>
+    `url(${$isActive ? $srcActive : $srcInactive})`};
   background-repeat: no-repeat;
   background-position: center;
   transform: translateZ(0);
   opacity: 0.99;
 `;
 
-const IconLabel = styled.div<{ isActive: boolean }>`
+const IconLabel = styled.div<{ $isActive: boolean }>`
   width: 36px;
 
-  color: ${({ isActive }) =>
-    isActive
+  color: ${({ $isActive }) =>
+    $isActive
       ? "var(--Color-Foundation-orange-500, #FF9522)"
       : "var(--Color-Foundation-gray-500, #BEC1C8)"};
   text-align: center;

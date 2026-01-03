@@ -1,13 +1,15 @@
 "use client";
 
 import UseFilter from "hooks/UseFilter";
-import Image from "next/image";
 import styled from "styled-components";
 import MobileFilterDistanceBottomSheet from "./MobileFilter/MobileFilterDistanceBottomSheet";
 import { useEffect, useRef, useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
+import FilterIcon from "assets/icons/filter.svg";
+import DownArrowIcon from "assets/icons/down-arrow.svg";
+import CheckIcon from "assets/icons/check.svg";
 import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 import { formatPrice } from "utils/FormatUtil";
 import { trackEvent } from "utils/MixPanel";
@@ -143,87 +145,48 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
+
         <FilterIconWrapper onClick={handleMainFilterOpen}>
-          <Image
-            src="/img/filter-icon.svg"
-            alt="필터 아이콘"
-            width={33.586}
-            height={34}
-            style={{
-              background: "var(--Color-Background-main, #F8F8F8)",
-              paddingLeft: "8px",
-              paddingRight: isScrolled ? "4.41px" : "0",
-            }}
-          />
-          <FilterIconGradient visible={isScrolled} />
+        <StyledFilterIcon aria-label="필터 아이콘" />
+          <FilterIconGradient $visible={isScrolled} />
         </FilterIconWrapper>
         <div style={{ width: "37px", flexShrink: "0" }} />
-        <Button isActive={isSet.length} onClick={handleDistanceFilterOpen}>
-          <ButtonText isActive={isSet.length}>
+        <Button $isActive={isSet.length} onClick={handleDistanceFilterOpen}>
+          <ButtonText $isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button isActive={isSet.priceMin || isSet.priceMax} onClick={handlePriceFilterOpen}>
-          <ButtonText isActive={isSet.priceMin || isSet.priceMax}>
+        <Button $isActive={isSet.priceMin || isSet.priceMax} onClick={() => setFilterState("price", true)}>
+          <ButtonText $isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
-              ? `${formatPrice(filterList.priceMin)}원 ~ ${
-                isFinite(filterList.priceMax)
-                  ? `${formatPrice(filterList.priceMax)}원`
-                  : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
+              ? `${filterList.priceMin}원 ~ ${
+                isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
               }`
               : "가격"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
+        <Button $isActive={isSet.isAvailableOnly} onClick={handleOnClickIsAvailableOnly}>
           {" "}
-          {isSet.isAvailableOnly && (
-            <Image src="img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          )}
-          <ButtonText isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
+          {isSet.isAvailableOnly && <StyledCheckIcon />}
+          <ButtonText $isActive={isSet.isAvailableOnly}>영업 중</ButtonText>
         </Button>
-        <Button isActive={isSet.isReview} onClick={handleOnClickIsReview}>
-          {isSet.isReview && (
-            <Image src="/img/check-gray.svg" alt="체크 아이콘" width={16} height={16} />
-          )}
-          <ButtonText isActive={isSet.isReview}>리뷰</ButtonText>
+        <Button $isActive={isSet.isReview} onClick={handleOnClickIsReview}>
+          {isSet.isReview && <StyledCheckIcon />}
+          <ButtonText $isActive={isSet.isReview}>리뷰</ButtonText>
         </Button>
-        <Button isActive={isSet.ratingMin} onClick={handleRatingFilterOpen}>
-          <ButtonText isActive={isSet.ratingMin}>
-            {isSet.ratingMin ? `평점 ${filterList.ratingMin.toFixed(1)} 이상` : "최소 평점"}
+        <Button $isActive={isSet.ratingMin} onClick={() => setFilterState("rating", true)}>
+          <ButtonText $isActive={isSet.ratingMin}>
+            {isSet.ratingMin ? `평점 ${filterList.ratingMin} 이상` : "최소 평점"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        {/* <Button isActive={isSet.category}>
-          <ButtonText isActive={isSet.category}>
+        {/* <Button $isActive={isSet.category}>
+          <ButtonText $isActive={isSet.category}>
             {isSet.category ? `${filterList.category.join(", ")}` : "카테고리"}
           </ButtonText>
-          <Image
-            src="/img/down-arrow-filter.svg"
-            alt="아래 화살표"
-            width={11}
-            height={6}
-            style={{ padding: "0 2.5px" }}
-          />
+          <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button> */}
       </Container>
     </>
@@ -239,7 +202,7 @@ const Container = styled.div`
   padding: 0 8px 17px 0;
   box-sizing: border-box;
   gap: 5px;
-
+  background-color: var(--Color-Background-main);
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -252,14 +215,14 @@ const FilterIconWrapper = styled.div`
   display: flex;
 `;
 
-const FilterIconGradient = styled.div<{ visible: boolean }>`
+const FilterIconGradient = styled.div<{ $visible: boolean }>`
   width: 16px;
   height: 36px;
   background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 `;
 
-const Button = styled.button<{ isActive?: boolean }>`
+const Button = styled.button<{ $isActive?: boolean }>`
   display: flex;
   flex: 0 0 auto;
   height: 34px;
@@ -271,23 +234,48 @@ const Button = styled.button<{ isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-    props.isActive
+
+    props.$isActive
       ? "var(--Color-Foundation-orange-500, #FF9522)"
       : "var(--Color-Foundation-gray-200, #E5E6E9)"};
   background: ${(props) =>
-    props.isActive
+    props.$isActive
       ? "var(--Color-Foundation-orange-100, #FFEAD3)"
       : " var(--Color-Foundation-base-white, #FFF)"};
 
   font-family: NanumSquare_ac;
 `;
 
-const ButtonText = styled.span<{ isActive?: boolean }>`
-  color: var(--Main-Balck, #000);
-  leading-trim: both;
-  text-edge: cap;
+const ButtonText = styled.span<{ $isActive?: boolean }>`
+  color: var(--Color-Foundation-base-black);
   font-size: 13px;
   font-style: normal;
-  font-weight: ${(props) => (props.isActive ? 700 : 400)};
+  font-weight: ${(props) => (props.$isActive ? 700 : 400)};
   line-height: 20px;
+`;
+
+const StyledFilterIcon = styled(FilterIcon)`
+  color: var(--Color-Foundation-gray-500);
+  width: 33.59px;
+  height: 34px;
+`;
+
+const StyledCheckIcon = styled(CheckIcon)`
+  width: 16px;
+  height: 16px;
+  color: var(--Color-Foundation-gray-800);
+`;
+
+const IconBox = styled.div<{ size?: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${({ size }) => (size ? `${size}px` : "auto")};
+  height: ${({ size }) => (size ? `${size}px` : "auto")};
+`;
+
+const StyledDownArrowIcon = styled(DownArrowIcon)`
+  color: var(--Color-Foundation-gray-700);
+  width: 16px;
+  height: 6px;
 `;

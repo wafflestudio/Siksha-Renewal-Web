@@ -2,19 +2,34 @@ import useIsMobile from "hooks/UseIsMobile";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
+import { useState } from "react";
+import ImageLightbox from "components/general/ImageLightbox";
 
 export default function PhotoReviewsSection({
   menuId,
   images,
-}: { menuId: number; images: string[]; }) {
+}: {
+  menuId: number;
+  images: string[];
+}) {
   const isMobile = useIsMobile();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const imagesCount = images.length;
-  const MAX_NUMBER_OF_PREVIEW_IMAGES = isMobile ? 3 : 4;
+  const MAX_NUMBER_OF_PREVIEW_IMAGES = isMobile ? 6 : 4;
   const IMAGE_SIZE = isMobile ? 120 : 160;
 
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
+  };
+
+  let displayImages = images;
   if (images.length > MAX_NUMBER_OF_PREVIEW_IMAGES) {
-    images = images.slice(0, MAX_NUMBER_OF_PREVIEW_IMAGES);
+    displayImages = images.slice(0, MAX_NUMBER_OF_PREVIEW_IMAGES);
   }
 
   return (
@@ -33,24 +48,27 @@ export default function PhotoReviewsSection({
             cursor: "pointer",
           }}
         >
-          <Label>전체 보기</Label>
-          <Image
-            src="/img/right-arrow-darkgrey.svg"
-            alt="전체 보기"
-            width={18}
-            height={18}
-          />
+          <Label>전체보기</Label>
+          {isMobile ? (
+            <MobileRightArrowIcon width={7.5} color="var(--Color-Foundation-gray-600)" />
+          ) : (
+            <RightArrowIcon width={13.87} color="var(--Color-Foundation-gray-600)" />
+          )}
+
+          {/* <Image src="/img/right-arrow-darkgrey.svg" alt="전체보기" width={18} height={18} /> */}
         </Link>
       </Header>
       <Photos>
         {images.length > 0 ? (
-          images.map((image, index) => (
-            <ImageWrapper key={index}>
-              {isMobile && imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES && index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
-                <Link href={`/menu/${menuId}/photos`}>
-                  <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
-                </Link>
-              )}
+          displayImages.map((image, index) => (
+            <ImageWrapper key={image + index} onClick={() => handleImageClick(index)}>
+              {isMobile &&
+                imagesCount > MAX_NUMBER_OF_PREVIEW_IMAGES &&
+                index === MAX_NUMBER_OF_PREVIEW_IMAGES - 1 && (
+                  <Link href={`/menu/${menuId}/photos`}>
+                    <MoreImages>{imagesCount - MAX_NUMBER_OF_PREVIEW_IMAGES}건 더보기</MoreImages>
+                  </Link>
+                )}
               <Image
                 src={image}
                 alt="리뷰 이미지"
@@ -59,6 +77,7 @@ export default function PhotoReviewsSection({
                 style={{
                   borderRadius: "10px",
                   objectFit: "cover",
+                  cursor: "pointer",
                 }}
               />
             </ImageWrapper>
@@ -67,6 +86,12 @@ export default function PhotoReviewsSection({
           <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
         )}
       </Photos>
+      <ImageLightbox
+        images={images}
+        initialIndex={selectedImageIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
     </Container>
   );
 }
@@ -77,7 +102,7 @@ const Container = styled.div`
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     padding-top: 14px;
   }
 `;
@@ -100,7 +125,7 @@ const HeaderTextWrapper = styled.div`
 
 const HeaderText = styled.div`
   align-self: stretch;
-  
+
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-16/ExtraBold */
@@ -123,7 +148,7 @@ const HeaderText = styled.div`
 `;
 
 const Label = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
 
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
@@ -159,6 +184,7 @@ const ImageWrapper = styled.div`
   width: var(--image-width);
   border-radius: 10px;
   overflow: hidden;
+  flex-shrink: 0;
 
   --image-height: 160px;
   --image-width: 160px;
@@ -178,7 +204,7 @@ const MoreImages = styled.button`
   border-radius: 10px;
   box-shadow: none;
 
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--Color-Foundation-base-white, #fff);
   text-align: center;
 
   /* text-12/Bold */

@@ -4,10 +4,12 @@ import NavigationBar from "components/general/NavigationBar";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
 import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
-import Image from 'next/image';
+import Image from "next/image";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 export default function Header() {
   const router = useRouter();
+  const { defaultProfileURL, currentTheme } = UseCurrentTheme();
 
   const { authStatus, logout } = useAuth();
   const { openLoginModal } = useModals();
@@ -16,13 +18,23 @@ export default function Header() {
     <Background>
       <DesktopContainer>
         <Left>
-          <Image
-            src="/manifest/desktop-icon.png"
-            height={50}
-            width={50}
-            onClick={() => router.push("/")}
-            alt="식샤 아이콘"
-          />
+          {currentTheme === "light" ? (
+            <Image
+              src={"/img/siksha.svg"}
+              height={40}
+              width={40}
+              onClick={() => router.push("/")}
+              alt="식샤 아이콘"
+            />
+          ) : (
+            <Image
+              src={"/img/siksha-dark.svg"}
+              height={40}
+              width={40}
+              onClick={() => router.push("/")}
+              alt="식샤 아이콘"
+            />
+          )}
           <TitleContainer>
             <Image
               src="/img/sikshaSplash.svg"
@@ -62,7 +74,7 @@ export default function Header() {
 }
 
 const Background = styled.div`
-  background: var(--Color-Foundation-orange-500, #FF9522);
+  background: var(--SemanticColor-Background-GNB, #ff9522);
 `;
 
 const DesktopContainer = styled(TwoColumnLayout.Container)`
@@ -81,7 +93,7 @@ const MobileContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background: #ff9522;
+    background: var(--SemanticColor-Background-GNB, #ff9522);
     height: 44px;
     width: auto;
     z-index: 1;
@@ -105,7 +117,7 @@ const TitleContainer = styled.div`
 
 const Title = styled.span`
   margin: 2px 0;
-  color: var(--Color-Foundation-base-white, #FFF);
+  color: var(--SemanticColor-Text-GNB, #fff);
   font-size: 14px;
   font-weight: 400;
   white-space: nowrap;
@@ -121,8 +133,8 @@ const Right = styled(TwoColumnLayout.Right)`
 const LoginButton = styled.button`
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--Color-Foundation-orange-400, #FFAA4E);
-  color: var(--Color-Foundation-base-white, #FFF);
+  background: var(--SemanticColor-Background-GNB-Button, #ffaa4e);
+  color: var(--SemanticColor-Text-Button, #fff);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
@@ -133,6 +145,7 @@ const LoginButton = styled.button`
     right: 5vw;
     padding: 0;
     background: none;
+    color: var(--SemanticColor-Text-GNB, #fff);
     font-size: 16px;
     font-weight: 400;
   }

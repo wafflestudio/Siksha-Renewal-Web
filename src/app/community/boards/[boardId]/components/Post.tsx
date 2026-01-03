@@ -2,19 +2,24 @@ import styled, { css } from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
 import { LoadingAnimation } from "styles/globalstyle";
+import { useTheme } from "next-themes";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface PropsPost {
   post: PostType;
+  isFirst?: boolean;
 }
 
-export function Post({ post }: PropsPost) {
+export function Post({ post, isFirst = false }: PropsPost) {
   const { boardId, id, title, content, isLiked, likeCount, commentCount, images } = post;
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
+  const { currentTheme } = UseCurrentTheme();
+  const isDark = currentTheme === "dark";
 
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
-      <Container>
-        <Info isImages={images && images.length > 0}>
+      <Container $isFirst={isFirst} $isDark={isDark}>
+        <Info $isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
@@ -40,7 +45,7 @@ export function Post({ post }: PropsPost) {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
   ${LoadingAnimation}
   display: flex;
   position: relative;
@@ -61,16 +66,24 @@ const Container = styled.div`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: #eeeeee;
+    background-color: var(--SemanticColor-Border-Secondary);
     transform: translateX(-50%);
-
     @media (max-width: 768px) {
+      /* display: none; */
       width: calc(100% + 25px);
-      background-color: #f0f0f0;
+      ${(props) =>
+        !props.$isDark
+          ? css`
+              background-color: var(--Color-Foundation-gray-100);
+            `
+          : props.$isFirst &&
+            css`
+              background-color: var(--Color-Foundation-gray-100);
+            `}
     }
   }
 `;
-const Info = styled.div<{ isImages: boolean | null }>`
+const Info = styled.div<{ $isImages: boolean | null }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -83,7 +96,7 @@ const Info = styled.div<{ isImages: boolean | null }>`
     height: min-content;
 
     ${(props) =>
-    props.isImages !== null &&
+      props.$isImages !== null &&
       css`
         max-width: calc(100% - 71.5px);
       `}
@@ -96,13 +109,14 @@ const Title = styled.div`
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 14px;
     font-weight: 800;
   }
 `;
 const ContentPreview = styled.div`
-  color: #393939;
+  color: var(--Color-Foundation-gray-700);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -123,12 +137,12 @@ const LikesAndComments = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 const Comments = styled.div`
   display: flex;
   align-items: center;
-  color: #797979;
+  color: var(--Color-Foundation-gray-600);
 `;
 const Icon = styled.img`
   margin-right: 4px;

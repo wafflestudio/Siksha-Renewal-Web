@@ -1,6 +1,7 @@
+import { ReviewType } from "app/menu/[menuId]/Menu";
 import axios from "axios";
 import APIendpoint from "constants/constants";
-import { MyReviewGroupType, MyReviewType, RawReview } from "types";
+import { MyReviewGroupType, MyReviewType, RawReview, KeywordReviewScore } from "types";
 
 export const getReviews = (
   menuID: number,
@@ -8,23 +9,60 @@ export const getReviews = (
 ): Promise<{
   totalCount: number;
   hasNext: boolean;
-  result: RawReview[];
+  result: ReviewType[];
 }> => {
   const apiUrl = !!accessToken
-    ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
-    : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
+  ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
+  : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
+const config = !!accessToken
+  ? { headers: { "Authorization": `Bearer ${accessToken}` } }
+  : {};
+return axios
+  .get(apiUrl, config)
+  .then((res) => {
+    const {
+      data: { total_count: totalCount, has_next: hasNext, result },
+    } = res;
+    return { totalCount, hasNext, result };
+  });
+};
+
+export const getPhotoReviews = (
+  menuID: number,
+  accessToken: string = "",
+): Promise<{
+  totalCount: number;
+  hasNext: boolean;
+  result: ReviewType[];
+}> => {
+  const apiUrl = `${APIendpoint()}/reviews/filter${
+    !!accessToken ? "" : "/web"
+  }?menu_id=${menuID}&page=1&per_page=100&image=true`;
+  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+
+  return axios.get(apiUrl, config).then((res) => {
+    const {
+      data: { total_count: totalCount, has_next: hasNext, result },
+    } = res;
+    return { totalCount, hasNext, result };
+  });
+};
+
+export const setReviewWithImages = (body: FormData, accessToken: string): Promise<void> => {
   return axios
-    .get(apiUrl, config)
-    .then((res) => {
-      const {
-        data: { total_count: totalCount, has_next: hasNext, result },
-      } = res;
-      return { totalCount, hasNext, result };
+    .post(`${APIendpoint()}/reviews/images`, body, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 등록에 실패했습니다.";
+      throw new Error(err);
     });
 };
+
+
 
 export const getReview = (
   reviewID: number,
@@ -74,6 +112,17 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
     });
 };
 
+export const getKeywordReviewScore = (menuID: number): Promise<KeywordReviewScore> => {
+  return axios
+    .get(`${APIendpoint()}/reviews/keyword/dist?menu_id=${menuID}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+      
 export const getMyReviewList = (
   accessToken: string,
   size: number,
@@ -99,6 +148,33 @@ export const getMyReviewList = (
     })
     .catch((e) => {
       throw e;
+    });
+};
+
+export const setReviewLike = (reviewId: number, accessToken: string): Promise<void> => {
+  return axios
+    .post(`${APIendpoint()}/reviews/${reviewId}/like`, null, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      throw err;
+    });
+};
+
+export const setReviewUnlike = (reviewId: number, accessToken: string): Promise<void> => {
+  return axios
+    .delete(`${APIendpoint()}/reviews/${reviewId}/like`, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(() => {})
+    .catch((err) => {
+      err.message = "리뷰 좋아요 취소에 실패했습니다.";
+      throw new Error(err);
     });
 };
 

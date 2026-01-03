@@ -34,6 +34,11 @@ export default function useAuth() {
 
   const getAccessToken = (): Promise<string> => {
     return new Promise((resolve, reject) => {
+      if (accessToken) {
+        resolve(accessToken);
+        return;
+      }
+
       if (authStatus !== "login") {
         reject(new Error("Login required"));
       }

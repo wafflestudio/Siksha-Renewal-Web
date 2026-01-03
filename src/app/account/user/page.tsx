@@ -46,7 +46,11 @@ export default function UserSetting() {
 
   return (
     <>
-      <MobileSubHeader title="계정관리" handleBack={() => router.push("/account")} />
+      <MobileSubHeader
+        title="계정관리"
+        handleBack={() => router.push("/account")}
+        containerColor="primary"
+      />
       <Container>
         <Title>계정 관리</Title>
         <ContentDiv onClick={handleLogout}>
@@ -65,13 +69,13 @@ export default function UserSetting() {
 
 const Container = styled.div`
   width: 544px;
-  background-color: white;
-  border: 1px solid #e8e8e8;
+  background-color: var(--SemanticColor-Background-Secondary);
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
 
   @media (max-width: 768px) {
-    width: calc(100% - 41px);
     margin-top: 24px;
+    width: calc(100dvw - 40px);
   }
 `;
 
@@ -79,7 +83,7 @@ const Title = styled.div`
   margin: 24.57px 0 0 22.45px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-gray-900);
   margin-bottom: 30.43px;
 
   @media (max-width: 768px) {
@@ -117,7 +121,7 @@ const LogoutText = styled(Text)`
 const WithdrawalText = styled(Text)`
   margin-top: 10.97px;
   margin-bottom: 14px;
-  color: #8a8a8a;
+  color: var(--Color-Accent-like);
 
   @media (max-width: 768px) {
     margin-top: 8px;
@@ -128,7 +132,7 @@ const WithdrawalText = styled(Text)`
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: #e8e8e8;
+  background: var(--SemanticColor-Border-Primary);
   margin: 0 6px;
 
   margin-top: 9.97px;

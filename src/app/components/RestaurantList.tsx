@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import useFavorite from "hooks/UseFavorite";
 import { sanitizeCssSelector } from "utils/FormatUtil";
 import Image from "next/image";
+import StarIcon from "assets/icons/star-outlined.svg";
+import LeftArrowIcon from "assets/icons/left-arrow.svg";
+import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 function scrollRestaurant(restaurant) {
   let element = document.querySelector(".a" + sanitizeCssSelector(restaurant));
@@ -32,34 +35,31 @@ export default function RestaurantList() {
   };
 
   useEffect(() => {
-    const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
-    const nonFavorites = data[meal].filter((restaurant) => isFavorite(restaurant.id) === false);
+    const mealData = data[meal] || [];
+    const favorites = mealData.filter((restaurant) => isFavorite(restaurant.id));
+    const nonFavorites = mealData.filter((restaurant) => isFavorite(restaurant.id) === false);
 
     const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
-  }, [data, favoriteRestaurants.length]);
+  }, [data, favoriteRestaurants.length, meal]);
 
   return (
-    <Container show={data[meal].length >= 1}>
+    <Container $show={(data[meal] || []).length >= 1}>
       <Header>
         <Title>식당 찾기</Title>
         <Pagination>
-          <Image
-            src={ (page === 1) ? "/img/left-arrow-darkgrey-inactive.svg" : "/img/left-arrow-darkgrey.svg"}
-            width={20}
-            height={20}
-            alt={"이전 식당 페이지"}
+          <StyledLeftArrowIcon
+            alt="이전 식당 페이지"
             onClick={prevPage}
             style={{ cursor: page === 1 ? "default" : "pointer" }}
+            $isActive={page > 1}
           />
-          <Page>{`${page}/${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
-          <Image
-            src={(page === Math.ceil(favoriteFirstRestaurants.length / 10)) ? "/img/right-arrow-darkgrey-inactive.svg" : "/img/right-arrow-darkgrey.svg"}
-            width={20}
-            height={20}
-            alt={"다음 식당 페이지"}
+          <Page>{`${page} / ${Math.ceil(favoriteFirstRestaurants.length / 10)}`}</Page>
+          <StyledRightArrowIcon
+            alt="다음 식당 페이지"
             onClick={nextPage}
             style={{ cursor: page === Math.ceil(favoriteFirstRestaurants.length / 10) ? "default" : "pointer" }}
+            $isActive={page < Math.ceil(favoriteFirstRestaurants.length / 10)}
           />
         </Pagination>
       </Header>
@@ -79,8 +79,7 @@ export default function RestaurantList() {
                     alt="좋아요"
                   />
                 ) : (
-                  <Star
-                    src="/img/general/star-off-20.svg"
+                  <StyledStarIcon
                     onClick={() => toggleFavorite(restaurant.id)}
                     alt=""
                   />
@@ -92,14 +91,14 @@ export default function RestaurantList() {
   );
 }
 
-const Container = styled.div<{ show: boolean }>`
-  display: ${(props) => (props.show === false ? "none" : "flex")};
+const Container = styled.div<{ $show: boolean }>`
+  display: ${(props) => (props.$show === false ? "none" : "flex")};
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
 
   max-height: 266px;
-  background: white;
+  background: transparent;
   box-sizing: border-box;
   gap: 22px;
 `;
@@ -113,7 +112,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--Color-Foundation-gray-900);
   /* text-16/ExtraBold */
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
@@ -128,7 +127,7 @@ const Pagination = styled.div`
 `;
 
 const Page = styled.span`
-  color: var(--Color-Foundation-gray-800, #4c4d50);
+  color: var(--Color-Foundation-gray-800);
 
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-13, 13px);
@@ -156,7 +155,8 @@ const Restaurant = styled.div`
   flex: 1 0 0;
   box-sizing: border-box;
   border-radius: 6px;
-  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  border: 1px solid var(--SemanticColor-Border-Secondary);
+  background: var(--SemanticColor-Background-Secondary);
   padding: 0 14.5px;
 
   &:hover {
@@ -167,7 +167,7 @@ const Restaurant = styled.div`
 const RestaurantName = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  color: var(--Color-Foundation-gray-700, #727478);
+  color: var(--Color-Foundation-gray-700);
   text-align: center;
   text-overflow: ellipsis;
 
@@ -181,5 +181,33 @@ const RestaurantName = styled.div`
 const Star = styled.img`
   width: 20px;
   height: 20px;
+  fill: var(--SemanticColor-Icon-Star);
+  cursor: pointer;
+`;
+
+const StyledStarIcon = styled(StarIcon)`
+  width: 20px;
+  height: 20px;
+  color: var(--SemanticColor-Icon-Star);
+  fill: var(--SemanticColor-Background-Secondary);
+  flex-shrink: 0;
+  cursor: pointer;
+`;
+
+const StyledLeftArrowIcon = styled(LeftArrowIcon)<{ $isActive?: boolean }>`
+  width: 20px;
+  height: 20px;
+  color: ${({ $isActive }) => $isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
+  fill: var(--SemanticColor-Background-Secondary);
+  flex-shrink: 0;
+  cursor: pointer;
+`;
+
+const StyledRightArrowIcon = styled(RightArrowIcon)<{ $isActive?: boolean }>`
+  width: 20px;
+  height: 20px;
+  color: ${({ $isActive }) => $isActive ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-gray-300)"};
+  fill: var(--SemanticColor-Background-Secondary);
+  flex-shrink: 0;
   cursor: pointer;
 `;

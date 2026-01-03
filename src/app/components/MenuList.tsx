@@ -31,7 +31,7 @@ export default function MenuList() {
     if (!data[meal] || data[meal].length == 0) setHasData(false);
     else if (
       isFilterFavorite &&
-      filterMenuList(data, location)[meal].filter((res) => favoriteRestaurants.includes(res.id))
+      (filterMenuList(data, location)[meal] || []).filter((res) => favoriteRestaurants.includes(res.id))
         .length === 0
     )
       setHasData(false);
@@ -39,7 +39,7 @@ export default function MenuList() {
   }, [data, meal, isFilterFavorite, filterList, location]);
 
   // Calculate the filtered list directly
-  const filteredList = hasData ? filterMenuList(data, location)[meal] : [];
+  const filteredList = hasData ? (filterMenuList(data, location)[meal] || []) : [];
 
   return (
     <Container key={date + meal}>
@@ -49,7 +49,7 @@ export default function MenuList() {
         <EmptyText>식단 정보가 없습니다.</EmptyText>
       ) : (
         <>
-          {filterMenuList(data, location)[meal].map(
+          {(filterMenuList(data, location)[meal] || []).map(
             (
               restaurant: RawRestaurant & {
                 menus: RawMenu[];

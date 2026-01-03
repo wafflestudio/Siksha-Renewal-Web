@@ -66,7 +66,7 @@ export default function MobileFilterDistanceBottomSheet({
       <div style={{ height: 56.5 }} />
       <MobileDistanceSlider length={length} onLengthChange={(value) => setLength(value)} />
       <div style={{ height: 58 }} />
-      <FilterActionSection marginBottom="19">
+      <FilterActionSection $marginBottom="19">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>

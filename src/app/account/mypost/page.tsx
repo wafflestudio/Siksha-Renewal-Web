@@ -42,7 +42,6 @@ export default function MyPost() {
         <Container $isEmpty={posts.length === 0}>
           <Header>내가 쓴 글</Header>
           <PostList posts={posts} fetch={fetchMyPosts} />
-          {posts.length >= 1 ? <BreakLine /> : null}
         </Container>
       </>
     );
@@ -51,20 +50,22 @@ export default function MyPost() {
 const Container = styled.div<{ $isEmpty: boolean }>`
   padding: 0 18.5px;
   width: 701px;
-  background: #ffffff;
   border-radius: 8px;
   box-sizing: border-box;
+  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
-    width: 100%;
     padding-top: 16px;
+    width: 100%;
+    margin-top: -4px;
+    border: none;
     height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
   }
 `;
 
 const Header = styled.div`
   margin: 24.08px 0 29.42px 4.5px;
-  color: var(--Main-Orange, #ff9522);
+  color: var(--Color-Foundation-gray-900);
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
@@ -91,5 +92,5 @@ const BreakLine = styled.hr`
   margin-bottom: 29.4px;
   border: 0;
   height: 1px;
-  background: #eeeeee;
+  background: var(--Color-Foundation-gray-100);
 `;

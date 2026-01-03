@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 import Menu from "app/components/Menu";
@@ -9,6 +9,10 @@ import { sanitizeCssSelector } from "utils/FormatUtil";
 import OperatingHour from "./OperatingHour";
 import { RawMenu, RawRestaurant } from "types";
 import getCurrentOperatingHours from "utils/getCurrentOperatingHours";
+import InfoIcon from "assets/icons/info.svg";
+import StarFilledIcon from "assets/icons/star-filled.svg";
+import StarOutlinedIcon from "assets/icons/star-outlined.svg";
+import { ReactNode } from "react";
 
 type Data = RawRestaurant & {
   menus: RawMenu[];
@@ -28,23 +32,27 @@ export default function MenuCard({ data }: { data: Data }) {
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
-              <ButtonIcon
-                src={"/img/info.svg"}
-                onClick={() => {
-                  setInfoData(data);
-                  toggleShowInfo();
-                }}
-                alt="위치 정보"
-              />
-              <ButtonIcon
-                src={
-                  isFavorite(data.id)
-                    ? "/img/general/star-on.svg"
-                    : "/img/general/star-off-24.svg"
-                }
-                onClick={() => toggleFavorite(data.id)}
-                alt={isFavorite(data.id) ? "좋아요" : "좋아요 해제"}
-              />
+              <StyledIcon>
+                <InfoIcon
+                  onClick={() => {
+                    setInfoData(data);
+                    toggleShowInfo();
+                  }}
+                  aria-label="정보"
+                />
+              </StyledIcon>
+              {isFavorite(data.id) ? (
+                <StyledIcon>
+                  <StarFilledIcon aria-label="좋아요" onClick={() => toggleFavorite(data.id)} />
+                </StyledIcon>
+              ) : (
+                <StyledIcon>
+                  <StarOutlinedIcon
+                    aria-label="좋아요 해제"
+                    onClick={() => toggleFavorite(data.id)}
+                  />
+                </StyledIcon>
+              )}
             </TitleIconList>
           </TitleContainer>
           <InfoContainer>
@@ -61,9 +69,9 @@ export default function MenuCard({ data }: { data: Data }) {
             />
             <HeaderDataList>
               <HeaderDataText>Price</HeaderDataText>
-              <HeaderDataText disableWidth={900}>Rate</HeaderDataText>
-              <HeaderDataText shrinkWidth={900}>Like</HeaderDataText>
-              <HeaderDataText disableWidth={1000}>Review</HeaderDataText>
+              <HeaderDataText $disableWidth={900}>Rate</HeaderDataText>
+              <HeaderDataText $shrinkWidth={900}>Like</HeaderDataText>
+              <HeaderDataText $disableWidth={1000}>Review</HeaderDataText>
             </HeaderDataList>
           </InfoContainer>
         </HeaderContainer>
@@ -81,26 +89,26 @@ export default function MenuCard({ data }: { data: Data }) {
           <TitleContainer>
             <Name>{data.name_kr}</Name>
             <TitleIconList>
-              <ButtonIcon
-                src={"/img/info.svg"}
-                onClick={() => {
-                  setInfoData(data);
-                  toggleShowInfo();
-                }}
-                alt="정보"
-              />
+              <StyledIcon>
+                <InfoIcon
+                  aria-label="정보"
+                  onClick={() => {
+                    setInfoData(data);
+                    toggleShowInfo();
+                  }}
+                />
+              </StyledIcon>
               {isFavorite(data.id) ? (
-                <ButtonIcon
-                  src="/img/general/star-on.svg"
-                  onClick={() => toggleFavorite(data.id)}
-                  alt="좋아요"
-                />
+                <StyledIcon>
+                  <StarFilledIcon aria-label="좋아요" onClick={() => toggleFavorite(data.id)} />
+                </StyledIcon>
               ) : (
-                <ButtonIcon
-                  src="/img/general/star-off-24.svg"
-                  onClick={() => toggleFavorite(data.id)}
-                  alt=""
-                />
+                <StyledIcon>
+                  <StarOutlinedIcon
+                    aria-label="좋아요 해제"
+                    onClick={() => toggleFavorite(data.id)}
+                  />
+                </StyledIcon>
               )}
             </TitleIconList>
           </TitleContainer>
@@ -154,7 +162,7 @@ const DesktopContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  background: var(--foundation-base-white);
+  background: var(--SemanticColor-Background-Secondary);
   border-radius: 10px;
 
   @media (max-width: 768px) {
@@ -170,8 +178,8 @@ const MobileContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
-    background: white;
-    border: solid 1px #e8e8e8;
+    background: var(--SemanticColor-Background-Secondary);
+    border: solid 1px var(--Color-Foundation-gray-200);
     box-sizing: border-box;
     border-radius: 8px;
     width: 95vw;
@@ -231,9 +239,9 @@ const HeaderDataList = styled.div`
   }
 `;
 
-const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>`
+const HeaderDataText = styled.p<{ $disableWidth?: number; $shrinkWidth?: number }>`
   width: 58px;
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
 
   /* text-13/Regular */
@@ -245,11 +253,11 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
 
   margin: 0;
 
-  @media ${(props) => `(max-width: ${props.shrinkWidth ?? 0}px)`} {
+  @media ${(props) => `(max-width: ${props.$shrinkWidth ?? 0}px)`} {
     width: 24px;
   }
 
-  @media ${(props) => `(max-width: ${props.disableWidth ?? 0}px)`} {
+  @media ${(props) => `(max-width: ${props.$disableWidth ?? 0}px)`} {
     display: none;
   }
 
@@ -265,20 +273,35 @@ const HeaderDataText = styled.p<{ disableWidth?: number; shrinkWidth?: number }>
   }
 `;
 
-const ButtonIcon = styled.img`
+const IconWrapper = styled.div`
   width: 24px;
   height: 24px;
   cursor: pointer;
+  color: var(--Color-Foundation-orange-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  /* App버전을 참고한 디자인 */
   @media (max-width: 768px) {
     width: 20px;
     height: 20px;
   }
+
+  & > svg {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+  }
 `;
 
+interface StyledIconProps {
+  children: ReactNode;
+}
+
+const StyledIcon = ({ children }: StyledIconProps) => <IconWrapper>{children}</IconWrapper>;
+
 const Name = styled.div`
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--Color-Foundation-base-black);
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -291,8 +314,6 @@ const Name = styled.div`
   line-height: 140%; /* 25.2px */
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black, #000);
-
     /* text-16/ExtraBold */
     font-family: var(--Font-family-sans, NanumSquare);
     font-size: var(--Font-size-16, 16px);

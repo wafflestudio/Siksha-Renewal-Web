@@ -46,6 +46,10 @@ export default function Home() {
       if (!accessToken) {
         getMenuList(dateString, true)
           .then(({ result }) => {
+            if (!result || !result[0]) {
+              setData({ br: [], lu: [], dn: [], date: dateString });
+              return;
+            }
             setData(result[0]);
           })
           .catch(onHttpError)
@@ -55,7 +59,12 @@ export default function Home() {
       } else {
         getMenuList(dateString, isExceptEmpty, accessToken)
           .then(({ result }) => {
-            const { BR, LU, DN } = result[0];
+            if (!result || !result[0]) {
+              setData({ br: [], lu: [], dn: [], date: dateString });
+              return;
+            }
+
+            const { br = [], lu = [], dn = [] } = result[0];
 
             const sortFunction = (a, b) => {
               const aOrder = orderHash.get(a.id)?.order ?? Infinity;
@@ -64,9 +73,9 @@ export default function Home() {
               else return aOrder - bOrder;
             };
 
-            result[0].BR = BR.sort(sortFunction);
-            result[0].LU = LU.sort(sortFunction);
-            result[0].DN = DN.sort(sortFunction);
+            result[0].br = br.sort(sortFunction);
+            result[0].lu = lu.sort(sortFunction);
+            result[0].dn = dn.sort(sortFunction);
 
             setData(result[0]);
           })
@@ -83,7 +92,6 @@ export default function Home() {
   useEffect(() => {
     async function fetchIsFestivalDate() {
       const dateString = formatISODate(date);
-      console.log("dateString", dateString);
       
       // 하드코딩된 버전: date가 20250916, 20250918 사이면 true
       const startFestivalDate = "2025-09-16";

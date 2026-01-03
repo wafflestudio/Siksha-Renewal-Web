@@ -15,7 +15,7 @@ export default function ReviewDistribution({
   distribution: number[];
 }) {
   const isMobile = useIsMobile();
-  
+
   if (distribution.length !== 5) {
     return null;
   }
@@ -38,7 +38,7 @@ export default function ReviewDistribution({
           후기 {reviewsTotalCount}개
         </ReviewsTotalCount>
       </ScoreContainer>
-      <DistributionChart>
+      {/* <DistributionChart>
         {distribution.map((count, i) => (
           // 텍스트, 바, 숫자 순
           <div style={{
@@ -56,7 +56,7 @@ export default function ReviewDistribution({
             <Count>{count}</Count>
           </div>
         ))}
-      </DistributionChart>
+      </DistributionChart> */}
     </Container>
   );
 }
@@ -97,7 +97,7 @@ const Score = styled.div`
 `;
 
 const MaximumScore = styled.div`
-  color: var(--Foundation-grey-500, var(--Color-Foundation-gray-500, #BEC1C8));
+  color: var(--Foundation-grey-500, var(--Color-Foundation-gray-500, #bec1c8));
   text-align: center;
 
   /* text-20/Bold */
@@ -146,7 +146,8 @@ const ScoreContainer = styled.div`
     flex-shrink: 0;
 
     border-radius: 16px;
-    border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
+    border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+    background: var(--SemanticColor-Background-Secondary);
   }
 `;
 
@@ -166,7 +167,7 @@ const Label = styled.label`
   text-align: center;
 
   color: var(--Color-Foundation-gray-700, #727478);
-  
+
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
@@ -176,7 +177,7 @@ const Label = styled.label`
 `;
 
 const Bar = styled.div`
-  background-color: var(--Color-Foundation-gray-100, #f2f3f4);
+  background-color: var(--SemanticColor-Background-Tertiary, #f2f3f4);
   height: 8px;
   flex: 1 0 0;
   border-radius: 4px;
@@ -192,7 +193,7 @@ const Fill = styled.div<{ percentage: number }>`
 const Count = styled.div`
   width: 40px;
 
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
 
   /* text-14/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquare);

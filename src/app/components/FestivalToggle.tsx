@@ -23,10 +23,10 @@ export default function FestivalToggle() {
   return (
     isFestivalDate && 
     <ToggleWrapper onClick={handleClick}>
-      <ToggleContainer active={active}>
-        <ToggleCircle active={active} />
+      <ToggleContainer $active={active}>
+        <ToggleCircle $active={active} />
       </ToggleContainer>
-      <ToggleText active={active}>축제</ToggleText>
+      <ToggleText $active={active}>축제</ToggleText>
     </ToggleWrapper>
   );
 }
@@ -49,7 +49,7 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const ToggleContainer = styled.div<{ active: boolean }>`
+const ToggleContainer = styled.div<{ $active: boolean }>`
   width: 100%;
   height: 100%;
   padding: 2.1px;
@@ -69,7 +69,7 @@ const ToggleContainer = styled.div<{ active: boolean }>`
     position: absolute;
     inset: 0;
     background: linear-gradient(270deg, #FF9DA4 40%, #FF9522 100%);
-    opacity: ${({ active }) => (active ? 1 : 0)};
+    opacity: ${({ $active }) => ($active ? 1 : 0)};
     transition: opacity 300ms ease-out;
     z-index: 1;
   }
@@ -81,16 +81,16 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   }
 `;
 
-const ToggleText = styled.span<{ active: boolean }>`
+const ToggleText = styled.span<{ $active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ active }) => (active ? '8px' : 'calc(100% - 31px)')};
+  left: ${({ $active }) => ($active ? '8px' : 'calc(100% - 31px)')};
   z-index: 1;
 
   width: 23px;
 
-  color: #FFF;
+  color: var(--Color-Foundation-base-white);
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
   font-family: NanumSquare;
@@ -103,17 +103,17 @@ const ToggleText = styled.span<{ active: boolean }>`
   transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? '6px' : 'calc(100% - 24px)')};
+    left: ${({ $active }) => ($active ? '6px' : 'calc(100% - 24px)')};
     width: 18px;
     font-size: 10px;
   }
 `;
 
-const ToggleCircle = styled.div<{ active: boolean }>`
+const ToggleCircle = styled.div<{ $active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ active }) => (active ? "calc(100% - 25.9px)" : '2.1px')};
+  left: ${({ $active }) => ($active ? "calc(100% - 25.9px)" : '2.1px')};
 
   width: 23.8px;
   height: 23.8px;
@@ -127,7 +127,7 @@ const ToggleCircle = styled.div<{ active: boolean }>`
   transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? "calc(100% - 22px)" : '2px')};
+    left: ${({ $active }) => ($active ? "calc(100% - 22px)" : '2px')};
     width: 20px;
     height: 20px;
     box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15), 0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
