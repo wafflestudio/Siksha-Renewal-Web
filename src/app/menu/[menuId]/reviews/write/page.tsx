@@ -211,7 +211,7 @@ export default function ReviewPost() {
           <div style={{ display: "flex", alignItems: "center" }}>
             <StyledCommentReviewIcon />
             <CommentTitle>식단 한 줄 평을 함께 남겨보세요!
- <span>(선택)</span>
+ <span>(필수)</span>
 
             </CommentTitle>
           </div>

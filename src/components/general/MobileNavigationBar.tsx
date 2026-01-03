@@ -140,19 +140,3 @@ const NavName = styled.div<{ $isActive: boolean }>`
   color: ${({ $isActive }) =>
     $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
 `;
-
-const IconLabel = styled.div<{ isActive: boolean }>`
-  width: 36px;
-
-  color: ${({ isActive }) =>
-    isActive
-      ? "var(--Color-Foundation-orange-500, #FF9522)"
-      : "var(--Color-Foundation-gray-500, #BEC1C8)"};
-  text-align: center;
-  font-feature-settings: "liga" off, "clig" off;
-  font-family: NanumSquare;
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
-`;

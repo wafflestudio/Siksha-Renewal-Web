@@ -45,7 +45,7 @@ export default function RestaurantList() {
   }, [data, meal, favoriteRestaurants.length]);
 
   return (
-    <Container $show={data[meal].length >= 1}>
+    <Container $show={(data[meal] || []).length >= 1}>
       <Header>
         <Title>식당 찾기</Title>
         <Pagination>

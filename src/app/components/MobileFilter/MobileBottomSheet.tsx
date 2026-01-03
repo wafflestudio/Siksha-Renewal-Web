@@ -77,9 +77,21 @@ export default function MobileBottomSheet({
   return (
     <>
       <BottomSheetBackdrop onClick={onClose} $isVisible={isOpen} />
-      <BottomSheetWrapper $isVisible={isOpen}>
-        {slideBar && <BottomSheetSlideBar />}
-        <BottomSheetContent>{children}</BottomSheetContent>
+      <BottomSheetWrapper $isVisible={isOpen} $translateY={translateY} $isAnimating={isAnimating}>
+        {
+          showHandle ?
+            <BottomSheetHandle onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
+              <div style={{
+                width: "46px",
+                height: "4px",
+                backgroundColor: "var(--Color-Foundation-gray-200, #E5E6E9)",
+                borderRadius: "2px",
+              }}/>
+            </BottomSheetHandle> :
+            <div style={{ marginBottom: 16 }} />
+        }
+        <CloseButton onClick={onClose} $showHandle={showHandle}/>
+        <BottomSheetContent $headerHeight={headerHeight}>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
   );
@@ -95,23 +107,24 @@ const BottomSheetBackdrop = styled.div<BottomSheetBackdropProps>`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: ${({ isVisible }) => (isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
+  background-color: ${({ $isVisible }) => ($isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
   z-index: 99;
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 
-const BottomSheetSlideBar = styled.div`
-  width: 42px;
-  height: 4px;
-  background-color: var(--SemanticColor-Border-Primary);
-  border-radius: 2px;
-  margin: 0 auto 17px auto;
+const BottomSheetHandle = styled.div`
+  display: flex;
+  width: 100%;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
 `;
 
-const CloseButton = styled.button<{ showHandle: boolean }>`
+const CloseButton = styled.button<{ $showHandle: boolean }>`
   position: absolute;
   right: 16px;
-  top: ${({ showHandle }) => (showHandle ? "28px" : "14px")};
+  top: ${({ $showHandle }) => ($showHandle ? "28px" : "14px")};
   width: 32px;
   height: 32px;
   flex-shrink: 0;
@@ -120,10 +133,10 @@ const CloseButton = styled.button<{ showHandle: boolean }>`
   background-repeat: no-repeat;
 `;
 
-const BottomSheetContent = styled.div<{ headerHeight: number }>`
+const BottomSheetContent = styled.div<{ $headerHeight: number }>`
   padding: 0px 16px;
-  max-height: ${({ headerHeight }) =>
-    `calc(100vh - 41px - ${headerHeight}px)`}; /* overlap header by 3px */
+  max-height: ${({ $headerHeight }) =>
+    `calc(100vh - 41px - ${$headerHeight}px)`}; /* overlap header by 3px */
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
@@ -131,6 +144,8 @@ const BottomSheetContent = styled.div<{ headerHeight: number }>`
 
 interface BottomSheetWrapperProps {
   $isVisible: boolean;
+  $translateY: number;
+  $isAnimating: boolean;
 }
 
 const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
