@@ -19,7 +19,7 @@ export function Post({ post, isFirst = false }: PropsPost) {
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
       <Container $isFirst={isFirst} $isDark={isDark}>
-        <Info isimages={images && images.length > 0}>
+        <Info $isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
@@ -83,7 +83,7 @@ const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
     }
   }
 `;
-const Info = styled.div<{ isimages: boolean | null }>`
+const Info = styled.div<{ $isImages: boolean | null }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -96,7 +96,7 @@ const Info = styled.div<{ isimages: boolean | null }>`
     height: min-content;
 
     ${(props) =>
-      props.isimages !== null &&
+      props.$isImages !== null &&
       css`
         max-width: calc(100% - 71.5px);
       `}
