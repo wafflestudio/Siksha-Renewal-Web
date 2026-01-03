@@ -69,11 +69,7 @@ const MobileCloseButton = styled.button`
   justify-content: center;
   align-items: center;
 
-<<<<<<< HEAD
   color: var(--Color-Foundation-orange-500, #ff9522);
-=======
-  color: var(--Color-Foundation-orange-500, #FF9522);
->>>>>>> origin
   text-align: center;
 
   /* text-16/ExtraBold */

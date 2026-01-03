@@ -14,7 +14,6 @@ import WebPriceSlider from "./WebPriceSlider";
 import RefreshIcon from "assets/icons/refresh.svg";
 import { trackEvent } from "utils/MixPanel";
 import { AnalyticsEvent, EventNames } from "constants/track";
-import RefreshIcon from "assets/icons/refresh.svg";
 
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();

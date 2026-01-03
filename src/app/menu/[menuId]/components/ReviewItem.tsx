@@ -12,6 +12,7 @@ import useAuth from "hooks/UseAuth";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
 import useError from "hooks/useError";
 import ImageLightbox from "components/general/ImageLightbox";
+import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);

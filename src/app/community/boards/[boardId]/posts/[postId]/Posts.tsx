@@ -105,10 +105,10 @@ export default function Post({ boardId, postId }: { boardId: number; postId: num
           </Comments>
         </LikesAndComments>
         <Footer>
-          <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+          <LikeButton onClick={fetchLike} $isLiked={post.isLiked}>
             <LikeButtonIcon
               src={post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg"}
-              isLiked={post.isLiked}
+              $isLiked={post.isLiked}
               alt="공감"
             />
             공감
@@ -318,14 +318,14 @@ const FooterButton = styled.button`
     border-radius: 6px;
   }
 `;
-const LikeButton = styled(FooterButton)<{ isLiked?: boolean | null }>`
+const LikeButton = styled(FooterButton)<{ $isLiked?: boolean | null }>`
   padding: 8.5px 12.4px;
   background-color: ${(props) =>
-    props.isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
+    props.$isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
   border-color: ${(props) =>
-    props.isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
+    props.$isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
   color: ${(props) =>
-    props.isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
+    props.$isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
   @media (max-width: 768px) {
     padding: 6.5px 8.25px;
   }
@@ -345,9 +345,9 @@ const FooterIcon = styled.img`
     height: 11px;
   }
 `;
-const LikeButtonIcon = styled(FooterIcon)<{ isLiked?: boolean | null }>`
+const LikeButtonIcon = styled(FooterIcon)<{ $isLiked?: boolean | null }>`
   background-color: ${(props) =>
-    props.isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
+    props.$isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
 `;
 
 const CommentContainer = styled.div``;

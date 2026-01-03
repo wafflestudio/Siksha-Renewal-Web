@@ -14,7 +14,6 @@ import {
 import StarFilledIcon from "assets/icons/star-filled.svg";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
-import StarFilledIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterBottomSheetProps {
   isOpen: boolean;
