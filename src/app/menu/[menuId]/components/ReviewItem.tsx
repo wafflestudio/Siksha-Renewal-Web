@@ -11,6 +11,8 @@ import { setReviewLike, setReviewUnlike } from "utils/api/reviews";
 import useAuth from "hooks/UseAuth";
 import UseCurrentTheme from "hooks/UseCurrentTheme";
 import useError from "hooks/useError";
+import ImageLightbox from "components/general/ImageLightbox";
+
 export default function ReviewItem({ review: initialReview }: { review: ReviewType }) {
   const [review, setReview] = useState(initialReview);
   const isMobile = useIsMobile();
@@ -19,6 +21,8 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
   const { currentTheme } = UseCurrentTheme();
   const isDark = currentTheme === "dark";
   const { onHttpError } = useError();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const handleReviewLike = async () => {
     const accessToken = await getAccessToken();
@@ -45,6 +49,11 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
       console.error(err);
       onHttpError(err, { preventNavigation: true });
     }
+  };
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
   };
 
   return (
@@ -88,18 +97,20 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
           <KeywordReviewChips keywords={review.keyword_reviews} />
           {Array.isArray(review.etc?.images) && (
             <Images>
-              {review.etc.images.map((image) => (
-                <Image
-                  key={image}
-                  src={image}
-                  alt="리뷰 이미지"
-                  width={IMAGE_SIZE}
-                  height={IMAGE_SIZE}
-                  style={{
-                    borderRadius: "8px",
-                    objectFit: "cover",
-                  }}
-                />
+              {review.etc.images.map((image, index) => (
+                <ImageClickWrapper key={image} onClick={() => handleImageClick(index)}>
+                  <Image
+                    src={image}
+                    alt="리뷰 이미지"
+                    width={IMAGE_SIZE}
+                    height={IMAGE_SIZE}
+                    style={{
+                      borderRadius: "8px",
+                      objectFit: "cover",
+                      cursor: "pointer",
+                    }}
+                  />
+                </ImageClickWrapper>
               ))}
             </Images>
           )}
@@ -114,6 +125,14 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
           )}
         </Content>
       </Body>
+      {Array.isArray(review.etc?.images) && review.etc.images.length > 0 && (
+        <ImageLightbox
+          images={review.etc.images}
+          initialIndex={selectedImageIndex}
+          isOpen={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </Container>
   );
 }
@@ -232,6 +251,11 @@ const Images = styled.div`
   margin-top: 10px;
   align-self: stretch;
   flex-wrap: wrap;
+`;
+
+const ImageClickWrapper = styled.div`
+  display: inline-block;
+  cursor: pointer;
 `;
 
 const Id = styled.div`
