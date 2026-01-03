@@ -11,7 +11,6 @@ import { ThemeProvider } from "next-themes";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
 import ClientMixpanelInitializer from "./components/ClientMixpanelInitializer";
-import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "서울대학교 식단 알리미 : 식샤",

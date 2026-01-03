@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import { useCallback } from "react";
 import useModals from "./UseModals";
-import { useCallback } from "react";
 
 export default function useError() {
   const { openErrorModal } = useModals();

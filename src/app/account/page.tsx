@@ -65,15 +65,6 @@ export default function Account() {
           <DefaultText>나의 평가 관리</DefaultText>
           <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
         </ContentDiv>
-        <BreakLine />
-        <ContentDiv
-          onClick={() => {
-            router.push("/account/myreview");
-          }}
-        >
-          <DefaultText>나의 평가 관리</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
-        </ContentDiv>
       </ListGroup>
       <ListGroup>
         <ContentDiv
@@ -154,12 +145,6 @@ const ArrowButtonWrapper = styled.div`
 
   @media (max-width: 768px) {
     margin-right: 13.75px;
-  }
-`;
-
-const Container = styled.div`
-  @media (max-width: 768px) {
-    padding-top: 24px;
   }
 `;
 
