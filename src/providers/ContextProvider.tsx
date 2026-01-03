@@ -43,7 +43,6 @@ const ContextProvider = ({ children }) => {
   // dispatch functions
   // 추후 useCallback으로 memorization 해두는 건 어떨까요?
   const setDate = (date: Date) => {
-    console.log("setDate", date);
     setState((prevState) => ({ ...prevState, date: date }));
   };
   const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));

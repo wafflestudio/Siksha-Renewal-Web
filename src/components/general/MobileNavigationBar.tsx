@@ -58,7 +58,7 @@ export default function MobileNavigationBar() {
           icon={<StarFilledIcon width="25px" />}
           name="즐겨찾기"
         />
-        <IconLabel isActive={active === "favorite"}>즐겨찾기</IconLabel>
+        <IconLabel $isActive={active === "favorite"}>즐겨찾기</IconLabel>
       </Link>
       <Link href="/" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "menu"} icon={<MenuIcon />} name="식단" />
@@ -134,23 +134,23 @@ const NavName = styled.div<{ $isActive: boolean }>`
   color: ${({ $isActive }) =>
     $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
 `;
-const Icon = styled.div<{ isActive: boolean; srcActive: string; srcInactive: string }>`
+const Icon = styled.div<{ $isActive: boolean; $srcActive: string; $srcInactive: string }>`
   display: flex;
   height: 36px;
   width: 36px;
-  background-image: ${({ isActive, srcActive, srcInactive }) =>
-    `url(${isActive ? srcActive : srcInactive})`};
+  background-image: ${({ $isActive, $srcActive, $srcInactive }) =>
+    `url(${$isActive ? $srcActive : $srcInactive})`};
   background-repeat: no-repeat;
   background-position: center;
   transform: translateZ(0);
   opacity: 0.99;
 `;
 
-const IconLabel = styled.div<{ isActive: boolean }>`
+const IconLabel = styled.div<{ $isActive: boolean }>`
   width: 36px;
 
-  color: ${({ isActive }) =>
-    isActive
+  color: ${({ $isActive }) =>
+    $isActive
       ? "var(--Color-Foundation-orange-500, #FF9522)"
       : "var(--Color-Foundation-gray-500, #BEC1C8)"};
   text-align: center;

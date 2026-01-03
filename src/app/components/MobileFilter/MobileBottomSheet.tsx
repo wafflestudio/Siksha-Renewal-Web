@@ -75,8 +75,8 @@ export default function MobileBottomSheet({
 
   return (
     <>
-      <BottomSheetBackdrop onClick={onClose} isVisible={isOpen} />
-      <BottomSheetWrapper isVisible={isOpen} translateY={translateY} isAnimating={isAnimating}>
+      <BottomSheetBackdrop onClick={onClose} $isVisible={isOpen} />
+      <BottomSheetWrapper $isVisible={isOpen} $translateY={translateY} $isAnimating={isAnimating}>
         {
           showHandle ?
             <BottomSheetHandle onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
@@ -89,22 +89,22 @@ export default function MobileBottomSheet({
             </BottomSheetHandle> :
             <div style={{ marginBottom: 16 }} />
         }
-        <CloseButton onClick={onClose} showHandle={showHandle}/>
-        <BottomSheetContent headerHeight={headerHeight}>{children}</BottomSheetContent>
+        <CloseButton onClick={onClose} $showHandle={showHandle}/>
+        <BottomSheetContent $headerHeight={headerHeight}>{children}</BottomSheetContent>
       </BottomSheetWrapper>
     </>
   );
 }
 
-const BottomSheetBackdrop = styled.div<{isVisible: boolean}>`
+const BottomSheetBackdrop = styled.div<{$isVisible: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: ${({ isVisible }) => (isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
+  background-color: ${({ $isVisible }) => ($isVisible ? "rgba(0, 0, 0, 0.25)" : "transparent")};
   z-index: 99;
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
+  display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
   transition: background-color 0.3s ease-in-out;
 `;
 
@@ -117,10 +117,10 @@ const BottomSheetHandle = styled.div`
   cursor: grab;
 `;
 
-const CloseButton = styled.button<{showHandle: boolean}>`
+const CloseButton = styled.button<{$showHandle: boolean}>`
   position: absolute;
   right: 16px;
-  top: ${({ showHandle }) => showHandle ? "28px" : "14px"};
+  top: ${({ $showHandle }) => $showHandle ? "28px" : "14px"};
   width: 32px;
   height: 32px;
   flex-shrink: 0;
@@ -129,18 +129,18 @@ const CloseButton = styled.button<{showHandle: boolean}>`
   background-repeat: no-repeat;
 `;
 
-const BottomSheetContent = styled.div<{ headerHeight: number }>`
+const BottomSheetContent = styled.div<{ $headerHeight: number }>`
   padding: 0px 16px;
-  max-height: ${({headerHeight}) => `calc(100vh - 41px - ${headerHeight}px)`}; /* overlap header by 3px */
+  max-height: ${({$headerHeight}) => `calc(100vh - 41px - ${$headerHeight}px)`}; /* overlap header by 3px */
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 `;
 
 interface BottomSheetWrapperProps {
-  isVisible: boolean;
-  translateY: number;
-  isAnimating: boolean;
+  $isVisible: boolean;
+  $translateY: number;
+  $isAnimating: boolean;
 }
 
 const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
@@ -154,8 +154,8 @@ const BottomSheetWrapper = styled.div<BottomSheetWrapperProps>`
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   transition: transform 0.3s ease-in-out;
-  transform: translateY(${({ translateY }) => translateY}px);
-  transition: ${({ isAnimating }) => (isAnimating ? 'transform 0.3s ease' : 'none')};
+  transform: translateY(${({ $translateY }) => $translateY}px);
+  transition: ${({ $isAnimating }) => ($isAnimating ? 'transform 0.3s ease' : 'none')};
   will-change: transform;
   touch-action: none;
 `;

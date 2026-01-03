@@ -35,15 +35,16 @@ export default function RestaurantList() {
   };
 
   useEffect(() => {
-    const favorites = data[meal].filter((restaurant) => isFavorite(restaurant.id));
-    const nonFavorites = data[meal].filter((restaurant) => isFavorite(restaurant.id) === false);
+    const mealData = data[meal] || [];
+    const favorites = mealData.filter((restaurant) => isFavorite(restaurant.id));
+    const nonFavorites = mealData.filter((restaurant) => isFavorite(restaurant.id) === false);
 
     const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
-  }, [data, favoriteRestaurants.length]);
+  }, [data, favoriteRestaurants.length, meal]);
 
   return (
-    <Container $show={data[meal].length >= 1}>
+    <Container $show={(data[meal] || []).length >= 1}>
       <Header>
         <Title>식당 찾기</Title>
         <Pagination>

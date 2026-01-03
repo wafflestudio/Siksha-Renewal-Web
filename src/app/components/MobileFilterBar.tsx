@@ -148,7 +148,7 @@ export default function MobileFilterBar() {
 
         <FilterIconWrapper onClick={handleMainFilterOpen}>
         <StyledFilterIcon aria-label="필터 아이콘" />
-          <FilterIconGradient visible={isScrolled} />
+          <FilterIconGradient $visible={isScrolled} />
         </FilterIconWrapper>
         <div style={{ width: "37px", flexShrink: "0" }} />
         <Button $isActive={isSet.length} onClick={handleDistanceFilterOpen}>
@@ -215,11 +215,11 @@ const FilterIconWrapper = styled.div`
   display: flex;
 `;
 
-const FilterIconGradient = styled.div<{ visible: boolean }>`
+const FilterIconGradient = styled.div<{ $visible: boolean }>`
   width: 16px;
   height: 36px;
   background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 `;
 
 const Button = styled.button<{ $isActive?: boolean }>`
