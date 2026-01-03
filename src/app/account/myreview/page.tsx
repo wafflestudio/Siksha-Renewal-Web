@@ -11,8 +11,13 @@ import { getMyReviewList } from "utils/api/reviews";
 import MyReviewGroup from "./components/MyReviewGroup";
 
 export default function MyReview() {
+<<<<<<< HEAD
   const [reviews, setReviews] = useState<MyReviewGroupType[]>([]);
 
+=======
+  const [ reviews, setReviews ] = useState<MyReviewGroupType[]>([]);
+  
+>>>>>>> origin
   const router = useRouter();
   const { authStatus, getAccessToken, authGuard } = useAuth();
   const { onHttpError } = useError();
@@ -25,6 +30,7 @@ export default function MyReview() {
         return getMyReviewList(accessToken, size, page);
       })
       .then(({ result, hasNext }) => {
+<<<<<<< HEAD
         result.forEach((myReviewGroup) =>
           setReviews((prev) => {
             // TODO: 리뷰가 중복되어 추가되는 문제를 임시로 방지하는 코드
@@ -35,6 +41,16 @@ export default function MyReview() {
             return [...prev, myReviewGroup];
           }),
         );
+=======
+        result.forEach((myReviewGroup) => setReviews((prev) => {
+          // TODO: 리뷰가 중복되어 추가되는 문제를 임시로 방지하는 코드
+          // 원천적으로 중복된 api call을 막도록 개선해야 함
+          if (prev.some((group) => group.restaurant_id === myReviewGroup.restaurant_id)) {
+            return prev;
+          }
+          return [...prev, myReviewGroup];
+        }));
+>>>>>>> origin
         return hasNext;
       })
       .catch(onHttpError);
@@ -52,7 +68,11 @@ export default function MyReview() {
         <MobileSubHeader title="나의 평가 관리" handleBack={router.back} />
         <Container>
           <Header>나의 평가 관리</Header>
+<<<<<<< HEAD
           <MyReviewsContainer>
+=======
+            <MyReviewsContainer>
+>>>>>>> origin
             {reviews.map((reviewGroup, index) => (
               <MyReviewGroup
                 key={reviewGroup.restaurant_id}
@@ -105,4 +125,8 @@ const MyReviewsContainer = styled.div`
   @media (max-width: 768px) {
     padding-bottom: 70px;
   }
+<<<<<<< HEAD
 `;
+=======
+`;
+>>>>>>> origin

@@ -11,6 +11,7 @@ import {
   DISTANCE_FILTER_OPTIONS,
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
+import StarFilledIcon from "assets/icons/star-filled.svg";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
 import StarFilledIcon from "assets/icons/star-filled.svg";

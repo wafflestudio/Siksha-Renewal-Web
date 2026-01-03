@@ -11,6 +11,7 @@ import {
 } from "constants/filterOptions";
 import WebDistanceSlider from "./WebDistanceSlider";
 import WebPriceSlider from "./WebPriceSlider";
+import RefreshIcon from "assets/icons/refresh.svg";
 import { trackEvent } from "utils/MixPanel";
 import { AnalyticsEvent, EventNames } from "constants/track";
 import RefreshIcon from "assets/icons/refresh.svg";

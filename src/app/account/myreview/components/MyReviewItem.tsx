@@ -5,7 +5,13 @@ import Link from "next/link";
 import useReviewActions from "../hooks/useReviewActions";
 import Stars from "./Stars";
 
+<<<<<<< HEAD
 export default function MyReviewItem({ review }) {
+=======
+export default function MyReviewItem({
+  review,
+}) {
+>>>>>>> origin
   const IMAGE_SIZE = 48;
   const { removeReview, updateReview } = useReviewActions();
   const handleDelete = () => removeReview(review.id);
@@ -16,7 +22,11 @@ export default function MyReviewItem({ review }) {
         <Link href={`/menu/${review.menu_id}`} style={{ width: "100%", cursor: "pointer" }}>
           <MenuInfo>
             <MenuHeader>
+<<<<<<< HEAD
               <div style={{ display: "flex", alignItems: "center" }}>
+=======
+              <div style={{display: 'flex', alignItems: 'center'}}>
+>>>>>>> origin
                 <MenuTitle>{review.name_kr}</MenuTitle>
                 <RightArrow src="/img/accordion-arrow.svg" />
               </div>
@@ -56,8 +66,17 @@ export default function MyReviewItem({ review }) {
           </Content>
         </Body>
         <Footer>
+<<<<<<< HEAD
           <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
           <EditButton onClick={handleEdit}>수정하기</EditButton>
+=======
+          <DeleteButton onClick={handleDelete}>
+            삭제하기
+          </DeleteButton>
+          <EditButton onClick={handleEdit}>
+            수정하기
+          </EditButton>
+>>>>>>> origin
         </Footer>
       </Container>
     </>
@@ -69,7 +88,11 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+<<<<<<< HEAD
   gap: 16px;
+=======
+  gap: 16px;  
+>>>>>>> origin
   align-self: stretch;
 `;
 
@@ -84,8 +107,13 @@ const MenuInfo = styled.div`
   flex: 1 0 0;
 
   border-radius: 8px;
+<<<<<<< HEAD
   border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
   background: var(--SemanticColor-Element-Tooltip2, #fff);
+=======
+  border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
+  background: var(--SemanticColor-Element-Tooltip2, #FFF);
+>>>>>>> origin
 `;
 
 const MenuHeader = styled.div`
@@ -111,7 +139,11 @@ const RightArrow = styled.img`
 `;
 
 const ReviewCreatedAt = styled.div`
+<<<<<<< HEAD
   color: var(--Color-Foundation-gray-600, #989aa0);
+=======
+  color: var(--Color-Foundation-gray-600, #989AA0);
+>>>>>>> origin
   text-align: right;
   font-family: NanumSquare;
   font-size: 12px;
@@ -165,7 +197,11 @@ const Keywords = styled.div`
 const Keyword = styled.div`
   padding: 4px;
   border-radius: 4px;
+<<<<<<< HEAD
   background: var(--SemanticColor-Element-Chip, #f2f3f4);
+=======
+  background: var(--SementicColor-Element-Chip, #F2F3F4);
+>>>>>>> origin
 
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;
@@ -182,13 +218,24 @@ const Footer = styled.div`
 `;
 
 const DeleteButton = styled.button`
+<<<<<<< HEAD
   color: var(--Color-Foundation-gray-600, #989aa0);
+=======
+  color: var(--Color-Foundation-gray-600, #989AA0);
+>>>>>>> origin
   font-size: 11px;
   font-weight: 700;
 `;
 
 const EditButton = styled.button`
+<<<<<<< HEAD
   color: var(--Color-Foundation-orange-500, #ff9522);
   font-size: 11px;
   font-weight: 700;
 `;
+=======
+  color: var(--Color-Foundation-orange-500, #FF9522);
+  font-size: 11px;
+  font-weight: 700;
+`;
+>>>>>>> origin
