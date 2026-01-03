@@ -10,14 +10,13 @@ import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { getParticle } from "utils/FormatUtil";
 import { MyReviewType } from "types";
-import StarIcon from "assets/icons/star-filled.svg"
+import StarIcon from "assets/icons/star-filled.svg";
 import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
 import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import ConfirmModal from "app/components/ConfirmModal";
-import { MyReviewType } from "types";
 
 export type ReviewInputs = {
   score: number;

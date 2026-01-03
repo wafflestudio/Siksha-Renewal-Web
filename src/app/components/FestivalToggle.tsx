@@ -19,7 +19,7 @@ export default function FestivalToggle() {
     isFestivalDate && (
       <ToggleWrapper onClick={() => setActive(!active)}>
         <ToggleContainer $active={active}>
-          <ToggleCircle />
+          <ToggleCircle $active={active} />
         </ToggleContainer>
         <ToggleText $active={active}>축제</ToggleText>
       </ToggleWrapper>
@@ -104,7 +104,7 @@ const ToggleText = styled.span<{ $active: boolean }>`
   }
 `;
 
-const ToggleCircle = styled.div`
+const ToggleCircle = styled.div<{ $active: boolean }>`
   width: 30.59px;
   height: 30.59px;
   border-radius: 50%;
@@ -115,7 +115,7 @@ const ToggleCircle = styled.div`
   filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? "calc(100% - 22px)" : "2px")};
+    left: ${({ $active }) => ($active ? "calc(100% - 22px)" : "2px")};
     width: 20px;
     height: 20px;
     box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15),
