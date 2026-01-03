@@ -758,7 +758,7 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: var(--SementicColor-Text-Button, #fff);
+  color: var(--SemanticColor-Text-Button, #fff);
   text-align: center;
 
   /* text-14/Bold */

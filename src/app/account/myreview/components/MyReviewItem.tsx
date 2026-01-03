@@ -165,7 +165,7 @@ const Keywords = styled.div`
 const Keyword = styled.div`
   padding: 4px;
   border-radius: 4px;
-  background: var(--SementicColor-Element-Chip, #f2f3f4);
+  background: var(--SemanticColor-Element-Chip, #f2f3f4);
 
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;
