@@ -65,7 +65,7 @@ export default function Account() {
             router.push("/account/restaurant");
           }}
         >
-          <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
+          <DefaultText $isFirst={true}>식당 순서 변경</DefaultText>
           <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
@@ -92,11 +92,11 @@ export default function Account() {
             router.push("/account/user");
           }}
         >
-          <DefaultText isLast={true}>계정관리</DefaultText>
+          <DefaultText $isLast={true}>계정관리</DefaultText>
           <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
-      <ListGroup isLast={true}>
+      <ListGroup $isLast={true}>
         <ContentDiv
           onClick={() => {
             router.push("/account/inquiry");
@@ -157,11 +157,11 @@ const CheckButtonWrapper = styled.div<{ $isActive: boolean }>`
   }
 `;
 
-const ListGroup = styled.div<{ isLast?: boolean }>`
+const ListGroup = styled.div<{ $isLast?: boolean }>`
   cursor: pointer;
   background-color: var(--SemanticColor-Background-Secondary);
   width: 544px;
-  margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
+  margin-bottom: ${(props) => (props.$isLast ? "0" : "19px")};
   border-radius: 8px;
   border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
 
@@ -212,9 +212,9 @@ const ProfileText = styled(Text)`
   font-weight: 700;
 `;
 
-const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
-  margin-top: ${(props) => (props.isFirst ? "13px" : "10.5px")};
-  margin-bottom: ${(props) => (props.isLast ? "13px" : "10.5px")};
+const DefaultText = styled(Text)<{ $isFirst?: boolean; $isLast?: boolean }>`
+  margin-top: ${(props) => (props.$isFirst ? "13px" : "10.5px")};
+  margin-bottom: ${(props) => (props.$isLast ? "13px" : "10.5px")};
 `;
 
 const InquiryText = styled(Text)`
