@@ -189,7 +189,7 @@ const ListGroup = styled.div<{ $isLast?: boolean }>`
   width: 544px;
   margin-bottom: ${(props) => (props.$isLast ? "0" : "19px")};
   border-radius: 8px;
-  border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
+  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
 
   @media (max-width: 768px) {
     width: calc(100dvw - 40px);

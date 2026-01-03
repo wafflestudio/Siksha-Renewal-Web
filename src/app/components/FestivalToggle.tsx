@@ -67,7 +67,7 @@ const ToggleContainer = styled.div<{ $active: boolean }>`
     position: absolute;
     inset: 0;
     background: linear-gradient(270deg, #ff9da4 40%, #ff9522 100%);
-    opacity: ${({ active }) => (active ? 1 : 0)};
+    opacity: ${({ $active }) => ($active ? 1 : 0)};
     transition: opacity 300ms ease-out;
     z-index: 1;
   }

@@ -336,7 +336,7 @@ const FilterButton = styled.button<{ $active?: boolean }>`
   color: ${(props) =>
     props.$active
       ? "var(--Color-Foundation-gray-900, #262728)"
-      : "var(--Color-Foundation-gray-600, #989AA0)"};
+      : "var(--Color-Foundation-gray-600, #989aa0)"};
   font-size: var(--Font-size-12, 12px);
   font-weight: ${(props) =>
     props.$active ? "var(--Font-weight-extrabold, 800)" : "var(--Font-weight-bold, 700)"};
