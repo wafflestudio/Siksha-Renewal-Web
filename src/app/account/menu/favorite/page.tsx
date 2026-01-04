@@ -128,7 +128,7 @@ const Container = styled.div`
   width: 544px;
   padding-bottom: 100px;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   margin: 0 auto;
 

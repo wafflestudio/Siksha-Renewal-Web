@@ -151,21 +151,20 @@ const TitleContainer = styled.div`
 `;
 
 const Name = styled.div`
-  color: var(--Color-Foundation-gray-900, #262728);
+  color: var(--Color-Foundation-orange-500, #ff9522);
   flex: 1 1 auto;
   min-width: 0;
   word-wrap: break-word;
   word-break: break-word;
 
-  /* text-16/ExtraBold */
+  /* text-16/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
-  font-weight: var(--Font-weight-extrabold, 800);
+  font-weight: var(--Font-weight-bold, 700);
   line-height: 140%;
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black, #000);
     font-size: var(--Font-size-16, 16px);
     font-weight: var(--Font-weight-extrabold, 800);
     line-height: 140%;
