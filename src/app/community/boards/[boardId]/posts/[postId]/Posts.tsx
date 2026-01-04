@@ -49,9 +49,9 @@ export default function Post({ boardId, postId }: { boardId: number; postId: num
 
   const actions: ModalAction[] = post.isMine
     ? [
-        { name: "수정", handleClick: () => updatePost(post.id) },
-        { name: "삭제", handleClick: () => removePost(post.id) },
-      ]
+      { name: "수정", handleClick: () => updatePost(post.id) },
+      { name: "삭제", handleClick: () => removePost(post.id) },
+    ]
     : [{ name: "신고", handleClick: () => reportPost(post.id) }];
 
   const onClickMoreActions = (actions: ModalAction[]) => {
@@ -105,10 +105,10 @@ export default function Post({ boardId, postId }: { boardId: number; postId: num
           </Comments>
         </LikesAndComments>
         <Footer>
-          <LikeButton onClick={fetchLike} isLiked={post.isLiked}>
+          <LikeButton onClick={fetchLike} $isLiked={post.isLiked}>
             <LikeButtonIcon
               src={post.isLiked ? "/img/post-like-white.svg" : "/img/post-like.svg"}
-              isLiked={post.isLiked}
+              $isLiked={post.isLiked}
               alt="공감"
             />
             공감
@@ -196,7 +196,7 @@ const Nickname = styled.div`
   }
 `;
 const PostDate = styled.div`
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-600);
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
@@ -228,7 +228,7 @@ const DesktopActionButton = styled.div`
   border: none;
   padding: 0;
 
-  color: #b7b7b7;
+  color: var(--Color-Foundation-gray-500);
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
@@ -280,7 +280,7 @@ const LikesAndComments = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 const Comments = styled.div`
   display: flex;
@@ -295,19 +295,19 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 17.7px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--SemanticColor-Border-Primary);
   @media (max-width: 768px) {
-    border-color: #f0f0f0;
+    border-color: var(--SemanticColor-Border-Primary);
     padding-bottom: 12.5px;
   }
 `;
 const FooterButton = styled.button`
   display: flex;
   align-items: center;
-  border: 1px solid #ff9522;
+  border: 1px solid var(--Color-Foundation-orange-500);
   border-radius: 8px;
-  background-color: #ffffff;
-  color: #ff9522;
+  background-color: var(--Color-Foundation-base-white);
+  color: var(--Color-Foundation-orange-500);
   font-weight: 700;
   font-size: 13px;
   line-height: 14.75px;
@@ -318,11 +318,14 @@ const FooterButton = styled.button`
     border-radius: 6px;
   }
 `;
-const LikeButton = styled(FooterButton)<{ isLiked?: boolean | null }>`
+const LikeButton = styled(FooterButton)<{ $isLiked?: boolean | null }>`
   padding: 8.5px 12.4px;
-  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
-  border-color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
-  color: ${(props) => (props.isLiked ? "#fff" : "#ff9522")};
+  background-color: ${(props) =>
+    props.$isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
+  border-color: ${(props) =>
+    props.$isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
+  color: ${(props) =>
+    props.$isLiked ? "var(--Color-Foundation-base-white)" : "var(--Color-Foundation-orange-500)"};
   @media (max-width: 768px) {
     padding: 6.5px 8.25px;
   }
@@ -342,8 +345,9 @@ const FooterIcon = styled.img`
     height: 11px;
   }
 `;
-const LikeButtonIcon = styled(FooterIcon)<{ isLiked?: boolean | null }>`
-  background-color: ${(props) => (props.isLiked ? "#ff9522" : "#fff")};
+const LikeButtonIcon = styled(FooterIcon)<{ $isLiked?: boolean | null }>`
+  background-color: ${(props) =>
+    props.$isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-base-white)"};
 `;
 
 const CommentContainer = styled.div``;

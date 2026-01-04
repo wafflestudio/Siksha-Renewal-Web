@@ -2,15 +2,18 @@
 
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import AccountLayout from "./layout";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
 import UseProfile from "hooks/UseProfile";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
+import RightArrowMobileIcon from "assets/icons/right-arrow-mobile.svg";
+import HideCircleIcon from "assets/icons/hide-circle.svg";
 
 export default function Account() {
   const router = useRouter();
+  const { defaultProfileURL } = UseCurrentTheme();
 
   const { userInfo } = UseProfile();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
@@ -19,11 +22,11 @@ export default function Account() {
 
   useEffect(authGuard, [authStatus]);
 
-  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
+  const profileURL = userInfo?.image ?? defaultProfileURL;
   const nickname = userInfo?.nickname;
 
   return (
-    <>
+    <Container>
       <ListGroup>
         <ContentDiv
           onClick={() => {
@@ -32,7 +35,7 @@ export default function Account() {
         >
           <Profile src={profileURL} alt="프로필 이미지" />
           <ProfileText>{userInfo ? nickname : "잠시만 기다려주세요..."}</ProfileText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="오른쪽 화살표" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -41,8 +44,26 @@ export default function Account() {
             router.push("/account/mypost");
           }}
         >
-          <DefaultText>내가 쓴 글</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <DefaultText $isFirst={true}>내가 쓴 글</DefaultText>
+          <ArrowButton aria-label="상세보기" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/menu/favorite");
+          }}
+        >
+          <DefaultText>내가 찜한 메뉴</DefaultText>
+          <ArrowButton aria-label="상세보기" />
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/myreview");
+          }}
+        >
+          <DefaultText>나의 평가 관리</DefaultText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <ListGroup>
@@ -51,8 +72,8 @@ export default function Account() {
             router.push("/account/restaurant");
           }}
         >
-          <DefaultText isFirst={true}>식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <DefaultText $isFirst={true}>식당 순서 변경</DefaultText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -61,24 +82,16 @@ export default function Account() {
           }}
         >
           <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
-          {isExceptEmpty ? (
-            <CheckButton
-              src="/img/account/hide-circle-active.svg"
-              alt="활성화"
-              onClick={toggleIsExceptEmpty}
-            />
-          ) : (
-            <CheckButton
-              src="/img/account/hide-circle-inactive.svg"
-              alt="비활성화"
-              onClick={toggleIsExceptEmpty}
-            />
-          )}
+          <CheckButton
+            isActive={isExceptEmpty}
+            onClick={toggleIsExceptEmpty}
+            aria-label={isExceptEmpty ? "활성화" : "비활성화"}
+          />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -86,31 +99,82 @@ export default function Account() {
             router.push("/account/user");
           }}
         >
-          <DefaultText isLast={true}>계정관리</DefaultText>
-          <ArrowButton src="/img/general/right-arrow-grey.svg" alt="상세보기" />
+          <DefaultText $isLast={true}>계정관리</DefaultText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
-      <ListGroup isLast={true}>
+      <ListGroup $isLast={true}>
         <ContentDiv
           onClick={() => {
             router.push("/account/inquiry");
           }}
         >
           <InquiryText>1:1 문의하기</InquiryText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
       </ListGroup>
       <MobileNavigationBar />
-    </>
+    </Container>
   );
 }
 
-const ListGroup = styled.div<{ isLast?: boolean }>`
-  cursor: pointer;
-  background-color: #ffffff;
+const Container = styled.div`
   width: 544px;
-  margin-bottom: ${(props) => (props.isLast ? "0" : "19px")};
-  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 24px 20px 0;
+  }
+`;
+
+const ArrowButton = () => {
+  return (
+    <ArrowButtonWrapper>
+      <RightArrowMobileIcon />
+    </ArrowButtonWrapper>
+  );
+};
+const ArrowButtonWrapper = styled.div`
+  width: 6.25px;
+  height: 10px;
+  margin-right: 15.47px;
+  margin-left: auto;
+  color: var(--Color-Foundation-gray-500);
+  margin-bottom: 7px;
+
+  @media (max-width: 768px) {
+    margin-right: 13.75px;
+  }
+`;
+
+const CheckButton = ({ isActive, onClick }: { isActive: boolean; onClick: () => void }) => {
+  return (
+    <CheckButtonWrapper $isActive={isActive} onClick={onClick}>
+      <HideCircleIcon />
+    </CheckButtonWrapper>
+  );
+};
+
+const CheckButtonWrapper = styled.div<{ $isActive: boolean }>`
+  width: 19px;
+  height: 19px;
+  margin-right: 12.22px;
+  margin-left: auto;
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"};
+  @media (max-width: 768px) {
+    margin-right: 15.5px;
+  }
+`;
+
+const ListGroup = styled.div<{ $isLast?: boolean }>`
+  cursor: pointer;
+  background-color: var(--SemanticColor-Background-Secondary);
+  width: 544px;
+  margin-bottom: ${(props) => (props.$isLast ? "0" : "19px")};
   border-radius: 8px;
+  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
 
   @media (max-width: 768px) {
     width: calc(100dvw - 40px);
@@ -147,7 +211,7 @@ const Text = styled.span`
   line-height: 23px;
   font-size: 16px;
   font-weight: 400;
-  color: black;
+  color: var(--Color-Foundation-base-black);
 
   @media (max-width: 768px) {
     font-size: 15px;
@@ -159,43 +223,20 @@ const ProfileText = styled(Text)`
   font-weight: 700;
 `;
 
-const DefaultText = styled(Text)<{ isFirst?: boolean; isLast?: boolean }>`
-  margin-top: ${(props) => (props.isFirst ? "13px" : "10.5px")};
-  margin-bottom: ${(props) => (props.isLast ? "13px" : "10.5px")};
+const DefaultText = styled(Text)<{ $isFirst?: boolean; $isLast?: boolean }>`
+  margin-top: ${(props) => (props.$isFirst ? "13px" : "10.5px")};
+  margin-bottom: ${(props) => (props.$isLast ? "13px" : "10.5px")};
 `;
 
 const InquiryText = styled(Text)`
   font-size: 16px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
 `;
 
 const BreakLine = styled.hr`
   border: 0;
   height: 1px;
-  background: #e8e8e8;
+  background: var(--SemanticColor-Border-Primary);
   margin: 0 6px;
-`;
-
-const Button = styled.img`
-  margin-left: auto;
-`;
-
-const ArrowButton = styled(Button)`
-  width: 6.25px;
-  height: 10px;
-  margin-right: 15.47px;
-
-  @media (max-width: 768px) {
-    margin-right: 13.75px;
-  }
-`;
-
-const CheckButton = styled(Button)`
-  width: 19px;
-  height: 19px;
-  margin-right: 12.22px;
-  @media (max-width: 768px) {
-    margin-right: 15.5px;
-  }
 `;

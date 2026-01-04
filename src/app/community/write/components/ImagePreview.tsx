@@ -26,15 +26,16 @@ export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
 
   return (
     <Container>
-      {images.map((image, i) => (
-        <Preview key={i}>
-          <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} />
-          <DeleteButton onClick={() => handleImageDelete(i)}>
-            <Icon src="/img/photo-delete.svg" alt="사진 삭제" />
-          </DeleteButton>
-        </Preview>
-      ))}
-      {images.length < 5 ? (
+      {images &&
+        images.map((image, i) => (
+          <Preview key={i}>
+            <Image src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="" />
+            <DeleteButton onClick={() => handleImageDelete(i)}>
+              <Icon src="/img/photo-delete.svg" alt="사진 삭제" />
+            </DeleteButton>
+          </Preview>
+        ))}
+      {images && images.length < 5 ? (
         <ImageAttacher>
           {images.length > 0 ? (
             <Icon

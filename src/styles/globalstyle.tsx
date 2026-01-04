@@ -2,7 +2,7 @@
 
 import { createGlobalStyle, css } from "styled-components";
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NIXGONFONTS V2.0';
     src: url('/font/NIXGONFONTS L 2.0.ttf') format('truetype'),
@@ -92,7 +92,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background: #F8F8F8;
+    background: var(--Color-Background-main);
     -ms-overflow-style: none;
     font-family: NanumSquare, sans-serif;
 
@@ -106,7 +106,7 @@ const GlobalStyle = createGlobalStyle`
   }
   a {
     text-decoration: none;
-    color: #000000;
+    color: var(--Color-Foundation-base-black);
   }
   input, button, select, option, textarea {
     font-size: 100%;
@@ -141,6 +141,7 @@ const GlobalStyle = createGlobalStyle`
   /* constants */
   :root {
     --Color-Background-main: #F8F8F8;
+    --Color-Background-Dim: #00000033;
     --Color-Foundation-gray-50: #F8F8F8;
     --Color-Foundation-gray-100: #F2F3F4;
     --Color-Foundation-gray-200: #E5E6E9;
@@ -159,11 +160,172 @@ const GlobalStyle = createGlobalStyle`
     --Color-Foundation-orange-600: #D27000;
     --Color-Foundation-orange-700: #A54C00;
     --Color-Foundation-orange-800: #7C2900;
-    --foundation-orange-900: #570000;
-    --foundation-base-white: #FFFFFF;
+    --Color-Foundation-orange-900: #570000;
+    --Color-Foundation-base-white: #FFFFFF;
+    --Color-Foundation-base-black: #000000;
+    --Color-Foundation-Tint-orange: #FFEAD3;
+
+    --Color-Main-Active: #FFE8CE;
+
+    --Color-Accent-like: #F86627;
+
+    --SemanticColor-Background-Primary: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-Secondary: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-100);
+    --SemanticColor-Background-Quaternary: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-Dark: var(--Color-Foundation-base-black);
+    --SemanticColor-Background-GNB: var(--Color-Foundation-orange-500);
+    --SemanticColor-Background-GNB-Secondary: var(--Color-Foundation-orange-500);
+    --SemanticColor-Background-GNB-Button: var(--Color-Foundation-orange-400);
+    --SemanticColor-Background-Toast: var(--Color-Foundation-gray-700);
+    --SemanticColor-Border-Primary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Border-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Text-Button: var(--Color-Foundation-base-white);
+    --SemanticColor-Text-Accent: var(--Color-Foundation-orange-500);
+    --SemanticColor-Text-GNB: var(--Color-Foundation-base-white);
+    --SemanticColor-Text-GNB-Secondary: var(--Color-Foundation-orange-200);
+    --SemanticColor-Text-Bubble: var(--Color-Foundation-gray-500);
+    --SemanticColor-Text-Dim: var(--Color-Foundation-base-white);
+    --SemanticColor-Icon-Close_bg: var(--Color-Foundation-gray-400);
+    --SemanticColor-Icon-WhiteIcon: var(--Color-Foundation-base-white);
+    --SemanticColor-Icon-Like: var(--Color-Foundation-gray-200);
+    --SemanticColor-Icon-Star: var(--Color-Foundation-gray-300);
+    --SemanticColor-Icon-GrayIcon: var(--Color-Foundation-gray-500);
+    --SemanticColor-Element-Chip: var(--Color-Foundation-gray-100);
+    --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-100);
+    --SemanticColor-Element-Tooltip2: var(--Color-Foundation-base-white);
+    --SemanticColor-Element-Control: var(--Color-Foundation-gray-200);
+
+    --Color-Static-Orange: #FF9522;
+    --Color-Static-White: #FFFFFF;
+    --Color-Static-Black: #000000;
 
   }
-`;
+
+  .dark {
+    --Color-Background-main: #121212;
+    --Color-Background-Dim: #0000007F;
+    --Color-Foundation-gray-50: #1E1E1E;
+    --Color-Foundation-gray-100: #202020;
+    --Color-Foundation-gray-200: #232323;
+    --Color-Foundation-gray-300: #282828;
+    --Color-Foundation-gray-400: #2D2D2D;
+    --Color-Foundation-gray-500: #404040;
+    --Color-Foundation-gray-600: #919191;
+    --Color-Foundation-gray-700: #B7B7B7;
+    --Color-Foundation-gray-800: #CBCBCC;
+    --Color-Foundation-gray-900: #E5E6E9;
+    --Color-Foundation-orange-100: #F0DCC6;
+    --Color-Foundation-orange-200: #F2CA9E;
+    --Color-Foundation-orange-300: #F1B573;
+    --Color-Foundation-orange-400: #F1A14A;
+    --Color-Foundation-orange-500: #F28C1D;
+    --Color-Foundation-orange-600: #C76A00;
+    --Color-Foundation-orange-700: #984600;
+    --Color-Foundation-orange-800: #6B2400;
+    --Color-Foundation-orange-900: #410000;
+    --Color-Foundation-base-white: #000000;
+    --Color-Foundation-base-black: #FFFFFF;
+    --Color-Foundation-Tint-orange: #F28C1D40;
+
+    --Color-Main-Active: #FFEAD3;
+
+    --Color-Accent-like: #F86627;
+
+    --SemanticColor-Background-Primary: var(--Color-Background-main);
+    --SemanticColor-Background-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-400);
+    --SemanticColor-Background-Quaternary: var(--Color-Foundation-gray-500);
+    --SemanticColor-Background-Dark: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-GNB: var(--Color-Background-main);
+    --SemanticColor-Background-GNB-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-GNB-Button: var(--Color-Foundation-gray-500);
+    --SemanticColor-Background-Toast: var(--Color-Foundation-gray-400);
+    --SemanticColor-Border-Primary: var(--Color-Foundation-gray-400);
+    --SemanticColor-Border-Secondary: var(--Color-Foundation-gray-500);
+    --SemanticColor-Text-Button: var(--Color-Foundation-base-black);
+    --SemanticColor-Text-Accent: var(--Color-Foundation-base-black);
+    --SemanticColor-Text-GNB: var(--Color-Foundation-gray-900);
+    --SemanticColor-Text-GNB-Secondary: var(--Color-Foundation-gray-600);
+    --SemanticColor-Text-Bubble: var(--Color-Foundation-gray-600);
+    --SemanticColor-Text-Dim: var(--Color-Foundation-base-black);
+    --SemanticColor-Icon-Close_bg: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-WhiteIcon: var(--Color-Foundation-base-black);
+    --SemanticColor-Icon-Like: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-Star: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-GrayIcon: var(--Color-Foundation-gray-600);
+    --SemanticColor-Element-Chip: var(--Color-Foundation-gray-50);
+    --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Tooltip2: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Control: var(--Color-Foundation-gray-500);
+
+    --Color-Static-Orange: #FF9522;
+    --Color-Static-White: #FFFFFF;
+    --Color-Static-Black: #000000;
+  }
+
+  .dark {
+    --Color-Background-main: #121212;
+    --Color-Background-Dim: #0000007F;
+    --Color-Foundation-gray-50: #1E1E1E;
+    --Color-Foundation-gray-100: #202020;
+    --Color-Foundation-gray-200: #232323;
+    --Color-Foundation-gray-300: #282828;
+    --Color-Foundation-gray-400: #2D2D2D;
+    --Color-Foundation-gray-500: #404040;
+    --Color-Foundation-gray-600: #919191;
+    --Color-Foundation-gray-700: #B7B7B7;
+    --Color-Foundation-gray-800: #CBCBCC;
+    --Color-Foundation-gray-900: #E5E6E9;
+    --Color-Foundation-orange-100: #F0DCC6;
+    --Color-Foundation-orange-200: #F2CA9E;
+    --Color-Foundation-orange-300: #F1B573;
+    --Color-Foundation-orange-400: #F1A14A;
+    --Color-Foundation-orange-500: #F28C1D;
+    --Color-Foundation-orange-600: #C76A00;
+    --Color-Foundation-orange-700: #984600;
+    --Color-Foundation-orange-800: #6B2400;
+    --Color-Foundation-orange-900: #410000;
+    --Color-Foundation-base-white: #000000;
+    --Color-Foundation-base-black: #FFFFFF;
+    --Color-Foundation-Tint-orange: #F28C1D40;
+
+    --Color-Main-Active: #FFEAD3;
+
+    --Color-Accent-like: #F86627;
+
+    --SemanticColor-Background-Primary: var(--Color-Background-main);
+    --SemanticColor-Background-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-Tertiary: var(--Color-Foundation-gray-400);
+    --SemanticColor-Background-Quaternary: var(--Color-Foundation-gray-500);
+    --SemanticColor-Background-Dark: var(--Color-Foundation-base-white);
+    --SemanticColor-Background-GNB: var(--Color-Background-main);
+    --SemanticColor-Background-GNB-Secondary: var(--Color-Foundation-gray-200);
+    --SemanticColor-Background-GNB-Button: var(--Color-Foundation-gray-500);
+    --SemanticColor-Background-Toast: var(--Color-Foundation-gray-400);
+    --SemanticColor-Border-Primary: var(--Color-Foundation-gray-400);
+    --SemanticColor-Border-Secondary: var(--Color-Foundation-gray-500);
+    --SemanticColor-Text-Button: var(--Color-Foundation-base-black);
+    --SemanticColor-Text-Accent: var(--Color-Foundation-base-black);
+    --SemanticColor-Text-GNB: var(--Color-Foundation-gray-900);
+    --SemanticColor-Text-GNB-Secondary: var(--Color-Foundation-gray-600);
+    --SemanticColor-Text-Bubble: var(--Color-Foundation-gray-600);
+    --SemanticColor-Text-Dim: var(--Color-Foundation-base-black);
+    --SemanticColor-Icon-Close_bg: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-WhiteIcon: var(--Color-Foundation-base-black);
+    --SemanticColor-Icon-Like: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-Star: var(--Color-Foundation-gray-500);
+    --SemanticColor-Icon-GrayIcon: var(--Color-Foundation-gray-600);
+    --SemanticColor-Element-Chip: var(--Color-Foundation-gray-50);
+    --SemanticColor-Element-Tooltip: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Tooltip2: var(--Color-Foundation-gray-400);
+    --SemanticColor-Element-Control: var(--Color-Foundation-gray-500);
+
+    --Color-Static-Orange: #FF9522;
+    --Color-Static-White: #FFFFFF;
+    --Color-Static-Black: #000000;
+  }
+` as unknown as React.ComponentType;
 
 export const LoadingAnimation = css`
   animation: menuSlide 0.75s;
@@ -215,5 +377,3 @@ export const LoadingAnimation = css`
     }
   }
 `;
-
-export const GlobalStyleFixed = GlobalStyle as unknown as React.ComponentType;

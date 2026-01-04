@@ -13,7 +13,7 @@ const firebaseConfig = {
   storageBucket: "throwaway-d58de.firebasestorage.app",
   messagingSenderId: "865764669353",
   appId: "1:865764669353:web:25b2832a66b6a6aa0336b8",
-  measurementId: "G-RZFG8LL2K2"
+  measurementId: "G-RZFG8LL2K2",
 };
 
 // Initialize Firebase

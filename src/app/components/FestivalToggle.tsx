@@ -15,19 +15,15 @@ export default function FestivalToggle() {
     setActive(filterList.isFestival);
   }, [filterList.isFestival]);
 
-  const handleClick = () => {
-    setActive(!filterList.isFestival);
-    changeFilterOption({ isFestival: !filterList.isFestival });
-  };
-
   return (
-    isFestivalDate && 
-    <ToggleWrapper onClick={handleClick}>
-      <ToggleContainer active={active}>
-        <ToggleCircle active={active} />
-      </ToggleContainer>
-      <ToggleText active={active}>축제</ToggleText>
-    </ToggleWrapper>
+    isFestivalDate && (
+      <ToggleWrapper onClick={() => setActive(!active)}>
+        <ToggleContainer $active={active}>
+          <ToggleCircle $active={active} />
+        </ToggleContainer>
+        <ToggleText $active={active}>축제</ToggleText>
+      </ToggleWrapper>
+    )
   );
 }
 
@@ -49,18 +45,20 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const ToggleContainer = styled.div<{ active: boolean }>`
-  width: 100%;
-  height: 100%;
-  padding: 2.1px;
-  gap: 6.1px;
-  border-radius: 90.323px;
-
+const ToggleContainer = styled.div<{ $active: boolean }>`
+  width: 80.206px;
+  height: 34.864px;
+  box-sizing: border-box;
+  border-radius: 17.432px;
+  background-color: ${({ $active }) =>
+    $active
+      ? `var(--Color-Foundation-orange-500, #FF9522)`
+      : `var(--Grey-3, var(--Color-Foundation-gray-500))`}; // 주황색 / 회색
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  box-sizing: border-box;
-  background: var(--Grey-3, #B7B7B7); 
+  justify-content: ${({ $active }) => ($active ? "flex-end" : "flex-start")};
+  padding: 2.14px 2.49px 2.14px 2.88px;
   cursor: pointer;
 
   &::before {
@@ -68,8 +66,8 @@ const ToggleContainer = styled.div<{ active: boolean }>`
     border-radius: 90.323px;
     position: absolute;
     inset: 0;
-    background: linear-gradient(270deg, #FF9DA4 40%, #FF9522 100%);
-    opacity: ${({ active }) => (active ? 1 : 0)};
+    background: linear-gradient(270deg, #ff9da4 40%, #ff9522 100%);
+    opacity: ${({ $active }) => ($active ? 1 : 0)};
     transition: opacity 300ms ease-out;
     z-index: 1;
   }
@@ -81,55 +79,46 @@ const ToggleContainer = styled.div<{ active: boolean }>`
   }
 `;
 
-const ToggleText = styled.span<{ active: boolean }>`
+const ToggleText = styled.span<{ $active: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ active }) => (active ? '8px' : 'calc(100% - 31px)')};
-  z-index: 1;
+  margin-left: ${({ $active }) => ($active ? "11.7px" : "39.28px")};
 
-  width: 23px;
-
-  color: #FFF;
+  color: var(--Color-Foundation-base-white);
   text-align: center;
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: NanumSquare;
-  font-size: 12.6px;
+  font-feature-settings: "liga" off, "clig" off;
+  font-family: NanumSquareOTF;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
-  
+
   transition: left 0.3s ease-out;
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? '6px' : 'calc(100% - 24px)')};
-    width: 18px;
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: -0.3px;
+    margin-left: ${({ $active }) => ($active ? "6.5px" : "21.83px")};
   }
 `;
 
-const ToggleCircle = styled.div<{ active: boolean }>`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: ${({ active }) => (active ? "calc(100% - 25.9px)" : '2.1px')};
-
-  width: 23.8px;
-  height: 23.8px;
-  background-color: white;
+const ToggleCircle = styled.div<{ $active: boolean }>`
+  width: 30.59px;
+  height: 30.59px;
+  border-radius: 50%;
+  background-color: var(--Color-Foundation-base-white);
   z-index: 1;
 
-  border-radius: 100%;
-  background: #FFF;
-  box-shadow: 0px 0px 0px 0.881px rgba(0, 0, 0, 0.04), 0px 2.644px 7.052px 0px rgba(0, 0, 0, 0.15), 0px 2.644px 0.881px 0px rgba(0, 0, 0, 0.06);
-
-  transition: left 0.3s ease-out;
+  fill: var(--Main-White, var(--Color-Foundation-base-white));
+  filter: drop-shadow(0px 0px 7.198px rgba(0, 0, 0, 0.15));
 
   @media (max-width: 768px) {
-    left: ${({ active }) => (active ? "calc(100% - 22px)" : '2px')};
+    left: ${({ $active }) => ($active ? "calc(100% - 22px)" : "2px")};
     width: 20px;
     height: 20px;
-    box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15), 0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 0px 0px 0.702px rgba(0, 0, 0, 0.04), 0px 2.105px 5.614px 0px rgba(0, 0, 0, 0.15),
+      0px 2.105px 0.702px 0px rgba(0, 0, 0, 0.06);
   }
 `;

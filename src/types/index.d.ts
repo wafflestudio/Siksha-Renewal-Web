@@ -105,7 +105,7 @@ export interface RawComment {
   updated_at: string;
   id: number;
   nickname: string;
-  profile_url: string | null;
+  profile_uri: string | null;
   available: boolean;
   anonymous: boolean;
   is_mine: boolean;
@@ -140,17 +140,17 @@ export interface Restaurant {
 }
 
 export interface RawMenuList {
-  BR: Array<
+  br: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }
   >;
-  DN: Array<
+  dn: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }
   >;
-  LU: Array<
+  lu: Array<
     RawRestaurant & {
       menus: RawMenu[];
     }
@@ -185,7 +185,45 @@ export interface RawReview {
   score: number;
   comment: string;
   etc: Record<string, any>;
+  keywordReviews?: string[];
+  likeCount?: number;
+  isLiked?: boolean;
 }
+
+export interface MyReviewGroupType {
+  restaurant_id: number;
+  name_kr: string;
+  name_en: string;
+  reviews: MyReviewType[];
+}
+
+export interface MyReviewType {
+  id: number;
+  menu_id: number;
+  name_kr: string;
+  name_en: string;
+  user_id: number;
+  score: number;
+  comment: string;
+  etc: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+  keyword_reviews: string[];
+  isLiked?: boolean;
+}
+
+export interface KeywordReviewScore {
+  taste_keyword: string;
+  taste_cnt: number;
+  taste_total: number;
+  price_keyword: string;
+  price_cnt: number;
+  price_total: number;
+  food_composition_keyword: string;
+  food_composition_cnt: number;
+  food_composition_total: number;
+}
+
 
 export interface RawUser {
   id: number;
@@ -207,4 +245,13 @@ export interface RestaurantPreview {
   id: number;
   nameKr: string;
   nameEn: string;
+}
+
+export interface LikedMenusResponse {
+  count: number;
+  result: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
 }

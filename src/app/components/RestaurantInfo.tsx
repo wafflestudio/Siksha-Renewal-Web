@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
@@ -12,7 +12,7 @@ export default function RestaurantInfo() {
 
   const { infoData } = state;
 
-  const [ etc, setEtc ] = useState({ isFestival: false, isFoodTruck: false });
+  const [etc, setEtc] = useState({ isFestival: false, isFoodTruck: false });
 
   useEffect(() => {
     const loadMap = () => {
@@ -55,7 +55,7 @@ export default function RestaurantInfo() {
 
     setEtc({
       isFestival: infoData.name_kr.startsWith("[축제]"),
-      isFoodTruck: infoData.name_kr.endsWith("(푸드트럭)")
+      isFoodTruck: infoData.name_kr.endsWith("(푸드트럭)"),
     });
   }, [infoData]);
 
@@ -85,24 +85,24 @@ export default function RestaurantInfo() {
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
-                  <MobileOperatingHour type={"weekdays"} etc={etc} />
-                )}
+                <MobileOperatingHour type={"weekdays"} etc={etc} />
+              )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
-                  <>
-                    <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"saturday"} etc={etc} />
-                  </>
-                )}
+                <>
+                  <HLine color={"#ECECEC"} margin={"2px"} />
+                  <MobileOperatingHour type={"saturday"} etc={etc} />
+                </>
+              )}
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.holiday.length != 0 && (
-                  <>
-                    <HLine color={"#ECECEC"} margin={"2px"} />
-                    <MobileOperatingHour type={"holiday"} etc={etc} />
-                  </>
-                )}
+                <>
+                  <HLine color={"#ECECEC"} margin={"2px"} />
+                  <MobileOperatingHour type={"holiday"} etc={etc} />
+                </>
+              )}
               {(!infoData.etc || !infoData.etc.operating_hours) && (
                 <>
                   <EmptyText>운영 시간 정보가 없습니다.</EmptyText>
@@ -129,7 +129,7 @@ const Container = styled.div`
 `;
 
 const InfoBox = styled.div`
-  background: white;
+  background: var(--Color-Foundation-base-white);
   border-radius: 15px;
   width: 90vw;
   max-width: 1000px;
@@ -209,7 +209,7 @@ const LocationText = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
-  color: #575757;
+  color: var(--Color-Foundation-gray-800);
   padding-left: 4px;
 `;
 
@@ -236,13 +236,13 @@ const BelowMap = styled.div`
 const EmptyText = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: #575757;
+  color: var(--Color-Foundation-gray-800);
   padding-top: 25px;
   font-weight: 400;
 `;
 
 const EmptyBox = styled.div<{ height: string }>`
   height: ${(props) => props.height};
-  background: white;
+  background: var(--Color-Foundation-base-white);
   width: 1px;
 `;

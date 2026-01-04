@@ -7,6 +7,8 @@ import { useStateContext } from "providers/ContextProvider";
 import { setInquiry } from "utils/api/voc";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import useAuth from "hooks/UseAuth";
+import UseCurrentTheme from "hooks/UseCurrentTheme";
+import CommentReportIcon from "assets/icons/comment_report.svg";
 
 export default function Inquiry() {
   const router = useRouter();
@@ -14,6 +16,7 @@ export default function Inquiry() {
   const { userInfo } = state;
 
   const { getAccessToken, authStatus, authGuard } = useAuth();
+  const { defaultProfileURL } = UseCurrentTheme();
 
   useEffect(authGuard, [authStatus]);
 
@@ -48,24 +51,32 @@ export default function Inquiry() {
 
   return (
     <>
-      <MobileSubHeader title="1:1 문의하기" handleBack={() => router.push("/account")} />
+      <MobileSubHeader
+        title="1:1 문의하기"
+        containerColor="secondary"
+        handleBack={() => router.push("/account")}
+      />
       <Container>
         <Title>1:1 문의하기</Title>
         <MobileBox>
-          <Icon src="/img/comment.svg" alt="내용 작성" />
+          <StyledCommentReportIcon />
           <Description>문의할 내용을 남겨주세요.</Description>
         </MobileBox>
         <UserBox>
-          <Profile src={userInfo?.image ?? "/img/default-profile.svg"} alt="프로필 이미지" />
+          <Profile src={userInfo?.image ?? defaultProfileURL} alt="프로필 이미지" />
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} />
-          <WordCnt>{`${voc.length} 자 / 500 자`}</WordCnt>
+          <TextArea
+            value={voc}
+            onChange={handleTextAreaChange}
+            placeholder="문의할 내용을 입력해주세요."
+          />
+          <WordCnt>{`${voc.length}/150자`}</WordCnt>
         </InquireBox>
         <ButtonBox>
           <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
-          <ButtonConfirm onClick={handlePost}>전송하기</ButtonConfirm>
+          <ButtonConfirm onClick={handlePost}>완료</ButtonConfirm>
         </ButtonBox>
       </Container>
     </>
@@ -74,8 +85,7 @@ export default function Inquiry() {
 
 const Container = styled.div`
   width: 701px;
-  background-color: white;
-  border: 1px solid #e8e8e8;
+  background-color: var(--SemanticColor-Background-Secondary);
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -90,7 +100,7 @@ const Title = styled.div`
   margin: 24.04px 0 0 23.5px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff9522;
+  color: var(--Color-Foundation-gray-900);
 
   @media (max-width: 768px) {
     display: none;
@@ -109,17 +119,18 @@ const MobileBox = styled.div`
   }
 `;
 
-const Icon = styled.img`
-  width: 18px;
-  height: 18px;
+const StyledCommentReportIcon = styled(CommentReportIcon)`
+  color: var(--Color-Foundation-gray-700);
 `;
 
 const Description = styled.p`
   text-align: center;
   margin: 0;
   margin-left: 10px;
-  font-size: 20px;
-  font-weight: 700;
+  color: var(--Color-Foundation-base-black);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 140%;
 `;
 
 const UserBox = styled.div`
@@ -145,12 +156,22 @@ const Profile = styled.img`
 
 const Nickname = styled.div`
   margin-left: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  color: #262728;
+  display: flex;
+  align-items: center;
 `;
 
 const InquireBox = styled.div`
   margin: 10.95px 23px 0 23px;
   width: 658px;
   height: 378.11px;
+
+  display: inline-grid;
+  grid-template-areas: "stack";
 
   @media (max-width: 768px) {
     width: calc(100% - 56px);
@@ -159,39 +180,51 @@ const InquireBox = styled.div`
     height: 280px;
   }
 `;
+
 const TextArea = styled.textarea`
+  grid-area: stack;
   width: 100%;
   height: 100%;
   padding: 15.73px 16px;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: var(--SemanticColor-Background-Tertiary);
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   resize: none;
+  &::placeholder {
+    color: var(--SemanticColor-Text-Bubble);
+  }
+
+  &::placeholder {
+    color: #989aa0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
+  }
 
   &:focus {
     outline: none;
   }
 `;
+
 const WordCnt = styled.div`
-  width: 650px;
-  margin-top: -26.46px;
-  padding-right: 35.95px;
+  grid-area: stack;
+  align-self: end;
+  justify-self: end;
+  /* width: 650px; */
+  margin-right: 8px;
+  margin-bottom: 16px;
   text-align: right;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 12.48px;
-  color: #707070;
-
-  @media (max-width: 768px) {
-    position: absolute;
-    right: 0;
-    padding-right: 35px;
-  }
+  color: var(--Color-Foundation-gray-700);
 `;
 const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   margin-bottom: 33.1px;
 
   @media (max-width: 768px) {
@@ -204,7 +237,6 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 66.38px;
   width: 324px;
   height: 46px;
   border-radius: 8px;
@@ -215,8 +247,8 @@ const Button = styled.div`
 `;
 
 const ButtonCancel = styled(Button)`
-  background-color: #eeeeee;
-  color: #8e8e8e;
+  background-color: var(--SemanticColor-Background-Tertiary);
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     display: none;
@@ -224,12 +256,26 @@ const ButtonCancel = styled(Button)`
 `;
 
 const ButtonConfirm = styled(Button)`
-  background-color: #ff9522;
-  color: #ffffff;
+  background-color: var(--Color-Foundation-orange-500);
+  color: var(--SemanticColor-Text-Button);
   margin-left: 14px;
 
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
+  }
+`;
+
+const DesktopText = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileText = styled.span`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: inline;
   }
 `;

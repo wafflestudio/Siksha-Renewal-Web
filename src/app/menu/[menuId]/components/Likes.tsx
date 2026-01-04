@@ -1,23 +1,24 @@
 import { useStateContext } from "providers/ContextProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
-import Image from "next/image";
+import useLikedMenus from "hooks/UseLikedMenus";
+import HeartIcon from "assets/icons/heart.svg";
+import useIsMobile from "hooks/UseIsMobile";
 
 export default function Likes({ menu }) {
   const [isLiked, setIsLiked] = useState<boolean>(menu?.is_liked);
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
+  const isMobile = useIsMobile();
 
-  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
-
-  const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth();
+  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
 
   const { openLoginModal } = useModals();
 
-  const onClickLike = async () => {
+  const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
@@ -27,6 +28,12 @@ export default function Likes({ menu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
+          // Update local storage
+          if (isLiked) {
+            addLikedMenu(menu.id);
+          } else {
+            removeLikedMenu(menu.id);
+          }
         })
         .catch((res) => {
           console.log(res);
@@ -36,15 +43,15 @@ export default function Likes({ menu }) {
 
   return (
     <Container>
-      <HeartIcon
-        src={isLikedImg}
+      <StyledLikeIcon
+        $isliked={isLiked}
+        aria-label="좋아요"
         onClick={(e) => {
-          onClickLike();
+          isLikedToggle();
           e.stopPropagation();
         }}
-        alt="좋아요"
       />
-      <LikesText>{likeCount}</LikesText>
+      {isMobile ? <LikesText>찜 {likeCount}개</LikesText> : <LikesText>{likeCount}</LikesText>}
     </Container>
   );
 }
@@ -57,16 +64,16 @@ const Container = styled.div`
   }
 `;
 
-const HeartIcon = styled.img`
+const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
   width: 30px;
   height: 30px;
   cursor: pointer;
-  @media (max-width: 768px) {
-  }
+  color: ${({ $isliked }) =>
+    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
 const LikesText = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
 
   /* text-13/Bold */
@@ -86,12 +93,5 @@ const LikesText = styled.div`
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
     line-height: 140%; /* 18.2px */
-    ::before {
-      content: "찜 ";
-    }
-
-    ::after {
-      content: "개"
-    }
   }
 `;

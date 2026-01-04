@@ -1,6 +1,6 @@
 import axios from "axios";
 import APIendpoint from "constants/constants";
-import { RawMenuList, RawMenu } from "types";
+import { RawMenuList, RawMenu, LikedMenusResponse } from "types";
 
 export const getMenuList = (
   date: string,
@@ -10,19 +10,31 @@ export const getMenuList = (
   count: number;
   result: RawMenuList[];
 }> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/menus/lo?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`
-    : `${APIendpoint()}/menus/?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
-  const config = !!accessToken
-    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
-    : {};
+  const apiUrl = `${APIendpoint()}/menus${
+    !!accessToken ? "" : "/web"
+  }?start_date=${date}&end_date=${date}&except_empty=${isExceptEmptyRestaurant}`;
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
     .then((res) => {
       const {
-        data: { count, result },
+        data: { count, result: rawData },
       } = res;
+      if (count === 0) {
+        return { count: 0, result: [{
+          date: date,
+          br: [],
+          lu: [],
+          dn: [],
+        }] };
+      }
+      const result = rawData.map((menuList) => ({
+        date: menuList.date,
+        br: menuList.br,
+        lu: menuList.lu,
+        dn: menuList.dn,
+      }));
       return { count, result };
     })
     .catch((e) => {
@@ -31,12 +43,8 @@ export const getMenuList = (
 };
 
 export const getMenu = (menuID: number, accessToken: string = ""): Promise<RawMenu> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/menus/${menuID}`
-    : `${APIendpoint()}/menus/plain/${menuID}`;
-  const config = !!accessToken
-    ? { headers: { "authorization-token": `Bearer ${accessToken}` } }
-    : {};
+  const apiUrl = `${APIendpoint()}/menus/${menuID}${!!accessToken ? "" : "/web"}`;
+  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -57,7 +65,7 @@ export const setMenuLike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/like`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -78,7 +86,7 @@ export const setMenuUnlike = (
     .post(
       `${APIendpoint()}/menus/${menuID}/unlike`,
       {},
-      { headers: { "authorization-token": `Bearer ${accessToken}` } },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -87,6 +95,26 @@ export const setMenuUnlike = (
       return { isLiked, likeCount };
     })
     .catch((e) => {
+      throw e;
+    });
+};
+
+export const getLikedMenus = (accessToken: string): Promise<LikedMenusResponse> => {
+  return axios
+    .get(`${APIendpoint()}/menus/me`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      // Prevent indefinite pending requests (e.g., stalled browser connection pool).
+      timeout: 10000,
+    })
+    .then((res) => {
+      const { data } = res;
+      return data;
+    })
+    .catch((e) => {
+      // If endpoint doesn't exist yet, return empty result
+      if (e.response?.status === 404 || e.response?.status === 501) {
+        return { count: 0, result: [] };
+      }
       throw e;
     });
 };

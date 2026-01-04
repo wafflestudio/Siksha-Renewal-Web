@@ -5,6 +5,8 @@ import useModals from "hooks/UseModals";
 import MobileCalendar from "./MobileCalendar";
 import { useContext, useEffect, useState } from "react";
 import { ModalsStateContext } from "providers/ModalsProvider";
+import LeftArrowMobileIcon from "assets/icons/left-arrow-mobile.svg";
+import RightArrowMobileIcon from "assets/icons/right-arrow-mobile.svg";
 
 export default function Date() {
   const state = useStateContext();
@@ -29,29 +31,29 @@ export default function Date() {
 
   return (
     <Container>
-      <Arrow
-        src={isCalOpened ? "/img/general/left-arrow-grey.svg" : "/img/left-arrow-mobile.svg"}
+      <ArrowWrapper
+        $isActive={!isCalOpened}
         onClick={() => {
           !isCalOpened && setDate(getYesterday(date));
         }}
-        alt={isCalOpened ? "" : "전날로 이동"}
-      />
-      <FlexBox onClick={onClickDate}>
-        <DateText>{formatDate(date)}</DateText>
-      </FlexBox>
-      <Arrow
-        src={isCalOpened ? "/img/general/right-arrow-grey.svg" : "/img/right-arrow-mobile.svg"}
+      >
+        <LeftArrowMobileIcon aria-label="전날로 이동" />
+      </ArrowWrapper>
+      <DateText onClick={onClickDate}>{formatDate(date)}</DateText>
+      <ArrowWrapper
+        $isActive={!isCalOpened}
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}
-        alt={isCalOpened ? "" : "다음날로 이동"}
-      />
+      >
+        <RightArrowMobileIcon aria-label="다음날로 이동" />
+      </ArrowWrapper>
     </Container>
   );
 }
 
 const Container = styled.div`
-  background: white;
+  background: var(--SemanticColor-Background-Secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -64,15 +66,13 @@ const Container = styled.div`
   }
 `;
 
-const Arrow = styled.img`
+const ArrowWrapper = styled.div<{ $isActive: boolean }>`
   width: 10px;
   height: 16px;
   cursor: pointer;
   padding: 0 16px 0 16px;
-
-  @media (min-width: 769px) {
-    fill: currentColor !important;
-  }
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--SemanticColor-Text-Accent)" : "var(--Color-Foundation-gray-400)"};
 `;
 
 const DateText = styled.div`
@@ -87,13 +87,7 @@ const DateText = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 17px;
-    color: var(--Color-Foundation-orange-500, #ff9522);
+    color: var(--SemanticColor-Text-Accent);
     white-space: nowrap;
   }
-`;
-
-const FlexBox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
 `;

@@ -8,7 +8,7 @@ interface RestaurantOrderEditorProps {
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
-export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
+export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
   const pathname = usePathname();
   const isFavorite = pathname?.includes("favorite");
 
@@ -35,11 +35,11 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      dragging={snapshot.isDragging}
+                      $dragging={snapshot.isDragging}
                     >
-                      <DragBox>
+                      <DragBox $dragging={snapshot.isDragging}>
                         <Restaurant>{nameKr}</Restaurant>
-                        <DragButton dragging={snapshot.isDragging}>
+                        <DragButton $dragging={snapshot.isDragging}>
                           <Line />
                           <Line />
                           <Line />
@@ -61,9 +61,9 @@ const Container = styled.div`
   width: 544px;
   font-family: NanumSquare;
   padding-bottom: 12.68px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -79,7 +79,7 @@ const Title = styled.h2`
   font-weight: 700;
   font-size: 20px;
   line-height: 23px;
-  color: #ff9522;
+  color: var(--Color-Foundation-gray-900);
 
   @media (max-width: 768px) {
     display: none;
@@ -87,13 +87,11 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  margin-top: 7.92px;
-  margin-left: 22.49px;
-  margin-bottom: 11.66px;
+  margin: 0 0 20px 20px;
   font-weight: 400;
   font-size: 11px;
   line-height: 19px;
-  color: #a6a6a6;
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     display: flex;
@@ -103,7 +101,7 @@ const Description = styled.p`
     width: 100%;
     height: 50px;
     margin: 0;
-    background-color: #ffffff;
+    background-color: var(--Color-Background-main);
     z-index: 1;
   }
 `;
@@ -114,25 +112,26 @@ const DragZone = styled.div`
     overflow: scroll;
   }
 `;
-const DragContainer = styled.div<{ dragging: boolean }>`
-  &:hover {
-    background-color: #f2f2f2;
+const DragContainer = styled.div<{ $dragging: boolean }>`
+  &:focus {
+    background-color: transparent;
   }
 `;
 
-const DragBox = styled.div`
+const DragBox = styled.div<{ $dragging: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 499.04px;
   height: 49px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--Color-Foundation-gray-200);
   border-radius: 8px;
   margin: 7.92px 22.15px;
+  background-color: ${(props) =>
+    props.$dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};;
 
   @media (max-width: 768px) {
     width: calc(100% - 40px);
     margin: 7.92px 0px 0px 20px;
-    background-color: white;
   }
 `;
 
@@ -142,19 +141,26 @@ const Restaurant = styled.p`
   font-size: 16px;
   line-height: 23px;
 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  min-width: 0;
+
   @media (max-width: 768px) {
     font-size: 15px;
   }
 `;
 
-const DragButton = styled.div<{ dragging: boolean }>`
+const DragButton = styled.div<{ $dragging: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 34px;
   height: 34px;
-  background-color: ${(props) => (props.dragging ? "#ff9522" : "#dfdfdf")};
+  background-color: ${(props) =>
+    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
   border-radius: 8px;
   margin: 7.5px;
 `;
@@ -162,6 +168,6 @@ const DragButton = styled.div<{ dragging: boolean }>`
 const Line = styled.div`
   width: 19px;
   height: 0px;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--Color-Static-White);
   margin: 2.08px 0;
 `;
