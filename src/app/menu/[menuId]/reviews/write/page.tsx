@@ -71,9 +71,9 @@ export default function ReviewPost() {
           score: reviewData.score ?? 3,
           comment: reviewData.comment,
           images: reviewData.etc?.images || [],
-          taste: reviewData.etc?.taste || "",
-          price: reviewData.etc?.price || "",
-          food_composition: reviewData.etc?.food_composition || "",
+          taste: reviewData.keyword_reviews[0] || "",
+          price: reviewData.keyword_reviews[1] || "",
+          food_composition: reviewData.keyword_reviews[2] || "",
         });
       })
       .catch((e) => {
@@ -124,8 +124,6 @@ export default function ReviewPost() {
       body.append("images", image);
     });
 
-    console.debug(body);
-
     return editReview(Number(reviewId), body)
       .then((res) => {
         fetchReviews(Number(menuId));
@@ -147,7 +145,6 @@ export default function ReviewPost() {
     }
 
     const { score, comment, taste, price, food_composition } = inputs;
-    console.debug(inputs);
 
     const hasImages =
       inputs.images.length > 0 &&
@@ -177,7 +174,6 @@ export default function ReviewPost() {
         price,
         food_composition,
       };
-      console.debug(json);
       request = submitReview(json);
     }
 
