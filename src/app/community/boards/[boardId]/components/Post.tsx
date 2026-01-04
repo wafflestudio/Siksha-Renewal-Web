@@ -142,7 +142,7 @@ const Likes = styled.div`
 const Comments = styled.div`
   display: flex;
   align-items: center;
-  color: var(--Color-Foundation-gray-600);
+  color: var(--Color-Foundation-gray-700);
 `;
 const Icon = styled.img`
   margin-right: 4px;

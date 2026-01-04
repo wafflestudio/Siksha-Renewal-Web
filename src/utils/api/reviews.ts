@@ -11,20 +11,33 @@ export const getReviews = (
   hasNext: boolean;
   result: ReviewType[];
 }> => {
-  const apiUrl = !!accessToken
-  ? `${APIendpoint()}/reviews?menu_id=${menuID}&page=1&size=100`
-  : `${APIendpoint()}/reviews/web?menu_id=${menuID}&page=1&size=100`;
-const config = !!accessToken
-  ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-  : {};
-return axios
-  .get(apiUrl, config)
-  .then((res) => {
+  const apiUrl = `${APIendpoint()}/reviews${
+    !!accessToken ? "" : "/web"
+  }?menu_id=${menuID}&page=1&per_page=100`;
+  const config = !!accessToken ? { headers: { authorization: `Bearer ${accessToken}` } } : {};
+
+  return axios.get(apiUrl, config).then((res) => {
     const {
       data: { total_count: totalCount, has_next: hasNext, result },
     } = res;
     return { totalCount, hasNext, result };
   });
+};
+
+export const getReview = (reviewID: number, accessToken: string = ""): Promise<MyReviewType> => {
+  const apiUrl = !!accessToken
+    ? `${APIendpoint()}/reviews/${reviewID}`
+    : `${APIendpoint()}/reviews/${reviewID}/web`;
+  const config = !!accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  return axios
+    .get(apiUrl, config)
+    .then((res) => {
+      const { data } = res;
+      return data;
+    })
+    .catch((e) => {
+      throw e;
+    });
 };
 
 export const getPhotoReviews = (
@@ -52,44 +65,20 @@ export const setReviewWithImages = (body: FormData, accessToken: string): Promis
   return axios
     .post(`${APIendpoint()}/reviews/images`, body, {
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
-    .catch((err) => {
-      err.message = "리뷰 등록에 실패했습니다.";
-      throw new Error(err);
-    });
-};
-
-
-
-export const getReview = (
-  reviewID: number,
-  accessToken: string = "",
-): Promise<MyReviewType> => {
-  const apiUrl = !!accessToken
-    ? `${APIendpoint()}/reviews/${reviewID}`
-    : `${APIendpoint()}/reviews/${reviewID}/web`;
-  const config = !!accessToken
-    ? { headers: { "Authorization": `Bearer ${accessToken}` } }
-    : {};
-  return axios
-    .get(apiUrl, config)
-    .then((res) => {
-      const { data } = res;
-      return data;
-    })
     .catch((e) => {
       throw e;
     });
-}
+};
 
-export const setReview = (body: FormData, accessToken: string): Promise<void> => {
+export const setReview = (body: any, accessToken: string): Promise<void> => {
   return axios
-    .post(`${APIendpoint()}/reviews/images`, body, {
+    .post(`${APIendpoint()}/reviews`, body, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        authorization: `Bearer ${accessToken}`,
       },
     })
     .then(() => {})
@@ -112,17 +101,6 @@ export const getReviewScore = (menuID: number): Promise<number[]> => {
     });
 };
 
-export const getKeywordReviewScore = (menuID: number): Promise<KeywordReviewScore> => {
-  return axios
-    .get(`${APIendpoint()}/reviews/keyword/dist?menu_id=${menuID}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((e) => {
-      throw e;
-    });
-};
-      
 export const getMyReviewList = (
   accessToken: string,
   size: number,
@@ -134,7 +112,7 @@ export const getMyReviewList = (
 }> => {
   return axios
     .get(`${APIendpoint()}/reviews/me?page=${page}&perPage=${size}`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then((res) => {
       const {
@@ -146,6 +124,39 @@ export const getMyReviewList = (
         hasNext,
       };
     })
+    .catch((e) => {
+      throw e;
+    });
+  };
+  
+export const getKeywordReviewScore = (menuID: number): Promise<KeywordReviewScore> => {
+  return axios
+    .get(`${APIendpoint()}/reviews/keyword/dist?menu_id=${menuID}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
+
+export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
+  return axios
+    .patch(`${APIendpoint()}/reviews/${reviewId}`, body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(() => {})
+    .catch((e) => {
+      throw e;
+    });
+};
+
+export const deleteReview = (reviewId: number, accessToken: string) => {
+  return axios
+    .delete(`${APIendpoint()}/reviews/${reviewId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(() => {})
     .catch((e) => {
       throw e;
     });
@@ -175,27 +186,5 @@ export const setReviewUnlike = (reviewId: number, accessToken: string): Promise<
     .catch((err) => {
       err.message = "리뷰 좋아요 취소에 실패했습니다.";
       throw new Error(err);
-    });
-};
-
-export const updateReview = (reviewId: number, body: FormData, accessToken: string) => {
-  return axios
-    .patch(`${APIendpoint()}/reviews/${reviewId}`, body, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
-    })
-    .then(() => {})
-    .catch((e) => {
-      throw e;
-    });
-};
-
-export const deleteReview = (reviewId: number, accessToken: string) => {
-  return axios
-    .delete(`${APIendpoint()}/reviews/${reviewId}`, {
-      headers: { "Authorization": `Bearer ${accessToken}` },
-    })
-    .then(() => {})
-    .catch((e) => {
-      throw e;
     });
 };

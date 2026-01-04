@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import Stars from "./Stars";
 import { ReviewType } from "app/menu/[menuId]/Menu";
 import Image from "next/image";
@@ -83,8 +83,8 @@ export default function ReviewItem({ review: initialReview }: { review: ReviewTy
       <Body>
         <Content>
           <CommentReviewWrapper>
-            <CommentWrapper isDark={isDark}>
-              <Comment isDark={isDark}>{review.comment}</Comment>
+            <CommentWrapper $isDark={isDark}>
+              <Comment $isDark={isDark}>{review.comment}</Comment>
             </CommentWrapper>
             {isMobile && (
               <ReviewLikes
@@ -180,7 +180,7 @@ const Content = styled.div`
   align-self: stretch;
 `;
 
-const Comment = styled.div<{ isDark: boolean }>`
+const Comment = styled.div<{ $isDark: boolean }>`
   display: flex;
   position: relative;
   padding: 4px 24px 4px 0px;
@@ -212,7 +212,7 @@ const Comment = styled.div<{ isDark: boolean }>`
   }
 `;
 
-const CommentWrapper = styled.div<{ isDark: boolean }>`
+const CommentWrapper = styled.div<{ $isDark: boolean }>`
   position: relative;
   display: inline-flex;
   flex-direction: row;
@@ -221,8 +221,8 @@ const CommentWrapper = styled.div<{ isDark: boolean }>`
   max-width: 100%;
   gap: 0;
   @media (max-width: 768px) {
-    background-image: ${({ isDark }) =>
-      isDark ? 'url("/img/review-comment-dark.svg")' : 'url("/img/review-comment-light.svg")'};
+    background-image: ${({ $isDark }) =>
+      $isDark ? 'url("/img/review-comment-dark.svg")' : 'url("/img/review-comment-light.svg")'};
     background-repeat: no-repeat; /* 세로로만 반복 */
     background-size: 100% 100%; /* 가로는 꽉 채우고, 세로는 자동 */
     background-position: center;

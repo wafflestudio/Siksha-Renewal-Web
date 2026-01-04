@@ -7,13 +7,13 @@ import { useEffect, useRef, useState } from "react";
 import MobileFilterPriceBottomSheet from "./MobileFilter/MobileFilterPriceBottomSheet";
 import MobileFilterRatingBottomSheet from "./MobileFilter/MobileFilterRatingBottomSheet";
 import MobileFilterBottomSheet from "./MobileFilter/MobileFilterBottomSheet";
-import FilterIcon from "assets/icons/filter.svg";
-import DownArrowIcon from "assets/icons/down-arrow.svg";
-import CheckIcon from "assets/icons/check.svg";
 import { PRICE_FILTER_OPTIONS } from "constants/filterOptions";
 import { formatPrice } from "utils/FormatUtil";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
+import FilterIcon from "assets/icons/filter.svg";
+import DownArrowIcon from "assets/icons/down-arrow.svg";
+import CheckIcon from "assets/icons/check.svg";
 
 export default function MobileFilterBar() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -145,23 +145,25 @@ export default function MobileFilterBar() {
           isOpen={filters.category}
           onClose={() => setFilterState("category", false)}
         /> */}
-
-        <FilterIconWrapper onClick={handleMainFilterOpen}>
-        <StyledFilterIcon aria-label="필터 아이콘" />
-          <FilterIconGradient $visible={isScrolled} />
-        </FilterIconWrapper>
-        <div style={{ width: "37px", flexShrink: "0" }} />
-        <Button $isActive={isSet.length} onClick={handleDistanceFilterOpen}>
+        <IconBox>
+          <StyledFilterIcon aria-label="필터 아이콘" onClick={() => setFilterState("all", true)} />
+        </IconBox>
+        <Button $isActive={isSet.length} onClick={() => setFilterState("distance", true)}>
           <ButtonText $isActive={isSet.length}>
             {isSet.length ? `${filterList.length}m 이내` : "거리"}
           </ButtonText>
           <StyledDownArrowIcon aria-label="아래 화살표" />
         </Button>
-        <Button $isActive={isSet.priceMin || isSet.priceMax} onClick={() => setFilterState("price", true)}>
+        <Button
+          $isActive={isSet.priceMin || isSet.priceMax}
+          onClick={() => setFilterState("price", true)}
+        >
           <ButtonText $isActive={isSet.priceMin || isSet.priceMax}>
             {isSet.priceMin || isSet.priceMax
-              ? `${filterList.priceMin}원 ~ ${
-                isFinite(filterList.priceMax) ? `${filterList.priceMax}원` : ""
+              ? `${formatPrice(filterList.priceMin)}원 ~ ${
+                isFinite(filterList.priceMax)
+                  ? `${formatPrice(filterList.priceMax)}원`
+                  : `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
               }`
               : "가격"}
           </ButtonText>
@@ -203,23 +205,6 @@ const Container = styled.div`
   box-sizing: border-box;
   gap: 5px;
   background-color: var(--Color-Background-main);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const FilterIconWrapper = styled.div`
-  position: absolute;
-  display: flex;
-`;
-
-const FilterIconGradient = styled.div<{ $visible: boolean }>`
-  width: 16px;
-  height: 36px;
-  background: linear-gradient(90deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
-  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 `;
 
 const Button = styled.button<{ $isActive?: boolean }>`
@@ -234,14 +219,11 @@ const Button = styled.button<{ $isActive?: boolean }>`
   border-radius: 30px;
   border: 1px solid
     ${(props) =>
-
+    props.$isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Border-Primary)"};
+  background-color: ${(props) =>
     props.$isActive
-      ? "var(--Color-Foundation-orange-500, #FF9522)"
-      : "var(--Color-Foundation-gray-200, #E5E6E9)"};
-  background: ${(props) =>
-    props.$isActive
-      ? "var(--Color-Foundation-orange-100, #FFEAD3)"
-      : " var(--Color-Foundation-base-white, #FFF)"};
+      ? "var(--Color-Foundation-Tint-orange)"
+      : "var(--SemanticColor-Background-Secondary)"};
 
   font-family: NanumSquare_ac;
 `;

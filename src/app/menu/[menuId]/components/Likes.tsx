@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import useLikedMenus from "hooks/UseLikedMenus";
 import HeartIcon from "assets/icons/heart.svg";
 import useIsMobile from "hooks/UseIsMobile";
 
@@ -12,17 +13,12 @@ export default function Likes({ menu }) {
   const [likeCount, setLikeCount] = useState<number>(menu.like_cnt);
   const isMobile = useIsMobile();
 
-  const state = useStateContext();
   const { authStatus, getAccessToken } = useAuth();
+  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
 
   const { openLoginModal } = useModals();
 
-  // Sync isLiked state when menu.is_liked changes (e.g., on refresh)
-  useEffect(() => {
-    setIsLiked(menu?.is_liked);
-  }, [menu?.is_liked]);
-
-  const onClickLike = async () => {
+  const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
     else {
       const handleLikeAction = isLiked ? setMenuUnlike : setMenuLike;
@@ -32,6 +28,12 @@ export default function Likes({ menu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
+          // Update local storage
+          if (isLiked) {
+            addLikedMenu(menu.id);
+          } else {
+            removeLikedMenu(menu.id);
+          }
         })
         .catch((res) => {
           console.log(res);
@@ -45,7 +47,7 @@ export default function Likes({ menu }) {
         $isliked={isLiked}
         aria-label="좋아요"
         onClick={(e) => {
-          onClickLike();
+          isLikedToggle();
           e.stopPropagation();
         }}
       />

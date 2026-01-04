@@ -7,7 +7,7 @@ interface MobileOperatingHourProps {
     isFestival: boolean;
     isFoodTruck: boolean;
   };
-};
+}
 
 export default function MobileOperatingHour({ type, etc }: MobileOperatingHourProps) {
   const state = useStateContext();

@@ -113,11 +113,11 @@ const Container = styled.div`
     height: 100%;
     border: none;
     border-radius: 0;
-
     display: flex;
     flex-direction: column;
   }
 `;
+
 const Title = styled.div`
   margin: 24px 0 0 22.48px;
   font-size: 20px;

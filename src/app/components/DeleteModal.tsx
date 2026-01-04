@@ -25,7 +25,10 @@ export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProp
               <Icon src="/img/modal-close.svg" alt="닫기" />
             </CloseButton>
           </Header>
-          <Message>해당 {target}{particle} 삭제하시겠습니까?</Message>
+          <Message>
+            해당 {target}
+            {particle} 삭제하시겠습니까?
+          </Message>
           <Footer>
             <CancelButton onClick={onClose}>취소</CancelButton>
             <DeleteButton onClick={onSubmit}>삭제</DeleteButton>
@@ -40,7 +43,11 @@ export default function DeleteModal({ type, onClose, onSubmit }: DeleteModalProp
           <MobileHeader>
             <MobileTitle>{target} 삭제</MobileTitle>
           </MobileHeader>
-          <MobileMessage>{target === "평가" && "해당 "}{target}{particle} 정말 삭제하시겠습니까?</MobileMessage>
+          <MobileMessage>
+            {target === "평가" && "해당 "}
+            {target}
+            {particle} 정말 삭제하시겠습니까?
+          </MobileMessage>
           <MobileFooter>
             <MobileCancelButton onClick={onClose}>취소</MobileCancelButton>
             <MobileDeleteButton onClick={onSubmit}>삭제</MobileDeleteButton>
@@ -133,7 +140,7 @@ const MobileMessage = styled.div`
   display: flex;
   justify-content: center;
 
-    color: var(--Color-Foundation-base-black, #000);
+  color: var(--Color-Foundation-base-black, #000);
   text-align: center;
 
   /* text-13/Regular */

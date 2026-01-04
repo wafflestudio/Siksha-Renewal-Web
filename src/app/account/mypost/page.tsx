@@ -41,7 +41,12 @@ export default function MyPost() {
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
         <Container $isEmpty={posts.length === 0}>
           <Header>내가 쓴 글</Header>
-          <PostList posts={posts} fetch={fetchMyPosts} />
+          {posts.length === 0 ? (
+            <NoPost>내가 쓴 글이 없어요.</NoPost>
+          ) : (
+            <PostList posts={posts} fetch={fetchMyPosts} />
+          )}
+          {posts.length >= 1 ? <BreakLine /> : null}
         </Container>
       </>
     );
@@ -57,8 +62,7 @@ const Container = styled.div<{ $isEmpty: boolean }>`
   @media (max-width: 768px) {
     padding-top: 16px;
     width: 100%;
-    margin-top: -4px;
-    border: none;
+    padding-top: 16px;
     height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
   }
 `;
@@ -82,10 +86,11 @@ const NoPost = styled.div`
   width: 100%;
   height: 160.84px;
   text-align: center;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 23px;
-  color: #a6a6a6;
+  line-height: 150%;
+  letter-spacing: -0.3px;
+  color: #727478;
 `;
 
 const BreakLine = styled.hr`

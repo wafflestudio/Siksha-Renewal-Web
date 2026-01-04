@@ -55,7 +55,10 @@ export default function WebPriceSlider({
 
   const priceText = useMemo(() => {
     const minTxt = priceMin <= min ? `0원` : `${formatPrice(priceMin)}원`;
-    const maxTxt = max <= priceMax ? `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상` : `${formatPrice(priceMax)}원`;
+    const maxTxt =
+      max <= priceMax
+        ? `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
+        : `${formatPrice(priceMax)}원`;
 
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);

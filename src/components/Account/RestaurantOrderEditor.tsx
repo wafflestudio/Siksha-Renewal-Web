@@ -35,11 +35,11 @@ export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrd
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      dragging={snapshot.isDragging}
+                      $dragging={snapshot.isDragging}
                     >
-                      <DragBox dragging={snapshot.isDragging}>
+                      <DragBox $dragging={snapshot.isDragging}>
                         <Restaurant>{nameKr}</Restaurant>
-                        <DragButton dragging={snapshot.isDragging}>
+                        <DragButton $dragging={snapshot.isDragging}>
                           <Line />
                           <Line />
                           <Line />
@@ -87,9 +87,7 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  margin-top: 7.92px;
-  margin-left: 22.49px;
-  margin-bottom: 11.66px;
+  margin: 0 0 20px 20px;
   font-weight: 400;
   font-size: 11px;
   line-height: 19px;
@@ -114,13 +112,13 @@ const DragZone = styled.div`
     overflow: scroll;
   }
 `;
-const DragContainer = styled.div<{ dragging: boolean }>`
+const DragContainer = styled.div<{ $dragging: boolean }>`
   &:focus {
     background-color: transparent;
   }
 `;
 
-const DragBox = styled.div<{ dragging: boolean }>`
+const DragBox = styled.div<{ $dragging: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 499.04px;
@@ -129,7 +127,7 @@ const DragBox = styled.div<{ dragging: boolean }>`
   border-radius: 8px;
   margin: 7.92px 22.15px;
   background-color: ${(props) =>
-    props.dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};
+    props.$dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};;
 
   @media (max-width: 768px) {
     width: calc(100% - 40px);
@@ -154,7 +152,7 @@ const Restaurant = styled.p`
   }
 `;
 
-const DragButton = styled.div<{ dragging: boolean }>`
+const DragButton = styled.div<{ $dragging: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -162,7 +160,7 @@ const DragButton = styled.div<{ dragging: boolean }>`
   width: 34px;
   height: 34px;
   background-color: ${(props) =>
-    props.dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
   border-radius: 8px;
   margin: 7.5px;
 `;

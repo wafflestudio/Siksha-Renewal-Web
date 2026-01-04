@@ -2,15 +2,15 @@ import { useMenuDispatchContext, useMenuStateContext } from "providers/MenuProvi
 import useAuth from "./UseAuth";
 import useError from "./useError";
 import { getMenu } from "utils/api/menus";
-import { getReview, getReviews, setReview, updateReview, setReviewWithImages } from "utils/api/reviews";
+import { getReviews, setReview, getReview, updateReview, setReviewWithImages } from "utils/api/reviews";
 import { useCallback } from "react";
 import { MyReviewType } from "types";
 
 export default function useMenu() {
   const { menu, reviews, menuLoading } = useMenuStateContext();
   const { setMenu, setReviews, setMenuLoading } = useMenuDispatchContext();
-  const { authStatus, getAccessToken } = useAuth();
-  const { onHttpError } = useError();   // Error handling
+  const { getAccessToken } = useAuth();
+  const { onHttpError } = useError(); // Error handling
 
   const fetchMenu = useCallback(
     async (menuId) => {
@@ -43,6 +43,35 @@ export default function useMenu() {
     [setReviews, onHttpError],
   );
 
+  const fetchReview = useCallback(
+    async (reviewId: number) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      return getReview(reviewId, accessToken)
+        .then((reviewData) => {
+          return reviewData;
+        })
+        .catch((e) => {
+          onHttpError(e);
+        });
+    },
+    [getReview, onHttpError],
+  );
+
+  const submitReview = useCallback(
+    async (body: any) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      return setReview(body, accessToken);
+    },
+    [getAccessToken],
+  );
+
+  const editReview = useCallback(
+    async (reviewId: number, body: FormData) => {
+      const accessToken = await getAccessToken().catch((error) => "");
+      return updateReview(reviewId, body, accessToken);
+    },
+    [getAccessToken],
+  );
 
   const submitReviewWithImages = useCallback(
     async (body: FormData) => {
@@ -52,27 +81,6 @@ export default function useMenu() {
     [getAccessToken],
   );
 
-  const fetchReview = useCallback(async (reviewId: number) => {
-    const accessToken = await getAccessToken().catch((error) => "");
-    return getReview(reviewId, accessToken)
-      .then((reviewData) => {
-        return reviewData;
-      })
-      .catch((e) => {
-        onHttpError(e);
-      });
-  }, [getReview, onHttpError]);
-
-  const submitReview = useCallback(async (body: FormData) => {
-    const accessToken = await getAccessToken().catch((error) => "");
-    return setReview(body, accessToken);
-  }, [getAccessToken]);
-
-  const editReview = useCallback(async (reviewId: number, body: FormData) => {
-    const accessToken = await getAccessToken().catch((error) => "");
-    return updateReview(reviewId, body, accessToken);
-  }, [getAccessToken]);
-  
   const fetchData = useCallback(
     async (menuId) => {
       setMenuLoading(true);
@@ -93,8 +101,8 @@ export default function useMenu() {
     fetchReviews,
     fetchReview,
     submitReview,
-    submitReviewWithImages,
     editReview,
+    submitReviewWithImages,
     fetchData,
   };
 }

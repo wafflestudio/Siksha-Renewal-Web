@@ -15,6 +15,6 @@ export default function useError() {
       });
     } else console.error(error);
   }, [openErrorModal]);
-
+  
   return { onHttpError };
 }

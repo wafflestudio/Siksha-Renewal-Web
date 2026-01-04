@@ -56,7 +56,7 @@ const NavItem = styled.div`
 `;
 
 const NavLink = styled.div<{ $cur: boolean }>`
-  color: var(--SemanticColor-Text-GNB-Secondary, #FFD5A7);
+  color: var(--SemanticColor-Text-GNB-Secondary, #ffd5a7);
   padding: 0px 20px 12px 20px;
   text-align: center;
   font-size: 16px;
@@ -66,12 +66,12 @@ const NavLink = styled.div<{ $cur: boolean }>`
   ${($props) =>
     $props.$cur &&
     css`
-      color: var(--SemanticColor-Text-GNB, #FFF);
+      color: var(--SemanticColor-Text-GNB, #fff);
       font-weight: 800;
       box-shadow: inset 0 -4px 0 #fff; /* 요소의 안쪽에 그려지도록 box-shadow 사용 */
     `};
 
   &:hover {
-    color: var(--SemanticColor-Text-GNB, #FFF);
+    color: var(--SemanticColor-Text-GNB, #fff);
   }
 `;

@@ -15,7 +15,7 @@ export default function ReviewLikes({
 }) {
   const isMobile = useIsMobile();
   return (
-    <Container isLiked={isLiked} onClick={onClick}>
+    <Container $isLiked={isLiked} onClick={onClick}>
       {isMobile ? (
         <>
           {isLiked ? (
@@ -32,19 +32,19 @@ export default function ReviewLikes({
               isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-500)"
             }
           />
-          <CountText isLiked={isLiked}>{count}</CountText>
+          <CountText $isLiked={isLiked}>{count}</CountText>
         </>
       )}
     </Container>
   );
 }
 
-const Container = styled.div<{ isLiked: boolean }>`
+const Container = styled.div<{ $isLiked: boolean }>`
   display: flex;
   align-items: center;
   border-radius: 6px;
-  border: ${({ isLiked }) =>
-    isLiked
+  border: ${({ $isLiked }) =>
+    $isLiked
       ? "1px solid var(--Color-Foundation-orange-300)"
       : "1px solid var(--SemanticColor-Border-Secondary)"};
   padding: 4px 8px;
@@ -62,13 +62,13 @@ const Container = styled.div<{ isLiked: boolean }>`
   }
 `;
 
-const CountText = styled.div<{ isLiked?: boolean }>`
+const CountText = styled.div<{ $isLiked?: boolean }>`
   font-weight: 700;
   font-size: 12px;
   line-height: 140%;
   letter-spacing: -0.3px;
-  color: ${({ isLiked }) =>
-    isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+  color: ${({ $isLiked }) =>
+    $isLiked ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
 
   @media (max-width: 768px) {
     font-weight: 800;

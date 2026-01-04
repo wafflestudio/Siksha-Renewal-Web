@@ -8,8 +8,8 @@ import useMenu from "hooks/UseMenu";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OneColumnLayout from "styles/layouts/OneColumnLayout";
 import MobileSubHeader from "components/general/MobileSubHeader";
-import Link from "next/link";
 import { getParticle } from "utils/FormatUtil";
+import { MyReviewType } from "types";
 import StarIcon from "assets/icons/star-filled.svg";
 import CommentReviewIcon from "assets/icons/comment-review.svg";
 import KeywordReviewForm from "../../components/KeywordReviewForm";
@@ -17,7 +17,6 @@ import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import ConfirmModal from "app/components/ConfirmModal";
-import { MyReviewType } from "types";
 
 export type ReviewInputs = {
   score: number;
@@ -43,20 +42,16 @@ export default function ReviewPost() {
   const reviewId = searchParams.get("reviewId");
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
-  
-  const { menu, fetchMenu, submitReview, submitReviewWithImages, fetchReviews, fetchReview } = useMenu();
-  const { openModal } = useModals();
+
+  const { menu, fetchMenu, fetchReview, fetchReviews, submitReview, submitReviewWithImages, editReview } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
 
-  const { getAccessToken } = useAuth();
-
   const MAX_COMMENT_LENGTH = 150;
 
   useEffect(() => {
-    if (!isEditMode)
-      return;
+    if (!isEditMode) return;
 
     fetchReview(Number(reviewId))
       .then((reviewData: MyReviewType) => {
@@ -76,9 +71,9 @@ export default function ReviewPost() {
           score: reviewData.score ?? 3,
           comment: reviewData.comment,
           images: reviewData.etc?.images || [],
-          taste: reviewData.taste || "맛",
-          price: reviewData.price || "가격",
-          food_composition: reviewData.food_composition || "구성",
+          taste: reviewData.keyword_reviews[0] || "",
+          price: reviewData.keyword_reviews[1] || "",
+          food_composition: reviewData.keyword_reviews[2] || "",
         });
       })
       .catch((e) => {
@@ -110,6 +105,42 @@ export default function ReviewPost() {
     } else return image;
   };
 
+  const handleUpdate = async () => {
+    if (!menu || !reviewId || !isEditMode) {
+      console.error("Required data not available for update");
+      return;
+    }
+
+    const { score, comment, taste, price, food_composition } = inputs;
+    
+    const body = new FormData();
+    body.append("menu_id", menuId);
+    body.append("score", String(score));
+    body.append("comment", comment);
+    body.append("taste", taste);
+    body.append("price", price);
+    body.append("food_composition", food_composition);
+    
+    // Convert images to blobs before appending
+    for (const image of inputs.images) {
+      const blob = await convertToBlob(image);
+      body.append("images", blob);
+    }
+
+    return editReview(Number(reviewId), body)
+      .then((res) => {
+        fetchReviews(Number(menuId));
+        router.push(`/menu/${menuId}`);
+      })
+      .catch((err) => {
+        const errorCode = err.response?.status ?? null;
+        if (errorCode == 500) {
+          window.alert(err.message);
+        }
+        onHttpError(err);
+      });
+  }
+
   const handleSubmit = async () => {
     if (!menu) {
       console.error("menu is not loaded");
@@ -117,22 +148,21 @@ export default function ReviewPost() {
     }
 
     const { score, comment, taste, price, food_composition } = inputs;
-    console.debug(inputs);
 
     const hasImages =
       inputs.images.length > 0 &&
       inputs.images.some((image) => image instanceof File && image.size > 0);
 
     let request;
-    const body = new FormData();
-    body.append("menu_id", menuId);
-    body.append("score", String(inputs.score));
-    body.append("comment", inputs.comment);
-    body.append("taste", taste);
-    body.append("price", price);
-    body.append("food_composition", food_composition);
 
     if (hasImages) {
+      const body = new FormData();
+      body.append("menu_id", menuId);
+      body.append("score", String(inputs.score));
+      body.append("comment", inputs.comment);
+      body.append("taste", taste);
+      body.append("price", price);
+      body.append("food_composition", food_composition);
       inputs.images.forEach((image) => {
         body.append("images", image);
       });
@@ -147,8 +177,7 @@ export default function ReviewPost() {
         price,
         food_composition,
       };
-        console.debug(json);
-        request = submitReview(body);
+      request = submitReview(json);
     }
 
     return request
@@ -236,7 +265,7 @@ export default function ReviewPost() {
         <PhotoSection>
           <PhotoViewer>
             {inputs.images.length < 5 && (
-              <PhotoAttacher photosLength={inputs.images.length}>
+              <PhotoAttacher $photosLength={inputs.images.length}>
                 <AddImage>{inputs.images.length === 0 && "사진 추가"}</AddImage>
                 <FileInput
                   type="file"
@@ -247,7 +276,10 @@ export default function ReviewPost() {
             )}
             {inputs.images.map((image, i) => (
               <PhotoContainer key={i}>
-                <Photo src={typeof image === "string" ? image : URL.createObjectURL(image)} alt="리뷰 이미지" />
+                <Photo
+                  src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                  alt="리뷰 이미지"
+                />
                 <DeleteButton onClick={() => handlePhotoDelete(i)}></DeleteButton>
               </PhotoContainer>
             ))}
@@ -270,12 +302,21 @@ export default function ReviewPost() {
               router.back();
             }}
           />
-          <ReviewPostButton
-            onClick={() => {
-              handleSubmit();
-            }}
-            disabled={inputs.comment.length === 0}
-          />
+          {isEditMode ? (
+            <ReviewEditButton
+              onClick={() => {
+                handleUpdate();
+              }}
+              disabled={inputs.comment.length === 0}
+            />
+          ) : (
+            <ReviewPostButton
+              onClick={() => {
+                handleSubmit();
+              }}
+              disabled={inputs.comment.length === 0}
+            />
+          )}
         </Footer>
         </FormContainer>
       </Container>
@@ -322,7 +363,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  color: var(--Color-Foundation-orange-500, var(--Color-Foundation-orange-500));
+  color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
 
   /* text-14/Bold */
@@ -348,12 +389,14 @@ const Header = styled.div`
 
 const ReviewTitle = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 28px;
 
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
 
-  /* text-20/ExtraBold */
+  /* text-20/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
@@ -370,8 +413,8 @@ const MenuNameText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-weight: var(--Font-weight-extrabold, 800);
   max-width: 500px;
+  font-weight: var(--Font-weight-extrabold, 800);
 `;
 
 const ReviewTitleText = styled.span`
@@ -493,7 +536,6 @@ const CommentTextArea = styled.textarea`
   color: var(--Color-Foundation-gray-900);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -604,7 +646,7 @@ const PhotoContainer = styled.div`
   }
 `;
 
-const PhotoAttacher = styled.label<{ photosLength: number }>`
+const PhotoAttacher = styled.label<{ $photosLength: number }>`
   width: 96px;
   height: 96px;
   flex: 0 0 auto;
@@ -751,7 +793,7 @@ const ReviewPostButton = styled.button`
   width: 50%;
   height: 46px;
   border-radius: 8px;
-  color: var(--SementicColor-Text-Button, #fff);
+  color: var(--SemanticColor-Text-Button, #fff);
   text-align: center;
 
   /* text-14/Bold */

@@ -23,33 +23,34 @@ export default function ReviewDistribution({
   return (
     <Container>
       <ScoreContainer>
-        <div style={{
-          display: "flex",
-          alignItems: "flex-end",
-          gap: "4px",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: "4px",
+          }}
+        >
           <Score>{score.toFixed(1)}</Score>
           <MaximumScore>/5</MaximumScore>
         </div>
         <ThemedWrapper theme={{ width: isMobile ? 71.09 : 140 }}>
           <Stars score={score} />
         </ThemedWrapper>
-        <ReviewsTotalCount>
-          후기 {reviewsTotalCount}개
-        </ReviewsTotalCount>
+        <ReviewsTotalCount>후기 {reviewsTotalCount}개</ReviewsTotalCount>
       </ScoreContainer>
       {/* <DistributionChart>
         {distribution.map((count, i) => (
           // 텍스트, 바, 숫자 순
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            alignSelf: "stretch",
-          }} key={i}>
-            <Label key={i}>
-              {i + 1}점
-            </Label>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              alignSelf: "stretch",
+            }}
+            key={i}
+          >
+            <Label key={i}>{i + 1}점</Label>
             <Bar>
               <Fill percentage={(reviewsTotalCount > 0 ? count / reviewsTotalCount : 0) * 100} />
             </Bar>

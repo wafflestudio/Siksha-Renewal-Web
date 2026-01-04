@@ -58,7 +58,6 @@ export default function MobileNavigationBar() {
           icon={<StarFilledIcon width="25px" />}
           name="즐겨찾기"
         />
-        <IconLabel $isActive={active === "favorite"}>즐겨찾기</IconLabel>
       </Link>
       <Link href="/" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "menu"} icon={<MenuIcon />} name="식단" />
@@ -66,9 +65,17 @@ export default function MobileNavigationBar() {
       <Link href="/community/boards/1" onClick={() => setIsFilterFavorite(false)}>
         <NavButton isActive={active === "community"} icon={<CommunityIcon />} name="게시판" />
       </Link>
-      <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
-        <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
-      </Link>
+      {
+        authStatus === "login" ? (
+          <Link href="/account" onClick={() => setIsFilterFavorite(false)}>
+            <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
+          </Link>
+        ) : (
+          <div onClick={() => openLoginModal()}>
+            <NavButton isActive={active === "account"} icon={<AccountIcon />} name="설정" />
+          </div>
+        )
+      }
     </Container>,
     rootElement,
   );
@@ -99,7 +106,6 @@ const Container = styled.div`
   width: 100%;
   height: 83px;
   background-color: var(--SemanticColor-Background-Secondary);
-  box-shadow: 0px -2px 6px 0px rgba(0, 0, 0, 0.05);
   z-index: 1;
   box-shadow: 0px -2px 6px 0px #0000000d;
 
@@ -133,31 +139,4 @@ const NavName = styled.div<{ $isActive: boolean }>`
   vertical-align: middle;
   color: ${({ $isActive }) =>
     $isActive ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Icon-GrayIcon)"};
-`;
-const Icon = styled.div<{ $isActive: boolean; $srcActive: string; $srcInactive: string }>`
-  display: flex;
-  height: 36px;
-  width: 36px;
-  background-image: ${({ $isActive, $srcActive, $srcInactive }) =>
-    `url(${$isActive ? $srcActive : $srcInactive})`};
-  background-repeat: no-repeat;
-  background-position: center;
-  transform: translateZ(0);
-  opacity: 0.99;
-`;
-
-const IconLabel = styled.div<{ $isActive: boolean }>`
-  width: 36px;
-
-  color: ${({ $isActive }) =>
-    $isActive
-      ? "var(--Color-Foundation-orange-500, #FF9522)"
-      : "var(--Color-Foundation-gray-500, #BEC1C8)"};
-  text-align: center;
-  font-feature-settings: "liga" off, "clig" off;
-  font-family: NanumSquare;
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
 `;

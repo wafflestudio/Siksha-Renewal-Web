@@ -185,19 +185,11 @@ export interface RawReview {
   score: number;
   comment: string;
   etc: Record<string, any>;
+  keywordReviews?: string[];
+  likeCount?: number;
+  isLiked?: boolean;
 }
 
-export interface KeywordReviewScore {
-  taste_keyword: string;
-  taste_cnt: number;
-  taste_total: number;
-  price_keyword: string;
-  price_cnt: number;
-  price_total: number;
-  food_composition_keyword: string;
-  food_composition_cnt: number;
-  food_composition_total: number;
-}
 export interface MyReviewGroupType {
   restaurant_id: number;
   name_kr: string;
@@ -218,10 +210,20 @@ export interface MyReviewType {
   updated_at: string;
   keyword_reviews: string[];
   isLiked?: boolean;
-  taste?: string;
-  price?: string;
-  food_composition?: string;
 }
+
+export interface KeywordReviewScore {
+  taste_keyword: string;
+  taste_cnt: number;
+  taste_total: number;
+  price_keyword: string;
+  price_cnt: number;
+  price_total: number;
+  food_composition_keyword: string;
+  food_composition_cnt: number;
+  food_composition_total: number;
+}
+
 
 export interface RawUser {
   id: number;
@@ -243,4 +245,13 @@ export interface RestaurantPreview {
   id: number;
   nameKr: string;
   nameEn: string;
+}
+
+export interface LikedMenusResponse {
+  count: number;
+  result: Array<
+    RawRestaurant & {
+      menus: RawMenu[];
+    }
+  >;
 }

@@ -67,8 +67,12 @@ export default function Inquiry() {
           <Nickname>{userInfo?.nickname ?? `ID ${userInfo?.id}`}</Nickname>
         </UserBox>
         <InquireBox>
-          <TextArea value={voc} onChange={handleTextAreaChange} placeholder="내용을 입력해주세요" />
-          <WordCnt>{`${voc.length} 자 / 500 자`}</WordCnt>
+          <TextArea
+            value={voc}
+            onChange={handleTextAreaChange}
+            placeholder="문의할 내용을 입력해주세요."
+          />
+          <WordCnt>{`${voc.length}/150자`}</WordCnt>
         </InquireBox>
         <ButtonBox>
           <ButtonCancel onClick={handleCancel}>취소</ButtonCancel>
@@ -152,6 +156,13 @@ const Profile = styled.img`
 
 const Nickname = styled.div`
   margin-left: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  color: #262728;
+  display: flex;
+  align-items: center;
 `;
 
 const InquireBox = styled.div`
@@ -169,6 +180,7 @@ const InquireBox = styled.div`
     height: 280px;
   }
 `;
+
 const TextArea = styled.textarea`
   grid-area: stack;
   width: 100%;
@@ -177,16 +189,25 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   background-color: var(--SemanticColor-Background-Tertiary);
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   resize: none;
   &::placeholder {
     color: var(--SemanticColor-Text-Bubble);
+  }
+
+  &::placeholder {
+    color: #989aa0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
   }
 
   &:focus {
     outline: none;
   }
 `;
+
 const WordCnt = styled.div`
   grid-area: stack;
   align-self: end;
@@ -195,7 +216,7 @@ const WordCnt = styled.div`
   margin-right: 8px;
   margin-bottom: 16px;
   text-align: right;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 12.48px;
   color: var(--Color-Foundation-gray-700);
@@ -203,6 +224,7 @@ const WordCnt = styled.div`
 const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   margin-bottom: 33.1px;
 
   @media (max-width: 768px) {
@@ -215,7 +237,6 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 66.38px;
   width: 324px;
   height: 46px;
   border-radius: 8px;
@@ -242,5 +263,19 @@ const ButtonConfirm = styled(Button)`
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
+  }
+`;
+
+const DesktopText = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileText = styled.span`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: inline;
   }
 `;

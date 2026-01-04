@@ -20,7 +20,6 @@ export default function InfiniteScrollable({
 
   const observerElement = useRef<HTMLDivElement | null>(null);
 
-
   async function loadingWrapper(callback: () => Promise<void>) {
     if (page === 1) setIsLoading?.(true);
     await callback();

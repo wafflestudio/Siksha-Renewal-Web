@@ -2,7 +2,6 @@
 
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import AccountLayout from "./layout";
 import useAuth from "hooks/UseAuth";
 import { useEffect } from "react";
 import MobileNavigationBar from "components/general/MobileNavigationBar";
@@ -45,9 +44,17 @@ export default function Account() {
             router.push("/account/mypost");
           }}
         >
-          <DefaultText>내가 쓴 글</DefaultText>
+          <DefaultText $isFirst={true}>내가 쓴 글</DefaultText>
           <ArrowButton aria-label="상세보기" />
-
+        </ContentDiv>
+        <BreakLine />
+        <ContentDiv
+          onClick={() => {
+            router.push("/account/menu/favorite");
+          }}
+        >
+          <DefaultText>내가 찜한 메뉴</DefaultText>
+          <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
         <ContentDiv
@@ -111,6 +118,16 @@ export default function Account() {
   );
 }
 
+const Container = styled.div`
+  width: 544px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 24px 20px 0;
+  }
+`;
+
 const ArrowButton = () => {
   return (
     <ArrowButtonWrapper>
@@ -128,12 +145,6 @@ const ArrowButtonWrapper = styled.div`
 
   @media (max-width: 768px) {
     margin-right: 13.75px;
-  }
-`;
-
-const Container = styled.div`
-  @media (max-width: 768px) {
-    padding-top: 24px;
   }
 `;
 
@@ -163,7 +174,7 @@ const ListGroup = styled.div<{ $isLast?: boolean }>`
   width: 544px;
   margin-bottom: ${(props) => (props.$isLast ? "0" : "19px")};
   border-radius: 8px;
-  border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
+  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
 
   @media (max-width: 768px) {
     width: calc(100dvw - 40px);

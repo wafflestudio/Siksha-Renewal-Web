@@ -3,11 +3,13 @@ import { Viewport } from "next";
 import StyledComponentsRegistry from "providers/StyledComponentsRegistry";
 import ContextProvider from "providers/ContextProvider";
 import { ModalsProvider } from "providers/ModalsProvider";
+import { LikedMenusProvider } from "providers/LikedMenusProvider";
+import ToastProvider from "providers/ToastProvider";
 import Script from "next/script";
-import { GlobalStyleFixed } from "styles/globalstyle";
+import { GlobalStyle } from "styles/globalstyle";
+import { ThemeProvider } from "next-themes";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
-import { ThemeProvider } from "next-themes";
 import ClientMixpanelInitializer from "./components/ClientMixpanelInitializer";
 
 export const metadata: Metadata = {
@@ -52,16 +54,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning>
       <body>
-        <GlobalStyleFixed />
+        <GlobalStyle />
         <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
             <ContextProvider>
-              <ModalsProvider>
-                <Suspense>
-                  <Layout>{children}</Layout>
-                </Suspense>
-              </ModalsProvider>
+              <LikedMenusProvider>
+                <ModalsProvider>
+                  <ToastProvider>
+                    <Suspense>
+                      <Layout>{children}</Layout>
+                    </Suspense>
+                  </ToastProvider>
+                </ModalsProvider>
+              </LikedMenusProvider>
             </ContextProvider>
           </ThemeProvider>
         </StyledComponentsRegistry>

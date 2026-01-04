@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
+import useLikedMenus from "hooks/UseLikedMenus";
 import { RawMenu } from "types";
 import HeartIcon from "assets/icons/heart.svg";
 import CommentIcon from "assets/icons/comment.svg";
@@ -17,10 +18,10 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
   const reviewCount = menu.review_cnt;
-
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
+  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
   const { openLoginModal } = useModals();
 
   const getScoreLevel = (score: number): "high" | "middle" | "low" => {
@@ -46,6 +47,12 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
+          // Update local storage
+          if (isLiked) {
+            addLikedMenu(menu.id);
+          } else {
+            removeLikedMenu(menu.id);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -71,7 +78,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
           <StyledLikeIcon
-            $isliked={isLiked}
+            $isLiked={isLiked}
             aria-label="좋아요"
             onClick={(e) => {
               isLikedToggle();
@@ -82,7 +89,7 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         </CountBox>
         <ReviewBox>
           {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
-          <StyledCommentIcon $isliked={false} aria-label="댓글" />
+          <StyledCommentIcon $isLiked={false} aria-label="댓글" />
           <CountText $disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
@@ -124,7 +131,7 @@ const MenuName = styled.div`
   flex-grow: 1;
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black);
+    color: var(--Color-Foundation-base-black, #000);
     font-size: 14px;
     line-height: 140%;
     font-weight: 400;
@@ -254,7 +261,7 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
+const StyledLikeIcon = styled(HeartIcon)<{ $isLiked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -263,7 +270,7 @@ const StyledLikeIcon = styled(HeartIcon)<{ $isliked: boolean }>`
     $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
-const StyledCommentIcon = styled(CommentIcon)<{ $isliked: boolean }>`
+const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
   width: 24px;
   height: 24px;
   cursor: pointer;

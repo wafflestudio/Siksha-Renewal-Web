@@ -5,20 +5,19 @@ import Link from "next/link";
 import useReviewActions from "../hooks/useReviewActions";
 import Stars from "./Stars";
 
-export default function MyReviewItem({
-  review,
-}) {
+export default function MyReviewItem({ review }) {
   const IMAGE_SIZE = 48;
   const { removeReview, updateReview } = useReviewActions();
   const handleDelete = () => removeReview(review.id);
   const handleEdit = () => updateReview(review.menu_id, review.id);
+
   return (
     <>
       <Container>
         <Link href={`/menu/${review.menu_id}`} style={{ width: "100%", cursor: "pointer" }}>
           <MenuInfo>
             <MenuHeader>
-              <div style={{display: 'flex', alignItems: 'center'}}>
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <MenuTitle>{review.name_kr}</MenuTitle>
                 <RightArrow src="/img/accordion-arrow.svg" />
               </div>
@@ -32,11 +31,11 @@ export default function MyReviewItem({
         <Body>
           <Content>
             <Comment>{review.comment}</Comment>
-            {review.keywords && (
+            {review.keyword_reviews && review.keyword_reviews.length > 0 && review.keyword_reviews[0]?.length > 0 && (
               <Keywords>
-                {review.keywords.map((keyword) => (
-                  <Keyword key={`${review.id}-${keyword}`}>{keyword}</Keyword>
-                ))}
+                {review.keyword_reviews.map((keyword, i) => {
+                  return <Keyword key={`${review.id}-${keyword}-${i}`}>{keyword}</Keyword>;
+                })}
               </Keywords>
             )}
             {review.etc?.images && (
@@ -58,12 +57,8 @@ export default function MyReviewItem({
           </Content>
         </Body>
         <Footer>
-          <DeleteButton onClick={handleDelete}>
-            삭제하기
-          </DeleteButton>
-          <EditButton onClick={handleEdit}>
-            수정하기
-          </EditButton>
+          <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
+          <EditButton onClick={handleEdit}>수정하기</EditButton>
         </Footer>
       </Container>
     </>
@@ -75,7 +70,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: 16px;  
+  gap: 16px;
   align-self: stretch;
 `;
 
@@ -90,8 +85,8 @@ const MenuInfo = styled.div`
   flex: 1 0 0;
 
   border-radius: 8px;
-  border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
-  background: var(--SemanticColor-Element-Tooltip2, #FFF);
+  border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
+  background: var(--SemanticColor-Element-Tooltip2, #fff);
 `;
 
 const MenuHeader = styled.div`
@@ -117,7 +112,7 @@ const RightArrow = styled.img`
 `;
 
 const ReviewCreatedAt = styled.div`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: right;
   font-family: NanumSquare;
   font-size: 12px;
@@ -171,7 +166,7 @@ const Keywords = styled.div`
 const Keyword = styled.div`
   padding: 4px;
   border-radius: 4px;
-  background: var(--SementicColor-Element-Chip, #F2F3F4);
+  background: var(--SemanticColor-Element-Chip, #f2f3f4);
 
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;
@@ -188,13 +183,13 @@ const Footer = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  color: var(--Color-Foundation-gray-600, #989AA0);
+  color: var(--Color-Foundation-gray-600, #989aa0);
   font-size: 11px;
   font-weight: 700;
 `;
 
 const EditButton = styled.button`
-  color: var(--Color-Foundation-orange-500, #FF9522);
+  color: var(--Color-Foundation-orange-500, #ff9522);
   font-size: 11px;
   font-weight: 700;
 `;

@@ -32,16 +32,16 @@ export default function ButtonGroup({ items, onSelect, selectedId }: ButtonGroup
 const ButtonGroupWrapper = styled.div<{ $count: number }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.$count}, 1fr);
+  gap: 10px;
   height: 34px;
   border-radius: 30px;
-  box-shadow: inset 0 0 0 1px var(--Color-Foundation-gray-200, #E5E6E9);
-  box-sizing: content-box;
-  align-content: center;
+  border: 1px solid var(--SemanticColor-Border-Primary);
 `;
 const ButtonItem = styled.button`
   display: flex;
   border-radius: 30px;
   height: 34px;
+  color: var(--SemanticColor-Text-GNB);
   width: 100%;
   background-color: transparent;
   box-sizing: border-box;
@@ -63,6 +63,6 @@ const ButtonItem = styled.button`
 `;
 
 const SelectedButtonItem = styled(ButtonItem)`
-  background: var(--Color-Foundation-orange-100, #FFEAD3);
-  box-shadow: inset 0 0 0 1px var(--Color-Foundation-orange-500, #ff9522);
+  background-color: var(--Color-Foundation-Tint-orange);
+  border: 1px solid var(--Color-Foundation-orange-500);
 `;

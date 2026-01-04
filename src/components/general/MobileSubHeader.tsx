@@ -11,11 +11,15 @@ export default function MobileSubHeader({
   title,
   selectedBoardId,
   handleBack,
+  rightIcon,
+  onRightIconClick,
   containerColor = "secondary",
 }: {
   title?: string;
   selectedBoardId?: number;
   handleBack: () => void;
+  rightIcon?: string;
+  onRightIconClick?: () => void;
   containerColor?: BackgroundColor;
 }) {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -38,7 +42,17 @@ export default function MobileSubHeader({
     setRootElement(document.getElementById("root-layout"));
   }, []);
 
-  if (rootElement)
+  const headerContent = (
+    <MobileHeader>
+      <BackButton src="/img/general/left-arrow-white.svg" onClick={handleBack} alt="뒤로 가기" />
+      <Title>{title || boardTitle}</Title>
+      {rightIcon && onRightIconClick && (
+        <RightIconButton src={rightIcon} onClick={onRightIconClick} alt="알림 설정" />
+      )}
+    </MobileHeader>
+  );
+
+  if (rootElement) {
     return createPortal(
       <MobileHeader $containercolor={containerColor}>
         <BackButton onClick={handleBack} aria-label="뒤로 가기" />
@@ -46,6 +60,10 @@ export default function MobileSubHeader({
       </MobileHeader>,
       rootElement,
     );
+  }
+
+  // Fallback: render directly if portal target not found
+  return headerContent;
 }
 
 const MobileHeader = styled.div<{ $containercolor?: BackgroundColor }>`
@@ -78,7 +96,6 @@ const BackButton = styled(LeftArrowMobileIcon)`
 
 const Title = styled.div`
   color: var(--SemanticColor-Text-GNB);
-  font-family: var(--Font-family-sans, NanumSquare);
   font-size: 16px;
   font-weight: 800;
   line-height: 140%;
@@ -86,4 +103,12 @@ const Title = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const RightIconButton = styled.img`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 16px;
+  cursor: pointer;
 `;

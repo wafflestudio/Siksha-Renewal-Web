@@ -24,13 +24,13 @@ export default function AccountLayout({ children }) {
   );
 }
 const Container = styled(OneColumnLayout.Container)<{ color?: string }>`
-  padding: 0;
   @media (max-width: 768px) {
     background-color: ${({ color }) =>
       color === "secondary" ? "var(--SemanticColor-Background-Secondary)" : ""};
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin-top: 0;
     padding: 0;
   }
 `;

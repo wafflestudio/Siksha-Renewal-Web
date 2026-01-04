@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import styled from "styled-components";
 import { useDispatchContext, useStateContext } from "../../providers/ContextProvider";
@@ -12,7 +12,7 @@ export default function RestaurantInfo() {
 
   const { infoData } = state;
 
-  const [ etc, setEtc ] = useState({ isFestival: false, isFoodTruck: false });
+  const [etc, setEtc] = useState({ isFestival: false, isFoodTruck: false });
 
   useEffect(() => {
     const loadMap = () => {
@@ -55,7 +55,7 @@ export default function RestaurantInfo() {
 
     setEtc({
       isFestival: infoData.name_kr.startsWith("[축제]"),
-      isFoodTruck: infoData.name_kr.endsWith("(푸드트럭)")
+      isFoodTruck: infoData.name_kr.endsWith("(푸드트럭)"),
     });
   }, [infoData]);
 
