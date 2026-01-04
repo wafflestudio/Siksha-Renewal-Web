@@ -52,7 +52,7 @@ const DateNavi = styled.div`
   }
 `;
 const DateNaviTitle = styled.div`
-  color: var(--Color-Foundation-base-white);
+  color: #ffffff;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -60,7 +60,7 @@ const DateNaviTitle = styled.div`
   cursor: pointer;
 `;
 const DateNaviSub = styled.div`
-  color: var(--Color-Foundation-base-white) 80;
+  color: #ffffff80;
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;

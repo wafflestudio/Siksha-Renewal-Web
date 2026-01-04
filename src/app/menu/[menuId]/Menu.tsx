@@ -37,12 +37,9 @@ export interface ReviewType {
   user_id: number;
   score: number | null;
   comment: string;
-  etc: { images?: string[] } | null;
+  etc: Record<string, any>;
   created_at: string;
   updated_at: string;
-  like_count: number;
-  is_liked: boolean;
-  keyword_reviews: string[];
 }
 
 export interface ReviewListType {
@@ -61,10 +58,9 @@ export default function Menu({ menuId }: { menuId: number }) {
   const [isReviewListPageOpen, setIsReviewListPageOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (authStatus !== "loading") {
-      fetchData(menuId);
-    }
-  }, [menuId, authStatus]);
+    fetchData(menuId);
+  }
+    , [menuId]);
 
   useEffect(() => {
     if (menu) {
@@ -75,8 +71,8 @@ export default function Menu({ menuId }: { menuId: number }) {
   useEffect(() => {
     var updatedImages: string[] = [];
     reviews.result.map((review) => {
-      if (review.etc?.images) {
-        updatedImages = updatedImages.concat(review.etc?.images);
+      if (review.etc) {
+        updatedImages = updatedImages.concat(review.etc.images);
       }
     });
     setImages(updatedImages);
@@ -95,7 +91,7 @@ export default function Menu({ menuId }: { menuId: number }) {
       console.error("menu is not loaded");
       return;
     }
-    setMobileSubHeaderTitle(isOpen ? "전체 리뷰" : menu.name_kr);
+    setMobileSubHeaderTitle(isOpen ? "리뷰" : menu.name_kr);
     setIsReviewListPageOpen(isOpen);
   };
 
@@ -143,6 +139,7 @@ export default function Menu({ menuId }: { menuId: number }) {
               isReviewListPageOpen={isReviewListPageOpen}
               handleReviewListPage={handleReviewListPage}
             />
+            <MobileNavigationBar />
           </MobileContainer>
         </>
       )}

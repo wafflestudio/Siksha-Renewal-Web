@@ -4,9 +4,6 @@ import { formatDate, formatMonth, formatWeekday } from "utils/FormatUtil";
 import ReactCalendar from "react-calendar";
 import styled from "styled-components";
 import "styles/calendar.css";
-import CalendarIcon from "assets/icons/calendar.svg";
-import LeftArrowIcon from "assets/icons/left-arrow.svg";
-import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export default function DesktopCalendar() {
   const state = useStateContext();
@@ -39,32 +36,44 @@ export default function DesktopCalendar() {
 
   return (
     <Container>
-      <Navigation $isCalOpened={isCalOpened}>
-        <StyledLeftArrowIcon onClick={movePrevDay} aria-label="지난날로 이동" color="gray" />
+      <Navigation isCalOpened={isCalOpened}>
+        <Arrow
+          onClick={movePrevDay}
+          src={"/img/left-arrow-calendar-nav.svg"}
+          height={"21px"}
+          alt="지난날로 이동"
+        />
         <DateBox onClick={toggleCal}>
-          <StyledCalendarIcon />
-          <DateText color={"var(--Color-Foundation-gray-900)"} $lineHeight={"150%"}>
+          <Icon src={"/img/calendar.svg"} />
+          <DateText color={"var(--Color-Foundation-gray-900, #262728)"} lineHeight={"150%"}>
             {formatDate(date)}
           </DateText>
         </DateBox>
-        <StyledRightArrowIcon onClick={moveNextDay} aria-label="다음날로 이동" color="gray" />
+        <Arrow
+          onClick={moveNextDay}
+          src={"/img/right-arrow-calendar-nav.svg"}
+          height={"21px"}
+          alt="다음날로 이동"
+        />
       </Navigation>
       {isCalOpened && (
         <Calendar>
           <Header>
-            <DateText color={"var(--Color-Foundation-orange-500)"} $lineHeight={"140%"}>
+            <DateText color={"var(--Color-Foundation-orange-500, #ff9522)"} lineHeight={"140%"}>
               {formatMonth(date)}
             </DateText>
             <ArrowBox>
-              <StyledLeftArrowIcon
+              <Arrow
                 onClick={movePrevMonth}
-                aria-label="지난달로 이동"
-                color="orange"
+                src={"/img/left-arrow.svg"}
+                height={"21px"}
+                alt="지난달로 이동"
               />
-              <StyledRightArrowIcon
+              <Arrow
                 onClick={moveNextMonth}
-                aria-label="다음달로 이동"
-                color="orange"
+                src={"/img/right-arrow.svg"}
+                height={"21px"}
+                alt="다음달로 이동"
               />
             </ArrowBox>
           </Header>
@@ -104,15 +113,15 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const Navigation = styled.div<{ $isCalOpened: boolean }>`
+const Navigation = styled.div<{ isCalOpened: boolean }>`
   display: flex;
   padding: 13px 16px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
   border-radius: 10px;
-  background: var(--SemanticColor-Background-Secondary);
-  box-shadow: ${(props) => (props.$isCalOpened ? "0px 0px 10px 0px rgba(0, 0, 0, 0.1)" : "none")};
+  background: var(--Color-Foundation-base-white, #fff);
+  box-shadow: ${(props) => (props.isCalOpened ? "0px 0px 10px 0px rgba(0, 0, 0, 0.1)" : "none")};
 `;
 
 const Calendar = styled.div`
@@ -126,7 +135,7 @@ const Calendar = styled.div`
   align-items: center;
   gap: 34px;
   border-radius: 10px;
-  background: var(--SemanticColor-Background-Secondary);
+  background: #fff;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
 `;
 
@@ -138,10 +147,9 @@ const DateBox = styled.div`
   cursor: pointer;
 `;
 
-const StyledCalendarIcon = styled(CalendarIcon)`
+const Icon = styled.img`
   width: 24px;
   height: 24px;
-  color: var(--Color-Foundation-gray-900);
 `;
 
 const Header = styled.div`
@@ -152,11 +160,11 @@ const Header = styled.div`
   align-self: stretch;
 `;
 
-const DateText = styled.div<{ color: string; $lineHeight: string }>`
+const DateText = styled.div<{ color: string; lineHeight: string }>`
   color: ${(props) => props.color};
   font-size: var(--Font-size-16, 16px);
   font-weight: var(--Font-weight-extrabold, 800);
-  line-height: ${(props) => props.$lineHeight};
+  line-height: ${(props) => props.lineHeight};
 `;
 
 const ArrowBox = styled.div`
@@ -164,16 +172,6 @@ const ArrowBox = styled.div`
   gap: 20px;
 `;
 
-const StyledLeftArrowIcon = styled(LeftArrowIcon)`
+const Arrow = styled.img`
   cursor: pointer;
-  height: 21px;
-  color: ${({ color }) =>
-    color === "orange" ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-700)"};
-`;
-
-const StyledRightArrowIcon = styled(RightArrowIcon)<{ color: string }>`
-  cursor: pointer;
-  height: 21px;
-  color: ${({ color }) =>
-    color === "orange" ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-700)"};
 `;

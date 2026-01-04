@@ -4,11 +4,10 @@ import { ReviewType } from "app/menu/[menuId]/Menu";
 import ThemedWrapper from "components/general/ThemedWrapper";
 
 export default function PhotoReviewItem({ review }: { review: ReviewType }) {
-  const hasImage = Array.isArray(review.etc?.images) && review.etc.images.length > 0;
   return (
     <>
       <ItemContainer>
-        <Thumbnail src={review.etc?.images?.[0] || ""} alt="리뷰 이미지" />
+        <Thumbnail src={review.etc.images[0]} alt="리뷰 이미지" />
         <ReviewInfo>
           <ReviewerIdText>ID {review.user_id}</ReviewerIdText>
           <ReviewDate>{review.created_at.substring(0, 10)}</ReviewDate>
@@ -69,7 +68,7 @@ const ReviewScore = styled.div`
 `;
 
 const ReviewScoreValue = styled.span`
-  color: var(--Color-Foundation-orange-500);
+  color: #ff9522;
   font-size: 12px;
   font-weight: 700;
   margin-left: 10px;

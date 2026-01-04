@@ -28,7 +28,7 @@ export const getPostList = (
     ? `${APIendpoint()}/community/posts?board_id=${boardID}&page=${page}&per_page=${size}`
     : `${APIendpoint()}/community/posts/web?board_id=${boardID}&page=${page}&per_page=${size}`;
 
-  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -54,7 +54,7 @@ export const getMyPostList = (
 }> => {
   return axios
     .get(`${APIendpoint()}/community/posts/me?page=${page}&per_page=${size}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const {
@@ -72,7 +72,7 @@ export const getPost = (postID: number, accessToken?: string): Promise<RawPost> 
     ? `${APIendpoint()}/community/posts/${postID}`
     : `${APIendpoint()}/community/posts/${postID}/web`;
 
-  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -92,7 +92,7 @@ export const getTrendingPosts = (
     ? `${APIendpoint()}/community/posts/popular/trending`
     : `${APIendpoint()}/community/posts/popular/trending/web`;
 
-  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -113,7 +113,7 @@ export const getBestPosts = (
 ): Promise<{ result: RawPost[]; totalCount: number; hasNext: boolean }> => {
   return axios
     .get(`${APIendpoint()}/community/posts/popular/best`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const { data } = res;
@@ -131,7 +131,7 @@ export const getBestPosts = (
 export const setPost = (body: FormData, accessToken: string): Promise<RawPost> => {
   return axios
     .post(`${APIendpoint()}/community/posts`, body, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const { data } = res;
@@ -149,7 +149,7 @@ export const updatePost = (
 ): Promise<RawPost> => {
   return axios
     .patch(`${APIendpoint()}/community/posts/${postID}`, body, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then((res) => {
       const { data } = res;
@@ -163,7 +163,7 @@ export const updatePost = (
 export const deletePost = (postID: number, accessToken: string): Promise<void> => {
   return axios
     .delete(`${APIendpoint()}/community/posts/${postID}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
@@ -179,7 +179,7 @@ export const setPostLike = (
     .post(
       `${APIendpoint()}/community/posts/${postID}/like`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -200,7 +200,7 @@ export const setPostUnlike = (
     .post(
       `${APIendpoint()}/community/posts/${postID}/unlike`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -216,7 +216,7 @@ export const setPostUnlike = (
 export const setReportPost = (postID: number, reason: string, accessToken: string) => {
   const apiUrl = `${APIendpoint()}/community/posts/${postID}/report`;
   const data = { reason };
-  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
 
   return axios
     .post(apiUrl, data, config)
@@ -240,7 +240,7 @@ export const getCommentList = (
     ? `${APIendpoint()}/community/comments?post_id=${postID}&page=${page}&per_page=${size}`
     : `${APIendpoint()}/community/comments/web?post_id=${postID}&page=${page}&per_page=${size}`;
 
-  const config = accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {};
+  const config = accessToken ? { headers: { "authorization-token": `Bearer ${accessToken}` } } : {};
 
   return axios
     .get(apiUrl, config)
@@ -266,7 +266,7 @@ export const setComment = (
     .post(
       `${APIendpoint()}/community/comments`,
       { post_id: postID, content, anonymous: isAnonymous },
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .catch((e) => {
       throw e;
@@ -276,7 +276,7 @@ export const setComment = (
 export const deleteComment = (commentID: number, accessToken: string): Promise<void> => {
   return axios
     .delete(`${APIendpoint()}/community/comments/${commentID}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { "authorization-token": `Bearer ${accessToken}` },
     })
     .then(() => {})
     .catch((e) => {
@@ -292,7 +292,7 @@ export const setCommentLike = (
     .post(
       `${APIendpoint()}/community/comments/${commentID}/like`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -313,7 +313,7 @@ export const setCommentUnlike = (
     .post(
       `${APIendpoint()}/community/comments/${commentID}/unlike`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
+      { headers: { "authorization-token": `Bearer ${accessToken}` } },
     )
     .then((res) => {
       const {
@@ -329,7 +329,7 @@ export const setCommentUnlike = (
 export const setReportComment = (commentID: number, reason: string, accessToken: string) => {
   const apiUrl = `${APIendpoint()}/community/comments/${commentID}/report`;
   const data = { reason };
-  const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+  const config = { headers: { "authorization-token": `Bearer ${accessToken}` } };
 
   return axios
     .post(apiUrl, data, config)

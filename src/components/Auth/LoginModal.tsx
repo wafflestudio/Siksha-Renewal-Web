@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 import BackClickable from "components/general/BackClickable";
-import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface LoginModalProps {
   onClose: () => void;
@@ -9,9 +8,6 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ onClose }: LoginModalProps) {
-  const { currentTheme } = UseCurrentTheme();
-  const isDark = currentTheme === "dark";
-
   const handleKakaoLogin = () => {
     const restApiKey = process.env.NEXT_PUBLIC_KAKAO_RESTAPI;
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI;
@@ -46,7 +42,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
         authorization: { id_token },
       } = response;
 
-      window.location.href = `/auth/apple?id_token=${id_token}`;
+      window.location.href = `/auth/apple/?id_token=${id_token}`;
     });
   };
 
@@ -76,11 +72,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
               height={41}
               left={10.5}
               right={74}
-              src={
-                isDark
-                  ? "/img/modal/login/google-union-dark.png"
-                  : "/img/modal/login/google-union.svg"
-              }
+              src={"/img/modal/login/google-union.svg"}
               alt="구글 로그인"
             />
             Login with Google
@@ -110,7 +102,7 @@ const MainContainer = styled.div`
   width: 497px;
   height: 565px;
   transform: translate(-50%, -50%);
-  background: var(--Color-Static-Orange);
+  background: #ff9522;
   border-radius: 13px;
 
   @media (max-width: 768px) {
@@ -143,7 +135,7 @@ const LoginTitle = styled.p`
   font-family: NanumSquare;
   font-weight: 800;
   font-size: 20px;
-  color: var(--Color-Static-White);
+  color: #ffffff;
 `;
 
 const CloseButton = styled.img`
@@ -180,7 +172,7 @@ const SocialContainer = styled.div`
   }
 `;
 
-const SocialButton = styled.div<{ provider: "kakao" | "google" | "apple" }>`
+const SocialButton = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -191,17 +183,19 @@ const SocialButton = styled.div<{ provider: "kakao" | "google" | "apple" }>`
   line-height: 45px;
   font-family: NanumSquare;
   font-size: 14px;
-  background-color: ${(props) =>
-    props.provider === "kakao" ? "#fee500" : "var(--Color-Static-White)"};
-  color: var(--Color-Static-Black);
+  background-color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+    props.provider === "kakao" ? "#fee500" : "#ffffff"};
+  color: ${(props: { provider: "kakao" | "google" | "apple" }) =>
+    props.provider === "kakao" ? "#181600" : "#393939"};
 
   border-radius: 6px;
   position: relative;
   cursor: pointer;
 `;
 
-const SocialUnion = styled.img<{ width: number; height: number; left: number; right: number }>`
-  width: ${(props) => props.width}px;
+const SocialUnion = styled.img`
+  width: ${(props: { width: number; height: number; left: number; right: number }) =>
+    props.width}px;
   height: ${(props) => props.height}px;
   margin-left: ${(props) => props.left}px;
   margin-right: ${(props) => props.right}px;

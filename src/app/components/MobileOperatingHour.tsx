@@ -7,7 +7,7 @@ interface MobileOperatingHourProps {
     isFestival: boolean;
     isFoodTruck: boolean;
   };
-}
+};
 
 export default function MobileOperatingHour({ type, etc }: MobileOperatingHourProps) {
   const state = useStateContext();
@@ -108,7 +108,7 @@ const Meal = styled.div`
 const Time = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: var(--Color-Foundation-gray-800);
+  color: #575757;
   padding-left: 10px;
   font-weight: 400;
 `;

@@ -12,7 +12,7 @@ const Container = styled.div`
     width: 100%;
     max-width: 100%;
     margin-top: 0;
-    padding-top: 0;
+    padding-top: 44px;
   }
 `;
 

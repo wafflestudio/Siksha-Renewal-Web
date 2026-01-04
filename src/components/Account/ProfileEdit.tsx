@@ -3,8 +3,6 @@ import styled from "styled-components";
 import useModals from "hooks/UseModals";
 import ProfileImageEditModal from "./ProfileImageEditModal";
 import UseProfile from "hooks/UseProfile";
-import UseCurrentTheme from "hooks/UseCurrentTheme";
-import PhotoCameraIcon from "assets/icons/photo_camera.svg";
 
 interface ProfileEditProps {
   nickname: string;
@@ -30,7 +28,6 @@ export default function ProfileEdit(props: ProfileEditProps) {
     isNicknameValid,
   } = props;
   const { userInfo } = UseProfile();
-  const { defaultProfileURL } = UseCurrentTheme();
 
   const { openModal } = useModals();
   const profileFrameRef = useRef<HTMLDivElement>(null);
@@ -63,15 +60,15 @@ export default function ProfileEdit(props: ProfileEditProps) {
         <Profile
           src={
             changeToDefaultImage
-              ? defaultProfileURL
+              ? "/img/default-profile.svg"
               : imageBlob
               ? URL.createObjectURL(imageBlob)
-              : userInfo?.image ?? defaultProfileURL
+              : userInfo?.image ?? "/img/default-profile.svg"
           }
           alt="프로필 사진"
         />
         <EditIconFrame>
-          <StyledPhotoCameraIcon aria-label="사진 업로드" />
+          <EditIcon src="/img/account/edit-profile.svg" alt="사진 업로드" />
         </EditIconFrame>
         <input
           type="file"
@@ -142,23 +139,21 @@ const EditIconFrame = styled.div`
   box-sizing: border-box;
   width: 41.607px;
   height: 41.607px;
+  padding: 10px 11px;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 1px solid var(--Color-Foundation-gray-100);
-  background: var(--Color-Foundation-base-white);
+  border: 1px solid #f0f0f0;
+  background: #ffffff;
 `;
 
-const StyledPhotoCameraIcon = styled(PhotoCameraIcon)`
-  color: var(--Color-Foundation-gray-600);
-  display: block;
+const EditIcon = styled.img`
   width: 22.5px;
   height: 18px;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
+  flex-shrink: 0;
 `;
 
 const InputBox = styled.label`
@@ -166,7 +161,7 @@ const InputBox = styled.label`
   justify-content: space-between;
   align-items: center;
   margin: 36.51px 22.48px 36.51px 22.48px;
-  border: 1px solid var(--SemanticColor-Border-Secondary);
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
   padding-left: 14px;
 
@@ -190,7 +185,6 @@ const Input = styled.input`
   @media (max-width: 768px) {
     width: 100%;
   }
-  background-color: transparent;
 `;
 
 const DuplicateCheck = styled.div`
@@ -208,8 +202,7 @@ const ResultImage = styled.img<{ isDuplicate: boolean }>`
 `;
 
 const ResultText = styled.span<{ isDuplicate: boolean }>`
-  color: ${(props) =>
-    props.isDuplicate ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+  color: ${(props) => (props.isDuplicate ? "#ff9522" : "#ADADAD")};
   font-size: 14px;
   font-weight: 400;
   line-height: 23px;

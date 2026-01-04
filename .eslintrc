@@ -1,6 +1,6 @@
 {
-  "extends": ["next", "next/core-web-vitals", "prettier"],
+  "extends": ["next", "prettier", "next/core-web-vitals"],
   "rules": {
-    "indent": "off"
+    "indent": ["error", 2],
   }
 }

@@ -5,13 +5,7 @@ export default function useLocalStorage(key: string, initialValue: any) {
   const setStorage = useCallback(
     (newValue: string) => {
       localStorage.setItem(key, newValue);
-      dispatchEvent(
-        new StorageEvent("storage", {
-          key: key,
-          newValue,
-          storageArea: localStorage,
-        }),
-      );
+      dispatchEvent(new StorageEvent("storage", { key: key, newValue }));
     },
     [key],
   );
@@ -19,12 +13,7 @@ export default function useLocalStorage(key: string, initialValue: any) {
   // remove localStorage item
   const removeStorage = useCallback(() => {
     localStorage.removeItem(key);
-    dispatchEvent(
-      new StorageEvent("storage", {
-        key: key,
-        storageArea: localStorage,
-      }),
-    );
+    dispatchEvent(new StorageEvent("storage", { key: key }));
   }, [key]);
 
   // get localStorage item
@@ -34,20 +23,12 @@ export default function useLocalStorage(key: string, initialValue: any) {
   const getServerSnapshot = () => initialValue;
 
   // subscribe localStorage item to react change
-  const subscribe = (listener: () => void) => {
-    const handleStorageChange = (e: StorageEvent) => {
-      // Only trigger listener if this specific key changed
-      // e.key === null means localStorage.clear() was called
-      if (e.key === key || e.key === null) {
-        listener();
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+  const subsribe = (listener: () => void) => {
+    window.addEventListener("storage", listener);
+    return () => window.removeEventListener("storage", listener);
   };
 
-  const store: string | null = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const store: string | null = useSyncExternalStore(subsribe, getSnapshot, getServerSnapshot);
 
   return {
     value: store,

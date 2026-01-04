@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getPhotoReviews } from "utils/api/reviews";
+import { getReviews } from "utils/api/reviews";
 import useError from "hooks/useError";
 
 export default function PhotoReviews({ menuId }: { menuId: number }) {
@@ -23,8 +23,8 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
   const { openLoginModal, openErrorModal } = useModals();
   const { onHttpError } = useError();
   const isMobile = useIsMobile();
-  const mobileSubHeaderTitle = "사진 리뷰";
-  const { getAccessToken, authStatus } = useAuth();
+  const mobileSubHeaderTitle = "사진 리뷰 모아보기";
+  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     if (!menuId) {
@@ -32,11 +32,9 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
     }
 
     const fetchPhotoReviews = () => {
-      getPhotoReviews(Number(menuId))
+      getReviews(Number(menuId))
         .then(({ totalCount, result }) => {
-          const photoReviews = result.filter(
-            (review) => review.etc && review.etc.images && review.etc.images.length > 0,
-          );
+          const photoReviews = result.filter((review) => review.etc);
           setReviews({
             result: photoReviews,
             total_count: photoReviews.length,
@@ -44,14 +42,13 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
         })
         .catch(onHttpError);
     };
-    if (authStatus !== "loading") {
-      fetchPhotoReviews();
-    }
-  }, [menuId, authStatus, onHttpError]);
+
+    fetchPhotoReviews();
+  }, [menuId]);
 
   const handleReviewPostButtonClick = () => {
     getAccessToken()
-      .then(() => router.push(`/menu/${menuId}/reviews/write`))
+      .then(() => router.push(`/menu/${menuId}?writeReview=true`))
       .catch(() => openLoginModal());
   };
 
@@ -92,7 +89,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
 
 const Container = styled.div`
   position: relative;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: white;
   width: 100%;
   min-height: calc(100vh - 271px);
   @media (max-width: 768px) {
@@ -133,7 +130,7 @@ const GalleryTitle = styled.h1`
 const PhotoReviewsCount = styled.div`
   margin-left: 4px;
   margin-top: 2px;
-  color: var(--Color-Foundation-orange-500);
+  color: #ff9522;
   font-size: 16px;
   font-weight: 800;
 `;
@@ -186,14 +183,14 @@ const ReviewPostButton = styled.button<{ mobile: boolean }>`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--Color-Foundation-orange-500);
+  background: #ff9522;
   width: 200px;
 
   padding: 14px 25px;
   border: none;
   border-radius: 5px;
 
-  color: var(--SemanticColor-Text-Button);
+  color: white;
   text-align: center;
   font-size: 16px;
   font-weight: 700;

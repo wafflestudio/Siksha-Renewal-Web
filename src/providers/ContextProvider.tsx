@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { State, RawMenuList, User } from "../types";
 import { formatISODate } from "../utils/FormatUtil";
 
@@ -8,8 +8,8 @@ const initDate = new Date();
 
 const initialState: State = {
   date: initDate,
-  meal: initDate.getHours() < 9 ? "br" : initDate.getHours() < 16 ? "lu" : "dn",
-  data: { br: [], lu: [], dn: [], date: formatISODate(initDate) },
+  meal: initDate.getHours() < 9 ? "BR" : initDate.getHours() < 16 ? "LU" : "DN",
+  data: { BR: [], LU: [], DN: [], date: formatISODate(initDate) },
   today: initDate,
   showInfo: false,
   loading: false,
@@ -42,48 +42,24 @@ const ContextProvider = ({ children }) => {
 
   // dispatch functions
   // 추후 useCallback으로 memorization 해두는 건 어떨까요?
-  const setDate = useCallback(
-    (date: Date) => setState((prevState) => ({ ...prevState, date })),
-    [],
-  );
-  const setMeal = useCallback(
-    (meal: string) => setState((prevState) => ({ ...prevState, meal })),
-    [],
-  );
-  const setData = useCallback(
-    (data: RawMenuList) => setState((prevState) => ({ ...prevState, data })),
-    [],
-  );
-  const setLoading = useCallback(
-    (loading: boolean) => setState((prevState) => ({ ...prevState, loading })),
-    [],
-  );
-  const setInfoData = useCallback(
-    (infoData) => setState((prevState) => ({ ...prevState, infoData })),
-    [],
-  );
-  const toggleShowInfo = useCallback(
-    () => setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo })),
-    [],
-  );
-  const setAuthStatus = useCallback(
-    (status: "loading" | "login" | "logout") =>
-      setState((prevState) => ({ ...prevState, authStatus: status })),
-    [],
-  );
-  const setUserInfo = useCallback(
-    (userInfo: User | null) => setState((prevState) => ({ ...prevState, userInfo })),
-    [],
-  );
-  const setIsFilterFavorite = useCallback(
-    (value: boolean) => setState((prevState) => ({ ...prevState, isFilterFavorite: value })),
-    [],
-  );
-  const setIsFestivalDate = useCallback(
-    (isFestival: boolean) =>
-      setState((prevState) => ({ ...prevState, isFestivalDate: isFestival })),
-    [],
-  );
+  const setDate = (date: Date) => {
+    console.log("setDate", date);
+    setState((prevState) => ({ ...prevState, date: date }));
+  };
+  const setMeal = (meal: string) => setState((prevState) => ({ ...prevState, meal: meal }));
+  const setData = (data: RawMenuList) => setState((prevState) => ({ ...prevState, data: data }));
+  const setLoading = (loading: boolean) =>
+    setState((prevState) => ({ ...prevState, loading: loading }));
+  const setInfoData = (infoData) => setState((prevState) => ({ ...prevState, infoData: infoData }));
+  const toggleShowInfo = () =>
+    setState((prevState) => ({ ...prevState, showInfo: !prevState.showInfo }));
+  const setAuthStatus = (status: "loading" | "login" | "logout") =>
+    setState((prevState) => ({ ...prevState, authStatus: status }));
+  const setUserInfo = (userInfo) => setState((prevState) => ({ ...prevState, userInfo: userInfo }));
+  const setIsFilterFavorite = (value) =>
+    setState((prevState) => ({ ...prevState, isFilterFavorite: value }));
+  const setIsFestivalDate = (isFestival) =>
+    setState((prevState) => ({ ...prevState, isFestivalDate: isFestival }));
 
   return (
     <dispatchContext.Provider

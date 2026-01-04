@@ -38,11 +38,11 @@ const Content = styled.div`
   gap: 24px;
   align-self: stretch;
   border-radius: 10px;
-  background: var(--SemanticColor-Background-Secondary, #fff);
+  background: var(--Color-Foundation-base-white, #fff);
 `;
 
 const HLine = styled.div`
   width: 100%;
   height: 1px;
-  background: var(--SemanticColor-Border-Secondary);
+  background: var(--Color-Foundation-gray-200, #e5e6e9);
 `;

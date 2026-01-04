@@ -2,10 +2,9 @@ import styled, { css } from "styled-components";
 import { ReviewListType } from "app/menu/[menuId]/Menu";
 import ReviewItem from "./ReviewItem";
 import useIsMobile from "hooks/UseIsMobile";
+import Image from "next/image";
 import MobileLayout from "styles/layouts/MobileLayout";
 import MobileReviewListPage from "./MobileReviewListPage";
-import MobileRightArrowIcon from "assets/icons/right-arrow-mobile.svg";
-import RightArrowIcon from "assets/icons/right-arrow.svg";
 
 export interface MenuType {
   id: number;
@@ -46,7 +45,7 @@ export default function ReviewSection({
     <>
       {isMobile && isReviewListPageOpen ? (
         // TODO: MobileReviewListPage component를 별도의 page로 만들어 routing하기
-        <MobileReviewListPage reviews={reviews} />
+        <MobileReviewListPage reviews={reviews}/>
       ) : (
         <Container>
           <ReviewHeader>
@@ -68,20 +67,17 @@ export default function ReviewSection({
                 ))
               )
             ) : (
-              <NoReviewMessage>
-                아직 등록된 리뷰가 없어요.
-                <br />
-                첫번째 리뷰의 주인공이 되어보세요!
-              </NoReviewMessage>
+              <NoReviewMessage>아직 등록된 리뷰가 없어요.<br />첫번째 리뷰의 주인공이 되어보세요!</NoReviewMessage>
             )}
           </ReviewList>
           <MoreReviews onClick={() => handleReviewListPage(true)}>
             <Label>리뷰 더보기</Label>
-            {isMobile ? (
-              <MobileRightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
-            ) : (
-              <RightArrowIcon width={5} color="var(--Color-Foundation-gray-600)" />
-            )}
+            <Image
+              src="/img/right-arrow-darkgrey.svg"
+              alt="리뷰 더보기"
+              width={12}
+              height={17}
+            />
           </MoreReviews>
         </Container>
       )}
@@ -91,7 +87,7 @@ export default function ReviewSection({
 
 const Container = styled.div`
   border-radius: 10px;
-  background: var(--SemanticColor-Background-Secondary, #232323);
+  background-color: var(--Color-Foundation-base-white, #FFF);
 
   display: flex;
   padding: 24px 28px 36px 24px;
@@ -102,6 +98,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 33px 16px 65px 16px;
+    margin-bottom: 83px;
     gap: 20px;
   }
 `;
@@ -111,6 +108,7 @@ const ReviewHeader = styled.div`
   align-items: flex-start;
   gap: 6px;
   @media (max-width: 768px) {
+    
   }
 `;
 
@@ -123,7 +121,7 @@ const HeaderText = styled.div`
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
   line-height: 140%; /* 22.4px */
-
+  
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
 
@@ -151,7 +149,7 @@ const ReviewList = styled.div`
 const HLine = styled.div`
   margin: 14px 0;
   height: 1px;
-  background-color: var(--SemanticColor-Border-Secondary, #404040);
+  background: var(--Color-Foundation-gray-200, #E5E6E9);
 `;
 
 const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
@@ -166,11 +164,11 @@ const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
   line-height: 150%; /* 21px */
-
+  
   @media (max-width: 768px) {
     ${(props) =>
-      !props.$isReviewListPageOpen &&
-      css`
+    !props.$isReviewListPageOpen &&
+    css`
         margin-top: 17px;
         margin-bottom: 0;
         height: 120px;
@@ -181,7 +179,7 @@ const NoReviewMessage = styled.div<{ $isReviewListPageOpen?: boolean }>`
   }
 `;
 
-const MoreReviews = styled.div`
+const MoreReviews = styled.div` 
   align-self: stretch;
   display: none;
   @media (max-width: 768px) {
@@ -195,7 +193,7 @@ const MoreReviews = styled.div`
 
 const Label = styled.div`
   display: none;
-  color: var(--Color-Foundation-gray-600, #989aa0);
+  color: var(--Color-Foundation-gray-600, #989AA0);
   text-align: right;
 
   /* text-12/Bold */

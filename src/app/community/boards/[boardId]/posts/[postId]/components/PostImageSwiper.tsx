@@ -44,7 +44,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
       </SwiperViewport>
       {images.length > 1 && (
         <>
-          <PrevButton type="button" onClick={onPrevButtonClick} $isHovered={isHovered}>
+          <PrevButton type="button" onClick={onPrevButtonClick} isHovered={isHovered}>
             <Image
               src="/img/general/left-arrow-white.svg"
               alt="왼쪽 화살표"
@@ -53,7 +53,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
               style={{ filter: "drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5))" }}
             />
           </PrevButton>
-          <NextButton type="button" onClick={onNextButtonClick} $isHovered={isHovered}>
+          <NextButton type="button" onClick={onNextButtonClick} isHovered={isHovered}>
             <Image
               src="/img/general/right-arrow-white.svg"
               alt="오른쪽 화살표"
@@ -62,7 +62,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
               style={{ filter: "drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5))" }}
             />
           </NextButton>
-          <SelectedSnapDisplay $isHovered={isHovered}>
+          <SelectedSnapDisplay isHovered={isHovered}>
             {selectedSnap + 1}/{images.length}
           </SelectedSnapDisplay>
         </>
@@ -74,7 +74,7 @@ export default function PostImageSwiper({ images }: { images: string[] }) {
 const Swiper = styled.div`
   position: relative;
   aspect-ratio: 1 / 1;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: white;
 
   --slide-width: 100%;
 `;
@@ -93,7 +93,7 @@ const SwiperContainer = styled.div`
   touch-action: pan-y;
 `;
 
-const transitionButton = styled.button<{ $isHovered: boolean }>`
+const transitionButton = styled.button<{ isHovered: boolean }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -101,7 +101,7 @@ const transitionButton = styled.button<{ $isHovered: boolean }>`
   background-color: transparent;
   cursor: pointer;
 
-  display: ${(props) => (props.$isHovered ? "flex" : "none")};
+  display: ${(props) => (props.isHovered ? "flex" : "none")};
 
   @media (max-width: 768px) {
     display: none;
@@ -118,14 +118,14 @@ const NextButton = styled(transitionButton)`
   margin-right: 24px;
 `;
 
-const SelectedSnapDisplay = styled.div<{ $isHovered: boolean }>`
+const SelectedSnapDisplay = styled.div<{ isHovered: boolean }>`
   position: absolute;
-  display: ${(props) => (props.$isHovered ? "flex" : "none")};
+  display: ${(props) => (props.isHovered ? "flex" : "none")};
   top: 20px;
   right: 20px;
   height: 25px;
-  color: var(--Color-Foundation-base-white);
-  background-color: var(--Color-Foundation-gray-800);
+  color: white;
+  background-color: #575757;
   border-radius: 14px;
   padding: 0 7.5px;
   font-weight: 400;

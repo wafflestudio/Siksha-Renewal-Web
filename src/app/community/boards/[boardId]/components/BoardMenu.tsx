@@ -29,6 +29,7 @@ const MenuContainer = styled.div`
     display: flex;
     align-self: center;
     width: calc(100% + 25px);
+    border-bottom: 1px solid #f0f0f0;
   }
 `;
 const MenuInnerContainer = styled.div`
@@ -52,7 +53,7 @@ const Menu = styled.div`
     left: 0;
     top: 0;
     width: auto;
-    padding: 18px 0 0 0;
+    padding: 18px 0 19px 0;
     overflow-x: auto;
     overflow-y: hidden;
     min-height: 35.5px;
@@ -76,12 +77,12 @@ const MenuItem = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: var(--SemanticColor-Background-Secondary, #f2f2f2);
+    background: #f2f2f2;
   }
 
   &.selected {
-    color: var(--Color-Foundation-orange-500);
-    background: var(--SemanticColor-Background-Primary, var(--Color-Foundation-base-white));
+    color: #ff9522;
+    background: #ffffff;
 
     &::before {
       content: "";
@@ -89,13 +90,13 @@ const MenuItem = styled.div`
       left: 0;
       width: 3px;
       height: 100%;
-      background-color: var(--Color-Foundation-orange-500);
+      background-color: #ff9522;
     }
   }
 
   @media (max-width: 768px) {
-    color: var(--SemanticColor-Text-Bubble);
-    background: var(--Color-Foundation-gray-100);
+    color: #b7b7b7;
+    background: #f2f2f2;
     border-radius: 12px;
     width: max-content;
     height: auto;
@@ -106,8 +107,8 @@ const MenuItem = styled.div`
     font-size: 15px;
 
     &.selected {
-      color: var(--SemanticColor-Text-Button, var(--Color-Foundation-base-white));
-      background: var(--Color-Foundation-orange-500);
+      color: #ffffff;
+      background: #ff9522;
 
       &::before {
         display: none;

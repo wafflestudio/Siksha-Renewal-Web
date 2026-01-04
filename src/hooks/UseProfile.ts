@@ -26,7 +26,5 @@ export default function UseProfile() {
     if (userInfo !== null) setUserInfo({ ...userInfo, nickname, image: image ?? null });
   };
 
-  const profileURL = userInfo?.image ?? "/img/default-profile.svg";
-
-  return { userInfo, setProfile, profileURL };
+  return { userInfo, setProfile };
 }

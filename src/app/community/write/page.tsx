@@ -54,16 +54,10 @@ export default function PostWriter() {
   useEffect(() => {
     if (authStatus === "logout") router.push("/community/boards/1");
     fetchBoards();
+    fetchPreviousPost();
     // update inputs' isAnoymous state
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
   }, []);
-
-  // Fetch previous post only when auth is ready
-  useEffect(() => {
-    if (authStatus === "login" && postId) {
-      fetchPreviousPost();
-    }
-  }, [authStatus, postId]);
 
   // 게시판 초기 선택
   useEffect(() => {
@@ -119,7 +113,7 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
 
-      return Promise.all((inputs.images || []).map(convertToBlob))
+      return Promise.all(inputs.images.map(convertToBlob))
         .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
         .then(getAccessToken)
         .then((accessToken) => {
@@ -236,10 +230,10 @@ const Container = styled.div`
 const DesktopHeader = styled.div`
   font-size: 20px;
   font-weight: bold;
-  color: var(--Color-Foundation-orange-500);
+  color: #ff9522;
   text-align: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--Color-Foundation-orange-500);
+  border-bottom: 1px solid #ff9522;
   margin: 19px 0 12px 0;
 
   @media (max-width: 768px) {
@@ -255,17 +249,16 @@ const Icon = styled.img`
 const TitleInput = styled.input`
   width: 100%;
   padding: 15px 14px;
-  background-color: var(--SemanticColor-Element-Chip);
+  background-color: #f8f8f8;
   border: none;
   outline: none;
   border-radius: 8px;
   box-sizing: border-box;
   margin-bottom: 25px;
   font-size: 18px;
-  color: var(--Color-Foundation-base-black);
 
   &::placeholder {
-    color: var(--Color-Foundation-gray-500);
+    color: #b7b7b7;
     font-weight: bold;
   }
 
@@ -285,11 +278,9 @@ const ContentInput = styled.textarea`
   min-height: 284px;
   margin-bottom: 51px;
   font-size: 16px;
-  color: var(--Color-Foundation-base-black);
-  background: transparent;
 
   &::placeholder {
-    color: var(--Color-Foundation-gray-500);
+    color: #b7b7b7;
     font-weight: bold;
   }
 
@@ -309,7 +300,7 @@ const Footer = styled.div`
 `;
 const Options = styled.div`
   height: 36px;
-  border-bottom: 0.5px solid var(--SemanticColor-Border-Secondary);
+  border-bottom: 0.5px solid #b7b7b7;
 
   @media (max-width: 768px) {
     font-size: 12px;
@@ -322,10 +313,9 @@ const Option = styled.label`
   margin-left: 4px;
   user-select: none;
   cursor: pointer;
-  color: var(--Color-Foundation-base-black);
 
   &.active {
-    color: var(--Color-Foundation-orange-500);
+    color: #ff9522;
   }
 `;
 
@@ -339,7 +329,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 14px;
-  background-color: var(--SemanticColor-Background-Primary);
+  background-color: white;
   flex: 1;
   align-items: end;
 
@@ -360,14 +350,14 @@ const Button = styled.button`
   cursor: pointer;
 
   &.cancel {
-    color: var(--Color-Foundation-gray-600);
-    background-color: var(--SemanticColor-Element-Chip);
+    color: #8e8e8e;
+    background-color: #eeeeee;
   }
   &.submit {
-    color: var(--Color-Foundation-base-white);
-    background-color: var(--Color-Foundation-gray-600);
+    color: white;
+    background-color: #adadad;
     &.active {
-      background-color: var(--Color-Foundation-orange-500);
+      background-color: #ff9522;
     }
   }
 

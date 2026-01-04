@@ -25,13 +25,13 @@ export function PostList({ posts, fetch }: PropsPostList) {
         // available(신고 많이 받으면 false)한 경우만 보여지게 합니다.
         posts
           .filter((post) => post.available === true)
-          .map((post, i) => <Post key={i} post={post} isFirst={i === 0} />)
+          .map((post, i) => <Post key={i} post={post} />)
       ) : (
         <>
           {isLoading ? (
             <EmptyText> 불러오는 중입니다 </EmptyText>
           ) : (
-            <EmptyText> 내가 쓴 글이 없어요 </EmptyText>
+            <EmptyText> 게시물이 없습니다 </EmptyText>
           )}
         </>
       )}
@@ -49,12 +49,10 @@ const EmptyText = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 23px;
-  color: var(--Color-Foundation-gray-600);
+  color: #a6a6a6;
 
   @media (max-width: 768px) {
-    height: 100%;
-    color: var(--Color-Foundation-gray-600, #989aa0);
-    font-size: var(--Font-size-15, 15px);
-    font-weight: var(--Font-weight-bold, 700);
+    height: calc(100% - 83px);
+    font-size: 15px;
   }
 `;

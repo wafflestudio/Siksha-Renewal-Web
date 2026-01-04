@@ -2,24 +2,19 @@ import styled, { css } from "styled-components";
 import { Post as PostType } from "types";
 import Link from "next/link";
 import { LoadingAnimation } from "styles/globalstyle";
-import { useTheme } from "next-themes";
-import UseCurrentTheme from "hooks/UseCurrentTheme";
 
 interface PropsPost {
   post: PostType;
-  isFirst?: boolean;
 }
 
-export function Post({ post, isFirst = false }: PropsPost) {
+export function Post({ post }: PropsPost) {
   const { boardId, id, title, content, isLiked, likeCount, commentCount, images } = post;
   const isLikedImg = isLiked ? "/img/post-like-fill.svg" : "/img/post-like.svg";
-  const { currentTheme } = UseCurrentTheme();
-  const isDark = currentTheme === "dark";
 
   return (
     <Link href={`/community/boards/${boardId}/posts/${id}`}>
-      <Container $isFirst={isFirst} $isDark={isDark}>
-        <Info $isImages={images && images.length > 0}>
+      <Container>
+        <Info isImages={images && images.length > 0}>
           <Title>{title}</Title>
           <ContentPreview>{content}</ContentPreview>
           <LikesAndComments>
@@ -36,8 +31,8 @@ export function Post({ post, isFirst = false }: PropsPost) {
         <PhotoZone>
           {images
             ? images.map((src, idx) =>
-              idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
-            )
+                idx < 1 ? <Photo key={src} src={src} alt="게시글 사진 모음" /> : null,
+              )
             : null}
         </PhotoZone>
       </Container>
@@ -45,7 +40,7 @@ export function Post({ post, isFirst = false }: PropsPost) {
   );
 }
 
-const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
+const Container = styled.div`
   ${LoadingAnimation}
   display: flex;
   position: relative;
@@ -66,24 +61,16 @@ const Container = styled.div<{ $isFirst: boolean; $isDark: boolean }>`
     height: 1px;
     top: 0;
     left: 50%;
-    background-color: var(--SemanticColor-Border-Secondary);
+    background-color: #eeeeee;
     transform: translateX(-50%);
+
     @media (max-width: 768px) {
-      /* display: none; */
       width: calc(100% + 25px);
-      ${(props) =>
-        !props.$isDark
-          ? css`
-              background-color: var(--Color-Foundation-gray-100);
-            `
-          : props.$isFirst &&
-            css`
-              background-color: var(--Color-Foundation-gray-100);
-            `}
+      background-color: #f0f0f0;
     }
   }
 `;
-const Info = styled.div<{ $isImages: boolean | null }>`
+const Info = styled.div<{ isImages: boolean | null }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -96,7 +83,7 @@ const Info = styled.div<{ $isImages: boolean | null }>`
     height: min-content;
 
     ${(props) =>
-      props.$isImages !== null &&
+      props.isImages !== null &&
       css`
         max-width: calc(100% - 71.5px);
       `}
@@ -109,14 +96,13 @@ const Title = styled.div`
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: var(--Color-Foundation-base-black);
   @media (max-width: 768px) {
     font-size: 14px;
     font-weight: 800;
   }
 `;
 const ContentPreview = styled.div`
-  color: var(--Color-Foundation-gray-700);
+  color: #393939;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -137,12 +123,12 @@ const LikesAndComments = styled.div`
 const Likes = styled.div`
   display: flex;
   align-items: center;
-  color: var(--Color-Foundation-orange-500);
+  color: #ff9522;
 `;
 const Comments = styled.div`
   display: flex;
   align-items: center;
-  color: var(--Color-Foundation-gray-700);
+  color: #797979;
 `;
 const Icon = styled.img`
   margin-right: 4px;

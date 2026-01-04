@@ -18,7 +18,7 @@ type DefaultFilterList = {
 
 type EventFilterList = {
   isFestival: boolean;
-};
+}
 
 export type FilterList = DefaultFilterList & EventFilterList;
 

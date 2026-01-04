@@ -8,7 +8,6 @@ import ButtonGroup from "./ButtonGroup";
 import { defaultFilters } from "constants/filterOptions";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
-import StarIcon from "assets/icons/star-filled.svg";
 
 interface MobileFilterRatingBottomSheetProps {
   isOpen: boolean;
@@ -91,8 +90,8 @@ export default function MobileFilterRatingBottomSheet({
           setRatingMin(Number(id));
         }}
       />
-      <div style={{ height: 36 }} />
-      <FilterActionSection $marginBottom="45">
+      <div style={{ height: 35.7 }} />
+      <FilterActionSection marginBottom="19">
         <Button variant="neutral" onClick={handleOnReset}>
           초기화
         </Button>
@@ -108,7 +107,7 @@ const RatingContent = ({ value }: { value: string }) => {
   return (
     <RatingContentWrapper>
       {value}
-      <StyledStarIcon />
+      <StarIcon src="/img/general/star-on-14.svg" />
     </RatingContentWrapper>
   );
 };
@@ -119,8 +118,8 @@ const RatingContentWrapper = styled.div`
   gap: 4px;
 `;
 
-const StyledStarIcon = styled(StarIcon)`
-  width: 14px;
+const StarIcon = styled.img`
+  width: 12px;
+  height: 12px;
   margin-bottom: 2px;
-  color: var(--Color-Foundation-orange-500);
 `;

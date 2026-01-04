@@ -10,7 +10,7 @@ export const setInquiry = (voc: string, accessToken: string): Promise<void> => {
         platform: "WEB",
       },
       {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { "authorization-token": `Bearer ${accessToken}` },
       },
     )
     .then(() => {})

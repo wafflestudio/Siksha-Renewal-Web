@@ -76,7 +76,7 @@ export default function SettingProfile() {
     <>
       <MobileSubHeader title="프로필 관리" handleBack={() => router.push("/account")} />
       <Container>
-        <Title>프로필 관리</Title>
+        <Title>닉네임 설정</Title>
         <ProfileEdit
           nickname={nickname}
           setNickname={setNickname}
@@ -104,8 +104,8 @@ export default function SettingProfile() {
 
 const Container = styled.div`
   width: 533px;
-  background-color: var(--SemanticColor-Background-Secondary);
-  border: 1px solid var(--Color-Foundation-gray-200);
+  background-color: white;
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
 
   @media (max-width: 768px) {
@@ -113,16 +113,16 @@ const Container = styled.div`
     height: 100%;
     border: none;
     border-radius: 0;
+
     display: flex;
     flex-direction: column;
   }
 `;
-
 const Title = styled.div`
   margin: 24px 0 0 22.48px;
   font-size: 20px;
   font-weight: 700;
-  color: var(--Color-Foundation-gray-900);
+  color: #ff9522;
 
   @media (max-width: 768px) {
     display: none;
@@ -134,7 +134,6 @@ const ButtonGroup = styled.div`
   justify-content: space-between;
   width: calc(100% - 39px);
   margin: 0 19.5px 18px 19.5px;
-  background-color: transparent;
 
   @media (max-width: 768px) {
     margin-bottom: 32.06px;
@@ -144,10 +143,10 @@ const ButtonGroup = styled.div`
 const Button = styled.button`
   width: calc(50% - 4px);
   height: 46px;
-  background-color: var(--Color-Foundation-orange-500);
+  background-color: #ff9522;
   border: none;
   border-radius: 8px;
-  color: var(--SemanticColor-Text-Button);
+  color: white;
   font-size: 16px;
   font-weight: 700;
   line-height: 22px;
@@ -159,7 +158,8 @@ const Button = styled.button`
 `;
 
 const CancelButton = styled(Button)`
-  background-color: var(--Color-Foundation-gray-500);
+  background-color: #eeeeee;
+  color: #8e8e8e;
   cursor: pointer;
 
   @media (max-width: 768px) {
@@ -168,8 +168,7 @@ const CancelButton = styled(Button)`
 `;
 
 const CompleteButton = styled(Button)<{ isValid: boolean }>`
-  background-color: ${({ isValid }) =>
-    isValid ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-600)"};
+  background-color: ${({ isValid }) => (isValid ? "#ff9522" : "#8e8e8e")};
   cursor: pointer;
 
   @media (max-width: 768px) {

@@ -15,7 +15,7 @@ export default function ReviewDistribution({
   distribution: number[];
 }) {
   const isMobile = useIsMobile();
-
+  
   if (distribution.length !== 5) {
     return null;
   }
@@ -23,41 +23,40 @@ export default function ReviewDistribution({
   return (
     <Container>
       <ScoreContainer>
-        <div
-          style={{
+        <div style={{
             display: "flex",
             alignItems: "flex-end",
             gap: "4px",
-          }}
-        >
+        }}>
           <Score>{score.toFixed(1)}</Score>
           <MaximumScore>/5</MaximumScore>
         </div>
         <ThemedWrapper theme={{ width: isMobile ? 71.09 : 140 }}>
           <Stars score={score} />
         </ThemedWrapper>
-        <ReviewsTotalCount>후기 {reviewsTotalCount}개</ReviewsTotalCount>
+        <ReviewsTotalCount>
+          후기 {reviewsTotalCount}개
+        </ReviewsTotalCount>
       </ScoreContainer>
-      {/* <DistributionChart>
+      <DistributionChart>
         {distribution.map((count, i) => (
           // 텍스트, 바, 숫자 순
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              alignSelf: "stretch",
-            }}
-            key={i}
-          >
-            <Label key={i}>{i + 1}점</Label>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            alignSelf: "stretch",
+          }} key={i}>
+            <Label key={i}>
+              {i + 1}점
+            </Label>
             <Bar>
               <Fill percentage={(reviewsTotalCount > 0 ? count / reviewsTotalCount : 0) * 100} />
             </Bar>
             <Count>{count}</Count>
           </div>
         ))}
-      </DistributionChart> */}
+      </DistributionChart>
     </Container>
   );
 }
@@ -98,7 +97,7 @@ const Score = styled.div`
 `;
 
 const MaximumScore = styled.div`
-  color: var(--Foundation-grey-500, var(--Color-Foundation-gray-500, #bec1c8));
+  color: var(--Foundation-grey-500, var(--Color-Foundation-gray-500, #BEC1C8));
   text-align: center;
 
   /* text-20/Bold */
@@ -147,8 +146,7 @@ const ScoreContainer = styled.div`
     flex-shrink: 0;
 
     border-radius: 16px;
-    border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
-    background: var(--SemanticColor-Background-Secondary);
+    border: 1px solid var(--Color-Foundation-gray-200, #E5E6E9);
   }
 `;
 
@@ -168,7 +166,7 @@ const Label = styled.label`
   text-align: center;
 
   color: var(--Color-Foundation-gray-700, #727478);
-
+  
   /* text-14/Bold */
   font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-14, 14px);
@@ -178,7 +176,7 @@ const Label = styled.label`
 `;
 
 const Bar = styled.div`
-  background-color: var(--SemanticColor-Background-Tertiary, #f2f3f4);
+  background-color: var(--Color-Foundation-gray-100, #f2f3f4);
   height: 8px;
   flex: 1 0 0;
   border-radius: 4px;
@@ -194,7 +192,7 @@ const Fill = styled.div<{ percentage: number }>`
 const Count = styled.div`
   width: 40px;
 
-  color: var(--Color-Foundation-orange-500, #ff9522);
+  color: var(--Color-Foundation-orange-500, #FF9522);
 
   /* text-14/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquare);

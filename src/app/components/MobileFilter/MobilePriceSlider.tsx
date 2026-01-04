@@ -34,13 +34,13 @@ export default function MobilePriceSlider({
   }
 
   // Calculate dimensions after mount and window resize
-  useEffect(() => {
+  useEffect(() => {    
     updateDimensions();
-    window.addEventListener("resize", updateDimensions);
+    window.addEventListener('resize', updateDimensions);
     const timeoutId = setTimeout(updateDimensions, 0);
-
+    
     return () => {
-      window.removeEventListener("resize", updateDimensions);
+      window.removeEventListener('resize', updateDimensions);
       clearTimeout(timeoutId);
     };
   }, []);
@@ -55,10 +55,7 @@ export default function MobilePriceSlider({
 
   const priceText = useMemo(() => {
     const minTxt = priceMin <= min ? `0원` : `${formatPrice(priceMin)}원`;
-    const maxTxt =
-      max <= priceMax
-        ? `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상`
-        : `${formatPrice(priceMax)}원`;
+    const maxTxt = max <= priceMax ? `${formatPrice(PRICE_FILTER_OPTIONS.max)}원 이상` : `${formatPrice(priceMax)}원`;
 
     return `${minTxt} ~ ${maxTxt}`;
   }, [priceMin, priceMax]);
@@ -66,7 +63,7 @@ export default function MobilePriceSlider({
   const pickettailPos = useMemo(() => {
     const priceMinForLeft = priceMin === 0 ? min : priceMin;
     const priceMaxForLeft = priceMax === Infinity ? max : priceMax;
-
+  
     const leftMin = ((priceMinForLeft - min) / (max - min)) * 100;
     const leftMax = ((priceMaxForLeft - min) / (max - min)) * 100;
     return (leftMin + leftMax) / 2;
@@ -75,7 +72,7 @@ export default function MobilePriceSlider({
   const picketbodyPos = useMemo(() => {
     const halfPicketPercent = (picketWidth / sliderWidth) * 50; // 피켓 절반 크기 비율
     const halfHandlePercent = (16 / sliderWidth) * 50; // 슬라이더 핸들 절반 크기 비율
-
+  
     // 피켓이 슬라이더를 벗어나지 않도록 제한
     const maxLeft = 100 - halfPicketPercent + halfHandlePercent; // 슬라이더 오른쪽 끝 제한
     const minLeft = halfPicketPercent - halfHandlePercent; // 슬라이더 왼쪽 끝 제한
@@ -91,19 +88,14 @@ export default function MobilePriceSlider({
         valueMin = valueMax - step;
       }
     }
-
+    
     setPriceRange([valueMin, valueMax]);
     onPriceRangeChange?.([valueMin, valueMax]);
   };
 
   return (
     <SliderWrapper ref={sliderRef}>
-      <MobilePicket
-        bodyPos={picketbodyPos}
-        tailPos={pickettailPos}
-        text={priceText}
-        ref={picketRef}
-      />
+      <MobilePicket bodyPos={picketbodyPos} tailPos={pickettailPos} text={priceText} ref={picketRef} />
       <StyledSlider
         range
         min={min}
@@ -127,6 +119,14 @@ const SliderWrapper = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
+  .rc-slider-track {
+    background-color: var(--Color-Foundation-orange-500, #ff9522);
+  }
+
+  .rc-slider-rail {
+    background-color: #dbdbdb;
+  }
+
   .rc-slider-handle {
     width: 18px;
     height: 18px;

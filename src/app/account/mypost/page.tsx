@@ -39,37 +39,33 @@ export default function MyPost() {
     return (
       <>
         <MobileSubHeader title="내가 쓴 글" handleBack={router.back} />
-        <Container $isEmpty={posts.length === 0}>
+        <Container>
           <Header>내가 쓴 글</Header>
-          {posts.length === 0 ? (
-            <NoPost>내가 쓴 글이 없어요.</NoPost>
-          ) : (
-            <PostList posts={posts} fetch={fetchMyPosts} />
-          )}
+          <PostList posts={posts} fetch={fetchMyPosts} />
           {posts.length >= 1 ? <BreakLine /> : null}
         </Container>
       </>
     );
 }
 
-const Container = styled.div<{ $isEmpty: boolean }>`
+const Container = styled.div`
   padding: 0 18.5px;
   width: 701px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
   box-sizing: border-box;
-  background-color: var(--SemanticColor-Background-Secondary);
 
   @media (max-width: 768px) {
-    padding-top: 16px;
     width: 100%;
-    padding-top: 16px;
-    height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
+    margin-top: -4px;
+    border: 0;
   }
 `;
 
 const Header = styled.div`
   margin: 24.08px 0 29.42px 4.5px;
-  color: var(--Color-Foundation-gray-900);
+  color: var(--Main-Orange, #ff9522);
   font-size: 20px;
   font-weight: 700;
   line-height: 23px;
@@ -86,16 +82,15 @@ const NoPost = styled.div`
   width: 100%;
   height: 160.84px;
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 400;
-  line-height: 150%;
-  letter-spacing: -0.3px;
-  color: #727478;
+  line-height: 23px;
+  color: #a6a6a6;
 `;
 
 const BreakLine = styled.hr`
   margin-bottom: 29.4px;
   border: 0;
   height: 1px;
-  background: var(--Color-Foundation-gray-100);
+  background: #eeeeee;
 `;

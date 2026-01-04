@@ -11,7 +11,6 @@ import {
   DISTANCE_FILTER_OPTIONS,
   PRICE_FILTER_OPTIONS,
 } from "constants/filterOptions";
-import StarFilledIcon from "assets/icons/star-filled.svg";
 import { trackEvent } from "utils/MixPanel";
 import { EventNames } from "constants/track";
 
@@ -191,17 +190,32 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           <div style={{ height: 14.5 }} />
           <ButtonGroup
             items={[
-              { label: "모두", id: "ALL" },
+              { label: "전체", id: "ALL" },
               {
-                label: <RatingLabel ratingValue="3.5" />,
+                label: (
+                  <div style={{ alignItems: "center", display: "flex" }}>
+                    3.5
+                    <StarIcon src="/img/general/star-on-14.svg" />
+                  </div>
+                ),
                 id: "3.5",
               },
               {
-                label: <RatingLabel ratingValue="4.0" />,
+                label: (
+                  <div style={{ alignItems: "center", display: "flex" }}>
+                    4.0
+                    <StarIcon src="/img/general/star-on-14.svg" />
+                  </div>
+                ),
                 id: "4",
               },
               {
-                label: <RatingLabel ratingValue="4.5" />,
+                label: (
+                  <div style={{ alignItems: "center", display: "flex" }}>
+                    4.5
+                    <StarIcon src="/img/general/star-on-14.svg" />
+                  </div>
+                ),
                 id: "4.5",
               },
             ]}
@@ -216,7 +230,7 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
           />
         </FilterContent>
       </FilterContentWrapper>
-      <FilterActionSection $marginBottom="54" $marginTop="19">
+      <FilterActionSection marginBottom="19" marginTop="19" addShadow>
         <Button variant="neutral" onClick={resetFilter}>
           초기화
         </Button>
@@ -228,34 +242,28 @@ export default function MobileFilterBottomSheet({ isOpen, onClose }: MobileFilte
   );
 }
 
-const RatingLabel = ({ ratingValue }: { ratingValue: string }) => {
-  return (
-    <RatingLabelWrapper>
-      {ratingValue}
-      <StyledStarIcon />
-    </RatingLabelWrapper>
-  );
-};
-
-const RatingLabelWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-`;
-
-const StyledStarIcon = styled(StarFilledIcon)`
-  width: 14px;
+const StarIcon = styled.img`
+  width: 12px;
+  height: 12px;
   margin-bottom: 2px;
-  color: var(--SemanticColor-Text-Accent);
+  flex-shrink: 0;
+  margin-left: 4px;
 `;
 
-export const FilterActionSection = styled.div<{ $marginBottom: string; $marginTop?: string }>`
-  display: flex;
-  padding-bottom: ${(props) => `${props.$marginBottom}px`};
-  padding-top: ${(props) => `${props.$marginTop ?? 0}px`};
-  justify-content: space-between;
-  /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
+export const FilterActionSection = styled.div<{
+  marginBottom: string;
+  marginTop?: string;
+  addShadow?: boolean;
+}>`
+  display: grid;
+  padding: 0 16px;
+  padding-bottom: ${(props) => `${props.marginBottom}px`};
+  padding-top: ${(props) => `${props.marginTop ?? 0}px`};
+  margin-left: -16px;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  box-shadow: ${(props) => props.addShadow && "0px -1px 6px 0px rgba(0, 0, 0, 0.05)"};
 `;
 
 const FilterContentWrapper = styled.div`
@@ -289,11 +297,19 @@ const MobileFilterHeader = styled.div`
   justify-content: center;
   margin-bottom: 10.68px;
   align-items: center;
-  color: var(--SemanticColor-Text-GNB);
 `;
 
 export const MobileFilterText = styled.div`
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--SemanticColor-Text-GNB);
+  display: flex;
+  height: 27.497px;
+  align-items: center;
+
+  color: var(--Color-Foundation-base-black, #000);
+
+  /* text-16/ExtraBold */
+  font-family: var(--Font-family-sans, NanumSquare);
+  font-size: var(--Font-size-16, 16px);
+  font-style: normal;
+  font-weight: var(--Font-weight-extrabold, 800);
+  line-height: 140%; /* 22.4px */
 `;

@@ -49,10 +49,7 @@ export default function ErrorModal({ code, message, onClose, onRetry }: ErrorMod
             <MobileCancelButton onClick={onClose} isServerError={code >= 500}>
               이전으로
             </MobileCancelButton>
-            <MobileRetryButton
-              onClick={code >= 500 ? () => onRetry : () => router.push("/")}
-              isServerError={code >= 500}
-            >
+            <MobileRetryButton onClick={code >= 500 ? () => onRetry : () => router.push("/")}>
               {code >= 500 ? "다시시도" : "처음으로"}
             </MobileRetryButton>
           </MobileFooter>
@@ -77,7 +74,7 @@ const DesktopContainer = styled(Container)`
   height: 230px;
   border-radius: 13px;
   padding: 27px 30px 30px 33px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: white;
 `;
 
 const Header = styled.div`
@@ -117,17 +114,17 @@ const CancelButton = styled(Button)`
   color: #8e8e8e;
 `;
 const RetryButton = styled(Button)`
-  background-color: var(--Color-Foundation-orange-500);
-  color: var(--Color-Foundation-base-white);
+  background-color: #ff9522;
+  color: white;
 `;
 
 const MobileContainer = styled(Container)`
   gap: 11px 17px;
-  width: 315px;
+  width: calc(100% - 60px);
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
-  background-color: var(--Color-Foundation-base-white);
+  background-color: #fff;
 `;
 const MobileHeader = styled.div`
   display: flex;
@@ -146,7 +143,7 @@ const MobileMessage = styled.div`
   line-height: 15px;
 `;
 const MobileFooter = styled.div`
-  border-top: 1px solid var(--Color-Foundation-gray-200);
+  border-top: 1px solid #e3e3e3;
   flex: 1;
 `;
 
@@ -161,12 +158,11 @@ const MobileButton = styled.button`
   cursor: pointer;
 `;
 
-const MobileRetryButton = styled(MobileButton)<{ isServerError: boolean }>`
-  display: ${({ isServerError }) => (isServerError ? "inherit" : "none")};
+const MobileRetryButton = styled(MobileButton)`
   color: #ff9522;
   border-left: 1px solid #e3e3e3;
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};
-  color: #797979; 
+  color: #797979;
 `;

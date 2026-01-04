@@ -33,7 +33,7 @@ export default function CommentWriter({ addComment, postId }: CommentWriterProps
   return (
     <Wrapper>
       <Container>
-        <AnonymousButton $isAnonymous={isAnonymous}>
+        <AnonymousButton isAnonymous={isAnonymous}>
           <Option onClick={() => setIsAnonymous(!isAnonymous)}>
             <Icon
               src={isAnonymous ? "/img/radio-full.svg" : "/img/radio-empty.svg"}
@@ -47,7 +47,7 @@ export default function CommentWriter({ addComment, postId }: CommentWriterProps
           value={commentInput}
           onChange={(e) => setCommentInput(e.target.value)}
         />
-        <SubmitButton $isValid={isValid} onClick={submit}>
+        <SubmitButton isValid={isValid} onClick={submit}>
           올리기
         </SubmitButton>
       </Container>
@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   padding-bottom: 24.7px;
   bottom: 0;
   left: 0;
-  background-color: var(--SemanticColor-Background-Primary);
+  background-color: white;
   width: 100%;
   z-index: 1;
 
@@ -73,7 +73,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: var(--SemanticColor-Background-Secondary);
+  background-color: #f8f8f8;
   width: 100%;
   height: 46px;
   border-radius: 8px;
@@ -85,7 +85,7 @@ const Container = styled.div`
   }
 `;
 
-const AnonymousButton = styled.button<{ $isAnonymous?: boolean }>`
+const AnonymousButton = styled.button<{ isAnonymous?: boolean }>`
   padding: 0;
   margin: 0;
   border: none;
@@ -93,9 +93,8 @@ const AnonymousButton = styled.button<{ $isAnonymous?: boolean }>`
   background-color: transparent;
   display: flex;
   align-items: center;
-  color: ${(props) =>
-    props.$isAnonymous ? "var(--Color-Foundation-orange-500)" : "var(--SemanticColor-Text-GNB-Secondary)"};
-  font-weight: ${(props) => (props.$isAnonymous ? 700 : 400)};
+  color: ${(props) => (props.isAnonymous ? "#ff9522" : "#575757")};
+  font-weight: ${(props) => (props.isAnonymous ? 700 : 400)};
   font-size: 14px;
   line-height: 16px;
   margin: 0 12.62px 0 16.59px;
@@ -126,7 +125,7 @@ const Icon = styled.img``;
 const CommentInput = styled.input`
   box-sizing: border-box;
   width: 100%;
-  background-color: var(--SemanticColor-Background-Secondary);
+  background-color: #f8f8f8;
 
   border: none;
   padding: 0;
@@ -137,7 +136,7 @@ const CommentInput = styled.input`
 
   outline: none;
   &::placeholder {
-    color: var(--Color-Foundation-gray-500);
+    color: #b7b7b7;
   }
   @media (max-width: 768px) {
     font-size: 12px;
@@ -145,8 +144,8 @@ const CommentInput = styled.input`
   }
 `;
 
-const SubmitButton = styled.button<{ $isValid: boolean }>`
-  background-color: var(--Color-Foundation-orange-500);
+const SubmitButton = styled.button<{ isValid: boolean }>`
+  background-color: #ff9522;
   width: 58px;
   height: 32px;
   flex-shrink: 0;
@@ -154,7 +153,7 @@ const SubmitButton = styled.button<{ $isValid: boolean }>`
 
   justify-content: center;
   align-items: center;
-  color: var(--Color-Foundation-base-white);
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 13px;

@@ -20,6 +20,15 @@ export default function InfiniteScrollable({
 
   const observerElement = useRef<HTMLDivElement | null>(null);
 
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNext) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    },
+    [hasNext, currentPath],
+  );
+
   async function loadingWrapper(callback: () => Promise<void>) {
     if (page === 1) setIsLoading?.(true);
     await callback();
@@ -30,15 +39,6 @@ export default function InfiniteScrollable({
     const hasNext = await fetchMoreData(size, page);
     if (typeof hasNext === "boolean") setHasNext(hasNext);
   }
-
-  const observerCallback = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && hasNext) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    },
-    [hasNext, currentPath],
-  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback);

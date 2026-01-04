@@ -5,12 +5,7 @@ import { useRouter } from "next/navigation";
 import { setMenuLike, setMenuUnlike } from "utils/api/menus";
 import useModals from "hooks/UseModals";
 import useAuth from "hooks/UseAuth";
-import useLikedMenus from "hooks/UseLikedMenus";
 import { RawMenu } from "types";
-import HeartIcon from "assets/icons/heart.svg";
-import CommentIcon from "assets/icons/comment.svg";
-import DotsIcon from "assets/icons/dots.svg";
-import NoMeatIcon from "assets/icons/no-meat.svg";
 
 export default function Menu({ menu }: { menu: RawMenu }) {
   const [hasPrice, setHasPrice] = useState(true);
@@ -18,24 +13,33 @@ export default function Menu({ menu }: { menu: RawMenu }) {
   const [isLiked, setIsLiked] = useState(menu?.is_liked);
   const [likeCount, setLikeCount] = useState(menu.like_cnt);
   const reviewCount = menu.review_cnt;
+
+  const isLikedImg = isLiked ? "/img/general/heart-on.svg" : "/img/general/heart-off.svg";
+  const isReviewedImg = "/img/general/comment-off.svg"; //리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴
   const router = useRouter();
 
   const { authStatus, getAccessToken } = useAuth();
-  const { addLikedMenu, removeLikedMenu } = useLikedMenus();
   const { openLoginModal } = useModals();
-
-  const getScoreLevel = (score: number): "high" | "middle" | "low" => {
-    if (score >= 4) return "high";
-    if (score > 3) return "middle";
-    return "low";
-  };
 
   useEffect(() => {
     setIsLiked(menu?.is_liked);
+  }, [menu?.is_liked]);
+
+  useEffect(() => {
     setLikeCount(menu.like_cnt);
-    setHasPrice(!!menu.price);
-    setScore(menu.score ? getScoreLevel(menu.score) : null);
-  }, [menu]);
+  }, [menu.like_cnt]);
+
+  useEffect(() => {
+    if (!menu.price) setHasPrice(false);
+  }, [menu.price]);
+
+  useEffect(() => {
+    if (menu.score) {
+      if (menu.score >= 4) setScore("high");
+      else if (menu.score > 3) setScore("middle");
+      else setScore("low");
+    }
+  }, [menu.score]);
 
   const isLikedToggle = async () => {
     if (authStatus === "logout") openLoginModal();
@@ -47,12 +51,6 @@ export default function Menu({ menu }: { menu: RawMenu }) {
         .then(({ isLiked, likeCount }) => {
           setIsLiked(isLiked);
           setLikeCount(likeCount);
-          // Update local storage
-          if (isLiked) {
-            addLikedMenu(menu.id);
-          } else {
-            removeLikedMenu(menu.id);
-          }
         })
         .catch((error) => {
           console.log(error);
@@ -69,28 +67,27 @@ export default function Menu({ menu }: { menu: RawMenu }) {
       <MenuName>
         {menu.name_kr}
         {menu.etc && menu.etc.find((e) => e == "No meat") && (
-          <StyledNoMeatIcon aria-label="채식 메뉴" />
+          <NoMeat src={"/img/no-meat.svg"} alt="채식 메뉴" />
         )}
       </MenuName>
-      <StyledDotsIcon />
+      <Dots src={"/img/dots.svg"} />
       <MenuInfo>
-        <Price $hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
+        <Price hasPrice={hasPrice}>{menu.price ? formatPrice(menu.price) : "-"}</Price>
         {score ? <Rate>{menu.score.toFixed(1)}</Rate> : <Rate>{"-"}</Rate>}
         <CountBox>
-          <StyledLikeIcon
-            $isLiked={isLiked}
-            aria-label="좋아요"
+          <CountIcon
+            src={isLikedImg}
             onClick={(e) => {
               isLikedToggle();
               e.stopPropagation();
             }}
+            alt="좋아요"
           />
-          <CountText $disableWith={900}>{likeCount}</CountText>
+          <CountText disableWith={900}>{likeCount}</CountText>
         </CountBox>
         <ReviewBox>
-          {/*리뷰여부에 따라 comment-on을 사용해야하나 현재 api에서 한번에 안내려옴*/}
-          <StyledCommentIcon $isLiked={false} aria-label="댓글" />
-          <CountText $disableWith={768}>{reviewCount}</CountText>
+          <CountIcon src={isReviewedImg} alt="댓글" />
+          <CountText disableWith={768}>{reviewCount}</CountText>
         </ReviewBox>
       </MenuInfo>
     </Container>
@@ -107,7 +104,7 @@ const Container = styled.div`
 
   @media (pointer: fine) {
     &:hover {
-      background: var(--Color-Foundation-gray-100);
+      background: #f5f5f5;
     }
   }
 
@@ -131,9 +128,9 @@ const MenuName = styled.div`
   flex-grow: 1;
 
   @media (max-width: 768px) {
-    color: var(--Color-Foundation-base-black, #000);
+    color: black;
     font-size: 14px;
-    line-height: 140%;
+    line-height: 21px;
     font-weight: 400;
   }
 `;
@@ -149,16 +146,16 @@ const MenuInfo = styled.div`
   }
 `;
 
-const StyledDotsIcon = styled(DotsIcon)`
+const Dots = styled.img`
   width: 40px;
   height: 22px;
-  color: var(--Color-Foundation-gray-500);
+
   @media (max-width: 1200px) {
     display: none;
   }
 `;
 
-const Price = styled.div<{ $hasPrice: boolean }>`
+const Price = styled.div`
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -181,8 +178,8 @@ const Price = styled.div<{ $hasPrice: boolean }>`
     min-width: 28px;
 
     display: flex;
-    justify-content: ${(props) => (props.$hasPrice ? "flex-end" : "center")};
-
+    justify-content: ${(props: { hasPrice: boolean }) => (props.hasPrice ? "flex-end" : "center")};
+    
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
 
@@ -230,10 +227,9 @@ const Rate = styled.div`
   }
 `;
 
-const StyledNoMeatIcon = styled(NoMeatIcon)`
+const NoMeat = styled.img`
   width: 19px;
   padding-bottom: 2px;
-  color: #b0b0b0; // 아이콘 자체에 마스킹 처리되는 부분이 흰색으로 표현됨.
 
   @media (max-width: 768px) {
     padding-left: 5px;
@@ -261,36 +257,25 @@ const ReviewBox = styled(CountBox)`
   }
 `;
 
-const StyledLikeIcon = styled(HeartIcon)<{ $isLiked: boolean }>`
+const CountIcon = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
   z-index: 0;
-  color: ${({ $isliked }) =>
-    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
 `;
 
-const StyledCommentIcon = styled(CommentIcon)<{ $isLiked: boolean }>`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  z-index: 0;
-  color: ${({ $isliked }) =>
-    $isliked ? "var(--Color-Accent-like)" : "var(--SemanticColor-Icon-Like)"};
-`;
-
-const CountText = styled.div<{ $disableWith: number }>`
+const CountText = styled.div<{ disableWith: number }>`
   font-size: 15px;
   line-height: 17px;
   font-weight: 400;
-  color: var(--Color-Foundation-gray-500);
+  color: #b7b7b7;
 
   color: var(--Color-Foundation-gray-700, #727478);
   font-size: 14px;
   font-weight: 400;
   line-height: 150%; /* 21px */
 
-  @media (${(props) => `(max-width: ${props.$disableWith}px)`}) {
+  @media (${(props) => `(max-width: ${props.disableWith}px)`}) {
     display: none;
   }
 `;

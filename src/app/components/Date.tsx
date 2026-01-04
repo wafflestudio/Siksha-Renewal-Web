@@ -5,8 +5,6 @@ import useModals from "hooks/UseModals";
 import MobileCalendar from "./MobileCalendar";
 import { useContext, useEffect, useState } from "react";
 import { ModalsStateContext } from "providers/ModalsProvider";
-import LeftArrowMobileIcon from "assets/icons/left-arrow-mobile.svg";
-import RightArrowMobileIcon from "assets/icons/right-arrow-mobile.svg";
 
 export default function Date() {
   const state = useStateContext();
@@ -31,29 +29,29 @@ export default function Date() {
 
   return (
     <Container>
-      <ArrowWrapper
-        $isActive={!isCalOpened}
+      <Arrow
+        src={isCalOpened ? "/img/general/left-arrow-grey.svg" : "/img/left-arrow-mobile.svg"}
         onClick={() => {
           !isCalOpened && setDate(getYesterday(date));
         }}
-      >
-        <LeftArrowMobileIcon aria-label="전날로 이동" />
-      </ArrowWrapper>
-      <DateText onClick={onClickDate}>{formatDate(date)}</DateText>
-      <ArrowWrapper
-        $isActive={!isCalOpened}
+        alt={isCalOpened ? "" : "전날로 이동"}
+      />
+      <FlexBox onClick={onClickDate}>
+        <DateText>{formatDate(date)}</DateText>
+      </FlexBox>
+      <Arrow
+        src={isCalOpened ? "/img/general/right-arrow-grey.svg" : "/img/right-arrow-mobile.svg"}
         onClick={() => {
           !isCalOpened && setDate(getTomorrow(date));
         }}
-      >
-        <RightArrowMobileIcon aria-label="다음날로 이동" />
-      </ArrowWrapper>
+        alt={isCalOpened ? "" : "다음날로 이동"}
+      />
     </Container>
   );
 }
 
 const Container = styled.div`
-  background: var(--SemanticColor-Background-Secondary);
+  background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,13 +64,15 @@ const Container = styled.div`
   }
 `;
 
-const ArrowWrapper = styled.div<{ $isActive: boolean }>`
+const Arrow = styled.img`
   width: 10px;
   height: 16px;
   cursor: pointer;
   padding: 0 16px 0 16px;
-  color: ${({ $isActive }) =>
-    $isActive ? "var(--SemanticColor-Text-Accent)" : "var(--Color-Foundation-gray-400)"};
+
+  @media (min-width: 769px) {
+    fill: currentColor !important;
+  }
 `;
 
 const DateText = styled.div`
@@ -87,7 +87,13 @@ const DateText = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 17px;
-    color: var(--SemanticColor-Text-Accent);
+    color: var(--Color-Foundation-orange-500, #ff9522);
     white-space: nowrap;
   }
+`;
+
+const FlexBox = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;

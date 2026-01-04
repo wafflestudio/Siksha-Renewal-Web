@@ -26,8 +26,6 @@ export default function StyledComponentsRegistry({ children }: { children: React
   }>;
 
   return (
-    <StyleSheetManagerFixed sheet={styledComponentsStyleSheet.instance}>
-      {children}
-    </StyleSheetManagerFixed>
+    <StyleSheetManagerFixed sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManagerFixed>
   );
 }
