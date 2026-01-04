@@ -114,15 +114,18 @@ export default function ReviewPost() {
     const { score, comment, taste, price, food_composition } = inputs;
     
     const body = new FormData();
+    body.append("menu_id", menuId);
     body.append("score", String(score));
     body.append("comment", comment);
     body.append("taste", taste);
     body.append("price", price);
     body.append("food_composition", food_composition);
     
-    inputs.images.forEach((image) => {
-      body.append("images", image);
-    });
+    // Convert images to blobs before appending
+    for (const image of inputs.images) {
+      const blob = await convertToBlob(image);
+      body.append("images", blob);
+    }
 
     return editReview(Number(reviewId), body)
       .then((res) => {
