@@ -10,6 +10,7 @@ export default function MyReviewItem({ review }) {
   const { removeReview, updateReview } = useReviewActions();
   const handleDelete = () => removeReview(review.id);
   const handleEdit = () => updateReview(review.menu_id, review.id);
+
   return (
     <>
       <Container>
@@ -30,11 +31,11 @@ export default function MyReviewItem({ review }) {
         <Body>
           <Content>
             <Comment>{review.comment}</Comment>
-            {review.keywords && (
+            {review.keyword_reviews && review.keyword_reviews.length > 0 && review.keyword_reviews[0]?.length > 0 && (
               <Keywords>
-                {review.keywords.map((keyword) => (
-                  <Keyword key={`${review.id}-${keyword}`}>{keyword}</Keyword>
-                ))}
+                {review.keyword_reviews.map((keyword, i) => {
+                  return <Keyword key={`${review.id}-${keyword}-${i}`}>{keyword}</Keyword>;
+                })}
               </Keywords>
             )}
             {review.etc?.images && (
