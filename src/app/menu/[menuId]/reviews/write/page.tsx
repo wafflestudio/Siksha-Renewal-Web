@@ -43,7 +43,7 @@ export default function ReviewPost() {
   const isEditMode = reviewId !== null;
   const { menuId } = useParams<{ menuId: string }>();
 
-  const { menu, fetchMenu, fetchReview, fetchReviews, submitReview, submitReviewWithImages } = useMenu();
+  const { menu, fetchMenu, fetchReview, fetchReviews, submitReview, submitReviewWithImages, editReview } = useMenu();
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
@@ -104,6 +104,41 @@ export default function ReviewPost() {
       return blob;
     } else return image;
   };
+
+  const handleUpdate = async () => {
+    if (!menu || !reviewId || !isEditMode) {
+      console.error("Required data not available for update");
+      return;
+    }
+
+    const { score, comment, taste, price, food_composition } = inputs;
+    
+    const body = new FormData();
+    body.append("score", String(score));
+    body.append("comment", comment);
+    body.append("taste", taste);
+    body.append("price", price);
+    body.append("food_composition", food_composition);
+    
+    inputs.images.forEach((image) => {
+      body.append("images", image);
+    });
+
+    console.debug(body);
+
+    return editReview(Number(reviewId), body)
+      .then((res) => {
+        fetchReviews(Number(menuId));
+        router.push(`/menu/${menuId}`);
+      })
+      .catch((err) => {
+        const errorCode = err.response?.status ?? null;
+        if (errorCode == 500) {
+          window.alert(err.message);
+        }
+        onHttpError(err);
+      });
+  }
 
   const handleSubmit = async () => {
     if (!menu) {
@@ -271,7 +306,7 @@ export default function ReviewPost() {
           {isEditMode ? (
             <ReviewEditButton
               onClick={() => {
-                handleSubmit();
+                handleUpdate();
               }}
               disabled={inputs.comment.length === 0}
             />
