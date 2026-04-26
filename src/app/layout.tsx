@@ -54,9 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning>
       <body>
-        <GlobalStyle />
         <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
+          <GlobalStyle />
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
             <ContextProvider>
               <LikedMenusProvider>
