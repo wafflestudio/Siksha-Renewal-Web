@@ -100,7 +100,7 @@ const Hour = styled.div`
 const Meal = styled.div`
   font-size: 12px;
   line-height: 14px;
-  color: #fe8c59;
+  color: var(--Color-Foundation-orange-500);
   padding-top: 1px;
   font-weight: 400;
 `;

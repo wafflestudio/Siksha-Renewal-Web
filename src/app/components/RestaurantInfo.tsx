@@ -66,7 +66,7 @@ export default function RestaurantInfo() {
         <InfoBox>
           <RestName>{infoData.name_kr}</RestName>
           <CloseIcon src={"/img/close.svg"} onClick={() => toggleShowInfo()} alt="닫기" />
-          <HLine color={"#FE8C59"} margin={"10px"} />
+          <HLine color={"var(--Color-Foundation-orange-500)"} margin={"10px"} />
           <ScrollArea>
             <Wrapper>
               <AboveMap>
@@ -81,7 +81,7 @@ export default function RestaurantInfo() {
               <BelowMap>
                 <Text>영업시간</Text>
               </BelowMap>
-              <HLine color={"#FE8C59"} margin={"8px"} />
+              <HLine color={"var(--Color-Foundation-orange-500)"} margin={"8px"} />
               {infoData.etc &&
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.weekdays.length != 0 && (
@@ -91,7 +91,7 @@ export default function RestaurantInfo() {
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.saturday.length != 0 && (
                 <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
+                  <HLine color={"var(--SemanticColor-Border-Primary)"} margin={"2px"} />
                   <MobileOperatingHour type={"saturday"} etc={etc} />
                 </>
               )}
@@ -99,7 +99,7 @@ export default function RestaurantInfo() {
                 infoData.etc.operating_hours &&
                 infoData.etc.operating_hours.holiday.length != 0 && (
                 <>
-                  <HLine color={"#ECECEC"} margin={"2px"} />
+                  <HLine color={"var(--SemanticColor-Border-Primary)"} margin={"2px"} />
                   <MobileOperatingHour type={"holiday"} etc={etc} />
                 </>
               )}

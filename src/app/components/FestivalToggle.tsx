@@ -85,7 +85,7 @@ const ToggleText = styled.span<{ $active: boolean }>`
   transform: translateY(-50%);
   margin-left: ${({ $active }) => ($active ? "11.7px" : "39.28px")};
 
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Static-White);
   text-align: center;
   font-feature-settings: "liga" off, "clig" off;
   font-family: NanumSquareOTF;

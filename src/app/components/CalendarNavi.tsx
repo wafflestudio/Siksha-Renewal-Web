@@ -46,13 +46,13 @@ const DateNavi = styled.div`
   position: relative;
   top: -40px;
   @media (max-width: 768px) {
-    color: #fe8c59;
+    color: var(--Color-Foundation-orange-500);
     cursor: pointer;
     top: 4px;
   }
 `;
 const DateNaviTitle = styled.div`
-  color: var(--Color-Foundation-base-white);
+  color: var(--SemanticColor-Text-GNB);
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -60,7 +60,7 @@ const DateNaviTitle = styled.div`
   cursor: pointer;
 `;
 const DateNaviSub = styled.div`
-  color: var(--Color-Foundation-base-white) 80;
+  color: var(--SemanticColor-Text-GNB);
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
