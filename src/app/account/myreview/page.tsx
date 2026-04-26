@@ -71,7 +71,7 @@ const Container = styled.div`
   padding: 0 18.5px 18.5px;
   width: 701px;
   background: var(--SemanticColor-Background-Primary, #ffffff);
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--SemanticColor-Border-Primary);
   border-radius: 8px;
   box-sizing: border-box;
 

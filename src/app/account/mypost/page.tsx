@@ -62,7 +62,8 @@ const Container = styled.div<{ $isEmpty: boolean }>`
   @media (max-width: 768px) {
     padding-top: 16px;
     width: 100%;
-    padding-top: 16px;
+    margin-top: -4px;
+    border: none;
     height: ${(props) => (props.$isEmpty ? "100%" : "auto")};
   }
 `;
@@ -90,7 +91,7 @@ const NoPost = styled.div`
   font-weight: 400;
   line-height: 150%;
   letter-spacing: -0.3px;
-  color: #727478;
+  color: var(--Color-Foundation-gray-600);
 `;
 
 const BreakLine = styled.hr`

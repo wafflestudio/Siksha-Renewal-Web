@@ -66,7 +66,7 @@ const MenuItem = styled.div`
   width: 94px;
   padding: 12px 37px 12px 15px;
 
-  color: #979797;
+  color: var(--Color-Foundation-gray-600);
   font-feature-settings: "liga" off, "clig" off;
   font-size: 16px;
   font-style: normal;
