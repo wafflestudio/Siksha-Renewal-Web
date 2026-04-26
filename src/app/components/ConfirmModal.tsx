@@ -36,7 +36,7 @@ const MobileContainer = styled(Container)`
   width: 315px;
 
   border-radius: 26px;
-  background-color: #fff;
+  background-color: var(--SemanticColor-Background-Secondary);
 `;
 const MobileMessage = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const MobileMessage = styled.div`
   line-height: 140%; /* 22.4px */
 `;
 const MobileFooter = styled.div`
-  border-top: 1px solid #e3e3e3;
+  border-top: 1px solid var(--SemanticColor-Border-Primary);
   flex: 1;
 `;
 const MobileCloseButton = styled.button`

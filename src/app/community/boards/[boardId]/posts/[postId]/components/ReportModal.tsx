@@ -241,7 +241,7 @@ const InputBox = styled.textarea`
   border: none;
   border-radius: 13px;
   outline: none;
-  background-color: #fafafa;
+  background-color: var(--SemanticColor-Background-Tertiary);
   height: 378.11px;
   padding: 15px;
   font-size: 16px;
@@ -249,10 +249,10 @@ const InputBox = styled.textarea`
 
   ::placeholder,
   ::-webkit-input-placeholder {
-    color: #8a8a8a;
+    color: var(--Color-Foundation-gray-700);
   }
   :-ms-input-placeholder {
-    color: #8a8a8a;
+    color: var(--Color-Foundation-gray-700);
   }
 
   @media (max-width: 768px) {
@@ -273,7 +273,7 @@ const WordCnt = styled.div`
   font-size: 11px;
   font-weight: 400;
   line-height: 12.48px;
-  color: #707070;
+  color: var(--Color-Foundation-gray-700);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -306,16 +306,16 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const CancelButton = styled(Button)`
-  color: #8e8e8e;
-  background-color: #eee;
+  color: var(--Color-Foundation-gray-600);
+  background-color: var(--SemanticColor-Background-Tertiary);
 
   @media (max-width: 768px) {
     display: none;
   }
 `;
 const ReportButton = styled(Button)`
-  color: ${(props) => (props.disabled ? "#8e8e8e" : "var(--Color-Foundation-base-white)")};
-  background-color: ${(props) => (props.disabled ? "#eee" : "var(--Color-Foundation-orange-500)")};
+  color: ${(props) => (props.disabled ? "var(--Color-Foundation-gray-600)" : "var(--Color-Foundation-base-white)")};
+  background-color: ${(props) => (props.disabled ? "var(--SemanticColor-Background-Tertiary)" : "var(--Color-Foundation-orange-500)")};
 
   @media (max-width: 768px) {
     width: 100%;
