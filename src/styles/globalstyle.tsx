@@ -224,7 +224,7 @@ export const GlobalStyle = createGlobalStyle`
     --Color-Foundation-orange-700: #984600;
     --Color-Foundation-orange-800: #6B2400;
     --Color-Foundation-orange-900: #410000;
-    --Color-Foundation-base-white: #000000;
+    --Color-Foundation-base-white: #232323;
     --Color-Foundation-base-black: #FFFFFF;
     --Color-Foundation-Tint-orange: #F28C1D40;
 
