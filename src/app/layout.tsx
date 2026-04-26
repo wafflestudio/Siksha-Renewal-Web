@@ -6,7 +6,6 @@ import { ModalsProvider } from "providers/ModalsProvider";
 import { LikedMenusProvider } from "providers/LikedMenusProvider";
 import ToastProvider from "providers/ToastProvider";
 import Script from "next/script";
-import { GlobalStyle } from "styles/globalstyle";
 import { ThemeProvider } from "next-themes";
 import Layout from "components/general/Layout";
 import { Suspense } from "react";
@@ -54,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning>
       <body>
-        <GlobalStyle />
         <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
