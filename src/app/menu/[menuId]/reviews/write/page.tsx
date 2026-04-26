@@ -536,6 +536,7 @@ const CommentTextArea = styled.textarea`
   color: var(--Color-Foundation-gray-900);
 
   /* text-15/Regular */
+  font-family: var(--Font-family-sans, NanumSquare);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -543,6 +544,7 @@ const CommentTextArea = styled.textarea`
 
   ::placeholder {
     color: var(--Color-Foundation-gray-600, #989aa0);
+    -webkit-text-fill-color: var(--Color-Foundation-gray-600, #989aa0);
   }
 
   @media (max-width: 768px) {
@@ -852,7 +854,7 @@ const ReviewCancelButton = styled.button`
   line-height: 150%; /* 21px */
 
   text-align: center;
-  color: #8e8e8e;
+  color: var(--Color-Foundation-gray-600);
   border: none;
   cursor: pointer;
   font-size: 16px;
