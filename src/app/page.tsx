@@ -20,6 +20,7 @@ import TwoColumnLayout from "styles/layouts/TwoColumnLayout";
 import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
 import useLikedMenuIntro from "hooks/UseLikedMenuIntro";
+import { getIsFestival } from "utils/api/festival";
 
 export default function Home() {
   const state = useStateContext();
@@ -96,21 +97,19 @@ export default function Home() {
   useEffect(() => {
     async function fetchIsFestivalDate() {
       const dateString = formatISODate(date);
-      
-      // 하드코딩된 버전: date가 20250916, 20250918 사이면 true
-      const startFestivalDate = "2025-09-16";
-      const endFestivalDate = "2025-09-18";
-      setIsFestivalDate(dateString >= startFestivalDate && dateString <= endFestivalDate);
 
-      // TODO: Festival API 완성되면 주석 해제
-      // getIsFestival(dateString)
-      //   .then((response) => {
-      //     console.log("isFestivalDate", response);
-      //     setIsFestivalDate(response.is_festival);
-      //   })
-      //   .catch((e) => {
-      //     onHttpError(e);
-      //   });
+      // Fallback: API 미배포/실패 시 사용할 하드코딩 축제 기간 (2026 봄축제)
+      const startFestivalDate = "2026-05-12";
+      const endFestivalDate = "2026-05-14";
+      const fallback = dateString >= startFestivalDate && dateString <= endFestivalDate;
+
+      getIsFestival(dateString)
+        .then((response) => {
+          setIsFestivalDate(response.is_festival);
+        })
+        .catch(() => {
+          setIsFestivalDate(fallback);
+        });
     }
 
     if (date) {
