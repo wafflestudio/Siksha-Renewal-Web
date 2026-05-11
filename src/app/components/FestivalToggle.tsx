@@ -17,7 +17,13 @@ export default function FestivalToggle() {
 
   return (
     isFestivalDate && (
-      <ToggleWrapper onClick={() => setActive(!active)}>
+      <ToggleWrapper
+        onClick={() => {
+          const next = !active;
+          setActive(next);
+          changeFilterOption({ isFestival: next });
+        }}
+      >
         <ToggleContainer $active={active}>
           <ToggleCircle $active={active} />
         </ToggleContainer>
