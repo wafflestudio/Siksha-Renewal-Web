@@ -252,10 +252,14 @@ const StyledStarIcon = styled(StarFilledIcon)`
 
 export const FilterActionSection = styled.div<{ $marginBottom: string; $marginTop?: string }>`
   display: flex;
+  gap: 7px;
   padding-bottom: ${(props) => `${props.$marginBottom}px`};
   padding-top: ${(props) => `${props.$marginTop ?? 0}px`};
-  justify-content: space-between;
-  /* box-shadow: 0px -1px 6px 0px rgba(0, 0, 0, 0.05); */
+  box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.05);
+
+  & > button {
+    flex: 1;
+  }
 `;
 
 const FilterContentWrapper = styled.div`
@@ -289,11 +293,11 @@ const MobileFilterHeader = styled.div`
   justify-content: center;
   margin-bottom: 10.68px;
   align-items: center;
-  color: var(--SemanticColor-Text-GNB);
+  color: var(--Color-Foundation-base-black);
 `;
 
 export const MobileFilterText = styled.div`
   font-size: 16px;
   font-weight: 800;
-  color: var(--SemanticColor-Text-GNB);
+  color: var(--Color-Foundation-base-black);
 `;
