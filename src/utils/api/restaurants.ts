@@ -3,14 +3,16 @@ import APIendpoint from "constants/constants";
 import { Restaurant, RawRestaurant } from "types";
 
 export const getRestaurantList = (): Promise<Restaurant[]> => {
-  const parse = (rawData: RawRestaurant[]): Restaurant[] =>
+  // `/restaurants` 엔드포인트는 식당 이름을 camelCase(nameKr/nameEn)로 반환한다.
+  // (`/menus`의 식당 데이터는 snake_case라 RawRestaurant와 함께 fallback으로 둔다.)
+  const parse = (rawData: (RawRestaurant & Partial<Restaurant>)[]): Restaurant[] =>
     rawData.map((restaurant) => ({
       createdAt: restaurant.created_at,
       updatedAt: restaurant.updated_at,
       id: restaurant.id,
       code: restaurant.code,
-      nameKr: restaurant.name_kr,
-      nameEn: restaurant.name_en,
+      nameKr: restaurant.nameKr ?? restaurant.name_kr,
+      nameEn: restaurant.nameEn ?? restaurant.name_en,
       addr: restaurant.addr,
       lat: restaurant.lat,
       lng: restaurant.lng,
