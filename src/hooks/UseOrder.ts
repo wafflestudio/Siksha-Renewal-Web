@@ -12,5 +12,11 @@ export default function useOrder(type: "favorite" | "nonFavorite") {
     setStorage(JSON.stringify(newOrderList));
   }
 
-  return { orderList, setNewOrderList };
+  // 하이드레이션 클로저에 갇히지 않도록 최신 저장값을 직접 읽는다.
+  function getStoredOrderList(): RestaurantPreview[] {
+    if (typeof window === "undefined") return [];
+    return JSON.parse(localStorage.getItem(key) || "[]");
+  }
+
+  return { orderList, setNewOrderList, getStoredOrderList };
 }

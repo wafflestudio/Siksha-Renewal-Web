@@ -310,7 +310,7 @@ const DragButton = styled.div<{ $dragging: boolean }>`
   width: 34px;
   height: 34px;
   background-color: ${(props) =>
-    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-200)"};
   border-radius: 8px;
   flex-shrink: 0;
   cursor: grab;
