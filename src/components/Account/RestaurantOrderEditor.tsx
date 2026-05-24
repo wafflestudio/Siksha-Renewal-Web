@@ -26,8 +26,8 @@ export default function RestaurantOrderEditor({
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    if (source && destination && source !== destination) {
-      reorder(source?.index, destination?.index);
+    if (destination && source.index !== destination.index) {
+      reorder(source.index, destination.index);
     }
   };
 
@@ -91,7 +91,7 @@ const Container = styled.div`
   align-items: flex-start;
   gap: 20px;
   border-radius: 10px;
-  background: var(--SementicColor-Background-Secondary, #fff);
+  background: var(--SemanticColor-Background-Secondary, #fff);
   font-family: NanumSquare;
 
   @media (max-width: 768px) {
@@ -151,7 +151,7 @@ const MobileDescriptionWrapper = styled.div`
     align-items: center;
     gap: 10px;
     align-self: stretch;
-    background: var(--SementicColor-Background-Secondary, #fff);
+    background: var(--SemanticColor-Background-Secondary, #fff);
   }
 `;
 
