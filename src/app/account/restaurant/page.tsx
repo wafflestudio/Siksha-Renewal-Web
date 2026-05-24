@@ -14,7 +14,7 @@ import useError from "hooks/useError";
 export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
-  const { orderList, setNewOrderList } = useOrder("nonFavorite");
+  const { orderList, setNewOrderList, getStoredOrderList } = useOrder("nonFavorite");
 
   const { onHttpError } = useError();
 
@@ -23,25 +23,24 @@ export default function NonFavoriteOrderSetting() {
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
-        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
-        let ghostRestaurantIds: number[] = [];
-        orderList.forEach((res) => {
-          if (!result.find(({ id }) => id === res.id)) {
-            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
-          }
-        });
+        const storedOrder = getStoredOrderList();
+        const apiById = new Map(result.map((restaurant) => [restaurant.id, restaurant]));
 
-        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+        // 1. 저장된 순서 유지 + 사라진 식당 제거 + 이름은 API 기준으로 갱신
+        const ordered: RestaurantPreview[] = storedOrder
+          .filter((res) => apiById.has(res.id))
+          .map(({ id }) => {
+            const { nameKr, nameEn } = apiById.get(id)!;
+            return { id, nameKr, nameEn };
+          });
 
-        // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
-        let newRestaurants: RestaurantPreview[] = [];
-        result.forEach(({ id, nameKr, nameEn }) => {
-          if (!newOrderList.find((res) => res.id === id)) {
-            newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
-          }
-        });
+        // 2. 저장된 순서엔 없지만 API엔 있는 새 식당을 뒤에 추가
+        const orderedIds = new Set(ordered.map((res) => res.id));
+        const appended: RestaurantPreview[] = result
+          .filter(({ id }) => !orderedIds.has(id))
+          .map(({ id, nameKr, nameEn }) => ({ id, nameKr, nameEn }));
 
-        setNewOrderList([...newOrderList, ...newRestaurants]);
+        setNewOrderList([...ordered, ...appended]);
       })
       .catch(onHttpError);
   }, []);

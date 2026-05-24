@@ -15,9 +15,9 @@ import useError from "hooks/useError";
 export default function FavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
-  const { orderList, setNewOrderList } = useOrder("favorite");
+  const { orderList, setNewOrderList, getStoredOrderList } = useOrder("favorite");
 
-  const { favoriteRestaurants } = useFavorite();
+  const { getStoredFavorites } = useFavorite();
 
   const { onHttpError } = useError();
 
@@ -26,26 +26,26 @@ export default function FavoriteOrderSetting() {
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
-        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
+        const storedOrder = getStoredOrderList();
+        const favorites = getStoredFavorites();
+        const apiById = new Map(result.map((restaurant) => [restaurant.id, restaurant]));
+        const isFavorite = (id: number) => apiById.has(id) && favorites.includes(id);
 
-        let ghostRestaurantIds: number[] = [];
-        orderList.forEach((res) => {
-          if (!result.find(({ id }) => id === res.id) || !favoriteRestaurants.includes(res.id)) {
-            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
-          }
-        });
+        // 1. 저장된 순서 유지 + (사라졌거나 즐겨찾기 해제된) 식당 제거 + 이름은 API 기준으로 갱신
+        const ordered: RestaurantPreview[] = storedOrder
+          .filter((res) => isFavorite(res.id))
+          .map(({ id }) => {
+            const { nameKr, nameEn } = apiById.get(id)!;
+            return { id, nameKr, nameEn };
+          });
 
-        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+        // 2. 즐겨찾기에 새로 추가된 식당을 뒤에 추가
+        const orderedIds = new Set(ordered.map((res) => res.id));
+        const appended: RestaurantPreview[] = result
+          .filter(({ id }) => isFavorite(id) && !orderedIds.has(id))
+          .map(({ id, nameKr, nameEn }) => ({ id, nameKr, nameEn }));
 
-        // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
-        let newRestaurants: RestaurantPreview[] = [];
-        result.forEach(({ id, nameKr, nameEn }) => {
-          if (!newOrderList.find((res) => res.id === id) && favoriteRestaurants.includes(id)) {
-            newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
-          }
-        });
-
-        setNewOrderList([...newOrderList, ...newRestaurants]);
+        setNewOrderList([...ordered, ...appended]);
       })
       .catch(onHttpError);
   }, []);

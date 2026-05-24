@@ -122,9 +122,9 @@ const DragBox = styled.div<{ $dragging: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 499.04px;
-  height: 49px;
+  height: 50px;
   border: 1px solid var(--Color-Foundation-gray-200);
-  border-radius: 8px;
+  border-radius: 12px;
   margin: 7.92px 22.15px;
   background-color: ${(props) =>
     props.$dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};;
@@ -140,6 +140,7 @@ const Restaurant = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
+  color: var(--Color-Foundation-gray-800);
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -160,7 +161,7 @@ const DragButton = styled.div<{ $dragging: boolean }>`
   width: 34px;
   height: 34px;
   background-color: ${(props) =>
-    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+    props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-200)"};
   border-radius: 8px;
   margin: 7.5px;
 `;
