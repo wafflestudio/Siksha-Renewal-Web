@@ -76,15 +76,6 @@ export default function Account() {
           <ArrowButton aria-label="상세보기" />
         </ContentDiv>
         <BreakLine />
-        <ContentDiv
-          onClick={() => {
-            router.push("/account/restaurant/favorite");
-          }}
-        >
-          <DefaultText>즐겨찾기 식당 순서 변경</DefaultText>
-          <ArrowButton aria-label="상세보기" />
-        </ContentDiv>
-        <BreakLine />
         <ContentDiv>
           <DefaultText>메뉴 없는 식당 숨기기 </DefaultText>
           <CheckButton

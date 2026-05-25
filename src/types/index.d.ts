@@ -137,6 +137,9 @@ export interface Restaurant {
   lat: number;
   lng: number;
   etc: Record<string, any>;
+  // /restaurants/personal 응답에 포함되는 개인화 필드
+  liked?: boolean;
+  visible?: boolean;
 }
 
 export interface RawMenuList {

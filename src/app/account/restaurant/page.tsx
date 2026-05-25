@@ -1,63 +1,103 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RestaurantOrderEditor from "components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
-import { getRestaurantList } from "utils/api/restaurants";
+import {
+  getPersonalRestaurantList,
+  patchRestaurantOrder,
+  patchRestaurantLike,
+  patchRestaurantVisible,
+} from "utils/api/restaurants";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/navigation";
-import { RestaurantPreview } from "types";
-import useOrder from "hooks/UseOrder";
-import AccountLayout from "../layout";
+import { Restaurant } from "types";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
 
 export default function NonFavoriteOrderSetting() {
-  const { authStatus, authGuard } = useAuth();
+  const { authStatus, authGuard, getAccessToken } = useAuth();
   const router = useRouter();
-  const { orderList, setNewOrderList, getStoredOrderList } = useOrder("nonFavorite");
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { onHttpError } = useError();
 
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    getRestaurantList()
-      .then((result) => {
-        const storedOrder = getStoredOrderList();
-        const apiById = new Map(result.map((restaurant) => [restaurant.id, restaurant]));
+    if (authStatus === "loading") return;
+    if (authStatus !== "login") {
+      setLoading(false);
+      return;
+    }
 
-        // 1. 저장된 순서 유지 + 사라진 식당 제거 + 이름은 API 기준으로 갱신
-        const ordered: RestaurantPreview[] = storedOrder
-          .filter((res) => apiById.has(res.id))
-          .map(({ id }) => {
-            const { nameKr, nameEn } = apiById.get(id)!;
-            return { id, nameKr, nameEn };
-          });
-
-        // 2. 저장된 순서엔 없지만 API엔 있는 새 식당을 뒤에 추가
-        const orderedIds = new Set(ordered.map((res) => res.id));
-        const appended: RestaurantPreview[] = result
-          .filter(({ id }) => !orderedIds.has(id))
-          .map(({ id, nameKr, nameEn }) => ({ id, nameKr, nameEn }));
-
-        setNewOrderList([...ordered, ...appended]);
-      })
-      .catch(onHttpError);
-  }, []);
+    getAccessToken()
+      .then((token) => getPersonalRestaurantList(token))
+      .then(setRestaurantList)
+      .catch(onHttpError)
+      .finally(() => setLoading(false));
+  }, [authStatus]);
 
   const reorder = (source: number, destination: number) => {
-    const copyData = [...orderList];
-    const sourceData = copyData[source];
-    copyData.splice(source, 1);
-    copyData.splice(destination, 0, sourceData);
-    setNewOrderList(copyData);
+    const newList = [...restaurantList];
+    const [moved] = newList.splice(source, 1);
+    newList.splice(destination, 0, moved);
+    setRestaurantList(newList);
+    getAccessToken()
+      .then((token) => patchRestaurantOrder(token, newList.map((r) => r.id)))
+      .catch(onHttpError);
   };
+
+  const toggleLiked = (id: number) => {
+    const current = restaurantList.find((r) => r.id === id);
+    if (!current) return;
+    const newLiked = !current.liked;
+    const newVisible = newLiked ? true : current.visible ?? true;
+    setRestaurantList((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, liked: newLiked, visible: newVisible } : r)),
+    );
+    getAccessToken()
+      .then((token) => {
+        const calls: Promise<void>[] = [patchRestaurantLike(token, id, newLiked)];
+        if (newVisible !== (current.visible ?? true)) {
+          calls.push(patchRestaurantVisible(token, id, newVisible));
+        }
+        return Promise.all(calls);
+      })
+      .catch(onHttpError);
+  };
+
+  const toggleVisible = (id: number) => {
+    const current = restaurantList.find((r) => r.id === id);
+    if (!current) return;
+    const newVisible = !(current.visible ?? true);
+    const newLiked = newVisible ? current.liked : false;
+    setRestaurantList((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, visible: newVisible, liked: newLiked } : r)),
+    );
+    getAccessToken()
+      .then((token) => {
+        const calls: Promise<void>[] = [patchRestaurantVisible(token, id, newVisible)];
+        if (!newVisible && current.liked) {
+          calls.push(patchRestaurantLike(token, id, false));
+        }
+        return Promise.all(calls);
+      })
+      .catch(onHttpError);
+  };
+
+  if (loading) return null;
 
   return (
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor
+          order={restaurantList}
+          reorder={reorder}
+          onToggleLiked={toggleLiked}
+          onToggleVisible={toggleVisible}
+        />
       </Container>
     </>
   );
