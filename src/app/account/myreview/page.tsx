@@ -16,7 +16,7 @@ export default function MyReview() {
   const { authStatus, getAccessToken, authGuard } = useAuth();
   const { onHttpError } = useError();
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   const fetchMyReviews = (size: number, page: number) =>
     getAccessToken()
@@ -43,6 +43,7 @@ export default function MyReview() {
     if (reviews.length == 0 && authStatus === "login") {
       fetchMyReviews(100, 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviews, authStatus]);
 
   if (authStatus === "login") {

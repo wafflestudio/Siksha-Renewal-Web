@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 import BackClickable from "./BackClickable";
 import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/navigation";
@@ -72,13 +73,17 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
             <RadioSection>
               <RadioOption onClick={() => setChoice("like")}>
                 <Radio $selected={choice === "like"}>
-                  {choice === "like" && <img src="/img/radio.svg" alt="선택됨" />}
+                  {choice === "like" && (
+                    <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                  )}
                 </Radio>
                 <RadioLabel>좋아요, 알림을 받을래요.</RadioLabel>
               </RadioOption>
               <RadioOption onClick={() => setChoice("later")}>
                 <Radio $selected={choice === "later"}>
-                  {choice === "later" && <img src="/img/radio.svg" alt="선택됨" />}
+                  {choice === "later" && (
+                    <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                  )}
                 </Radio>
                 <RadioLabel>괜찮아요, 알림을 받지 않을래요.</RadioLabel>
               </RadioOption>
@@ -122,13 +127,17 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
           <MobileRadioSection>
             <MobileRadioOption onClick={() => setChoice("like")}>
               <MobileRadio $selected={choice === "like"}>
-                {choice === "like" && <img src="/img/radio.svg" alt="선택됨" />}
+                {choice === "like" && (
+                  <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                )}
               </MobileRadio>
               <MobileRadioLabel>좋아요, 알림을 받을래요.</MobileRadioLabel>
             </MobileRadioOption>
             <MobileRadioOption onClick={() => setChoice("later")}>
               <MobileRadio $selected={choice === "later"}>
-                {choice === "later" && <img src="/img/radio.svg" alt="선택됨" />}
+                {choice === "later" && (
+                  <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                )}
               </MobileRadio>
               <MobileRadioLabel>괜찮아요, 알림을 받지 않을래요.</MobileRadioLabel>
             </MobileRadioOption>

@@ -20,7 +20,7 @@ export default function MyPost() {
 
   const router = useRouter();
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   const fetchMyPosts = (size: number, page: number) =>
     getAccessToken()

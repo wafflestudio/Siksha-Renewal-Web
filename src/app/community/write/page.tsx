@@ -56,6 +56,7 @@ export default function PostWriter() {
     fetchBoards();
     // update inputs' isAnoymous state
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch previous post only when auth is ready
@@ -63,6 +64,7 @@ export default function PostWriter() {
     if (authStatus === "login" && postId) {
       fetchPreviousPost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus, postId]);
 
   // 게시판 초기 선택

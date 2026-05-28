@@ -20,6 +20,7 @@ export default function UserSetting() {
       setIsLoading(false);
     }
     if (isLoading) authGuard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus]);
 
   const handleLogout = () => {

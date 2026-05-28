@@ -18,7 +18,7 @@ export default function Inquiry() {
   const { getAccessToken, authStatus, authGuard } = useAuth();
   const { defaultProfileURL } = UseCurrentTheme();
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   const [voc, setVoc] = useState("");
 

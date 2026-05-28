@@ -17,7 +17,7 @@ export default function NotificationSettings() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [selectedMenuIds, setSelectedMenuIds] = useState<Set<number>>(new Set());
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   // Load settings from localStorage
   useEffect(() => {

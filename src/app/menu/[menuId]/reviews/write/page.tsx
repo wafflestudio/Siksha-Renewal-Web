@@ -79,6 +79,7 @@ export default function ReviewPost() {
       .catch((e) => {
         onHttpError(e);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewId, isEditMode]);
 
   useEffect(() => {

@@ -12,7 +12,7 @@ export default function NotificationTimeSettings() {
   const router = useRouter();
   const [timePreference, setTimePreference] = useState<NotificationTimePreference>("once_morning");
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   // Load saved preference from localStorage
   useEffect(() => {
