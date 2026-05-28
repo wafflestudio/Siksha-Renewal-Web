@@ -158,7 +158,7 @@ const Container = styled.div`
 const SettingsCard = styled.div`
   width: 100%;
   max-width: 343px;
-  background: white;
+  background: var(--SemanticColor-Background-Secondary);
   border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
   border-radius: 8px;
   padding: 14px;
@@ -185,7 +185,10 @@ const ToggleSwitch = styled.div<{ $enabled: boolean }>`
   width: 36px;
   height: 22px;
   border-radius: 59.14px;
-  background-color: ${(props) => (props.$enabled ? "#ff9522" : "#e5e6e9")};
+  background-color: ${(props) =>
+    props.$enabled
+      ? "var(--Color-Foundation-orange-500)"
+      : "var(--Color-Foundation-gray-200)"};
   position: relative;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -196,7 +199,7 @@ const ToggleCircle = styled.div<{ $enabled: boolean }>`
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--Color-Static-White);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -233,7 +236,7 @@ const InstructionText = styled.p`
 
 const LoadingText = styled.div`
   font-size: 14px;
-  color: #999;
+  color: var(--Color-Foundation-gray-600);
   text-align: center;
   padding: 20px;
 `;
@@ -241,7 +244,7 @@ const LoadingText = styled.div`
 const RestaurantCard = styled.div`
   width: 100%;
   max-width: 343px;
-  background: white;
+  background: var(--SemanticColor-Background-Secondary);
   border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
   border-radius: 8px;
   padding: 14px;

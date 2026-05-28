@@ -80,7 +80,7 @@ const LeftSide = styled.div`
 const Text = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: black;
+  color: var(--Color-Foundation-base-black);
   justify-content: flex-start;
   padding-bottom: 8px;
   font-weight: 400;

@@ -160,7 +160,7 @@ const Nickname = styled.div`
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: -0.3px;
-  color: #262728;
+  color: var(--Color-Foundation-gray-900);
   display: flex;
   align-items: center;
 `;
@@ -196,7 +196,7 @@ const TextArea = styled.textarea`
   }
 
   &::placeholder {
-    color: #989aa0;
+    color: var(--Color-Foundation-gray-600);
     font-size: 15px;
     font-weight: 400;
     line-height: 1.5;

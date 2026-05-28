@@ -76,7 +76,7 @@ const Container = styled.div`
 const SettingsCard = styled.div`
   width: 100%;
   max-width: 343px;
-  background: white;
+  background: var(--SemanticColor-Background-Secondary);
   border: 1px solid var(--Color-Foundation-gray-200, #e5e6e9);
   border-radius: 8px;
   padding: 14px;

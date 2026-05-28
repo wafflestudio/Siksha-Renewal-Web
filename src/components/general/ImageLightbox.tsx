@@ -126,14 +126,14 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000000B2;
+  background: #000000b2;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
 
   @media (max-width: 768px) {
-    background: #000;
+    background: var(--Color-Static-Black);
   }
 `;
 

@@ -163,8 +163,8 @@ const MobileButton = styled.button`
 
 const MobileRetryButton = styled(MobileButton)<{ isServerError: boolean }>`
   display: ${({ isServerError }) => (isServerError ? "inherit" : "none")};
-  color: #ff9522;
-  border-left: 1px solid #e3e3e3;
+  color: var(--SemanticColor-Text-Accent);
+  border-left: 1px solid var(--SemanticColor-Border-Primary);
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};

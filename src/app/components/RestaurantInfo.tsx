@@ -145,7 +145,7 @@ const RestName = styled.div`
   font-size: 20px;
   line-height: 23px;
   font-weight: 700;
-  color: black;
+  color: var(--Color-Foundation-base-black);
   padding-top: 14px;
   white-space: nowrap;
 `;
@@ -193,7 +193,7 @@ const AboveMap = styled.div`
 const Text = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: black;
+  color: var(--Color-Foundation-base-black);
   font-weight: 400;
 `;
 

@@ -37,7 +37,7 @@ const DateNavi = styled.div`
   font-weight: 700;
   font-size: 15px;
   line-height: 17px;
-  color: black;
+  color: var(--Color-Foundation-base-black);
   max-width: 600px;
   width: 40vw;
   white-space: nowrap;
