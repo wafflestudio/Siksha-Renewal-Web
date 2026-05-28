@@ -245,7 +245,7 @@ const MobilePageIndicator = styled.div`
   line-height: 140%;
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Static-White);
   text-align: center;
 
 `;
