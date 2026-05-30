@@ -16,7 +16,7 @@ export default function MyReview() {
   const { authStatus, getAccessToken, authGuard } = useAuth();
   const { onHttpError } = useError();
 
-  useEffect(authGuard, [authStatus]);
+  useEffect(authGuard, [authGuard]);
 
   const fetchMyReviews = (size: number, page: number) =>
     getAccessToken()
@@ -43,6 +43,7 @@ export default function MyReview() {
     if (reviews.length == 0 && authStatus === "login") {
       fetchMyReviews(100, 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviews, authStatus]);
 
   if (authStatus === "login") {
@@ -71,7 +72,7 @@ const Container = styled.div`
   padding: 0 18.5px 18.5px;
   width: 701px;
   background: var(--SemanticColor-Background-Primary, #ffffff);
-  border: 1px solid #e8e8e8;
+  border: 1px solid var(--SemanticColor-Border-Primary);
   border-radius: 8px;
   box-sizing: border-box;
 

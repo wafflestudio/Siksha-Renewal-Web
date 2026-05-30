@@ -56,6 +56,7 @@ export default function PostWriter() {
     fetchBoards();
     // update inputs' isAnoymous state
     setInputs((prev) => ({ ...prev, options: { anonymous: isAnonymousWriter } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch previous post only when auth is ready
@@ -63,6 +64,7 @@ export default function PostWriter() {
     if (authStatus === "login" && postId) {
       fetchPreviousPost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus, postId]);
 
   // 게시판 초기 선택
@@ -364,7 +366,7 @@ const Button = styled.button`
     background-color: var(--SemanticColor-Element-Chip);
   }
   &.submit {
-    color: var(--Color-Foundation-base-white);
+    color: var(--SemanticColor-Text-Button);
     background-color: var(--Color-Foundation-gray-600);
     &.active {
       background-color: var(--Color-Foundation-orange-500);

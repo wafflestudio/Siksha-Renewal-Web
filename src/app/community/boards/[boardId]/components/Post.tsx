@@ -165,7 +165,7 @@ const Photo = styled.img`
   width: 84px;
   height: 84px;
   border-radius: 8px;
-  background-color: #d9d9d9;
+  background-color: var(--SemanticColor-Background-Tertiary);
 
   @media (max-width: 768px) {
     width: 61px;
