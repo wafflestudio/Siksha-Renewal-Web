@@ -19,6 +19,7 @@ export default function FavoriteOrderSetting() {
   const [restaurantOrderList, setRestaurantOrderList] = useState<RestaurantPreview[]>([]);
 
   const { favoriteRestaurants } = useFavorite();
+  const favoriteRestaurantKey = favoriteRestaurants.join(",");
 
   const { onHttpError } = useError();
 
@@ -52,7 +53,7 @@ export default function FavoriteOrderSetting() {
         setNewOrderList(nextOrderList);
       })
       .catch(onHttpError);
-  }, []);
+  }, [favoriteRestaurantKey]);
 
   const reorder = (source: number, destination: number) => {
     const copyData = [...restaurantOrderList];

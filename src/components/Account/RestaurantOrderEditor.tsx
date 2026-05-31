@@ -1,8 +1,9 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { RestaurantPreview } from "types";
+import useFavorite from "hooks/UseFavorite";
+import useHiddenRestaurant from "hooks/UseHiddenRestaurant";
 import StarFilledIcon from "assets/icons/star-filled.svg";
 import StarOutlinedIcon from "assets/icons/star-outlined.svg";
 import VisibilityIcon from "assets/icons/visibility.svg";
@@ -13,20 +14,11 @@ interface RestaurantOrderEditorProps {
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
-type IconState = {
-  isStarFilled: boolean;
-  isVisible: boolean;
-};
-
-const defaultIconState: IconState = {
-  isStarFilled: true,
-  isVisible: false,
-};
-
 export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
   const pathname = usePathname();
   const isFavorite = pathname?.includes("favorite");
-  const [iconStates, setIconStates] = useState<Record<number, IconState>>({});
+  const { isFavorite: isFavoriteRestaurant, toggleFavorite } = useFavorite();
+  const { isHidden, hideRestaurant, showRestaurant } = useHiddenRestaurant();
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -36,36 +28,23 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
     }
   };
 
-  const getIconState = (restaurantId: number) => iconStates[restaurantId] ?? defaultIconState;
-
   const toggleStar = (restaurantId: number) => {
-    setIconStates((prev) => {
-      const current = prev[restaurantId] ?? defaultIconState;
-      const isStarFilled = !current.isStarFilled;
-
-      return {
-        ...prev,
-        [restaurantId]: {
-          isStarFilled,
-          isVisible: isStarFilled ? true : current.isVisible,
-        },
-      };
-    });
+    if (!isFavoriteRestaurant(restaurantId)) {
+      showRestaurant(restaurantId);
+    }
+    toggleFavorite(restaurantId);
   };
 
   const toggleVisibility = (restaurantId: number) => {
-    setIconStates((prev) => {
-      const current = prev[restaurantId] ?? defaultIconState;
-      const isVisible = !current.isVisible;
+    if (isHidden(restaurantId)) {
+      showRestaurant(restaurantId);
+      return;
+    }
 
-      return {
-        ...prev,
-        [restaurantId]: {
-          isVisible,
-          isStarFilled: isVisible ? current.isStarFilled : false,
-        },
-      };
-    });
+    hideRestaurant(restaurantId);
+    if (isFavoriteRestaurant(restaurantId)) {
+      toggleFavorite(restaurantId);
+    }
   };
 
   return (
@@ -80,7 +59,8 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
                 const { id } = restaurant;
                 const nameKr = restaurant.nameKr;
                 const restaurantName = nameKr ?? "이름 없는 식당";
-                const { isStarFilled, isVisible } = getIconState(id);
+                const isStarFilled = isFavoriteRestaurant(id);
+                const isVisible = !isHidden(id);
 
                 return (
                   <Draggable key={id} draggableId={id.toString()} index={index}>
@@ -97,6 +77,7 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
                               type="button"
                               $active={isStarFilled}
                               onClick={(event) => {
+                                event.preventDefault();
                                 event.stopPropagation();
                                 toggleStar(id);
                               }}
@@ -112,6 +93,7 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
                               type="button"
                               $active={isVisible}
                               onClick={(event) => {
+                                event.preventDefault();
                                 event.stopPropagation();
                                 toggleVisibility(id);
                               }}
