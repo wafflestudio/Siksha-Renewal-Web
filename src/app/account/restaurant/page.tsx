@@ -38,8 +38,6 @@ export default function NonFavoriteOrderSetting() {
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
-        console.log("getRestaurantList result sample", result[0], Object.keys(result[0] ?? {}));
-
         const restaurants = result.map(toRestaurantPreview);
         const restaurantsById = new Map(restaurants.map((restaurant) => [restaurant.id, restaurant]));
 
