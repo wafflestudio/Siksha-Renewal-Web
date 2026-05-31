@@ -233,6 +233,10 @@ const StarIconSlot = styled(IconButton)<{ $active: boolean }>`
     width: 24px;
     height: 24px;
   }
+
+  svg g {
+    mask: none;
+  }
 `;
 
 const VisibilityIconSlot = styled(IconButton)<{ $active: boolean }>`
