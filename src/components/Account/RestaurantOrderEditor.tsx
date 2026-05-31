@@ -1,16 +1,32 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { RestaurantPreview } from "types";
+import StarFilledIcon from "assets/icons/star-filled.svg";
+import StarOutlinedIcon from "assets/icons/star-outlined.svg";
+import VisibilityIcon from "assets/icons/visibility.svg";
+import VisibilityOffIcon from "assets/icons/visibility-off.svg";
 
 interface RestaurantOrderEditorProps {
   order: RestaurantPreview[];
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
+type IconState = {
+  isStarFilled: boolean;
+  isVisible: boolean;
+};
+
+const defaultIconState: IconState = {
+  isStarFilled: true,
+  isVisible: false,
+};
+
 export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
   const pathname = usePathname();
   const isFavorite = pathname?.includes("favorite");
+  const [iconStates, setIconStates] = useState<Record<number, IconState>>({});
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -18,6 +34,38 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
     if (source && destination && source !== destination) {
       reorder(source?.index, destination?.index);
     }
+  };
+
+  const getIconState = (restaurantId: number) => iconStates[restaurantId] ?? defaultIconState;
+
+  const toggleStar = (restaurantId: number) => {
+    setIconStates((prev) => {
+      const current = prev[restaurantId] ?? defaultIconState;
+      const isStarFilled = !current.isStarFilled;
+
+      return {
+        ...prev,
+        [restaurantId]: {
+          isStarFilled,
+          isVisible: isStarFilled ? true : current.isVisible,
+        },
+      };
+    });
+  };
+
+  const toggleVisibility = (restaurantId: number) => {
+    setIconStates((prev) => {
+      const current = prev[restaurantId] ?? defaultIconState;
+      const isVisible = !current.isVisible;
+
+      return {
+        ...prev,
+        [restaurantId]: {
+          isVisible,
+          isStarFilled: isVisible ? current.isStarFilled : false,
+        },
+      };
+    });
   };
 
   return (
@@ -29,10 +77,10 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
           {(provided) => (
             <DragZone {...provided.droppableProps} ref={provided.innerRef}>
               {order.map((restaurant, index) => {
-
                 const { id } = restaurant;
                 const nameKr = restaurant.nameKr;
                 const restaurantName = nameKr ?? "이름 없는 식당";
+                const { isStarFilled, isVisible } = getIconState(id);
 
                 return (
                   <Draggable key={id} draggableId={id.toString()} index={index}>
@@ -44,7 +92,37 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
                         $dragging={snapshot.isDragging}
                       >
                         <DragBox $dragging={snapshot.isDragging}>
-                          <Restaurant>{restaurantName}</Restaurant>
+                          <RestaurantInfo>
+                            <StarIconSlot
+                              type="button"
+                              $active={isStarFilled}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                toggleStar(id);
+                              }}
+                            >
+                              {isStarFilled ? (
+                                <StarFilledIcon aria-label="즐겨찾기 식당" />
+                              ) : (
+                                <StarOutlinedIcon aria-label="즐겨찾기하지 않은 식당" />
+                              )}
+                            </StarIconSlot>
+                            <Restaurant>{restaurantName}</Restaurant>
+                            <VisibilityIconSlot
+                              type="button"
+                              $active={isVisible}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                toggleVisibility(id);
+                              }}
+                            >
+                              {isVisible ? (
+                                <VisibilityIcon aria-label="표시 중인 식당" />
+                              ) : (
+                                <VisibilityOffIcon aria-label="숨김 처리된 식당" />
+                              )}
+                            </VisibilityIconSlot>
+                          </RestaurantInfo>
                           <DragButton $dragging={snapshot.isDragging}>
                             <Line />
                             <Line />
@@ -127,15 +205,19 @@ const DragContainer = styled.div<{ $dragging: boolean }>`
 `;
 
 const DragBox = styled.div<{ $dragging: boolean }>`
+  box-sizing: border-box;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 14px;
   width: 499.04px;
   height: 49px;
   border: 1px solid var(--Color-Foundation-gray-200);
-  border-radius: 8px;
+  border-radius: 12px;
   margin: 7.92px 22.15px;
+  padding: 7px 7px 7px 15px;
   background-color: ${(props) =>
-    props.$dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};;
+    props.$dragging ? "var(--Color-Foundation-gray-50)" : "var(--SemanticColor-Element-Tooltip2)"};
 
   @media (max-width: 768px) {
     width: calc(100% - 40px);
@@ -143,11 +225,55 @@ const DragBox = styled.div<{ $dragging: boolean }>`
   }
 `;
 
+const RestaurantInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+`;
+
+const IconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+
+const StarIconSlot = styled(IconButton)<{ $active: boolean }>`
+  width: 24px;
+  height: 24px;
+  color: ${(props) =>
+    props.$active ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const VisibilityIconSlot = styled(IconButton)<{ $active: boolean }>`
+  width: 30px;
+  height: 30px;
+  color: ${(props) =>
+    props.$active ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
 const Restaurant = styled.p`
-  margin: 13px 0 13px 14.65px;
+  margin: 0;
   font-weight: 400;
   font-size: 16px;
-  line-height: 23px;
+  line-height: 1.4;
+  color: var(--Color-Foundation-gray-800);
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -165,12 +291,12 @@ const DragButton = styled.div<{ $dragging: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 0 0 auto;
   width: 34px;
   height: 34px;
   background-color: ${(props) =>
     props.$dragging ? "var(--Color-Foundation-orange-500)" : "var(--Color-Foundation-gray-300)"};
   border-radius: 8px;
-  margin: 7.5px;
 `;
 
 const Line = styled.div`
