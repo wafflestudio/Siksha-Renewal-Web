@@ -8,7 +8,7 @@ interface RestaurantOrderEditorProps {
   reorder: (dragStartIndex: number, dragEndIndex: number) => void;
 }
 
-export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
+export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrderEditorProps) {
   const pathname = usePathname();
   const isFavorite = pathname?.includes("favorite");
 
@@ -26,7 +26,7 @@ export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrd
         <Title>{`${isFavorite ? "즐겨찾기 " : ""}식당 순서 변경`}</Title>
         <Description>우측 손잡이를 드래그하여 순서를 바꿔보세요.</Description>
         <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
+          {(provided) => (
             <DragZone {...provided.droppableProps} ref={provided.innerRef}>
               {order.map(({ id, nameKr }, index) => (
                 <Draggable key={id} draggableId={id.toString()} index={index}>
@@ -49,6 +49,7 @@ export default function RestzaurantOrderEditor({ order, reorder }: RestaurantOrd
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </DragZone>
           )}
         </Droppable>
