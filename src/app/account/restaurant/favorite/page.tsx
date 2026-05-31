@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RestaurantOrderEditor from "components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
@@ -16,6 +16,7 @@ export default function FavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
   const { orderList, setNewOrderList } = useOrder("favorite");
+  const [restaurantOrderList, setRestaurantOrderList] = useState<RestaurantPreview[]>([]);
 
   const { favoriteRestaurants } = useFavorite();
 
@@ -26,16 +27,17 @@ export default function FavoriteOrderSetting() {
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
-        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
+        const restaurantsById = new Map(
+          result.map(({ id, nameKr, nameEn }) => [id, { id, nameKr, nameEn }]),
+        );
 
-        let ghostRestaurantIds: number[] = [];
-        orderList.forEach((res) => {
-          if (!result.find(({ id }) => id === res.id) || !favoriteRestaurants.includes(res.id)) {
-            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
-          }
-        });
-
-        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+        // 1. localStorage에는 있는데, 받아온 데이터에는 없거나 즐겨찾기가 아닌 식당은 remove
+        const newOrderList = orderList
+          .map(({ id }) => restaurantsById.get(id))
+          .filter(
+            (restaurant): restaurant is RestaurantPreview =>
+              !!restaurant && favoriteRestaurants.includes(restaurant.id),
+          );
 
         // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
         let newRestaurants: RestaurantPreview[] = [];
@@ -45,16 +47,19 @@ export default function FavoriteOrderSetting() {
           }
         });
 
-        setNewOrderList([...newOrderList, ...newRestaurants]);
+        const nextOrderList = [...newOrderList, ...newRestaurants];
+        setRestaurantOrderList(nextOrderList);
+        setNewOrderList(nextOrderList);
       })
       .catch(onHttpError);
   }, []);
 
   const reorder = (source: number, destination: number) => {
-    const copyData = [...orderList];
+    const copyData = [...restaurantOrderList];
     const sourceData = copyData[source];
     copyData.splice(source, 1);
     copyData.splice(destination, 0, sourceData);
+    setRestaurantOrderList(copyData);
     setNewOrderList(copyData);
   };
 
@@ -62,7 +67,7 @@ export default function FavoriteOrderSetting() {
     <>
       <MobileSubHeader title="즐겨찾기 식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor order={restaurantOrderList} reorder={reorder} />
       </Container>
     </>
   );

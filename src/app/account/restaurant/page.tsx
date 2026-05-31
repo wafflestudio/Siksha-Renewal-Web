@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RestaurantOrderEditor from "components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
 import { getRestaurantList } from "utils/api/restaurants";
@@ -11,10 +11,25 @@ import AccountLayout from "../layout";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
 
+type RestaurantListItem = {
+  id: number;
+  nameKr?: string;
+  nameEn?: string;
+  name_kr?: string;
+  name_en?: string;
+};
+
+const toRestaurantPreview = (restaurant: RestaurantListItem): RestaurantPreview => ({
+  id: restaurant.id,
+  nameKr: restaurant.nameKr ?? restaurant.name_kr ?? "",
+  nameEn: restaurant.nameEn ?? restaurant.name_en ?? "",
+});
+
 export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard } = useAuth();
   const router = useRouter();
   const { orderList, setNewOrderList } = useOrder("nonFavorite");
+  const [restaurantOrderList, setRestaurantOrderList] = useState<RestaurantPreview[]>([]);
 
   const { onHttpError } = useError();
 
@@ -23,34 +38,37 @@ export default function NonFavoriteOrderSetting() {
   useEffect(() => {
     getRestaurantList()
       .then((result) => {
-        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
-        let ghostRestaurantIds: number[] = [];
-        orderList.forEach((res) => {
-          if (!result.find(({ id }) => id === res.id)) {
-            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
-          }
-        });
+        console.log("getRestaurantList result sample", result[0], Object.keys(result[0] ?? {}));
 
-        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
+        const restaurants = result.map(toRestaurantPreview);
+        const restaurantsById = new Map(restaurants.map((restaurant) => [restaurant.id, restaurant]));
+
+        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
+        const newOrderList = orderList
+          .map(({ id }) => restaurantsById.get(id))
+          .filter((restaurant): restaurant is RestaurantPreview => !!restaurant);
 
         // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
         let newRestaurants: RestaurantPreview[] = [];
-        result.forEach(({ id, nameKr, nameEn }) => {
+        restaurants.forEach(({ id, nameKr, nameEn }) => {
           if (!newOrderList.find((res) => res.id === id)) {
             newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
           }
         });
 
-        setNewOrderList([...newOrderList, ...newRestaurants]);
+        const nextOrderList = [...newOrderList, ...newRestaurants];
+        setRestaurantOrderList(nextOrderList);
+        setNewOrderList(nextOrderList);
       })
       .catch(onHttpError);
   }, []);
 
   const reorder = (source: number, destination: number) => {
-    const copyData = [...orderList];
+    const copyData = [...restaurantOrderList];
     const sourceData = copyData[source];
     copyData.splice(source, 1);
     copyData.splice(destination, 0, sourceData);
+    setRestaurantOrderList(copyData);
     setNewOrderList(copyData);
   };
 
@@ -58,7 +76,7 @@ export default function NonFavoriteOrderSetting() {
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor order={restaurantOrderList} reorder={reorder} />
       </Container>
     </>
   );

@@ -28,27 +28,34 @@ export default function RestaurantOrderEditor({ order, reorder }: RestaurantOrde
         <Droppable droppableId="droppable">
           {(provided) => (
             <DragZone {...provided.droppableProps} ref={provided.innerRef}>
-              {order.map(({ id, nameKr }, index) => (
-                <Draggable key={id} draggableId={id.toString()} index={index}>
-                  {(provided, snapshot) => (
-                    <DragContainer
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      $dragging={snapshot.isDragging}
-                    >
-                      <DragBox $dragging={snapshot.isDragging}>
-                        <Restaurant>{nameKr}</Restaurant>
-                        <DragButton $dragging={snapshot.isDragging}>
-                          <Line />
-                          <Line />
-                          <Line />
-                        </DragButton>
-                      </DragBox>
-                    </DragContainer>
-                  )}
-                </Draggable>
-              ))}
+              {order.map((restaurant, index) => {
+
+                const { id } = restaurant;
+                const nameKr = restaurant.nameKr;
+                const restaurantName = nameKr ?? "이름 없는 식당";
+
+                return (
+                  <Draggable key={id} draggableId={id.toString()} index={index}>
+                    {(provided, snapshot) => (
+                      <DragContainer
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        $dragging={snapshot.isDragging}
+                      >
+                        <DragBox $dragging={snapshot.isDragging}>
+                          <Restaurant>{restaurantName}</Restaurant>
+                          <DragButton $dragging={snapshot.isDragging}>
+                            <Line />
+                            <Line />
+                            <Line />
+                          </DragButton>
+                        </DragBox>
+                      </DragContainer>
+                    )}
+                  </Draggable>
+                );
+              })}
               {provided.placeholder}
             </DragZone>
           )}
