@@ -74,7 +74,7 @@ export default function Home() {
             const sortFunction = (a, b) => {
               const aOrder = orderHash.get(a.id)?.order ?? Infinity;
               const bOrder = orderHash.get(b.id)?.order ?? Infinity;
-              if (aOrder === bOrder) return a.name_kr.localeCompare(b.name);
+              if (aOrder === bOrder) return a.name_kr.localeCompare(b.name_kr);
               else return aOrder - bOrder;
             };
 
@@ -92,7 +92,7 @@ export default function Home() {
     }
 
     fetchData();
-  }, [date, authStatus, meal, isFilterFavorite]); // TODO: meal, isFilterFavorite 의존성 배열에서 제거
+  }, [date, authStatus, meal, isFilterFavorite, orderList]); // TODO: meal, isFilterFavorite 의존성 배열에서 제거
 
   useEffect(() => {
     async function fetchIsFestivalDate() {

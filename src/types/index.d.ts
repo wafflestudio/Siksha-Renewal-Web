@@ -120,6 +120,8 @@ export interface RawRestaurant {
   code: string;
   name_kr: string;
   name_en: string;
+  nameKr?: string;
+  nameEn?: string;
   addr: string;
   lat: number;
   lng: number;
