@@ -233,7 +233,7 @@ const Rate = styled.div`
 const StyledNoMeatIcon = styled(NoMeatIcon)`
   width: 19px;
   padding-bottom: 2px;
-  color: #b0b0b0; // 아이콘 자체에 마스킹 처리되는 부분이 흰색으로 표현됨.
+  color: var(--Color-Foundation-gray-600); // 아이콘 자체에 마스킹 처리되는 부분이 흰색으로 표현됨.
 
   @media (max-width: 768px) {
     padding-left: 5px;

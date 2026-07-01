@@ -68,7 +68,7 @@ const NavLink = styled.div<{ $cur: boolean }>`
     css`
       color: var(--SemanticColor-Text-GNB, #fff);
       font-weight: 800;
-      box-shadow: inset 0 -4px 0 #fff; /* 요소의 안쪽에 그려지도록 box-shadow 사용 */
+      box-shadow: inset 0 -4px 0 var(--SemanticColor-Text-GNB); /* 요소의 안쪽에 그려지도록 box-shadow 사용 */
     `};
 
   &:hover {

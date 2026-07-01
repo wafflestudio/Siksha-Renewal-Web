@@ -20,6 +20,7 @@ export default function UserSetting() {
       setIsLoading(false);
     }
     if (isLoading) authGuard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authStatus]);
 
   const handleLogout = () => {
@@ -141,7 +142,7 @@ const WithdrawalText = styled(Text)`
   @media (max-width: 768px) {
     margin-top: 8px;
     margin-bottom: 8px;
-    color: #8a8a8a;
+    color: var(--Color-Foundation-gray-600);
   }
 `;
 
@@ -152,7 +153,7 @@ const BreakLine = styled.hr`
   margin: 0 6px;
 
   @media (max-width: 768px) {
-    background: #e8e8e8;
+    background: var(--SemanticColor-Border-Primary);
     margin: 0 6px;
   }
 `;

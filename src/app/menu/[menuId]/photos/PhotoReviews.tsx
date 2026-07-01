@@ -162,7 +162,7 @@ const NoReviewMessage = styled.div`
   width: 100%;
   font-size: 20px;
   font-weight: 400;
-  color: #797979;
+  color: var(--Color-Foundation-gray-700);
   flex-grow: 1;
   justify-content: center;
   @media (max-width: 768px) {

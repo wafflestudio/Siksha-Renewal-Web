@@ -52,7 +52,7 @@ const ReviewerIdText = styled.span`
 `;
 
 const ReviewDate = styled.span`
-  color: #919191;
+  color: var(--Color-Foundation-gray-600);
   font-size: 10px;
   font-weight: 700;
 `;

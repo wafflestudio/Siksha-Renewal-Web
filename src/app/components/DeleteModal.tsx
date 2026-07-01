@@ -108,12 +108,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const CancelButton = styled(Button)`
-  background-color: #eeeeee;
-  color: #8e8e8e;
+  background-color: var(--SemanticColor-Background-Tertiary);
+  color: var(--Color-Foundation-gray-600);
 `;
 const DeleteButton = styled(Button)`
   background-color: var(--Color-Foundation-orange-500);
-  color: var(--Color-Foundation-base-white);
+  color: var(--SemanticColor-Text-Button);
 `;
 
 const MobileContainer = styled(Container)`
@@ -169,5 +169,5 @@ const MobileCancelButton = styled(MobileButton)`
   border-right: 1px solid var(--Color-Foundation-gray-200);
 `;
 const MobileDeleteButton = styled(MobileButton)`
-  color: #797979;
+  color: var(--Color-Foundation-gray-700);
 `;

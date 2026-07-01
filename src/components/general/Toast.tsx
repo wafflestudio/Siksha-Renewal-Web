@@ -156,7 +156,8 @@ const ToastContent = styled.div<{ $variant: ToastVariant }>`
   align-items: center;
   gap: ${(props) => (props.$variant === "default" ? "10px" : "0")};
   padding: ${(props) => (props.$variant === "default" ? "9px 13px" : "0")};
-  background-color: ${(props) => (props.$variant === "default" ? "#727478" : "transparent")};
+  background-color: ${(props) =>
+    props.$variant === "default" ? "var(--SemanticColor-Background-Toast)" : "transparent"};
   border-radius: ${(props) => (props.$variant === "default" ? "8px" : "0")};
   box-shadow: ${(props) =>
     props.$variant === "default" ? "0px 0px 4px 0px rgba(0, 0, 0, 0.2)" : "none"};
@@ -197,13 +198,14 @@ const ToastMessage = styled.p<{ $variant: ToastVariant }>`
   font-size: 12px;
   font-weight: 700;
   line-height: 22px;
-  color: ${(props) => (props.$variant === "default" ? "#ffffff" : "#000000")};
+  color: ${(props) =>
+    props.$variant === "default" ? "var(--Color-Static-White)" : "var(--Color-Static-Black)"};
   letter-spacing: -0.408px;
   margin: 0;
   white-space: nowrap;
 `;
 
 const OrangeText = styled.span`
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-weight: 800;
 `;

@@ -22,11 +22,11 @@
   }
 }
 .react-calendar__navigation__label {
-  background: white;
+  background: var(--SemanticColor-Background-Secondary);
   font-weight: 700;
   font-size: 15px;
   line-height: 17px;
-  color: #ff9522;
+  color: var(--Color-Foundation-orange-500);
   font-family: NanumSquare, sans-serif;
   white-space: nowrap;
   display: none;
@@ -36,7 +36,7 @@
   }
 
   @media (max-width: 768px) {
-    color: #fe8c59;
+    color: var(--Color-Foundation-orange-500);
     cursor: pointer;
     top: 4px;
   }

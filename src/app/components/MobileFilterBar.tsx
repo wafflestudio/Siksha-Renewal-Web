@@ -205,6 +205,11 @@ const Container = styled.div`
   box-sizing: border-box;
   gap: 5px;
   background-color: var(--Color-Background-main);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Button = styled.button<{ $isActive?: boolean }>`

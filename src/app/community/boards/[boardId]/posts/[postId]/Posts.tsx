@@ -156,7 +156,7 @@ const ErrorContainer = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: 23px;
-  color: #a6a6a6;
+  color: var(--Color-Foundation-gray-600);
 
   @media (max-width: 768px) {
     height: calc(100dvh - 60px);
@@ -285,7 +285,7 @@ const Likes = styled.div`
 const Comments = styled.div`
   display: flex;
   align-items: center;
-  color: #797979;
+  color: var(--Color-Foundation-gray-700);
 `;
 const Icon = styled.img`
   margin-right: 4px;

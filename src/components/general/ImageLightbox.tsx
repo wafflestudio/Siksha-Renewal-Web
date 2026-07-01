@@ -126,14 +126,14 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000000B2;
+  background: #000000b2;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
 
   @media (max-width: 768px) {
-    background: #000;
+    background: var(--Color-Static-Black);
   }
 `;
 
@@ -245,7 +245,7 @@ const MobilePageIndicator = styled.div`
   line-height: 140%;
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);
 
-  color: var(--Color-Foundation-base-white);
+  color: var(--Color-Static-White);
   text-align: center;
 
 `;

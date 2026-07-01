@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 import BackClickable from "./BackClickable";
 import useIsMobile from "hooks/UseIsMobile";
 import { useRouter } from "next/navigation";
@@ -72,13 +73,17 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
             <RadioSection>
               <RadioOption onClick={() => setChoice("like")}>
                 <Radio $selected={choice === "like"}>
-                  {choice === "like" && <img src="/img/radio.svg" alt="선택됨" />}
+                  {choice === "like" && (
+                    <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                  )}
                 </Radio>
                 <RadioLabel>좋아요, 알림을 받을래요.</RadioLabel>
               </RadioOption>
               <RadioOption onClick={() => setChoice("later")}>
                 <Radio $selected={choice === "later"}>
-                  {choice === "later" && <img src="/img/radio.svg" alt="선택됨" />}
+                  {choice === "later" && (
+                    <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                  )}
                 </Radio>
                 <RadioLabel>괜찮아요, 알림을 받지 않을래요.</RadioLabel>
               </RadioOption>
@@ -122,13 +127,17 @@ export default function LikedMenuIntroModal({ onClose }: LikedMenuIntroModalProp
           <MobileRadioSection>
             <MobileRadioOption onClick={() => setChoice("like")}>
               <MobileRadio $selected={choice === "like"}>
-                {choice === "like" && <img src="/img/radio.svg" alt="선택됨" />}
+                {choice === "like" && (
+                  <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                )}
               </MobileRadio>
               <MobileRadioLabel>좋아요, 알림을 받을래요.</MobileRadioLabel>
             </MobileRadioOption>
             <MobileRadioOption onClick={() => setChoice("later")}>
               <MobileRadio $selected={choice === "later"}>
-                {choice === "later" && <img src="/img/radio.svg" alt="선택됨" />}
+                {choice === "later" && (
+                  <Image src="/img/radio.svg" alt="선택됨" width={20} height={20} />
+                )}
               </MobileRadio>
               <MobileRadioLabel>괜찮아요, 알림을 받지 않을래요.</MobileRadioLabel>
             </MobileRadioOption>
@@ -164,7 +173,7 @@ const DesktopContainer = styled(Container)`
   width: 500px;
   max-height: 80vh;
   border-radius: 16px;
-  background-color: white;
+  background-color: var(--SemanticColor-Background-Secondary);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 `;
@@ -199,7 +208,7 @@ const Banner = styled.div`
   position: relative;
   width: 100%;
   height: 280px;
-  background-color: #f7ecd1;
+  background-color: var(--Color-Foundation-orange-100);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -243,7 +252,7 @@ const MainTitle = styled.div`
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
-  color: #000000;
+  color: var(--Color-Foundation-base-black);
   letter-spacing: -0.3px;
 `;
 
@@ -252,7 +261,7 @@ const Subtitle = styled.div`
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
-  color: #727478;
+  color: var(--Color-Foundation-gray-700);
   letter-spacing: -0.3px;
 `;
 
@@ -273,7 +282,8 @@ const Radio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: ${(props) => (props.$selected ? "none" : "1.538px solid #BEC1C8")};
+  border: ${(props) =>
+    props.$selected ? "none" : "1.538px solid var(--Color-Foundation-gray-500)"};
   background: transparent;
   display: flex;
   align-items: center;
@@ -293,7 +303,7 @@ const RadioLabel = styled.div`
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
-  color: #000000;
+  color: var(--Color-Foundation-base-black);
   letter-spacing: -0.3px;
 `;
 
@@ -316,21 +326,28 @@ const Button = styled.button`
 `;
 
 const SecondaryButton = styled(Button)`
-  background: #f2f3f4;
-  color: #989aa0;
+  background: var(--Color-Foundation-gray-100);
+  color: var(--Color-Foundation-gray-600);
 
   &:hover {
-    background: #e9ecef;
+    background: var(--Color-Foundation-gray-200);
   }
 `;
 
 const PrimaryButton = styled(Button)<{ $enabled: boolean }>`
-  background: ${(props) => (props.$enabled ? "#FF9522" : "#F2F3F4")};
-  color: ${(props) => (props.$enabled ? "white" : "#989AA0")};
+  background: ${(props) =>
+    props.$enabled
+      ? "var(--Color-Foundation-orange-500)"
+      : "var(--Color-Foundation-gray-100)"};
+  color: ${(props) =>
+    props.$enabled ? "var(--Color-Static-White)" : "var(--Color-Foundation-gray-600)"};
   cursor: ${(props) => (props.$enabled ? "pointer" : "not-allowed")};
 
   &:hover {
-    background: ${(props) => (props.$enabled ? "#e8821e" : "#F2F3F4")};
+    background: ${(props) =>
+      props.$enabled
+        ? "var(--Color-Foundation-orange-600)"
+        : "var(--Color-Foundation-gray-100)"};
   }
 
   &:disabled {
@@ -342,7 +359,7 @@ const MobileContainer = styled(Container)`
   width: calc(100% - 40px);
   max-width: 360px;
   border-radius: 20px;
-  background-color: white;
+  background-color: var(--SemanticColor-Background-Secondary);
   overflow: hidden;
 `;
 
@@ -350,7 +367,7 @@ const MobileBanner = styled.div`
   position: relative;
   width: 100%;
   height: 216px;
-  background-color: #f7ecd1;
+  background-color: var(--Color-Foundation-orange-100);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -394,7 +411,7 @@ const MobileMainTitle = styled.div`
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
-  color: #000000;
+  color: var(--Color-Foundation-base-black);
   letter-spacing: -0.3px;
 `;
 
@@ -403,7 +420,7 @@ const MobileSubtitle = styled.div`
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
-  color: #727478;
+  color: var(--Color-Foundation-gray-700);
   letter-spacing: -0.3px;
 `;
 
@@ -424,7 +441,8 @@ const MobileRadio = styled.div<{ $selected: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: ${(props) => (props.$selected ? "none" : "1.538px solid #BEC1C8")};
+  border: ${(props) =>
+    props.$selected ? "none" : "1.538px solid var(--Color-Foundation-gray-500)"};
   background: transparent;
   display: flex;
   align-items: center;
@@ -444,7 +462,7 @@ const MobileRadioLabel = styled.div`
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
-  color: #000000;
+  color: var(--Color-Foundation-base-black);
   letter-spacing: -0.3px;
 `;
 
@@ -467,21 +485,28 @@ const MobileButton = styled.button`
 `;
 
 const MobileSecondaryButton = styled(MobileButton)`
-  background: #f2f3f4;
-  color: #989aa0;
+  background: var(--Color-Foundation-gray-100);
+  color: var(--Color-Foundation-gray-600);
 
   &:active {
-    background: #e9ecef;
+    background: var(--Color-Foundation-gray-200);
   }
 `;
 
 const MobilePrimaryButton = styled(MobileButton)<{ $enabled: boolean }>`
-  background: ${(props) => (props.$enabled ? "#FF9522" : "#F2F3F4")};
-  color: ${(props) => (props.$enabled ? "white" : "#989AA0")};
+  background: ${(props) =>
+    props.$enabled
+      ? "var(--Color-Foundation-orange-500)"
+      : "var(--Color-Foundation-gray-100)"};
+  color: ${(props) =>
+    props.$enabled ? "var(--Color-Static-White)" : "var(--Color-Foundation-gray-600)"};
   cursor: ${(props) => (props.$enabled ? "pointer" : "not-allowed")};
 
   &:active {
-    background: ${(props) => (props.$enabled ? "#e8821e" : "#F2F3F4")};
+    background: ${(props) =>
+      props.$enabled
+        ? "var(--Color-Foundation-orange-600)"
+        : "var(--Color-Foundation-gray-100)"};
   }
 
   &:disabled {
