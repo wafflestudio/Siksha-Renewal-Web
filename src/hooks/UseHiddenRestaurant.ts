@@ -18,7 +18,18 @@ export default function useHiddenRestaurant() {
     else hideRestaurant(restaurantId);
   };
 
+  const setHiddenRestaurants = (restaurantIds: number[]) => {
+    setStorage(JSON.stringify(restaurantIds));
+  };
+
   const isHidden = (restaurantId: number) => hiddenRestaurants.includes(restaurantId);
 
-  return { hiddenRestaurants, hideRestaurant, showRestaurant, toggleHidden, isHidden };
+  return {
+    hiddenRestaurants,
+    hideRestaurant,
+    showRestaurant,
+    toggleHidden,
+    setHiddenRestaurants,
+    isHidden,
+  };
 }

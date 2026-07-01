@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useLocalStorage from "./UseLocalStorage";
 import { RestaurantPreview } from "types";
 
@@ -6,7 +7,7 @@ export default function useOrder(type: "favorite" | "nonFavorite") {
   const key = type === "favorite" ? "orderList_favorite" : "orderList_nonFavorite";
 
   const { value, set: setStorage } = useLocalStorage(key, "[]");
-  const orderList = JSON.parse(value || "[]");
+  const orderList: RestaurantPreview[] = useMemo(() => JSON.parse(value || "[]"), [value]);
 
   function setNewOrderList(newOrderList: RestaurantPreview[]) {
     setStorage(JSON.stringify(newOrderList));

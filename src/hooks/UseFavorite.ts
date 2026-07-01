@@ -29,7 +29,17 @@ export default function useFavorite() {
     }
   };
 
+  const setFavoriteRestaurants = (restaurantIds: number[]) => {
+    setStorage(JSON.stringify(restaurantIds));
+  };
+
   const isFavorite = (restaurantId: number) => favoriteRestaurants.includes(restaurantId);
 
-  return { favoriteRestaurants, toggleFavorite, isFavorite, getStoredFavorites };
+  return {
+    favoriteRestaurants,
+    toggleFavorite,
+    setFavoriteRestaurants,
+    isFavorite,
+    getStoredFavorites,
+  };
 }

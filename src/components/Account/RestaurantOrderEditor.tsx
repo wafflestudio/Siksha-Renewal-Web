@@ -1,5 +1,4 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
-import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { Restaurant } from "types";
 import StarOrange from "assets/icons/star-orange.svg";
@@ -20,9 +19,6 @@ export default function RestaurantOrderEditor({
   onToggleLiked,
   onToggleVisible,
 }: RestaurantOrderEditorProps) {
-  const pathname = usePathname();
-  const isFavorite = pathname?.includes("favorite");
-
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -35,7 +31,7 @@ export default function RestaurantOrderEditor({
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
         <HeaderGroup>
-          <Title>{`${isFavorite ? "즐겨찾기 " : ""}식당 순서 변경`}</Title>
+          <Title>식당 순서 변경</Title>
           <Description>원하는 식당을 숨기거나 우측 손잡이를 드래그하여 순서를 바꿀 수 있어요.</Description>
         </HeaderGroup>
         <MobileDescriptionWrapper>

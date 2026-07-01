@@ -13,6 +13,11 @@ import { useRouter } from "next/navigation";
 import { Restaurant } from "types";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
+import useFavorite from "hooks/UseFavorite";
+import useHiddenRestaurant from "hooks/UseHiddenRestaurant";
+import useOrder from "hooks/UseOrder";
+
+const toRestaurantPreview = ({ id, nameKr, nameEn }: Restaurant) => ({ id, nameKr, nameEn });
 
 export default function NonFavoriteOrderSetting() {
   const { authStatus, authGuard, getAccessToken } = useAuth();
@@ -21,6 +26,17 @@ export default function NonFavoriteOrderSetting() {
   const [loading, setLoading] = useState(true);
 
   const { onHttpError } = useError();
+  const { setNewOrderList } = useOrder("nonFavorite");
+  const { setFavoriteRestaurants } = useFavorite();
+  const { setHiddenRestaurants } = useHiddenRestaurant();
+
+  const syncPersonalRestaurantStorage = (restaurants: Restaurant[]) => {
+    setNewOrderList(restaurants.map(toRestaurantPreview));
+    setFavoriteRestaurants(restaurants.filter((restaurant) => restaurant.liked).map(({ id }) => id));
+    setHiddenRestaurants(
+      restaurants.filter((restaurant) => restaurant.visible === false).map(({ id }) => id),
+    );
+  };
 
   useEffect(authGuard, [authStatus]);
 
@@ -33,7 +49,10 @@ export default function NonFavoriteOrderSetting() {
 
     getAccessToken()
       .then((token) => getPersonalRestaurantList(token))
-      .then(setRestaurantList)
+      .then((restaurants) => {
+        setRestaurantList(restaurants);
+        syncPersonalRestaurantStorage(restaurants);
+      })
       .catch(onHttpError)
       .finally(() => setLoading(false));
   }, [authStatus]);
@@ -43,6 +62,7 @@ export default function NonFavoriteOrderSetting() {
     const [moved] = newList.splice(source, 1);
     newList.splice(destination, 0, moved);
     setRestaurantList(newList);
+    setNewOrderList(newList.map(toRestaurantPreview));
     getAccessToken()
       .then((token) => patchRestaurantOrder(token, newList.map((r) => r.id)))
       .catch(onHttpError);
@@ -53,9 +73,11 @@ export default function NonFavoriteOrderSetting() {
     if (!current) return;
     const newLiked = !current.liked;
     const newVisible = newLiked ? true : current.visible ?? true;
-    setRestaurantList((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, liked: newLiked, visible: newVisible } : r)),
+    const newList = restaurantList.map((r) =>
+      r.id === id ? { ...r, liked: newLiked, visible: newVisible } : r,
     );
+    setRestaurantList(newList);
+    syncPersonalRestaurantStorage(newList);
     getAccessToken()
       .then((token) => {
         const calls: Promise<void>[] = [patchRestaurantLike(token, id, newLiked)];
@@ -72,9 +94,11 @@ export default function NonFavoriteOrderSetting() {
     if (!current) return;
     const newVisible = !(current.visible ?? true);
     const newLiked = newVisible ? current.liked : false;
-    setRestaurantList((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, visible: newVisible, liked: newLiked } : r)),
+    const newList = restaurantList.map((r) =>
+      r.id === id ? { ...r, visible: newVisible, liked: newLiked } : r,
     );
+    setRestaurantList(newList);
+    syncPersonalRestaurantStorage(newList);
     getAccessToken()
       .then((token) => {
         const calls: Promise<void>[] = [patchRestaurantVisible(token, id, newVisible)];
