@@ -204,7 +204,7 @@ const MoreImages = styled.button`
   border-radius: 10px;
   box-shadow: none;
 
-  color: var(--Color-Foundation-base-white, #fff);
+  color: var(--Color-Static-White);
   text-align: center;
 
   /* text-12/Bold */

@@ -1,64 +1,127 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RestaurantOrderEditor from "components/Account/RestaurantOrderEditor";
 import styled from "styled-components";
-import { getRestaurantList } from "utils/api/restaurants";
+import {
+  getPersonalRestaurantList,
+  patchRestaurantOrder,
+  patchRestaurantLike,
+  patchRestaurantVisible,
+} from "utils/api/restaurants";
 import MobileSubHeader from "components/general/MobileSubHeader";
 import { useRouter } from "next/navigation";
-import { RestaurantPreview } from "types";
-import useOrder from "hooks/UseOrder";
-import AccountLayout from "../layout";
+import { Restaurant } from "types";
 import useAuth from "hooks/UseAuth";
 import useError from "hooks/useError";
+import useFavorite from "hooks/UseFavorite";
+import useHiddenRestaurant from "hooks/UseHiddenRestaurant";
+import useOrder from "hooks/UseOrder";
+
+const toRestaurantPreview = ({ id, nameKr, nameEn }: Restaurant) => ({ id, nameKr, nameEn });
 
 export default function NonFavoriteOrderSetting() {
-  const { authStatus, authGuard } = useAuth();
+  const { authStatus, authGuard, getAccessToken } = useAuth();
   const router = useRouter();
-  const { orderList, setNewOrderList } = useOrder("nonFavorite");
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { onHttpError } = useError();
+  const { setNewOrderList } = useOrder("nonFavorite");
+  const { setFavoriteRestaurants } = useFavorite();
+  const { setHiddenRestaurants } = useHiddenRestaurant();
+
+  const syncPersonalRestaurantStorage = (restaurants: Restaurant[]) => {
+    setNewOrderList(restaurants.map(toRestaurantPreview));
+    setFavoriteRestaurants(restaurants.filter((restaurant) => restaurant.liked).map(({ id }) => id));
+    setHiddenRestaurants(
+      restaurants.filter((restaurant) => restaurant.visible === false).map(({ id }) => id),
+    );
+  };
 
   useEffect(authGuard, [authStatus]);
 
   useEffect(() => {
-    getRestaurantList()
-      .then((result) => {
-        // 1. localStorage에는 있는데, 받아온 데이터에는 없는 식당은 remove
-        let ghostRestaurantIds: number[] = [];
-        orderList.forEach((res) => {
-          if (!result.find(({ id }) => id === res.id)) {
-            ghostRestaurantIds = [...ghostRestaurantIds, res.id];
-          }
-        });
+    if (authStatus === "loading") return;
+    if (authStatus !== "login") {
+      setLoading(false);
+      return;
+    }
 
-        const newOrderList = orderList.filter((res) => !ghostRestaurantIds.includes(res.id));
-
-        // 2. localStorage에 없고, 받아온 데이터에 있는 식당을 추가
-        let newRestaurants: RestaurantPreview[] = [];
-        result.forEach(({ id, nameKr, nameEn }) => {
-          if (!newOrderList.find((res) => res.id === id)) {
-            newRestaurants = [...newRestaurants, { id, nameKr, nameEn }];
-          }
-        });
-
-        setNewOrderList([...newOrderList, ...newRestaurants]);
+    getAccessToken()
+      .then((token) => getPersonalRestaurantList(token))
+      .then((restaurants) => {
+        setRestaurantList(restaurants);
+        syncPersonalRestaurantStorage(restaurants);
       })
-      .catch(onHttpError);
-  }, []);
+      .catch(onHttpError)
+      .finally(() => setLoading(false));
+  }, [authStatus]);
 
   const reorder = (source: number, destination: number) => {
-    const copyData = [...orderList];
-    const sourceData = copyData[source];
-    copyData.splice(source, 1);
-    copyData.splice(destination, 0, sourceData);
-    setNewOrderList(copyData);
+    const newList = [...restaurantList];
+    const [moved] = newList.splice(source, 1);
+    newList.splice(destination, 0, moved);
+    setRestaurantList(newList);
+    setNewOrderList(newList.map(toRestaurantPreview));
+    getAccessToken()
+      .then((token) => patchRestaurantOrder(token, newList.map((r) => r.id)))
+      .catch(onHttpError);
   };
+
+  const toggleLiked = (id: number) => {
+    const current = restaurantList.find((r) => r.id === id);
+    if (!current) return;
+    const newLiked = !current.liked;
+    const newVisible = newLiked ? true : current.visible ?? true;
+    const newList = restaurantList.map((r) =>
+      r.id === id ? { ...r, liked: newLiked, visible: newVisible } : r,
+    );
+    setRestaurantList(newList);
+    syncPersonalRestaurantStorage(newList);
+    getAccessToken()
+      .then((token) => {
+        const calls: Promise<void>[] = [patchRestaurantLike(token, id, newLiked)];
+        if (newVisible !== (current.visible ?? true)) {
+          calls.push(patchRestaurantVisible(token, id, newVisible));
+        }
+        return Promise.all(calls);
+      })
+      .catch(onHttpError);
+  };
+
+  const toggleVisible = (id: number) => {
+    const current = restaurantList.find((r) => r.id === id);
+    if (!current) return;
+    const newVisible = !(current.visible ?? true);
+    const newLiked = newVisible ? current.liked : false;
+    const newList = restaurantList.map((r) =>
+      r.id === id ? { ...r, visible: newVisible, liked: newLiked } : r,
+    );
+    setRestaurantList(newList);
+    syncPersonalRestaurantStorage(newList);
+    getAccessToken()
+      .then((token) => {
+        const calls: Promise<void>[] = [patchRestaurantVisible(token, id, newVisible)];
+        if (!newVisible && current.liked) {
+          calls.push(patchRestaurantLike(token, id, false));
+        }
+        return Promise.all(calls);
+      })
+      .catch(onHttpError);
+  };
+
+  if (loading) return null;
 
   return (
     <>
       <MobileSubHeader title="식당 순서 변경" handleBack={() => router.push("/account")} />
       <Container>
-        <RestaurantOrderEditor order={orderList} reorder={reorder} />
+        <RestaurantOrderEditor
+          order={restaurantList}
+          reorder={reorder}
+          onToggleLiked={toggleLiked}
+          onToggleVisible={toggleVisible}
+        />
       </Container>
     </>
   );

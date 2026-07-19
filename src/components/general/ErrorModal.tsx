@@ -113,8 +113,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const CancelButton = styled(Button)`
-  background-color: #eeeeee;
-  color: #8e8e8e;
+  background-color: var(--SemanticColor-Background-Tertiary);
+  color: var(--Color-Foundation-gray-600);
 `;
 const RetryButton = styled(Button)`
   background-color: var(--Color-Foundation-orange-500);
@@ -163,10 +163,10 @@ const MobileButton = styled.button`
 
 const MobileRetryButton = styled(MobileButton)<{ isServerError: boolean }>`
   display: ${({ isServerError }) => (isServerError ? "inherit" : "none")};
-  color: #ff9522;
-  border-left: 1px solid #e3e3e3;
+  color: var(--SemanticColor-Text-Accent);
+  border-left: 1px solid var(--SemanticColor-Border-Primary);
 `;
 const MobileCancelButton = styled(MobileButton)<{ isServerError: boolean }>`
   width: ${({ isServerError }) => (isServerError ? "50%" : "100%")};
-  color: #797979; 
+  color: var(--Color-Foundation-gray-700);
 `;

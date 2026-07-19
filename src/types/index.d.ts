@@ -120,6 +120,8 @@ export interface RawRestaurant {
   code: string;
   name_kr: string;
   name_en: string;
+  nameKr?: string;
+  nameEn?: string;
   addr: string;
   lat: number;
   lng: number;
@@ -137,6 +139,9 @@ export interface Restaurant {
   lat: number;
   lng: number;
   etc: Record<string, any>;
+  // /restaurants/personal 응답에 포함되는 개인화 필드
+  liked?: boolean;
+  visible?: boolean;
 }
 
 export interface RawMenuList {

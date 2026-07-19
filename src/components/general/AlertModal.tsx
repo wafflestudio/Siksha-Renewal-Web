@@ -103,7 +103,7 @@ const MobileContainer = styled(Container)`
   height: 130px;
   padding-top: 20px;
   border-radius: 26px;
-  background-color: #fff;
+  background-color: var(--SemanticColor-Background-Secondary);
 `;
 const MobileHeader = styled.div`
   display: flex;

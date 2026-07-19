@@ -80,7 +80,7 @@ const LeftSide = styled.div`
 const Text = styled.div`
   font-size: 14px;
   line-height: 16px;
-  color: black;
+  color: var(--Color-Foundation-base-black);
   justify-content: flex-start;
   padding-bottom: 8px;
   font-weight: 400;
@@ -100,7 +100,7 @@ const Hour = styled.div`
 const Meal = styled.div`
   font-size: 12px;
   line-height: 14px;
-  color: #fe8c59;
+  color: var(--Color-Foundation-orange-500);
   padding-top: 1px;
   font-weight: 400;
 `;

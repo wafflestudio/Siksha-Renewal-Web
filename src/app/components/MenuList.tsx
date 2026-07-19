@@ -6,6 +6,7 @@ import { useStateContext } from "../../providers/ContextProvider";
 import { useEffect, useState, useMemo } from "react";
 import { LoadingAnimation } from "styles/globalstyle";
 import useFavorite from "hooks/UseFavorite";
+import useHiddenRestaurant from "hooks/UseHiddenRestaurant";
 import { RawMenu, RawMenuList, RawRestaurant } from "types";
 import UseFilter from "hooks/UseFilter";
 
@@ -14,6 +15,7 @@ export default function MenuList() {
 
   const { meal, data, date, loading, isFilterFavorite } = state;
   const { favoriteRestaurants } = useFavorite();
+  const { hiddenRestaurants, isHidden } = useHiddenRestaurant();
   const { filterList, filterMenuList } = UseFilter();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -33,8 +35,8 @@ export default function MenuList() {
 
   // Memoize the meal-specific list
   const filteredMealList = useMemo(() => {
-    return filteredData[meal] || [];
-  }, [filteredData, meal]);
+    return (filteredData[meal] || []).filter((restaurant) => !isHidden(restaurant.id));
+  }, [filteredData, meal, hiddenRestaurants]);
 
   // Memoize hasData calculation
   const hasData = useMemo(() => {

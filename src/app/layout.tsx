@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ClientMixpanelInitializer />
         <StyledComponentsRegistry>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ContextProvider>
               <LikedMenusProvider>
                 <ModalsProvider>
