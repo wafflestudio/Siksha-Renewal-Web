@@ -94,9 +94,8 @@ export default function UseFilter() {
    * 필터 리스트를 초기화합니다. (축제 토글 제외)
    */
   const resetFilterList = () => {
-    const oldIsFestival = filterList.isFestival;
-    setStorage(defaultFiltersJson);
-    changeFilterOption({ isFestival: oldIsFestival });
+    const newFilters = { ...defaultFilters, isFestival: filterList.isFestival };
+    setStorage(JSON.stringify(newFilters, replacer));
   };
 
   /**
