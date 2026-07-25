@@ -1,5 +1,8 @@
 import UseFilter from "hooks/UseFilter";
 import useIsExceptEmpty from "hooks/UseIsExceptEmpty";
+import useAuth from "hooks/UseAuth";
+import useModals from "hooks/UseModals";
+import { useStateContext, useDispatchContext } from "providers/ContextProvider";
 import "rc-slider/assets/index.css";
 import "styles/slider.css";
 import { useCallback, useEffect, useState } from "react";
@@ -18,6 +21,18 @@ import { AnalyticsEvent, EventNames } from "constants/track";
 export default function RestaurantFilter() {
   const { filterList, setFilterList, resetFilterList, countChangedFilters } = UseFilter();
   const { isExceptEmpty, toggleIsExceptEmpty } = useIsExceptEmpty();
+  const { isFilterFavorite } = useStateContext();
+  const { setIsFilterFavorite } = useDispatchContext();
+  const { authStatus } = useAuth();
+  const { openLoginModal } = useModals();
+
+  const handleToggleFavorite = () => {
+    if (authStatus === "logout") {
+      openLoginModal();
+      return;
+    }
+    setIsFilterFavorite(!isFilterFavorite);
+  };
   const { length, priceMin, priceMax, ratingMin, isReview, isAvailableOnly } = filterList;
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -136,10 +151,12 @@ export default function RestaurantFilter() {
     <Container>
       <Header>
         <Title>메뉴 필터</Title>
-        <RefreshBox onClick={resetFilter}>
-          <StyledRefreshIcon />
-          <RefreshText>초기화</RefreshText>
-        </RefreshBox>
+        <FavoriteToggleWrapper onClick={handleToggleFavorite}>
+          <FavoriteToggleLabel>즐겨찾기한 식당만 보기</FavoriteToggleLabel>
+          <ToggleTrack $active={isFilterFavorite}>
+            <ToggleKnob $active={isFilterFavorite} />
+          </ToggleTrack>
+        </FavoriteToggleWrapper>
       </Header>
       <Filter>
         <SliderBox>
@@ -226,7 +243,13 @@ export default function RestaurantFilter() {
           </ButtonGroup>
         </ContentBar>
       </Filter>
-      <DecideButton onClick={applyFilter}>필터 적용하기</DecideButton>
+      <ButtonRow>
+        <ResetButton onClick={resetFilter}>
+          <StyledRefreshIcon />
+          <RefreshText>초기화</RefreshText>
+        </ResetButton>
+        <DecideButton onClick={applyFilter}>필터 적용하기</DecideButton>
+      </ButtonRow>
     </Container>
   );
 }
@@ -255,11 +278,46 @@ const Title = styled.h3`
   line-height: 140%; /* 22.4px */
 `;
 
-const RefreshBox = styled.div`
+const FavoriteToggleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
+`;
+
+const FavoriteToggleLabel = styled.span`
+  color: var(--Color-Foundation-gray-600, #989aa0);
+  font-size: var(--Font-size-13, 13px);
+  font-weight: var(--Font-weight-bold, 700);
+  line-height: 140%; /* 18.2px */
+  white-space: nowrap;
+`;
+
+const ToggleTrack = styled.div<{ $active: boolean }>`
+  position: relative;
+  flex-shrink: 0;
+  width: 23px;
+  height: 14.056px;
+  border-radius: 59.14px;
+  background: ${(props) =>
+    props.$active
+      ? "var(--Color-Foundation-orange-500, #ff9522)"
+      : "var(--SemanticColor-Icon-GrayIcon, #bec1c8)"};
+  transition: background 0.2s ease-out;
+`;
+
+const ToggleKnob = styled.div<{ $active: boolean }>`
+  position: absolute;
+  top: 50%;
+  right: ${(props) => (props.$active ? "1.5px" : "10.22px")};
+  transform: translateY(-50%);
+  width: 11.5px;
+  height: 11.5px;
+  border-radius: 50%;
+  background: var(--Color-Static-White, #fff);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.04), 0px 1.233px 3.288px 0px rgba(0, 0, 0, 0.15),
+    0px 1.233px 0.411px 0px rgba(0, 0, 0, 0.06);
+  transition: right 0.2s ease-out;
 `;
 
 const StyledRefreshIcon = styled(RefreshIcon)`
@@ -269,10 +327,10 @@ const StyledRefreshIcon = styled(RefreshIcon)`
 `;
 
 const RefreshText = styled.span`
-  color: var(--Color-Foundation-gray-800, #4c4d50);
-  font-size: var(--Font-size-13, 13px);
+  color: var(--Color-Foundation-gray-600, #989aa0);
+  font-size: var(--Font-size-14, 14px);
   font-weight: var(--Font-weight-bold, 700);
-  line-height: 140%; /* 18.2px */
+  line-height: 150%; /* 21px */
 `;
 
 const Filter = styled.div`
@@ -344,14 +402,36 @@ const FilterButton = styled.button<{ $active?: boolean }>`
   text-align: center;
 `;
 
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  width: 100%;
+`;
+
+const ResetButton = styled.button`
+  display: flex;
+  flex: 1 0 0;
+  height: 42px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--Color-Foundation-gray-300, #d8dade);
+  background: var(--SemanticColor-Background-Quaternary);
+  cursor: pointer;
+`;
+
 const DecideButton = styled.button`
   display: flex;
+  flex: 1 0 0;
   height: 42px;
-  padding: 0px 65px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  align-self: stretch;
   border-radius: 8px;
   background: var(--Color-Foundation-orange-500, #ff9522);
 

@@ -1,9 +1,7 @@
 "use client";
 
 import Header from "components/general/Header";
-import { useDispatchContext } from "providers/ContextProvider";
 import useAuth from "hooks/UseAuth";
-import useIsMobile from "hooks/UseIsMobile";
 import UseProfile from "hooks/UseProfile";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -23,8 +21,6 @@ export default function Layout({ children }: LayoutProps) {
   const boardId = searchParams?.get("boardId");
   const pathname = usePathname();
 
-  const { setIsFilterFavorite } = useDispatchContext();
-  const isMobile = useIsMobile();
   const { getAccessToken, login } = useAuth();
 
   UseProfile();
@@ -40,10 +36,6 @@ export default function Layout({ children }: LayoutProps) {
         if (message !== "Login required") console.error(error);
       });
   }, []);
-
-  useEffect(() => {
-    if (!isMobile) setIsFilterFavorite(false);
-  }, [isMobile]);
 
   useEffect(() => {
     if (analytics) {
