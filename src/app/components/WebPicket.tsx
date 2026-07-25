@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import styled from "styled-components";
 import PicketBottomIcon from "assets/icons/picket-bottom.svg";
 
@@ -5,10 +6,12 @@ interface PicketProps {
   bodyPos?: number;
   tailPos?: number;
   text: string;
-  ref?: React.RefObject<HTMLDivElement>;
 }
 
-export default function WebPicket({ bodyPos, tailPos, text, ref }: PicketProps) {
+const WebPicket = forwardRef<HTMLDivElement, PicketProps>(function WebPicket(
+  { bodyPos, tailPos, text },
+  ref,
+) {
   return (
     <>
       <PicketBox style={{ left: `${bodyPos ?? 0}%` }} ref={ref}>
@@ -17,7 +20,9 @@ export default function WebPicket({ bodyPos, tailPos, text, ref }: PicketProps) 
       <StyledPicketBottom style={{ left: `${tailPos ?? 0}%` }} />
     </>
   );
-}
+});
+
+export default WebPicket;
 
 const PicketBox = styled.div`
   display: flex;

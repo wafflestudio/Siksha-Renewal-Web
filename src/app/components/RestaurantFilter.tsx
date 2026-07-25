@@ -151,7 +151,12 @@ export default function RestaurantFilter() {
     <Container>
       <Header>
         <Title>메뉴 필터</Title>
-        <FavoriteToggleWrapper onClick={handleToggleFavorite}>
+        <FavoriteToggleWrapper
+          type="button"
+          role="switch"
+          aria-checked={isFilterFavorite}
+          onClick={handleToggleFavorite}
+        >
           <FavoriteToggleLabel>즐겨찾기한 식당만 보기</FavoriteToggleLabel>
           <ToggleTrack $active={isFilterFavorite}>
             <ToggleKnob $active={isFilterFavorite} />
@@ -278,7 +283,7 @@ const Title = styled.h3`
   line-height: 140%; /* 22.4px */
 `;
 
-const FavoriteToggleWrapper = styled.div`
+const FavoriteToggleWrapper = styled.button`
   display: flex;
   align-items: center;
   gap: 6px;
