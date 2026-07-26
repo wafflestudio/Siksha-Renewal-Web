@@ -19,7 +19,7 @@ function scrollRestaurant(restaurant) {
 export default function RestaurantList() {
   const state = useStateContext();
 
-  const { meal, data } = state;
+  const { meal, data, isFilterFavorite } = state;
 
   const { favoriteRestaurants, toggleFavorite, isFavorite } = useFavorite();
 
@@ -40,9 +40,15 @@ export default function RestaurantList() {
     const favorites = restaurants.filter((restaurant) => isFavorite(restaurant.id));
     const nonFavorites = restaurants.filter((restaurant) => isFavorite(restaurant.id) === false);
 
-    const newFavoriteFirstRestaurants = favorites.concat(nonFavorites);
+    const newFavoriteFirstRestaurants = isFilterFavorite
+      ? favorites
+      : favorites.concat(nonFavorites);
     setFavoriteFirstRestaurants(newFavoriteFirstRestaurants);
-  }, [data, meal, favoriteRestaurants.length]);
+  }, [data, meal, favoriteRestaurants.length, isFilterFavorite]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [isFilterFavorite]);
 
   return (
     <Container $show={(data[meal] || []).length >= 1}>

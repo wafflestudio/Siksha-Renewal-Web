@@ -6,7 +6,7 @@ import useLocalStorage from "./UseLocalStorage";
 
 export default function useAuth() {
   const { authStatus } = useStateContext();
-  const { setAuthStatus } = useDispatchContext();
+  const { setAuthStatus, setIsFilterFavorite } = useDispatchContext();
   const { openLoginModal } = useModals();
   const router = useRouter();
 
@@ -15,6 +15,9 @@ export default function useAuth() {
     set: setStorage,
     remove: removeStorage,
   } = useLocalStorage("access_token", undefined);
+
+  const { remove: removeFavoriteStorage } = useLocalStorage("favorite_restaurant", "[]");
+  const { remove: removeFilterStorage } = useLocalStorage("filterList", "{}");
 
   // TODO: 안티패턴이므로 수정 필요
   // 전역적으로 수행되어야 하는 동작이 useAuth 내 useEffect의 callback function으로 들어가 있음
@@ -71,8 +74,11 @@ export default function useAuth() {
 
   const logout = useCallback(() => {
     removeStorage();
+    removeFavoriteStorage();
+    removeFilterStorage();
+    setIsFilterFavorite(false);
     setAuthStatus("logout");
-  }, [removeStorage, setAuthStatus]);
+  }, [removeStorage, removeFavoriteStorage, removeFilterStorage, setIsFilterFavorite, setAuthStatus]);
 
   return { authStatus, authGuard, getAccessToken, checkAccessToken, login, logout };
 }

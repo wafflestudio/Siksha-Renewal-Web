@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import styled from "styled-components";
 import PicketBottomIcon from "assets/icons/picket-bottom.svg";
 
@@ -5,26 +6,29 @@ interface PicketProps {
   bodyPos?: number;
   tailPos?: number;
   text: string;
-  ref?: React.RefObject<HTMLDivElement>;
 }
 
-export default function WebPicket({ bodyPos, tailPos, text, ref }: PicketProps) {
+const WebPicket = forwardRef<HTMLDivElement, PicketProps>(function WebPicket(
+  { bodyPos, tailPos, text },
+  ref,
+) {
   return (
     <>
-      <PicketBox $left={bodyPos ?? 0} ref={ref}>
+      <PicketBox style={{ left: `${bodyPos ?? 0}%` }} ref={ref}>
         <PicketText>{text}</PicketText>
       </PicketBox>
-      <StyledPicketBottom $left={tailPos ?? 0} />
+      <StyledPicketBottom style={{ left: `${tailPos ?? 0}%` }} />
     </>
   );
-}
+});
 
-const PicketBox = styled.div<{ $left: number }>`
+export default WebPicket;
+
+const PicketBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
-  left: ${(props) => `${props.$left}%`};
   transform: translateX(-50%);
   top: -30px;
 `;
@@ -47,9 +51,8 @@ const PicketText = styled.div`
   white-space: nowrap;
 `;
 
-const StyledPicketBottom = styled(PicketBottomIcon)<{ $left: number }>`
+const StyledPicketBottom = styled(PicketBottomIcon)`
   position: absolute;
-  left: ${(props) => `${props.$left}%`}; // hardcoded 3px to center the image
   transform: translateX(-50%);
   top: -11.5px;
   width: 6px;
