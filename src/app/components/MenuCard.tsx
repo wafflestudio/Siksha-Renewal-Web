@@ -13,6 +13,7 @@ import InfoIcon from "assets/icons/info.svg";
 import StarFilledIcon from "assets/icons/star-filled.svg";
 import StarOutlinedIcon from "assets/icons/star-outlined.svg";
 import { ReactNode } from "react";
+import { getFestivalRestaurantLink } from "constants/festival";
 
 type Data = RawRestaurant & {
   menus: RawMenu[];
@@ -25,12 +26,18 @@ export default function MenuCard({ data }: { data: Data }) {
 
   const { toggleFavorite, isFavorite } = useFavorite();
 
+  // 일부 축제 식당은 제목 클릭 시 외부 링크(인스타그램 등)로 이동합니다.
+  const externalLink = getFestivalRestaurantLink(data.name_kr);
+  const nameProps = externalLink
+    ? ({ as: "a", href: externalLink, target: "_blank", rel: "noopener noreferrer" } as const)
+    : {};
+
   return (
     <>
       <DesktopContainer className={"a" + sanitizeCssSelector(data.code)}>
         <HeaderContainer>
           <TitleContainer>
-            <Name>{data.name_kr}</Name>
+            <Name {...nameProps}>{data.name_kr}</Name>
             <TitleIconList>
               <StyledIcon>
                 <InfoIcon
@@ -87,7 +94,7 @@ export default function MenuCard({ data }: { data: Data }) {
       <MobileContainer className={"a" + sanitizeCssSelector(data.code)}>
         <HeaderContainer>
           <TitleContainer>
-            <Name>{data.name_kr}</Name>
+            <Name {...nameProps}>{data.name_kr}</Name>
             <TitleIconList>
               <StyledIcon>
                 <InfoIcon
@@ -305,6 +312,17 @@ const Name = styled.div`
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
+
+  /* 외부 링크(anchor)로 렌더링된 경우에만 적용 */
+  &[href] {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   /* text-18/ExtraBold */
   font-family: var(--Font-family-sans, NanumSquare);
