@@ -9,6 +9,7 @@ import useFavorite from "hooks/UseFavorite";
 import useHiddenRestaurant from "hooks/UseHiddenRestaurant";
 import { RawMenu, RawMenuList, RawRestaurant } from "types";
 import UseFilter from "hooks/UseFilter";
+import { pinFestivalRestaurants } from "constants/festival";
 
 export default function MenuList() {
   const state = useStateContext();
@@ -34,8 +35,12 @@ export default function MenuList() {
   }, [data, location, filterList, filterMenuList]);
 
   // Memoize the meal-specific list
+  // 임시: 특정 축제 식당을 로그인/비로그인 상태 모두에서 최상단에 고정합니다.
   const filteredMealList = useMemo(() => {
-    return (filteredData[meal] || []).filter((restaurant) => !isHidden(restaurant.id));
+    const mealList: (RawRestaurant & { menus: RawMenu[] })[] = (filteredData[meal] || []).filter(
+      (restaurant) => !isHidden(restaurant.id),
+    );
+    return pinFestivalRestaurants(mealList);
   }, [filteredData, meal, hiddenRestaurants]);
 
   // Memoize hasData calculation

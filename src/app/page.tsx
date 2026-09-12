@@ -21,6 +21,7 @@ import MobileFilterBar from "./components/MobileFilterBar";
 import FestivalToggle from "./components/FestivalToggle";
 import useLikedMenuIntro from "hooks/UseLikedMenuIntro";
 import { getIsFestival } from "utils/api/festival";
+import { isHardcodedFestivalDate } from "constants/festival";
 
 export default function Home() {
   const state = useStateContext();
@@ -95,26 +96,27 @@ export default function Home() {
   }, [date, authStatus, meal, isFilterFavorite, orderList]); // TODO: meal, isFilterFavorite 의존성 배열에서 제거
 
   useEffect(() => {
-    async function fetchIsFestivalDate() {
-      const dateString = formatISODate(date);
+    if (!date) return;
 
-      // Fallback: API 미배포/실패 시 사용할 하드코딩 축제 기간 (2026 봄축제)
-      const startFestivalDate = "2026-05-12";
-      const endFestivalDate = "2026-05-14";
-      const fallback = dateString >= startFestivalDate && dateString <= endFestivalDate;
+    // 날짜를 빠르게 전환할 때 이전 요청의 늦은 응답이 현재 날짜의 상태를 덮어쓰지 않도록 합니다.
+    let ignore = false;
 
-      getIsFestival(dateString)
-        .then((response) => {
-          setIsFestivalDate(response.is_festival);
-        })
-        .catch(() => {
-          setIsFestivalDate(fallback);
-        });
-    }
+    const dateString = formatISODate(date);
+    const fallback = isHardcodedFestivalDate(dateString);
 
-    if (date) {
-      fetchIsFestivalDate();
-    }
+    getIsFestival(dateString)
+      .then((response) => {
+        if (ignore) return;
+        setIsFestivalDate(response.is_festival);
+      })
+      .catch(() => {
+        if (ignore) return;
+        setIsFestivalDate(fallback);
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, [date]);
 
   return (
