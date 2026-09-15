@@ -19,6 +19,7 @@ import useModals from "hooks/UseModals";
 import ConfirmModal from "app/components/ConfirmModal";
 import isReviewableMenu from "utils/isReviewableMenu";
 import ErrorModal from "components/general/ErrorModal";
+import { compressImage } from "utils/compressImage";
 
 export type ReviewInputs = {
   score: number;
@@ -117,22 +118,24 @@ export default function ReviewPost() {
     return null;
   }
 
-  const handlePhotoAttach = (newPhoto: File | undefined) => {
-    if (newPhoto) {
-      setInputs({ ...inputs, images: [...inputs.images, newPhoto] });
-    }
+  const handlePhotoAttach = async (newPhoto: File | undefined) => {
+    if (!newPhoto) return;
+    // 서버 multipart 파일당 제한(1MB)에 맞춰 업로드 전에 압축
+    const compressed = await compressImage(newPhoto);
+    setInputs((prev) => ({ ...prev, images: [...prev.images, compressed] }));
   };
 
   const handlePhotoDelete = (index: number) => {
     setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
 
-  const convertToBlob = async (image: string | File) => {
+  const convertToFile = async (image: string | File): Promise<File> => {
     if (typeof image === "string") {
       const response = await fetch(image);
       const blob = await response.blob();
-      return blob;
-    } else return image;
+      return new File([blob], "image", { type: blob.type });
+    }
+    return image;
   };
 
   const handleUpdate = async () => {
@@ -151,10 +154,10 @@ export default function ReviewPost() {
     body.append("price", price);
     body.append("food_composition", food_composition);
     
-    // Convert images to blobs before appending
+    // 기존 이미지(URL)는 파일로 변환하고, 서버 파일당 제한(1MB)에 맞춰 압축한 뒤 첨부
     for (const image of inputs.images) {
-      const blob = await convertToBlob(image);
-      body.append("images", blob);
+      const file = await compressImage(await convertToFile(image));
+      body.append("images", file);
     }
 
     return editReview(Number(reviewId), body)
