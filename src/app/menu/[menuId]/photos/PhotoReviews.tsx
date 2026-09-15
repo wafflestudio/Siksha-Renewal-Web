@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getPhotoReviews } from "utils/api/reviews";
 import useError from "hooks/useError";
+import useMenu from "hooks/UseMenu";
+import isReviewableMenu from "utils/isReviewableMenu";
 
 export default function PhotoReviews({ menuId }: { menuId: number }) {
   const router = useRouter();
@@ -25,6 +27,7 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
   const isMobile = useIsMobile();
   const mobileSubHeaderTitle = "사진 리뷰";
   const { getAccessToken, authStatus } = useAuth();
+  const { menu, fetchMenu } = useMenu();
 
   useEffect(() => {
     if (!menuId) {
@@ -48,6 +51,14 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
       fetchPhotoReviews();
     }
   }, [menuId, authStatus, onHttpError]);
+
+  // 평가 버튼 노출 조건(당일 메뉴 여부) 판별을 위해 메뉴 정보가 필요하다
+  useEffect(() => {
+    if (!menuId || authStatus === "loading" || menu) {
+      return;
+    }
+    fetchMenu(Number(menuId));
+  }, [menuId, authStatus, menu, fetchMenu]);
 
   const handleReviewPostButtonClick = () => {
     getAccessToken()
@@ -79,11 +90,13 @@ export default function PhotoReviews({ menuId }: { menuId: number }) {
           ) : (
             <NoReviewMessage>아직 등록된 리뷰가 없어요.</NoReviewMessage>
           )}
-          <ReviewPostButtonWrapper>
-            <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
-              나의 평가 남기기
-            </ReviewPostButton>
-          </ReviewPostButtonWrapper>
+          {menu && isReviewableMenu(menu) && (
+            <ReviewPostButtonWrapper>
+              <ReviewPostButton onClick={handleReviewPostButtonClick} mobile={true}>
+                나의 평가 남기기
+              </ReviewPostButton>
+            </ReviewPostButtonWrapper>
+          )}
         </GalleryWrapper>
       </Container>
     </>
