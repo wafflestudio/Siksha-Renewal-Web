@@ -6,7 +6,8 @@ import ReviewDistribution from "./ReviewDistribution";
 import { getRestaurantList } from "utils/api/restaurants";
 import { getKeywordReviewScore, getReviewScore } from "utils/api/reviews";
 import useIsMobile from "hooks/UseIsMobile";
-import { formatDate, formatPrice } from "utils/FormatUtil";
+import { formatPrice } from "utils/FormatUtil";
+import isReviewableMenu from "utils/isReviewableMenu";
 import useError from "hooks/useError";
 import PhotoReviewsSection from "./PhotoReviewsSection";
 import KeywordReviewChart from "./KeywordReviewChart";
@@ -88,15 +89,11 @@ export default function MenuSection({
             />
             <KeywordReviewChart data={keywordReviewScore} />
           </ReviewArrangement>
-          {
-            // formateDate -> "2021-08-01 (수)" 식으로 나옴
-            // 따라서 "2021-08-01".split(" ")[0] -> "2021-08-01"로 가공해야하며 이는 menuDate 형식과 같음
-            formatDate(new Date()).split(" ")[0] === menu.date && (
-              <ReviewPostButton onClick={handleReviewPostButtonClick}>
-                나의 평가 남기기
-              </ReviewPostButton>
-            )
-          }
+          {isReviewableMenu(menu) && (
+            <ReviewPostButton onClick={handleReviewPostButtonClick}>
+              나의 평가 남기기
+            </ReviewPostButton>
+          )}
         </MenuEvaluation>
       </MenuOverview>
       <MobileDivider />
