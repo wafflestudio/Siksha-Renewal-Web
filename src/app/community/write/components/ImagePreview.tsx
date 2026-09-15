@@ -2,6 +2,7 @@ import useIsMobile from "hooks/UseIsMobile";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { inputs } from "app/community/write/page";
+import { compressImage } from "utils/compressImage";
 
 interface ImagePreviewProps {
   images: (string | File)[];
@@ -11,11 +12,13 @@ interface ImagePreviewProps {
 export function ImagePreview({ images, setInputs }: ImagePreviewProps) {
   const isMobile = useIsMobile();
 
-  const handleImageAttach = (photo: File | undefined) => {
-    if (photo)
-      setInputs((prev) => {
-        return { ...prev, images: [...prev.images, photo] };
-      });
+  const handleImageAttach = async (photo: File | undefined) => {
+    if (!photo) return;
+    // 서버 multipart 파일당 제한(1MB)에 맞춰 업로드 전에 압축
+    const compressed = await compressImage(photo);
+    setInputs((prev) => {
+      return { ...prev, images: [...prev.images, compressed] };
+    });
   };
 
   const handleImageDelete = (index: number) => {

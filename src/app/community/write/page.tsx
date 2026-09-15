@@ -14,6 +14,7 @@ import { ImagePreview } from "app/community/write/components/ImagePreview";
 import useIsAnonymousWriter from "hooks/UseIsAnonymousWriter";
 import { BoardSelectDropdown } from "app/community/write/components/BoardSelectDropdown";
 import useError from "hooks/useError";
+import { compressImage } from "utils/compressImage";
 
 export type inputs = {
   title: string;
@@ -99,12 +100,14 @@ export default function PostWriter() {
     setInputs({ ...inputs, options: { anonymous: !inputs.options.anonymous } });
   };
 
-  const convertToBlob = async (image: string | File) => {
+  // 기존 이미지(URL)는 파일로 변환하고, 서버 파일당 제한(1MB)에 맞춰 압축
+  const convertToFile = async (image: string | File): Promise<File> => {
     if (typeof image === "string") {
       const response = await fetch(image);
       const blob = await response.blob();
-      return blob;
-    } else return image;
+      return compressImage(new File([blob], "image", { type: blob.type }));
+    }
+    return compressImage(image);
   };
 
   const handleSubmit = () => {
@@ -121,8 +124,8 @@ export default function PostWriter() {
       body.append("content", inputs.content);
       body.append("anonymous", String(inputs.options.anonymous));
 
-      return Promise.all((inputs.images || []).map(convertToBlob))
-        .then((blobs) => blobs.forEach((blob) => body.append("images", blob)))
+      return Promise.all((inputs.images || []).map(convertToFile))
+        .then((files) => files.forEach((file) => body.append("images", file)))
         .then(getAccessToken)
         .then((accessToken) => {
           const actionFunction = isUpdate
