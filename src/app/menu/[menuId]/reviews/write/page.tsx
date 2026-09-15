@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import useError from "hooks/useError";
@@ -17,6 +17,9 @@ import PhotoDeleteIcon from "assets/icons/photo-delete.svg";
 import useAuth from "hooks/UseAuth";
 import useModals from "hooks/UseModals";
 import ConfirmModal from "app/components/ConfirmModal";
+import isReviewableMenu from "utils/isReviewableMenu";
+import ErrorModal from "components/general/ErrorModal";
+import { compressImage } from "utils/compressImage";
 
 export type ReviewInputs = {
   score: number;
@@ -47,6 +50,9 @@ export default function ReviewPost() {
   const [inputs, setInputs] = useState<ReviewInputs>(emptyReviewInputs);
   const { onHttpError } = useError();
   const { authStatus } = useAuth();
+  const { openModal } = useModals();
+  const [isBlocked, setIsBlocked] = useState(false);
+  const hasBlockedRef = useRef(false);
 
   const MAX_COMMENT_LENGTH = 150;
 
@@ -88,22 +94,48 @@ export default function ReviewPost() {
     }
   }, [menu, authStatus, fetchMenu, menuId]);
 
-  const handlePhotoAttach = (newPhoto: File | undefined) => {
-    if (newPhoto) {
-      setInputs({ ...inputs, images: [...inputs.images, newPhoto] });
+  // 평가 버튼이 노출되지 않는 메뉴(당일 메뉴가 아닌 경우)에 URL로 직접 접근하는 것을 막는다.
+  // 메뉴 정보가 로드된 뒤에만 판정하며, 이미 작성한 평가의 수정은 날짜와 무관하게 허용한다.
+  //
+  // Modals는 주소가 바뀌면 열려 있는 모달을 닫으므로, 먼저 이동한 뒤 모달을 띄우면 모달이 바로 사라진다.
+  // 따라서 폼을 감추고 모달을 띄운 뒤, 모달을 닫을 때 메뉴 상세로 이동한다.
+  // (openErrorModal은 onClose 커스텀이 막혀 있어 ErrorModal을 직접 연다.)
+  useEffect(() => {
+    if (isEditMode || !menu || isReviewableMenu(menu) || hasBlockedRef.current) {
+      return;
     }
+    hasBlockedRef.current = true;
+    setIsBlocked(true);
+    openModal(ErrorModal, {
+      code: 400,
+      message: "오늘 제공되는 메뉴에만 평가를 남길 수 있어요.",
+      onClose: () => router.replace(`/menu/${menuId}`),
+    });
+  }, [isEditMode, menu, menuId, router, openModal]);
+
+  // 평가 불가 메뉴로 판정된 경우 폼 대신 모달만 보여준다.
+  if (isBlocked) {
+    return null;
+  }
+
+  const handlePhotoAttach = async (newPhoto: File | undefined) => {
+    if (!newPhoto) return;
+    // 서버 multipart 파일당 제한(1MB)에 맞춰 업로드 전에 압축
+    const compressed = await compressImage(newPhoto);
+    setInputs((prev) => ({ ...prev, images: [...prev.images, compressed] }));
   };
 
   const handlePhotoDelete = (index: number) => {
     setInputs({ ...inputs, images: inputs.images.filter((_, i) => i !== index) });
   };
 
-  const convertToBlob = async (image: string | File) => {
+  const convertToFile = async (image: string | File): Promise<File> => {
     if (typeof image === "string") {
       const response = await fetch(image);
       const blob = await response.blob();
-      return blob;
-    } else return image;
+      return new File([blob], "image", { type: blob.type });
+    }
+    return image;
   };
 
   const handleUpdate = async () => {
@@ -122,10 +154,10 @@ export default function ReviewPost() {
     body.append("price", price);
     body.append("food_composition", food_composition);
     
-    // Convert images to blobs before appending
+    // 기존 이미지(URL)는 파일로 변환하고, 서버 파일당 제한(1MB)에 맞춰 압축한 뒤 첨부
     for (const image of inputs.images) {
-      const blob = await convertToBlob(image);
-      body.append("images", blob);
+      const file = await compressImage(await convertToFile(image));
+      body.append("images", file);
     }
 
     return editReview(Number(reviewId), body)
