@@ -140,7 +140,7 @@ const LoginTitle = styled.p`
   transform: translateX(-50%);
   width: 55px;
   height: 23px;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-weight: 800;
   font-size: 20px;
   color: var(--Color-Static-White);
@@ -189,7 +189,7 @@ const SocialButton = styled.div<{ provider: "kakao" | "google" | "apple" }>`
   margin: auto;
   margin-top: 18px;
   line-height: 45px;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   background-color: ${(props) =>
     props.provider === "kakao" ? "#fee500" : "var(--Color-Static-White)"};

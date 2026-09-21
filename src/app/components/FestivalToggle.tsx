@@ -92,7 +92,7 @@ const ToggleText = styled.span<{ $active: boolean }>`
   color: var(--Color-Static-White);
   text-align: center;
   font-feature-settings: "liga" off, "clig" off;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 12.6px;
   font-style: normal;
   font-weight: 700;

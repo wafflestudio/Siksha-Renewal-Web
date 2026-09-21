@@ -230,7 +230,7 @@ const Button = styled.button<{ $isActive?: boolean }>`
       ? "var(--Color-Foundation-Tint-orange)"
       : "var(--SemanticColor-Background-Secondary)"};
 
-  font-family: NanumSquare_ac;
+  font-family: var(--Font-family-sans-ac);
 `;
 
 const ButtonText = styled.span<{ $isActive?: boolean }>`

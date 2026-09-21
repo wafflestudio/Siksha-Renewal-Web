@@ -7,7 +7,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NIXGONFONTS V2.0';
     src: url('/font/NIXGONFONTS L 2.0.ttf') format('truetype'),
     url('/font/NIXGONFONTS L 2.0.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
   }
@@ -15,7 +14,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareExtraBold.ttf') format('truetype'),
     url('/font/NanumSquareExtraBold.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
     
     font-weight: 1000;
   }
@@ -24,7 +22,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareBold.ttf') format('truetype'),
     url('/font/NanumSquareBold.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 700;
   }
@@ -33,7 +30,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareRegular.ttf') format('truetype'),
     url('/font/NanumSquareRegular.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
   }
@@ -42,7 +38,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare';
     src: url('/font/NanumSquareLight.ttf') format('truetype'),
     url('/font/NanumSquareLight.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 100;
   }
@@ -51,7 +46,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acEB.ttf') format('truetype'),
     url('/font/NanumSquare_acEB.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
     
     font-weight: 1000;
   }
@@ -60,7 +54,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acB.ttf') format('truetype'),
     url('/font/NanumSquare_acB.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 700;
   }
@@ -69,7 +62,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acR.ttf') format('truetype'),
     url('/font/NanumSquare_acR.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 400;
   }
@@ -78,7 +70,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'NanumSquare_ac';
     src: url('/font/NanumSquare_acL.ttf') format('truetype'),
     url('/font/NanumSquare_acL.otf') format('opentype');
-    unicode-range: U+0020-007E, U+AC00-D7A3;
 
     font-weight: 100;
   }
@@ -94,7 +85,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: var(--Color-Background-main);
     -ms-overflow-style: none;
-    font-family: NanumSquare, sans-serif;
+    font-family: var(--Font-family-sans);
 
     @media (max-width: 768px) {
       min-width: none;
@@ -140,6 +131,9 @@ export const GlobalStyle = createGlobalStyle`
 
   /* constants */
   :root {
+    --Font-family-sans: NanumSquare, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    --Font-family-sans-ac: NanumSquare_ac, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+
     --Color-Background-main: #F8F8F8;
     --Color-Background-Dim: #00000033;
     --Color-Foundation-gray-50: #F8F8F8;

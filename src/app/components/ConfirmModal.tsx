@@ -52,7 +52,7 @@ const MobileMessage = styled.div`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -73,7 +73,7 @@ const MobileCloseButton = styled.button`
   text-align: center;
 
   /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);

@@ -130,7 +130,7 @@ const NavName = styled.div<{ $isActive: boolean }>`
   width: 36;
   height: 10;
   top: 36px;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-weight: 800;
   font-size: 9px;
   line-height: 100%;

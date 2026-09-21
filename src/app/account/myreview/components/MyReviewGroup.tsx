@@ -71,7 +71,7 @@ const Header = styled.div`
 
 const RestaurantName = styled.div`
   color: var(--Color-Foundation-base-black, #000);
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
