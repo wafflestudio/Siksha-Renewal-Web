@@ -97,6 +97,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!date) return;
+    return; // 축제 종료로 토글 비활성화. 다음 축제 때 이 줄만 지우면 됩니다.
 
     // 날짜를 빠르게 전환할 때 이전 요청의 늦은 응답이 현재 날짜의 상태를 덮어쓰지 않도록 합니다.
     let ignore = false;
