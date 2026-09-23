@@ -239,7 +239,7 @@ const NavigationButton = styled.button<{
 
 const MobilePageIndicator = styled.div`
 
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-weight: var(--Font-weight-extrabold, 700);
   font-size: var(--Font-size-16, 16px);
   line-height: 140%;
@@ -258,7 +258,7 @@ const PageIndicator = styled.div`
   padding: 8px 12px;
   border-radius: 29px;
 
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-weight: var(--Font-weight-bold, 700);
   line-height: 140%;
   letter-spacing: var(--Font-letter-spacing-0, -0.3px);

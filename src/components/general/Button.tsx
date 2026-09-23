@@ -30,7 +30,7 @@ const BaseButton = styled.button`
   border-radius: 20px;
   border: none;
   cursor: pointer;
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 16px;
   font-weight: 700;
   line-height: 1.4;

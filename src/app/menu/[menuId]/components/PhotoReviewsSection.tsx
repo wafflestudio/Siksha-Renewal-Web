@@ -129,7 +129,7 @@ const HeaderText = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
 
   /* text-16/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -139,7 +139,7 @@ const HeaderText = styled.div`
     color: var(--Color-Foundation-base-black, #000);
 
     /* text-14/Bold */
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -151,7 +151,7 @@ const Label = styled.div`
   color: var(--Color-Foundation-gray-600, #989aa0);
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -208,7 +208,7 @@ const MoreImages = styled.button`
   text-align: center;
 
   /* text-12/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-12, 12px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -234,7 +234,7 @@ const NoReviewMessage = styled.div`
   align-content: center;
 
   /* text-14/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);

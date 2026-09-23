@@ -173,7 +173,7 @@ const SettingsRow = styled.div<{ $clickable?: boolean }>`
 `;
 
 const Label = styled.div`
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -224,7 +224,7 @@ const ChevronIcon = styled.img`
 const InstructionText = styled.p`
   width: 100%;
   max-width: 343px;
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   font-weight: 700;
   line-height: 1.5;
@@ -258,7 +258,7 @@ const RestaurantHeader = styled.div`
 `;
 
 const RestaurantName = styled.h3`
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 16px;
   font-weight: 800;
   line-height: 1.4;
@@ -288,7 +288,7 @@ const MenuItem = styled.div`
 
 const MenuName = styled.div`
   flex: 1;
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;

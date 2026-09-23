@@ -144,7 +144,7 @@ const MobileMessage = styled.div`
   text-align: center;
 
   /* text-13/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);

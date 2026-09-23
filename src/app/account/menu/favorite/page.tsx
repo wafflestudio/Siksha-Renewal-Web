@@ -161,7 +161,7 @@ const TitleCard = styled.div`
 
 const TitleText = styled.div`
   color: var(--Color-Foundation-gray-900, #262728);
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -188,7 +188,7 @@ const EmptyState = styled.div`
 const EmptyText = styled.div`
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   font-weight: 400;
   line-height: 150%;

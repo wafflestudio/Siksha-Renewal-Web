@@ -88,7 +88,7 @@ const Container = styled.div`
   gap: 20px;
   border-radius: 10px;
   background: var(--SemanticColor-Background-Secondary, #fff);
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -129,7 +129,7 @@ const Title = styled.p`
 
 const Description = styled.p`
   color: var(--Color-Foundation-gray-600, #989aa0);
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-12, 12px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -155,7 +155,7 @@ const MobileDescription = styled.p`
   margin: 0;
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);

@@ -77,7 +77,7 @@ const LikesText = styled.div`
   text-align: center;
 
   /* text-13/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -88,7 +88,7 @@ const LikesText = styled.div`
     text-align: center;
 
     /* text-13/Bold */
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-13, 13px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);

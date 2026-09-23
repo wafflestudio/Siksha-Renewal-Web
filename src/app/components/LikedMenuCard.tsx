@@ -158,7 +158,7 @@ const Name = styled.div`
   word-break: break-word;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -211,7 +211,7 @@ const HeaderDataList = styled.div`
 const HeaderDataText = styled.p`
   color: var(--Color-Foundation-orange-500, #ff9522);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -278,7 +278,7 @@ const MenuName = styled.div`
   align-items: center;
   gap: 6px;
   color: var(--Color-Foundation-gray-900, #262728);
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -332,7 +332,7 @@ const Price = styled.div`
   width: 44px;
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -342,7 +342,7 @@ const Price = styled.div`
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);
@@ -359,7 +359,7 @@ const Rate = styled.div`
   width: 28px;
   color: var(--Color-Foundation-gray-900, #262728);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -369,7 +369,7 @@ const Rate = styled.div`
   @media (max-width: 768px) {
     color: var(--Color-Foundation-base-black, #000);
     text-align: center;
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);

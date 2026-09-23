@@ -400,7 +400,7 @@ const Title = styled.div`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -430,7 +430,7 @@ const ReviewTitle = styled.div`
   text-align: center;
 
   /* text-20/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -462,7 +462,7 @@ const SelectStarText = styled.span`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -507,7 +507,7 @@ const Score = styled.div`
   text-align: center;
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -521,7 +521,7 @@ const Score = styled.div`
     text-align: center;
 
     /* text-20/Bold */
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-20, 20px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -569,7 +569,7 @@ const CommentTextArea = styled.textarea`
   color: var(--Color-Foundation-gray-900);
 
   /* text-15/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-15, 15px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -596,7 +596,7 @@ const CommentTitle = styled.div`
   color: var(--Color-Foundation-gray-800, #cbcbcc);
 
   /* text-16/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-16, 16px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -634,7 +634,7 @@ const CommentLength = styled.span`
   color: var(--Color-Foundation-gray-700, #b7b7b7);
 
   /* text-13/Regular */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-13, 13px);
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -706,7 +706,7 @@ const AddImage = styled.div`
 
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: center;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
@@ -729,7 +729,7 @@ const AddImage = styled.div`
     color: var(--SemanticColor-Text-Button, #fff);
     text-align: center;
     font-feature-settings: "liga" off, "clig" off;
-    font-family: NanumSquare;
+    font-family: var(--Font-family-sans);
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
@@ -832,7 +832,7 @@ const ReviewPostButton = styled.button`
   text-align: center;
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -880,7 +880,7 @@ const ReviewCancelButton = styled.button`
   color: var(--Color-Foundation-gray-600, #919191);
   text-align: center;
 
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);

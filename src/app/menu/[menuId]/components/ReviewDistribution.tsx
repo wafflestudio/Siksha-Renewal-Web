@@ -78,7 +78,7 @@ const Score = styled.div`
   text-align: center;
 
   /* text-28/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-28, 28px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -89,7 +89,7 @@ const Score = styled.div`
     text-align: center;
 
     /* text-32/Bold */
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-32, 32px);
     font-style: normal;
     font-weight: var(--Font-weight-bold, 700);
@@ -102,7 +102,7 @@ const MaximumScore = styled.div`
   text-align: center;
 
   /* text-20/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-20, 20px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -122,7 +122,7 @@ const ReviewsTotalCount = styled.div`
     text-align: center;
 
     /* text-14/Regular */
-    font-family: var(--Font-family-sans, NanumSquare);
+    font-family: var(--Font-family-sans);
     font-size: var(--Font-size-14, 14px);
     font-style: normal;
     font-weight: var(--Font-weight-regular, 400);
@@ -170,7 +170,7 @@ const Label = styled.label`
   color: var(--Color-Foundation-gray-700, #727478);
 
   /* text-14/Bold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -197,7 +197,7 @@ const Count = styled.div`
   color: var(--Color-Foundation-orange-500, #ff9522);
 
   /* text-14/ExtraBold */
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: var(--Font-size-14, 14px);
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);

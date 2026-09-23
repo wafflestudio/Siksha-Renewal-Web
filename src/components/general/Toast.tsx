@@ -194,7 +194,7 @@ const CheckIcon = styled.img`
 `;
 
 const ToastMessage = styled.p<{ $variant: ToastVariant }>`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-weight: 700;
   line-height: 22px;

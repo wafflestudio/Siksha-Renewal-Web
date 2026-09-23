@@ -248,7 +248,7 @@ const TextSection = styled.div`
 `;
 
 const MainTitle = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
@@ -257,7 +257,7 @@ const MainTitle = styled.div`
 `;
 
 const Subtitle = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
@@ -299,7 +299,7 @@ const Radio = styled.div<{ $selected: boolean }>`
 `;
 
 const RadioLabel = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -317,7 +317,7 @@ const Button = styled.button`
   flex: 1;
   height: 44px;
   border-radius: 8px;
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -407,7 +407,7 @@ const MobileTextSection = styled.div`
 `;
 
 const MobileMainTitle = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 18px;
   font-weight: 800;
   line-height: 1.4;
@@ -416,7 +416,7 @@ const MobileMainTitle = styled.div`
 `;
 
 const MobileSubtitle = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
@@ -458,7 +458,7 @@ const MobileRadio = styled.div<{ $selected: boolean }>`
 `;
 
 const MobileRadioLabel = styled.div`
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -476,7 +476,7 @@ const MobileButton = styled.button`
   flex: 1;
   height: 44px;
   border-radius: 8px;
-  font-family: "NanumSquare", sans-serif;
+  font-family: var(--Font-family-sans);
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;

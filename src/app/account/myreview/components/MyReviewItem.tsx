@@ -98,7 +98,7 @@ const MenuHeader = styled.div`
 
 const MenuTitle = styled.div`
   color: var(--Color-Foundation-base-black, #000);
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-style: normal;
   font-weight: var(--Font-weight-extrabold, 800);
@@ -114,7 +114,7 @@ const RightArrow = styled.img`
 const ReviewCreatedAt = styled.div`
   color: var(--Color-Foundation-gray-600, #989aa0);
   text-align: right;
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);
@@ -138,7 +138,7 @@ const Content = styled.div`
 
 const Comment = styled.div`
   color: var(--Color-Foundation-base-black, #000);
-  font-family: NanumSquare;
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: var(--Font-weight-regular, 400);
@@ -170,7 +170,7 @@ const Keyword = styled.div`
 
   color: var(--Color-Foundation-gray-700, #727478);
   text-align: center;
-  font-family: var(--Font-family-sans, NanumSquare);
+  font-family: var(--Font-family-sans);
   font-size: 11px;
   font-style: normal;
   font-weight: var(--Font-weight-bold, 700);

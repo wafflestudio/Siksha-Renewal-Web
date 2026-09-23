@@ -92,7 +92,7 @@ const OptionRow = styled.div`
 `;
 
 const OptionLabel = styled.div`
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -121,7 +121,7 @@ const ExplanationText = styled.div`
 `;
 
 const ExplanationLine = styled.p`
-  font-family: var(--Font-family-sans, NanumSquareOTF);
+  font-family: var(--Font-family-sans);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.4;
